@@ -3,21 +3,21 @@ import * as mat from "@angular/material";
 import * as dgp from "dgp-ng-app";
 
 const sharedModules = [
-  mat.MatButtonModule,
-  mat.MatIconModule,
-  mat.MatListModule,
-  mat.MatToolbarModule,
+    mat.MatButtonModule,
+    mat.MatIconModule,
+    mat.MatListModule,
+    mat.MatToolbarModule,
 
-  dgp.DgpEmptyStateModule
+    dgp.DgpEmptyStateModule
 ];
 
 @NgModule({
-  imports: [
-    ...sharedModules
-  ],
-  exports: [
-    ...sharedModules
-  ]
+    imports: [
+        ...sharedModules
+    ],
+    exports: [
+        ...sharedModules
+    ]
 })
 export class UiSharedModule {
 }

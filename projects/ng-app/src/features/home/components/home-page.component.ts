@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../../../store";
 
 @Component({
-    selector: "dgp-home-page",
+    selector: "app-home-page",
     templateUrl: "./home-page.component.html",
     styleUrls: [
         "./home-page.component.scss"

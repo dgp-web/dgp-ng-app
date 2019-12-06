@@ -1,7 +1,7 @@
 describe("test", () => {
 
-  it(`Me spec`, () => {
-    expect(true).toBeFalsy();
-  });
+    it(`Me spec`, () => {
+        expect(true).toBeFalsy();
+    });
 
 });

@@ -8,29 +8,29 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 
 @NgModule({
-  imports: [
-    StoreModule.forRoot(
-      appReducer, {
-        metaReducers: appMetaReducers,
-        runtimeChecks: {
-          strictActionImmutability: true,
-          strictActionSerializability: false,
-          strictStateImmutability: true,
-          strictStateSerializability: true
-        }
-      }
-    ),
-    EffectsModule.forRoot([
-      effects.AppEffects
-    ]),
+    imports: [
+        StoreModule.forRoot(
+            appReducer, {
+                metaReducers: appMetaReducers,
+                runtimeChecks: {
+                    strictActionImmutability: true,
+                    strictActionSerializability: false,
+                    strictStateImmutability: true,
+                    strictStateSerializability: true
+                }
+            }
+        ),
+        EffectsModule.forRoot([
+            effects.AppEffects
+        ]),
 
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
 
-    dgp.DgpRequestStoreModule,
-  ],
-  providers: [
-    appReducerProviders
-  ]
+        dgp.DgpRequestStoreModule,
+    ],
+    providers: [
+        appReducerProviders
+    ]
 })
 export class AppStoreModule {
 }
