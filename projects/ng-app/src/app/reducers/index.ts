@@ -6,6 +6,7 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
+import {hmrReducer} from "dgp-ng-app";
 
 export interface State {
 
@@ -16,4 +17,5 @@ export const reducers: ActionReducerMap<State> = {
 };
 
 
-export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
+export const metaReducers: MetaReducer<State>[
+  ] = !environment.production ? [hmrReducer] : [];

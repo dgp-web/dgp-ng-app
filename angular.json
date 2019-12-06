@@ -23,6 +23,7 @@
             "polyfills": "projects/ng-app/src/polyfills.ts",
             "tsConfig": "projects/ng-app/tsconfig.app.json",
             "aot": false,
+            "progress": false,
             "assets": [
               "projects/ng-app/src/favicon.ico",
               "projects/ng-app/src/assets"
@@ -39,6 +40,10 @@
                 {
                   "replace": "projects/ng-app/src/environments/environment.ts",
                   "with": "projects/ng-app/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/ng-app/src/index.html",
+                  "with": "projects/ng-app/src/index.prod.html"
                 }
               ],
               "optimization": true,
@@ -68,10 +73,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "hmr": true,
+            "hmrWarning": false,
             "browserTarget": "ng-app:build"
           },
           "configurations": {
             "production": {
+              "hmr": false,
+              "hmrWarning": true,
               "browserTarget": "ng-app:build:production"
             }
           }
