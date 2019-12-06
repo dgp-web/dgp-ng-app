@@ -4,8 +4,8 @@ import {
   createFeatureSelector,
   createSelector,
   MetaReducer
-} from '@ngrx/store';
-import { environment } from '../../environments/environment';
+} from "@ngrx/store";
+import { environment } from "../../environments/environment";
 import {hmrReducer} from "dgp-ng-app";
 
 export interface State {
