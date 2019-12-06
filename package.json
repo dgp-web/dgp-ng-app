@@ -30,6 +30,7 @@
         "dgp-ng-app": "^8.0.1",
         "entity-store": "^1.1.1",
         "hammerjs": "^2.0.8",
+        "lodash": "^4.17.15",
         "rxjs": "~6.4.0",
         "tslib": "^1.10.0",
         "zone.js": "~0.9.1"
@@ -47,6 +48,7 @@
         "@storybook/angular": "^5.2.8",
         "@types/jasmine": "~3.3.8",
         "@types/jasminewd2": "~2.0.3",
+        "@types/lodash": "^4.14.149",
         "@types/node": "~8.9.4",
         "babel-loader": "^8.0.6",
         "codelyzer": "^5.0.0",
