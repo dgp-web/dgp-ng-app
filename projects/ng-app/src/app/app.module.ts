@@ -3,7 +3,7 @@ import { ApplicationRef, NgModule } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import * as dgp from "dgp-ng-app";
-import { AppComponent } from "./app.component";
+import { AppComponent } from "./components";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
 import { AppState, AppStoreModule } from "../store";
