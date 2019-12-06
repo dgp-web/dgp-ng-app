@@ -1,3 +1,30 @@
-Das ist ein Test für HMR 12345
+<dgp-hamburger-shell dgpThemeHost>
 
-<router-outlet></router-outlet>
+  <div dgp-hamburger-menu
+       class="hamburger-menu">
+
+    <mat-toolbar color="primary">
+      DGP NG APP
+    </mat-toolbar>
+
+    <mat-nav-list class="hamburger-menu__main-entries">
+      <a mat-list-item
+         [routerLink]="['/home']">
+        <mat-icon class="hamburger-menu-list-item__icon">home</mat-icon>
+        Home
+      </a>
+    </mat-nav-list>
+
+    <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+
+    <mat-nav-list>
+      <a mat-list-item
+         [routerLink]="['/logEntries']">
+        <mat-icon class="hamburger-menu-list-item__icon">error</mat-icon>
+        Log
+      </a>
+    </mat-nav-list>
+  </div>
+
+  <router-outlet></router-outlet>
+</dgp-hamburger-shell>

@@ -1,16 +1,15 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ApplicationRef, NgModule } from "@angular/core";
-
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-import { Store, StoreModule } from "@ngrx/store";
-import { reducers, metaReducers, State } from "./reducers";
-import { EffectsModule } from "@ngrx/effects";
-import { AppEffects } from "./app.effects";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { environment } from "../environments/environment";
+import { Store } from "@ngrx/store";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { DgpNgApp } from "dgp-ng-app";
+import * as dgp from "dgp-ng-app";
+import { AppComponent } from "./app.component";
+import { UiSharedModule } from "../ui/shared";
+import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
+import { AppState, AppStoreModule } from "../store";
+import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
+import { RouterModule } from "@angular/router";
+import * as features from "../features";
 
 @NgModule({
   declarations: [
@@ -18,25 +17,32 @@ import { DgpNgApp } from "dgp-ng-app";
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    StoreModule.forRoot(reducers, {
-    metaReducers,
-    runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-    }
+    BrowserAnimationsModule,
+
+    dgp.DgpAuthenticationModule.forRoot({
+      authenticationApiClientProvider,
+      initializationServiceProvider
     }),
-    EffectsModule.forRoot([AppEffects]),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    BrowserAnimationsModule
+    dgp.DgpHamburgerShellModule.forRoot(),
+    dgp.DgpThemeSwitcherModule.forRoot(),
+    dgp.DgpLogModule,
+
+    UiSharedModule,
+    ApiClientModule.forRoot({
+      provide: ApiClientSettings,
+      useValue: {}
+    } as ApiClientSettingsProvider),
+    RouterModule.forRoot([]),
+    AppStoreModule,
+
+    features.HomeModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule extends DgpNgApp {
+export class AppModule extends dgp.DgpNgApp {
 
   constructor(public readonly appRef: ApplicationRef,
-            protected readonly ngrxStore: Store<State>) {
+              protected readonly ngrxStore: Store<AppState>) {
     super(appRef, ngrxStore);
   }
 
