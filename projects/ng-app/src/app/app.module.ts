@@ -20,11 +20,11 @@ import { DgpNgApp } from "dgp-ng-app";
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
+    metaReducers,
+    runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: true
-      }
+    }
     }),
     EffectsModule.forRoot([AppEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
@@ -36,7 +36,7 @@ import { DgpNgApp } from "dgp-ng-app";
 export class AppModule extends DgpNgApp {
 
   constructor(public readonly appRef: ApplicationRef,
-              protected readonly ngrxStore: Store<State>) {
+            protected readonly ngrxStore: Store<State>) {
     super(appRef, ngrxStore);
   }
 

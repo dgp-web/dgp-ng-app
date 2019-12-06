@@ -2,7 +2,7 @@
   "extends": "../projects/ng-app/tsconfig.app.json",
   "compilerOptions": {
     "types": [
-      "node"
+    "node"
     ]
   },
   "exclude": [
