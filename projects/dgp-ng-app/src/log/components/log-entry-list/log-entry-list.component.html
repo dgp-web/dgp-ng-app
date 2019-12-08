@@ -1,0 +1,24 @@
+<mat-nav-list *ngIf="hasLogEntries$ | async; else emptyState">
+    <h3 mat-subheader>Entries</h3>
+    <a mat-list-item
+       *ngFor="let logEntry of (logEntries$ | async)"
+        [routerLink]="['/logEntries', logEntry.timeStamp.toString()]">
+        <mat-icon mat-list-icon
+                 *ngIf="logEntry.severity === severityEnum.Error">
+            error
+        </mat-icon>
+        <div mat-line>
+            {{ logEntry.title }}
+        </div>
+        <div mat-line>
+            {{ logEntry.timeStamp | date:'medium'}}
+        </div>
+    </a>
+</mat-nav-list>
+
+<ng-template #emptyState>
+    <dgp-empty-state matIconName="error"
+                     title="No entries available">
+
+    </dgp-empty-state>
+</ng-template>

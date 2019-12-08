@@ -1,0 +1,31 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.page-menu-drawer-container {
+    display: flex;
+    flex-grow: 1;
+    overflow: inherit;
+}
+
+.page-menu-drawer {
+    width: 360px;
+}
+
+.page-menu-drawer-content {
+    overflow: auto;
+    flex-grow: 1;
+    display: flex;
+    position: relative;
+}
+
+.page-menu-drawer-toggle-container {
+    display: flex;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}

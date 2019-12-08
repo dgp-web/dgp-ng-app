@@ -1,0 +1,60 @@
+@import '~@angular/material/theming';
+
+@mixin dgp-normalize {
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+}
+
+@mixin dgp-list-item-theme($theme) {
+
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+
+    .dgp-list-item--selected {
+        color: white;
+        border-left-color: mat-color($primary, 300);
+        border-left-width: 4px;
+        border-left-style: solid;
+        pointer-events: none;
+
+        &:hover {
+            color: white;
+            background-color: mat-color($accent, 300);
+        }
+    }
+
+}
+
+@mixin dgp-ng-app-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+
+    @include dgp-normalize();
+
+    $app-theme: mat-light-theme($primary, $accent, $warn);
+    $app-dark-theme: mat-dark-theme($primary, $accent, $warn);
+
+    @include angular-material-theme($app-theme);
+    @include dgp-list-item-theme($app-theme);
+
+    .dark-theme {
+        @include angular-material-theme($app-dark-theme);
+        @include dgp-list-item-theme($app-dark-theme);
+    }
+
+    mat-dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+}
