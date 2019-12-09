@@ -5,6 +5,7 @@
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
+        "postbuild": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
