@@ -1,5 +1,5 @@
-import {isNullOrUndefined} from "util";
-import {BroadcastRole} from "../models";
+import { isNullOrUndefined } from "util";
+import { BroadcastRole, BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "../models";
 
 export interface ShouldUpdateBrowserTabBroadcastRoleDisplayPayload {
     readonly currentBrowserTabTitle: Readonly<string>;
@@ -11,15 +11,11 @@ export interface ShouldUpdateBrowserTabBroadcastRoleDisplayResult {
     updatedBrowserTabTitle?: Readonly<string>;
 }
 
-export interface ShouldUpdateBrowserTabBroadcastRoleDisplayConfig {
-    readonly leaderBrowserTabTitleSuffix: string;
-    readonly peonBrowserTabTitleSuffix: string;
+export interface ShouldUpdateBrowserTabBroadcastRoleDisplayConfig extends BroadcastRoleDisplayConfig {
 }
 
-export const defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig: ShouldUpdateBrowserTabBroadcastRoleDisplayConfig = {
-  leaderBrowserTabTitleSuffix: ": Leader",
-    peonBrowserTabTitleSuffix: ": Peon"
-};
+export const defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig: ShouldUpdateBrowserTabBroadcastRoleDisplayConfig
+    = defaultBroadcastRoleDisplayConfig;
 
 export function shouldUpdateBrowserTabBroadcastRoleDisplay(
     payload: ShouldUpdateBrowserTabBroadcastRoleDisplayPayload,
@@ -67,7 +63,9 @@ export function shouldUpdateBrowserTabBroadcastRoleDisplay(
 
     }
 
-    if (updatedTabTitle !== payload.currentBrowserTabTitle) { result.updatedBrowserTabTitle = updatedTabTitle; }
+    if (updatedTabTitle !== payload.currentBrowserTabTitle) {
+        result.updatedBrowserTabTitle = updatedTabTitle;
+    }
     result.shouldUpdateRoleDisplay = !isNullOrUndefined(result.updatedBrowserTabTitle);
 
     return result;

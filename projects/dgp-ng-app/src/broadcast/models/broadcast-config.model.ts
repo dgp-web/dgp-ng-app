@@ -2,10 +2,7 @@ import {
     actionBroadcastChannelId, heartbeatBroadcastChannelId
 } from "./broadcast-channel.model";
 import { InjectionToken } from "@angular/core";
-import {
-    defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig,
-    ShouldUpdateBrowserTabBroadcastRoleDisplayConfig
-} from "../functions";
+import { BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "./broadcast-role-display-config.model";
 
 export interface BroadcastConfig {
     /**
@@ -41,7 +38,7 @@ export interface BroadcastConfig {
      * Indicates whether and how browser-tab titles are used
      * to indicate status
      */
-    readonly updateBrowserTabTitleConfig?: ShouldUpdateBrowserTabBroadcastRoleDisplayConfig;
+    readonly updateBrowserTabTitleConfig?: BroadcastRoleDisplayConfig;
 }
 
 export const defaultBroadcastConfig: BroadcastConfig = {
@@ -50,7 +47,7 @@ export const defaultBroadcastConfig: BroadcastConfig = {
     heartbeatBroadcastChannelId,
     actionBroadcastChannelId,
     actionTypesToPrefixWithPeon: [],
-    updateBrowserTabTitleConfig: defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig
+    updateBrowserTabTitleConfig: defaultBroadcastRoleDisplayConfig
 };
 
 export const BROADCAST_CONFIG = new InjectionToken<Readonly<BroadcastConfig>>(
