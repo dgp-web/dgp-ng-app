@@ -9,6 +9,7 @@ import * as components from "./components";
         UiSharedModule,
         dgp.DgpPageHeaderModule,
         dgp.DgpHamburgerMenuToggleModule,
+        dgp.DgpListDetailsPageModule,
 
         RouterModule.forChild([{
             path: "home",
