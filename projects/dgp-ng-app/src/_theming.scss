@@ -57,4 +57,11 @@
         justify-content: flex-end;
     }
 
+    .page-menu-drawer-container {
+        .mat-drawer-inner-container {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
 }
