@@ -1,15 +1,18 @@
 import { ModuleWithProviders, NgModule } from "@angular/core";
 import { StoreModule } from "@ngrx/store";
-import { hamburgerShellStoreFeature } from "./models";
-import { hamburgerShellReducer, hamburgerShellReducerProviders } from "./reducers";
 import { EffectsModule } from "@ngrx/effects";
-import * as effects from "./effects";
-import { defaultHamburgerShellConfigProvider, HamburgerShellConfigProvider } from "./models";
 import { LayoutModule } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import * as mat from "@angular/material";
-import * as components from "./components";
+import { hamburgerShellReducer, hamburgerShellReducerProviders } from "./reducers/hamburger-shell.reducer";
+import {
+    defaultHamburgerShellConfigProvider,
+    HamburgerShellConfigProvider
+} from "./models/hamburger-shell-config-provider.model";
+import { hamburgerShellStoreFeature } from "./models/hamburger-shell.store-feature";
+import { HamburgerShellComponent } from "./components/hamburger-shell.component";
+import { HamburgerShellEffects } from "./effects/hamburger-shell.effects";
 
 @NgModule({
     imports: [
@@ -25,17 +28,17 @@ import * as components from "./components";
             hamburgerShellReducer
         ),
         EffectsModule.forFeature([
-            effects.HamburgerShellEffects
+            HamburgerShellEffects
         ])
     ],
     providers: [
         hamburgerShellReducerProviders
     ],
     declarations: [
-        components.HamburgerShellComponent
+        HamburgerShellComponent
     ],
     exports: [
-        components.HamburgerShellComponent
+        HamburgerShellComponent
     ]
 })
 export class DgpHamburgerShellModule {

@@ -1,14 +1,21 @@
-import {Component, ChangeDetectionStrategy} from "@angular/core";
-import {HamburgerShellState} from "../../models";
-import {Store} from "@ngrx/store";
-import {ToggleHamburgerMenuAction} from "../../actions/hamburger-shell.actions";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { ToggleHamburgerMenuAction } from "../../actions/hamburger-shell.actions";
+import { HamburgerShellState } from "../../models/hamburger-shell-state.model";
 
 @Component({
     selector: "dgp-hamburger-menu-toggle",
-    templateUrl: "./hamburger-menu-toggle.component.html",
-    styleUrls: [
-        "./hamburger-menu-toggle.component.scss"
-    ],
+    template: `
+        <button mat-icon-button
+                (click)="toggleHamburgerMenu()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    `,
+    styles: [`
+        :host {
+            margin-right: 8px;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { LogEntry } from "../models";
+import { LogEntry } from "../models/log-entry.model";
 
 export const logErrorActionType = "[Log] LogError";
 

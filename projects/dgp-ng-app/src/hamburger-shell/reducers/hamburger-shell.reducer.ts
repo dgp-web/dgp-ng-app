@@ -1,9 +1,7 @@
-import {HamburgerShellState} from "../models";
 import {HamburgerShellActions} from "../actions/hamburger-shell.actions";
 import {FactoryProvider, InjectionToken} from "@angular/core";
 import {ActionReducer} from "@ngrx/store";
-import {AuthenticationState} from "../../authentication/models";
-import {_authenticationReducer} from "../../authentication/reducers";
+import { HamburgerShellState } from "../models/hamburger-shell-state.model";
 
 const initialState: HamburgerShellState = {
     hamburgerMenuMode: "side",

@@ -3,7 +3,8 @@ import { Actions, Effect } from "@ngrx/effects";
 import { debounceTime, map } from "rxjs/operators";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { SetHamburgerMenuStateAction, SetListDetailsPageStateAction } from "../actions/hamburger-shell.actions";
-import { HAMBURGER_SHELL_CONFIG, HamburgerShellConfig } from "../models";
+import { HamburgerShellConfig } from "../models/hamburger-shell-config.model";
+import { HAMBURGER_SHELL_CONFIG } from "../models/hamburger-shell-config-provider.model";
 
 @Injectable()
 export class HamburgerShellEffects {

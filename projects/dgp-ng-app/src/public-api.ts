@@ -9,6 +9,14 @@ export * from "./hmr";
 export * from "./key-value-store";
 export * from "./log";
 export * from "./request-store";*/
+// log
+export {
+    AddLogEntryAction, addLogEntryActionType, LogErrorAction, logErrorActionType
+} from "./log/actions/log.actions";
+export { LogEntry, logEntryType } from "./log/models/log-entry.model";
+export { LogState, logStoreFeature } from "./log/models/log-state.model";
+export { Severity } from "./log/models/severity.model";
+export { DgpLogModule } from "./log/log.module";
 
 // request-store
 export { requestStoreFeature } from "./request-store/models/request-store-state.model";

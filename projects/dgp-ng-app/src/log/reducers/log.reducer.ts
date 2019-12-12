@@ -1,9 +1,10 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { FactoryProvider, InjectionToken } from "@angular/core";
-import { logEntryType, LogState, logStoreFeature } from "../models";
 import { createEntityReducer } from "entity-store";
+import { LogState, logStoreFeature } from "../models/log-state.model";
+import { logEntryType } from "../models/log-entry.model";
 
-export const _logStoreReducer: ActionReducerMap<LogState> = {
+export const logStoreReducerImpl: ActionReducerMap<LogState> = {
 
     logEntries: createEntityReducer({
         entityType: logEntryType,
@@ -15,7 +16,7 @@ export const _logStoreReducer: ActionReducerMap<LogState> = {
 export const logStoreReducer = new InjectionToken<LogState>("LogStoreReducer");
 
 export function logStoreReducerFactory(): ActionReducerMap<LogState> {
-    return _logStoreReducer;
+    return logStoreReducerImpl;
 }
 
 export const logStoreReducerProviders = [{

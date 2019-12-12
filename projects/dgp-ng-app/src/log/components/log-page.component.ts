@@ -1,17 +1,32 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { logEntryType, LogState, logStoreFeature } from "../../models";
 import { select, Store } from "@ngrx/store";
-import { getSelectedLogEntrySelector } from "../../selectors";
 import { ActivatedRoute } from "@angular/router";
 import { isNullOrUndefined } from "util";
 import { CompositeEntityAction } from "entity-store";
+import { getSelectedLogEntrySelector } from "../selectors/log-entry.selectors";
+import { LogState, logStoreFeature } from "../models/log-state.model";
+import { logEntryType } from "../models/log-entry.model";
 
 @Component({
     selector: "dgp-log-page",
-    templateUrl: "./log-page.component.html",
-    styleUrls: [
-        "./log-page.component.scss"
-    ],
+    template: `
+        <dgp-page-header>
+            <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+            Log
+        </dgp-page-header>
+
+        <dgp-list-details-page>
+
+            <ng-container dgp-list-details-page-menu>
+                <dgp-log-entry-list></dgp-log-entry-list>
+            </ng-container>
+
+            <dgp-list-details-page-content>
+                <dgp-log-entry-details [logEntry]="logEntry$ | async"></dgp-log-entry-details>
+            </dgp-list-details-page-content>
+
+        </dgp-list-details-page>
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

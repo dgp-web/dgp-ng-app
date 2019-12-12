@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
-import { AddLogEntryAction, addLogEntryActionType, LogErrorAction, logErrorActionType } from "../actions";
-import { defaultIfEmpty, first, map, switchMap } from "rxjs/operators";
+import { defaultIfEmpty, map, switchMap } from "rxjs/operators";
 import { CompositeEntityAction } from "entity-store";
-import { LogEntry, logEntryType, logStoreFeature, Severity } from "../models";
 import { MatSnackBar } from "@angular/material";
 import { Router } from "@angular/router";
+import { AddLogEntryAction, addLogEntryActionType, LogErrorAction, logErrorActionType } from "../actions/log.actions";
+import { logStoreFeature } from "../models/log-state.model";
+import { Severity } from "../models/severity.model";
+import { LogEntry, logEntryType } from "../models/log-entry.model";
 
 @Injectable()
 export class LogEffects {

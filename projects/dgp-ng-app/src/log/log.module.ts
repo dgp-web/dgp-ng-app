@@ -1,18 +1,20 @@
 import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
-import * as effects from "./effects";
-import * as components from "./components";
 import { StoreModule } from "@ngrx/store";
 import * as mat from "@angular/material";
-import { logStoreFeature } from "./models";
-import { logStoreReducer, logStoreReducerProviders } from "./reducers";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page";
-import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header";
-import { DgpHamburgerMenuToggleModule } from "../hamburger-shell/components/hamburger-menu-toggle";
 import { DgpEmptyStateModule } from "../empty-state";
+import { logStoreReducer, logStoreReducerProviders } from "./reducers/log.reducer";
+import { LogPageComponent } from "./components/log-page.component";
+import { LogEntryListComponent } from "./components/log-entry-list.component";
+import { LogEntryDetailsComponent } from "./components/log-entry-details.component";
+import { logStoreFeature } from "./models/log-state.model";
+import { LogEffects } from "./effects/log.effects";
+import { DgpHamburgerMenuToggleModule } from "../hamburger-shell/components/hamburger-menu-toggle/hamburger-menu-toggle.module";
+import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
+import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 
 @NgModule({
     imports: [
@@ -21,15 +23,15 @@ import { DgpEmptyStateModule } from "../empty-state";
 
         StoreModule.forFeature(logStoreFeature, logStoreReducer),
         EffectsModule.forFeature([
-            effects.LogEffects
+            LogEffects
         ]),
 
         RouterModule.forChild([{
             path: "logEntries",
-            component: components.LogPageComponent,
+            component: LogPageComponent,
         }, {
             path: "logEntries/:logEntryId",
-            component: components.LogPageComponent,
+            component: LogPageComponent,
         }]),
 
         mat.MatDividerModule,
@@ -43,9 +45,9 @@ import { DgpEmptyStateModule } from "../empty-state";
         DgpEmptyStateModule
     ],
     declarations: [
-        components.LogEntryDetailsComponent,
-        components.LogEntryListComponent,
-        components.LogPageComponent
+        LogEntryDetailsComponent,
+        LogEntryListComponent,
+        LogPageComponent
     ],
     providers: [
         logStoreReducerProviders
