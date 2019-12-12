@@ -14,7 +14,8 @@ export * from "./spacer";
 export * from "./table-cell-editor";
 export * from "./theme-switcher";
 export * from "./utils";*/
-
+// utils
+export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
 export { VirtualListPanelComponent } from "./virtual-list-panel/components/virtual-list-panel.component";
