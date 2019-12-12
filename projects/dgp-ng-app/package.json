@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app",
-    "version": "0.0.1",
+    "version": "8.1.2",
     "peerDependencies": {
         "@angular/animations": "^8",
         "@angular/cdk": "^8",
