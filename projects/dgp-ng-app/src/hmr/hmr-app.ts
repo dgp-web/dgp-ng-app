@@ -1,8 +1,8 @@
-import {ApplicationRef} from "@angular/core";
-import {Store} from "@ngrx/store";
-import {HmrReloadAction} from "./hmr.actions";
-import {createNewHosts, removeNgStyles} from "@angularclass/hmr";
-import {take} from "rxjs/operators";
+import { ApplicationRef } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { HmrReloadAction } from "./hmr.actions";
+import { createNewHosts, removeNgStyles } from "@angularclass/hmr";
+import { take } from "rxjs/operators";
 
 export class DgpNgApp {
 
@@ -12,7 +12,9 @@ export class DgpNgApp {
 
     //noinspection JSUnusedGlobalSymbols
     hmrOnInit(store: any) {
-        if (!store || !store.rootState) { return; }
+        if (!store || !store.rootState) {
+            return;
+        }
         if (store.rootState) {
             this.ngrxStore.dispatch(new HmrReloadAction(store.rootState));
         }
