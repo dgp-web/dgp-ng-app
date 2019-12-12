@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import * as mat from "@angular/material";
-import * as components from "./components";
-import * as directives from "./directives";
 import { CommonModule } from "@angular/common";
+import { DgpTableCelLEditorDirective } from "./directives/table-cell-editor.directive";
+import { DgpTableCellComponent } from "./components/table-cell.component";
 
 @NgModule({
     imports: [
@@ -11,12 +11,12 @@ import { CommonModule } from "@angular/common";
         mat.MatDialogModule
     ],
     declarations: [
-        components.DgpTableCellComponent,
-        directives.DgpTableCelLEditorDirective
+        DgpTableCellComponent,
+        DgpTableCelLEditorDirective
     ],
     exports: [
-        components.DgpTableCellComponent,
-        directives.DgpTableCelLEditorDirective
+        DgpTableCellComponent,
+        DgpTableCelLEditorDirective
     ]
 })
 export class DgpTableCellModule {

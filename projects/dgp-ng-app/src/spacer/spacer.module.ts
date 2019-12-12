@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
-import * as components from "./components";
+import { SpacerComponent } from "./components/spacer.component";
 
 @NgModule({
     declarations: [
-        components.SpacerComponent
+        SpacerComponent
     ],
     exports: [
-        components.SpacerComponent
+        SpacerComponent
     ]
 })
 export class DgpSpacerModule {

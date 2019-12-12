@@ -9,9 +9,18 @@ export * from "./hmr";
 export * from "./key-value-store";
 export * from "./log";
 export * from "./request-store";
-export * from "./routing-overlay";
-export * from "./spacer";
-export * from "./table-cell-editor";*/
+export * from "./routing-overlay";*/
+
+
+
+// spacer
+export { SpacerComponent } from "./spacer/components/spacer.component";
+export { DgpSpacerModule } from "./spacer/spacer.module";
+
+// table-cell
+export { DgpTableCellComponent } from "./table-cell-editor/components/table-cell.component";
+export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/table-cell-editor.directive";
+export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
 export {

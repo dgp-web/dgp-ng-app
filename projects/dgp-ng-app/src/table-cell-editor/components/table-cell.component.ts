@@ -9,7 +9,7 @@ import {
     ViewEncapsulation
 } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material";
-import { DgpTableCelLEditorDirective } from "../../directives";
+import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
 
 export interface TableCellEditorSizes {
     readonly offsetTop: number;
@@ -37,7 +37,7 @@ export interface TableCellEditorSizes {
     `,
     styles: [`
 
-        mat-cell-dialog-editor {
+        dgp-table-cell {
             display: flex;
             flex-grow: 1;
         }
