@@ -1,6 +1,0 @@
-<cdk-virtual-scroll-viewport [itemSize]="itemSize"
-                             style="height: 100%; width:100%;">
-    <ng-container *cdkVirtualFor="let item of items">
-        <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"></ng-container>
-    </ng-container>
-</cdk-virtual-scroll-viewport>

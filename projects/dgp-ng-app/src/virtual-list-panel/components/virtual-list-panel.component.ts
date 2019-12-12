@@ -7,14 +7,18 @@ import {
     Renderer2,
     AfterViewInit, ElementRef
 } from "@angular/core";
-import { VirtualListItemDirective } from "../../directives/virtual-list-item";
+import { VirtualListItemDirective } from "../directives/virtual-list-item.directive";
 
 @Component({
     selector: "dgp-virtual-list-panel",
-    templateUrl: "./virtual-list-panel.component.html",
-    styleUrls: [
-        "./virtual-list-panel.component.scss"
-    ],
+    template: `
+        <cdk-virtual-scroll-viewport [itemSize]="itemSize"
+                                     style="height: 100%; width:100%;">
+            <ng-container *cdkVirtualFor="let item of items">
+                <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"></ng-container>
+            </ng-container>
+        </cdk-virtual-scroll-viewport>
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
@@ -26,13 +30,14 @@ export class VirtualListPanelComponent implements AfterViewInit {
     @Input()
     items: ReadonlyArray<any>;
 
-    @ContentChild(VirtualListItemDirective, { read: TemplateRef, static: false })
+    @ContentChild(VirtualListItemDirective, {read: TemplateRef, static: false})
     itemTemplate: TemplateRef<any>;
 
     constructor(
         private readonly elementRef: ElementRef,
         private readonly renderer: Renderer2
-    ) {}
+    ) {
+    }
 
     ngAfterViewInit(): void {
         const parentNode = this.renderer.parentNode(this.elementRef.nativeElement);

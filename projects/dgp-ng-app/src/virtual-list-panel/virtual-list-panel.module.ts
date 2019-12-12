@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import * as components from "./components";
-import * as directives from "./directives";
+import { VirtualListItemDirective } from "./directives/virtual-list-item.directive";
+import { VirtualListPanelComponent } from "./components/virtual-list-panel.component";
 
 @NgModule({
     imports: [
@@ -10,12 +10,12 @@ import * as directives from "./directives";
         ScrollingModule
     ],
     declarations: [
-        components.VirtualListPanelComponent,
-        directives.VirtualListItemDirective
+        VirtualListPanelComponent,
+        VirtualListItemDirective
     ],
     exports: [
-        components.VirtualListPanelComponent,
-        directives.VirtualListItemDirective
+        VirtualListPanelComponent,
+        VirtualListItemDirective
     ]
 })
 export class DgpVirtualListPanelModule {
