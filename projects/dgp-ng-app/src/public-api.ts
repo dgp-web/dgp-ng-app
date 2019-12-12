@@ -67,6 +67,7 @@ export { DgpLogModule } from "./log/log.module";
 export { requestStoreFeature } from "./request-store/models/request-store-state.model";
 export { RequestState } from "./request-store/models/request-state.model";
 export { ScheduleRequestAction, scheduleRequestActionType } from "./request-store/actions/request.actions";
+export { hasPendingRequestsSelector, requestStateSelector } from "./request-store/selectors/request.selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
