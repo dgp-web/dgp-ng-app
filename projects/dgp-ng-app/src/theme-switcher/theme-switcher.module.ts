@@ -1,18 +1,23 @@
 import { ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
 import * as mat from "@angular/material";
-import * as components from "./components";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { defaultThemeSwitcherConfig, THEME_SWITCHER_CONFIG, ThemeSwitcherConfig, ThemeSwitcherState } from "./models";
 import { Store, StoreModule } from "@ngrx/store";
 import { themeSwitcherStoreFeature } from "./models/theme-switcher-store-feature.model";
-import { themeSwitcherReducer, themeSwitcherReducerProviders } from "./reducers";
 import { EffectsModule } from "@ngrx/effects";
-import { ThemeSwitcherEffects } from "./effects";
 import { isNullOrUndefined } from "util";
-import { SetIsDarkModeActiveAction } from "./actions";
-import { ThemeHostDirective } from "./directives";
 import { OverlayModule } from "@angular/cdk/overlay";
+import { ThemeSwitcherEffects } from "./effects/theme-switcher.effects";
+import { themeSwitcherReducer, themeSwitcherReducerProviders } from "./reducers/theme-switcher.reducer";
+import { ThemeHostDirective } from "./directives/theme-host.directive";
+import { DarkModeToggleComponent } from "./components/dark-mode-toggle.component";
+import {
+    defaultThemeSwitcherConfig,
+    THEME_SWITCHER_CONFIG,
+    ThemeSwitcherConfig
+} from "./models/theme-switcher-config.model";
+import { ThemeSwitcherState } from "./models/theme-switcher-state.model";
+import { SetIsDarkModeActiveAction } from "./actions/theme-switcher.actions";
 
 @NgModule({
     imports: [
@@ -28,11 +33,11 @@ import { OverlayModule } from "@angular/cdk/overlay";
         ])
     ],
     declarations: [
-        components.DarkModeToggleComponent,
+        DarkModeToggleComponent,
         ThemeHostDirective
     ],
     exports: [
-        components.DarkModeToggleComponent,
+        DarkModeToggleComponent,
         ThemeHostDirective
     ],
     providers: [

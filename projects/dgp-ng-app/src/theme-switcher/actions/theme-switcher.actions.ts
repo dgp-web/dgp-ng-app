@@ -1,4 +1,4 @@
-import {Action} from "@ngrx/store";
+import { Action } from "@ngrx/store";
 
 export const toggleDarkModeActionType = "[ThemeSwitcher] ToggleDarkMode";
 
@@ -13,7 +13,8 @@ export class SetIsDarkModeActiveAction implements Action {
 
     constructor(
         public readonly isDarkModeActive: boolean
-    ) {}
+    ) {
+    }
 }
 
 export type ThemeSwitcherActions = ToggleDarkModeAction | SetIsDarkModeActiveAction;

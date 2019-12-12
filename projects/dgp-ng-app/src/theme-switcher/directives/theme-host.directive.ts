@@ -1,8 +1,9 @@
-import {Directive, ElementRef, Inject, Renderer2} from "@angular/core";
-import {THEME_SWITCHER_CONFIG, ThemeSwitcherConfig, ThemeSwitcherState} from "../models";
-import {select, Store} from "@ngrx/store";
-import {isDarkModeActiveSelector} from "../selectors";
-import {OverlayContainer} from "@angular/cdk/overlay";
+import { Directive, ElementRef, Inject, Renderer2 } from "@angular/core";
+import { select, Store } from "@ngrx/store";
+import { OverlayContainer } from "@angular/cdk/overlay";
+import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
+import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig } from "../models/theme-switcher-config.model";
+import { isDarkModeActiveSelector } from "../selectors/theme-switcher.selectors";
 
 @Directive({
     selector: "[dgpThemeHost]",

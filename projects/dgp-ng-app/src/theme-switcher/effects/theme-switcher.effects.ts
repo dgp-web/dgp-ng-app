@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Actions, Effect, ofType} from "@ngrx/effects";
-import {toggleDarkModeActionType} from "../actions";
 import {first, switchMap, tap} from "rxjs/operators";
-import {ThemeSwitcherState} from "../models";
 import {select, Store} from "@ngrx/store";
-import {isDarkModeActiveSelector} from "../selectors";
+import { toggleDarkModeActionType } from "../actions/theme-switcher.actions";
+import { isDarkModeActiveSelector } from "../selectors/theme-switcher.selectors";
+import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
 
 @Injectable()
 export class ThemeSwitcherEffects {
