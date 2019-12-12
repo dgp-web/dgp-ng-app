@@ -1,22 +1,22 @@
 import { NgModule } from "@angular/core";
 import * as mat from "@angular/material";
 import { EffectsModule } from "@ngrx/effects";
-import * as components from "./components";
-import * as effects from "./effects";
+import { RoutingOverlayComponent } from "./components/routing-overlay.component";
+import { RoutingOverlayEffects } from "./effects/routing-overlay.effects";
 
 @NgModule({
     imports: [
         mat.MatDialogModule,
         mat.MatProgressBarModule,
         EffectsModule.forFeature([
-            effects.RoutingOverlayEffects
+            RoutingOverlayEffects
         ])
     ],
     declarations: [
-        components.RoutingOverlayComponent
+        RoutingOverlayComponent
     ],
     entryComponents: [
-        components.RoutingOverlayComponent
+        RoutingOverlayComponent
     ]
 })
 export class DgpRoutingOverlayModule {

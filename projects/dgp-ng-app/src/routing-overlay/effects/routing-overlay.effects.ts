@@ -4,9 +4,9 @@ import { isNullOrUndefined } from "util";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
 import { timer, of } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
-import { RoutingOverlayComponent } from "../components/overlay";
 import { MatDialog, MatDialogRef } from "@angular/material";
-import { ShowLoadingSpinnerAction, showLoadingSpinnerActionType } from "../actions";
+import { ShowLoadingSpinnerAction, showLoadingSpinnerActionType } from "../actions/routing-overlay.actions";
+import { RoutingOverlayComponent } from "../components/routing-overlay.component";
 
 @Injectable()
 export class RoutingOverlayEffects {

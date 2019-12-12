@@ -11,7 +11,11 @@ export * from "./log";
 export * from "./request-store";
 export * from "./routing-overlay";*/
 
-
+// routing-overlay
+export {
+    ShowLoadingSpinnerAction, showLoadingSpinnerActionType
+} from "./routing-overlay/actions/routing-overlay.actions";
+export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
 
 // spacer
 export { SpacerComponent } from "./spacer/components/spacer.component";
