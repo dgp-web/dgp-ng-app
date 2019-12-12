@@ -1,22 +1,24 @@
 import { NgModule } from "@angular/core";
-import * as mat from "@angular/material";
-import * as components from "./components";
 import { CommonModule } from "@angular/common";
+import { EmptyStateComponent } from "./components/empty-state.component";
+import { EmptyStateContentComponent } from "./components/empty-state-content.component";
+import { EmptyStateIconComponent } from "./components/empty-state-icon.component";
+import { EmptyStateTitleComponent } from "./components/empty-state-title.component";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
     imports: [
         CommonModule,
-
-        mat.MatIconModule
+        MatIconModule
     ],
     declarations: [
-        components.EmptyStateComponent,
-        components.EmptyStateContentComponent,
-        components.EmptyStateIconComponent,
-        components.EmptyStateTitleComponent
+        EmptyStateComponent,
+        EmptyStateContentComponent,
+        EmptyStateIconComponent,
+        EmptyStateTitleComponent
     ],
     exports: [
-        components.EmptyStateComponent
+        EmptyStateComponent
     ]
 })
 export class DgpEmptyStateModule {

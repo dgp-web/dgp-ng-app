@@ -5,7 +5,7 @@ import * as mat from "@angular/material";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { DgpEmptyStateModule } from "../empty-state";
+import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { logStoreReducer, logStoreReducerProviders } from "./reducers/log.reducer";
 import { LogPageComponent } from "./components/log-page.component";
 import { LogEntryListComponent } from "./components/log-entry-list.component";

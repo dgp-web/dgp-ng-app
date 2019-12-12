@@ -2,9 +2,11 @@
  * Public API Surface of dgp-ng-app
  */
 /*export * from "./authentication";
-export * from "./broadcast";
-export * from "./empty-state";
-export * from "./hamburger-shell";*/
+export * from "./broadcast";*/
+
+// empty-state
+export * from "./empty-state/components/empty-state.component";
+export * from "./empty-state/empty-state.module";
 
 // hamburger-shell
 export * from "./hamburger-shell/actions/hamburger-shell.actions";
