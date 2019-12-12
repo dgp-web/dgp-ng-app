@@ -10,9 +10,6 @@ export abstract class InitializationService<TUser = any> {
 
     /**
      * Runs tasks on app start
-     *
-     * @param {TUser} user
-     * @returns {Promise<void>}
      */
     abstract runPostAuthenticationTask$(user: TUser): Promise<void>;
 

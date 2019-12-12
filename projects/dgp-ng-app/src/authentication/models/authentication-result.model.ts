@@ -7,8 +7,8 @@
  * attribute is set.
  */
 export interface AuthenticationState {
-  readonly success: boolean;
-  readonly error?: any;
-  readonly user?: any;
-  readonly initialUrl: string;
+    readonly success: boolean;
+    readonly error?: any;
+    readonly user?: any;
+    readonly initialUrl: string;
 }

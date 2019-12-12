@@ -1,12 +1,11 @@
+import { ActionReducer } from "@ngrx/store";
+import { FactoryProvider, InjectionToken } from "@angular/core";
+import { AuthenticationState } from "../models/authentication-result.model";
 import {
     authenticateUserActionType,
     AuthenticationActions,
-    cacheInitialUrlActionType,
-    registerAuthenticateErrorActionType
-} from "../actions";
-import { AuthenticationState } from "../models";
-import { ActionReducer } from "@ngrx/store";
-import { FactoryProvider, InjectionToken } from "@angular/core";
+    cacheInitialUrlActionType, registerAuthenticateErrorActionType
+} from "../actions/authentication.actions";
 
 const initialState: AuthenticationState = {
     user: null,
@@ -15,7 +14,7 @@ const initialState: AuthenticationState = {
     initialUrl: null
 };
 
-export function _authenticationReducer<TUser>(
+export function authenticationReducerImpl<TUser>(
     state = initialState,
     action: AuthenticationActions
 ): AuthenticationState {
@@ -55,7 +54,7 @@ export function _authenticationReducer<TUser>(
 export const authenticationReducer = new InjectionToken<ActionReducer<AuthenticationState>>("authenticationReducer");
 
 export function authenticationReducerFactory(): ActionReducer<AuthenticationState> {
-    return _authenticationReducer;
+    return authenticationReducerImpl;
 }
 
 export const authenticationReducerProviders = [{

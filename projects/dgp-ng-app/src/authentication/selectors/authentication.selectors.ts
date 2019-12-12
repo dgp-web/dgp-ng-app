@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { AuthenticationState, authenticationStoreFeature } from "../models";
 import { isNullOrUndefined } from "util";
+import { authenticationStoreFeature } from "../models/authentication-store-feature";
+import { AuthenticationState } from "../models/authentication-result.model";
 
 export const authenticationFeatureSelector = createFeatureSelector<AuthenticationState>(authenticationStoreFeature);
 

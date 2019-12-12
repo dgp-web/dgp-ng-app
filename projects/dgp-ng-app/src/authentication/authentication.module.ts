@@ -1,12 +1,12 @@
 import { ModuleWithProviders, NgModule } from "@angular/core";
 import { StoreModule } from "@ngrx/store";
-import { authenticationStoreFeature } from "./models";
-import { authenticationReducer, authenticationReducerProviders } from "./reducers";
-import * as guards from "./guards";
-import * as services from "./services";
-import { AuthenticationApiClientProvider } from "./api-clients";
-import { InitializationServiceProvider } from "./services";
-import { appInitializerProvider } from "./services";
+import { InitializationServiceProvider } from "./services/initialization.service";
+import { authenticationStoreFeature } from "./models/authentication-store-feature";
+import { AuthenticationApiClientProvider } from "./api-clients/authentication.api-client";
+import { authenticationReducer, authenticationReducerProviders } from "./reducers/authentication.reducer";
+import { appInitializerProvider } from "./services/app-initializer.function";
+import { AuthenticationGuard } from "./guards/authentication.guard";
+import { authenticationServiceProvider } from "./services/authentication.service";
 
 export interface AuthenticationModuleSettings {
     readonly authenticationApiClientProvider: AuthenticationApiClientProvider;
@@ -23,19 +23,19 @@ export interface AuthenticationModuleSettings {
     providers: [
         appInitializerProvider,
         authenticationReducerProviders,
-        guards.AuthenticationGuard,
-        services.authenticationServiceProvider
+        AuthenticationGuard,
+        authenticationServiceProvider
     ]
 })
 export class DgpAuthenticationModule {
 
     static forRoot(settings: AuthenticationModuleSettings): ModuleWithProviders {
         return {
-          ngModule: DgpAuthenticationModule,
-          providers: [
-              settings.authenticationApiClientProvider,
-              settings.initializationServiceProvider,
-          ]
+            ngModule: DgpAuthenticationModule,
+            providers: [
+                settings.authenticationApiClientProvider,
+                settings.initializationServiceProvider,
+            ]
         };
     }
 
