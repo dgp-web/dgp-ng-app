@@ -9,7 +9,7 @@ describe("observeRequest", () => {
   beforeEach(() => {
     observer = {
       next: () => {},
-      error: e => {},
+      error: () => {},
       complete: () => {}
     };
   });

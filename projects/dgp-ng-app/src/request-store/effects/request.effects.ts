@@ -5,13 +5,13 @@ import { Effect, ofType } from "@ngrx/effects";
 import { concatMap } from "rxjs/operators";
 import { Actions } from "@ngrx/effects";
 import {
-    scheduleRequestActionType,
-    ScheduleRequestAction,
     RegisterRequestAction,
+    ScheduleRequestAction,
+    scheduleRequestActionType,
     UnregisterRequestAction
-} from "../actions";
-import { observeRequest } from "../functions";
-import { RequestStoreState } from "../models";
+} from "../actions/request.actions";
+import { RequestStoreState } from "../models/request-store-state.model";
+import { observeRequest } from "../functions/observe-request.function";
 
 @Injectable()
 export class RequestEffects {
@@ -53,7 +53,7 @@ export class RequestEffects {
 
         return {
             next: onObserved,
-            error: (e) => {
+            error: () => {
                 onObserved();
             },
             complete: onObserved

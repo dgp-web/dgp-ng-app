@@ -8,8 +8,13 @@ export * from "./hamburger-shell";
 export * from "./hmr";
 export * from "./key-value-store";
 export * from "./log";
-export * from "./request-store";
-export * from "./routing-overlay";*/
+export * from "./request-store";*/
+
+// request-store
+export { requestStoreFeature } from "./request-store/models/request-store-state.model";
+export { RequestState } from "./request-store/models/request-state.model";
+export { ScheduleRequestAction, scheduleRequestActionType } from "./request-store/actions/request.actions";
+export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
 export {

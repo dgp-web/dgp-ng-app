@@ -5,8 +5,8 @@ import { ReplaySubject } from "rxjs";
 import { StoreModule } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { RequestEffects } from "../request.effects";
-import * as functions from "../../functions";
-import {ScheduleRequestAction} from "../../actions";
+import { ScheduleRequestAction } from "../../actions/request.actions";
+import * as functions from "../../functions/observe-request.function";
 
 xdescribe(RequestEffects.name, () => {
 

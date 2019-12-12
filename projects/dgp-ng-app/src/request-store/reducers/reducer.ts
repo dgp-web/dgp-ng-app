@@ -1,9 +1,9 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { FactoryProvider, InjectionToken } from "@angular/core";
-import { RequestStoreState } from "../models";
 import { requestReducer } from "./request.reducer";
+import { RequestStoreState } from "../models/request-store-state.model";
 
-export const _requestStoreReducer: ActionReducerMap<RequestStoreState> = {
+export const requestStoreReducerImpl: ActionReducerMap<RequestStoreState> = {
     requests: requestReducer
 
 };
@@ -11,7 +11,7 @@ export const _requestStoreReducer: ActionReducerMap<RequestStoreState> = {
 export const requestStoreReducer = new InjectionToken<RequestStoreState>("RequestStoreReducer");
 
 export function requestStoreReducerFactory(): ActionReducerMap<RequestStoreState> {
-    return _requestStoreReducer;
+    return requestStoreReducerImpl;
 }
 
 export const requestStoreReducerProviders = [{
