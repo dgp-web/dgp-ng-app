@@ -1,5 +1,5 @@
-import {leaderActionTypePrefix, peonActionTypePrefix} from "../../actions";
 import {trimIncomingBroadcastAction} from "../trim-incoming-broadcast-action.function";
+import { leaderActionTypePrefix, peonActionTypePrefix } from "../../actions/broadcast-channel.actions";
 
 describe("trimIncomingBroadcastAction", () => {
 

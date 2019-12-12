@@ -1,8 +1,9 @@
 
 import {createGuid} from "../create-guid.function";
-import {BroadcastHeartbeat, BroadcastParticipant} from "../../models";
 import {createBroadcastParticipant} from "../create-broadcast-participant.function";
 import {createBroadcastHeartbeat} from "../create-broadcast-heartbeat.function";
+import { BroadcastParticipant } from "../../models/broadcast-participant.model";
+import { BroadcastHeartbeat } from "../../models/broadcast-heartbeat.model";
 
 export interface DataVersion {
     readonly dataId: string;
@@ -14,7 +15,6 @@ export class BroadcastFunctionsTestData {
     static readonly participant01: BroadcastParticipant = createBroadcastParticipant();
     static readonly participant02: BroadcastParticipant = createBroadcastParticipant();
     static readonly participant03: BroadcastParticipant = createBroadcastParticipant();
-    static readonly participant04: BroadcastParticipant = createBroadcastParticipant();
 
     static readonly dataId01: DataVersion = {
         dataId: createGuid(),

@@ -1,7 +1,9 @@
 import {isNullOrUndefined} from "util";
 import {getDistinctHeartbeatsForChannel} from "./get-distinct-heartbeats-for-channel.function";
 import {getHeartbeatFromOldestParticipant} from "./get-heartbeat-form-oldest-participant.function";
-import {BroadcastHeartbeat, BroadcastParticipant, BroadcastRole} from "../models";
+import { BroadcastRole } from "../models/broadcast-role.model";
+import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
+import { BroadcastParticipant } from "../models/broadcast-participant.model";
 
 export interface ShouldBroadcastParticipantChangeRolePayload {
     readonly heartbeats: ReadonlyArray<BroadcastHeartbeat>;

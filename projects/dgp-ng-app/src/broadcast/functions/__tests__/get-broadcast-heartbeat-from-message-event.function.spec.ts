@@ -1,6 +1,7 @@
 import {BroadcastFunctionsTestData} from "./broadcast-functions.test-data.spec";
-import {BroadcastHeartbeat, MessageEventLike} from "../../models";
 import {getBroadcastHeartbeatFromMessageEvent} from "../get-broadcast-heartbeat-from-message-event.function";
+import { MessageEventLike } from "../../models/broadcast-channel-like.model";
+import { BroadcastHeartbeat } from "../../models/broadcast-heartbeat.model";
 
 describe("getBroadcastHeartbeatFromMessageEvent", () => {
 

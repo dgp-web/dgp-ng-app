@@ -1,5 +1,5 @@
 import {filterActionToPrefixWithLeaderPredicate} from "../filter-action-to-prefix-with-leader.predicate";
-import {compositeActionTypePrefix, trackRequestActionTypePrefix} from "../../actions";
+import { compositeActionTypePrefix, trackRequestActionTypePrefix } from "../../actions/broadcast-channel.actions";
 
 describe("filterActionToPrefixWithLeaderPredicate", () => {
 

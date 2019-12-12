@@ -9,7 +9,7 @@ export interface BroadcastConfig {
      * The interval at which this participant sends
      * heartbeats
      *
-     * @default: 1000 ms
+     * default: 1000 ms
      */
     readonly heartbeartBroadcastInterval: number;
     /**
@@ -17,7 +17,7 @@ export interface BroadcastConfig {
      * incoming heartbeats before checking the current
      * roles
      *
-     * @default: 3000 ms
+     * default: 3000 ms
      */
     readonly incomingHeartbeatBufferInterval: number;
     /**

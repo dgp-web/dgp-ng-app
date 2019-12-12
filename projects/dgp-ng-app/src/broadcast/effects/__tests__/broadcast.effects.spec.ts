@@ -1,32 +1,30 @@
-import {async, TestBed} from "@angular/core/testing";
-import {of, Observable, ReplaySubject} from "rxjs";
-import {first} from "rxjs/operators";
-import {Action, Store, StoreModule} from "@ngrx/store";
-import {EffectsMetadata, getEffectsMetadata} from "@ngrx/effects";
-import {provideMockActions} from "@ngrx/effects/testing";
+import { async, TestBed } from "@angular/core/testing";
+import { of, Observable, ReplaySubject } from "rxjs";
+import { first } from "rxjs/operators";
+import { Action, Store, StoreModule } from "@ngrx/store";
+import { EffectsMetadata, getEffectsMetadata } from "@ngrx/effects";
+import { provideMockActions } from "@ngrx/effects/testing";
 
-import {MatSnackBarModule} from "@angular/material";
+import { MatSnackBarModule } from "@angular/material";
 
-import * as functions from "../../functions";
+import { BroadcastEffects } from "../broadcast.effects";
+import { BroadcastFunctionsTestData } from "../../functions/__tests__/broadcast-functions.test-data.spec";
+import { broadcastReducer, BroadcastState, broadcastStoreFeature } from "../../broadcast-store";
 import {
     leaderActionTypePrefix,
     peonActionTypePrefix,
     SetOwnBroadcastRoleAction,
     setOwnBroadcastRoleActionType
-} from "../../actions";
+} from "../../actions/broadcast-channel.actions";
+import { BroadcastRole } from "../../models/broadcast-role.model";
 import {
-    BROADCAST_CONFIG,
-    BroadcastAction,
-    BroadcastHeartbeat,
-    BroadcastRole,
-    defaultBroadcastConfig
-} from "../../models";
-import {BroadcastEffects} from "../broadcast.effects";
-import {BroadcastFunctionsTestData} from "../../functions/__tests__/broadcast-functions.test-data.spec";
-import {BroadcastChannelService} from "../../services";
-import {broadcastReducer, BroadcastState, broadcastStoreFeature} from "../../broadcast-store";
-import {FilterIncomingBroadcastActionPayload} from "../../functions";
-import {defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig} from "../../functions";
+    defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig
+} from "../../functions/should-update-browser-tab-broadcast-role-display.function";
+import { BroadcastHeartbeat } from "../../models/broadcast-heartbeat.model";
+import { FilterIncomingBroadcastActionPayload } from "../../functions/filter-incoming-broadcast-action.function";
+import { BROADCAST_CONFIG, defaultBroadcastConfig } from "../../models/broadcast-config.model";
+import { BroadcastAction } from "../../models/broadcast-action.model";
+import { BroadcastChannelService } from "../../services/broadcast-channel.service";
 
 describe(BroadcastEffects.name, () => {
 
@@ -177,7 +175,7 @@ describe(BroadcastEffects.name, () => {
 
     });
 
-    xit(`observeBroadcastedActions$ should subscribe to channelService.getAction$()
+   /* xit(`observeBroadcastedActions$ should subscribe to channelService.getAction$()
     and filter and trim incoming actions.`, async () => {
 
         spyOn(functions, "filterIncomingBroadcastAction").and.returnValue(true);
@@ -212,6 +210,6 @@ describe(BroadcastEffects.name, () => {
             currentBrowserTabTitle: window.document.title
         }, defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig);
 
-    });
+    });*/
 
 });

@@ -1,28 +1,30 @@
-import {Inject, Injectable} from "@angular/core";
-import {Actions, Effect, ofType} from "@ngrx/effects";
-import {Action, select, Store} from "@ngrx/store";
-import {bufferTime, filter, map, switchMap, tap} from "rxjs/operators";
+import { Inject, Injectable } from "@angular/core";
+import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Action, select, Store } from "@ngrx/store";
+import { bufferTime, filter, map, switchMap, tap } from "rxjs/operators";
+import { BroadcastState, getOwnBroadcastRoleSelector } from "../broadcast-store";
+import { interval, of } from "rxjs";
+import { isNullOrUndefined } from "util";
+import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
+import { BroadcastParticipant } from "../models/broadcast-participant.model";
+import { createBroadcastHeartbeat } from "../functions/create-broadcast-heartbeat.function";
+import { createBroadcastParticipant } from "../functions/create-broadcast-participant.function";
+import { BroadcastRole } from "../models/broadcast-role.model";
 import {
     leaderActionTypePrefix,
-    peonActionTypePrefix,
-    SetOwnBroadcastRoleAction,
-    setOwnBroadcastRoleActionType, SetBroadcastChannelDataIdAction, setBroadcastChannelDataIdActionType
-} from "../actions";
-import {BroadcastState, getOwnBroadcastRoleSelector} from "../broadcast-store";
-import {interval, of} from "rxjs";
-import {
-    BroadcastAction, BroadcastHeartbeat,
-    BroadcastParticipant, BroadcastRole,
-    BROADCAST_CONFIG, BroadcastConfig
-} from "../models";
-import {isNullOrUndefined} from "util";
-import {
-    createBroadcastAction, createBroadcastHeartbeat,
-    createBroadcastParticipant, shouldBroadcastParticipantChangeRole,
-    filterIncomingBroadcastAction, trimIncomingBroadcastAction,
-    shouldUpdateBrowserTabBroadcastRoleDisplay, filterActionToPrefixWithLeaderPredicate
-} from "../functions";
-import {BroadcastChannelService} from "../services";
+    peonActionTypePrefix, SetBroadcastChannelDataIdAction,
+    setBroadcastChannelDataIdActionType, SetOwnBroadcastRoleAction,
+    setOwnBroadcastRoleActionType
+} from "../actions/broadcast-channel.actions";
+import { trimIncomingBroadcastAction } from "../functions/trim-incoming-broadcast-action.function";
+import { shouldBroadcastParticipantChangeRole } from "../functions/should-broadcast-participant-change-role.function";
+import { createBroadcastAction } from "../functions/create-broadcast-action.function";
+import { filterIncomingBroadcastAction } from "../functions/filter-incoming-broadcast-action.function";
+import { BroadcastAction } from "../models/broadcast-action.model";
+import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "../functions/should-update-browser-tab-broadcast-role-display.function";
+import { BroadcastChannelService } from "../services/broadcast-channel.service";
+import { filterActionToPrefixWithLeaderPredicate } from "../functions/filter-action-to-prefix-with-leader.predicate";
+import { BROADCAST_CONFIG, BroadcastConfig } from "../models/broadcast-config.model";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;

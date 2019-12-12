@@ -1,10 +1,12 @@
 import { Action, ActionsSubject, ReducerManager, select, StateObservable, Store } from "@ngrx/store";
-import {ClassProvider, Inject, Injectable} from "@angular/core";
+import { ClassProvider, Inject, Injectable } from "@angular/core";
 import { getOwnBroadcastRoleSelector } from "./broadcast-store";
 import { Subscription } from "rxjs";
-import {BROADCAST_CONFIG, BroadcastConfig, BroadcastRole} from "./models";
-import {prefixAction, shouldPrefixAction} from "./functions";
-import {peonActionTypePrefix} from "./actions";
+import { prefixAction } from "./functions/prefix-action.function";
+import { peonActionTypePrefix } from "./actions/broadcast-channel.actions";
+import { BroadcastRole } from "./models/broadcast-role.model";
+import { BROADCAST_CONFIG, BroadcastConfig } from "./models/broadcast-config.model";
+import { shouldPrefixAction } from "./functions/should-prefix-action.function";
 
 @Injectable()
 export class BroadcastStoreDecorator<T> extends Store<T> {
@@ -14,11 +16,11 @@ export class BroadcastStoreDecorator<T> extends Store<T> {
 
     constructor(
         @Inject(StateObservable)
-        state$: StateObservable,
+            state$: StateObservable,
         @Inject(ActionsSubject)
-        actionsObserver: ActionsSubject,
+            actionsObserver: ActionsSubject,
         @Inject(ReducerManager)
-        reducerManager: ReducerManager,
+            reducerManager: ReducerManager,
         @Inject(BROADCAST_CONFIG)
         private config: BroadcastConfig) {
         super(state$, actionsObserver, reducerManager);
@@ -35,7 +37,7 @@ export class BroadcastStoreDecorator<T> extends Store<T> {
 
     dispatch<V extends Action = Action>(action: V): void {
 
-        let _action = action;
+        let localAction = action;
 
         const shouldPrefixActionWithPeonResult = shouldPrefixAction({
             action,
@@ -45,19 +47,19 @@ export class BroadcastStoreDecorator<T> extends Store<T> {
         });
 
         if (shouldPrefixActionWithPeonResult) {
-            _action = prefixAction({
-                action: _action,
+            localAction = prefixAction({
+                action: localAction,
                 prefix: peonActionTypePrefix
             });
         }
 
-        super.dispatch(_action);
+        super.dispatch(localAction);
 
     }
 
     next<V extends Action = Action>(action: V): void {
 
-        let _action = action;
+        let localAction = action;
 
         const shouldPrefixActionWithPeonResult = shouldPrefixAction({
             action,
@@ -67,13 +69,13 @@ export class BroadcastStoreDecorator<T> extends Store<T> {
         });
 
         if (shouldPrefixActionWithPeonResult) {
-            _action = prefixAction({
-                action: _action,
+            localAction = prefixAction({
+                action: localAction,
                 prefix: peonActionTypePrefix
             });
         }
 
-        super.next(_action);
+        super.next(localAction);
 
     }
 

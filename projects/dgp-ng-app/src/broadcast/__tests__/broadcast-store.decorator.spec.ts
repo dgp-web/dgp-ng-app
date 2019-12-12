@@ -1,10 +1,8 @@
 import {broadcastStoreProvider, BroadcastStoreDecorator} from "../broadcast-store.decorator";
 import {TestBed} from "@angular/core/testing";
-import {Action, Store, StoreModule} from "@ngrx/store";
-import {BroadcastRole} from "../models";
-import {peonActionTypePrefix} from "../actions";
-import * as functions from "../functions";
+import {Store, StoreModule} from "@ngrx/store";
 import {broadcastStoreFeature} from "../broadcast-store";
+import { BroadcastRole } from "../models/broadcast-role.model";
 
 describe(BroadcastStoreDecorator.name, () => {
 

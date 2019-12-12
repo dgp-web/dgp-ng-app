@@ -1,14 +1,12 @@
 import {Observable, fromEventPattern} from "rxjs";
 import {ClassProvider, Inject, Injectable} from "@angular/core";
 import {map} from "rxjs/operators";
-import {
-    BroadcastAction, BroadcastConfig,
-    BroadcastHeartbeat,
-    BroadcastChannelLike, BROADCAST_CONFIG,
-    MessageEventLike
-} from "../models";
 import {BroadcastChannelLocalStorageFallbackService} from "./broadcast-channel-local-storage-fallback.service";
-import {getBroadcastHeartbeatFromMessageEvent} from "../functions";
+import { BroadcastChannelLike, MessageEventLike } from "../models/broadcast-channel-like.model";
+import { getBroadcastHeartbeatFromMessageEvent } from "../functions/get-broadcast-heartbeat-from-message-event.function";
+import { BroadcastAction } from "../models/broadcast-action.model";
+import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
+import { BROADCAST_CONFIG, BroadcastConfig } from "../models/broadcast-config.model";
 
 export abstract class BroadcastChannelService {
 

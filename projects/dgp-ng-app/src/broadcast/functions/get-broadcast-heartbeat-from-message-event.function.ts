@@ -1,5 +1,6 @@
-import {BroadcastHeartbeat, MessageEventLike} from "../models";
 import { isDate } from "util";
+import { MessageEventLike } from "../models/broadcast-channel-like.model";
+import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
 
 /**
  * Parses heartbeats from message events

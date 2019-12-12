@@ -1,5 +1,5 @@
-import {BroadcastParticipant} from "../models";
-import {createGuid} from "./create-guid.function";
+import { createGuid } from "./create-guid.function";
+import { BroadcastParticipant } from "../models/broadcast-participant.model";
 
 export function createBroadcastParticipant(): BroadcastParticipant {
     return {

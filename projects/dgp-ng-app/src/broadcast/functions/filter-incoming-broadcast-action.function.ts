@@ -1,7 +1,8 @@
-import {isNullOrUndefined} from "util";
-import {leaderActionTypePrefix, peonActionTypePrefix} from "../actions";
-import {BroadcastAction, BroadcastRole} from "../models";
+import { isNullOrUndefined } from "util";
 import * as _ from "lodash";
+import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions/broadcast-channel.actions";
+import { BroadcastRole } from "../models/broadcast-role.model";
+import { BroadcastAction } from "../models/broadcast-action.model";
 
 export interface FilterIncomingBroadcastActionPayload {
     readonly action: BroadcastAction;
@@ -15,16 +16,22 @@ export function filterIncomingBroadcastAction(
     const doDataIdsExist = !isNullOrUndefined(payload.action.dataId)
         && !isNullOrUndefined(payload.dataId);
 
-    if (!doDataIdsExist) { return false; }
+    if (!doDataIdsExist) {
+        return false;
+    }
 
     const areDataIdsEqual = _.isEqual(payload.action.dataId, payload.dataId);
 
-    if (!areDataIdsEqual) { return false; }
+    if (!areDataIdsEqual) {
+        return false;
+    }
 
     const peonActionArrivesAtLeader = payload.action.type.startsWith(peonActionTypePrefix)
         && payload.ownBroadcastRole === BroadcastRole.Leader;
 
-    if (peonActionArrivesAtLeader) { return true; }
+    if (peonActionArrivesAtLeader) {
+        return true;
+    }
 
     const leaderActionArrivesAtPeon = payload.action.type.startsWith(leaderActionTypePrefix)
         && payload.ownBroadcastRole === BroadcastRole.Peon;

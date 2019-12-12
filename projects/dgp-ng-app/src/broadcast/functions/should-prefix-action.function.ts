@@ -1,5 +1,5 @@
-import {Action} from "@ngrx/store";
-import {BroadcastRole} from "../models";
+import { Action } from "@ngrx/store";
+import { BroadcastRole } from "../models/broadcast-role.model";
 
 export interface ShouldPrefixActionPayload {
     readonly action: Readonly<Action>;

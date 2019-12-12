@@ -4,12 +4,12 @@ import {combineReducers, Store, StoreModule} from "@ngrx/store";
 import {first} from "rxjs/operators";
 import {NoPeonGuard} from "../no-peon.guard";
 import {
-    _broadcastReducer,
+    broadcastReducerImpl,
     BroadcastState,
     broadcastStoreFeature
 } from "../../broadcast-store";
-import {SetOwnBroadcastRoleAction} from "../../actions";
-import {BroadcastRole} from "../../models";
+import { SetOwnBroadcastRoleAction } from "../../actions/broadcast-channel.actions";
+import { BroadcastRole } from "../../models/broadcast-role.model";
 
 describe(NoPeonGuard.name, () => {
 
@@ -21,7 +21,7 @@ describe(NoPeonGuard.name, () => {
         TestBed.configureTestingModule({
             imports: [
                 StoreModule.forRoot({
-                    [broadcastStoreFeature]: combineReducers(_broadcastReducer as any)
+                    [broadcastStoreFeature]: combineReducers(broadcastReducerImpl as any)
                 } as any)
             ],
             providers: [

@@ -1,9 +1,8 @@
-
 import { ActionReducerMap, createFeatureSelector, createSelector } from "@ngrx/store";
-import { SetOwnBroadcastRoleAction, setOwnBroadcastRoleActionType } from "./actions";
 import { isNullOrUndefined } from "util";
-import {BroadcastRole} from "./models";
-import {FactoryProvider, InjectionToken} from "@angular/core";
+import { FactoryProvider, InjectionToken } from "@angular/core";
+import { BroadcastRole } from "./models/broadcast-role.model";
+import { SetOwnBroadcastRoleAction, setOwnBroadcastRoleActionType } from "./actions/broadcast-channel.actions";
 
 export const broadcastStoreFeature = "Broadcast";
 export const broadcastStoreFeatureSelector = createFeatureSelector(broadcastStoreFeature);
@@ -14,7 +13,7 @@ export interface BroadcastState {
 
 export const broadcastReducer = new InjectionToken<ActionReducerMap<BroadcastState>>("BroadcastStoreReducer");
 
-export const _broadcastReducer: ActionReducerMap<BroadcastState> = {
+export const broadcastReducerImpl: ActionReducerMap<BroadcastState> = {
     ownRole: (state: BroadcastRole = BroadcastRole.None, action: SetOwnBroadcastRoleAction): BroadcastRole => {
 
         switch (action.type) {
@@ -29,7 +28,7 @@ export const _broadcastReducer: ActionReducerMap<BroadcastState> = {
 };
 
 export function broadcastReducerFactory(): ActionReducerMap<BroadcastState> {
-    return _broadcastReducer;
+    return broadcastReducerImpl;
 }
 
 export const broadcastReducerProviders = [{
@@ -40,7 +39,9 @@ export const broadcastReducerProviders = [{
 
 export const getOwnBroadcastRoleSelector = createSelector(
     broadcastStoreFeatureSelector, (x: BroadcastState) => {
-        if (isNullOrUndefined(x)) { return null; }
+        if (isNullOrUndefined(x)) {
+            return null;
+        }
 
         return x.ownRole;
     }
