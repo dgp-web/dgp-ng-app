@@ -1,30 +1,40 @@
 <dgp-hamburger-shell dgpThemeHost>
 
-  <div dgp-hamburger-menu
-       class="hamburger-menu">
+    <div dgp-hamburger-menu
+         class="hamburger-menu">
 
-    <mat-toolbar color="primary">
-      DGP NG APP
-    </mat-toolbar>
+        <mat-toolbar color="primary">
+            DGP NG APP
+        </mat-toolbar>
 
-    <mat-nav-list class="hamburger-menu__main-entries">
-      <a mat-list-item
-         [routerLink]="['/home']">
-        <mat-icon class="hamburger-menu-list-item__icon">home</mat-icon>
-        Home
-      </a>
-    </mat-nav-list>
+        <mat-nav-list class="hamburger-menu__main-entries">
+            <a mat-list-item
+               [routerLink]="['/home']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">home</mat-icon>
+                Home
+            </a>
 
-    <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+            <h2 mat-subheader>Docs</h2>
 
-    <mat-nav-list>
-      <a mat-list-item
-         [routerLink]="['/logEntries']">
-        <mat-icon class="hamburger-menu-list-item__icon">error</mat-icon>
-        Log
-      </a>
-    </mat-nav-list>
-  </div>
+            <a mat-list-item
+               [routerLink]="['/authentication']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">person</mat-icon>
+                Authentication
+            </a>
+        </mat-nav-list>
 
-  <router-outlet></router-outlet>
+        <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+
+        <mat-nav-list>
+            <a mat-list-item
+               [routerLink]="['/logEntries']">
+                <mat-icon class="hamburger-menu-list-item__icon">error</mat-icon>
+                Log
+            </a>
+        </mat-nav-list>
+    </div>
+
+    <router-outlet></router-outlet>
 </dgp-hamburger-shell>

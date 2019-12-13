@@ -12,38 +12,46 @@ import { RouterModule } from "@angular/router";
 import * as features from "../features";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
 
-    dgp.DgpAuthenticationModule.forRoot({
-      authenticationApiClientProvider,
-      initializationServiceProvider
-    }),
-    dgp.DgpHamburgerShellModule.forRoot(),
-    dgp.DgpThemeSwitcherModule.forRoot(),
-    dgp.DgpLogModule,
+        dgp.DgpAuthenticationModule.forRoot({
+            authenticationApiClientProvider,
+            initializationServiceProvider
+        }),
+        dgp.DgpHamburgerShellModule.forRoot(),
+        dgp.DgpThemeSwitcherModule.forRoot(),
+        dgp.DgpLogModule,
 
-    UiSharedModule,
-    ApiClientModule.forRoot({
-      provide: ApiClientSettings,
-      useValue: {}
-    } as ApiClientSettingsProvider),
-    RouterModule.forRoot([]),
-    AppStoreModule,
+        UiSharedModule,
+        ApiClientModule.forRoot({
+            provide: ApiClientSettings,
+            useValue: {}
+        } as ApiClientSettingsProvider),
+        RouterModule.forRoot([{
+            path: "",
+            pathMatch: "full",
+            redirectTo: "/home"
+        }, {
+            path: "**",
+            redirectTo: "/home"
+        }]),
+        AppStoreModule,
 
-    features.HomeModule
-  ],
-  bootstrap: [AppComponent]
+        features.HomeModule,
+        features.AuthenticationDocsModule
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule extends dgp.DgpNgApp {
 
-  constructor(public readonly appRef: ApplicationRef,
-              protected readonly ngrxStore: Store<AppState>) {
-    super(appRef, ngrxStore);
-  }
+    constructor(public readonly appRef: ApplicationRef,
+                protected readonly ngrxStore: Store<AppState>) {
+        super(appRef, ngrxStore);
+    }
 
 }
