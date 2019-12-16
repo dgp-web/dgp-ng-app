@@ -10,6 +10,7 @@ import { AppState, AppStoreModule } from "../store";
 import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
+import { sideNavHamburgerShellConfigProvider } from "dgp-ng-app";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import * as features from "../features";
       authenticationApiClientProvider,
       initializationServiceProvider
     }),
-    dgp.DgpHamburgerShellModule.forRoot(),
+    dgp.DgpHamburgerShellModule.forRoot(
+        sideNavHamburgerShellConfigProvider
+    ),
     dgp.DgpThemeSwitcherModule.forRoot(),
     dgp.DgpLogModule,
 
