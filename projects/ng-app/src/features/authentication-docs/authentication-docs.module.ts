@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import * as components from "./containers";
 import * as dgp from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
+import { DocsModule } from "../../ui/docs";
 
 @NgModule({
     imports: [
@@ -11,7 +12,8 @@ import { RouterModule } from "@angular/router";
         }]),
 
         dgp.DgpPageHeaderModule,
-        dgp.DgpHamburgerMenuToggleModule
+        dgp.DgpHamburgerMenuToggleModule,
+        DocsModule
     ],
     declarations: [
         components.AuthenticationDocsPageComponent
