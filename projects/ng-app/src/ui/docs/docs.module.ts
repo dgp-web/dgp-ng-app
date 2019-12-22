@@ -1,16 +1,19 @@
 import { NgModule } from "@angular/core";
 import { DocsPageComponent } from "./docs-page.component";
 import { DocsPageContentComponent } from "./docs-page-content.component";
+import { DocsCodeBlockComponent } from "./docs-code-block.component";
 
 @NgModule({
     imports: [],
     declarations: [
         DocsPageComponent,
-        DocsPageContentComponent
+        DocsPageContentComponent,
+        DocsCodeBlockComponent
     ],
     exports: [
         DocsPageComponent,
-        DocsPageContentComponent
+        DocsPageContentComponent,
+        DocsCodeBlockComponent
     ]
 })
 export class DocsModule {

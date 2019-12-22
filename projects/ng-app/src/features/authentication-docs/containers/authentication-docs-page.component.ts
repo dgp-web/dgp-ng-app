@@ -25,25 +25,15 @@ declare var hljs;
 
                 <h2>1: Implement AuthenticationApiClient.</h2>
 
-                <div style="width: 100%;">
-                        <pre><code [innerHTML]="authenticationClientCode"
-                                   class="language-typescript"></code></pre>
-                </div>
+                <dgp-docs-code-block [code]="authenticationClientCode"></dgp-docs-code-block>
 
                 <h2>2: Implement InitializationService.</h2>
 
-                <div style="width: 100%;">
-                        <pre><code [innerHTML]="initializationServiceCode"
-                                   class="language-typescript"></code></pre>
-                </div>
+                <dgp-docs-code-block [code]="initializationServiceCode"></dgp-docs-code-block>
 
                 <h2>3: Import DgpAuthenticationModule.forRoot(...) in your main module.</h2>
 
-                <div style="width: 100%;">
-                        <pre><code [innerHTML]="moduleImportCode"
-                                   class="language-typescript"></code></pre>
-                </div>
-
+                <dgp-docs-code-block [code]="moduleImportCode"></dgp-docs-code-block>
 
             </dgp-docs-page-content>
 
@@ -101,7 +91,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
 
     readonly moduleImportCode = `
 import { DgpAuthenticationModule } from "dgp-ng-app";
-import { 
+import {
     authenticationApiClientProvider,
     initializationServiceProvider
  } from "./services";
