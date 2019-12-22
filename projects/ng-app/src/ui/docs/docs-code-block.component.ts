@@ -7,6 +7,7 @@ import {
     ViewChild,
     ElementRef
 } from "@angular/core";
+import { timer } from "rxjs";
 
 declare var hljs;
 
@@ -14,8 +15,7 @@ declare var hljs;
     selector: "dgp-docs-code-block",
     template: `
         <pre><code #codeHost
-                   [innerHTML]="code"
-                   class="language-typescript"></code></pre>
+                   class="typescript">{{ code  }}</code></pre>
     `,
     styles: [`
         :host {
@@ -28,7 +28,7 @@ declare var hljs;
 export class DocsCodeBlockComponent implements OnChanges {
 
     @ViewChild("codeHost", {
-        static: false
+        static: true
     }) codeHost: ElementRef;
 
     @Input()
@@ -37,8 +37,10 @@ export class DocsCodeBlockComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes["code" as keyof DocsCodeBlockComponent]) {
             if (this.code) {
-                const el = this.codeHost.nativeElement;
-                hljs.highlightBlock(el);
+                timer(0).subscribe(() => {
+                    const el = this.codeHost.nativeElement;
+                    hljs.highlightBlock(el);
+                });
             } else {
 
             }

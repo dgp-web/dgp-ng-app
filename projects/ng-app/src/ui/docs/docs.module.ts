@@ -2,9 +2,12 @@ import { NgModule } from "@angular/core";
 import { DocsPageComponent } from "./docs-page.component";
 import { DocsPageContentComponent } from "./docs-page-content.component";
 import { DocsCodeBlockComponent } from "./docs-code-block.component";
+import { SafePipeModule } from "../safe-pipe";
 
 @NgModule({
-    imports: [],
+    imports: [
+        SafePipeModule
+    ],
     declarations: [
         DocsPageComponent,
         DocsPageContentComponent,

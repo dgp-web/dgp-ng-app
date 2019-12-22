@@ -1,6 +1,9 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChildren } from "@angular/core";
-
-declare var hljs;
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import {
+    authenticationClientCodeSample,
+    initializationClientCodeSample,
+    moduleImportCodeSample
+} from "../authentication-code-samples";
 
 @Component({
     selector: "dgp-authentication-docs-page",
@@ -52,69 +55,10 @@ declare var hljs;
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class AuthenticationDocsPageComponent implements AfterViewInit {
-    readonly authenticationClientCode = `
-import { AuthenticationApiClient, AuthenticationApiClientProvider } from "dgp-ng-app";
-import { AuthenticationResult } from "../models";
+export class AuthenticationDocsPageComponent {
 
-export class AuthenticationApiClientImpl implements AuthenticationApiClient {
-
-    authenticate$(): Promise<AuthenticationResult> {
-        return Promise.resolve({});
-    }
-
-}
-
-export const authenticationApiClientProvider: AuthenticationApiClientProvider = {
-    provide: AuthenticationApiClient,
-    useClass: AuthenticationApiClientImpl
-};
-    `;
-
-    readonly initializationServiceCode = `
-import { InitializationService, InitializationServiceProvider } from "dgp-ng-app";
-import { AuthenticationResult } from "../models";
-
-export class InitializationServiceImpl implements InitializationService {
-
-      runPostAuthenticationTask$(authenticationResult: AuthenticationResult): Promise<void> {
-            return Promise.resolve();
-        }
-
-}
-
-export const initializationServiceProvider: InitializationServiceProvider = {
-    provide: InitializationService,
-    useClass: AuthenticationApiClientImpl
-};
-    `;
-
-    readonly moduleImportCode = `
-import { DgpAuthenticationModule } from "dgp-ng-app";
-import {
-    authenticationApiClientProvider,
-    initializationServiceProvider
- } from "./services";
-
-
-@NgModule({
-    imports: [
-        DgpAuthenticationModule.forRoot({
-            authenticationApiClientProvider,
-            initializationServiceProvider
-        }),
-        // ...
-    ]
-})
-export class AppModule {}
-    `;
-
-    ngAfterViewInit(): void {
-
-        const el = document.querySelectorAll("pre code")
-            .forEach((value, key, parent) => {
-                hljs.highlightBlock(value);
-            });
-    }
+    readonly authenticationClientCode = authenticationClientCodeSample;
+    readonly initializationServiceCode = initializationClientCodeSample;
+    readonly moduleImportCode = moduleImportCodeSample;
 
 }
