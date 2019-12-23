@@ -44,7 +44,8 @@ import * as features from "../features";
 
         features.HomeModule,
         features.AuthenticationDocsModule,
-        features.EmptyStateDocsModule
+        features.EmptyStateDocsModule,
+        features.RequestStoreDocsModule
     ],
     bootstrap: [AppComponent]
 })

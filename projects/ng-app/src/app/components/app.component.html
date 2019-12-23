@@ -30,6 +30,13 @@
                 <mat-icon class="hamburger-menu-list-item__icon">texture</mat-icon>
                 Empty state
             </a>
+
+            <a mat-list-item
+               [routerLink]="['/request-store']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">import_export</mat-icon>
+                Request store
+            </a>
         </mat-nav-list>
 
         <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
