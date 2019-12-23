@@ -15,11 +15,15 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                 <p>
                     A side drawer for your application that you can fill with any content you want.
-                    <br>
+                </p>
+
+                <p>
                     By default, it is always visible on x-large screens (as specified by material design) and becomes
                     an overlay on smaller ones. The user can manually toggle the menu using a special control that
                     can be placed anywhere.
-                    <br>
+                </p>
+
+                <p>
                     Helpful for setting up the main navigation for your application.
                 </p>
 

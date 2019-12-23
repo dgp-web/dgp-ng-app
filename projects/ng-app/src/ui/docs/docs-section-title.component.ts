@@ -8,13 +8,11 @@ import { Component, ChangeDetectionStrategy, HostBinding } from "@angular/core";
         :host {
             display: block;
             width: 100%;
+            font-size: larger;
+            margin-top: 16px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocsSectionTitleComponent {
-
-    @HostBinding("class.mat-h2")
-    readonly hostBindings = true;
-
 }

@@ -19,7 +19,9 @@ import {
 
                 <p>
                     A request queue that allows to dispatch requests as actions.
-                    <br>
+                </p>
+
+                <p>
                     Useful for tracking whether your application has pending requests.
                 </p>
 

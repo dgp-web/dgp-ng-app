@@ -22,7 +22,9 @@ import {
                 <p>
                     Helps setup the plumbing for authenticating a user and performing a set of tasks
                     afterwards before the application opens.
-                    <br>
+                </p>
+
+                <p>
                     Useful for downloading basic data needed for your application for instance.
                 </p>
 
