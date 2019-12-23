@@ -50,9 +50,6 @@ import {
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
-    styles: [
-        ``
-    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestStoreDocsPageComponent {
