@@ -6,6 +6,7 @@ import { Component, ChangeDetectionStrategy, HostBinding } from "@angular/core";
     styles: [`
         :host {
             display: block;
+            width: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

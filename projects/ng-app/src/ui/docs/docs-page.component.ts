@@ -22,6 +22,8 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             flex-direction: column;
             flex-grow: 1;
             height: 100%;
+            width: 100%;
+            align-items: center;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

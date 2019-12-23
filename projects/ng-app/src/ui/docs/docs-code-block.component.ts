@@ -15,7 +15,7 @@ declare var hljs;
     selector: "dgp-docs-code-block",
     template: `
         <pre><code #codeHost
-                   class="typescript">{{ code  }}</code></pre>
+                   class="{{language}}">{{ code  }}</code></pre>
     `,
     styles: [`
         :host {
@@ -26,6 +26,9 @@ declare var hljs;
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocsCodeBlockComponent implements OnChanges {
+
+    @Input()
+    language: "typescript" | "html" = "typescript";
 
     @ViewChild("codeHost", {
         static: true

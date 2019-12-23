@@ -43,7 +43,8 @@ import * as features from "../features";
         AppStoreModule,
 
         features.HomeModule,
-        features.AuthenticationDocsModule
+        features.AuthenticationDocsModule,
+        features.EmptyStateDocsModule
     ],
     bootstrap: [AppComponent]
 })

@@ -23,6 +23,13 @@
                 <mat-icon class="hamburger-menu-list-item__icon">person</mat-icon>
                 Authentication
             </a>
+
+            <a mat-list-item
+               [routerLink]="['/empty-state']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">texture</mat-icon>
+                Empty state
+            </a>
         </mat-nav-list>
 
         <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
