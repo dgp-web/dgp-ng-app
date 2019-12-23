@@ -1,8 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import * as dgp from "dgp-ng-app";
 import * as containers from "./containers";
-import { DocsModule } from "../../ui/docs";
+import { DocsPageModule } from "../shared";
 
 @NgModule({
     imports: [
@@ -11,14 +10,9 @@ import { DocsModule } from "../../ui/docs";
             component: containers.RequestStoreDocsPageComponent
         }]),
 
-        dgp.DgpPageHeaderModule,
-        dgp.DgpHamburgerMenuToggleModule,
-        DocsModule
+        DocsPageModule
     ],
     declarations: [
-        containers.RequestStoreDocsPageComponent
-    ],
-    exports: [
         containers.RequestStoreDocsPageComponent
     ]
 })

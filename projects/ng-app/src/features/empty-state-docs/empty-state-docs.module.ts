@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
-import { DocsModule } from "../../ui/docs";
 import { RouterModule } from "@angular/router";
 import { EmptyStatePageComponent } from "./containers";
 import * as dgp from "dgp-ng-app";
+import { DocsPageModule } from "../shared";
 
 @NgModule({
     imports: [
@@ -12,15 +12,10 @@ import * as dgp from "dgp-ng-app";
             component: EmptyStatePageComponent
         }]),
 
-        dgp.DgpPageHeaderModule,
-        dgp.DgpHamburgerMenuToggleModule,
-        dgp.DgpEmptyStateModule,
-        DocsModule
+        DocsPageModule,
+        dgp.DgpEmptyStateModule
     ],
     declarations: [
-        EmptyStatePageComponent
-    ],
-    exports: [
         EmptyStatePageComponent
     ]
 })
