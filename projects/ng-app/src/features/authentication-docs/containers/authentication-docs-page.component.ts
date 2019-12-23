@@ -17,7 +17,7 @@ import {
 
             <dgp-docs-page-content>
 
-                <h1>Authentication</h1>
+                <dgp-docs-chapter-title>Authentication</dgp-docs-chapter-title>
 
                 <p>
                     Helps setup the plumbing for authenticating a user and performing a set of tasks
@@ -26,15 +26,16 @@ import {
                     Useful for downloading basic data needed for your application for instance.
                 </p>
 
-                <h2>1: Implement AuthenticationApiClient.</h2>
+                <dgp-docs-section-title>1: Implement AuthenticationApiClient.</dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="authenticationClientCode"></dgp-docs-code-block>
 
-                <h2>2: Implement InitializationService.</h2>
+                <dgp-docs-section-title>2: Implement InitializationService.</dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="initializationServiceCode"></dgp-docs-code-block>
 
-                <h2>3: Import DgpAuthenticationModule.forRoot(...) in your main module.</h2>
+                <dgp-docs-section-title>3: Import DgpAuthenticationModule.forRoot(...) in your main module.
+                </dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="moduleImportCode"></dgp-docs-code-block>
 
