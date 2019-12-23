@@ -14,6 +14,7 @@ import * as dgp from "dgp-ng-app";
 
         dgp.DgpPageHeaderModule,
         dgp.DgpHamburgerMenuToggleModule,
+        dgp.DgpEmptyStateModule,
         DocsModule
     ],
     declarations: [

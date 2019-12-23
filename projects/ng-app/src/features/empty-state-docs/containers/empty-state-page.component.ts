@@ -28,6 +28,15 @@ import { moduleImportCodeSample, templateCodeSample } from "../empty-state-code-
                 <dgp-docs-code-block [code]="templateCodeSample"
                                      language="html"></dgp-docs-code-block>
 
+                <dgp-docs-section-title>Demo</dgp-docs-section-title>
+
+                <dgp-empty-state title="Empty state"
+                                 matIconName="texture"
+                                 style="min-height:320px;">
+                    Configurable placeholder for empty views.
+                </dgp-empty-state>
+
+
             </dgp-docs-page-content>
 
         </dgp-docs-page>
