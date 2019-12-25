@@ -32,7 +32,25 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                     applications.
                 </p>
 
-                <div>
+                <div style="display: flex; flex-wrap: wrap; ">
+
+                        <a routerLink="/authentication"
+                           class="module-card">
+                            <mat-card matRipple
+                                      class="module-card__card">
+                                <mat-card-content class="module-card__content">
+                                    <mat-icon class="module-card__icon dgp-bg--primary">person</mat-icon>
+                                    <div class="module-card__title">
+                                        Authentication
+                                    </div>
+                                    <mat-divider class="module_card__divider"></mat-divider>
+                                    <div>
+                                        Authenticate users and perform startup tasks.
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+
+                        </a>
 
                 </div>
 
@@ -40,7 +58,51 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         </dgp-docs-page>
     `,
     styles: [`
+        .module-card {
+            display: flex;
+            flex-direction: column;
+            max-height: 240px;
+            min-height: 240px;
+            height: 100%;
+            max-width: 240px;
+            min-width: 240px;
+            width: 100%;
+            text-decoration: inherit;
+        }
 
+        .module-card__card {
+            flex-grow: 1;
+        }
+
+        .module-card__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .module-card__icon {
+            font-size: 48px;
+            height: 64px;
+            width: 64px;
+            color: white !important;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .module-card__title {
+            font-size: larger;
+        }
+
+        .module_card__divider {
+            position: relative !important;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
