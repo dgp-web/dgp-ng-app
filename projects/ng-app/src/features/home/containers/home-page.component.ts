@@ -32,7 +32,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                     applications.
                 </p>
 
-                <div style="display: flex; flex-wrap: wrap; ">
+                <div style="display: flex; flex-wrap: wrap; justify-content: center">
 
                         <a routerLink="/authentication"
                            class="module-card">
@@ -52,6 +52,60 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                         </a>
 
+                    <a routerLink="/empty-state"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">texture</mat-icon>
+                                <div class="module-card__title">
+                                    Empty state
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Configurable placeholder for empty views.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
+                    <a routerLink="/hamburger-shell"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">chrome_reader_mode</mat-icon>
+                                <div class="module-card__title">
+                                    Hamburger shell
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Responsive navigation drawer for applications.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
+                    <a routerLink="/request-store"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">import_export</mat-icon>
+                                <div class="module-card__title">
+                                    Request store
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    A request queue that allows to dispatch requests as actions.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
                 </div>
 
             </dgp-docs-page-content>
@@ -61,13 +115,14 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         .module-card {
             display: flex;
             flex-direction: column;
-            max-height: 240px;
-            min-height: 240px;
+            max-height: 224px;
+            min-height: 224px;
             height: 100%;
-            max-width: 240px;
-            min-width: 240px;
+            max-width: 224px;
+            min-width: 224px;
             width: 100%;
             text-decoration: inherit;
+            margin: 8px;
         }
 
         .module-card__card {
@@ -83,7 +138,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         }
 
         .module-card__icon {
-            font-size: 48px;
+            font-size: 40px;
             height: 64px;
             width: 64px;
             color: white !important;
