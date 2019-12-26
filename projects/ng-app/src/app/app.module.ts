@@ -7,46 +7,49 @@ import { AppComponent } from "./components";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
 import { AppState, AppStoreModule } from "../store";
-import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
-import { sideNavHamburgerShellConfigProvider } from "dgp-ng-app";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
 
-    dgp.DgpAuthenticationModule.forRoot({
-      authenticationApiClientProvider,
-      initializationServiceProvider
-    }),
-    dgp.DgpHamburgerShellModule.forRoot(
-        sideNavHamburgerShellConfigProvider
-    ),
-    dgp.DgpThemeSwitcherModule.forRoot(),
-    dgp.DgpLogModule,
+        dgp.DgpHamburgerShellModule.forRoot(),
+        dgp.DgpThemeSwitcherModule.forRoot(),
+        dgp.DgpLogModule,
 
-    UiSharedModule,
-    ApiClientModule.forRoot({
-      provide: ApiClientSettings,
-      useValue: {}
-    } as ApiClientSettingsProvider),
-    RouterModule.forRoot([]),
-    AppStoreModule,
+        UiSharedModule,
+        ApiClientModule.forRoot({
+            provide: ApiClientSettings,
+            useValue: {}
+        } as ApiClientSettingsProvider),
+        RouterModule.forRoot([{
+            path: "",
+            pathMatch: "full",
+            redirectTo: "/home"
+        }, {
+            path: "**",
+            redirectTo: "/home"
+        }]),
+        AppStoreModule,
 
-    features.HomeModule
-  ],
-  bootstrap: [AppComponent]
+        features.HomeModule,
+        features.AuthenticationDocsModule,
+        features.EmptyStateDocsModule,
+        features.HamburgerShellDocsModule,
+        features.RequestStoreDocsModule
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule extends dgp.DgpNgApp {
 
-  constructor(public readonly appRef: ApplicationRef,
-              protected readonly ngrxStore: Store<AppState>) {
-    super(appRef, ngrxStore);
-  }
+    constructor(public readonly appRef: ApplicationRef,
+                protected readonly ngrxStore: Store<AppState>) {
+        super(appRef, ngrxStore);
+    }
 
 }
