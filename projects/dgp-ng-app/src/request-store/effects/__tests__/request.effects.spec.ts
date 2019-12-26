@@ -5,7 +5,7 @@ import { ReplaySubject } from "rxjs";
 import { StoreModule } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { RequestEffects } from "../request.effects";
-import { ScheduleRequestAction } from "../../actions/request.actions";
+import { scheduleRequest } from "../../actions/request.actions";
 import * as functions from "../../functions/observe-request.function";
 
 xdescribe(RequestEffects.name, () => {
@@ -45,7 +45,7 @@ xdescribe(RequestEffects.name, () => {
         spyOn(functions, "observeRequest").and.callThrough();
 
         const request$ = Promise.resolve();
-        actions.next(new ScheduleRequestAction({request$}));
+        actions.next(scheduleRequest({request$}));
 
         await effects.scheduleRequest$.pipe(first()).toPromise();
 

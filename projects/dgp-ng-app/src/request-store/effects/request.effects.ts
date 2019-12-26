@@ -1,14 +1,13 @@
-import { Inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Observer } from "rxjs";
 import { Store } from "@ngrx/store";
 import { Effect, ofType } from "@ngrx/effects";
 import { concatMap } from "rxjs/operators";
 import { Actions } from "@ngrx/effects";
 import {
-    RegisterRequestAction,
+    registerRequest,
     ScheduleRequestAction,
-    scheduleRequestActionType,
-    UnregisterRequestAction
+    scheduleRequestActionType, unregisterRequest,
 } from "../actions/request.actions";
 import { RequestStoreState } from "../models/request-store-state.model";
 import { observeRequest } from "../functions/observe-request.function";
@@ -40,14 +39,14 @@ export class RequestEffects {
         );
 
     private getRequestObserver(): Observer<any> {
-        this.store.dispatch(new RegisterRequestAction());
+        this.store.dispatch(registerRequest());
 
         let isAlreadyUnregistered = false;
 
         const onObserved = () => {
             if (!isAlreadyUnregistered) {
                 isAlreadyUnregistered = true;
-                this.store.dispatch(new UnregisterRequestAction());
+                this.store.dispatch(unregisterRequest());
             }
         };
 
@@ -61,9 +60,7 @@ export class RequestEffects {
     }
 
     constructor(
-        @Inject(Actions)
         private readonly actions$: Actions,
-        @Inject(Store)
         private readonly store: Store<RequestStoreState>
     ) {
     }
