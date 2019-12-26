@@ -12,6 +12,7 @@
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build:dgp-ng-app": "ng build dgp-ng-app",
+        "publish:dgp-ng-app": "npm publish dist/dgp-ng-app",
         "start:docs-app": "ng serve ng-app",
         "build:docs-app": "ng build --prod ng-app",
         "publish:docs-app": "firebase deploy"
