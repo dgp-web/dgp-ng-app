@@ -11,9 +11,10 @@
         "e2e": "ng e2e",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "docs-app": "ng serve ng-app",
         "build:dgp-ng-app": "ng build dgp-ng-app",
-        "build:docs-app": "ng build --prod ng-app"
+        "start:docs-app": "ng serve ng-app",
+        "build:docs-app": "ng build --prod ng-app",
+        "publish:docs-app": "firebase deploy"
     },
     "private": true,
     "dependencies": {
