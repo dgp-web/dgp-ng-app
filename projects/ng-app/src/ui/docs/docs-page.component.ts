@@ -17,13 +17,13 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         }
 
         .content-container {
-            margin: 16px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             height: 100%;
             width: 100%;
             align-items: center;
+            overflow: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -12,7 +12,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             flex-direction: column;
             flex-grow: 1;
             height: 100%;
-            margin: 16px;
+            padding: 16px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
