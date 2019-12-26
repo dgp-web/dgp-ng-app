@@ -28,7 +28,7 @@ declare var hljs;
 export class DocsCodeBlockComponent implements OnChanges {
 
     @Input()
-    language: "typescript" | "html" = "typescript";
+    language: "typescript" | "html" | "css" | "scss" = "typescript";
 
     @ViewChild("codeHost", {
         static: true
