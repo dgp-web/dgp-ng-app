@@ -14,21 +14,21 @@ export class AppStoreModule {}
 `;
 
 export const scheduleRequestActionCodeSample = `
-import { ScheduleRequestAction } from "dgp-ng-app";
+import { scheduleRequest } from "dgp-ng-app";
 
 const request$ = await Promise.resolve({});
 
-const action = new ScheduleRequestAction({ request$ });
+const action = scheduleRequest({ request$ });
 
 `;
 
 export const hasPendingRequestsSelectorCodeSample = `
-import { hasPendingRequestsSelector } from "dgp-ng-app";
+import { hasPendingRequests } from "dgp-ng-app";
 
 // ...
 
 readonly hasPendingRequests$ = this.store.select(
-    hasPendingRequestsSelector
+    hasPendingRequests
 );
 
 constructor(

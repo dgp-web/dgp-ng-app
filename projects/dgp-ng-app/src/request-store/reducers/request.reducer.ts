@@ -1,11 +1,12 @@
 import { RequestState } from "../models/request-state.model";
 import {
-    registerRequestActionType, RequestBookkeepingActions,
+    registerRequestActionType,
     resetRequestsActionType,
     unregisterRequestActionType
 } from "../actions/request.actions";
+import { Action } from "@ngrx/store";
 
-export const requestReducer = (state: RequestState = {pendingRequests: 0}, action: RequestBookkeepingActions): RequestState => {
+export const requestReducer = (state: RequestState = {pendingRequests: 0}, action: Action): RequestState => {
     switch (action.type) {
 
         case registerRequestActionType: {

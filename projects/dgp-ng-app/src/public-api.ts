@@ -1,7 +1,6 @@
 /*
  * Public API Surface of dgp-ng-app
  */
-/* export * from "./broadcast"; */
 
 // authentication
 export * from "./authentication/actions/authentication.actions";
@@ -66,8 +65,8 @@ export { DgpLogModule } from "./log/log.module";
 // request-store
 export { requestStoreFeature } from "./request-store/models/request-store-state.model";
 export { RequestState } from "./request-store/models/request-state.model";
-export { ScheduleRequestAction, scheduleRequestActionType } from "./request-store/actions/request.actions";
-export { hasPendingRequestsSelector, requestStateSelector } from "./request-store/selectors/request.selectors";
+export { ScheduleRequestAction, scheduleRequest, scheduleRequestActionType } from "./request-store/actions/request.actions";
+export { hasPendingRequestsSelector, hasPendingRequests, requestStateSelector } from "./request-store/selectors/request.selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay

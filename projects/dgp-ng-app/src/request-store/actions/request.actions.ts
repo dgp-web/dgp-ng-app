@@ -1,4 +1,4 @@
-import { Action } from "@ngrx/store";
+import { Action, createAction, props } from "@ngrx/store";
 import { Observable } from "rxjs";
 
 export const scheduleRequestActionType = "[ScheduleRequest] ScheduleRequestAction";
@@ -19,23 +19,19 @@ export class ScheduleRequestAction<T> implements Action {
     }
 }
 
+export const scheduleRequest = createAction(
+    scheduleRequestActionType,
+    props<ScheduleRequestActionPayload<any>>()
+);
 
 export const registerRequestActionType = "[Request] Register";
 
-export class RegisterRequestAction implements Action {
-    readonly type = registerRequestActionType;
-}
+export const registerRequest = createAction(registerRequestActionType);
 
 export const unregisterRequestActionType = "[Request] Unregister";
 
-export class UnregisterRequestAction implements Action {
-    readonly type = unregisterRequestActionType;
-}
+export const unregisterRequest = createAction(unregisterRequestActionType);
 
 export const resetRequestsActionType = "[Request] Reset";
 
-export class ResetRequestAction implements Action {
-    readonly type = resetRequestsActionType;
-}
-
-export type RequestBookkeepingActions = RegisterRequestAction | UnregisterRequestAction | ResetRequestAction;
+export const resetRequests = createAction(resetRequestsActionType);
