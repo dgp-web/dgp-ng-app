@@ -145,6 +145,25 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                     </a>
 
+                    <a routerLink="/theme-switcher"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">style</mat-icon>
+                                <div class="module-card__title">
+                                    Theme switcher
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Setup theming-related components in your
+                                    app.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
                 </div>
 
             </dgp-docs-page-content>

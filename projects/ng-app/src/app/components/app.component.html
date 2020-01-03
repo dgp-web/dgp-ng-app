@@ -60,6 +60,13 @@
                 <mat-icon class="hamburger-menu-list-item__icon">color_lens</mat-icon>
                 Styling
             </a>
+
+            <a mat-list-item
+               [routerLink]="['/theme-switcher']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">style</mat-icon>
+                Theme switcher
+            </a>
         </mat-nav-list>
 
         <dgp-dark-mode-toggle></dgp-dark-mode-toggle>

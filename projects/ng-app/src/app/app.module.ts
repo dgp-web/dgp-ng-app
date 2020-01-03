@@ -43,7 +43,8 @@ import * as features from "../features";
         features.HamburgerShellDocsModule,
         features.ListDetailsPageDocsModule,
         features.RequestStoreDocsModule,
-        features.StylingDocsModule
+        features.StylingDocsModule,
+        features.ThemeSwitcherDocsModule
     ],
     bootstrap: [AppComponent]
 })
