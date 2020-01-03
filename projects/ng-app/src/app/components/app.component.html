@@ -41,6 +41,13 @@
             </a>
 
             <a mat-list-item
+               [routerLink]="['/list-details-page']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">vertical_split</mat-icon>
+                List-details page
+            </a>
+
+            <a mat-list-item
                [routerLink]="['/request-store']"
                [routerLinkActive]="'dgp-list-item--selected'">
                 <mat-icon class="hamburger-menu-list-item__icon">import_export</mat-icon>

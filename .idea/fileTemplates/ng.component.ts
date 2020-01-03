@@ -5,7 +5,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
   template: ``,
   styles: [`
     
-  '],
+  `],
    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ${Name} {
