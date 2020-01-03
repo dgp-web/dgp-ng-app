@@ -53,7 +53,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                 <dgp-docs-code-block [code]="toggleModuleCode"></dgp-docs-code-block>
 
                 <dgp-docs-section-title>
-                    2: Add the toggle control to a page header.
+                    5: Add the toggle control to a page header.
                 </dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="toggleCode"
