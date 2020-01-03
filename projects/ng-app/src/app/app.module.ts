@@ -42,7 +42,8 @@ import * as features from "../features";
         features.EmptyStateDocsModule,
         features.HamburgerShellDocsModule,
         features.ListDetailsPageDocsModule,
-        features.RequestStoreDocsModule
+        features.RequestStoreDocsModule,
+        features.StylingDocsModule
     ],
     bootstrap: [AppComponent]
 })

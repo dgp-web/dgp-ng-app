@@ -127,6 +127,24 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                     </a>
 
+                    <a routerLink="/styling"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">color_lens</mat-icon>
+                                <div class="module-card__title">
+                                    Styling
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Theming utilities for easy setup of bright/dark mode.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
                 </div>
 
             </dgp-docs-page-content>

@@ -49,23 +49,6 @@ export class FeatureModule {}
 
 ```
 
-### Styling ###
-
-``dgp-ng-app`` wraps mat-theme and helps you style your angular and 
-dgp components for bright and dark mode in no time.
-
-```
-@import '~@angular/material/theming';
-@import '~dgp-ng-app/theming';
-
-@include mat-core();
-
-$app-primary: mat-palette($mat-light-green, 800, 900);
-$app-accent: mat-palette($mat-green, A200, A100, A400);
-
-@include dgp-ng-app-theme($app-primary, $app-accent);
-```
-
 ### Theme switcher ###
 
 Module for quickly setting up theming-related components in your
