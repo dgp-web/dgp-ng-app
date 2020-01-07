@@ -1,6 +1,22 @@
 {
     "name": "dgp-ng-app",
-    "version": "8.2.1",
+    "version": "8.2.2",
+    "license": "MIT",
+    "description": "Building blocks for Angular apps",
+    "keywords": [
+        "angular",
+        "ngrx",
+        "material",
+        "building blocks"
+    ],
+    "private": false,
+    "author": {
+        "name": "dgp-web"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dgp-web/dgp-ng-app"
+    },
     "peerDependencies": {
         "@angular/animations": "^8",
         "@angular/cdk": "^8",

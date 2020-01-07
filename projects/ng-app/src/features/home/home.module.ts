@@ -6,6 +6,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
+import { DgpSpacerModule } from "dgp-ng-app";
+import { MatTooltipModule } from "@angular/material";
 
 @NgModule({
     imports: [
@@ -18,7 +20,9 @@ import { MatRippleModule } from "@angular/material/core";
         MatIconModule,
         MatDividerModule,
         MatCardModule,
-        MatRippleModule
+        MatRippleModule,
+        DgpSpacerModule,
+        MatTooltipModule
     ],
     declarations: [
         HomePageComponent
