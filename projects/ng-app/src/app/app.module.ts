@@ -42,6 +42,7 @@ import * as features from "../features";
         features.EmptyStateDocsModule,
         features.HamburgerShellDocsModule,
         features.ListDetailsPageDocsModule,
+        features.LogDocsModule,
         features.RequestStoreDocsModule,
         features.StylingDocsModule,
         features.ThemeSwitcherDocsModule
