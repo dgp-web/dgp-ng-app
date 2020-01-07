@@ -6,6 +6,13 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
             Home
+            <dgp-spacer></dgp-spacer>
+            <a href="https://github.com/dgp-web/dgp-ng-app"
+               style="width: 40px; height: 40px;"
+               matTooltip="Open on GitHub">
+                <img style="width: 100%; height: 100%;"
+                     src="assets/github-logo.png">
+            </a>
         </dgp-page-header>
 
         <dgp-docs-page>
@@ -34,23 +41,23 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">
 
-                        <a routerLink="/authentication"
-                           class="module-card">
-                            <mat-card matRipple
-                                      class="module-card__card">
-                                <mat-card-content class="module-card__content">
-                                    <mat-icon class="module-card__icon dgp-bg--primary">person</mat-icon>
-                                    <div class="module-card__title">
-                                        Authentication
-                                    </div>
-                                    <mat-divider class="module_card__divider"></mat-divider>
-                                    <div>
-                                        Authenticate users and perform startup tasks.
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
+                    <a routerLink="/authentication"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">person</mat-icon>
+                                <div class="module-card__title">
+                                    Authentication
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Authenticate users and perform startup tasks.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
 
-                        </a>
+                    </a>
 
                     <a routerLink="/empty-state"
                        class="module-card">
