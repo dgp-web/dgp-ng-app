@@ -1,5 +1,5 @@
 @import '~@angular/material/theming';
-@import '~dgp-ng-app/theming';
+@import '../../dgp-ng-app/src/theming';
 
 @include mat-core();
 
@@ -7,3 +7,7 @@ $app-primary: mat-palette($mat-light-green, 800, 900);
 $app-accent: mat-palette($mat-green, A200, A100, A400);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);
+
+.dgp-bg--primary {
+    background: mat-color($app-primary) !important;
+}

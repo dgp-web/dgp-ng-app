@@ -6,6 +6,9 @@ import { AppModule } from "./app/app.module";
 import { environment } from "./environments/environment";
 import { bootloader, hmrModule } from "@angularclass/hmr";
 
+
+
+
 if (environment.production) {
     enableProdMode();
 }
@@ -15,7 +18,8 @@ export function main() {
         .bootstrapModule(AppModule)
         .then((ngModuleRef: any) => {
             return hmrModule(ngModuleRef, module);
-        }).catch(err => console.error(err));
+        })
+        .catch(err => console.error(err));
 }
 
 bootloader(main);
