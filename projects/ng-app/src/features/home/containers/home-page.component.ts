@@ -95,6 +95,27 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                     </a>
 
+                    <a routerLink="/list-details-page"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">vertical_split</mat-icon>
+                                <div class="module-card__title">
+                                    List-details page
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Page with a collapsible list and a central details view.
+<!--
+                                    The configuration options are passed to HamburgerMenuShellModule.forRoot(...)
+                                    and described on that page.-->
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
                     <a routerLink="/request-store"
                        class="module-card">
                         <mat-card matRipple
@@ -107,6 +128,43 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                                 <mat-divider class="module_card__divider"></mat-divider>
                                 <div>
                                     A request queue that allows to dispatch requests as actions.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
+                    <a routerLink="/styling"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">color_lens</mat-icon>
+                                <div class="module-card__title">
+                                    Styling
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Theming utilities for easy setup of bright/dark mode.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
+                    <a routerLink="/theme-switcher"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">style</mat-icon>
+                                <div class="module-card__title">
+                                    Theme switcher
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Setup theming-related components in your
+                                    app.
                                 </div>
                             </mat-card-content>
                         </mat-card>

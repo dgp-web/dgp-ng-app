@@ -31,13 +31,13 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                     1: Import DgpHamburgerShellModule.forRoot() in your main module.
                 </dgp-docs-section-title>
 
-                <dgp-docs-code-block [code]="moduleImportCode"></dgp-docs-code-block>
+                <dgp-docs-code-block [code]="shellModuleImportCode"></dgp-docs-code-block>
 
                 <dgp-docs-section-title>
-                    2: Add the control to your main component.
+                    2: Add the shell control to your main component.
                 </dgp-docs-section-title>
 
-                <dgp-docs-code-block [code]="templateCode"
+                <dgp-docs-code-block [code]="shellTemplateCode"
                                      language="html"></dgp-docs-code-block>
 
                 <dgp-docs-section-title>
@@ -45,6 +45,19 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                 </dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="configurationCode"></dgp-docs-code-block>
+
+                <dgp-docs-section-title>
+                    4: Import DgpHamburgerMenuToggleModule into a feature module.
+                </dgp-docs-section-title>
+
+                <dgp-docs-code-block [code]="toggleModuleCode"></dgp-docs-code-block>
+
+                <dgp-docs-section-title>
+                    5: Add the toggle control to a page header.
+                </dgp-docs-section-title>
+
+                <dgp-docs-code-block [code]="toggleCode"
+                                     language="html"></dgp-docs-code-block>
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
@@ -52,7 +65,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 })
 export class HamburgerShellDocsPageComponent {
 
-    readonly moduleImportCode = `
+    readonly shellModuleImportCode = `
 import { DgpHamburgerShellModule } from "dgp-ng-app";
 
 // ...
@@ -66,7 +79,7 @@ import { DgpHamburgerShellModule } from "dgp-ng-app";
 export class AppModule {}
     `;
 
-    readonly templateCode = `
+    readonly shellTemplateCode = `
 <dgp-hamburger-shell>
 
     <ng-container dgp-hamburger-menu
@@ -97,6 +110,27 @@ export const config: HamburgerShellConfig = {
         Breakpoints.XLarge
     ]
 };
+    `;
+
+    readonly toggleModuleCode = `
+import { DgpHamburgerMenuToggleModule } from "dgp-ng-app";
+
+// ...
+
+@NgModule({
+    imports: [
+        DgpHamburgerMenuToggleModule,
+        // ...
+    ]
+})
+export class FeatureModule {}
+    `;
+
+    readonly toggleCode = `
+<!-- your page header -->
+<mat-toolbar>
+    <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+</mat-toolbar>
     `;
 
 }
