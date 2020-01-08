@@ -84,30 +84,6 @@ export class AppModule extends DgpNgApp {
 }
 ```
 
-### Log ###
-
-Feature to create and view log entries.
-
-1: Import ``DgpLogModule`` in your main module.
-
-```
-import { DgpLogModule } from "dgp-ng-app";
-
-// ...
-
-@NgModule({
-    imports: [
-        DgpLogModule,
-        // ...
-    ]
-})
-export class AppModule {}
-``` 
-
-2: Create some option to route to it. It's located under ``/logEntries``.
-
-3: Create log actions to populate your log via ``AddLogEntryAction`` and ``LogErrorAction``.
-
 ### Virtual-list panel ###
 
 An easy interface for virtual lists with dynamic width and height.
