@@ -24,11 +24,12 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                 <dgp-docs-code-block [code]="moduleCode"></dgp-docs-code-block>
 
                 <dgp-docs-section-title>
-                    2: Create some option to route to it. It's located under /logEntries.
+                    2: Create some option to route to it. It's located under
+                    <a routerLink="/logEntries" style="color:inherit;">/logEntries</a>.
                 </dgp-docs-section-title>
 
                 <dgp-docs-section-title>
-                    1: Import DgpLogModule in your main module.
+                    3: Create log actions to populate your log via AddLogEntryAction and LogErrorAction.
                 </dgp-docs-section-title>
 
             </dgp-docs-page-content>

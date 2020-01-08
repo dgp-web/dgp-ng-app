@@ -48,6 +48,13 @@
             </a>
 
             <a mat-list-item
+               [routerLink]="['/log']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">receipt</mat-icon>
+                Log
+            </a>
+
+            <a mat-list-item
                [routerLink]="['/request-store']"
                [routerLinkActive]="'dgp-list-item--selected'">
                 <mat-icon class="hamburger-menu-list-item__icon">import_export</mat-icon>
