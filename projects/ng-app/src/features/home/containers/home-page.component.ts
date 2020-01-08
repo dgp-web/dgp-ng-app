@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             Home
             <dgp-spacer></dgp-spacer>
             <a href="https://github.com/dgp-web/dgp-ng-app"
-               style="width: 40px; height: 40px;"
+               style="width: 32px; height: 32px;"
                matTooltip="Open on GitHub">
                 <img style="width: 100%; height: 100%;"
                      src="assets/github-logo.png">
@@ -107,9 +107,24 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                                 <mat-divider class="module_card__divider"></mat-divider>
                                 <div>
                                     Page with a collapsible list and a central details view.
-<!--
-                                    The configuration options are passed to HamburgerMenuShellModule.forRoot(...)
-                                    and described on that page.-->
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
+                    <a routerLink="/log"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">receipt</mat-icon>
+                                <div class="module-card__title">
+                                    Log
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Feature to create and view log entries.
                                 </div>
                             </mat-card-content>
                         </mat-card>
