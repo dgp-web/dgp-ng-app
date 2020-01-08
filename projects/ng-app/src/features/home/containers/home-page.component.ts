@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             Home
             <dgp-spacer></dgp-spacer>
             <a href="https://github.com/dgp-web/dgp-ng-app"
-               style="width: 40px; height: 40px;"
+               style="width: 32px; height: 32px;"
                matTooltip="Open on GitHub">
                 <img style="width: 100%; height: 100%;"
                      src="assets/github-logo.png">
