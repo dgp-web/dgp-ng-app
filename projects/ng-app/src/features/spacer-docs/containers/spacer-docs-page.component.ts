@@ -52,7 +52,7 @@ export class FeatureModule {}
 `;
 
     readonly templateCode = `
-    <mat-toolbar>
+<mat-toolbar>
 
     Feature title
 
