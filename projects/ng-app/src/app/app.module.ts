@@ -44,6 +44,7 @@ import * as features from "../features";
         features.ListDetailsPageDocsModule,
         features.LogDocsModule,
         features.RequestStoreDocsModule,
+        features.SpacerDocsModule,
         features.StylingDocsModule,
         features.ThemeSwitcherDocsModule
     ],

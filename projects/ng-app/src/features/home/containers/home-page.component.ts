@@ -149,6 +149,24 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                     </a>
 
+                    <a routerLink="/spacer"
+                       class="module-card">
+                        <mat-card matRipple
+                                  class="module-card__card">
+                            <mat-card-content class="module-card__content">
+                                <mat-icon class="module-card__icon dgp-bg--primary">space_bar</mat-icon>
+                                <div class="module-card__title">
+                                    Spacer
+                                </div>
+                                <mat-divider class="module_card__divider"></mat-divider>
+                                <div>
+                                    Invisible component that fills empty space.
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </a>
+
                     <a routerLink="/styling"
                        class="module-card">
                         <mat-card matRipple

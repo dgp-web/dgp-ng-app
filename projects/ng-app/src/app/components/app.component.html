@@ -62,6 +62,13 @@
             </a>
 
             <a mat-list-item
+               [routerLink]="['/spacer']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">space_bar</mat-icon>
+                Spacer
+            </a>
+
+            <a mat-list-item
                [routerLink]="['/styling']"
                [routerLinkActive]="'dgp-list-item--selected'">
                 <mat-icon class="hamburger-menu-list-item__icon">color_lens</mat-icon>
