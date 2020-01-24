@@ -10,6 +10,7 @@ import {
 } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
+import { MatDialogRef } from "@angular/material/dialog";
 
 export interface TableCellEditorSizes {
     readonly offsetTop: number;
@@ -94,6 +95,8 @@ export class DgpTableCellComponent {
         read: ElementRef, static: false
     }) buttonElRef: ElementRef;
 
+    private dialogRef: MatDialogRef<any>;
+
     constructor(private readonly matDialog: MatDialog) {
     }
 
@@ -127,13 +130,22 @@ export class DgpTableCellComponent {
             position.left = (boundingClientRect.right - width) + "px";
         }
 
-        await this.matDialog.open(this.editorTemplate, {
+        this.dialogRef = this.matDialog.open(this.editorTemplate, {
             ...this.editDialogConfig,
             position,
             backdropClass: "mat-dialog-no-backdrop",
-        }).afterClosed().toPromise();
+        });
 
+        await this.dialogRef.afterClosed().toPromise();
+
+        this.dialogRef = null;
         this.editorClosed.emit();
+    }
+
+    closeCellEditorDialog() {
+        if (this.dialogRef) {
+            this.dialogRef.close();
+        }
     }
 
 }
