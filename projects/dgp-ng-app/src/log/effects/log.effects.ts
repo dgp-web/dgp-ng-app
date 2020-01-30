@@ -1,20 +1,18 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { defaultIfEmpty, map, switchMap } from "rxjs/operators";
-import { CompositeEntityAction } from "entity-store";
 import { MatSnackBar } from "@angular/material";
 import { Router } from "@angular/router";
-import { AddLogEntryAction, addLogEntryActionType, LogErrorAction, logErrorActionType } from "../actions/log.actions";
-import { logStoreFeature } from "../models/log-state.model";
-import { Severity } from "../models/severity.model";
-import { LogEntry, logEntryType } from "../models/log-entry.model";
+import { addLogEntry, logError } from "../actions/log.actions";
+import { LogEntry, Severity } from "../models/log.models";
+import { logStore } from "../reducers/log.reducer";
 
 @Injectable()
 export class LogEffects {
 
     @Effect()
     readonly logError$ = this.actions$.pipe(
-        ofType<LogErrorAction>(logErrorActionType),
+        ofType(logError),
         map(action => {
 
             const logEntry: LogEntry = {
@@ -24,26 +22,22 @@ export class LogEffects {
                 severity: Severity.Error
             };
 
-            return new AddLogEntryAction(logEntry);
+            return addLogEntry({ logEntry });
 
         })
     );
 
     @Effect()
     readonly addLogEntry$ = this.actions$.pipe(
-        ofType<AddLogEntryAction>(addLogEntryActionType),
+        ofType(addLogEntry),
         map(action => {
 
-            const logEntry = action.logEntry;
-
-            return new CompositeEntityAction({
-                add: [{
-                    storeFeature: logStoreFeature,
-                    entityType: logEntryType,
-                    payload: {
-                        [logEntry.timeStamp.toString()]: logEntry
+            return logStore.actions.composeEntityActions({
+                add: {
+                    logEntry: {
+                        [action.logEntry.timeStamp.toString()]: action.logEntry
                     }
-                }]
+                }
             });
 
         })
@@ -53,7 +47,7 @@ export class LogEffects {
         dispatch: false
     })
     readonly showErrorSnack = this.actions$.pipe(
-        ofType<AddLogEntryAction>(addLogEntryActionType),
+        ofType(addLogEntry),
         switchMap(action => {
 
             return this.matSnackbar.open(action.logEntry.title, "Show log", {

@@ -1,4 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { AppState } from "../../../store";
+import { Store } from "@ngrx/store";
+import { LogErrorAction } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-log-docs",
@@ -25,7 +28,8 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                 <dgp-docs-section-title>
                     2: Create some option to route to it. It's located under
-                    <a routerLink="/logEntries" style="color:inherit;">/logEntries</a>.
+                    <a routerLink="/logEntries"
+                       style="color:inherit;">/logEntries</a>.
                 </dgp-docs-section-title>
 
                 <dgp-docs-section-title>
@@ -41,6 +45,12 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogDocsPageComponent {
+
+    constructor(
+        private readonly store: Store<AppState>
+    ) {
+        this.store.dispatch(new LogErrorAction({title: "Hallo", error: "Welt"}));
+    }
 
     readonly moduleCode = `
 import { DgpLogModule } from "dgp-ng-app";

@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { isNullOrUndefined } from "util";
 import { map } from "rxjs/operators";
-import { Severity } from "../models/severity.model";
-import { getAllLogEntriesSelector } from "../selectors/log-entry.selectors";
-import { LogState } from "../models/log-state.model";
+import { Severity, LogState } from "../models/log.models";
+import { getAllLogEntries } from "../selectors/log.selectors";
 
 @Component({
     selector: "dgp-log-entry-list",
@@ -49,12 +47,10 @@ export class LogEntryListComponent {
 
     readonly severityEnum = Severity;
 
-    readonly logEntries$ = this.store.select(getAllLogEntriesSelector);
+    readonly logEntries$ = this.store.select(getAllLogEntries);
 
     readonly hasLogEntries$ = this.logEntries$.pipe(
-        map(x => {
-            return !isNullOrUndefined(x) && x.length > 0;
-        })
+        map(x => x && x.length > 0)
     );
 
     constructor(
