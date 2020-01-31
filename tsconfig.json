@@ -20,10 +20,10 @@
     ],
     "paths": {
       "dgp-ng-app": [
-        "projects/dgp-ng-app"
+        "projects/dgp-ng-app/src/public-api.ts"
       ],
       "dgp-ng-app/*": [
-        "projects/dgp-ng-app/*"
+        "projects/dgp-ng-app/src/*"
       ]
     }
   },
