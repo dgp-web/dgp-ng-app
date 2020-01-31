@@ -5,9 +5,7 @@ import { Effect, ofType } from "@ngrx/effects";
 import { concatMap } from "rxjs/operators";
 import { Actions } from "@ngrx/effects";
 import {
-    registerRequest,
-    ScheduleRequestAction,
-    scheduleRequestActionType, unregisterRequest,
+    registerRequest, scheduleRequest, unregisterRequest,
 } from "../actions/request.actions";
 import { RequestStoreState } from "../models/request-store-state.model";
 import { observeRequest } from "../functions/observe-request.function";
@@ -25,9 +23,8 @@ export class RequestEffects {
     })
     scheduleRequest$ = this.actions$
         .pipe(
-            ofType(scheduleRequestActionType),
-            concatMap(
-                (action: ScheduleRequestAction<any>) => {
+            ofType(scheduleRequest),
+            concatMap(action => {
 
                     return observeRequest({
                         request$: action.payload.request$,

@@ -21,7 +21,7 @@ export class ScheduleRequestAction<T> implements Action {
 
 export const scheduleRequest = createAction(
     scheduleRequestActionType,
-    props<ScheduleRequestActionPayload<any>>()
+    props<{ payload: ScheduleRequestActionPayload<any> }>()
 );
 
 export const registerRequestActionType = "[Request] Register";
