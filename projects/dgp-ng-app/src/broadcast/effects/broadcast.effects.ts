@@ -11,10 +11,7 @@ import { createBroadcastHeartbeat } from "../functions/create-broadcast-heartbea
 import { createBroadcastParticipant } from "../functions/create-broadcast-participant.function";
 import { BroadcastRole } from "../models/broadcast-role.model";
 import {
-    leaderActionTypePrefix,
-    peonActionTypePrefix, SetBroadcastChannelDataIdAction,
-    setBroadcastChannelDataIdActionType, SetOwnBroadcastRoleAction,
-    setOwnBroadcastRoleActionType
+    leaderActionTypePrefix, peonActionTypePrefix, setBroadcastChannelDataId, setOwnBroadcastRole
 } from "../actions/broadcast-channel.actions";
 import { trimIncomingBroadcastAction } from "../functions/trim-incoming-broadcast-action.function";
 import { shouldBroadcastParticipantChangeRole } from "../functions/should-broadcast-participant-change-role.function";
@@ -54,7 +51,7 @@ export class BroadcastEffects {
         dispatch: false
     })
     cacheDataId$ = this.actions$.pipe(
-        ofType<SetBroadcastChannelDataIdAction>(setBroadcastChannelDataIdActionType),
+        ofType(setBroadcastChannelDataId),
         tap(action => {
             this.selectedDataId = action.payload;
         })
@@ -65,11 +62,12 @@ export class BroadcastEffects {
     })
     cacheOwnBroadcastRole$ = this.store.pipe(
         select(getOwnBroadcastRoleSelector)
-    ).pipe(
-        tap((ownBroadcastRole: BroadcastRole) => {
-            this.ownBroadcastRole = ownBroadcastRole;
-        })
-    );
+    )
+        .pipe(
+            tap((ownBroadcastRole: BroadcastRole) => {
+                this.ownBroadcastRole = ownBroadcastRole;
+            })
+        );
 
     @Effect({
         dispatch: false
@@ -109,7 +107,7 @@ export class BroadcastEffects {
                 });
 
                 if (shouldChangeRoleResult.shouldChangeRole) {
-                    return new SetOwnBroadcastRoleAction(shouldChangeRoleResult.newBroadcastRole);
+                    return setOwnBroadcastRole({broadcastRole: shouldChangeRoleResult.newBroadcastRole});
                 } else {
                     return null;
                 }
@@ -122,12 +120,12 @@ export class BroadcastEffects {
         dispatch: false
     })
     displayBroadcastRoleInBrowserTabTitle$ = this.actions$.pipe(
-        ofType(setOwnBroadcastRoleActionType),
+        ofType(setOwnBroadcastRole),
         filter(() => !isNullOrUndefined(this.config.updateBrowserTabTitleConfig)),
-        tap((action: SetOwnBroadcastRoleAction) => {
+        tap(action => {
 
             const result = shouldUpdateBrowserTabBroadcastRoleDisplay({
-                currentBroadcastRole: action.payload,
+                currentBroadcastRole: action.broadcastRole,
                 currentBrowserTabTitle: window.document.title
             }, this.config.updateBrowserTabTitleConfig);
 
