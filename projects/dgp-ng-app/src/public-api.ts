@@ -67,9 +67,7 @@ export { hasPendingRequestsSelector, hasPendingRequests, requestStateSelector } 
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
-export {
-    ShowLoadingSpinnerAction, showLoadingSpinnerActionType
-} from "./routing-overlay/actions/routing-overlay.actions";
+export  * from "./routing-overlay/actions/routing-overlay.actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
 
 // spacer
