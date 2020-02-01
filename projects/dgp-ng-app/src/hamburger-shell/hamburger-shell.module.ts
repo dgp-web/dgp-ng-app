@@ -5,7 +5,7 @@ import { LayoutModule } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import * as mat from "@angular/material";
-import { hamburgerShellReducer, hamburgerShellReducerProviders } from "./reducers/hamburger-shell.reducer";
+import { hamburgerShellReducer, hamburgerShellReducerProvider } from "./reducers/hamburger-shell.reducer";
 import {
     defaultHamburgerShellConfigProvider,
     HamburgerShellConfigProvider
@@ -32,7 +32,7 @@ import { HamburgerShellEffects } from "./effects/hamburger-shell.effects";
         ])
     ],
     providers: [
-        hamburgerShellReducerProviders
+        hamburgerShellReducerProvider
     ],
     declarations: [
         HamburgerShellComponent

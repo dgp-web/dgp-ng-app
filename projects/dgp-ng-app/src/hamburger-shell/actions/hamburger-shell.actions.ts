@@ -1,4 +1,4 @@
-import { Action, createAction, props } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
 import { HamburgerMenuMode, PageMenuMode } from "../models/hamburger-shell-state.model";
 
 // hamburger menu
@@ -16,31 +16,13 @@ export const closeHamburgerMenu = createAction("[HamburgerShell] CloseHamburgerM
 
 // list-details page
 
-export const setListDetailsPageStateActionType = "[HamburgerShell] SetListDetailsPageState";
-
-export class SetListDetailsPageStateAction implements Action {
-    readonly type = setListDetailsPageStateActionType;
-
-    constructor(public readonly payload: {
+export const setListDetailsPageState = createAction("[HamburgerShell] SetListDetailsPageState", props<{
+    readonly payload: {
         readonly isPageMenuOpen: boolean;
         readonly pageMenuMode: PageMenuMode;
-    }) {
     }
-}
+}>());
 
-export const toggleListDetailsPageMenuActionType = "[HamburgerShell] ToggleListDetailsPageMenu";
+export const toggleListDetailsPageMenu = createAction("[HamburgerShell] ToggleListDetailsPageMenu");
 
-export class ToggleListDetailsPageMenuAction implements Action {
-    readonly type = toggleListDetailsPageMenuActionType;
-}
-
-export const closeListDetailsMenuActionType = "[HamburgerShell] CloseListDetailsPageMenu";
-
-export class CloseListDetailsMenuAction implements Action {
-    readonly type = closeListDetailsMenuActionType;
-}
-
-export type HamburgerShellActions =
-    | SetListDetailsPageStateAction
-    | ToggleListDetailsPageMenuAction
-    | CloseListDetailsMenuAction;
+export const closeListDetailsMenu = createAction("[HamburgerShell] CloseListDetailsPageMenu");

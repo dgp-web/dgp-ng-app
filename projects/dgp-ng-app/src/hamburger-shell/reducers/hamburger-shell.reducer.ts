@@ -1,5 +1,8 @@
-import { closeHamburgerMenu, HamburgerShellActions, setHamburgerMenuState, toggleHamburgerMenu } from "../actions/hamburger-shell.actions";
-import {FactoryProvider, InjectionToken} from "@angular/core";
+import {
+    closeHamburgerMenu, closeListDetailsMenu, setHamburgerMenuState, setListDetailsPageState,
+    toggleHamburgerMenu, toggleListDetailsPageMenu
+} from "../actions/hamburger-shell.actions";
+import { FactoryProvider, InjectionToken } from "@angular/core";
 import { ActionReducer, createReducer, on } from "@ngrx/store";
 import { HamburgerShellState } from "../models/hamburger-shell-state.model";
 
@@ -17,76 +20,46 @@ export const hamburgerShellReducerImpl = createReducer(initialState,
             ...action.payload
         };
     })),
-    on(toggleHamburgerMenu, ((state, action) => {
+    on(toggleHamburgerMenu, ((state) => {
         return {
             ...state,
             isHamburgerMenuOpen: !state.isHamburgerMenuOpen
         };
     })),
-    on(closeHamburgerMenu, ((state, action) => {
+    on(closeHamburgerMenu, ((state) => {
         return {
             ...state,
             isHamburgerMenuOpen: false
         };
+    })),
+    on(setListDetailsPageState, ((state, action) => {
+        return {
+            ...state,
+            ...action.payload
+        };
+    })),
+    on(toggleListDetailsPageMenu, ((state) => {
+        return {
+            ...state,
+            isPageMenuOpen: !state.isPageMenuOpen
+        };
+    })),
+    on(closeListDetailsMenu, ((state) => {
+        return {
+            ...state,
+            isPageMenuOpen: false
+        };
     }))
 );
 
-export function _hamburgerShellReducer(
-    state: HamburgerShellState = initialState,
-    action: HamburgerShellActions
-): HamburgerShellState {
-
-    switch (action.type) {
-       /* case "[HamburgerShell] SetHamburgerMenuState": {
-            return {
-                ...state,
-                ...action.payload
-            };
-        }
-        case "[HamburgerShell] ToggleHamburgerMenu": {
-            return {
-                ...state,
-                isHamburgerMenuOpen: !state.isHamburgerMenuOpen
-            };
-        }
-        case "[HamburgerShell] CloseHamburgerMenu": {
-            return {
-                ...state,
-                isHamburgerMenuOpen: false
-            };
-        }*/
-        case "[HamburgerShell] SetListDetailsPageState": {
-            return {
-                ...state,
-                ...action.payload
-            };
-        }
-        case "[HamburgerShell] ToggleListDetailsPageMenu": {
-            return {
-                ...state,
-                isPageMenuOpen: !state.isPageMenuOpen
-            };
-        }
-        case "[HamburgerShell] CloseListDetailsPageMenu": {
-            return {
-                ...state,
-                isPageMenuOpen: false
-            };
-        }
-        default: return state;
-    }
-
-}
-
-
 export const hamburgerShellReducer = new InjectionToken<ActionReducer<HamburgerShellState>>("hamburgerShellReducer");
 
-export function hamburgerShellReducerFactory(): ActionReducer<HamburgerShellState> {
-    return _hamburgerShellReducer;
+export function hamburgerShellReducerFactory() {
+    return hamburgerShellReducerImpl;
 }
 
-export const hamburgerShellReducerProviders = [{
+export const hamburgerShellReducerProvider: FactoryProvider = {
     provide: hamburgerShellReducer,
     useFactory: hamburgerShellReducerFactory
-} as FactoryProvider];
+};
 
