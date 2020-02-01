@@ -82,13 +82,7 @@ export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/tabl
 export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
-export {
-    setIsDarkModeActiveActionType,
-    ThemeSwitcherActions,
-    toggleDarkModeActionType,
-    ToggleDarkModeAction,
-    SetIsDarkModeActiveAction
-} from "./theme-switcher/actions/theme-switcher.actions";
+export * from "./theme-switcher/actions/theme-switcher.actions";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
 export { themeSwitcherStoreFeature } from "./theme-switcher/models/theme-switcher-store-feature.model";

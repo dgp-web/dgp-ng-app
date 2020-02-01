@@ -8,7 +8,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { isNullOrUndefined } from "util";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { ThemeSwitcherEffects } from "./effects/theme-switcher.effects";
-import { themeSwitcherReducer, themeSwitcherReducerProviders } from "./reducers/theme-switcher.reducer";
+import { themeSwitcherReducer, themeSwitcherReducerProvider } from "./reducers/theme-switcher.reducer";
 import { ThemeHostDirective } from "./directives/theme-host.directive";
 import { DarkModeToggleComponent } from "./components/dark-mode-toggle.component";
 import {
@@ -17,7 +17,7 @@ import {
     ThemeSwitcherConfig
 } from "./models/theme-switcher-config.model";
 import { ThemeSwitcherState } from "./models/theme-switcher-state.model";
-import { SetIsDarkModeActiveAction } from "./actions/theme-switcher.actions";
+import { setIsDarkModeActive } from "./actions/theme-switcher.actions";
 
 @NgModule({
     imports: [
@@ -41,7 +41,7 @@ import { SetIsDarkModeActiveAction } from "./actions/theme-switcher.actions";
         ThemeHostDirective
     ],
     providers: [
-        themeSwitcherReducerProviders
+        themeSwitcherReducerProvider
     ]
 })
 export class DgpThemeSwitcherModule {
@@ -63,9 +63,7 @@ export class DgpThemeSwitcherModule {
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
         if (!isNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
-            this.store.dispatch(
-                new SetIsDarkModeActiveAction(isDarkModeActive)
-            );
+            this.store.dispatch(setIsDarkModeActive(isDarkModeActive));
         }
     }
 
