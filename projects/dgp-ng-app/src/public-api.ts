@@ -49,7 +49,7 @@ export * from "./hamburger-shell/selectors/hamburger-shell.selectors";
 export * from "./hamburger-shell/hamburger-shell.module";
 
 // hmr
-export { HmrReloadAction, hmrReloadActionType } from "./hmr/hmr.actions";
+export { hotReload } from "./hmr/hmr.actions";
 export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
