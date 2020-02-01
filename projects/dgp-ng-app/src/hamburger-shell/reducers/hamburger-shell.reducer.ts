@@ -1,6 +1,6 @@
-import {HamburgerShellActions} from "../actions/hamburger-shell.actions";
+import { closeHamburgerMenu, HamburgerShellActions, setHamburgerMenuState, toggleHamburgerMenu } from "../actions/hamburger-shell.actions";
 import {FactoryProvider, InjectionToken} from "@angular/core";
-import {ActionReducer} from "@ngrx/store";
+import { ActionReducer, createReducer, on } from "@ngrx/store";
 import { HamburgerShellState } from "../models/hamburger-shell-state.model";
 
 const initialState: HamburgerShellState = {
@@ -10,6 +10,26 @@ const initialState: HamburgerShellState = {
     isPageMenuOpen: true
 };
 
+export const hamburgerShellReducerImpl = createReducer(initialState,
+    on(setHamburgerMenuState, ((state, action) => {
+        return {
+            ...state,
+            ...action.payload
+        };
+    })),
+    on(toggleHamburgerMenu, ((state, action) => {
+        return {
+            ...state,
+            isHamburgerMenuOpen: !state.isHamburgerMenuOpen
+        };
+    })),
+    on(closeHamburgerMenu, ((state, action) => {
+        return {
+            ...state,
+            isHamburgerMenuOpen: false
+        };
+    }))
+);
 
 export function _hamburgerShellReducer(
     state: HamburgerShellState = initialState,
@@ -17,7 +37,7 @@ export function _hamburgerShellReducer(
 ): HamburgerShellState {
 
     switch (action.type) {
-        case "[HamburgerShell] SetHamburgerMenuState": {
+       /* case "[HamburgerShell] SetHamburgerMenuState": {
             return {
                 ...state,
                 ...action.payload
@@ -34,7 +54,7 @@ export function _hamburgerShellReducer(
                 ...state,
                 isHamburgerMenuOpen: false
             };
-        }
+        }*/
         case "[HamburgerShell] SetListDetailsPageState": {
             return {
                 ...state,

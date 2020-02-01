@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { Actions, Effect } from "@ngrx/effects";
 import { debounceTime, filter, map, switchMap } from "rxjs/operators";
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { SetHamburgerMenuStateAction, SetListDetailsPageStateAction } from "../actions/hamburger-shell.actions";
+import { setHamburgerMenuState, SetListDetailsPageStateAction } from "../actions/hamburger-shell.actions";
 import { HamburgerShellConfig, HamburgerShellMode, ListDetailsPageMode } from "../models/hamburger-shell-config.model";
 import { HAMBURGER_SHELL_CONFIG } from "../models/hamburger-shell-config-provider.model";
 import { HamburgerShellState } from "../models/hamburger-shell-state.model";
@@ -25,7 +25,7 @@ export class HamburgerShellEffects {
             const isHamburgerMenuOpen = result.matches;
             const hamburgerMenuMode = isHamburgerMenuOpen ? "side" : "over";
 
-            return new SetHamburgerMenuStateAction({
+            return setHamburgerMenuState({
                 isHamburgerMenuOpen,
                 hamburgerMenuMode
             });
@@ -63,12 +63,12 @@ export class HamburgerShellEffects {
         private readonly hamburgerShellConfig: HamburgerShellConfig
     ) {
         if (hamburgerShellConfig.hamburgerShellMode === HamburgerShellMode.SideNav) {
-            this.store.dispatch(new SetHamburgerMenuStateAction({
+            this.store.dispatch(setHamburgerMenuState({
                 isHamburgerMenuOpen: true,
                 hamburgerMenuMode: "side"
             }));
         } else if (hamburgerShellConfig.hamburgerShellMode === HamburgerShellMode.Overlay) {
-            this.store.dispatch(new SetHamburgerMenuStateAction({
+            this.store.dispatch(setHamburgerMenuState({
                 isHamburgerMenuOpen: false,
                 hamburgerMenuMode: "over"
             }));

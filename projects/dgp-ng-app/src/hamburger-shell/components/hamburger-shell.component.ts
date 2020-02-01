@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { CloseHamburgerMenuAction } from "../actions/hamburger-shell.actions";
+import { closeHamburgerMenu } from "../actions/hamburger-shell.actions";
 import { hamburgerMenuModeSelector, isHamburgerMenuOpenSelector } from "../selectors/hamburger-shell.selectors";
 import { hasPendingRequestsSelector } from "../../request-store/selectors/request.selectors";
 import { HamburgerShellState } from "../models/hamburger-shell-state.model";
@@ -80,8 +80,6 @@ export class HamburgerShellComponent {
     }
 
     closeHamburgerMenu(): void {
-        this.store.dispatch(
-            new CloseHamburgerMenuAction()
-        );
+        this.store.dispatch(closeHamburgerMenu());
     }
 }
