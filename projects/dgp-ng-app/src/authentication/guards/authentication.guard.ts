@@ -2,7 +2,7 @@ import { first } from "rxjs/operators";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { select, Store } from "@ngrx/store";
-import { CacheInitialUrlAction } from "../actions/authentication.actions";
+import { cacheInitialUrl } from "../actions/authentication.actions";
 import { getIsAuthenticatedSelector, hasCachedInitialUrlSelector } from "../selectors/authentication.selectors";
 import { AuthenticationState } from "../models/authentication-result.model";
 
@@ -25,7 +25,7 @@ export class AuthenticationGuard implements CanActivate {
             .toPromise();
 
         if (!hasInitialUrl) {
-            this.store.dispatch(new CacheInitialUrlAction(state.url));
+            this.store.dispatch(cacheInitialUrl({ initialUrl: state.url }));
         }
 
         return this.store.pipe(
