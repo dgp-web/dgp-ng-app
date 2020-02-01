@@ -27,10 +27,8 @@ export class HamburgerShellEffects {
                 const hamburgerMenuMode = isHamburgerMenuOpen ? "side" : "over";
 
                 return setHamburgerMenuState({
-                    payload: {
-                        isHamburgerMenuOpen,
-                        hamburgerMenuMode
-                    }
+                    isHamburgerMenuOpen,
+                    hamburgerMenuMode
                 });
 
             })
@@ -52,10 +50,8 @@ export class HamburgerShellEffects {
                 const pageMenuMode = isPageMenuOpen ? "side" : "over";
 
                 return setListDetailsPageState({
-                    payload: {
-                        isPageMenuOpen,
-                        pageMenuMode
-                    }
+                    isPageMenuOpen,
+                    pageMenuMode
                 });
 
             })
@@ -70,33 +66,25 @@ export class HamburgerShellEffects {
     ) {
         if (hamburgerShellConfig.hamburgerShellMode === HamburgerShellMode.SideNav) {
             this.store.dispatch(setHamburgerMenuState({
-                payload: {
-                    isHamburgerMenuOpen: true,
-                    hamburgerMenuMode: "side"
-                }
+                isHamburgerMenuOpen: true,
+                hamburgerMenuMode: "side"
             }));
         } else if (hamburgerShellConfig.hamburgerShellMode === HamburgerShellMode.Overlay) {
             this.store.dispatch(setHamburgerMenuState({
-                payload: {
-                    isHamburgerMenuOpen: false,
-                    hamburgerMenuMode: "over"
-                }
+                isHamburgerMenuOpen: false,
+                hamburgerMenuMode: "over"
             }));
         }
 
         if (hamburgerShellConfig.listDetailsPageMode === ListDetailsPageMode.SideNav) {
             this.store.dispatch(setListDetailsPageState({
-                payload: {
-                    isPageMenuOpen: true,
-                    pageMenuMode: "side"
-                }
+                isPageMenuOpen: true,
+                pageMenuMode: "side"
             }));
         } else if (hamburgerShellConfig.listDetailsPageMode === ListDetailsPageMode.Overlay) {
             this.store.dispatch(setListDetailsPageState({
-                payload: {
-                    isPageMenuOpen: false,
-                    pageMenuMode: "over"
-                }
+                isPageMenuOpen: false,
+                pageMenuMode: "over"
             }));
         }
     }

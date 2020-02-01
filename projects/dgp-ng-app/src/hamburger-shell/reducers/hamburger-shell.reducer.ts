@@ -17,7 +17,8 @@ export const hamburgerShellReducerImpl = createReducer(initialState,
     on(setHamburgerMenuState, ((state, action) => {
         return {
             ...state,
-            ...action.payload
+            hamburgerMenuMode: action.hamburgerMenuMode,
+            isHamburgerMenuOpen: action.isHamburgerMenuOpen
         };
     })),
     on(toggleHamburgerMenu, ((state) => {
@@ -35,7 +36,8 @@ export const hamburgerShellReducerImpl = createReducer(initialState,
     on(setListDetailsPageState, ((state, action) => {
         return {
             ...state,
-            ...action.payload
+            pageMenuMode: action.pageMenuMode,
+            isPageMenuOpen: action.isPageMenuOpen,
         };
     })),
     on(toggleListDetailsPageMenu, ((state) => {
