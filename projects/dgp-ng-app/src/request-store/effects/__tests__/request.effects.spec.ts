@@ -45,7 +45,7 @@ xdescribe(RequestEffects.name, () => {
         spyOn(functions, "observeRequest").and.callThrough();
 
         const request$ = Promise.resolve();
-        actions.next(scheduleRequest({request$}));
+        actions.next(scheduleRequest({  request$ }));
 
         await effects.scheduleRequest$.pipe(first()).toPromise();
 

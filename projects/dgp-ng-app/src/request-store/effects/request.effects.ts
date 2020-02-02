@@ -27,7 +27,7 @@ export class RequestEffects {
             concatMap(action => {
 
                     return observeRequest({
-                        request$: action.payload.request$,
+                        request$: action.request$,
                         observer: this.getRequestObserver()
                     });
 
