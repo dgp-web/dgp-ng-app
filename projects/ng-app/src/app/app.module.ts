@@ -1,27 +1,18 @@
-import { BrowserModule } from "@angular/platform-browser";
 import { ApplicationRef, NgModule } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import * as dgp from "dgp-ng-app";
 import { AppComponent } from "./components";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
-import { AppState, AppStoreModule } from "../store";
+import { appReducer, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
+import { DgpNgApp, DgpNgAppModule } from "dgp-ng-app";
 
 @NgModule({
     declarations: [
         AppComponent
     ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-
-        dgp.DgpHamburgerShellModule.forRoot(),
-        dgp.DgpThemeSwitcherModule.forRoot(),
-        dgp.DgpLogModule,
-
         UiSharedModule,
         ApiClientModule.forRoot({
             provide: ApiClientSettings,
@@ -35,7 +26,12 @@ import * as features from "../features";
             path: "**",
             redirectTo: "/home"
         }]),
-        AppStoreModule,
+
+        DgpNgAppModule.forRoot<AppState>(() => {
+            return {
+                appReducer
+            };
+        }),
 
         features.HomeModule,
         features.AuthenticationDocsModule,
@@ -50,7 +46,7 @@ import * as features from "../features";
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule extends dgp.DgpNgApp {
+export class AppModule extends DgpNgApp {
 
     constructor(public readonly appRef: ApplicationRef,
                 protected readonly ngrxStore: Store<AppState>) {

@@ -99,3 +99,5 @@ export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtua
 export { VirtualListPanelComponent } from "./virtual-list-panel/components/virtual-list-panel.component";
 export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-panel.module";
 
+export * from "./dgp-ng-app.module";
+
