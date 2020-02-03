@@ -170,6 +170,128 @@
                     }
                 }
             }
+        },
+        "content-block-editor-demo": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/content-block-editor-demo",
+            "sourceRoot": "projects/content-block-editor-demo/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/content-block-editor-demo",
+                        "index": "projects/content-block-editor-demo/src/index.html",
+                        "main": "projects/content-block-editor-demo/src/main.ts",
+                        "polyfills": "projects/content-block-editor-demo/src/polyfills.ts",
+                        "tsConfig": "projects/content-block-editor-demo/tsconfig.app.json",
+                        "aot": false,
+                        "assets": [
+                            "projects/content-block-editor-demo/src/favicon.ico",
+                            "projects/content-block-editor-demo/src/assets"
+                        ],
+                        "styles": [
+                            "projects/content-block-editor-demo/src/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/content-block-editor-demo/src/environments/environment.ts",
+                                    "with": "projects/content-block-editor-demo/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "content-block-editor-demo:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "content-block-editor-demo:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "content-block-editor-demo:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/content-block-editor-demo/src/test.ts",
+                        "polyfills": "projects/content-block-editor-demo/src/polyfills.ts",
+                        "tsConfig": "projects/content-block-editor-demo/tsconfig.spec.json",
+                        "karmaConfig": "projects/content-block-editor-demo/karma.conf.js",
+                        "assets": [
+                            "projects/content-block-editor-demo/src/favicon.ico",
+                            "projects/content-block-editor-demo/src/assets"
+                        ],
+                        "styles": [
+                            "projects/content-block-editor-demo/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/content-block-editor-demo/tsconfig.app.json",
+                            "projects/content-block-editor-demo/tsconfig.spec.json",
+                            "projects/content-block-editor-demo/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/content-block-editor-demo/e2e/protractor.conf.js",
+                        "devServerTarget": "content-block-editor-demo:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "content-block-editor-demo:serve:production"
+                        }
+                    }
+                }
+            }
         }
     },
     "defaultProject": "ng-app"
