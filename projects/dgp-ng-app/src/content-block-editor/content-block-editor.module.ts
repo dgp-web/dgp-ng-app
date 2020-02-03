@@ -40,6 +40,9 @@ export const contentBlockEditorReducerProvider: FactoryProvider = {
         RouterModule.forChild([{
             path: "content-block-editor",
             component: ContentBlockEditorPageComponent
+        }, {
+            path: "content-block-editor/:documentTemplateId/:documentNumber",
+            component: ContentBlockEditorPageComponent
         }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,

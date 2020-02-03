@@ -23,7 +23,8 @@ import { getAllDocuments } from "../selectors";
             <div dgp-list-details-page-menu>
                 <mat-nav-list>
                     <a mat-list-item
-                       *ngFor="let document of (documents$ | async)">
+                       *ngFor="let document of (documents$ | async)"
+                       [routerLink]="'/content-block-editor/' +  document.documentTemplateId + '/' + document.documentNumber">
                         <mat-icon mat-list-icon>
                             description
                         </mat-icon>
