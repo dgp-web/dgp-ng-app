@@ -1,8 +1,9 @@
-import { NgModule } from "@angular/core";
+import { ApplicationRef, NgModule } from "@angular/core";
 
 import { AppComponent } from "./app.component";
-import { DgpNgAppModule, DgpContentBlockEditorModule } from "dgp-ng-app";
+import { DgpNgAppModule, DgpContentBlockEditorModule, DgpNgApp } from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
+import { Store } from "@ngrx/store";
 
 @NgModule({
     declarations: [
@@ -28,5 +29,11 @@ import { RouterModule } from "@angular/router";
     providers: [],
     bootstrap: [AppComponent]
 })
-export class AppModule {
+export class AppModule extends DgpNgApp {
+
+    constructor(public readonly appRef: ApplicationRef,
+                protected readonly ngrxStore: Store<any>) {
+        super(appRef, ngrxStore);
+    }
+
 }

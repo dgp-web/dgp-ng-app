@@ -235,10 +235,14 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
+                        "hmr": true,
+                        "hmrWarning": false,
                         "browserTarget": "content-block-editor-demo:build"
                     },
                     "configurations": {
                         "production": {
+                            "hmr": false,
+                            "hmrWarning": true,
                             "browserTarget": "content-block-editor-demo:build:production"
                         }
                     }
