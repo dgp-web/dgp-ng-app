@@ -21,7 +21,17 @@ import { getAllDocuments } from "../selectors";
         <dgp-list-details-page>
 
             <div dgp-list-details-page-menu>
-                {{ documents$ | async | json }}
+                <mat-nav-list>
+                    <a mat-list-item
+                       *ngFor="let document of (documents$ | async)">
+                        <mat-icon mat-list-icon>
+                            description
+                        </mat-icon>
+                        <div mat-line>
+                            {{ document.label }}
+                        </div>
+                    </a>
+                </mat-nav-list>
             </div>
 
             <dgp-list-details-page-content>
