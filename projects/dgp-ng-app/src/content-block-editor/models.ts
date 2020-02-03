@@ -26,6 +26,7 @@ export interface SectionId extends DocumentId {
 
 export interface Section extends SectionId {
     readonly label: string;
+    readonly position: number;
 }
 
 export interface ContentBlockTypeId extends DocumentTemplateId {

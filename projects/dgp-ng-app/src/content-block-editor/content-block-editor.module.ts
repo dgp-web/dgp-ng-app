@@ -21,6 +21,7 @@ import { CommonModule } from "@angular/common";
 import { MatListModule } from "@angular/material/list";
 import { SelectedDocumentResolver } from "./resolvers/selected-document.resolver";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
+import { DocumentDetailsComponent } from "./components/document-details.component";
 
 export const contentBlockEditorReducer = new InjectionToken<typeof contentBlockEditorStore.reducers>(
     contentBlockEditorStoreFeature
@@ -69,7 +70,8 @@ export const contentBlockEditorReducerProvider: FactoryProvider = {
     ],
     declarations: [
         ContentBlockEditorPageComponent,
-        AddDocumentDialogComponent
+        AddDocumentDialogComponent,
+        DocumentDetailsComponent
     ],
     entryComponents: [
         AddDocumentDialogComponent

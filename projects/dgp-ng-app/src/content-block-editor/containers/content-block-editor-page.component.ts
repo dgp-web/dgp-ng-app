@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { ContentBlockEditorState } from "../store";
 import { openAddDocumentDialog } from "../actions";
-import { getAllDocuments, getSelectedDocument } from "../selectors";
+import { getAllDocuments, getDocumentPresentationModel, getSelectedDocument } from "../selectors";
 
 @Component({
     selector: "dgp-content-block-editor-page",
@@ -38,11 +38,8 @@ import { getAllDocuments, getSelectedDocument } from "../selectors";
 
             <dgp-list-details-page-content>
 
-                <ng-container *ngIf="selectedDocument$ | async as selectedDocument; else noSelectedDocumentEmptyState">
-
-                    {{ selectedDocument | json }}
-
-                </ng-container>
+                <dgp-document-details *ngIf="selectedDocument$ | async ; else noSelectedDocumentEmptyState"
+                                      [document]="documentPresentationModel$ | async"></dgp-document-details>
 
                 <ng-template #noSelectedDocumentEmptyState>
                     <dgp-empty-state matIconName="description"
@@ -66,6 +63,7 @@ export class ContentBlockEditorPageComponent {
     readonly documents$ = this.store.select(getAllDocuments);
 
     readonly selectedDocument$ = this.store.select(getSelectedDocument);
+    readonly documentPresentationModel$ = this.store.select(getDocumentPresentationModel);
 
     constructor(
         private readonly store: Store<ContentBlockEditorState>
