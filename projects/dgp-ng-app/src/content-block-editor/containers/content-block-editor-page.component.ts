@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { ContentBlockEditorState } from "../store";
 import { openAddDocumentDialog } from "../actions";
-import { getAllDocuments } from "../selectors";
+import { getAllDocuments, getSelectedDocument } from "../selectors";
 
 @Component({
     selector: "dgp-content-block-editor-page",
@@ -38,6 +38,8 @@ import { getAllDocuments } from "../selectors";
 
             <dgp-list-details-page-content>
 
+                {{ selectedDocument$ | async | json }}
+
             </dgp-list-details-page-content>
 
         </dgp-list-details-page>
@@ -50,6 +52,8 @@ import { getAllDocuments } from "../selectors";
 export class ContentBlockEditorPageComponent {
 
     readonly documents$ = this.store.select(getAllDocuments);
+
+    readonly selectedDocument$ = this.store.select(getSelectedDocument);
 
     constructor(
         private readonly store: Store<ContentBlockEditorState>

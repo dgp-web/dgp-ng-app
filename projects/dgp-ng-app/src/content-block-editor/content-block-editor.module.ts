@@ -19,6 +19,7 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { MatListModule } from "@angular/material/list";
+import { SelectedDocumentResolver } from "./resolvers/selected-document.resolver";
 
 export const contentBlockEditorReducer = new InjectionToken<typeof contentBlockEditorStore.reducers>(
     contentBlockEditorStoreFeature
@@ -39,10 +40,16 @@ export const contentBlockEditorReducerProvider: FactoryProvider = {
         EffectsModule.forRoot([ContentBlockEditorEffects]),
         RouterModule.forChild([{
             path: "content-block-editor",
-            component: ContentBlockEditorPageComponent
+            component: ContentBlockEditorPageComponent,
+            resolve: {
+                selectedDocument: SelectedDocumentResolver
+            }
         }, {
             path: "content-block-editor/:documentTemplateId/:documentNumber",
-            component: ContentBlockEditorPageComponent
+            component: ContentBlockEditorPageComponent,
+            resolve: {
+                selectedDocument: SelectedDocumentResolver
+            }
         }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
@@ -66,7 +73,8 @@ export const contentBlockEditorReducerProvider: FactoryProvider = {
         AddDocumentDialogComponent
     ],
     providers: [
-        contentBlockEditorReducerProvider
+        contentBlockEditorReducerProvider,
+        SelectedDocumentResolver
     ]
 })
 export class DgpContentBlockEditorModule {
