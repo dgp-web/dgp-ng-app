@@ -101,3 +101,8 @@ export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-pan
 
 export * from "./dgp-ng-app.module";
 
+// content-block-editor
+export * from "./content-block-editor/models";
+export * from "./content-block-editor/store";
+export * from "./content-block-editor/content-block-editor.module";
+

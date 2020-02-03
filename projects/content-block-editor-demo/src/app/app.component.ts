@@ -2,7 +2,15 @@ import { Component } from "@angular/core";
 
 @Component({
     selector: "app-root",
-    templateUrl: "./app.component.html",
+    template: `
+        <dgp-hamburger-shell>
+
+            <div dgp-hamburger-menu></div>
+
+            <router-outlet></router-outlet>
+
+        </dgp-hamburger-shell>
+    `,
     styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
