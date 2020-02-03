@@ -38,7 +38,19 @@ import { getAllDocuments, getSelectedDocument } from "../selectors";
 
             <dgp-list-details-page-content>
 
-                {{ selectedDocument$ | async | json }}
+                <ng-container *ngIf="selectedDocument$ | async as selectedDocument; else noSelectedDocumentEmptyState">
+
+                    {{ selectedDocument | json }}
+
+                </ng-container>
+
+                <ng-template #noSelectedDocumentEmptyState>
+                    <dgp-empty-state matIconName="description"
+                                     title="No document selected">
+                        Select one by clicking on it in the list on left.
+                    </dgp-empty-state>
+                </ng-template>
+
 
             </dgp-list-details-page-content>
 
