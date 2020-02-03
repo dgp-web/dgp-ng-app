@@ -1,11 +1,3 @@
-import { Action } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
 
-export const showLoadingSpinnerActionType = "[RoutingOverlay] ShowSpinner";
-
-export class ShowLoadingSpinnerAction implements Action {
-    readonly type = showLoadingSpinnerActionType;
-
-    constructor(public readonly showSpinner: boolean) {
-    }
-
-}
+export const showLoadingSpinner = createAction("[RoutingOverlay] ShowSpinner", props<{ readonly showSpinner: boolean }>());

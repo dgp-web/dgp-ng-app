@@ -49,7 +49,7 @@ export * from "./hamburger-shell/selectors/hamburger-shell.selectors";
 export * from "./hamburger-shell/hamburger-shell.module";
 
 // hmr
-export { HmrReloadAction, hmrReloadActionType } from "./hmr/hmr.actions";
+export { hotReload } from "./hmr/hmr.actions";
 export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
@@ -67,9 +67,7 @@ export { hasPendingRequestsSelector, hasPendingRequests, requestStateSelector } 
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
-export {
-    ShowLoadingSpinnerAction, showLoadingSpinnerActionType
-} from "./routing-overlay/actions/routing-overlay.actions";
+export  * from "./routing-overlay/actions/routing-overlay.actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
 
 // spacer
@@ -82,13 +80,7 @@ export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/tabl
 export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
-export {
-    setIsDarkModeActiveActionType,
-    ThemeSwitcherActions,
-    toggleDarkModeActionType,
-    ToggleDarkModeAction,
-    SetIsDarkModeActiveAction
-} from "./theme-switcher/actions/theme-switcher.actions";
+export * from "./theme-switcher/actions/theme-switcher.actions";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
 export { themeSwitcherStoreFeature } from "./theme-switcher/models/theme-switcher-store-feature.model";
@@ -106,4 +98,6 @@ export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
 export { VirtualListPanelComponent } from "./virtual-list-panel/components/virtual-list-panel.component";
 export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-panel.module";
+
+export * from "./dgp-ng-app.module";
 

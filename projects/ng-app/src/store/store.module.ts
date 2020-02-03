@@ -24,8 +24,6 @@ import { environment } from "../environments/environment";
             effects.AppEffects
         ]),
 
-        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-
         dgp.DgpRequestStoreModule,
     ],
     providers: [

@@ -1,20 +1,4 @@
-import { Action } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
 
-export const toggleDarkModeActionType = "[ThemeSwitcher] ToggleDarkMode";
-
-export class ToggleDarkModeAction implements Action {
-    readonly type = toggleDarkModeActionType;
-}
-
-export const setIsDarkModeActiveActionType = "[ThemeSwitcher] SetIsDarkModeActive";
-
-export class SetIsDarkModeActiveAction implements Action {
-    readonly type = setIsDarkModeActiveActionType;
-
-    constructor(
-        public readonly isDarkModeActive: boolean
-    ) {
-    }
-}
-
-export type ThemeSwitcherActions = ToggleDarkModeAction | SetIsDarkModeActiveAction;
+export const toggleDarkMode = createAction("[ThemeSwitcher] ToggleDarkMode");
+export const setIsDarkModeActive = createAction("[ThemeSwitcher] SetIsDarkModeActive", props<{ readonly isDarkModeActive: boolean }>());

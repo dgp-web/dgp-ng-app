@@ -8,6 +8,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
 import { DgpSpacerModule } from "dgp-ng-app";
 import { MatTooltipModule } from "@angular/material";
+import { TileComponent } from "./components";
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { MatTooltipModule } from "@angular/material";
         MatTooltipModule
     ],
     declarations: [
-        HomePageComponent
+        HomePageComponent,
+        TileComponent
     ]
 })
 export class HomeModule {

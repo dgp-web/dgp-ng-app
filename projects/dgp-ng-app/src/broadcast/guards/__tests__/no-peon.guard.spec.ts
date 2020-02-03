@@ -48,6 +48,6 @@ describe(NoPeonGuard.name, () => {
             first()
         ).toPromise();
 
-        expect(canActivate).toBeFalsy();
+        expect(canActivate).toBeTruthy();
     });
 });

@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { isDarkModeActiveSelector } from "../selectors/theme-switcher.selectors";
 import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
-import { ToggleDarkModeAction } from "../actions/theme-switcher.actions";
+import { toggleDarkMode } from "../actions/theme-switcher.actions";
 
 @Component({
     selector: "dgp-dark-mode-toggle",
@@ -31,7 +31,7 @@ export class DarkModeToggleComponent {
     }
 
     toggleDarkMode(): void {
-        this.store.dispatch(new ToggleDarkModeAction());
+        this.store.dispatch(toggleDarkMode());
     }
 
 }

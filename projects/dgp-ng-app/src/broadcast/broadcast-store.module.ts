@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from "@angular/core";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { MatSnackBarModule } from "@angular/material";
-import { broadcastReducer, broadcastReducerProviders, broadcastStoreFeature } from "./broadcast-store";
+import { broadcastReducer, broadcastReducerProvider, broadcastStoreFeature } from "./broadcast-store";
 import { broadcastStoreProvider } from "./broadcast-store.decorator";
 import { broadcastChannelServiceProvider } from "./services/broadcast-channel.service";
 import { BroadcastEffects } from "./effects/broadcast.effects";
@@ -24,7 +24,7 @@ import { NoPeonGuard } from "./guards/no-peon.guard";
             useValue: defaultBroadcastConfig
         },
         NoPeonGuard,
-        broadcastReducerProviders,
+        broadcastReducerProvider,
         broadcastStoreProvider
     ]
 })

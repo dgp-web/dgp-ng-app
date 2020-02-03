@@ -1,11 +1,3 @@
-import {Action} from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
 
-export const hmrReloadActionType = "[HMR] Reload";
-
-export class HmrReloadAction implements Action {
-  readonly type = hmrReloadActionType;
-
-  constructor(public payload: any) {
-  }
-
-}
+export const hotReload = createAction( "[HMR] Reload", props<{ readonly payload: any }>());

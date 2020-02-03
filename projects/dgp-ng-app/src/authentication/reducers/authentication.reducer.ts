@@ -1,11 +1,7 @@
-import { ActionReducer } from "@ngrx/store";
+import { ActionReducer, createReducer, on } from "@ngrx/store";
 import { FactoryProvider, InjectionToken } from "@angular/core";
 import { AuthenticationState } from "../models/authentication-result.model";
-import {
-    authenticateUserActionType,
-    AuthenticationActions,
-    cacheInitialUrlActionType, registerAuthenticateErrorActionType
-} from "../actions/authentication.actions";
+import { authenticateUser, cacheInitialUrl, registerAuthenticateError } from "../actions/authentication.actions";
 
 const initialState: AuthenticationState = {
     user: null,
@@ -14,51 +10,38 @@ const initialState: AuthenticationState = {
     initialUrl: null
 };
 
-export function authenticationReducerImpl<TUser>(
-    state = initialState,
-    action: AuthenticationActions
-): AuthenticationState {
-
-    switch (action.type) {
-
-        case authenticateUserActionType: {
+export const authenticationReducerImpl = createReducer(
+    initialState, on(
+        authenticateUser, (state, action) => {
             return {
                 ...state,
                 user: action.user,
                 success: true
             };
         }
+    ), on(cacheInitialUrl, (state, action) => {
+        return {
+            ...state,
+            initialUrl: action.initialUrl
+        };
+    }), on(registerAuthenticateError, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            success: false
+        };
+    })
+);
 
-        case cacheInitialUrlActionType: {
-            return {
-                ...state,
-                initialUrl: action.initialUrl
-            };
-        }
-
-        case registerAuthenticateErrorActionType: {
-            return {
-                ...state,
-                error: action.error,
-                success: false
-            };
-        }
-
-        default: {
-            return state;
-        }
-    }
-
-}
 
 export const authenticationReducer = new InjectionToken<ActionReducer<AuthenticationState>>("authenticationReducer");
 
-export function authenticationReducerFactory(): ActionReducer<AuthenticationState> {
+export function authenticationReducerFactory() {
     return authenticationReducerImpl;
 }
 
-export const authenticationReducerProviders = [{
+export const authenticationReducerProvider: FactoryProvider = {
     provide: authenticationReducer,
     useFactory: authenticationReducerFactory
-} as FactoryProvider];
+};
 

@@ -3,7 +3,7 @@ import { StoreModule } from "@ngrx/store";
 import { InitializationServiceProvider } from "./services/initialization.service";
 import { authenticationStoreFeature } from "./models/authentication-store-feature";
 import { AuthenticationApiClientProvider } from "./api-clients/authentication.api-client";
-import { authenticationReducer, authenticationReducerProviders } from "./reducers/authentication.reducer";
+import { authenticationReducer, authenticationReducerProvider } from "./reducers/authentication.reducer";
 import { appInitializerProvider } from "./services/app-initializer.function";
 import { AuthenticationGuard } from "./guards/authentication.guard";
 import { authenticationServiceProvider } from "./services/authentication.service";
@@ -22,7 +22,7 @@ export interface AuthenticationModuleSettings {
     ],
     providers: [
         appInitializerProvider,
-        authenticationReducerProviders,
+        authenticationReducerProvider,
         AuthenticationGuard,
         authenticationServiceProvider
     ]
