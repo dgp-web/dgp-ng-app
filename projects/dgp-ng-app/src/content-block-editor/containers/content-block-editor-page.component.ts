@@ -1,4 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { ContentBlockEditorState, contentBlockEditorStore } from "../store";
+import { openAddDocumentDialog } from "../actions";
 
 @Component({
     selector: "dgp-content-block-editor-page",
@@ -6,12 +9,18 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
             Document editor
+            <dgp-spacer></dgp-spacer>
+            <button mat-icon-button
+                    [matTooltip]="'Add new document'"
+                    (click)="openAddDocumentDialog()">
+                <mat-icon>add</mat-icon>
+            </button>
         </dgp-page-header>
 
         <dgp-list-details-page>
 
             <div dgp-list-details-page-menu>
-
+                {{ documents$ | async | json }}
             </div>
 
             <dgp-list-details-page-content>
@@ -22,9 +31,22 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
     `,
     styles: [`
 
-   `],
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentBlockEditorPageComponent {
+
+    readonly documents$ = this.store.select(
+        contentBlockEditorStore.selectors.documents.getAll
+    );
+
+    constructor(
+        private readonly store: Store<ContentBlockEditorState>
+    ) {
+    }
+
+    openAddDocumentDialog() {
+        this.store.dispatch(openAddDocumentDialog());
+    }
 
 }

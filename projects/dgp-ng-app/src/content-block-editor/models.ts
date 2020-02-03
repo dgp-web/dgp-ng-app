@@ -9,7 +9,11 @@ export interface DocumentTemplate extends DocumentTemplateId {
 }
 
 export interface DocumentId extends DocumentTemplateId {
-    readonly documentNumber: string;
+    readonly documentNumber: number;
+}
+
+export interface DocumentCreationModel extends DocumentTemplateId {
+    readonly label: string;
 }
 
 export interface Document extends DocumentId {
@@ -17,13 +21,11 @@ export interface Document extends DocumentId {
 }
 
 export interface SectionId extends DocumentId {
-    readonly sectionNumber: string;
+    readonly sectionNumber: number;
 }
 
-export interface Section {
-    readonly documentTemplateId: string;
-    readonly documentNumber: string;
-    readonly sectionNumber: number;
+export interface Section extends SectionId {
+    readonly label: string;
 }
 
 export interface ContentBlockTypeId extends DocumentTemplateId {
