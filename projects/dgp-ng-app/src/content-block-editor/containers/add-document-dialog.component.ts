@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { DocumentCreationModel } from "../models";
+import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-base";
 
 @Component({
     selector: "dgp-add-document-dialog",
@@ -49,7 +49,9 @@ import { DocumentCreationModel } from "../models";
 })
 export class AddDocumentDialogComponent extends DgpModelEditorComponentBase<DocumentCreationModel> {
 
+    protected modelValue = {label: null, documentTemplateId: "my-document-template"};
+
     updateLabel(label: string) {
-        this.updateModel({ label });
+        this.updateModel({label});
     }
 }

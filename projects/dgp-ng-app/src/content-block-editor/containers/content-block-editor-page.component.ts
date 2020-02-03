@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { ContentBlockEditorState, contentBlockEditorStore } from "../store";
+import { ContentBlockEditorState } from "../store";
 import { openAddDocumentDialog } from "../actions";
+import { getAllDocuments } from "../selectors";
 
 @Component({
     selector: "dgp-content-block-editor-page",
@@ -36,9 +37,7 @@ import { openAddDocumentDialog } from "../actions";
 })
 export class ContentBlockEditorPageComponent {
 
-    readonly documents$ = this.store.select(
-        contentBlockEditorStore.selectors.documents.getAll
-    );
+    readonly documents$ = this.store.select(getAllDocuments);
 
     constructor(
         private readonly store: Store<ContentBlockEditorState>
