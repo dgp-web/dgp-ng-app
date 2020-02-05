@@ -40,11 +40,11 @@ export interface ContentBlockType extends ContentBlockTypeId {
     readonly position: number;
 }
 
-export interface ContentBlockId extends ContentBlockTypeId, SectionId {
+export interface ContentBlockId extends DocumentId {
     readonly contentBlockNumber: number;
 }
 
-export interface ContentBlock extends ContentBlockId {
+export interface ContentBlock extends ContentBlockId, SectionId, ContentBlockTypeId {
     readonly position: number;
     readonly label: string;
     readonly content: any;

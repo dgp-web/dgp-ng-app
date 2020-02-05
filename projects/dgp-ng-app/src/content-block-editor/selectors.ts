@@ -21,6 +21,11 @@ export const getAllContentBlocks = createSelector(
     contentBlockEditorStore.selectors.contentBlocks.getAll
 );
 
+export const getSelectedContentBlock = createSelector(
+    contentBlockEditorFeatureSelector,
+    contentBlockEditorStore.selectors.contentBlocks.getFirstSelected
+);
+
 export const getSelectedDocument = createSelector(
     contentBlockEditorFeatureSelector,
     contentBlockEditorStore.selectors.documents.getFirstSelected
@@ -30,7 +35,8 @@ export const getDocumentPresentationModel = createSelector(
     getAllSections,
     getAllContentBlocks,
     getSelectedDocument,
-    (sections, contentBlocks, selectedDocument) => {
+    getSelectedContentBlock,
+    (sections, contentBlocks, selectedDocument, selectedContentBlock) => {
 
         if (!selectedDocument) {
             return null;
@@ -38,6 +44,7 @@ export const getDocumentPresentationModel = createSelector(
 
         return {
             ...selectedDocument,
+            selectedContentBlock,
             sections: sections.filter(section => {
                 return section.documentTemplateId === selectedDocument.documentTemplateId
                     && section.documentNumber === selectedDocument.documentNumber;

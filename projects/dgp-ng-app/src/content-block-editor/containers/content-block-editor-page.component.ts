@@ -1,8 +1,10 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { ContentBlockEditorState } from "../store";
+import { ContentBlockEditorState, contentBlockEditorStore } from "../store";
 import { openAddDocumentDialog } from "../actions";
 import { getAllDocuments, getDocumentPresentationModel, getSelectedDocument } from "../selectors";
+import { ContentBlockId } from "../models";
+import { getContentBlockSurrogateKey } from "../functions";
 
 @Component({
     selector: "dgp-content-block-editor-page",
@@ -39,7 +41,8 @@ import { getAllDocuments, getDocumentPresentationModel, getSelectedDocument } fr
             <dgp-list-details-page-content>
 
                 <dgp-document-details *ngIf="selectedDocument$ | async ; else noSelectedDocumentEmptyState"
-                                      [document]="documentPresentationModel$ | async"></dgp-document-details>
+                                      [document]="documentPresentationModel$ | async"
+                                      (selectedContentBlockChange)="selectContentBlock($event)"></dgp-document-details>
 
                 <ng-template #noSelectedDocumentEmptyState>
                     <dgp-empty-state matIconName="description"
@@ -47,7 +50,6 @@ import { getAllDocuments, getDocumentPresentationModel, getSelectedDocument } fr
                         Select one by clicking on it in the list on left.
                     </dgp-empty-state>
                 </ng-template>
-
 
             </dgp-list-details-page-content>
 
@@ -74,4 +76,13 @@ export class ContentBlockEditorPageComponent {
         this.store.dispatch(openAddDocumentDialog());
     }
 
+    selectContentBlock(contentBlockId: ContentBlockId) {
+        this.store.dispatch(
+            contentBlockEditorStore.actions.composeEntityActions({
+                select: {
+                    contentBlocks: [getContentBlockSurrogateKey(contentBlockId)]
+                }
+            })
+        );
+    }
 }

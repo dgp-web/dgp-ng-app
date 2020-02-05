@@ -1,8 +1,9 @@
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
 import { Injectable } from "@angular/core";
-import { DocumentId } from "../models";
+import { ContentBlockId, DocumentId } from "../models";
 import { ContentBlockEditorState, contentBlockEditorStore } from "../store";
 import { Store } from "@ngrx/store";
+import { getContentBlockSurrogateKey } from "../functions";
 
 @Injectable()
 export class SelectedDocumentResolver implements Resolve<void> {
@@ -32,6 +33,7 @@ export class SelectedDocumentResolver implements Resolve<void> {
         } else {
 
             const documentNumber = route.params["documentNumber" as keyof DocumentId];
+            const contentBlockNumber = route.params["contentBlockNumber" as keyof ContentBlockId];
 
             this.store.dispatch(
                 contentBlockEditorStore.actions.composeEntityActions({
@@ -39,7 +41,11 @@ export class SelectedDocumentResolver implements Resolve<void> {
                         documents: [
                             documentTemplateId + "." + documentNumber
                         ],
-                        contentBlocks: []
+                        contentBlocks: contentBlockNumber ? [
+                            getContentBlockSurrogateKey({
+                                documentTemplateId, documentNumber, contentBlockNumber
+                            })
+                        ] : []
                     }
                 })
             );

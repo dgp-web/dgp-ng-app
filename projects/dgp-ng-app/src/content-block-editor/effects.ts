@@ -19,37 +19,70 @@ export class ContentBlockEditorEffects {
 
             return this.matDialog
                 .open<AddDocumentDialogComponent, null, DocumentCreationModel>(AddDocumentDialogComponent)
-                .afterClosed().toPromise();
+                .afterClosed()
+                .toPromise();
 
         }),
         filter(x => x !== null && x !== undefined),
         switchMap(documentCreationModel => {
 
-            return this.store.select(getAllDocuments).pipe(
-                first(),
-                map(documents => {
-                    const documentNumbers = documents.map(x => x.documentNumber);
-                    documentNumbers.sort();
-                    let documentNumber: number;
+            return this.store.select(getAllDocuments)
+                .pipe(
+                    first(),
+                    map(documents => {
+                        const documentNumbers = documents.map(x => x.documentNumber);
+                        documentNumbers.sort();
+                        let documentNumber: number;
 
-                    if (documentNumbers.length > 0) {
-                        documentNumber = documentNumbers[documentNumbers.length - 1] + 1;
-                    } else {
-                        documentNumber = 1;
-                    }
+                        if (documentNumbers.length > 0) {
+                            documentNumber = documentNumbers[documentNumbers.length - 1] + 1;
+                        } else {
+                            documentNumber = 1;
+                        }
 
-                    return contentBlockEditorStore.actions.composeEntityActions({
-                        add: {
-                            documents: {
-                                [documentCreationModel.documentTemplateId + "." + documentNumber]: {
-                                    ...documentCreationModel,
-                                    documentNumber
+                        return contentBlockEditorStore.actions.composeEntityActions({
+                            add: {
+                                documents: {
+                                    [documentCreationModel.documentTemplateId + "." + documentNumber]: {
+                                        ...documentCreationModel,
+                                        documentNumber
+                                    }
+                                },
+                                sections: {
+                                    [documentCreationModel.documentTemplateId + "." + documentNumber + "." + 1]: {
+                                        label: "First section",
+                                        documentNumber,
+                                        documentTemplateId: documentCreationModel.documentTemplateId,
+                                        position: 1,
+                                        sectionNumber: 1
+                                    }
+                                },
+                                contentBlocks: {
+                                    [documentCreationModel.documentTemplateId + "." + documentNumber + "." + 1]: {
+                                        label: "First section",
+                                        documentNumber,
+                                        documentTemplateId: documentCreationModel.documentTemplateId,
+                                        position: 1,
+                                        contentBlockNumber: 1,
+                                        contentBlockTypeNumber: 1,
+                                        content: "",
+                                        sectionNumber: 1
+                                    }
+                                },
+                                contentBlockTypes: {
+                                    [documentCreationModel.documentTemplateId + "." + 1]: {
+                                        matIconName: "description",
+                                        position: 1,
+                                        label: "Text block",
+                                        documentTemplateId: documentCreationModel.documentTemplateId,
+                                        contentBlockTypeNumber: 1,
+                                        description: "Block of text"
+                                    }
                                 }
                             }
-                        }
-                    });
-                })
-            );
+                        });
+                    })
+                );
 
         })
     );

@@ -52,6 +52,12 @@ export const contentBlockEditorReducerProvider: FactoryProvider = {
             resolve: {
                 selectedDocument: SelectedDocumentResolver
             }
+        }, {
+            path: "content-block-editor/:documentTemplateId/:documentNumber/:contentBlockNumber",
+            component: ContentBlockEditorPageComponent,
+            resolve: {
+                selectedDocument: SelectedDocumentResolver
+            }
         }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
