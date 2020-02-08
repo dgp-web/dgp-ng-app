@@ -8,6 +8,7 @@ import { DocumentCreationModel } from "./models";
 import { ContentBlockEditorState, contentBlockEditorStore } from "./store";
 import { Store } from "@ngrx/store";
 import { getAllDocuments } from "./selectors";
+import { getDocumentSurrogateKey } from "./functions";
 
 @Injectable()
 export class ContentBlockEditorEffects {
@@ -43,7 +44,10 @@ export class ContentBlockEditorEffects {
                         return contentBlockEditorStore.actions.composeEntityActions({
                             add: {
                                 documents: {
-                                    [documentCreationModel.documentTemplateId + "." + documentNumber]: {
+                                    [getDocumentSurrogateKey({
+                                        documentTemplateId: documentCreationModel.documentTemplateId,
+                                        documentNumber
+                                    })]: {
                                         ...documentCreationModel,
                                         documentNumber
                                     }

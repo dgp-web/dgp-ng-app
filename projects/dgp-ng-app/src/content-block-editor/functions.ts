@@ -1,7 +1,13 @@
-import { ContentBlockId } from "./models";
+import { ContentBlockId, DocumentId } from "./models";
+
+export function getDocumentSurrogateKey(
+    documentId: DocumentId
+): string {
+    return documentId.documentTemplateId + "." + documentId.documentNumber;
+}
 
 export function getContentBlockSurrogateKey(
     contentBlockId: ContentBlockId
 ): string {
-    return contentBlockId.documentTemplateId + "." + contentBlockId.documentNumber + "." + contentBlockId.contentBlockNumber;
+    return getDocumentSurrogateKey(contentBlockId ) + contentBlockId.contentBlockNumber;
 }

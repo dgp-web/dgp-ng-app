@@ -12,11 +12,13 @@
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build:dgp-ng-app": "ng build dgp-ng-app",
+        "build:dgp-ng-app:watch": "ng build dgp-ng-app --watch",
         "postbuild:dgp-ng-app": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
         "publish:dgp-ng-app": "npm publish dist/dgp-ng-app",
         "start:docs-app": "ng serve ng-app",
         "build:docs-app": "ng build --prod ng-app",
-        "publish:docs-app": "firebase deploy"
+        "publish:docs-app": "firebase deploy",
+        "start:content-block-editor-demo-app": "ng serve content-block-editor-demo"
     },
     "private": true,
     "dependencies": {
