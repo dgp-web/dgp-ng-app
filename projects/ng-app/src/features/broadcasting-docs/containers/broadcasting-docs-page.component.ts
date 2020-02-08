@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { appEntityStore, AppState, User } from "../../../store";
+import { updateUser } from "../actions";
 
 @Component({
     selector: "dgp-broadcasting-docs-page",
@@ -33,7 +34,7 @@ import { appEntityStore, AppState, User } from "../../../store";
                         <mat-form-field>
                             <input matInput
                                    [ngModel]="user.firstName"
-                                   (ngModelChange)="updateUser(user.userId, { firstName: $event })">
+                                   (ngModelChange)="updateUser(user, { firstName: $event })">
                         </mat-form-field>
 
                     </div>
@@ -84,15 +85,11 @@ export class BroadcastingDocsPageComponent {
         );
     }
 
-    updateUser(userId: string, user: Partial<User>) {
-        this.store.dispatch(
-            appEntityStore.actions.composeEntityActions({
-                update: {
-                    user: {
-                        [userId]: user
-                    }
-                }
-            })
-        );
+    updateUser(user: User, changes: Partial<User>) {
+        this.store.dispatch(updateUser({
+            user: {
+                ...user, ...changes
+            }
+        }));
     }
 }

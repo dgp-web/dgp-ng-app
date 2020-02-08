@@ -3,15 +3,18 @@ import { Store, StoreModule } from "@ngrx/store";
 import { AppComponent } from "./components";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
-import {  appReducer, appReducerProviders, AppState } from "../store";
+import { appReducer, appReducerProviders, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
-import { DgpBroadcastStoreModule, DgpNgApp, setBroadcastChannelDataId } from "dgp-ng-app";
+import { defaultBroadcastConfig, DgpBroadcastStoreModule, DgpNgApp, setBroadcastChannelDataId } from "dgp-ng-app";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { EffectsModule } from "@ngrx/effects";
-import { hmrReducer, DgpRoutingOverlayModule, DgpRequestStoreModule, DgpLogModule, DgpThemeSwitcherModule, DgpHamburgerShellModule } from "dgp-ng-app";
+import {
+    hmrReducer, DgpRoutingOverlayModule, DgpRequestStoreModule, DgpLogModule, DgpThemeSwitcherModule,
+    DgpHamburgerShellModule
+} from "dgp-ng-app";
 
 @NgModule({
     declarations: [
@@ -49,7 +52,12 @@ import { hmrReducer, DgpRoutingOverlayModule, DgpRequestStoreModule, DgpLogModul
         DgpRequestStoreModule,
         DgpRoutingOverlayModule,
 
-        DgpBroadcastStoreModule.forRoot(),
+        DgpBroadcastStoreModule.forRoot({
+            ...defaultBroadcastConfig,
+            actionTypesToPrefixWithPeon: [
+                "[DocsApp]"
+            ]
+        }),
 
         StoreDevtoolsModule.instrument(),
         /*

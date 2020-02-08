@@ -181,8 +181,6 @@ export class BroadcastEffects {
         filter((action: Action) => action.type.startsWith(leaderActionTypePrefix)),
         tap((action: Action) => {
 
-            console.log(action);
-
             const actionMessage = createBroadcastAction({
                 participant: this.participant,
                 dataId: this.selectedDataId,
@@ -201,8 +199,6 @@ export class BroadcastEffects {
         .pipe(
             filter((action: BroadcastAction) => {
 
-                console.log(action);
-
                 return filterIncomingBroadcastAction({
                     action,
                     dataId: this.selectedDataId,
@@ -220,7 +216,6 @@ export class BroadcastEffects {
         @Inject(BROADCAST_CONFIG)
         private readonly config: BroadcastConfig
     ) {
-        console.log("Creating broadcasting effects");
     }
 
 }

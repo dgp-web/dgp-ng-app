@@ -24,8 +24,7 @@ import { NoPeonGuard } from "./guards/no-peon.guard";
             useValue: defaultBroadcastConfig
         },
         NoPeonGuard,
-        broadcastReducerProvider,
-        broadcastStoreProvider
+        broadcastReducerProvider
     ]
 })
 export class DgpBroadcastStoreModule {
@@ -36,7 +35,7 @@ export class DgpBroadcastStoreModule {
             providers: [{
                 provide: BROADCAST_CONFIG,
                 useValue: config as BroadcastConfig
-            }]
+            }, broadcastStoreProvider]
         };
     }
 

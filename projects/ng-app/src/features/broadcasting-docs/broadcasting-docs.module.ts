@@ -6,6 +6,8 @@ import * as dgp from "dgp-ng-app";
 import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule } from "@angular/material";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { EffectsModule } from "@ngrx/effects";
+import { BroadcastDocsEffects } from "./effects";
 
 @NgModule({
     imports: [
@@ -13,6 +15,10 @@ import { FormsModule } from "@angular/forms";
             path: "broadcasting",
             component: BroadcastingDocsPageComponent
         }]),
+
+        EffectsModule.forFeature([
+            BroadcastDocsEffects
+        ]),
 
         DocsPageModule,
         dgp.DgpEmptyStateModule,
