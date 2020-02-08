@@ -29,8 +29,12 @@ import { appEntityStore, AppState, User } from "../../../store";
 
                 <div>
 
-                    <div *ngFor="let user of (users$ | async)">
-                        {{ user | json }}
+                    <div *ngFor="let user of (users$ | async); trackBy: trackBy">
+                        <mat-form-field>
+                            <input matInput
+                                   [ngModel]="user.firstName"
+                                   (ngModelChange)="updateUser(user.userId, { firstName: $event })">
+                        </mat-form-field>
 
                     </div>
 
@@ -55,6 +59,7 @@ export class BroadcastingDocsPageComponent {
     readonly users$ = this.store.select(
         appEntityStore.selectors.user.getAll
     );
+    trackBy = (index, item: User) => item.userId;
 
     constructor(
         private readonly store: Store<AppState>
@@ -63,7 +68,7 @@ export class BroadcastingDocsPageComponent {
 
     addUser() {
         const user: User = {
-            userId: new Date().toString(),
+            userId: new Date().toISOString(),
             lastName: "Doe",
             firstName: "John"
         };
@@ -73,6 +78,18 @@ export class BroadcastingDocsPageComponent {
                 add: {
                     user: {
                         [user.userId]: user
+                    }
+                }
+            })
+        );
+    }
+
+    updateUser(userId: string, user: Partial<User>) {
+        this.store.dispatch(
+            appEntityStore.actions.composeEntityActions({
+                update: {
+                    user: {
+                        [userId]: user
                     }
                 }
             })

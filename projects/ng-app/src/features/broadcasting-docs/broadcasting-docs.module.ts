@@ -5,6 +5,7 @@ import { DocsPageModule } from "../shared";
 import * as dgp from "dgp-ng-app";
 import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule } from "@angular/material";
 import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { CommonModule } from "@angular/common";
         CommonModule,
         MatInputModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        FormsModule
     ],
     declarations: [
         BroadcastingDocsPageComponent
