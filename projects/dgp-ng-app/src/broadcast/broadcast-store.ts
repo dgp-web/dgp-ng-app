@@ -13,11 +13,13 @@ export interface BroadcastState {
 
 export const broadcastReducer = new InjectionToken<ActionReducerMap<BroadcastState>>("BroadcastStoreReducer");
 
-export const broadcastReducerImpl = createReducer(
-    BroadcastRole.None,
-    on(setOwnBroadcastRole, ((state, action) => {
-        return action.broadcastRole;
-    }))
+export const broadcastReducerImpl = createReducer<BroadcastState>(
+    {ownRole: BroadcastRole.None},
+    on(setOwnBroadcastRole, (state, action) => {
+        return {
+            ownRole: action.broadcastRole
+        };
+    })
 );
 
 export function broadcastReducerFactory() {

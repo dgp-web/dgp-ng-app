@@ -1,16 +1,29 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { FactoryProvider, InjectionToken } from "@angular/core";
 import { hmrReducer } from "dgp-ng-app";
+import { createEntityStore, EntityStateMap } from "entity-store";
 
-export interface AppState {
+export interface User {
+    readonly userId: string;
+    readonly firstName: string;
+    readonly lastName: string;
 }
 
-export const _appReducer: ActionReducerMap<AppState> = {};
+export interface AppEntities {
+    readonly user: User;
+}
 
-export const appReducer = new InjectionToken<ActionReducerMap<AppState>>("appReducer");
+export interface AppState extends EntityStateMap<AppEntities> {
+}
 
-export function appReducerFactory(): ActionReducerMap<AppState> {
-    return _appReducer;
+export const appEntityStore = createEntityStore<AppEntities>({
+    entityTypes: ["user"]
+});
+
+export const appReducer = new InjectionToken<typeof appEntityStore.reducers>("appReducer");
+
+export function appReducerFactory() {
+    return appEntityStore.reducers;
 }
 
 export const appReducerProviders = [{

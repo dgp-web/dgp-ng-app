@@ -46,6 +46,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                               label="Authentication"
                               description="Authenticate users and perform startup tasks."></dgp-tile>
 
+                    <dgp-tile routerLinkToContent="/broadcasting"
+                              matIconName="dynamic_feed"
+                              label="Broadcasting"
+                              description="Bidirectional data sync between windows and tabs."></dgp-tile>
+
                     <dgp-tile routerLinkToContent="/empty-state"
                               matIconName="texture"
                               label="Empty state"
@@ -85,7 +90,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                               matIconName="featured_video"
                               label="Table-cell editor"
                               description="Editing functionality for table cells."></dgp-tile>
-                    
+
                     <dgp-tile routerLinkToContent="/theme-switcher"
                               matIconName="style"
                               label="Theme switcher"
