@@ -31,26 +31,25 @@ import * as _ from "lodash";
                     <tr>
                         <td>
                             <dgp-table-cell (editorOpened)="editedModel = model.string"
-                                            (editorClosed)="model.string = editedModel">
+                                            (editorClosed)="model.string = editedModel"
+                                            #stringCell>
 
                                 {{ model.string }}
 
-                                <ng-container *dgpTableCellEditor>
-
-                                    <mat-form-field>
-                                        <mat-label>
-                                            String
-                                        </mat-label>
-                                        <input #stringInput
-                                               matInput
-                                               [(ngModel)]="editedModel"
-                                               maxlength="16">
-                                        <mat-hint align="end">
-                                            {{ stringInput.value ? stringInput.value.length : 0 }} / 16
-                                        </mat-hint>
-                                    </mat-form-field>
-
-                                </ng-container>
+                                <mat-form-field *dgpTableCellEditor>
+                                    <mat-label>
+                                        String
+                                    </mat-label>
+                                    <input #stringInput
+                                           matInput
+                                           [(ngModel)]="editedModel"
+                                           (keydown.enter)="stringCell.closeCellEditorDialog()"
+                                           (keydown.tab)="stringCell.closeCellEditorDialog()"
+                                           maxlength="16">
+                                    <mat-hint align="end">
+                                        {{ stringInput.value ? stringInput.value.length : 0 }} / 16
+                                    </mat-hint>
+                                </mat-form-field>
 
                             </dgp-table-cell>
                         </td>
@@ -132,6 +131,21 @@ import * as _ from "lodash";
                     </tr>
                 </table>
 
+
+                <dgp-docs-section-title>
+                    1: Import DgpTableCellModule in your feature module.
+                </dgp-docs-section-title>
+
+                <dgp-docs-code-block [code]="moduleImportCode"></dgp-docs-code-block>
+
+                <dgp-docs-section-title>
+                    2: Add the component to the template.
+                </dgp-docs-section-title>
+
+                <dgp-docs-code-block [code]="templateCode"
+                                     language="html"></dgp-docs-code-block>
+
+
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
@@ -168,6 +182,41 @@ export class TableCellEditorDocsPageComponent {
             lastName: "Doe"
         }
     };
+
+    readonly moduleImportCode = `
+import { DgpTableCellModule } from "dgp-ng-app";
+
+// ...
+
+@NgModule({
+    imports: [
+        DgpTableCellModule,
+        // ...
+    ]
+})
+export class FeatureModule {}
+    `;
+
+    readonly templateCode = `
+<td>
+    <dgp-table-cell (editorOpened)="editedModel = model.string"
+                    (editorClosed)="model.string = editedModel">
+
+        {{ model.string }}
+
+        <mat-form-field *dgpTableCellEditor>
+            <mat-label>
+                String
+            </mat-label>
+            <input matInput
+                   [(ngModel)]="editedModel"
+                   (keydown.enter)="stringCell.closeCellEditorDialog()">
+            <mat-hint align="end">
+        </mat-form-field>
+
+    </dgp-table-cell>
+</td>
+    `;
 
     setObjectModel() {
         this.editedModel = _.clone(this.model.object);
