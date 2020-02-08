@@ -7,4 +7,5 @@ export * from "./log-docs";
 export * from "./request-store-docs";
 export * from "./spacer-docs";
 export * from "./styling-docs";
+export * from "./table-cell-editor-docs";
 export * from "./theme-switcher-docs";

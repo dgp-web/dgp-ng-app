@@ -42,6 +42,7 @@ import { DgpNgApp, DgpNgAppModule } from "dgp-ng-app";
         features.RequestStoreDocsModule,
         features.SpacerDocsModule,
         features.StylingDocsModule,
+        features.TableCellEditorDocsModule,
         features.ThemeSwitcherDocsModule
     ],
     bootstrap: [AppComponent]

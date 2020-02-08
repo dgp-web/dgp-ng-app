@@ -16,7 +16,7 @@ export class DgpNgApp {
             return;
         }
         if (store.rootState) {
-            this.ngrxStore.dispatch(hotReload(store.rootState));
+            this.ngrxStore.dispatch(hotReload({ payload: store.rootState }));
         }
 
         Object.keys(store)
