@@ -81,6 +81,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                               label="Styling"
                               description="Theming utilities for easy setup of bright/dark mode."></dgp-tile>
 
+                    <dgp-tile routerLinkToContent="/table-cell-editor"
+                              matIconName="featured_video"
+                              label="Table-cell editor"
+                              description="Editing functionality for table cells."></dgp-tile>
+                    
                     <dgp-tile routerLinkToContent="/theme-switcher"
                               matIconName="style"
                               label="Theme switcher"

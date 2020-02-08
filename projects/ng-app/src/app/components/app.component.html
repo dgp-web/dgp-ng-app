@@ -76,6 +76,13 @@
             </a>
 
             <a mat-list-item
+               [routerLink]="['/table-cell-editor']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">featured_video</mat-icon>
+                Table-cell editor
+            </a>
+
+            <a mat-list-item
                [routerLink]="['/theme-switcher']"
                [routerLinkActive]="'dgp-list-item--selected'">
                 <mat-icon class="hamburger-menu-list-item__icon">style</mat-icon>
