@@ -46,10 +46,10 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                               label="Authentication"
                               description="Authenticate users and perform startup tasks."></dgp-tile>
 
-                    <dgp-tile routerLinkToContent="/broadcasting"
+                    <!--<dgp-tile routerLinkToContent="/broadcasting"
                               matIconName="dynamic_feed"
                               label="Broadcasting"
-                              description="Bidirectional data sync between windows and tabs."></dgp-tile>
+                              description="Bidirectional data sync between windows and tabs."></dgp-tile>-->
 
                     <dgp-tile routerLinkToContent="/empty-state"
                               matIconName="texture"

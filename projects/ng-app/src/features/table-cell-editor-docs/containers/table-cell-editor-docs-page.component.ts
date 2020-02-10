@@ -54,7 +54,8 @@ import * as _ from "lodash";
                             </dgp-table-cell>
                         </td>
                         <td>
-                            <dgp-table-cell (editorOpened)="editedModel = model.number"
+                            <dgp-table-cell #numberCell
+                                            (editorOpened)="editedModel = model.number"
                                             (editorClosed)="model.number = editedModel">
 
                                 {{ model.number }}
@@ -67,7 +68,9 @@ import * as _ from "lodash";
                                         </mat-label>
                                         <input matInput
                                                type="number"
-                                               [(ngModel)]="editedModel">
+                                               [(ngModel)]="editedModel"
+                                               (keydown.enter)="numberCell.closeCellEditorDialog()"
+                                               (keydown.tab)="numberCell.closeCellEditorDialog()">
                                     </mat-form-field>
 
                                 </ng-container>
@@ -91,7 +94,8 @@ import * as _ from "lodash";
 
                         <td>
                             <dgp-table-cell (editorOpened)="setObjectModel()"
-                                            (editorClosed)="model.object = editedModel; editedModel = null;">
+                                            (editorClosed)="model.object = editedModel; editedModel = null;"
+                                            #complexCell>
 
                                 {{ model.object.firstName }} {{ model.object.lastName }}
 
@@ -104,7 +108,8 @@ import * as _ from "lodash";
                                         <input #firstNameInput
                                                matInput
                                                [(ngModel)]="editedModel.firstName"
-                                               maxlength="16">
+                                               maxlength="16"
+                                               (keydown.enter)="complexCell.closeCellEditorDialog()">
                                         <mat-hint align="end">
                                             {{ firstNameInput.value ? firstNameInput.value.length : 0 }} / 16
                                         </mat-hint>
@@ -117,7 +122,9 @@ import * as _ from "lodash";
                                         <input #lastNameInput
                                                matInput
                                                [(ngModel)]="editedModel.lastName"
-                                               maxlength="16">
+                                               maxlength="16"
+                                               (keydown.enter)="complexCell.closeCellEditorDialog()"
+                                               (keydown.tab)="complexCell.closeCellEditorDialog()">
                                         <mat-hint align="end">
                                             {{ lastNameInput.value ? lastNameInput.value.length : 0 }} / 16
                                         </mat-hint>
