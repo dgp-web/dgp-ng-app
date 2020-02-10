@@ -46,6 +46,20 @@ import { updateUser } from "../actions";
 
                 </div>
 
+                <dgp-docs-chapter-title>
+                    1: Import DgpBroadcastStoreModule in your app module
+                </dgp-docs-chapter-title>
+
+                <dgp-docs-code-block [code]="moduleImportCodeSample"></dgp-docs-code-block>
+
+                <!-- TODO: Explain what happens now -->
+                <!-- Actions get broadcasted -->
+                <!-- You can see this in your browser-tab title -->
+                <!-- The "oldest" instance is the leader -->
+                <!-- Nothing else has happened; now you can react to that -->
+                <!-- making everything readonly -->
+                
+                
             </dgp-docs-page-content>
 
         </dgp-docs-page>
@@ -56,6 +70,20 @@ import { updateUser } from "../actions";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BroadcastingDocsPageComponent {
+
+    readonly moduleImportCodeSample = `
+import { DgpBroadcastStoreModule } from "dgp-ng-app";
+
+// ...
+
+@NgModule({
+    imports: [
+        DgpBroadcastStoreModule.forRoot(),
+        // ...
+    ]
+})
+export class AppModule {}
+    `;
 
     readonly users$ = this.store.select(
         appEntityStore.selectors.user.getAll
