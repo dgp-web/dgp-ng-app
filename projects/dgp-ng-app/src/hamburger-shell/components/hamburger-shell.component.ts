@@ -60,10 +60,9 @@ import { HamburgerShellState } from "../models/hamburger-shell-state.model";
         .hamburger-menu-drawer-content {
             display: flex;
             flex-direction: column;
-            height: 100%;
             flex-grow: 1;
+            height: auto;
         }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
