@@ -77,6 +77,7 @@ import {
         features.ListDetailsPageDocsModule,
         features.LogDocsModule,
         features.RequestStoreDocsModule,
+        features.RoutingOverlayDocsModule,
         features.SpacerDocsModule,
         features.StylingDocsModule,
         features.TableCellEditorDocsModule,

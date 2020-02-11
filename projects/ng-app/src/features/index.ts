@@ -6,6 +6,7 @@ export * from "./home";
 export * from "./list-details-page-docs";
 export * from "./log-docs";
 export * from "./request-store-docs";
+export * from "./routing-overlay-docs";
 export * from "./spacer-docs";
 export * from "./styling-docs";
 export * from "./table-cell-editor-docs";

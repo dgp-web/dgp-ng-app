@@ -76,6 +76,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                               label="Request store"
                               description="A request queue that allows to dispatch requests as actions."></dgp-tile>
 
+                    <dgp-tile routerLinkToContent="/routing-overlay"
+                              matIconName="schedule"
+                              label="Routing overlay"
+                              description="Loading spinner that indicates idle states when routing."></dgp-tile>
+
                     <dgp-tile routerLinkToContent="/spacer"
                               matIconName="space_bar"
                               label="Spacer"
