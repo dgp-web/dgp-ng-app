@@ -63,7 +63,7 @@ export class DgpThemeSwitcherModule {
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
         if (!isNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
-            this.store.dispatch(setIsDarkModeActive(isDarkModeActive));
+            this.store.dispatch(setIsDarkModeActive({ isDarkModeActive }));
         }
     }
 
