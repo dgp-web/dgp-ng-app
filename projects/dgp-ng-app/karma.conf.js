@@ -29,5 +29,14 @@ module.exports = function(config) {
         browsers: ["ChromeHeadless"],
         singleRun: false,
         restartOnFileChange: true,
+        specReporter: {
+            maxLogLines: 5,
+            suppressErrorSummary: false,
+            suppressFailed: false,
+            suppressPassed: true,
+            suppressSkipped: true,
+            showSpecTiming: false,
+            failFast: false
+        },
     });
 };

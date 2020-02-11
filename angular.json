@@ -106,7 +106,8 @@
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/ng-app/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "progress": false
                     }
                 },
                 "lint": {
@@ -146,7 +147,8 @@
                     "builder": "@angular-devkit/build-ng-packagr:build",
                     "options": {
                         "tsConfig": "projects/dgp-ng-app/tsconfig.lib.json",
-                        "project": "projects/dgp-ng-app/ng-package.json"
+                        "project": "projects/dgp-ng-app/ng-package.json",
+                        "progress": false
                     }
                 },
                 "test": {
@@ -154,7 +156,8 @@
                     "options": {
                         "main": "projects/dgp-ng-app/src/test.ts",
                         "tsConfig": "projects/dgp-ng-app/tsconfig.spec.json",
-                        "karmaConfig": "projects/dgp-ng-app/karma.conf.js"
+                        "karmaConfig": "projects/dgp-ng-app/karma.conf.js",
+                        "progress": false
                     }
                 },
                 "lint": {
