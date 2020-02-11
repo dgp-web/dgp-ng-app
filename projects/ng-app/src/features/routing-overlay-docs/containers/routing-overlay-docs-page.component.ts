@@ -16,6 +16,28 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                     Loading spinner that indicates idle states when routing.
                 </p>
 
+                <dgp-docs-section-title>Demo</dgp-docs-section-title>
+
+                <p>
+                    Navigating to one of these links takes two seconds.
+                </p>
+
+                <mat-nav-list style="margin: 16px;">
+
+                    <a mat-list-item
+                       routerLink="/routing-overlay/route01"
+                       routerLinkActive="dgp-list-item--selected">
+                        /route01
+                    </a>
+
+                    <a mat-list-item
+                       routerLink="/routing-overlay/route02"
+                       routerLinkActive="dgp-list-item--selected">
+                        /route02
+                    </a>
+
+                </mat-nav-list>
+
                 <dgp-docs-section-title>
                     1: Import DgpRoutingOverlayModule into an application using @ngrx/store
                     and @ngrx/effects.
