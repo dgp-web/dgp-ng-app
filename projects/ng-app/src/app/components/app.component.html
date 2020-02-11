@@ -69,6 +69,13 @@
             </a>
 
             <a mat-list-item
+               [routerLink]="['/routing-overlay']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">schedule</mat-icon>
+                Routing overlay
+            </a>
+
+            <a mat-list-item
                [routerLink]="['/spacer']"
                [routerLinkActive]="'dgp-list-item--selected'">
                 <mat-icon class="hamburger-menu-list-item__icon">space_bar</mat-icon>
