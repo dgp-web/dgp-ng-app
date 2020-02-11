@@ -31,7 +31,7 @@ export class AuthenticationServiceImpl<TUser> implements AuthenticationService<T
         )
             .pipe(
                 tap(user => {
-                    this.store.dispatch(authenticateUser(user));
+                    this.store.dispatch(authenticateUser({ user }));
                 }),
                 switchMap(user => {
 
@@ -42,7 +42,7 @@ export class AuthenticationServiceImpl<TUser> implements AuthenticationService<T
                     return forkJoin(requests$);
                 }),
                 catchError((error: any) => {
-                    this.store.dispatch(registerAuthenticateError(error));
+                    this.store.dispatch(registerAuthenticateError({ error }));
                     return empty();
                 }),
                 defaultIfEmpty(null)
