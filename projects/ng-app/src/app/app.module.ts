@@ -52,12 +52,12 @@ import {
         DgpRequestStoreModule,
         DgpRoutingOverlayModule,
 
-        DgpBroadcastStoreModule.forRoot({
+        /*DgpBroadcastStoreModule.forRoot({
             ...defaultBroadcastConfig,
             actionTypesToPrefixWithPeon: [
                 "[DocsApp]"
             ]
-        }),
+        }),*/
 
         StoreDevtoolsModule.instrument(),
         /*
