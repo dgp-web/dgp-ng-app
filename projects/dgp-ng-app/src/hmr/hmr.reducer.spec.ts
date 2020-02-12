@@ -1,4 +1,5 @@
 import { hmrReducer } from "./hmr.reducer";
+import { hotReload } from "dgp-ng-app";
 
 describe("hmrReducer should decorate a reducer that", () => {
 
@@ -25,14 +26,27 @@ describe("hmrReducer should decorate a reducer that", () => {
 
     it(`passes calls through to the baseReducer.`, () => {
 
-        decoratedReducer("test", {type: "dummyAction"});
+        const action = {type: ""};
+        const state = "";
+
+        decoratedReducer(state, action);
 
         expect(dummy.baseReducer)
-            .toHaveBeenCalled();
+            .toHaveBeenCalledWith(state, action);
 
     });
 
-    xit(`reacts to hotReload and set its payload as new state.`, () => {
+    it(`reacts to hotReload and set its payload as new state.`, () => {
+
+        const payload = {};
+        const state = "";
+
+        const action = hotReload({payload});
+
+        const updateState = decoratedReducer(state, action);
+
+        expect(updateState)
+            .toBe(payload);
 
     });
 
