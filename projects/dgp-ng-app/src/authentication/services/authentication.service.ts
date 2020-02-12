@@ -7,7 +7,7 @@ import { AuthenticationApiClient } from "../api-clients/authentication.api-clien
 import { PostAuthenticationTask } from "../models/post-authentication-task.model";
 import { AuthenticationState } from "../models/authentication-result.model";
 
-export abstract class AuthenticationService<TUser> {
+export abstract class AuthenticationService<TUser = any> {
 
     abstract authenticate$(): Promise<void>;
 
