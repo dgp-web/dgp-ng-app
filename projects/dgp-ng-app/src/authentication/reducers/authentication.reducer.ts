@@ -3,7 +3,7 @@ import { FactoryProvider, InjectionToken } from "@angular/core";
 import { AuthenticationState } from "../models/authentication-result.model";
 import { authenticateUser, cacheInitialUrl, registerAuthenticateError } from "../actions/authentication.actions";
 
-const initialState: AuthenticationState = {
+export const initialAuthenticationState: AuthenticationState = {
     user: null,
     success: null,
     error: null,
@@ -11,7 +11,7 @@ const initialState: AuthenticationState = {
 };
 
 export const authenticationReducerImpl = createReducer(
-    initialState, on(
+    initialAuthenticationState, on(
         authenticateUser, (state, action) => {
             return {
                 ...state,

@@ -1,7 +1,7 @@
-import {broadcastStoreProvider, BroadcastStoreDecorator} from "../broadcast-store.decorator";
-import {TestBed} from "@angular/core/testing";
-import {Store, StoreModule} from "@ngrx/store";
-import {broadcastStoreFeature} from "../broadcast-store";
+import { broadcastStoreProvider, BroadcastStoreDecorator } from "../broadcast-store.decorator";
+import { TestBed } from "@angular/core/testing";
+import { Store, StoreModule } from "@ngrx/store";
+import { broadcastStoreFeature } from "../broadcast-store";
 import { BroadcastRole } from "../models/broadcast-role.model";
 
 describe(BroadcastStoreDecorator.name, () => {
@@ -16,6 +16,13 @@ describe(BroadcastStoreDecorator.name, () => {
                     [broadcastStoreFeature]: {
                         ownBroadcastRole: BroadcastRole.Peon
                     } as any
+                }, {
+                    runtimeChecks: {
+                        strictActionImmutability: true,
+                        strictActionSerializability: true,
+                        strictStateImmutability: true,
+                        strictStateSerializability: true
+                    }
                 })
             ],
             providers: [

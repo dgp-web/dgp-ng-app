@@ -22,7 +22,14 @@ describe(NoPeonGuard.name, () => {
             imports: [
                 StoreModule.forRoot({
                     [broadcastStoreFeature]: combineReducers(broadcastReducerImpl as any)
-                } as any)
+                } as any, {
+                    runtimeChecks: {
+                        strictActionImmutability: true,
+                        strictActionSerializability: true,
+                        strictStateImmutability: true,
+                        strictStateSerializability: true
+                    }
+                })
             ],
             providers: [
                 NoPeonGuard
