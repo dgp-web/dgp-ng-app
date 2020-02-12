@@ -74,6 +74,13 @@ describe(BroadcastEffects.name, () => {
             imports: [
                 StoreModule.forRoot({
                     [broadcastStoreFeature]: broadcastReducer as any
+                }, {
+                    runtimeChecks: {
+                        strictActionImmutability: true,
+                        strictActionSerializability: true,
+                        strictStateImmutability: true,
+                        strictStateSerializability: true
+                    }
                 }),
                 MatSnackBarModule
             ],
