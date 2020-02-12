@@ -24,11 +24,6 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
             justify-content: center;
             align-items: center;
         }
-
-        .vertical-separator {
-            margin-top: 16px;
-            margin-bottom: 16px;
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
