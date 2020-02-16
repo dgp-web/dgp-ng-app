@@ -3,11 +3,11 @@ import { ActionReducer, createReducer, on } from "@ngrx/store";
 import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
 import { setIsDarkModeActive, toggleDarkMode } from "../actions/theme-switcher.actions";
 
-const initialState: ThemeSwitcherState = {
+export const initialThemeSwitcherState: ThemeSwitcherState = {
     useDarkMode: false
 };
 
-export const themeSwitcherReducerImpl = createReducer(initialState,
+export const themeSwitcherReducerImpl = createReducer(initialThemeSwitcherState,
     on(setIsDarkModeActive, (state, action) => {
         return {
             ...state,
