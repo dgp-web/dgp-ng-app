@@ -1,0 +1,9 @@
+{
+    "name": "dgp-ng-docs",
+    "version": "0.0.1",
+    "peerDependencies": {
+        "@angular/common": "^8.2.14",
+        "@angular/core": "^8.2.14",
+        "highlight.js": "^9.18.1"
+    }
+}

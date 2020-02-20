@@ -1,15 +1,15 @@
 import {
-    Component,
     ChangeDetectionStrategy,
+    Component,
+    ElementRef,
     Input,
     OnChanges,
     SimpleChanges,
-    ViewChild,
-    ElementRef
+    ViewChild
 } from "@angular/core";
 import { timer } from "rxjs";
+import hljs from "highlight.js";
 
-declare var hljs;
 
 @Component({
     selector: "dgp-docs-code-block",
