@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { SpacerComponent } from "../spacer.component";
+import { SpacerComponent } from "./spacer.component";
 
 describe(SpacerComponent.name, () => {
 
