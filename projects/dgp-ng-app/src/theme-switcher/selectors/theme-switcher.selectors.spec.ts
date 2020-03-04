@@ -31,12 +31,11 @@ describe("theme-switcher selectors", () => {
 
     it(`isDarkModeActiveSelector should return whether dark mode is active`, async () => {
 
-        const isDarkModeActive = await this.store.select(isDarkModeActiveSelector)
+        const isDarkModeActive = await store.select(isDarkModeActiveSelector)
             .pipe(first())
             .toPromise();
 
-        expect(isDarkModeActive)
-            .toBeTruthy();
+        expect(isDarkModeActive).toBeFalsy();
 
     });
 
