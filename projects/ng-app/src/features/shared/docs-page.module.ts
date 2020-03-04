@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import * as dgp from "dgp-ng-app";
-import { DocsModule } from "../../ui/docs";
+import { DocsModule } from "dgp-ng-docs";
 
 @NgModule({
     imports: [

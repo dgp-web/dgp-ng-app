@@ -7,6 +7,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             <ng-content></ng-content>
         </div>`,
     styles: [`
+
         :host {
             display: flex;
             flex-direction: column;
