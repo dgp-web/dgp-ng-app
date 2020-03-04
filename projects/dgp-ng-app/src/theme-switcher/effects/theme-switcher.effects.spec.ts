@@ -18,6 +18,13 @@ describe(ThemeSwitcherEffects.name, () => {
             imports: [
                 StoreModule.forRoot({
                     [themeSwitcherStoreFeature]: themeSwitcherReducerImpl
+                }, {
+                    runtimeChecks: {
+                        strictStateSerializability: true,
+                        strictStateImmutability: true,
+                        strictActionSerializability: true,
+                        strictActionImmutability: true
+                    }
                 }),
                 EffectsModule.forRoot([ThemeSwitcherEffects])
             ]
