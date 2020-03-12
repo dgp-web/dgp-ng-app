@@ -21,6 +21,13 @@ describe(DarkModeToggleComponent.name, () => {
                 MatSlideToggleModule,
                 StoreModule.forRoot({
                     [themeSwitcherStoreFeature]: themeSwitcherReducerImpl
+                }, {
+                    runtimeChecks: {
+                        strictStateSerializability: true,
+                        strictStateImmutability: true,
+                        strictActionSerializability: true,
+                        strictActionImmutability: true
+                    }
                 })
             ],
             declarations: [
