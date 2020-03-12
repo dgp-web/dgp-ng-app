@@ -104,7 +104,7 @@ export class DgpTableCellComponent {
         const tableCellBoundingRect = this.buttonElRef.nativeElement.getBoundingClientRect() as ClientRect;
 
         const tableCellEditorSizes = computeTableCellEditorSizes({
-            tableCellBoundingRect, triggerButtonElement, windowRef: window
+            tableCellBoundingRect, triggerButtonElement, window: window
         });
 
         const position = getDialogPositionFromTableCellEditorSizes({

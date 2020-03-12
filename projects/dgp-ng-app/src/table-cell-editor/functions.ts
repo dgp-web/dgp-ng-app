@@ -3,7 +3,7 @@ import { TableCellEditorSizes } from "./models";
 
 export function computeTableCellEditorSizes(payload: {
     readonly tableCellBoundingRect: ClientRect;
-    readonly windowRef: Window;
+    readonly window: Window;
     readonly triggerButtonElement: HTMLElement;
 }): TableCellEditorSizes {
 
@@ -12,9 +12,9 @@ export function computeTableCellEditorSizes(payload: {
         offsetLeft: payload.tableCellBoundingRect.left,
         availableSpace: {
             left: payload.tableCellBoundingRect.left,
-            right: payload.windowRef.innerWidth - (payload.tableCellBoundingRect.left),
-            bottom: payload.windowRef.innerHeight - (payload.tableCellBoundingRect.top + payload.triggerButtonElement.offsetHeight),
-            top: payload.windowRef.innerHeight - payload.tableCellBoundingRect.top
+            right: payload.window.innerWidth - (payload.tableCellBoundingRect.left),
+            bottom: payload.window.innerHeight - (payload.tableCellBoundingRect.top + payload.triggerButtonElement.offsetHeight),
+            top: payload.window.innerHeight - payload.tableCellBoundingRect.top
         }
     };
 
