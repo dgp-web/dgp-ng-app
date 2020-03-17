@@ -77,12 +77,12 @@
 
 .dgp-file-manager-overlay {
     max-width: 100vw !important;
-    pointer-events: none !important;
+    // pointer-events: none !important;
     width: 100% !important;
     height: 100% !important;
 
     mat-dialog-container {
-        pointer-events: none !important;
+        // pointer-events: none !important;
         background: none !important;
         box-shadow: none !important;
     }

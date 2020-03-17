@@ -5,6 +5,9 @@ import { EffectsModule } from "@ngrx/effects";
 import { FileUploadEffects } from "./effects";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialogModule } from "@angular/material/dialog";
+import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
+import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
+import { SafePipe } from "./safe.pipe";
 
 @NgModule({
     imports: [
@@ -12,11 +15,14 @@ import { MatDialogModule } from "@angular/material/dialog";
         MatDialogModule,
         EffectsModule.forFeature([
             FileUploadEffects
-        ])
+        ]),
+        DgpPageHeaderModule,
+        DgpListDetailsPageModule
     ],
     declarations: [
         DragFileListenerDirective,
-        FileManagerComponent
+        FileManagerComponent,
+        SafePipe
     ],
     exports: [
         DragFileListenerDirective,
