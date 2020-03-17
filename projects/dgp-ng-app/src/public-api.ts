@@ -17,6 +17,7 @@ export * from "./authentication/authentication.module";
 // broadcast
 export * from "./broadcast/actions/broadcast-channel.actions";
 export * from "./broadcast/guards/no-peon.guard";
+export * from "./broadcast/functions/create-guid.function";
 export * from "./broadcast/models/broadcast-role.model";
 export * from "./broadcast/models/broadcast-channel.model";
 export * from "./broadcast/models/broadcast-config.model";
