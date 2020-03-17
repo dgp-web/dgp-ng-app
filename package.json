@@ -12,6 +12,7 @@
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build:dgp-ng-app": "ng build dgp-ng-app",
+        "build:watch:dgp-ng-app": "ng build dgp-ng-app --watch",
         "postbuild:dgp-ng-app": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
         "publish:dgp-ng-app": "npm publish dist/dgp-ng-app",
         "build:dgp-ng-docs": "ng build dgp-ng-docs",

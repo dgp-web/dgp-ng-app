@@ -15,6 +15,7 @@ import {
     hmrReducer, DgpRoutingOverlayModule, DgpRequestStoreModule, DgpLogModule, DgpThemeSwitcherModule,
     DgpHamburgerShellModule
 } from "dgp-ng-app";
+import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-docs.module";
 
 @NgModule({
     declarations: [
@@ -73,6 +74,7 @@ import {
         features.AuthenticationDocsModule,
         features.BroadcastingDocsModule,
         features.EmptyStateDocsModule,
+        FileUploadDocsModule,
         features.HamburgerShellDocsModule,
         features.ListDetailsPageDocsModule,
         features.LogDocsModule,
