@@ -143,8 +143,7 @@
                     "builder": "@angular-devkit/build-ng-packagr:build",
                     "options": {
                         "tsConfig": "projects/dgp-ng-app/tsconfig.lib.json",
-                        "project": "projects/dgp-ng-app/ng-package.json",
-                        "progress": false
+                        "project": "projects/dgp-ng-app/ng-package.json"
                     }
                 },
                 "test": {
@@ -152,8 +151,7 @@
                     "options": {
                         "main": "projects/dgp-ng-app/src/test.ts",
                         "tsConfig": "projects/dgp-ng-app/tsconfig.spec.json",
-                        "karmaConfig": "projects/dgp-ng-app/karma.conf.js",
-                        "progress": false
+                        "karmaConfig": "projects/dgp-ng-app/karma.conf.js"
                     }
                 },
                 "lint": {

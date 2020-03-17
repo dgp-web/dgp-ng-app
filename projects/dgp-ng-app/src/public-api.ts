@@ -62,12 +62,16 @@ export { DgpLogModule } from "./log/log.module";
 // request-store
 export { requestStoreFeature } from "./request-store/models/request-store-state.model";
 export { RequestState } from "./request-store/models/request-state.model";
-export { ScheduleRequestAction, scheduleRequest, scheduleRequestActionType } from "./request-store/actions/request.actions";
-export { hasPendingRequestsSelector, hasPendingRequests, requestStateSelector } from "./request-store/selectors/request.selectors";
+export {
+    ScheduleRequestAction, scheduleRequest, scheduleRequestActionType
+} from "./request-store/actions/request.actions";
+export {
+    hasPendingRequestsSelector, hasPendingRequests, requestStateSelector
+} from "./request-store/selectors/request.selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
-export  * from "./routing-overlay/actions/routing-overlay.actions";
+export * from "./routing-overlay/actions/routing-overlay.actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
 
 // spacer
@@ -93,6 +97,7 @@ export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 
 // utils
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
+export * from "./utils/select-entity-via-route.resolver-base";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
