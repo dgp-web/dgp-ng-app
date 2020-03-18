@@ -1,6 +1,6 @@
 import { Directive, ElementRef } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { openFileOverlay } from "dgp-ng-app/file-upload/actions";
+import { openFileManagerOverlay } from "dgp-ng-app/file-upload/actions";
 
 @Directive({
     selector: "[dgpFileDragListener]"
@@ -17,7 +17,7 @@ export class DragFileListenerDirective {
             console.log(e);
             // Prevent default behavior (Prevent file from being opened)
             e.preventDefault();
-            store.dispatch(openFileOverlay());
+            store.dispatch(openFileManagerOverlay());
         }
 
         function dropHandler(e) {

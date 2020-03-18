@@ -25,7 +25,15 @@ export function getFileItemSizeLabel(size: number): string {
 @Component({
     selector: "dgp-file-manager",
     template: `
-        <dgp-page-header>File upload</dgp-page-header>
+        <h2 mat-dialog-title
+            style="display: flex; align-items: center">
+            File upload
+            <dgp-spacer></dgp-spacer>
+            <button mat-icon-button
+                    mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button>
+        </h2>
 
         <dgp-list-details-page>
 
@@ -94,6 +102,13 @@ export function getFileItemSizeLabel(size: number): string {
 
                             <img [src]="selectedFileItem.url | safe:'url'"
                                  alt="{{ selectedFileItem.label }}">
+
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'pdf'">
+
+                            <embed [src]="selectedFileItem.url | safe:'resourceUrl'"
+                                   type="application/pdf" width="100%" height="100%">
 
                         </ng-container>
 

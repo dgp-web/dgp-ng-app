@@ -1,6 +1,6 @@
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
-import { addFilesViaDrop, openFileOverlay } from "./actions";
+import { addFilesViaDrop, openFileManagerOverlay } from "./actions";
 import { Store } from "@ngrx/store";
 import { distinctUntilChanged, map, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
@@ -15,12 +15,12 @@ export class FileUploadEffects {
     @Effect({
         dispatch: false
     })
-    readonly openFileOverlay$ = this.actions$.pipe(
-        ofType(openFileOverlay),
+    readonly openFileManagerOverlay$ = this.actions$.pipe(
+        ofType(openFileManagerOverlay),
         tap(() => {
-            const overlayRef = this.matDialog.open(FileManagerComponent, {
-                height: "95%",
-                width: "95%",
+            this.matDialog.open(FileManagerComponent, {
+                height: "80%",
+                width: "80%",
                 panelClass: "dgp-file-manager-overlay"
             });
         })
