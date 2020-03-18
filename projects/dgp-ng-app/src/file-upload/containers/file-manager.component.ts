@@ -1,26 +1,9 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    OnDestroy,
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { addFilesViaDrop } from "../actions";
-import { FileItem } from "../models";
-import { createGuid } from "../../broadcast/functions/create-guid.function";
+import { addFilesViaDrop, removeFile } from "../actions";
+import { FileItem, FileUploadState } from "../models";
 import { getAllFileItems, getSelectedFileItem } from "../selectors";
-
-export function getFileItemSizeLabel(size: number): string {
-
-    if (size < 1000) {
-        return (size / (1000)).toFixed(2) + " Kb";
-    } else {
-        return (size / (1000 * 1000)).toFixed(2) + " Mb";
-    }
-
-}
+import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
 
 @Component({
     selector: "dgp-file-manager",
@@ -42,7 +25,7 @@ export function getFileItemSizeLabel(size: number): string {
                     <a *ngFor="let fileItem of fileItems$ | async"
                        mat-list-item
                        [routerLink]="[]"
-                       routerLinkActive="dgp-list-item--selected"
+                       routerLinkActive="dgp-list-item --selected"
                        [queryParams]="{ fileItemId: fileItem.fileItemId }">
                         <mat-icon matListIcon>
                             insert_drive_file
@@ -53,7 +36,7 @@ export function getFileItemSizeLabel(size: number): string {
                             <div style="flex-grow: 1; display: flex; flex-direction: column">
 
                                 <div style="flex-grow: 1; display: flex;">
-                                    {{ fileItem.label }}
+                                    {{ fileItem.fileName }}
                                     <dgp-spacer></dgp-spacer>
                                     <small>{{ fileItem.extension }}</small>
                                 </div>
@@ -66,14 +49,22 @@ export function getFileItemSizeLabel(size: number): string {
                             </div>
 
                             <button mat-icon-button
-                                    style="margin-left: 16px;">
+                                    style="margin-left: 16px;"
+                                    [matMenuTriggerFor]="overflowMenu">
+
                                 <mat-icon>
                                     more_vert
                                 </mat-icon>
+
                             </button>
 
+                            <mat-menu #overflowMenu="matMenu">
+                                <button mat-menu-item
+                                        (click)="removeFileItem(fileItem)">Remove
+                                </button>
+                            </mat-menu>
+
                         </div>
-                        <!-- TODO: allow removing item -->
                     </a>
                 </mat-nav-list>
             </ng-container>
@@ -87,21 +78,21 @@ export function getFileItemSizeLabel(size: number): string {
                         <ng-container *ngSwitchCase="'jpg'">
 
                             <img [src]="selectedFileItem.url | safe:'url'"
-                                 alt="{{ selectedFileItem.label }}">
+                                 alt="{{ selectedFileItem.fileName }}">
 
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'png'">
 
                             <img [src]="selectedFileItem.url | safe:'url'"
-                                 alt="{{ selectedFileItem.label }}">
+                                 alt="{{ selectedFileItem.fileName }}">
 
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'svg'">
 
                             <img [src]="selectedFileItem.url | safe:'url'"
-                                 alt="{{ selectedFileItem.label }}">
+                                 alt="{{ selectedFileItem.fileName }}">
 
                         </ng-container>
 
@@ -114,12 +105,17 @@ export function getFileItemSizeLabel(size: number): string {
 
                         <ng-container *ngSwitchDefault>
 
-                            No preview is available for this file.
-                            <a class="download-link"
-                               [href]="selectedFileItem.url | safe:'url'"
-                               target="_blank">
-                                Download it here
-                            </a>
+                            <dgp-empty-state title="No preview available"
+                                             matIconName="get_app">
+
+                                <a class="download-link"
+                                   [href]="selectedFileItem.url | safe:'url'"
+                                   target="_blank">
+                                    Download it here
+                                </a>
+
+                            </dgp-empty-state>
+
 
                         </ng-container>
 
@@ -158,59 +154,23 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     readonly fileItems$ = this.store.select(getAllFileItems);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
 
-    currentUrl: string;
-
     readonly dragOverHandler = (e) => {
-        // Prevent default behavior (Prevent file from being opened)
         e.preventDefault();
-    }
+    };
 
     readonly dropHandler = (e) => {
-        // Prevent default behavior (Prevent file from being opened)
         e.preventDefault();
 
-        const fileList = e.dataTransfer.files;
-        const file = fileList.item(0);
-
-        const objectUrl = URL.createObjectURL(file);
-
-        const lastPeriodIndex = file.name.indexOf(".");
-        const extension = file.name.substring(lastPeriodIndex + 1, file.name.length);
-        const label = file.name.substring(0, lastPeriodIndex);
-
-        const fileItem: FileItem = {
-            fileItemId: createGuid(),
-            extension,
-            label,
-            size: file.size,
-            url: objectUrl,
-            creationDate: new Date(file.lastModified)
-        };
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", objectUrl, true);
-        xhr.responseType = "blob";
-        xhr.onload = function (e) {
-            if (this.status === 200) {
-                console.log(this.response as File);
-
-
-            }
-        };
-        xhr.send();
-
-        this.currentUrl = objectUrl;
-        this.cd.markForCheck();
+        const fileItems = getFileItemsFromFileList(e.dataTransfer.files);
 
         this.store.dispatch(addFilesViaDrop({
-            fileItems: [fileItem]
+            fileItems
         }));
-    }
+    };
 
     constructor(
         private readonly elementRef: ElementRef,
-        private readonly store: Store<any>,
-        private readonly cd: ChangeDetectorRef
+        private readonly store: Store<FileUploadState>
     ) {
     }
 
@@ -227,5 +187,9 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
     getFileItemSize(fileItem: FileItem) {
         return getFileItemSizeLabel(fileItem.size);
+    }
+
+    removeFileItem(fileItem: FileItem) {
+        this.store.dispatch(removeFile({fileItem}));
     }
 }

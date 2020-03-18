@@ -16,6 +16,8 @@ import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { DgpSpacerModule } from "../spacer/spacer.module";
 import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule } from "@angular/material/menu";
+import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 
 @NgModule({
     imports: [
@@ -31,7 +33,9 @@ import { MatButtonModule } from "@angular/material/button";
         RouterModule,
         MatIconModule,
         DgpSpacerModule,
-        MatButtonModule
+        MatButtonModule,
+        MatMenuModule,
+        DgpEmptyStateModule
     ],
     declarations: [
         DragFileListenerDirective,

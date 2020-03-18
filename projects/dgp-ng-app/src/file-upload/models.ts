@@ -2,7 +2,7 @@ import { EntityStateMap } from "entity-store";
 
 export interface FileItem {
     readonly fileItemId: string;
-    readonly label: string;
+    readonly fileName: string;
     readonly extension: string;
     /**
      * File size in bytes
@@ -10,6 +10,16 @@ export interface FileItem {
     readonly size: number;
     readonly url: string;
     readonly creationDate: Date;
+    /**
+     * Indicates whether this item has
+     * already been saved.
+     *
+     * When a new item is uploaded, this
+     * flag is true, so the developer
+     * has a means of knowing which items to
+     * persist.
+     */
+    readonly isSaved?: boolean;
 }
 
 

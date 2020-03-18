@@ -1,6 +1,6 @@
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
-import { addFilesViaDrop, openFileManagerOverlay } from "./actions";
+import { addFilesViaDrop, openFileManagerOverlay, removeFile } from "./actions";
 import { Store } from "@ngrx/store";
 import { distinctUntilChanged, map, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
@@ -58,6 +58,18 @@ export class FileUploadEffects {
                 }
             });
 
+        })
+    );
+
+    @Effect()
+    readonly removeFile$ = this.actions$.pipe(
+        ofType(removeFile),
+        map(action => {
+            return fileUploadEntityStore.actions.composeEntityActions({
+                remove: {
+                    fileItem: [action.fileItem.fileItemId]
+                }
+            });
         })
     );
 
