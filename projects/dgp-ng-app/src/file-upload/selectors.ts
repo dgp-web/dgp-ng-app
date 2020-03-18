@@ -6,6 +6,6 @@ export const fileUploadFeatureSelector = createFeatureSelector<FileUploadState>(
 
 export const getFileItemState = createSelector(fileUploadFeatureSelector, x => x.fileItem);
 
-export const getAllFileItems = createSelector(getFileItemState, getAll);
+export const getAllFileItems = createSelector(getFileItemState, x => getAll(x));
 
-export const getSelectedFileItem = createSelector(getFileItemState, getFirstSelected);
+export const getSelectedFileItem = createSelector(getFileItemState, x => getFirstSelected(x));

@@ -70,12 +70,48 @@ export function getFileItemSizeLabel(size: number): string {
                 </mat-nav-list>
             </ng-container>
 
-            <a [href]="currentUrl | safe:'url'"
-               target="_blank">
-                Download
-            </a>
+            <ng-container *ngIf="selectedFileItem$ | async as selectedFileItem">
 
-            {{ selectedFileItem$ | async | json }}
+                <div class="preview-container">
+
+                    <ng-container [ngSwitch]="selectedFileItem.extension">
+
+                        <ng-container *ngSwitchCase="'jpg'">
+
+                            <img [src]="selectedFileItem.url | safe:'url'"
+                                 alt="{{ selectedFileItem.label }}">
+
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'png'">
+
+                            <img [src]="selectedFileItem.url | safe:'url'"
+                                 alt="{{ selectedFileItem.label }}">
+
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'svg'">
+
+                            <img [src]="selectedFileItem.url | safe:'url'"
+                                 alt="{{ selectedFileItem.label }}">
+
+                        </ng-container>
+
+                        <ng-container *ngSwitchDefault>
+
+                            No preview is available for this file.
+                            <a class="download-link"
+                               [href]="selectedFileItem.url | safe:'url'"
+                               target="_blank">
+                                Download it here
+                            </a>
+
+                        </ng-container>
+
+                    </ng-container>
+
+                </div>
+            </ng-container>
 
         </dgp-list-details-page>
     `,
@@ -86,6 +122,18 @@ export function getFileItemSizeLabel(size: number): string {
             flex-grow: 1;
             width: 100%;
             height: 100%;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .download-link {
+            color: inherit;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -112,7 +160,7 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
         const objectUrl = URL.createObjectURL(file);
 
         const lastPeriodIndex = file.name.indexOf(".");
-        const extension = file.name.substring(lastPeriodIndex, file.name.length);
+        const extension = file.name.substring(lastPeriodIndex + 1, file.name.length);
         const label = file.name.substring(0, lastPeriodIndex);
 
         const fileItem: FileItem = {
