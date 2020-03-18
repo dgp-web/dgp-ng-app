@@ -10,7 +10,7 @@ import { Store } from "@ngrx/store";
 import { addFilesViaDrop } from "../actions";
 import { FileItem } from "../models";
 import { createGuid } from "../../broadcast/functions/create-guid.function";
-import { getAllFileItems } from "../selectors";
+import { getAllFileItems, getSelectedFileItem } from "../selectors";
 
 export function getFileItemSizeLabel(size: number): string {
 
@@ -34,21 +34,36 @@ export function getFileItemSizeLabel(size: number): string {
                     <a *ngFor="let fileItem of fileItems$ | async"
                        mat-list-item
                        [routerLink]="[]"
+                       routerLinkActive="dgp-list-item--selected"
                        [queryParams]="{ fileItemId: fileItem.fileItemId }">
                         <mat-icon matListIcon>
                             insert_drive_file
                         </mat-icon>
                         <div matLine
-                             style="display: flex;">
-                            {{ fileItem.label }}
-                            <dgp-spacer></dgp-spacer>
-                            {{ fileItem.extension }}
-                        </div>
-                        <div matLine
-                             style="display: flex;">
-                            {{ fileItem.creationDate | date:'hh:mm, dd MMMM yyyy' }}
-                            <dgp-spacer></dgp-spacer>
-                            {{ getFileItemSize(fileItem) }}
+                             style="display: flex; align-items: center;">
+
+                            <div style="flex-grow: 1; display: flex; flex-direction: column">
+
+                                <div style="flex-grow: 1; display: flex;">
+                                    {{ fileItem.label }}
+                                    <dgp-spacer></dgp-spacer>
+                                    <small>{{ fileItem.extension }}</small>
+                                </div>
+
+                                <div style="display: flex;">
+                                    <small>{{ fileItem.creationDate | date:'hh:mm, dd MMMM yyyy' }}</small>
+                                    <dgp-spacer></dgp-spacer>
+                                    <small>{{ getFileItemSize(fileItem) }}</small>
+                                </div>
+                            </div>
+
+                            <button mat-icon-button
+                                    style="margin-left: 16px;">
+                                <mat-icon>
+                                    more_vert
+                                </mat-icon>
+                            </button>
+
                         </div>
                         <!-- TODO: allow removing item -->
                     </a>
@@ -59,6 +74,9 @@ export function getFileItemSizeLabel(size: number): string {
                target="_blank">
                 Download
             </a>
+
+            {{ selectedFileItem$ | async | json }}
+
         </dgp-list-details-page>
     `,
     styles: [`
@@ -75,6 +93,7 @@ export function getFileItemSizeLabel(size: number): string {
 export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
     readonly fileItems$ = this.store.select(getAllFileItems);
+    readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
 
     currentUrl: string;
 

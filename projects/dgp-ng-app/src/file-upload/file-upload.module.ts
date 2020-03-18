@@ -15,6 +15,7 @@ import { MatListModule } from "@angular/material/list";
 import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { DgpSpacerModule } from "../spacer/spacer.module";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { DgpSpacerModule } from "../spacer/spacer.module";
         MatListModule,
         RouterModule,
         MatIconModule,
-        DgpSpacerModule
+        DgpSpacerModule,
+        MatButtonModule
     ],
     declarations: [
         DragFileListenerDirective,

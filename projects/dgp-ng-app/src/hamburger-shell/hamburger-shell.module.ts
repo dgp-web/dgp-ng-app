@@ -13,6 +13,7 @@ import {
 import { hamburgerShellStoreFeature } from "./models/hamburger-shell.store-feature";
 import { HamburgerShellComponent } from "./components/hamburger-shell.component";
 import { HamburgerShellEffects } from "./effects/hamburger-shell.effects";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { HamburgerShellEffects } from "./effects/hamburger-shell.effects";
         ),
         EffectsModule.forFeature([
             HamburgerShellEffects
-        ])
+        ]),
+        RouterModule
     ],
     providers: [
         hamburgerShellReducerProvider
