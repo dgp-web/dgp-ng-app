@@ -17,13 +17,8 @@ export class DragFileListenerDirective {
             store.dispatch(openFileManagerOverlay());
         }
 
-        function dropHandler(e) {
-            e.preventDefault();
-        }
-
         this.elementRef.nativeElement.addEventListener("dragover", dragOverHandler);
 
-        document.querySelector("body").addEventListener("drop", dropHandler);
     }
 
 }

@@ -18,6 +18,7 @@ import { DgpSpacerModule } from "../spacer/spacer.module";
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
         DgpSpacerModule,
         MatButtonModule,
         MatMenuModule,
-        DgpEmptyStateModule
+        DgpEmptyStateModule,
+        MatTooltipModule
     ],
     declarations: [
         DragFileListenerDirective,
