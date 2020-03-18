@@ -10,6 +10,8 @@ import { Store } from "@ngrx/store";
 import { addFilesViaDrop } from "../actions";
 import { FileItem } from "../models";
 import { createGuid } from "../../broadcast/functions/create-guid.function";
+import { fileUploadEntityStore } from "../store";
+import { getAllFileItems } from "../selectors";
 
 @Component({
     selector: "dgp-file-manager",
@@ -17,6 +19,22 @@ import { createGuid } from "../../broadcast/functions/create-guid.function";
         <dgp-page-header>File upload</dgp-page-header>
 
         <dgp-list-details-page>
+
+            <ng-container dgp-list-details-page-menu>
+                <mat-nav-list>
+                    <a *ngFor="let fileItem of fileItems$ | async"
+                       mat-list-item
+                       [routerLink]="[]"
+                       [queryParams]="{ fileItemId: fileItem.fileItemId }">
+                        <div matLine>
+                            {{ fileItem.label }}
+                        </div>
+                        <!-- TODO: Add item size, an icon, upload date, and type of file -->
+                        <!-- TODO: allow removing item -->
+                    </a>
+                </mat-nav-list>
+            </ng-container>
+
             <a [href]="currentUrl | safe:'url'"
                target="_blank">
                 Download
@@ -35,6 +53,8 @@ import { createGuid } from "../../broadcast/functions/create-guid.function";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileManagerComponent implements AfterViewInit, OnDestroy {
+
+    readonly fileItems$ = this.store.select(getAllFileItems);
 
     currentUrl: string;
 

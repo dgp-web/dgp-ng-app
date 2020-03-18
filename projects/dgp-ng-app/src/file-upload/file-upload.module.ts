@@ -8,16 +8,24 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
 import { SafePipe } from "./safe.pipe";
+import { StoreModule } from "@ngrx/store";
+import { fileUploadStoreFeature } from "./models";
+import { fileUploadReducer, fileUploadReducerProvider } from "./store";
+import { MatListModule } from "@angular/material/list";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
     imports: [
         CommonModule,
         MatDialogModule,
+        StoreModule.forFeature(fileUploadStoreFeature, fileUploadReducer),
         EffectsModule.forFeature([
             FileUploadEffects
         ]),
         DgpPageHeaderModule,
-        DgpListDetailsPageModule
+        DgpListDetailsPageModule,
+        MatListModule,
+        RouterModule
     ],
     declarations: [
         DragFileListenerDirective,
@@ -31,7 +39,9 @@ import { SafePipe } from "./safe.pipe";
     entryComponents: [
         FileManagerComponent
     ],
-    providers: []
+    providers: [
+        fileUploadReducerProvider
+    ]
 })
 export class DgpFileUploadModule {
 }

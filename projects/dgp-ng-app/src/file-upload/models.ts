@@ -1,3 +1,5 @@
+import { EntityStateMap } from "entity-store";
+
 export interface FileItem {
     readonly fileItemId: string;
     readonly label: string;
@@ -8,3 +10,14 @@ export interface FileItem {
     readonly size: number;
     readonly url: string;
 }
+
+
+export interface FileUploadEntities {
+    readonly fileItem: FileItem;
+}
+
+export interface FileUploadState extends EntityStateMap<FileUploadEntities> {
+}
+
+export type FileUploadStoreFeature = "FileUpload";
+export const fileUploadStoreFeature: FileUploadStoreFeature = "FileUpload";
