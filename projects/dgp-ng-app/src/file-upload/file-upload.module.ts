@@ -45,8 +45,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         SafePipe
     ],
     exports: [
-        DragFileListenerDirective,
-        FileManagerComponent
+        DragFileListenerDirective
     ],
     entryComponents: [
         FileManagerComponent

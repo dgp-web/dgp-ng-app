@@ -33,7 +33,10 @@ export * from "./empty-state/components/empty-state.component";
 export * from "./empty-state/empty-state.module";
 
 // file-upload
-// TODO
+export * from "./file-upload/actions";
+export * from "./file-upload/directive/drag-file-listener.directive";
+export * from "./file-upload/models";
+export * from "./file-upload/file-upload.module";
 
 // hamburger-shell
 export * from "./hamburger-shell/actions/hamburger-shell.actions";
