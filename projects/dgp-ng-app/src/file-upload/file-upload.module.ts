@@ -13,6 +13,8 @@ import { fileUploadStoreFeature } from "./models";
 import { fileUploadReducer, fileUploadReducerProvider } from "./store";
 import { MatListModule } from "@angular/material/list";
 import { RouterModule } from "@angular/router";
+import { MatIconModule } from "@angular/material/icon";
+import { DgpSpacerModule } from "../spacer/spacer.module";
 
 @NgModule({
     imports: [
@@ -25,7 +27,9 @@ import { RouterModule } from "@angular/router";
         DgpPageHeaderModule,
         DgpListDetailsPageModule,
         MatListModule,
-        RouterModule
+        RouterModule,
+        MatIconModule,
+        DgpSpacerModule
     ],
     declarations: [
         DragFileListenerDirective,

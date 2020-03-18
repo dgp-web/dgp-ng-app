@@ -10,8 +10,17 @@ import { Store } from "@ngrx/store";
 import { addFilesViaDrop } from "../actions";
 import { FileItem } from "../models";
 import { createGuid } from "../../broadcast/functions/create-guid.function";
-import { fileUploadEntityStore } from "../store";
 import { getAllFileItems } from "../selectors";
+
+export function getFileItemSizeLabel(size: number): string {
+
+    if (size < 1000) {
+        return (size / (1000)).toFixed(2) + " Kb";
+    } else {
+        return (size / (1000 * 1000)).toFixed(2) + " Mb";
+    }
+
+}
 
 @Component({
     selector: "dgp-file-manager",
@@ -26,10 +35,21 @@ import { getAllFileItems } from "../selectors";
                        mat-list-item
                        [routerLink]="[]"
                        [queryParams]="{ fileItemId: fileItem.fileItemId }">
-                        <div matLine>
+                        <mat-icon matListIcon>
+                            insert_drive_file
+                        </mat-icon>
+                        <div matLine
+                             style="display: flex;">
                             {{ fileItem.label }}
+                            <dgp-spacer></dgp-spacer>
+                            {{ fileItem.extension }}
                         </div>
-                        <!-- TODO: Add item size, an icon, upload date, and type of file -->
+                        <div matLine
+                             style="display: flex;">
+                            {{ fileItem.creationDate | date:'hh:mm, dd MMMM yyyy' }}
+                            <dgp-spacer></dgp-spacer>
+                            {{ getFileItemSize(fileItem) }}
+                        </div>
                         <!-- TODO: allow removing item -->
                     </a>
                 </mat-nav-list>
@@ -72,12 +92,17 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
         const objectUrl = URL.createObjectURL(file);
 
+        const lastPeriodIndex = file.name.indexOf(".");
+        const extension = file.name.substring(lastPeriodIndex, file.name.length);
+        const label = file.name.substring(0, lastPeriodIndex);
+
         const fileItem: FileItem = {
             fileItemId: createGuid(),
-            extension: file.type,
-            label: "My file",
+            extension,
+            label,
             size: file.size,
-            url: objectUrl
+            url: objectUrl,
+            creationDate: new Date(file.lastModified)
         };
 
         const xhr = new XMLHttpRequest();
@@ -118,4 +143,7 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
         this.elementRef.nativeElement.removeEventListener("drop", this.dropHandler);
     }
 
+    getFileItemSize(fileItem: FileItem) {
+        return getFileItemSizeLabel(fileItem.size);
+    }
 }

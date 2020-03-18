@@ -9,6 +9,7 @@ export interface FileItem {
      */
     readonly size: number;
     readonly url: string;
+    readonly creationDate: Date;
 }
 
 
