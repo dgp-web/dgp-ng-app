@@ -4,8 +4,6 @@ import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../
 import { FileItem, FileUploadState } from "../models";
 import { getAllFileItems, getSelectedFileItem, isDropTargetVisible } from "../selectors";
 import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
-import { ThemeSwitcherConfig } from "dgp-ng-app";
-import { Overlay, OverlayContainer, OverlayRef } from "@angular/cdk/overlay";
 import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
@@ -16,7 +14,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 
             <h2 mat-dialog-title
                 style="display: flex; align-items: center">
-                File upload
+                File manager
                 <dgp-spacer></dgp-spacer>
                 <button *ngIf="!isMaximized"
                         mat-icon-button
@@ -174,6 +172,20 @@ import { MatDialogRef } from "@angular/material/dialog";
                 Drop one or more files into this zone to upload them.
                 <br>
                 You can preview them afterward.
+                <br>
+                <button mat-button
+                        (click)="filePicker.click()"
+                        style="display: flex; max-width: 480px; width: 100%; justify-content: center; margin-top: 16px;">
+                    <mat-icon style="margin-right: 4px;">open_in_new</mat-icon>
+                    Choose file via picker
+                </button>
+
+                <input hidden
+                       multiple="true"
+                       (change)="onFileSelected($event)"
+                       type="file"
+                       #filePicker>
+
             </dgp-empty-state>
 
         </ng-template>
