@@ -12,3 +12,6 @@ export const addFilesViaDrop = createAction("[FileUpload] AddFilesViaDrop",
 export const removeFile = createAction("[FileUpload] RemoveFile",
     props<{ readonly fileItem: FileItem; }>()
 );
+
+export const showDropTarget = createAction("[FileUpload] ShowDropTarget");
+export const hideDropTarget = createAction("[FileUpload] HideDropTarget");

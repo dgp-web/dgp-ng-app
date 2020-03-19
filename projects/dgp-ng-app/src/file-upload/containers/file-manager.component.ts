@@ -1,22 +1,15 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    OnDestroy,
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { addFilesViaDrop, removeFile } from "../actions";
+import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
 import { FileItem, FileUploadState } from "../models";
-import { getAllFileItems, getSelectedFileItem } from "../selectors";
+import { getAllFileItems, getSelectedFileItem, isDropTargetVisible } from "../selectors";
 import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
 
 @Component({
     selector: "dgp-file-manager",
     template: `
 
-        <ng-container *ngIf="!showDropTarget; else dropTarget">
+        <ng-container *ngIf="(isDropTargetVisible$ | async) === false; else dropTarget">
 
             <h2 mat-dialog-title
                 style="display: flex; align-items: center">
@@ -180,30 +173,25 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
 })
 export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
-    // TODO: This should start as true, if no file items are present and if dragging is true
-    showDropTarget = false;
-
+    readonly isDropTargetVisible$ = this.store.select(isDropTargetVisible);
     readonly fileItems$ = this.store.select(getAllFileItems);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
 
     readonly dragOverHandler = (e) => {
-        this.showDropTarget = true;
-        this.cd.markForCheck();
         e.preventDefault();
+        this.store.dispatch(showDropTarget());
     };
 
     readonly dragLeaveHandler = (e) => {
-        this.showDropTarget = false;
-        this.cd.markForCheck();
         e.preventDefault();
+        this.store.dispatch(hideDropTarget());
     };
 
     readonly dropHandler = (e) => {
         e.preventDefault();
 
         const fileItems = getFileItemsFromFileList(e.dataTransfer.files);
-        this.showDropTarget = false;
-        this.cd.markForCheck();
+        this.store.dispatch(hideDropTarget());
         this.store.dispatch(addFilesViaDrop({
             fileItems
         }));
@@ -211,8 +199,7 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private readonly elementRef: ElementRef,
-        private readonly store: Store<FileUploadState>,
-        private readonly cd: ChangeDetectorRef
+        private readonly store: Store<FileUploadState>
     ) {
     }
 

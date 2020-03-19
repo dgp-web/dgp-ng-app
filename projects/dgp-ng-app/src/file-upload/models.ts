@@ -29,6 +29,7 @@ export interface FileUploadEntities {
 
 export interface FileUploadState extends EntityStateMap<FileUploadEntities> {
     readonly isFileManagerOpen: boolean;
+    readonly isDropTargetVisible: boolean;
 }
 
 export type FileUploadStoreFeature = "FileUpload";

@@ -2,7 +2,7 @@ import { FactoryProvider, InjectionToken } from "@angular/core";
 import { FileUploadEntities, FileUploadState, FileUploadStoreFeature } from "./models";
 import { createEntityStore } from "entity-store";
 import { ActionReducerMap } from "@ngrx/store";
-import { closeFileManager, openFileManagerOverlay } from "./actions";
+import { closeFileManager, hideDropTarget, openFileManagerOverlay, showDropTarget } from "./actions";
 
 export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileUploadStoreFeature>({
     storeFeature: "FileUpload",
@@ -21,6 +21,18 @@ export const fileUploadReducerImpl: ActionReducerMap<FileUploadState> = {
             case openFileManagerOverlay.type:
                 return true;
             case closeFileManager.type:
+                return false;
+            default:
+                return state;
+        }
+
+    },
+    isDropTargetVisible: (state = false, action) => {
+
+        switch (action.type) {
+            case showDropTarget.type:
+                return true;
+            case hideDropTarget.type:
                 return false;
             default:
                 return state;
