@@ -4,6 +4,9 @@ import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../
 import { FileItem, FileUploadState } from "../models";
 import { getAllFileItems, getSelectedFileItem, isDropTargetVisible } from "../selectors";
 import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
+import { ThemeSwitcherConfig } from "dgp-ng-app";
+import { Overlay, OverlayContainer, OverlayRef } from "@angular/cdk/overlay";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "dgp-file-manager",
@@ -15,6 +18,18 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
                 style="display: flex; align-items: center">
                 File upload
                 <dgp-spacer></dgp-spacer>
+                <button *ngIf="!isMaximized"
+                        mat-icon-button
+                        (click)="maximize()"
+                        matTooltip="Maximize">
+                    <mat-icon>maximize</mat-icon>
+                </button>
+                <button *ngIf="isMaximized"
+                        mat-icon-button
+                        (click)="minimize()"
+                        matTooltip="Minimize">
+                    <mat-icon>minimize</mat-icon>
+                </button>
                 <button mat-icon-button
                         mat-dialog-close
                         matTooltip="Close dialog">
@@ -199,6 +214,8 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
 })
 export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
+    isMaximized = false;
+
     readonly isDropTargetVisible$ = this.store.select(isDropTargetVisible);
     readonly fileItems$ = this.store.select(getAllFileItems);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
@@ -227,7 +244,8 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private readonly elementRef: ElementRef,
-        private readonly store: Store<FileUploadState>
+        private readonly store: Store<FileUploadState>,
+        private readonly dialogRef: MatDialogRef<FileManagerComponent>
     ) {
     }
 
@@ -256,5 +274,15 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     onFileSelected(e) {
         const fileItems = getFileItemsFromFileList(e.target.files);
         this.store.dispatch(addFilesViaDrop({fileItems}));
+    }
+
+    maximize() {
+        this.dialogRef.addPanelClass("--maximized");
+        this.isMaximized = true;
+    }
+
+    minimize() {
+        this.dialogRef.removePanelClass("--maximized");
+        this.isMaximized = false;
     }
 }
