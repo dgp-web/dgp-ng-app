@@ -1,6 +1,6 @@
 import { Directive, OnDestroy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { openFileManagerOverlay } from "../actions";
+import { openFileManager } from "../actions";
 import { fromEvent, Subscription } from "rxjs";
 import { filter, first, switchMap, tap } from "rxjs/operators";
 import { isFileManagerOpen } from "../selectors";
@@ -20,7 +20,7 @@ export class OpenFileManagerViaShortKeyDirective implements OnDestroy {
             filter((x: KeyboardEvent) => x.keyCode === 70 && x.altKey),
             switchMap(() => this.store.select(isFileManagerOpen).pipe(first()).toPromise()),
             filter(x => !x),
-            tap(() => this.store.dispatch(openFileManagerOverlay()))
+            tap(() => this.store.dispatch(openFileManager()))
         ).subscribe();
 
     }

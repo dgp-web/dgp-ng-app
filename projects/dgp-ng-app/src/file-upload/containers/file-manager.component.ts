@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
-import { FileItem, FileUploadState } from "../models";
+import { FILE_UPLOAD_CONFIG, FileItem, FileUploadConfig, FileUploadState } from "../models";
 import { getAllFileItems, getSelectedFileItem, isDropTargetVisible } from "../selectors";
 import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
 import { MatDialogRef } from "@angular/material/dialog";
@@ -50,7 +50,7 @@ import { MatDialogRef } from "@angular/material/dialog";
                             <div matLine
                                  style="display: flex; align-items: center;">
 
-                                <div style="flex-grow: 1; display: flex; flex-direction: column">
+                                <div style="flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
 
                                     <div style="flex-grow: 1; display: flex;">
                                         {{ fileItem.fileName }}
@@ -109,13 +109,8 @@ import { MatDialogRef } from "@angular/material/dialog";
 
                         <ng-container [ngSwitch]="selectedFileItem.extension">
 
-                            <ng-container *ngSwitchCase="'jpg'">
-
-                                <img [src]="selectedFileItem.url | safe:'url'"
-                                     class="image"
-                                     alt="{{ selectedFileItem.fileName }}">
-
-                            </ng-container>
+                            <dgp-jpg-viewer *ngSwitchCase="'jpg'"
+                                            [fileItem]="selectedFileItem"></dgp-jpg-viewer>
 
                             <ng-container *ngSwitchCase="'png'">
 
@@ -133,12 +128,8 @@ import { MatDialogRef } from "@angular/material/dialog";
 
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'pdf'">
-
-                                <embed [src]="selectedFileItem.url | safe:'resourceUrl'"
-                                       type="application/pdf" width="100%" height="100%">
-
-                            </ng-container>
+                            <dgp-pdf-viewer *ngSwitchCase="'pdf'"
+                                            [fileItem]="selectedFileItem"></dgp-pdf-viewer>
 
                             <ng-container *ngSwitchDefault>
 
@@ -257,7 +248,9 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     constructor(
         private readonly elementRef: ElementRef,
         private readonly store: Store<FileUploadState>,
-        private readonly dialogRef: MatDialogRef<FileManagerComponent>
+        private readonly dialogRef: MatDialogRef<FileManagerComponent>,
+        @Inject(FILE_UPLOAD_CONFIG)
+        private readonly moduleConfig: FileUploadConfig
     ) {
     }
 
@@ -289,12 +282,12 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     }
 
     maximize() {
-        this.dialogRef.addPanelClass("--maximized");
+        this.dialogRef.addPanelClass(this.moduleConfig.maximizedClass);
         this.isMaximized = true;
     }
 
     minimize() {
-        this.dialogRef.removePanelClass("--maximized");
+        this.dialogRef.removePanelClass(this.moduleConfig.maximizedClass);
         this.isMaximized = false;
     }
 }

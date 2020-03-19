@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { ModuleWithProviders, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { DragFileListenerDirective } from "./directive/drag-file-listener.directive";
 import { EffectsModule } from "@ngrx/effects";
@@ -9,7 +9,7 @@ import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/p
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
 import { SafePipe } from "./safe.pipe";
 import { StoreModule } from "@ngrx/store";
-import { fileUploadStoreFeature } from "./models";
+import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG, fileUploadStoreFeature } from "./models";
 import { fileUploadReducer, fileUploadReducerProvider } from "./store";
 import { MatListModule } from "@angular/material/list";
 import { RouterModule } from "@angular/router";
@@ -20,6 +20,8 @@ import { MatMenuModule } from "@angular/material/menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
+import { PdfViewerComponent } from "./components/pdf-viewer.component";
+import { JpgViewerComponent } from "./components/jpg-viewer.component";
 
 @NgModule({
     imports: [
@@ -44,7 +46,9 @@ import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manag
         DragFileListenerDirective,
         OpenFileManagerViaShortKeyDirective,
         FileManagerComponent,
-        SafePipe
+        SafePipe,
+        PdfViewerComponent,
+        JpgViewerComponent
     ],
     exports: [
         DragFileListenerDirective,
@@ -58,4 +62,15 @@ import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manag
     ]
 })
 export class DgpFileUploadModule {
+
+    static forRoot(config = defaultFileUploadConfig): ModuleWithProviders {
+        return {
+            ngModule: DgpFileUploadModule,
+            providers: [{
+                provide: FILE_UPLOAD_CONFIG,
+                useValue: config
+            }]
+        };
+    }
+
 }
