@@ -2,7 +2,7 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
 import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile } from "./actions";
 import { Store } from "@ngrx/store";
-import { distinctUntilChanged, map, switchMap, tap } from "rxjs/operators";
+import { distinctUntilChanged, map, switchMap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";

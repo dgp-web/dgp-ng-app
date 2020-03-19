@@ -19,6 +19,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 
 @NgModule({
     imports: [
@@ -41,11 +42,13 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     ],
     declarations: [
         DragFileListenerDirective,
+        OpenFileManagerViaShortKeyDirective,
         FileManagerComponent,
         SafePipe
     ],
     exports: [
-        DragFileListenerDirective
+        DragFileListenerDirective,
+        OpenFileManagerViaShortKeyDirective
     ],
     entryComponents: [
         FileManagerComponent

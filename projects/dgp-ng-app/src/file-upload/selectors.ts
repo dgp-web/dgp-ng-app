@@ -9,3 +9,5 @@ export const getFileItemState = createSelector(fileUploadFeatureSelector, x => x
 export const getAllFileItems = createSelector(getFileItemState, x => getAll(x));
 
 export const getSelectedFileItem = createSelector(getFileItemState, x => getFirstSelected(x));
+
+export const isFileManagerOpen = createSelector(fileUploadFeatureSelector, x => x.isFileManagerOpen);

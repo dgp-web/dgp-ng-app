@@ -1,6 +1,8 @@
 import { FactoryProvider, InjectionToken } from "@angular/core";
-import { FileUploadEntities, FileUploadStoreFeature } from "./models";
+import { FileUploadEntities, FileUploadState, FileUploadStoreFeature } from "./models";
 import { createEntityStore } from "entity-store";
+import { ActionReducerMap } from "@ngrx/store";
+import { closeFileManager, openFileManagerOverlay } from "./actions";
 
 export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileUploadStoreFeature>({
     storeFeature: "FileUpload",
@@ -9,10 +11,26 @@ export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileU
     ]
 });
 
-export const fileUploadReducer = new InjectionToken<typeof fileUploadEntityStore.reducers>("hamburgerShellReducer");
+export const fileUploadReducer = new InjectionToken<FileUploadState>("hamburgerShellReducer");
+
+export const fileUploadReducerImpl: ActionReducerMap<FileUploadState> = {
+    ...fileUploadEntityStore.reducers,
+    isFileManagerOpen: (state = false, action) => {
+
+        switch (action.type) {
+            case openFileManagerOverlay.type:
+                return true;
+            case closeFileManager.type:
+                return false;
+            default:
+                return state;
+        }
+
+    }
+};
 
 export function fileUploadReducerFactory() {
-    return fileUploadEntityStore.reducers;
+    return fileUploadReducerImpl;
 }
 
 export const fileUploadReducerProvider: FactoryProvider = {

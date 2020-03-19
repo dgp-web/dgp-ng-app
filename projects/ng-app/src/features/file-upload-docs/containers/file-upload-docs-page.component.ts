@@ -8,7 +8,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             File upload
         </dgp-page-header>
 
-        <dgp-docs-page dgpFileDragListener>
+        <dgp-docs-page dgpFileDragListener
+                       dgpOpenFileManagerViaShortKey>
             <dgp-docs-page-content>
 
                 <dgp-docs-chapter-title>File upload</dgp-docs-chapter-title>
