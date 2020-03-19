@@ -24,9 +24,12 @@ export interface FileItem {
     readonly isSaved?: boolean;
 }
 
+export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;
+
 export interface FileUploadConfig {
     readonly fileManagerMatDialogConfig: MatDialogConfig;
     readonly maximizedClass: string;
+    readonly openFileManagerShortKeyFilter: OpenFileManagerShortKeyFilter;
 }
 
 export const defaultFileUploadConfig: FileUploadConfig = {
@@ -35,7 +38,8 @@ export const defaultFileUploadConfig: FileUploadConfig = {
         width: "80%",
         panelClass: "dgp-file-manager-overlay"
     },
-    maximizedClass: "--maximized"
+    maximizedClass: "--maximized",
+    openFileManagerShortKeyFilter: (x: KeyboardEvent) => x.keyCode === 70 && x.altKey
 };
 
 

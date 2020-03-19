@@ -43,7 +43,10 @@ import { MatDialogRef } from "@angular/material/dialog";
                            mat-list-item
                            [routerLink]="[]"
                            routerLinkActive="dgp-list-item --selected"
-                           [queryParams]="{ fileItemId: fileItem.fileItemId }">
+                           [queryParams]="{ fileItemId: fileItem.fileItemId }"
+                           [matTooltip]="fileItem.fileName"
+                           matTooltipShowDelay="500"
+                           (keydown.delete)="removeFileItem(fileItem)">
                             <mat-icon matListIcon>
                                 insert_drive_file
                             </mat-icon>
