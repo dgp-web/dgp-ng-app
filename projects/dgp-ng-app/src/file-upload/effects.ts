@@ -2,12 +2,12 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
 import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile } from "./actions";
 import { Store } from "@ngrx/store";
-import { distinctUntilChanged, map, switchMap } from "rxjs/operators";
+import { distinctUntilChanged, map, switchMap, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Injectable()
 export class FileUploadEffects {
@@ -29,6 +29,13 @@ export class FileUploadEffects {
     readonly addFilesViaDrop$ = this.actions$.pipe(
         ofType(addFilesViaDrop),
         map(action => {
+
+            this.router.navigate([], {
+                queryParams: {
+                    fileItemId: action.fileItems[0].fileItemId
+                }
+            });
+
             return fileUploadEntityStore.actions.composeEntityActions({
                 add: {
                     fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId)
@@ -76,7 +83,8 @@ export class FileUploadEffects {
         private readonly actions$: Actions,
         private readonly store: Store<any>,
         private readonly matDialog: MatDialog,
-        private readonly activatedRoute: ActivatedRoute
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly router: Router,
     ) {
     }
 
