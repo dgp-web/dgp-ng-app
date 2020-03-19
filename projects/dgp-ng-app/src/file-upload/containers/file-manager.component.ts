@@ -177,7 +177,7 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     readonly fileItems$ = this.store.select(getAllFileItems);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
 
-    readonly dragOverHandler = (e) => {
+    readonly dragEnterHandler = (e) => {
         e.preventDefault();
         this.store.dispatch(showDropTarget());
     };
@@ -187,14 +187,16 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
         this.store.dispatch(hideDropTarget());
     };
 
+    readonly dragOverHandler = (e) => {
+        e.preventDefault();
+    };
+
     readonly dropHandler = (e) => {
         e.preventDefault();
 
         const fileItems = getFileItemsFromFileList(e.dataTransfer.files);
         this.store.dispatch(hideDropTarget());
-        this.store.dispatch(addFilesViaDrop({
-            fileItems
-        }));
+        this.store.dispatch(addFilesViaDrop({fileItems}));
     };
 
     constructor(
@@ -204,15 +206,17 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.elementRef.nativeElement.addEventListener("dragover", this.dragOverHandler);
+        this.elementRef.nativeElement.addEventListener("dragenter", this.dragEnterHandler);
         this.elementRef.nativeElement.addEventListener("dragleave", this.dragLeaveHandler);
         this.elementRef.nativeElement.addEventListener("drop", this.dropHandler);
+        this.elementRef.nativeElement.addEventListener("dragover", this.dragOverHandler);
     }
 
     ngOnDestroy(): void {
-        this.elementRef.nativeElement.removeEventListener("dragover", this.dragOverHandler);
+        this.elementRef.nativeElement.removeEventListener("dragenter", this.dragEnterHandler);
         this.elementRef.nativeElement.removeEventListener("dragleave", this.dragLeaveHandler);
         this.elementRef.nativeElement.removeEventListener("drop", this.dropHandler);
+        this.elementRef.nativeElement.removeEventListener("dragover", this.dragOverHandler);
     }
 
     getFileItemSize(fileItem: FileItem) {
