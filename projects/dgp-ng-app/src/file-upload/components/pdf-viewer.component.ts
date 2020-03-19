@@ -10,7 +10,13 @@ import { FileItem } from "../models";
                height="100%">
     `,
     styles: [`
-
+        :host {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

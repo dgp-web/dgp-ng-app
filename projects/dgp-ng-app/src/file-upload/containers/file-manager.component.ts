@@ -130,7 +130,7 @@ import { MatDialogRef } from "@angular/material/dialog";
                                      alt="{{ selectedFileItem.fileName }}">
 
                             </ng-container>
-
+                            
                             <dgp-pdf-viewer *ngSwitchCase="'pdf'"
                                             [fileItem]="selectedFileItem"></dgp-pdf-viewer>
 
