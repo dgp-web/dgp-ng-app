@@ -1,8 +1,8 @@
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
-import { addFilesViaDrop, openFileManagerOverlay, removeFile } from "./actions";
+import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile } from "./actions";
 import { Store } from "@ngrx/store";
-import { distinctUntilChanged, map, tap } from "rxjs/operators";
+import { distinctUntilChanged, map, switchMap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
@@ -12,18 +12,17 @@ import { ActivatedRoute } from "@angular/router";
 @Injectable()
 export class FileUploadEffects {
 
-    @Effect({
-        dispatch: false
-    })
+    @Effect()
     readonly openFileManagerOverlay$ = this.actions$.pipe(
         ofType(openFileManagerOverlay),
-        tap(() => {
-            this.matDialog.open(FileManagerComponent, {
+        switchMap(() => {
+            return this.matDialog.open(FileManagerComponent, {
                 height: "80%",
                 width: "80%",
                 panelClass: "dgp-file-manager-overlay"
-            });
-        })
+            }).afterClosed();
+        }),
+        map(() => closeFileManager())
     );
 
     @Effect()

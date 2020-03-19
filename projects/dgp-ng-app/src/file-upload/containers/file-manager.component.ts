@@ -180,7 +180,8 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
 })
 export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
-    showDropTarget = true;
+    // TODO: This should start as true, if no file items are present and if dragging is true
+    showDropTarget = false;
 
     readonly fileItems$ = this.store.select(getAllFileItems);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
