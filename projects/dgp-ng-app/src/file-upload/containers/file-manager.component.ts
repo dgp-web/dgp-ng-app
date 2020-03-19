@@ -25,7 +25,7 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
             <dgp-list-details-page>
 
                 <ng-container dgp-list-details-page-menu>
-                    <mat-nav-list>
+                    <mat-nav-list style="overflow: auto;">
                         <a *ngFor="let fileItem of fileItems$ | async"
                            mat-list-item
                            [routerLink]="[]"
@@ -71,6 +71,23 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
                             </div>
                         </a>
                     </mat-nav-list>
+                    <dgp-spacer></dgp-spacer>
+                    <mat-nav-list>
+                        <a mat-list-item
+                           (click)="filePicker.click()">
+                            <mat-icon>
+                                open_in_new
+                            </mat-icon>
+                            <div matLine>
+                                Choose file via picker
+                            </div>
+                            <input hidden
+                                   multiple="true"
+                                   (change)="onFileSelected($event)"
+                                   type="file"
+                                   #filePicker>
+                        </a>
+                    </mat-nav-list>
                 </ng-container>
 
                 <ng-container *ngIf="selectedFileItem$ | async as selectedFileItem">
@@ -82,6 +99,7 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
                             <ng-container *ngSwitchCase="'jpg'">
 
                                 <img [src]="selectedFileItem.url | safe:'url'"
+                                     class="image"
                                      alt="{{ selectedFileItem.fileName }}">
 
                             </ng-container>
@@ -89,6 +107,7 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
                             <ng-container *ngSwitchCase="'png'">
 
                                 <img [src]="selectedFileItem.url | safe:'url'"
+                                     class="image"
                                      alt="{{ selectedFileItem.fileName }}">
 
                             </ng-container>
@@ -96,6 +115,7 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
                             <ng-container *ngSwitchCase="'svg'">
 
                                 <img [src]="selectedFileItem.url | safe:'url'"
+                                     class="image"
                                      alt="{{ selectedFileItem.fileName }}">
 
                             </ng-container>
@@ -168,6 +188,12 @@ import { getFileItemsFromFileList, getFileItemSizeLabel } from "../functions";
             border: 2px dashed white;
             max-height: 100%;
         }
+
+        .image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -225,5 +251,10 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
 
     removeFileItem(fileItem: FileItem) {
         this.store.dispatch(removeFile({fileItem}));
+    }
+
+    onFileSelected(e) {
+        const fileItems = getFileItemsFromFileList(e.target.files);
+        this.store.dispatch(addFilesViaDrop({fileItems}));
     }
 }
