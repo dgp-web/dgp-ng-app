@@ -106,53 +106,29 @@ import { MatDialogRef } from "@angular/material/dialog";
                     </mat-nav-list>
                 </ng-container>
 
-                <ng-container *ngIf="selectedFileItem$ | async as selectedFileItem">
+                <div *ngIf="selectedFileItem$ | async as selectedFileItem"
+                     class="preview-container">
 
-                    <div class="preview-container">
+                    <ng-container [ngSwitch]="selectedFileItem.extension">
 
-                        <ng-container [ngSwitch]="selectedFileItem.extension">
+                        <dgp-jpg-viewer *ngSwitchCase="'jpg'"
+                                        [fileItem]="selectedFileItem"></dgp-jpg-viewer>
 
-                            <dgp-jpg-viewer *ngSwitchCase="'jpg'"
-                                            [fileItem]="selectedFileItem"></dgp-jpg-viewer>
+                        <dgp-png-viewer *ngSwitchCase="'png'"
+                                        [fileItem]="selectedFileItem"></dgp-png-viewer>
 
-                            <ng-container *ngSwitchCase="'png'">
+                        <dgp-svg-viewer *ngSwitchCase="'svg'"
+                                        [fileItem]="selectedFileItem"></dgp-svg-viewer>
 
-                                <img [src]="selectedFileItem.url | safe:'url'"
-                                     class="image"
-                                     alt="{{ selectedFileItem.fileName }}">
+                        <dgp-pdf-viewer *ngSwitchCase="'pdf'"
+                                        [fileItem]="selectedFileItem"></dgp-pdf-viewer>
 
-                            </ng-container>
+                        <dgp-fallback-file-viewer *ngSwitchDefault
+                                                  [fileItem]="selectedFileItem"></dgp-fallback-file-viewer>
 
-                            <ng-container *ngSwitchCase="'svg'">
+                    </ng-container>
 
-                                <img [src]="selectedFileItem.url | safe:'url'"
-                                     class="image"
-                                     alt="{{ selectedFileItem.fileName }}">
-
-                            </ng-container>
-                            
-                            <dgp-pdf-viewer *ngSwitchCase="'pdf'"
-                                            [fileItem]="selectedFileItem"></dgp-pdf-viewer>
-
-                            <ng-container *ngSwitchDefault>
-
-                                <dgp-empty-state title="No preview available"
-                                                 matIconName="get_app">
-
-                                    <a class="download-link"
-                                       [href]="selectedFileItem.url | safe:'url'"
-                                       target="_blank">
-                                        Download it here
-                                    </a>
-
-                                </dgp-empty-state>
-
-                            </ng-container>
-
-                        </ng-container>
-
-                    </div>
-                </ng-container>
+                </div>
 
             </dgp-list-details-page>
 
@@ -201,20 +177,11 @@ import { MatDialogRef } from "@angular/material/dialog";
             align-items: center;
         }
 
-        .download-link {
-            color: inherit;
-        }
-
         .drop-target {
             border: 2px dashed white;
             max-height: 100%;
         }
 
-        .image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

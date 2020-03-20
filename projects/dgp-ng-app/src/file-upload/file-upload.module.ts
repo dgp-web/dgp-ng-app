@@ -22,6 +22,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 import { PdfViewerComponent } from "./components/pdf-viewer.component";
 import { JpgViewerComponent } from "./components/jpg-viewer.component";
+import { PngViewerComponent } from "./components/png-viewer.component";
+import { SvgViewerComponent } from "./components/svg-viewer.component";
+import { FallbackFileViewerComponent } from "./components/fallback-file-viewer.component";
 
 @NgModule({
     imports: [
@@ -48,7 +51,10 @@ import { JpgViewerComponent } from "./components/jpg-viewer.component";
         FileManagerComponent,
         SafePipe,
         PdfViewerComponent,
-        JpgViewerComponent
+        JpgViewerComponent,
+        PngViewerComponent,
+        SvgViewerComponent,
+        FallbackFileViewerComponent
     ],
     exports: [
         DragFileListenerDirective,
