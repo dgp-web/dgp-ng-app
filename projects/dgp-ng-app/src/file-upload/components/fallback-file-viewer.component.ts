@@ -23,6 +23,10 @@ import { FileItem } from "../models";
             width: 100%;
             height: 100%;
         }
+
+        .download-link {
+            color: inherit;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
