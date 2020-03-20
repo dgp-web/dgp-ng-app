@@ -26,10 +26,16 @@ export interface FileItem {
 
 export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;
 
+export interface FileUploadEditingCapabilities {
+    readonly canAddFiles: boolean;
+    readonly canRemoveFiles: boolean;
+}
+
 export interface FileUploadConfig {
     readonly fileManagerMatDialogConfig: MatDialogConfig;
     readonly maximizedClass: string;
     readonly openFileManagerShortKeyFilter: OpenFileManagerShortKeyFilter;
+    readonly editingCapabilities: FileUploadEditingCapabilities;
 }
 
 export const defaultFileUploadConfig: FileUploadConfig = {
@@ -39,7 +45,11 @@ export const defaultFileUploadConfig: FileUploadConfig = {
         panelClass: "dgp-file-manager-overlay"
     },
     maximizedClass: "--maximized",
-    openFileManagerShortKeyFilter: (x: KeyboardEvent) => x.keyCode === 70 && x.altKey
+    openFileManagerShortKeyFilter: (x: KeyboardEvent) => x.keyCode === 70 && x.altKey,
+    editingCapabilities: {
+        canAddFiles: true,
+        canRemoveFiles: true
+    }
 };
 
 
@@ -56,6 +66,7 @@ export interface FileUploadQueryParams {
 export interface FileUploadState extends EntityStateMap<FileUploadEntities> {
     readonly isFileManagerOpen: boolean;
     readonly isDropTargetVisible: boolean;
+    readonly initialConfig: FileUploadConfig;
 }
 
 export type FileUploadStoreFeature = "FileUpload";

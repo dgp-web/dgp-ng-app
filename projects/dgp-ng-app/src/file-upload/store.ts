@@ -1,8 +1,8 @@
 import { FactoryProvider, InjectionToken } from "@angular/core";
-import { FileUploadEntities, FileUploadState, FileUploadStoreFeature } from "./models";
+import { defaultFileUploadConfig, FileUploadEntities, FileUploadState, FileUploadStoreFeature } from "./models";
 import { createEntityStore } from "entity-store";
 import { ActionReducerMap } from "@ngrx/store";
-import { closeFileManager, hideDropTarget, openFileManagerOverlay, showDropTarget } from "./actions";
+import { closeFileManager, hideDropTarget, openFileManagerOverlay, setConfig, showDropTarget } from "./actions";
 
 export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileUploadStoreFeature>({
     storeFeature: "FileUpload",
@@ -38,6 +38,13 @@ export const fileUploadReducerImpl: ActionReducerMap<FileUploadState> = {
                 return state;
         }
 
+    },
+    initialConfig: (state = defaultFileUploadConfig, action) => {
+        if (action.type === setConfig.type) {
+            return (action as any).config;
+        } else {
+            return state;
+        }
     }
 };
 

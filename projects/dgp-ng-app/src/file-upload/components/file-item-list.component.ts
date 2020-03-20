@@ -13,7 +13,7 @@ import { getFileItemSizeLabel } from "../functions";
                [queryParams]="{ fileItemId: fileItem.fileItemId }"
                [matTooltip]="fileItem.fileName"
                matTooltipShowDelay="500"
-               (keydown.delete)="fileItemRemoved.emit(fileItem)">
+               (keydown.delete)="removeFileItem(fileItem)">
                 <mat-icon matListIcon>
                     insert_drive_file
                 </mat-icon>
@@ -37,7 +37,8 @@ import { getFileItemSizeLabel } from "../functions";
 
                     <button mat-icon-button
                             style="margin-left: 16px;"
-                            [matMenuTriggerFor]="overflowMenu">
+                            [matMenuTriggerFor]="overflowMenu"
+                            [disabled]="disabled">
 
                         <mat-icon>
                             more_vert
@@ -47,7 +48,8 @@ import { getFileItemSizeLabel } from "../functions";
 
                     <mat-menu #overflowMenu="matMenu">
                         <button mat-menu-item
-                                (click)="fileItemRemoved.emit(fileItem)">Remove
+                                (click)="removeFileItem(fileItem)"
+                                [disabled]="disabled">Remove
                         </button>
                     </mat-menu>
 
@@ -67,6 +69,9 @@ import { getFileItemSizeLabel } from "../functions";
 })
 export class FileItemListComponent {
 
+    @Input()
+    disabled: boolean;
+
     @Output()
     readonly fileItemRemoved = new EventEmitter<FileItem>();
 
@@ -75,6 +80,12 @@ export class FileItemListComponent {
 
     getFileItemSize(fileItem: FileItem) {
         return getFileItemSizeLabel(fileItem.size);
+    }
+
+    removeFileItem(fileItem: FileItem) {
+        if (this.disabled) return;
+
+        this.fileItemRemoved.emit(fileItem);
     }
 
 }

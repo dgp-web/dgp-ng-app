@@ -1,6 +1,6 @@
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Inject, Injectable } from "@angular/core";
-import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile } from "./actions";
+import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile, setConfig } from "./actions";
 import { Store } from "@ngrx/store";
 import { distinctUntilChanged, map, switchMap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
@@ -83,6 +83,9 @@ export class FileUploadEffects {
         @Inject(FILE_UPLOAD_CONFIG)
         private readonly moduleConfig: FileUploadConfig
     ) {
+        this.store.dispatch(setConfig({
+            config: moduleConfig
+        }));
     }
 
 }

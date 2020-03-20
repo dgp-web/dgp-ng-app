@@ -12,6 +12,11 @@ export const getSelectedFileItem = createSelector(getFileItemState, x => getFirs
 
 export const isFileManagerOpen = createSelector(fileUploadFeatureSelector, x => x.isFileManagerOpen);
 
+
+export const isAddFilesDisabled = createSelector(fileUploadFeatureSelector, x => !x.initialConfig.editingCapabilities.canAddFiles);
+export const isRemoveFilesDisabled = createSelector(fileUploadFeatureSelector, x => !x.initialConfig.editingCapabilities.canRemoveFiles);
+
+
 export const isDropTargetVisible = createSelector(fileUploadFeatureSelector,
-    x => x.isDropTargetVisible || x.fileItem.ids.length === 0
+    x => x.initialConfig.editingCapabilities.canAddFiles && (x.isDropTargetVisible || x.fileItem.ids.length === 0)
 );

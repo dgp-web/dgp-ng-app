@@ -2,7 +2,12 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, 
 import { Store } from "@ngrx/store";
 import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
 import { FILE_UPLOAD_CONFIG, FileItem, FileUploadConfig, FileUploadState } from "../models";
-import { getAllFileItems, getSelectedFileItem, isDropTargetVisible } from "../selectors";
+import {
+    getAllFileItems,
+    getSelectedFileItem, isAddFilesDisabled,
+    isDropTargetVisible,
+    isRemoveFilesDisabled
+} from "../selectors";
 import { getFileItemsFromFileList } from "../functions";
 import { MatDialogRef } from "@angular/material/dialog";
 
@@ -39,9 +44,10 @@ import { MatDialogRef } from "@angular/material/dialog";
 
                 <ng-container dgp-list-details-page-menu>
                     <dgp-file-item-list [fileItems]="fileItems$ | async"
-                                        (fileItemRemoved)="removeFileItem($event)"></dgp-file-item-list>
+                                        (fileItemRemoved)="removeFileItem($event)"
+                                        [disabled]="isRemoveFilesDisabled$ | async"></dgp-file-item-list>
                     <dgp-spacer></dgp-spacer>
-                    <mat-nav-list>
+                    <mat-nav-list *ngIf="!(isAddFilesDisabled$ | async)">
                         <a mat-list-item
                            (click)="filePicker.click()">
                             <mat-icon>
@@ -97,6 +103,7 @@ import { MatDialogRef } from "@angular/material/dialog";
                 You can preview them afterward.
                 <br>
                 <button mat-button
+                        [disabled]="isAddFilesDisabled$ | async"
                         (click)="filePicker.click()"
                         style="display: flex; max-width: 480px; width: 100%; justify-content: center; margin-top: 16px;">
                     <mat-icon style="margin-right: 4px;">open_in_new</mat-icon>
@@ -145,6 +152,8 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     readonly isDropTargetVisible$ = this.store.select(isDropTargetVisible);
     readonly fileItems$ = this.store.select(getAllFileItems);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
+    readonly isRemoveFilesDisabled$ = this.store.select(isRemoveFilesDisabled);
+    readonly isAddFilesDisabled$ = this.store.select(isAddFilesDisabled);
 
     readonly dragEnterHandler = (e) => {
         e.preventDefault();
