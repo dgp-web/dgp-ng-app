@@ -65,29 +65,7 @@ import { MatDialogRef } from "@angular/material/dialog";
                     </mat-nav-list>
                 </ng-container>
 
-                <div *ngIf="selectedFileItem$ | async as selectedFileItem"
-                     class="preview-container">
-
-                    <ng-container [ngSwitch]="selectedFileItem.extension">
-
-                        <dgp-jpg-viewer *ngSwitchCase="'jpg'"
-                                        [fileItem]="selectedFileItem"></dgp-jpg-viewer>
-
-                        <dgp-png-viewer *ngSwitchCase="'png'"
-                                        [fileItem]="selectedFileItem"></dgp-png-viewer>
-
-                        <dgp-svg-viewer *ngSwitchCase="'svg'"
-                                        [fileItem]="selectedFileItem"></dgp-svg-viewer>
-
-                        <dgp-pdf-viewer *ngSwitchCase="'pdf'"
-                                        [fileItem]="selectedFileItem"></dgp-pdf-viewer>
-
-                        <dgp-fallback-file-viewer *ngSwitchDefault
-                                                  [fileItem]="selectedFileItem"></dgp-fallback-file-viewer>
-
-                    </ng-container>
-
-                </div>
+                <dgp-file-viewer [fileItem]="selectedFileItem$ | async"></dgp-file-viewer>
 
             </dgp-list-details-page>
 
@@ -127,14 +105,6 @@ import { MatDialogRef } from "@angular/material/dialog";
             flex-grow: 1;
             width: 100%;
             height: 100%;
-        }
-
-        .preview-container {
-            display: flex;
-            flex-grow: 1;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
         .drop-target {

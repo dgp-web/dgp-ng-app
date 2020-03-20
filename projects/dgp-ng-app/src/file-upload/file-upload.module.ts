@@ -26,6 +26,7 @@ import { PngViewerComponent } from "./components/png-viewer.component";
 import { SvgViewerComponent } from "./components/svg-viewer.component";
 import { FallbackFileViewerComponent } from "./components/fallback-file-viewer.component";
 import { FileItemListComponent } from "./components/file-item-list.component";
+import { FileViewerComponent } from "./components/file-viewer.component";
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ import { FileItemListComponent } from "./components/file-item-list.component";
         JpgViewerComponent,
         PngViewerComponent,
         SvgViewerComponent,
+        FileViewerComponent,
         FallbackFileViewerComponent,
         FileItemListComponent
     ],
