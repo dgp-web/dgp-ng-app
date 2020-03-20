@@ -1,5 +1,5 @@
 import { Actions, Effect, ofType } from "@ngrx/effects";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile } from "./actions";
 import { Store } from "@ngrx/store";
 import { distinctUntilChanged, map, switchMap } from "rxjs/operators";
@@ -8,7 +8,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
 import { ActivatedRoute, Router } from "@angular/router";
-import { fromEvent } from "rxjs";
+import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadQueryParams } from "./models";
 
 @Injectable()
 export class FileUploadEffects {
@@ -16,13 +16,9 @@ export class FileUploadEffects {
     @Effect()
     readonly openFileManagerOverlay$ = this.actions$.pipe(
         ofType(openFileManagerOverlay),
-        switchMap(() => {
-            return this.matDialog.open(FileManagerComponent, {
-                height: "80%",
-                width: "80%",
-                panelClass: "dgp-file-manager-overlay"
-            }).afterClosed();
-        }),
+        switchMap(() => this.matDialog
+            .open(FileManagerComponent, this.moduleConfig.fileManagerMatDialogConfig)
+            .afterClosed()),
         map(() => closeFileManager())
     );
 
@@ -47,7 +43,7 @@ export class FileUploadEffects {
 
     @Effect()
     readonly selectFileItem$ = this.activatedRoute.queryParams.pipe(
-        map((x: { readonly fileItemId?: string; }) => x.fileItemId),
+        map((x: FileUploadQueryParams) => x.fileItemId),
         distinctUntilChanged(),
         map(fileItemId => {
 
@@ -71,13 +67,11 @@ export class FileUploadEffects {
     @Effect()
     readonly removeFile$ = this.actions$.pipe(
         ofType(removeFile),
-        map(action => {
-            return fileUploadEntityStore.actions.composeEntityActions({
-                remove: {
-                    fileItem: [action.fileItem.fileItemId]
-                }
-            });
-        })
+        map(action => fileUploadEntityStore.actions.composeEntityActions({
+            remove: {
+                fileItem: [action.fileItem.fileItemId]
+            }
+        }))
     );
 
     constructor(
@@ -86,6 +80,8 @@ export class FileUploadEffects {
         private readonly matDialog: MatDialog,
         private readonly activatedRoute: ActivatedRoute,
         private readonly router: Router,
+        @Inject(FILE_UPLOAD_CONFIG)
+        private readonly moduleConfig: FileUploadConfig
     ) {
     }
 

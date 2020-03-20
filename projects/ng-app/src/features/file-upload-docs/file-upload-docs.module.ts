@@ -11,7 +11,7 @@ import { DgpFileUploadModule } from "dgp-ng-app/file-upload/file-upload.module";
             component: FileUploadDocsPageComponent
         }]),
         DocsPageModule,
-        DgpFileUploadModule
+        DgpFileUploadModule.forRoot()
     ],
     declarations: [
         FileUploadDocsPageComponent
