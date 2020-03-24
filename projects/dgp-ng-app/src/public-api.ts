@@ -33,6 +33,11 @@ export * from "./empty-state/components/empty-state.component";
 export * from "./empty-state/empty-state.module";
 
 // file-upload
+export * from "./file-viewer/models";
+export * from "./file-viewer/functions";
+export * from "./file-viewer/file-viewer.module";
+
+// file-upload
 export * from "./file-upload/actions";
 export * from "./file-upload/directive/drag-file-listener.directive";
 export * from "./file-upload/functions";

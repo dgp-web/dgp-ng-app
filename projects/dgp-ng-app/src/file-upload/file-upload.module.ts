@@ -7,7 +7,6 @@ import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
-import { SafePipe } from "./safe.pipe";
 import { StoreModule } from "@ngrx/store";
 import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG, fileUploadStoreFeature } from "./models";
 import { fileUploadReducer, fileUploadReducerProvider } from "./store";
@@ -20,14 +19,8 @@ import { MatMenuModule } from "@angular/material/menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
-import { PdfViewerComponent } from "./components/pdf-viewer.component";
-import { JpgViewerComponent } from "./components/jpg-viewer.component";
-import { PngViewerComponent } from "./components/png-viewer.component";
-import { SvgViewerComponent } from "./components/svg-viewer.component";
-import { FallbackFileViewerComponent } from "./components/fallback-file-viewer.component";
-import { FileItemListComponent } from "./components/file-item-list.component";
-import { FileViewerComponent } from "./components/file-viewer.component";
 import { PlatformModule } from "@angular/cdk/platform";
+import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 
 @NgModule({
     imports: [
@@ -53,14 +46,7 @@ import { PlatformModule } from "@angular/cdk/platform";
         DragFileListenerDirective,
         OpenFileManagerViaShortKeyDirective,
         FileManagerComponent,
-        SafePipe,
-        PdfViewerComponent,
-        JpgViewerComponent,
-        PngViewerComponent,
-        SvgViewerComponent,
-        FileViewerComponent,
-        FallbackFileViewerComponent,
-        FileItemListComponent
+        DgpFileViewerModule
     ],
     exports: [
         DragFileListenerDirective,

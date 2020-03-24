@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
-import { FILE_UPLOAD_CONFIG, FileItem, FileUploadConfig, FileUploadState } from "../models";
+import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "../models";
 import {
     getAllFileItems,
     getSelectedFileItem, isAddFilesDisabled,
@@ -10,6 +10,7 @@ import {
 } from "../selectors";
 import { getFileItemsFromFileList } from "../functions";
 import { MatDialogRef } from "@angular/material/dialog";
+import { FileItem } from "../../file-viewer/models";
 
 @Component({
     selector: "dgp-file-manager",
