@@ -27,6 +27,7 @@ import { SvgViewerComponent } from "./components/svg-viewer.component";
 import { FallbackFileViewerComponent } from "./components/fallback-file-viewer.component";
 import { FileItemListComponent } from "./components/file-item-list.component";
 import { FileViewerComponent } from "./components/file-viewer.component";
+import { PlatformModule } from "@angular/cdk/platform";
 
 @NgModule({
     imports: [
@@ -45,7 +46,8 @@ import { FileViewerComponent } from "./components/file-viewer.component";
         MatButtonModule,
         MatMenuModule,
         DgpEmptyStateModule,
-        MatTooltipModule
+        MatTooltipModule,
+        PlatformModule
     ],
     declarations: [
         DragFileListenerDirective,

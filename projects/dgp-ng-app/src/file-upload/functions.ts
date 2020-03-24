@@ -39,7 +39,7 @@ export function getFileItemsFromFileList(fileList: FileList): ReadonlyArray<File
             size: file.size,
             url: objectUrl,
             creationDate: new Date(file.lastModified),
-            isSaved: true,
+            isSaved: false,
             ...parseFileNameWithExtension(file.name)
         };
 
