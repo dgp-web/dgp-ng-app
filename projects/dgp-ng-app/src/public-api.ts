@@ -35,6 +35,7 @@ export * from "./empty-state/empty-state.module";
 // file-upload
 export * from "./file-viewer/models";
 export * from "./file-viewer/functions";
+export * from "./file-viewer/components/file-viewer.component-base";
 export * from "./file-viewer/file-viewer.module";
 
 // file-upload

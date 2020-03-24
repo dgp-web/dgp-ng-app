@@ -70,7 +70,11 @@ export const defaultFileViewerConfig: FileViewerConfig = {
         SvgViewerComponent,
         FileViewerComponent,
         FallbackFileViewerComponent
-    ]
+    ],
+    providers: [{
+        provide: FILE_VIEWER_CONFIG,
+        useValue: defaultFileViewerConfig
+    }]
 })
 export class DgpFileViewerModule {
 
