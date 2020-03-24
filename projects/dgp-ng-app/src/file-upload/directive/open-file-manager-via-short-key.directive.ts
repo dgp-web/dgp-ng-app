@@ -26,7 +26,7 @@ export class OpenFileManagerViaShortKeyDirective implements OnDestroy {
                     .pipe(first())
                     .toPromise()),
                 filter(x => !x),
-                tap(() => this.store.dispatch(openFileManager()))
+                tap(() => this.store.dispatch(openFileManager({})))
             )
             .subscribe();
 

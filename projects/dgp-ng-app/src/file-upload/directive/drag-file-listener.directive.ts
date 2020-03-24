@@ -14,7 +14,7 @@ export class DragFileListenerDirective {
 
         function dragOverHandler(e) {
             e.preventDefault();
-            store.dispatch(openFileManager());
+            store.dispatch(openFileManager({}));
         }
 
         this.elementRef.nativeElement.addEventListener("dragover", dragOverHandler);

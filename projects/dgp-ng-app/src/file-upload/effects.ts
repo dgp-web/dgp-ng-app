@@ -2,7 +2,7 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Inject, Injectable } from "@angular/core";
 import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile, setConfig } from "./actions";
 import { Store } from "@ngrx/store";
-import { distinctUntilChanged, map, switchMap } from "rxjs/operators";
+import { distinctUntilChanged, map, switchMap, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
@@ -16,8 +16,28 @@ export class FileUploadEffects {
     @Effect()
     readonly openFileManagerOverlay$ = this.actions$.pipe(
         ofType(openFileManagerOverlay),
-        switchMap(() => this.matDialog
-            .open(FileManagerComponent, this.moduleConfig.fileManagerMatDialogConfig)
+        tap(action => {
+
+            if (action.fileItems) {
+                this.store.dispatch(
+                    fileUploadEntityStore.actions.composeEntityActions({
+                        set: {
+                            fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId)
+                        }
+                    })
+                );
+            }
+
+            if (action.config) {
+                this.store.dispatch(setConfig({
+                        config: action.config
+                    })
+                );
+            }
+
+        }),
+        switchMap(action => this.matDialog
+            .open(FileManagerComponent, action.config ? action.config.fileManagerMatDialogConfig : this.moduleConfig.fileManagerMatDialogConfig)
             .afterClosed()),
         map(() => closeFileManager())
     );

@@ -22,6 +22,7 @@ export interface FileItem {
      * persist.
      */
     readonly isSaved?: boolean;
+    readonly type: string;
 }
 
 export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;

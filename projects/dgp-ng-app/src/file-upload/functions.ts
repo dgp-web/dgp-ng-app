@@ -40,6 +40,7 @@ export function getFileItemsFromFileList(fileList: FileList): ReadonlyArray<File
             url: objectUrl,
             creationDate: new Date(file.lastModified),
             isSaved: false,
+            type: file.type,
             ...parseFileNameWithExtension(file.name)
         };
 
@@ -48,5 +49,21 @@ export function getFileItemsFromFileList(fileList: FileList): ReadonlyArray<File
     }
 
     return result;
+
+}
+
+export function getFileFromFileItem$(fileItem: FileItem): Promise<File> {
+
+    return new Promise<File>((resolve, reject) => {
+
+        return fetch(fileItem.url).then(x => x.blob()).then(x => {
+            const file = new File([x], fileItem.fileName + "." + fileItem.extension, {
+                type: fileItem.type
+            });
+
+            resolve(file);
+        });
+
+    });
 
 }
