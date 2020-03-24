@@ -19,7 +19,6 @@ import { MatMenuModule } from "@angular/material/menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
-import { PlatformModule } from "@angular/cdk/platform";
 import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 
 @NgModule({
@@ -40,13 +39,12 @@ import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
         MatMenuModule,
         DgpEmptyStateModule,
         MatTooltipModule,
-        PlatformModule
+        DgpFileViewerModule
     ],
     declarations: [
         DragFileListenerDirective,
         OpenFileManagerViaShortKeyDirective,
-        FileManagerComponent,
-        DgpFileViewerModule
+        FileManagerComponent
     ],
     exports: [
         DragFileListenerDirective,

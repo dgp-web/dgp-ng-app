@@ -1,3 +1,5 @@
+import { InjectionToken, Type } from "@angular/core";
+
 export interface FileItem {
     readonly fileItemId: string;
     readonly fileName: string;
@@ -19,4 +21,15 @@ export interface FileItem {
      */
     readonly isSaved?: boolean;
     readonly type: string;
+}
+
+
+export interface FileTypeViewerMap {
+    [key: string]: Type<any>;
+}
+
+export const FILE_VIEWER_CONFIG = new InjectionToken<FileViewerConfig>("DgpFileViewerConfig");
+
+export interface FileViewerConfig {
+    readonly fileTypeViewerMap: FileTypeViewerMap;
 }

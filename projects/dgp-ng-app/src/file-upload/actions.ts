@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { FileItem, FileUploadConfig } from "./models";
+import { FileUploadConfig } from "./models";
+import { FileItem } from "../file-viewer/models";
 
 export const openFileManagerOverlay = createAction("[FileUpload] OpenFileManagerOverlay", props<{
     readonly config?: FileUploadConfig;
