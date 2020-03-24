@@ -36,6 +36,7 @@ export * from "./empty-state/empty-state.module";
 export * from "./file-upload/actions";
 export * from "./file-upload/directive/drag-file-listener.directive";
 export * from "./file-upload/models";
+export { fileUploadEntityStore } from "./file-upload/store";
 export * from "./file-upload/file-upload.module";
 
 // hamburger-shell

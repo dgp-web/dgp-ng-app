@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { FileItem } from "dgp-ng-app";
+import { FileItem } from "../models";
 
 @Component({
     selector: "dgp-file-viewer",
