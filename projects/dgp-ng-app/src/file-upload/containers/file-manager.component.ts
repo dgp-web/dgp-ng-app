@@ -3,8 +3,9 @@ import { Store } from "@ngrx/store";
 import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "../models";
 import {
-    getAllFileItems,
-    getSelectedFileItem, isAddFilesDisabled,
+    getFileItemListModel,
+    getSelectedFileItem,
+    isAddFilesDisabled,
     isDropTargetVisible,
     isRemoveFilesDisabled
 } from "../selectors";
@@ -44,7 +45,7 @@ import { FileItem } from "../../file-viewer/models";
             <dgp-list-details-page>
 
                 <ng-container dgp-list-details-page-menu>
-                    <dgp-file-item-list [fileItems]="fileItems$ | async"
+                    <dgp-file-item-list [model]="fileItemListModel$ | async"
                                         (fileItemRemoved)="removeFileItem($event)"
                                         [disabled]="isRemoveFilesDisabled$ | async"></dgp-file-item-list>
                     <dgp-spacer></dgp-spacer>
@@ -121,7 +122,7 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     isMaximized = false;
 
     readonly isDropTargetVisible$ = this.store.select(isDropTargetVisible);
-    readonly fileItems$ = this.store.select(getAllFileItems);
+    readonly fileItemListModel$ = this.store.select(getFileItemListModel);
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
     readonly isRemoveFilesDisabled$ = this.store.select(isRemoveFilesDisabled);
     readonly isAddFilesDisabled$ = this.store.select(isAddFilesDisabled);

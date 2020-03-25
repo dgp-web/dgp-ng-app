@@ -7,6 +7,7 @@ import { closeFileManager, hideDropTarget, openFileManagerOverlay, setConfig, sh
 export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileUploadStoreFeature>({
     storeFeature: "FileUpload",
     entityTypes: [
+        "directory",
         "fileItem"
     ]
 });

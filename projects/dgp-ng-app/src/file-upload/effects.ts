@@ -2,13 +2,14 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Inject, Injectable } from "@angular/core";
 import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile, setConfig } from "./actions";
 import { Store } from "@ngrx/store";
-import { distinctUntilChanged, map, switchMap, tap } from "rxjs/operators";
+import { distinctUntilChanged, first, map, switchMap, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadQueryParams } from "./models";
+import { getAllDirectories } from "dgp-ng-app/file-upload/selectors";
 
 @Injectable()
 export class FileUploadEffects {
@@ -45,19 +46,59 @@ export class FileUploadEffects {
     @Effect()
     readonly addFilesViaDrop$ = this.actions$.pipe(
         ofType(addFilesViaDrop),
-        map(action => {
+        switchMap(action => {
+            return this.store.select(getAllDirectories).pipe(
+                first(),
+                map(directories => {
+                    if (directories.length > 0) {
 
-            this.router.navigate([], {
-                queryParams: {
-                    fileItemId: action.fileItems[0].fileItemId
-                }
-            });
+                        const directory = directories[0];
 
-            return fileUploadEntityStore.actions.composeEntityActions({
-                add: {
-                    fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId)
-                }
-            });
+                        this.router.navigate([], {
+                            queryParams: {
+                                fileItemId: action.fileItems[0].fileItemId
+                            }
+                        });
+
+                        return fileUploadEntityStore.actions.composeEntityActions({
+                            add: {
+                                fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId)
+                            },
+                            update: {
+                                directory: {
+                                    [directory.directoryId]: {
+                                        fileItemIds: directory.fileItemIds.concat(
+                                            action.fileItems.map(x => x.fileItemId)
+                                        )
+                                    }
+                                }
+                            }
+                        });
+
+                    } else {
+
+                        this.router.navigate([], {
+                            queryParams: {
+                                fileItemId: action.fileItems[0].fileItemId
+                            }
+                        });
+
+                        return fileUploadEntityStore.actions.composeEntityActions({
+                            add: {
+                                fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId),
+                                directory: {
+                                    ["Files"]: {
+                                        directoryId: "Files",
+                                        label: "Files",
+                                        fileItemIds: action.fileItems.map(x => x.fileItemId)
+                                    }
+                                }
+                            }
+                        });
+
+                    }
+                })
+            );
         })
     );
 

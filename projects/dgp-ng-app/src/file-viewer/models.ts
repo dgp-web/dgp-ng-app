@@ -23,6 +23,11 @@ export interface FileItem {
     readonly type: string;
 }
 
+export interface Directory {
+    readonly directoryId: string;
+    readonly label: string;
+    readonly fileItemIds: ReadonlyArray<string>;
+}
 
 export interface FileTypeViewerMap {
     [key: string]: Type<any>;

@@ -1,7 +1,7 @@
 import { EntityStateMap } from "entity-store";
 import { InjectionToken } from "@angular/core";
 import { MatDialogConfig } from "@angular/material";
-import { FileItem } from "../file-viewer/models";
+import { Directory, FileItem } from "../file-viewer/models";
 
 export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;
 
@@ -35,6 +35,7 @@ export const defaultFileUploadConfig: FileUploadConfig = {
 export const FILE_UPLOAD_CONFIG = new InjectionToken<FileUploadConfig>("FileUploadConfig");
 
 export interface FileUploadEntities {
+    readonly directory: Directory;
     readonly fileItem: FileItem;
 }
 
