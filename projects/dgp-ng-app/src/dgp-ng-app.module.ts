@@ -38,7 +38,7 @@ export const appReducer = new InjectionToken<ActionReducerMap<any>>("AppReducer"
 })
 export class DgpNgAppModule {
 
-    static forRoot<TAppState>(createAppConfig: () => DgpNgAppConfig<TAppState>): ModuleWithProviders {
+    static forRoot<TAppState>(createAppConfig: () => DgpNgAppConfig<TAppState>): ModuleWithProviders<DgpNgAppModule> {
 
         const config = createAppConfig();
 

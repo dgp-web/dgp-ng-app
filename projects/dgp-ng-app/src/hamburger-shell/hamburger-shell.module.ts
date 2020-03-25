@@ -47,7 +47,7 @@ export class DgpHamburgerShellModule {
 
     static forRoot(
         configProvider: HamburgerShellConfigProvider = defaultHamburgerShellConfigProvider
-    ): ModuleWithProviders {
+    ): ModuleWithProviders<DgpHamburgerShellModule> {
         return {
             ngModule: DgpHamburgerShellModule,
             providers: [

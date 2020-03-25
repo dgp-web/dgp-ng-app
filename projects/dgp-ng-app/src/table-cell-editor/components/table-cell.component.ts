@@ -82,13 +82,13 @@ export class DgpTableCellComponent {
     scrollParentSelector: string;
 
     @ContentChild(DgpTableCelLEditorDirective, {
-        read: TemplateRef, static: false
-    })
+    read: TemplateRef
+})
     editorTemplate: TemplateRef<any>;
 
     @ViewChild("triggerButton", {
-        read: ElementRef, static: false
-    }) buttonElRef: ElementRef;
+    read: ElementRef
+}) buttonElRef: ElementRef;
 
     private dialogRef: MatDialogRef<any>;
 

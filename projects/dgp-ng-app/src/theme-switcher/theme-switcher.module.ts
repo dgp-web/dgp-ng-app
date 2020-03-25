@@ -46,7 +46,7 @@ import { setIsDarkModeActive } from "./actions/theme-switcher.actions";
 })
 export class DgpThemeSwitcherModule {
 
-    static forRoot(config: ThemeSwitcherConfig = defaultThemeSwitcherConfig): ModuleWithProviders {
+    static forRoot(config: ThemeSwitcherConfig = defaultThemeSwitcherConfig): ModuleWithProviders<DgpThemeSwitcherModule> {
 
         return {
             ngModule: DgpThemeSwitcherModule,

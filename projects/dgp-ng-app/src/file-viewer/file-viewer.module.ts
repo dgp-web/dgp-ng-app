@@ -80,7 +80,7 @@ export const defaultFileViewerConfig: FileViewerConfig = {
 })
 export class DgpFileViewerModule {
 
-    static forRoot(config = defaultFileViewerConfig): ModuleWithProviders {
+    static forRoot(config = defaultFileViewerConfig): ModuleWithProviders<DgpFileViewerModule> {
         return {
             ngModule: DgpFileViewerModule,
             providers: [{

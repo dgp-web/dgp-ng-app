@@ -29,7 +29,7 @@ import { NoPeonGuard } from "./guards/no-peon.guard";
 })
 export class DgpBroadcastStoreModule {
 
-    static forRoot(config: BroadcastConfig = defaultBroadcastConfig): ModuleWithProviders {
+    static forRoot(config: BroadcastConfig = defaultBroadcastConfig): ModuleWithProviders<DgpBroadcastStoreModule> {
         return {
             ngModule: DgpBroadcastStoreModule,
             providers: [{
