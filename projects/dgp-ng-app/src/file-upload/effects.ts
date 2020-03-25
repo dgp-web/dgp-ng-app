@@ -23,7 +23,8 @@ export class FileUploadEffects {
                 this.store.dispatch(
                     fileUploadEntityStore.actions.composeEntityActions({
                         set: {
-                            fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId)
+                            fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId),
+                            directory: createKVSFromArray(action.directories, x => x.directoryId),
                         }
                     })
                 );
