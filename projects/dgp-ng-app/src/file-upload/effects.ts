@@ -9,7 +9,7 @@ import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadQueryParams } from "./models";
-import { getAllDirectories } from "dgp-ng-app/file-upload/selectors";
+import { getAllDirectories } from "./selectors";
 
 @Injectable()
 export class FileUploadEffects {
