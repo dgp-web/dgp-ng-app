@@ -38,9 +38,24 @@ export class FileUploadEffects {
             }
 
         }),
-        switchMap(action => this.matDialog
-            .open(FileManagerComponent, action.config ? action.config.fileManagerMatDialogConfig : this.moduleConfig.fileManagerMatDialogConfig)
-            .afterClosed()),
+        switchMap(action => {
+
+            const dialogRef = this.matDialog
+                .open(FileManagerComponent, action.config ? action.config.fileManagerMatDialogConfig : this.moduleConfig.fileManagerMatDialogConfig);
+
+            if (action.selectedFileItemId) {
+                this.store.dispatch(
+                    fileUploadEntityStore.actions.composeEntityActions({
+                        select: {
+                            fileItem: [action.selectedFileItemId]
+                        }
+                    })
+                );
+            }
+
+            return dialogRef.afterClosed();
+
+        }),
         map(() => closeFileManager())
     );
 

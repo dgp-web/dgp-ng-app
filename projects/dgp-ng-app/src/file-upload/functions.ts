@@ -15,6 +15,15 @@ export function parseFileNameWithExtension(fileNameWithExtension: string): {
     };
 }
 
+export function getMimeTypeFromExtension(extension: string): string {
+    switch (extension) {
+        case "pdf":
+            return "application/pdf";
+        default:
+            return null;
+    }
+}
+
 export function getFileItemsFromFileList(fileList: FileList): ReadonlyArray<FileItem> {
 
     const result = new Array<FileItem>();
@@ -30,7 +39,6 @@ export function getFileItemsFromFileList(fileList: FileList): ReadonlyArray<File
             url: objectUrl,
             creationDate: new Date(file.lastModified),
             isSaved: false,
-            type: file.type,
             ...parseFileNameWithExtension(file.name)
         };
 
@@ -48,7 +56,7 @@ export function getFileFromFileItem$(fileItem: FileItem): Promise<File> {
 
         return fetch(fileItem.url).then(x => x.blob()).then(x => {
             const file = new File([x], fileItem.fileName + "." + fileItem.extension, {
-                type: fileItem.type
+                type: getMimeTypeFromExtension(fileItem.extension)
             });
 
             resolve(file);

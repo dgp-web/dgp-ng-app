@@ -6,6 +6,7 @@ export const openFileManagerOverlay = createAction("[FileUpload] OpenFileManager
     readonly config?: FileUploadConfig;
     readonly fileItems?: ReadonlyArray<FileItem>;
     readonly directories?: ReadonlyArray<Directory>;
+    readonly selectedFileItemId?: string;
 } | null>());
 export const openFileManager = openFileManagerOverlay;
 export const closeFileManager = createAction("[FileUpload] CloseFileManager");

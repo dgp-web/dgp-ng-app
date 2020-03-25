@@ -20,7 +20,6 @@ export interface FileItem {
      * persist.
      */
     readonly isSaved?: boolean;
-    readonly type: string;
 }
 
 export interface Directory {
