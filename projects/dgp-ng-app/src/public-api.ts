@@ -36,6 +36,7 @@ export * from "./empty-state/empty-state.module";
 export * from "./file-viewer/models";
 export * from "./file-viewer/functions";
 export * from "./file-viewer/components/fallback-file-viewer.component";
+export * from "./file-viewer/components/file-item-list.component";
 export * from "./file-viewer/components/file-viewer.component-base";
 export * from "./file-viewer/components/file-viewer.component";
 export * from "./file-viewer/components/jpg-viewer.component";
