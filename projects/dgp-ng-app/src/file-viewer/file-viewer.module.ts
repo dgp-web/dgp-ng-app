@@ -19,6 +19,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { FILE_VIEWER_CONFIG, FileTypeViewerMap, FileViewerConfig } from "./models";
 
+// TODO: Add bmp
+
 export const defaultFileTypeViewerMap: FileTypeViewerMap = {
     jpg: JpgViewerComponent,
     pdf: PdfViewerComponent,

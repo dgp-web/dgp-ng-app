@@ -51,7 +51,7 @@ export class FileViewerComponent implements OnChanges {
     private loadComponent(fileItem: FileItem) {
         const fileType = fileItem.extension;
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-            this.config.fileTypeViewerMap[fileType] ? this.config.fileTypeViewerMap[fileType] : this.config.fileTypeViewerMap.default
+            this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default
         );
         this.viewContainerRef.clear();
         const componentRef = this.viewContainerRef.createComponent(componentFactory);

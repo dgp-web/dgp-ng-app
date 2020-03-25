@@ -54,7 +54,9 @@ export function getFileFromFileItem$(fileItem: FileItem): Promise<File> {
 
     return new Promise<File>((resolve, reject) => {
 
-        return fetch(fileItem.url).then(x => x.blob()).then(x => {
+        return fetch(fileItem.url, {
+            credentials: "include"
+        }).then(x => x.blob()).then(x => {
             const file = new File([x], fileItem.fileName + "." + fileItem.extension, {
                 type: getMimeTypeFromExtension(fileItem.extension)
             });

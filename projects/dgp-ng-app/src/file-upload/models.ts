@@ -17,6 +17,10 @@ export interface FileUploadConfig {
     readonly editingCapabilities: FileUploadEditingCapabilities;
 }
 
+export function openFileManagerShortKeyFilter(x: KeyboardEvent) {
+    return  x.keyCode === 70 && x.altKey;
+}
+
 export const defaultFileUploadConfig: FileUploadConfig = {
     fileManagerMatDialogConfig: {
         height: "80%",
@@ -24,7 +28,7 @@ export const defaultFileUploadConfig: FileUploadConfig = {
         panelClass: "dgp-file-manager-overlay"
     },
     maximizedClass: "--maximized",
-    openFileManagerShortKeyFilter: (x: KeyboardEvent) => x.keyCode === 70 && x.altKey,
+    openFileManagerShortKeyFilter,
     editingCapabilities: {
         canAddFiles: true,
         canRemoveFiles: true
