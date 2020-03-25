@@ -3,7 +3,9 @@ import { RouterModule } from "@angular/router";
 import { DocsPageModule } from "../shared";
 import { TableCellEditorDocsPageComponent } from "./containers";
 import { DgpTableCellModule } from "dgp-ng-app";
-import { MatFormFieldModule, MatInputModule, MatSlideToggleModule } from "@angular/material";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { FormsModule } from "@angular/forms";
 
 @NgModule({

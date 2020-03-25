@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { MatDialog, MatDialogConfig } from "@angular/material";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
 import { MatDialogRef } from "@angular/material/dialog";
 import {

@@ -3,7 +3,8 @@ import { RouterModule } from "@angular/router";
 import * as containers from "./containers";
 import { DocsPageModule } from "../shared";
 import { CommonModule } from "@angular/common";
-import { MatButtonModule, MatIconModule } from "@angular/material";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 import { DgpEmptyStateModule } from "dgp-ng-app";
 
 @NgModule({

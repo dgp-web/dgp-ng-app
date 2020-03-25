@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { defaultIfEmpty, map, switchMap } from "rxjs/operators";
-import { MatSnackBar } from "@angular/material";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { addLogEntry, logError } from "../actions/log.actions";
 import { LogEntry, Severity } from "../models/log.models";

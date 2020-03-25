@@ -4,7 +4,7 @@ import { DarkModeToggleComponent, ThemeSwitcherState, themeSwitcherStoreFeature,
 import { Store, StoreModule } from "@ngrx/store";
 import { themeSwitcherReducerImpl } from "../reducers/theme-switcher.reducer";
 import { FormsModule } from "@angular/forms";
-import { MatSlideToggleModule } from "@angular/material";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 describe(DarkModeToggleComponent.name, () => {
 

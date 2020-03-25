@@ -1,6 +1,6 @@
 import { EntityStateMap } from "entity-store";
 import { InjectionToken } from "@angular/core";
-import { MatDialogConfig } from "@angular/material";
+import { MatDialogConfig } from "@angular/material/dialog";
 import { Directory, FileItem } from "../file-viewer/models";
 
 export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;

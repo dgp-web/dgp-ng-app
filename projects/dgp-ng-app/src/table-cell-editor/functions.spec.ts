@@ -1,6 +1,6 @@
 import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "dgp-ng-app/table-cell-editor/functions";
 import { TableCellEditorSizes } from "dgp-ng-app/table-cell-editor/models";
-import { DialogPosition } from "@angular/material";
+import { DialogPosition } from "@angular/material/dialog";
 
 describe("table-cell-editor functions", () => {
 
