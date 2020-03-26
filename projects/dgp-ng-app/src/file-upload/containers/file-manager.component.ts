@@ -27,13 +27,13 @@ import { FileItem } from "../../file-viewer/models";
                         mat-icon-button
                         (click)="maximize()"
                         matTooltip="Maximize">
-                    <mat-icon>maximize</mat-icon>
+                    <mat-icon>crop_din</mat-icon>
                 </button>
                 <button *ngIf="isMaximized"
                         mat-icon-button
                         (click)="minimize()"
                         matTooltip="Minimize">
-                    <mat-icon>minimize</mat-icon>
+                    <mat-icon>filter_none</mat-icon>
                 </button>
                 <button mat-icon-button
                         mat-dialog-close
