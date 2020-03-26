@@ -18,16 +18,11 @@ import { DgpSpacerModule } from "../spacer/spacer.module";
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { FILE_VIEWER_CONFIG, FileTypeViewerMap, FileViewerConfig } from "./models";
+import { DynamicFileViewerComponent } from "./components/dynamic-file-viewer.component";
 
 // TODO: Add bmp
 
-export const defaultFileTypeViewerMap: FileTypeViewerMap = {
-    jpg: JpgViewerComponent,
-    pdf: PdfViewerComponent,
-    png: PngViewerComponent,
-    svg: SvgViewerComponent,
-    default: FallbackFileViewerComponent
-};
+export const defaultFileTypeViewerMap: FileTypeViewerMap = {};
 
 export const defaultFileViewerConfig: FileViewerConfig = {
     fileTypeViewerMap: defaultFileTypeViewerMap
@@ -54,7 +49,8 @@ export const defaultFileViewerConfig: FileViewerConfig = {
         SvgViewerComponent,
         FileViewerComponent,
         FallbackFileViewerComponent,
-        FileItemListComponent
+        FileItemListComponent,
+        DynamicFileViewerComponent
     ],
     exports: [
         PdfViewerComponent,
@@ -63,15 +59,8 @@ export const defaultFileViewerConfig: FileViewerConfig = {
         SvgViewerComponent,
         FileViewerComponent,
         FallbackFileViewerComponent,
-        FileItemListComponent
-    ],
-    entryComponents: [
-        PdfViewerComponent,
-        JpgViewerComponent,
-        PngViewerComponent,
-        SvgViewerComponent,
-        FileViewerComponent,
-        FallbackFileViewerComponent
+        FileItemListComponent,
+        DynamicFileViewerComponent
     ],
     providers: [{
         provide: FILE_VIEWER_CONFIG,
