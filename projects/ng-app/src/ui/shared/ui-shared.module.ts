@@ -1,12 +1,15 @@
 import { NgModule } from "@angular/core";
-import * as mat from "@angular/material";
 import * as dgp from "dgp-ng-app";
+import { MatButtonModule } from "@angular/material/button";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatListModule } from "@angular/material/list";
+import { MatIconModule } from "@angular/material/icon";
 
 const sharedModules = [
-    mat.MatButtonModule,
-    mat.MatIconModule,
-    mat.MatListModule,
-    mat.MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatToolbarModule,
 
     dgp.DgpEmptyStateModule
 ];

@@ -1,7 +1,6 @@
 import { FactoryProvider, InjectionToken, NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
-import * as mat from "@angular/material";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -15,6 +14,10 @@ import { LogEffects } from "./effects/log.effects";
 import { DgpHamburgerMenuToggleModule } from "../hamburger-shell/components/hamburger-menu-toggle/hamburger-menu-toggle.module";
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatListModule } from "@angular/material/list";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 export const logStoreReducer = new InjectionToken<typeof logStore.reducers>("LogStoreReducer");
 
@@ -45,10 +48,10 @@ export const logStoreReducerProvider: FactoryProvider = {
             component: LogPageComponent,
         }]),
 
-        mat.MatDividerModule,
-        mat.MatIconModule,
-        mat.MatListModule,
-        mat.MatSnackBarModule,
+        MatDividerModule,
+        MatIconModule,
+        MatListModule,
+        MatSnackBarModule,
 
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,

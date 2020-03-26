@@ -30,7 +30,7 @@ export class VirtualListPanelComponent implements AfterViewInit {
     @Input()
     items: ReadonlyArray<any>;
 
-    @ContentChild(VirtualListItemDirective, {read: TemplateRef, static: false})
+    @ContentChild(VirtualListItemDirective, { read: TemplateRef })
     itemTemplate: TemplateRef<any>;
 
     constructor(

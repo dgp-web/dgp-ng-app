@@ -29,7 +29,7 @@ export interface AuthenticationModuleSettings {
 })
 export class DgpAuthenticationModule {
 
-    static forRoot(settings: AuthenticationModuleSettings): ModuleWithProviders {
+    static forRoot(settings: AuthenticationModuleSettings): ModuleWithProviders<DgpAuthenticationModule> {
         return {
             ngModule: DgpAuthenticationModule,
             providers: [

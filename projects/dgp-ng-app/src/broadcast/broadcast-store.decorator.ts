@@ -53,7 +53,7 @@ export class BroadcastStoreDecorator<T> extends Store<T> {
             });
         }
 
-        super.dispatch(localAction);
+        super.dispatch(localAction as any);
 
     }
 

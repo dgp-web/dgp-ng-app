@@ -1,5 +1,4 @@
 import { ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
-import * as mat from "@angular/material";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Store, StoreModule } from "@ngrx/store";
@@ -18,6 +17,7 @@ import {
 } from "./models/theme-switcher-config.model";
 import { ThemeSwitcherState } from "./models/theme-switcher-state.model";
 import { setIsDarkModeActive } from "./actions/theme-switcher.actions";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @NgModule({
     imports: [
@@ -25,7 +25,7 @@ import { setIsDarkModeActive } from "./actions/theme-switcher.actions";
         FormsModule,
         OverlayModule,
 
-        mat.MatSlideToggleModule,
+        MatSlideToggleModule,
 
         StoreModule.forFeature(themeSwitcherStoreFeature, themeSwitcherReducer),
         EffectsModule.forFeature([
@@ -46,7 +46,7 @@ import { setIsDarkModeActive } from "./actions/theme-switcher.actions";
 })
 export class DgpThemeSwitcherModule {
 
-    static forRoot(config: ThemeSwitcherConfig = defaultThemeSwitcherConfig): ModuleWithProviders {
+    static forRoot(config: ThemeSwitcherConfig = defaultThemeSwitcherConfig): ModuleWithProviders<DgpThemeSwitcherModule> {
 
         return {
             ngModule: DgpThemeSwitcherModule,

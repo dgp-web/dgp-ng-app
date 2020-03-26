@@ -4,7 +4,6 @@ import { EffectsModule } from "@ngrx/effects";
 import { LayoutModule } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import * as mat from "@angular/material";
 import { hamburgerShellReducer, hamburgerShellReducerProvider } from "./reducers/hamburger-shell.reducer";
 import {
     defaultHamburgerShellConfigProvider,
@@ -14,16 +13,20 @@ import { hamburgerShellStoreFeature } from "./models/hamburger-shell.store-featu
 import { HamburgerShellComponent } from "./components/hamburger-shell.component";
 import { HamburgerShellEffects } from "./effects/hamburger-shell.effects";
 import { RouterModule } from "@angular/router";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatSidenavModule } from "@angular/material/sidenav";
 
 @NgModule({
     imports: [
         LayoutModule,
         CommonModule,
         FormsModule,
-        mat.MatButtonModule,
-        mat.MatIconModule,
-        mat.MatProgressBarModule,
-        mat.MatSidenavModule,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressBarModule,
+        MatSidenavModule,
         StoreModule.forFeature(
             hamburgerShellStoreFeature,
             hamburgerShellReducer
@@ -47,7 +50,7 @@ export class DgpHamburgerShellModule {
 
     static forRoot(
         configProvider: HamburgerShellConfigProvider = defaultHamburgerShellConfigProvider
-    ): ModuleWithProviders {
+    ): ModuleWithProviders<DgpHamburgerShellModule> {
         return {
             ngModule: DgpHamburgerShellModule,
             providers: [

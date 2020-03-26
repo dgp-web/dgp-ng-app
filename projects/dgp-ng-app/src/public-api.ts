@@ -35,12 +35,20 @@ export * from "./empty-state/empty-state.module";
 // file-upload
 export * from "./file-viewer/models";
 export * from "./file-viewer/functions";
+export * from "./file-viewer/components/fallback-file-viewer.component";
+export * from "./file-viewer/components/file-item-list.component";
 export * from "./file-viewer/components/file-viewer.component-base";
+export * from "./file-viewer/components/file-viewer.component";
+export * from "./file-viewer/components/jpg-viewer.component";
+export * from "./file-viewer/components/pdf-viewer.component";
+export * from "./file-viewer/components/png-viewer.component";
+export * from "./file-viewer/components/svg-viewer.component";
 export * from "./file-viewer/file-viewer.module";
 
 // file-upload
 export * from "./file-upload/actions";
 export * from "./file-upload/directive/drag-file-listener.directive";
+export * from "./file-upload/directive/open-file-manager-via-short-key.directive";
 export * from "./file-upload/functions";
 export * from "./file-upload/models";
 export { fileUploadEntityStore } from "./file-upload/store";

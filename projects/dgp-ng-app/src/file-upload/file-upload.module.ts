@@ -59,7 +59,7 @@ import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 })
 export class DgpFileUploadModule {
 
-    static forRoot(config = defaultFileUploadConfig): ModuleWithProviders {
+    static forRoot(config = defaultFileUploadConfig): ModuleWithProviders<DgpFileUploadModule> {
         return {
             ngModule: DgpFileUploadModule,
             providers: [{
