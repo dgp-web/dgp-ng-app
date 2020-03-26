@@ -23,6 +23,7 @@ export const getSelectedFileItem = createSelector(getFileItemState, x => getFirs
 
 export const isFileManagerOpen = createSelector(fileUploadFeatureSelector, x => x.isFileManagerOpen);
 
+export const canOpenFileDrawer = createSelector(fileUploadFeatureSelector, x => x.initialConfig.canOpenFileDrawer);
 
 export const isAddFilesDisabled = createSelector(fileUploadFeatureSelector, x => !x.initialConfig.editingCapabilities.canAddFiles);
 export const isRemoveFilesDisabled = createSelector(fileUploadFeatureSelector, x => !x.initialConfig.editingCapabilities.canRemoveFiles);

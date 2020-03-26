@@ -15,6 +15,7 @@ export interface FileUploadConfig {
     readonly maximizedClass: string;
     readonly openFileManagerShortKeyFilter: OpenFileManagerShortKeyFilter;
     readonly editingCapabilities: FileUploadEditingCapabilities;
+    readonly canOpenFileDrawer: boolean;
 }
 
 export function openFileManagerShortKeyFilter(x: KeyboardEvent) {
@@ -32,7 +33,8 @@ export const defaultFileUploadConfig: FileUploadConfig = {
     editingCapabilities: {
         canAddFiles: true,
         canRemoveFiles: true
-    }
+    },
+    canOpenFileDrawer: true
 };
 
 
