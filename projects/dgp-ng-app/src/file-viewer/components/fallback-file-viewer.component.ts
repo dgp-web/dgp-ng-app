@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from "@angular/core";
 import { FileItem } from "../models";
+import { getFileFromFileItem$ } from "../../file-upload/functions";
+import { Platform } from "@angular/cdk/platform";
 
 @Component({
     selector: "dgp-fallback-file-viewer",
@@ -7,11 +9,20 @@ import { FileItem } from "../models";
         <dgp-empty-state title="No preview available"
                          matIconName="get_app">
 
-            <a class="download-link"
+            <a *ngIf="!isTridentOrEdge; else ieFallback"
+               class="download-link"
                [href]="fileItem.url | safe:'url'"
                target="_blank">
                 Download it here
             </a>
+
+            <ng-template #ieFallback>
+                <a class="download-link"
+                   href="javascript:;"
+                   (click)="downloadFileInTridentOrEdge()">
+                    Download it here
+                </a>
+            </ng-template>
 
         </dgp-empty-state>
     `,
@@ -30,9 +41,26 @@ import { FileItem } from "../models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FallbackFileViewerComponent {
+export class FallbackFileViewerComponent implements AfterViewInit {
 
     @Input()
     fileItem: FileItem;
+
+    isTridentOrEdge: boolean;
+
+    constructor(
+        private readonly platform: Platform
+    ) {
+        this.isTridentOrEdge = this.platform.TRIDENT || this.platform.EDGE;
+    }
+
+    ngAfterViewInit() {
+        this.isTridentOrEdge = this.platform.TRIDENT || this.platform.EDGE;
+    }
+
+    async downloadFileInTridentOrEdge() {
+        const file = await getFileFromFileItem$(this.fileItem);
+        window.navigator.msSaveOrOpenBlob(file, file.name);
+    }
 
 }

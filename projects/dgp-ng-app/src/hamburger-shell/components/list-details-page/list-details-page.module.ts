@@ -5,13 +5,15 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { ListDetailsPageContentComponent } from "./list-details-page-content.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
     imports: [
         CommonModule,
         MatButtonModule,
         MatIconModule,
-        MatSidenavModule
+        MatSidenavModule,
+        MatTooltipModule
     ],
     declarations: [
         ListDetailsPageContentComponent,
