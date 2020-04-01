@@ -3,6 +3,7 @@ import { Store } from "@ngrx/store";
 import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "../models";
 import {
+    canOpenFileDrawer,
     getFileItemListModel,
     getSelectedFileItem,
     isAddFilesDisabled,
@@ -27,13 +28,13 @@ import { FileItem } from "../../file-viewer/models";
                         mat-icon-button
                         (click)="maximize()"
                         matTooltip="Maximize">
-                    <mat-icon>maximize</mat-icon>
+                    <mat-icon>crop_din</mat-icon>
                 </button>
                 <button *ngIf="isMaximized"
                         mat-icon-button
                         (click)="minimize()"
                         matTooltip="Minimize">
-                    <mat-icon>minimize</mat-icon>
+                    <mat-icon>filter_none</mat-icon>
                 </button>
                 <button mat-icon-button
                         mat-dialog-close
@@ -42,7 +43,7 @@ import { FileItem } from "../../file-viewer/models";
                 </button>
             </h2>
 
-            <dgp-list-details-page>
+            <dgp-list-details-page *ngIf="canOpenFileDrawer$ | async; else singleFileMode">
 
                 <ng-container dgp-list-details-page-menu>
                     <dgp-file-item-list [model]="fileItemListModel$ | async"
@@ -71,6 +72,9 @@ import { FileItem } from "../../file-viewer/models";
 
             </dgp-list-details-page>
 
+            <ng-template #singleFileMode>
+                <dgp-file-viewer [fileItem]="selectedFileItem$ | async"></dgp-file-viewer>
+            </ng-template>
         </ng-container>
 
         <ng-template #dropTarget>
@@ -126,6 +130,7 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
     readonly isRemoveFilesDisabled$ = this.store.select(isRemoveFilesDisabled);
     readonly isAddFilesDisabled$ = this.store.select(isAddFilesDisabled);
+    readonly canOpenFileDrawer$ = this.store.select(canOpenFileDrawer);
 
     readonly dragEnterHandler = (e) => {
         e.preventDefault();
