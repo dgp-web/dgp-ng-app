@@ -3,7 +3,7 @@ import { Store, StoreModule } from "@ngrx/store";
 import { AppComponent } from "./components";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
-import { appReducer, appReducerProviders, AppState } from "../store";
+import { AppEntities, appEntityStore, appReducer, appReducerProviders, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
 import { defaultBroadcastConfig, DgpBroadcastStoreModule, DgpNgApp, setBroadcastChannelDataId } from "dgp-ng-app";
@@ -53,12 +53,17 @@ import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-d
         DgpRequestStoreModule,
         DgpRoutingOverlayModule,
 
-        /*DgpBroadcastStoreModule.forRoot({
+        DgpBroadcastStoreModule.forRoot<AppEntities>({
             ...defaultBroadcastConfig,
             actionTypesToPrefixWithPeon: [
                 "[DocsApp]"
-            ]
-        }),*/
+            ],
+            sendInitialState: state => appEntityStore.actions.composeEntityActions({
+                set: {
+                    user: state.user.entities
+                }
+            })
+        }),
 
         StoreDevtoolsModule.instrument(),
         /*

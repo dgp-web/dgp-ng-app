@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Action, select, Store } from "@ngrx/store";
-import { bufferTime, filter, first, map, switchMap, tap } from "rxjs/operators";
+import { bufferTime, distinctUntilChanged, distinctUntilKeyChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
 import { BroadcastState, getOwnBroadcastRoleSelector } from "../broadcast-store";
 import { interval, of } from "rxjs";
 import { isNullOrUndefined } from "util";
@@ -22,6 +22,7 @@ import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "../functions/should-
 import { BroadcastChannelService } from "../services/broadcast-channel.service";
 import { filterActionToPrefixWithLeaderPredicate } from "../functions/filter-action-to-prefix-with-leader.predicate";
 import { BROADCAST_CONFIG, BroadcastConfig } from "../models/broadcast-config.model";
+import { prefixAction } from "dgp-ng-app/broadcast/functions/prefix-action.function";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;
@@ -210,13 +211,32 @@ export class BroadcastEffects {
         );
 
     @Effect()
-    readonly requestInitialData$ = this.actions$.pipe(
+    readonly sendInitialData$ = this.actions$.pipe(
         ofType(requestInitialData),
-        switchMap(() => this.store.select(getOwnBroadcastRoleSelector).pipe(first())),
-        filter(role => role === BroadcastRole.Leader && this.config.sendInitialState !== null && this.config.sendInitialState !== undefined),
-        switchMap(() => this.store),
-        map(state => this.config.sendInitialState(state as any))
+        switchMap(() => this.store.select(getOwnBroadcastRoleSelector)
+            .pipe(first())),
+        filter(role => role === BroadcastRole.Leader
+            && this.config.sendInitialState !== null
+            && this.config.sendInitialState !== undefined),
+        switchMap(() => this.store.pipe(first())),
+        map(state => prefixAction({
+            action: this.config.sendInitialState(state as any),
+            prefix: leaderActionTypePrefix
+        }))
     );
+
+    @Effect()
+    readonly requestInitialData$ = this.store.select(getOwnBroadcastRoleSelector)
+        .pipe(
+            distinctUntilChanged(),
+            filter(role => role === BroadcastRole.Peon
+                && this.config.sendInitialState !== null
+                && this.config.sendInitialState !== undefined),
+            map(() => prefixAction({
+                action: requestInitialData,
+                prefix: peonActionTypePrefix
+            }))
+        );
 
     constructor(
         private readonly actions$: Actions,

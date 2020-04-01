@@ -8,6 +8,7 @@ import { broadcastChannelServiceProvider } from "./services/broadcast-channel.se
 import { BroadcastEffects } from "./effects/broadcast.effects";
 import { BROADCAST_CONFIG, BroadcastConfig, defaultBroadcastConfig } from "./models/broadcast-config.model";
 import { NoPeonGuard } from "./guards/no-peon.guard";
+import { EntityTypeMap } from "entity-store";
 
 @NgModule({
     imports: [
@@ -29,12 +30,14 @@ import { NoPeonGuard } from "./guards/no-peon.guard";
 })
 export class DgpBroadcastStoreModule {
 
-    static forRoot(config: BroadcastConfig = defaultBroadcastConfig): ModuleWithProviders<DgpBroadcastStoreModule> {
+    static forRoot<TEntityTypeMap extends EntityTypeMap = { [key: string]: any; }, TStoreFeature = string>(
+        config: BroadcastConfig<TEntityTypeMap, TStoreFeature> = defaultBroadcastConfig as any
+    ): ModuleWithProviders<DgpBroadcastStoreModule> {
         return {
             ngModule: DgpBroadcastStoreModule,
             providers: [{
                 provide: BROADCAST_CONFIG,
-                useValue: config as BroadcastConfig
+                useValue: config
             }, broadcastStoreProvider]
         };
     }

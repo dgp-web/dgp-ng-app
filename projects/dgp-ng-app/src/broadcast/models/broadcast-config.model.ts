@@ -1,13 +1,13 @@
 import { actionBroadcastChannelId, heartbeatBroadcastChannelId } from "./broadcast-channel.model";
 import { InjectionToken } from "@angular/core";
 import { BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "./broadcast-role-display-config.model";
-import { CompositeEntityAction, EntityStateMap, EntityTypeMap } from "entity-store";
+import { ComposedEntityActions, EntityStateMap, EntityTypeMap } from "entity-store";
 
-export type SendInitialStateSignature = <TEntityTypeMap extends EntityTypeMap>(
+export type SendInitialStateSignature<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = (
     state: EntityStateMap<TEntityTypeMap>
-) => CompositeEntityAction<TEntityTypeMap>;
+) => ComposedEntityActions<TEntityTypeMap, TStoreFeature>;
 
-export interface BroadcastConfig {
+export interface BroadcastConfig<TEntityTypeMap extends EntityTypeMap = { [key: string]: any; }, TStoreFeature = string> {
     /**
      * The interval at which this participant sends
      * heartbeats
@@ -43,7 +43,7 @@ export interface BroadcastConfig {
      */
     readonly updateBrowserTabTitleConfig?: BroadcastRoleDisplayConfig;
 
-    readonly sendInitialState?: SendInitialStateSignature;
+    readonly sendInitialState?: SendInitialStateSignature<TEntityTypeMap, TStoreFeature>;
 }
 
 export const defaultBroadcastConfig: BroadcastConfig = {
