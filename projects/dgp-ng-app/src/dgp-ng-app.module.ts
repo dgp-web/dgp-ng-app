@@ -18,13 +18,16 @@ export const appReducer = new InjectionToken<ActionReducerMap<any>>("AppReducer"
 
 @NgModule({
     imports: [
+
         BrowserModule,
         BrowserAnimationsModule,
 
+
         StoreModule.forRoot(appReducer, {
-            metaReducers: [ hmrReducer ]
+            metaReducers: [hmrReducer]
         }),
         EffectsModule.forRoot([]),
+
         DgpHamburgerShellModule.forRoot(),
         DgpThemeSwitcherModule.forRoot(),
         DgpLogModule,
@@ -38,14 +41,13 @@ export const appReducer = new InjectionToken<ActionReducerMap<any>>("AppReducer"
 })
 export class DgpNgAppModule {
 
-    static forRoot<TAppState>(createAppConfig: () => DgpNgAppConfig<TAppState>): ModuleWithProviders<DgpNgAppModule> {
-
-        const config = createAppConfig();
+    static forRoot<TAppState>(config: DgpNgAppConfig<TAppState>): ModuleWithProviders<DgpNgAppModule> {
 
         return {
             ngModule: DgpNgAppModule,
             providers: [{
-                provide: appReducer, useFactory: () => config.appReducer
+                provide: appReducer,
+                useValue: config.appReducer
             }]
         };
     }
