@@ -15,7 +15,7 @@
     "build:watch:dgp-ng-app": "ng build dgp-ng-app --watch",
     "postbuild:dgp-ng-app": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
     "publish:dgp-ng-app": "npm publish dist/dgp-ng-app",
-    "build:dgp-ng-docs": "ng build dgp-ng-docs",
+    "build:dgp-ng-docs": "ng build --prod dgp-ng-docs",
     "postbuild:dgp-ng-docs": "cpx projects/dgp-ng-docs/src/lib/_styles.scss dist/dgp-ng-docs",
     "publish:dgp-ng-docs": "npm publish dist/dgp-ng-docs",
     "start:docs-app": "ng serve --hmr --hmrWarning=false ng-app",
