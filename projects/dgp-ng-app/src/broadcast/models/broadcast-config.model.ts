@@ -1,8 +1,11 @@
-import {
-    actionBroadcastChannelId, heartbeatBroadcastChannelId
-} from "./broadcast-channel.model";
+import { actionBroadcastChannelId, heartbeatBroadcastChannelId } from "./broadcast-channel.model";
 import { InjectionToken } from "@angular/core";
 import { BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "./broadcast-role-display-config.model";
+import { CompositeEntityAction, EntityStateMap, EntityTypeMap } from "entity-store";
+
+export type SendInitialStateSignature = <TEntityTypeMap extends EntityTypeMap>(
+    state: EntityStateMap<TEntityTypeMap>
+) => CompositeEntityAction<TEntityTypeMap>;
 
 export interface BroadcastConfig {
     /**
@@ -39,6 +42,8 @@ export interface BroadcastConfig {
      * to indicate status
      */
     readonly updateBrowserTabTitleConfig?: BroadcastRoleDisplayConfig;
+
+    readonly sendInitialState?: SendInitialStateSignature;
 }
 
 export const defaultBroadcastConfig: BroadcastConfig = {

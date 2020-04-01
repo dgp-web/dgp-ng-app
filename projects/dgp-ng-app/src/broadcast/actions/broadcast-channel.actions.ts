@@ -27,6 +27,8 @@ export class SetBroadcastChannelDataIdAction implements Action {
 
 export const setBroadcastChannelDataId = createAction(setBroadcastChannelDataIdActionType, props<{ readonly payload: any; }>());
 
+export const requestInitialData = createAction("[BroadcastChannel] RequestInitialData");
+
 export const leaderActionTypePrefix = "[Leader] ";
 export const peonActionTypePrefix = "[Peon] ";
 export const compositeActionTypePrefix = "[Composite] ";
