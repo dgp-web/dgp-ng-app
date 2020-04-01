@@ -56,6 +56,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                               label="Empty state"
                               description="Configurable placeholder for empty views."></dgp-tile>
 
+                    <dgp-tile routerLinkToContent="/file-upload"
+                              matIconName="attach_file"
+                              label="File upload"
+                              description="Configurable placeholder for empty views."></dgp-tile>
+
                     <dgp-tile routerLinkToContent="/hamburger-shell"
                               matIconName="chrome_reader_mode"
                               label="Hamburger shell"

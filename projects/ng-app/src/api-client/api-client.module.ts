@@ -18,7 +18,7 @@ export class ApiClientModule {
 
     static forRoot(
         apiClientSettingsProvider: ApiClientSettingsProvider
-    ): ModuleWithProviders {
+    ): ModuleWithProviders<ApiClientModule> {
         return {
             ngModule: ApiClientModule,
             providers: [

@@ -41,6 +41,13 @@
             </a>
 
             <a mat-list-item
+               [routerLink]="['/file-upload']"
+               [routerLinkActive]="'dgp-list-item--selected'">
+                <mat-icon class="hamburger-menu-list-item__icon">attach_file</mat-icon>
+                File upload
+            </a>
+
+            <a mat-list-item
                [routerLink]="['/hamburger-shell']"
                [routerLinkActive]="'dgp-list-item--selected'">
                 <mat-icon class="hamburger-menu-list-item__icon">chrome_reader_mode</mat-icon>

@@ -4,7 +4,7 @@ import { isNullOrUndefined } from "util";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
 import { timer, of } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
-import { MatDialog, MatDialogRef } from "@angular/material";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { showLoadingSpinner } from "../actions/routing-overlay.actions";
 import { RoutingOverlayComponent } from "../components/routing-overlay.component";
 

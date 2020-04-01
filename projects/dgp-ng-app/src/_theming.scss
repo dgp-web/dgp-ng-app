@@ -22,6 +22,17 @@
     $primary: map-get($theme, primary);
     $accent: map-get($theme, accent);
 
+    .dgp-list-item.--selected {
+        color: white;
+        border-left-color: mat-color($primary, 300);
+        border-left-width: 4px;
+        border-left-style: solid;
+    }
+
+    .dgp-list-item.--not-clickable {
+        pointer-events: none;
+    }
+
     .dgp-list-item--selected {
         color: white;
         border-left-color: mat-color($primary, 300);
@@ -67,10 +78,17 @@
     .hamburger-menu-drawer-content > *:not(router-outlet) {
         display: flex;
         flex-direction: column;
-        height:100%;
+        height: 100%;
         flex-grow: 1;
         overflow: auto;
     }
 
 
+}
+
+.dgp-file-manager-overlay.--maximized {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
 }

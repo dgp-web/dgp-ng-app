@@ -22,7 +22,7 @@
                         "main": "projects/ng-app/src/main.ts",
                         "polyfills": "projects/ng-app/src/polyfills.ts",
                         "tsConfig": "projects/ng-app/tsconfig.app.json",
-                        "aot": false,
+                        "aot": true,
                         "progress": false,
                         "assets": [
                             "projects/ng-app/src/favicon.ico",
@@ -51,7 +51,6 @@
                             "sourceMap": false,
                             "extractCss": true,
                             "namedChunks": false,
-                            "aot": true,
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
@@ -145,7 +144,12 @@
                         "tsConfig": "projects/dgp-ng-app/tsconfig.lib.json",
                         "project": "projects/dgp-ng-app/ng-package.json"
                     }
-                },
+                ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/dgp-ng-app/tsconfig.lib.prod.json"
+            }
+          }
+},
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
@@ -180,7 +184,12 @@
                         "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.json",
                         "project": "projects/dgp-ng-docs/ng-package.json"
                     }
-                },
+                ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.prod.json"
+            }
+          }
+},
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {

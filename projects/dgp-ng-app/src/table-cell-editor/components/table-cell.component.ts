@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { MatDialog, MatDialogConfig } from "@angular/material";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
 import { MatDialogRef } from "@angular/material/dialog";
 import {
@@ -82,13 +82,13 @@ export class DgpTableCellComponent {
     scrollParentSelector: string;
 
     @ContentChild(DgpTableCelLEditorDirective, {
-        read: TemplateRef, static: false
-    })
+    read: TemplateRef
+})
     editorTemplate: TemplateRef<any>;
 
     @ViewChild("triggerButton", {
-        read: ElementRef, static: false
-    }) buttonElRef: ElementRef;
+    read: ElementRef
+}) buttonElRef: ElementRef;
 
     private dialogRef: MatDialogRef<any>;
 

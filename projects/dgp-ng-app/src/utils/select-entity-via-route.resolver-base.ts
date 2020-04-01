@@ -2,17 +2,18 @@ import { composeEntityActions, EntityTypeMap } from "entity-store";
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
 import { Store } from "@ngrx/store";
 
-export interface SelectEntityViaRouteResolverConfig<TEntityTypeMap extends EntityTypeMap> {
+export interface SelectEntityViaRouteResolverConfig<TEntityTypeMap extends EntityTypeMap, TStoreFeature = null> {
     readonly getNewEntitySurrogateKeyFromRoute: (route: ActivatedRouteSnapshot) => Promise<string>;
     readonly getOldEntitySurrogateKeyFromStore: () => Promise<string>;
     readonly entityName: keyof TEntityTypeMap;
+    readonly storeFeature?: TStoreFeature;
 }
 
-export abstract class DgpSelectEntityViaRouteResolver<TEntityTypeMap extends EntityTypeMap> implements Resolve<void> {
+export abstract class DgpSelectEntityViaRouteResolver<TEntityTypeMap extends EntityTypeMap, TStoreFeature = null> implements Resolve<void> {
 
     protected constructor(
         protected readonly store: Store<any>,
-        private readonly config: SelectEntityViaRouteResolverConfig<TEntityTypeMap>
+        private readonly config: SelectEntityViaRouteResolverConfig<TEntityTypeMap, TStoreFeature>
     ) {
     }
 
@@ -33,7 +34,8 @@ export abstract class DgpSelectEntityViaRouteResolver<TEntityTypeMap extends Ent
             composeEntityActions({
                 select: {
                     [this.config.entityName]: [newSelectionIdFromRoute]
-                }
+                },
+                storeFeature: this.config.storeFeature
             })
         );
 
