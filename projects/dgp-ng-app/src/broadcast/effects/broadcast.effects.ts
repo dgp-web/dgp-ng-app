@@ -22,7 +22,7 @@ import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "../functions/should-
 import { BroadcastChannelService } from "../services/broadcast-channel.service";
 import { filterActionToPrefixWithLeaderPredicate } from "../functions/filter-action-to-prefix-with-leader.predicate";
 import { BROADCAST_CONFIG, BroadcastConfig } from "../models/broadcast-config.model";
-import { prefixAction } from "dgp-ng-app/broadcast/functions/prefix-action.function";
+import { prefixAction } from "../functions/prefix-action.function";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;
