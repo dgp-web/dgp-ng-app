@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Action, select, Store } from "@ngrx/store";
-import { bufferTime, filter, map, switchMap, tap } from "rxjs/operators";
+import { bufferTime, filter, first, map, switchMap, tap } from "rxjs/operators";
 import { BroadcastState, getOwnBroadcastRoleSelector } from "../broadcast-store";
 import { interval, of } from "rxjs";
 import { isNullOrUndefined } from "util";
@@ -11,7 +11,7 @@ import { createBroadcastHeartbeat } from "../functions/create-broadcast-heartbea
 import { createBroadcastParticipant } from "../functions/create-broadcast-participant.function";
 import { BroadcastRole } from "../models/broadcast-role.model";
 import {
-    leaderActionTypePrefix, peonActionTypePrefix, setBroadcastChannelDataId, setOwnBroadcastRole
+    leaderActionTypePrefix, peonActionTypePrefix, requestInitialData, setBroadcastChannelDataId, setOwnBroadcastRole
 } from "../actions/broadcast-channel.actions";
 import { trimIncomingBroadcastAction } from "../functions/trim-incoming-broadcast-action.function";
 import { shouldBroadcastParticipantChangeRole } from "../functions/should-broadcast-participant-change-role.function";
@@ -208,6 +208,15 @@ export class BroadcastEffects {
             }),
             map(x => trimIncomingBroadcastAction(x))
         );
+
+    @Effect()
+    readonly requestInitialData$ = this.actions$.pipe(
+        ofType(requestInitialData),
+        switchMap(() => this.store.select(getOwnBroadcastRoleSelector).pipe(first())),
+        filter(role => role === BroadcastRole.Leader && this.config.sendInitialState !== null && this.config.sendInitialState !== undefined),
+        switchMap(() => this.store),
+        map(state => this.config.sendInitialState(state as any))
+    );
 
     constructor(
         private readonly actions$: Actions,
