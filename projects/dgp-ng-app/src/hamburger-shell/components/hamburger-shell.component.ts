@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { CloseHamburgerMenuAction } from "../actions/hamburger-shell.actions";
+import { closeHamburgerMenu } from "../actions/hamburger-shell.actions";
 import { hamburgerMenuModeSelector, isHamburgerMenuOpenSelector } from "../selectors/hamburger-shell.selectors";
 import { hasPendingRequestsSelector } from "../../request-store/selectors/request.selectors";
 import { HamburgerShellState } from "../models/hamburger-shell-state.model";
@@ -60,10 +60,9 @@ import { HamburgerShellState } from "../models/hamburger-shell-state.model";
         .hamburger-menu-drawer-content {
             display: flex;
             flex-direction: column;
-            height: 100%;
             flex-grow: 1;
+            height: auto;
         }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -80,8 +79,6 @@ export class HamburgerShellComponent {
     }
 
     closeHamburgerMenu(): void {
-        this.store.dispatch(
-            new CloseHamburgerMenuAction()
-        );
+        this.store.dispatch(closeHamburgerMenu());
     }
 }

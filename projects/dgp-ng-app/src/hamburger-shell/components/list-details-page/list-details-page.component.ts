@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { CloseListDetailsMenuAction, ToggleListDetailsPageMenuAction } from "../../actions/hamburger-shell.actions";
+import { closeListDetailsMenu, toggleListDetailsPageMenu } from "../../actions/hamburger-shell.actions";
 import { isPageMenuOpenSelector, pageMenuModeSelector } from "../../selectors/hamburger-shell.selectors";
 import { HamburgerShellState } from "../../models/hamburger-shell-state.model";
 
@@ -90,14 +90,10 @@ export class ListDetailsPageComponent {
     }
 
     closePageMenuDrawer(): void {
-        this.store.dispatch(
-            new CloseListDetailsMenuAction()
-        );
+        this.store.dispatch(closeListDetailsMenu());
     }
 
     togglePageMenuDrawer(): void {
-        this.store.dispatch(
-            new ToggleListDetailsPageMenuAction()
-        );
+        this.store.dispatch(toggleListDetailsPageMenu());
     }
 }

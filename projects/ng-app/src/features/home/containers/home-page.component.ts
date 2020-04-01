@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             Home
             <dgp-spacer></dgp-spacer>
             <a href="https://github.com/dgp-web/dgp-ng-app"
-               style="width: 40px; height: 40px;"
+               style="width: 32px; height: 32px;"
                matTooltip="Open on GitHub">
                 <img style="width: 100%; height: 100%;"
                      src="assets/github-logo.png">
@@ -41,189 +41,76 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">
 
-                    <a routerLink="/authentication"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">person</mat-icon>
-                                <div class="module-card__title">
-                                    Authentication
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    Authenticate users and perform startup tasks.
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <dgp-tile routerLinkToContent="/authentication"
+                              matIconName="person"
+                              label="Authentication"
+                              description="Authenticate users and perform startup tasks."></dgp-tile>
 
-                    </a>
+                    <!--<dgp-tile routerLinkToContent="/broadcasting"
+                              matIconName="dynamic_feed"
+                              label="Broadcasting"
+                              description="Bidirectional data sync between windows and tabs."></dgp-tile>-->
 
-                    <a routerLink="/empty-state"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">texture</mat-icon>
-                                <div class="module-card__title">
-                                    Empty state
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    Configurable placeholder for empty views.
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <dgp-tile routerLinkToContent="/empty-state"
+                              matIconName="texture"
+                              label="Empty state"
+                              description="Configurable placeholder for empty views."></dgp-tile>
 
-                    </a>
+                    <dgp-tile routerLinkToContent="/file-upload"
+                              matIconName="attach_file"
+                              label="File upload"
+                              description="Configurable placeholder for empty views."></dgp-tile>
 
-                    <a routerLink="/hamburger-shell"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">chrome_reader_mode</mat-icon>
-                                <div class="module-card__title">
-                                    Hamburger shell
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    Responsive navigation drawer for applications.
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <dgp-tile routerLinkToContent="/hamburger-shell"
+                              matIconName="chrome_reader_mode"
+                              label="Hamburger shell"
+                              description="Responsive navigation drawer for applications."></dgp-tile>
 
-                    </a>
+                    <dgp-tile routerLinkToContent="/list-details-page"
+                              matIconName="vertical_split"
+                              label="List-details page"
+                              description="Page with a collapsible list and a central details view."></dgp-tile>
 
-                    <a routerLink="/list-details-page"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">vertical_split</mat-icon>
-                                <div class="module-card__title">
-                                    List-details page
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    Page with a collapsible list and a central details view.
-<!--
-                                    The configuration options are passed to HamburgerMenuShellModule.forRoot(...)
-                                    and described on that page.-->
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <dgp-tile routerLinkToContent="/log"
+                              matIconName="receipt"
+                              label="Log"
+                              description="Feature to create and view log entries."></dgp-tile>
 
-                    </a>
+                    <dgp-tile routerLinkToContent="/request-store"
+                              matIconName="import_export"
+                              label="Request store"
+                              description="A request queue that allows to dispatch requests as actions."></dgp-tile>
 
-                    <a routerLink="/request-store"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">import_export</mat-icon>
-                                <div class="module-card__title">
-                                    Request store
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    A request queue that allows to dispatch requests as actions.
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <dgp-tile routerLinkToContent="/routing-overlay"
+                              matIconName="schedule"
+                              label="Routing overlay"
+                              description="Loading spinner that indicates idle states when routing."></dgp-tile>
 
-                    </a>
+                    <dgp-tile routerLinkToContent="/spacer"
+                              matIconName="space_bar"
+                              label="Spacer"
+                              description="Invisible component that fills empty space."></dgp-tile>
 
-                    <a routerLink="/styling"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">color_lens</mat-icon>
-                                <div class="module-card__title">
-                                    Styling
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    Theming utilities for easy setup of bright/dark mode.
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <dgp-tile routerLinkToContent="/styling"
+                              matIconName="color_lens"
+                              label="Styling"
+                              description="Theming utilities for easy setup of bright/dark mode."></dgp-tile>
 
-                    </a>
+                    <dgp-tile routerLinkToContent="/table-cell-editor"
+                              matIconName="featured_video"
+                              label="Table-cell editor"
+                              description="Editing functionality for table cells."></dgp-tile>
 
-                    <a routerLink="/theme-switcher"
-                       class="module-card">
-                        <mat-card matRipple
-                                  class="module-card__card">
-                            <mat-card-content class="module-card__content">
-                                <mat-icon class="module-card__icon dgp-bg--primary">style</mat-icon>
-                                <div class="module-card__title">
-                                    Theme switcher
-                                </div>
-                                <mat-divider class="module_card__divider"></mat-divider>
-                                <div>
-                                    Setup theming-related components in your
-                                    app.
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-
-                    </a>
+                    <dgp-tile routerLinkToContent="/theme-switcher"
+                              matIconName="style"
+                              label="Theme switcher"
+                              description="Setup theming-related components in your app."></dgp-tile>
 
                 </div>
 
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
-    styles: [`
-        .module-card {
-            display: flex;
-            flex-direction: column;
-            max-height: 224px;
-            min-height: 224px;
-            height: 100%;
-            max-width: 224px;
-            min-width: 224px;
-            width: 100%;
-            text-decoration: inherit;
-            margin: 8px;
-        }
-
-        .module-card__card {
-            flex-grow: 1;
-        }
-
-        .module-card__content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .module-card__icon {
-            font-size: 40px;
-            height: 64px;
-            width: 64px;
-            color: white !important;
-            border-radius: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-
-        .module-card__title {
-            font-size: larger;
-        }
-
-        .module_card__divider {
-            position: relative !important;
-            margin-top: 16px;
-            margin-bottom: 16px;
-        }
-    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {

@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { ActivatedRoute } from "@angular/router";
-import { isNullOrUndefined } from "util";
-import { CompositeEntityAction } from "entity-store";
-import { getSelectedLogEntrySelector } from "../selectors/log-entry.selectors";
-import { LogState, logStoreFeature } from "../models/log-state.model";
-import { logEntryType } from "../models/log-entry.model";
+import { getSelectedLogEntry } from "../selectors/log.selectors";
+import { LogState } from "../models/log.models";
+import { logStore } from "../reducers/log.reducer";
+import { filter } from "rxjs/operators";
 
 @Component({
     selector: "dgp-log-page",
@@ -32,32 +31,25 @@ import { logEntryType } from "../models/log-entry.model";
 
 export class LogPageComponent {
 
-    readonly logEntry$ = this.store.pipe(
-        select(getSelectedLogEntrySelector)
-    );
+    readonly logEntry$ = this.store.select(getSelectedLogEntry);
 
     constructor(
         private readonly store: Store<LogState>,
         private readonly activatedRoute: ActivatedRoute
     ) {
         activatedRoute.params
+            .pipe(filter(params => params.logEntryId))
             .subscribe(params => {
 
-                if (!isNullOrUndefined(params.logEntryId)) {
-                    const logEntryId = params.logEntryId;
-                    this.store.dispatch(
-                        new CompositeEntityAction({
-                            select: [{
-                                entityType: logEntryType,
-                                storeFeature: logStoreFeature,
-                                payload: [logEntryId]
-                            }]
-                        })
-                    );
-                }
+                this.store.dispatch(
+                    logStore.actions.composeEntityActions({
+                        select: {
+                            logEntry: [params.logEntryId]
+                        }
+                    })
+                );
 
             });
     }
-
 
 }

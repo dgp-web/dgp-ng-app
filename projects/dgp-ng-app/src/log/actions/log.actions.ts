@@ -1,24 +1,22 @@
-import { Action } from "@ngrx/store";
-import { LogEntry } from "../models/log-entry.model";
+import { Action, createAction, props } from "@ngrx/store";
+import { LogEntry } from "../models/log.models";
 
-export const logErrorActionType = "[Log] LogError";
+export interface LogErrorPayload {
+    readonly title: string;
+    readonly error?: any;
+}
+
+export const logError = createAction("[Log] LogError", props<{
+    readonly payload: LogErrorPayload
+}>());
+
+export const addLogEntry = createAction("[Log] AddLogEntry", props<{ readonly logEntry: LogEntry }>());
+
+export const logErrorActionType = logError.type;
 
 export class LogErrorAction implements Action {
     readonly type = logErrorActionType;
 
-    constructor(public readonly payload: {
-        readonly title: string;
-        readonly error?: any;
-    }) {
+    constructor(public readonly payload: LogErrorPayload) {
     }
 }
-
-export const addLogEntryActionType = "[Log] AddLogEntry";
-
-export class AddLogEntryAction implements Action {
-    readonly type = addLogEntryActionType;
-
-    constructor(public readonly logEntry: LogEntry) {
-    }
-}
-

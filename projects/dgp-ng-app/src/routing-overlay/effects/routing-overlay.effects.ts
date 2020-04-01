@@ -4,8 +4,8 @@ import { isNullOrUndefined } from "util";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
 import { timer, of } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
-import { MatDialog, MatDialogRef } from "@angular/material";
-import { ShowLoadingSpinnerAction, showLoadingSpinnerActionType } from "../actions/routing-overlay.actions";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { showLoadingSpinner } from "../actions/routing-overlay.actions";
 import { RoutingOverlayComponent } from "../components/routing-overlay.component";
 
 @Injectable()
@@ -17,12 +17,12 @@ export class RoutingOverlayEffects {
     readonly observeRouteEvents$ = this.router.events.pipe(
         map(event => {
             if (event instanceof ActivationStart) {
-                return new ShowLoadingSpinnerAction(true);
+                return showLoadingSpinner({ showSpinner: true });
             }
             if (event instanceof NavigationEnd
                 || event instanceof NavigationCancel
                 || event instanceof NavigationError) {
-                return new ShowLoadingSpinnerAction(false);
+                return showLoadingSpinner({ showSpinner: false });
             }
             return null;
 
@@ -34,7 +34,7 @@ export class RoutingOverlayEffects {
         dispatch: false
     })
     readonly showLoadingSpinner$ = this.actions$.pipe(
-        ofType<ShowLoadingSpinnerAction>(showLoadingSpinnerActionType),
+        ofType(showLoadingSpinner),
         distinctUntilKeyChanged("showSpinner"),
         switchMap(action => {
             if (action.showSpinner) {

@@ -1,4 +1,4 @@
-import { Action } from "@ngrx/store";
+import { Action, createAction, props } from "@ngrx/store";
 import { BroadcastRole } from "../models/broadcast-role.model";
 
 export const setOwnBroadcastRoleActionType = "[BroadcastChannel] SetOwnRole";
@@ -12,6 +12,8 @@ export class SetOwnBroadcastRoleAction implements Action {
     }
 }
 
+export const setOwnBroadcastRole = createAction(setOwnBroadcastRoleActionType, props<{ broadcastRole: BroadcastRole }>());
+
 export const setBroadcastChannelDataIdActionType = "[BroadcastChannel] SetSelectedDataId";
 
 export class SetBroadcastChannelDataIdAction implements Action {
@@ -22,6 +24,8 @@ export class SetBroadcastChannelDataIdAction implements Action {
     ) {
     }
 }
+
+export const setBroadcastChannelDataId = createAction(setBroadcastChannelDataIdActionType, props<{ readonly payload: any; }>());
 
 export const leaderActionTypePrefix = "[Leader] ";
 export const peonActionTypePrefix = "[Peon] ";

@@ -11,45 +11,6 @@ npm install --save dgp-ng-app
 
 ## Documentation ##
 
-### Spacer ###
-
-Invisible component that fills empty space.
-
-
-1: Import ``DgSpacerModule`` in your feature module.
-
-```
-import { DgpSpacerModule } from "dgp-ng-app";
-
-// ...
-
-@NgModule({
-    imports: [
-        DgpSpacerModule,
-        // ...
-    ]
-})
-export class FeatureModule {}
-``` 
-
-2: Add the component to your template.
-
-```
-<mat-toolbar>
-    
-    Feature title
-    
-    <dgp-spacer></dgp-spacer>
-    
-    <button mat-icon-button>
-        <mat-icon>add</mat-icon>
-    </button>
-
-</mat-toolbar>
-
-```
-
-
 ### Hot-module replacement ###
 
 Helps keep your store state between HMR-related application reloads.
@@ -83,30 +44,6 @@ export class AppModule extends DgpNgApp {
 
 }
 ```
-
-### Log ###
-
-Feature to create and view log entries.
-
-1: Import ``DgpLogModule`` in your main module.
-
-```
-import { DgpLogModule } from "dgp-ng-app";
-
-// ...
-
-@NgModule({
-    imports: [
-        DgpLogModule,
-        // ...
-    ]
-})
-export class AppModule {}
-``` 
-
-2: Create some option to route to it. It's located under ``/logEntries``.
-
-3: Create log actions to populate your log via ``AddLogEntryAction`` and ``LogErrorAction``.
 
 ### Virtual-list panel ###
 

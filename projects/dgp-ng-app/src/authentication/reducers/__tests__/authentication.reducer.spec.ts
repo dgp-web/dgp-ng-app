@@ -1,7 +1,0 @@
-describe("authenticationReducer", () => {
-
-    xit(`should ...`, () => {
-
-    });
-
-});

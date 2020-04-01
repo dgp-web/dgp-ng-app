@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { PageHeaderComponent } from "./page-header.component";
-import { MatProgressBarModule, MatToolbarModule } from "@angular/material";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { CommonModule } from "@angular/common";
 
 @NgModule({

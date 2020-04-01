@@ -5,7 +5,7 @@ import { Action, Store, StoreModule } from "@ngrx/store";
 import { EffectsMetadata, getEffectsMetadata } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
 
-import { MatSnackBarModule } from "@angular/material";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { BroadcastEffects } from "../broadcast.effects";
 import { BroadcastFunctionsTestData } from "../../functions/__tests__/broadcast-functions.test-data.spec";
@@ -74,6 +74,13 @@ describe(BroadcastEffects.name, () => {
             imports: [
                 StoreModule.forRoot({
                     [broadcastStoreFeature]: broadcastReducer as any
+                }, {
+                    runtimeChecks: {
+                        strictActionImmutability: true,
+                        strictActionSerializability: true,
+                        strictStateImmutability: true,
+                        strictStateSerializability: true
+                    }
                 }),
                 MatSnackBarModule
             ],

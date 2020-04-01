@@ -13,18 +13,16 @@ import { environment } from "../environments/environment";
             appReducer, {
                 metaReducers: appMetaReducers,
                 runtimeChecks: {
-                    strictActionImmutability: true,
+                    strictActionImmutability: false,
                     strictActionSerializability: false,
-                    strictStateImmutability: true,
-                    strictStateSerializability: true
+                    strictStateImmutability: false,
+                    strictStateSerializability: false
                 }
             }
         ),
         EffectsModule.forRoot([
             effects.AppEffects
         ]),
-
-        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
 
         dgp.DgpRequestStoreModule,
     ],

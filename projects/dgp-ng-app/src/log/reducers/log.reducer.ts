@@ -1,25 +1,9 @@
-import { ActionReducerMap } from "@ngrx/store";
-import { FactoryProvider, InjectionToken } from "@angular/core";
-import { createEntityReducer } from "entity-store";
-import { LogState, logStoreFeature } from "../models/log-state.model";
-import { logEntryType } from "../models/log-entry.model";
+import { createEntityStore } from "entity-store";
+import { LogStoreFeature, LogStoreSchema } from "../models/log.models";
 
-export const logStoreReducerImpl: ActionReducerMap<LogState> = {
-
-    logEntries: createEntityReducer({
-        entityType: logEntryType,
-        storeFeature: logStoreFeature
-    })
-
-};
-
-export const logStoreReducer = new InjectionToken<LogState>("LogStoreReducer");
-
-export function logStoreReducerFactory(): ActionReducerMap<LogState> {
-    return logStoreReducerImpl;
-}
-
-export const logStoreReducerProviders = [{
-    provide: logStoreReducer,
-    useFactory: logStoreReducerFactory
-} as FactoryProvider];
+export const logStore = createEntityStore<LogStoreSchema, LogStoreFeature>({
+    entityTypes: [
+        "logEntry"
+    ],
+    storeFeature: "LogStore"
+});

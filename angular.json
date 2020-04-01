@@ -22,7 +22,7 @@
                         "main": "projects/ng-app/src/main.ts",
                         "polyfills": "projects/ng-app/src/polyfills.ts",
                         "tsConfig": "projects/ng-app/tsconfig.app.json",
-                        "aot": false,
+                        "aot": true,
                         "progress": false,
                         "assets": [
                             "projects/ng-app/src/favicon.ico",
@@ -51,7 +51,6 @@
                             "sourceMap": false,
                             "extractCss": true,
                             "namedChunks": false,
-                            "aot": true,
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
@@ -73,14 +72,10 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "hmr": true,
-                        "hmrWarning": false,
                         "browserTarget": "ng-app:build"
                     },
                     "configurations": {
                         "production": {
-                            "hmr": false,
-                            "hmrWarning": true,
                             "browserTarget": "ng-app:build:production"
                         }
                     }
@@ -106,7 +101,8 @@
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/ng-app/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "progress": false
                     }
                 },
                 "lint": {
@@ -148,7 +144,12 @@
                         "tsConfig": "projects/dgp-ng-app/tsconfig.lib.json",
                         "project": "projects/dgp-ng-app/ng-package.json"
                     }
-                },
+                ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/dgp-ng-app/tsconfig.lib.prod.json"
+            }
+          }
+},
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
@@ -163,6 +164,46 @@
                         "tsConfig": [
                             "projects/dgp-ng-app/tsconfig.lib.json",
                             "projects/dgp-ng-app/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "dgp-ng-docs": {
+            "projectType": "library",
+            "root": "projects/dgp-ng-docs",
+            "sourceRoot": "projects/dgp-ng-docs/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.json",
+                        "project": "projects/dgp-ng-docs/ng-package.json"
+                    }
+                ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.prod.json"
+            }
+          }
+},
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/dgp-ng-docs/src/test.ts",
+                        "tsConfig": "projects/dgp-ng-docs/tsconfig.spec.json",
+                        "karmaConfig": "projects/dgp-ng-docs/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/dgp-ng-docs/tsconfig.lib.json",
+                            "projects/dgp-ng-docs/tsconfig.spec.json"
                         ],
                         "exclude": [
                             "**/node_modules/**"

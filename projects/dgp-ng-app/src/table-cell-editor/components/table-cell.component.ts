@@ -1,26 +1,22 @@
 import {
     ChangeDetectionStrategy,
-    Component, ContentChild,
+    Component,
+    ContentChild,
     ElementRef,
     EventEmitter,
     Input,
-    Output, TemplateRef,
+    Output,
+    TemplateRef,
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { MatDialog, MatDialogConfig } from "@angular/material";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
-
-export interface TableCellEditorSizes {
-    readonly offsetTop: number;
-    readonly offsetLeft: number;
-    readonly availableSpace: {
-        left: number;
-        right: number;
-        top: number;
-        bottom: number;
-    };
-}
+import { MatDialogRef } from "@angular/material/dialog";
+import {
+    computeTableCellEditorSizes,
+    getDialogPositionFromTableCellEditorSizes
+} from "../functions";
 
 @Component({
     selector: "dgp-table-cell",
@@ -69,7 +65,7 @@ export interface TableCellEditorSizes {
 export class DgpTableCellComponent {
 
     @Input()
-    editDialogConfig: MatDialogConfig<any> = {
+    editDialogConfig: MatDialogConfig = {
         width: "240px"
     };
 
@@ -86,13 +82,15 @@ export class DgpTableCellComponent {
     scrollParentSelector: string;
 
     @ContentChild(DgpTableCelLEditorDirective, {
-        read: TemplateRef, static: false
-    })
+    read: TemplateRef
+})
     editorTemplate: TemplateRef<any>;
 
     @ViewChild("triggerButton", {
-        read: ElementRef, static: false
-    }) buttonElRef: ElementRef;
+    read: ElementRef
+}) buttonElRef: ElementRef;
+
+    private dialogRef: MatDialogRef<any>;
 
     constructor(private readonly matDialog: MatDialog) {
     }
@@ -101,39 +99,34 @@ export class DgpTableCellComponent {
 
         this.editorOpened.emit();
 
-        const button = this.buttonElRef.nativeElement as HTMLElement;
-        const width = +this.editDialogConfig.width.replace("px", "");
-        const boundingClientRect = this.buttonElRef.nativeElement.getBoundingClientRect() as ClientRect;
+        const triggerButtonElement = this.buttonElRef.nativeElement as HTMLElement;
+        const configureDialogWidth = +this.editDialogConfig.width.replace("px", "");
+        const tableCellBoundingRect = this.buttonElRef.nativeElement.getBoundingClientRect() as ClientRect;
 
-        const sizes: TableCellEditorSizes = {
-            offsetTop: (boundingClientRect.top + button.offsetHeight),
-            offsetLeft: boundingClientRect.left,
-            availableSpace: {
-                left: boundingClientRect.left,
-                right: window.innerWidth - (boundingClientRect.left),
-                bottom: window.innerHeight - (boundingClientRect.top + button.offsetHeight),
-                top: window.innerHeight - boundingClientRect.top
-            }
-        };
+        const tableCellEditorSizes = computeTableCellEditorSizes({
+            tableCellBoundingRect, triggerButtonElement, window: window
+        });
 
-        const position = {
-            top: sizes.offsetTop + "px",
-            left: sizes.offsetLeft + "px",
-            bottom: null,
-            right: null
-        };
+        const position = getDialogPositionFromTableCellEditorSizes({
+            tableCellEditorSizes, configureDialogWidth
+        });
 
-        if (sizes.availableSpace.right < width && sizes.availableSpace.left >= width) {
-            position.left = (boundingClientRect.right - width) + "px";
-        }
-
-        await this.matDialog.open(this.editorTemplate, {
+        this.dialogRef = this.matDialog.open(this.editorTemplate, {
             ...this.editDialogConfig,
             position,
             backdropClass: "mat-dialog-no-backdrop",
-        }).afterClosed().toPromise();
+        });
 
+        await this.dialogRef.afterClosed().toPromise();
+
+        this.dialogRef = null;
         this.editorClosed.emit();
+    }
+
+    closeCellEditorDialog() {
+        if (this.dialogRef) {
+            this.dialogRef.close();
+        }
     }
 
 }

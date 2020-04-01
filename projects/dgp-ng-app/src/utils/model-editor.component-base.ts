@@ -1,9 +1,10 @@
-import { EventEmitter, Input, Output } from "@angular/core";
+import { EventEmitter, Input, Output, Directive } from "@angular/core";
 import * as _ from "lodash";
 
 /**
  * Base class for classes for manipulating a model
  */
+@Directive()
 export abstract class DgpModelEditorComponentBase<TModel> {
 
     protected modelValue: TModel;

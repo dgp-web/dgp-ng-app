@@ -1,6 +1,6 @@
 import { ApplicationRef } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { HmrReloadAction } from "./hmr.actions";
+import { hotReload } from "./hmr.actions";
 import { createNewHosts, removeNgStyles } from "@angularclass/hmr";
 import { take } from "rxjs/operators";
 
@@ -16,7 +16,7 @@ export class DgpNgApp {
             return;
         }
         if (store.rootState) {
-            this.ngrxStore.dispatch(new HmrReloadAction(store.rootState));
+            this.ngrxStore.dispatch(hotReload({ payload: store.rootState }));
         }
 
         Object.keys(store)
