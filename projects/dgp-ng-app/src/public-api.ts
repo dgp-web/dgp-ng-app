@@ -119,6 +119,7 @@ export {
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 
 // utils
+export { DgpContainer } from "./utils/container.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 export * from "./utils/select-entity-via-route.resolver-base";
 
