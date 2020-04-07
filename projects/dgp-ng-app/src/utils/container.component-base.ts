@@ -6,11 +6,13 @@ import { Selector } from "entity-store";
 // tslint:disable-next-line:directive-class-suffix
 export abstract class DgpContainer<TState = any> {
 
-    readonly select = <TV>(x: Selector<TState, TV>) => this.store.select(x);
-
     constructor(
         protected readonly store: Store<TState>
     ) {
     }
+
+    readonly dispatch = this.store.dispatch;
+
+    readonly select = <TV>(x: Selector<TState, TV>) => this.store.select(x);
 
 }
