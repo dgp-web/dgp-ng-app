@@ -97,6 +97,10 @@ export { DgpRequestStoreModule } from "./request-store/request-store.module";
 export * from "./routing-overlay/actions/routing-overlay.actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
 
+// safe pipe
+export * from "./safe/safe.pipe";
+export * from "./safe/safe-pipe.module";
+
 // spacer
 export { SpacerComponent } from "./spacer/components/spacer.component";
 export { DgpSpacerModule } from "./spacer/spacer.module";
