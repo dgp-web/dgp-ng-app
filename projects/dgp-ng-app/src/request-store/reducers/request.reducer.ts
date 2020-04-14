@@ -1,9 +1,9 @@
-import { RequestState } from "../models/request-state.model";
+import { RequestState } from "../models";
 import {
     registerRequestActionType,
     resetRequestsActionType,
     unregisterRequestActionType
-} from "../actions/request.actions";
+} from "../actions";
 import { Action } from "@ngrx/store";
 
 export const requestReducer = (state: RequestState = {pendingRequests: 0}, action: Action): RequestState => {

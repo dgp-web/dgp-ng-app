@@ -5,8 +5,8 @@ import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/opera
 import { timer, of } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { showLoadingSpinner } from "../actions/routing-overlay.actions";
-import { RoutingOverlayComponent } from "../components/routing-overlay.component";
+import { showLoadingSpinner } from "./actions";
+import { RoutingOverlayComponent } from "./components/routing-overlay.component";
 
 @Injectable()
 export class RoutingOverlayEffects {

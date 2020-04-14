@@ -1,4 +1,6 @@
-import { RequestState } from "./request-state.model";
+export interface RequestState {
+    readonly pendingRequests: number;
+}
 
 export interface RequestStoreState {
     readonly requests: RequestState;

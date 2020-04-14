@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { requestStoreFeature, RequestStoreState } from "../models/request-store-state.model";
+import { requestStoreFeature, RequestStoreState } from "./models";
 
 export const requestStateSelector = createFeatureSelector<RequestStoreState>(
     requestStoreFeature

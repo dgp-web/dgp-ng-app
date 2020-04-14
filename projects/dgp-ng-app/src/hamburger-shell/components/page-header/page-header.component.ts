@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { RequestState } from "../../../request-store/models/request-state.model";
-import { hasPendingRequestsSelector } from "../../../request-store/selectors/request.selectors";
+import { RequestState } from "../../../request-store/models";
+import { hasPendingRequestsSelector } from "../../../request-store/selectors";
 
 @Component({
     selector: "dgp-page-header",

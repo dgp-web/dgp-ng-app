@@ -4,9 +4,9 @@ import { provideMockActions } from "@ngrx/effects/testing";
 import { ReplaySubject } from "rxjs";
 import { StoreModule } from "@ngrx/store";
 import { first } from "rxjs/operators";
-import { RequestEffects } from "../request.effects";
-import { scheduleRequest } from "../../actions/request.actions";
-import * as functions from "../../functions/observe-request.function";
+import { RequestEffects } from "./effects";
+import { scheduleRequest } from "./actions";
+import * as functions from "./functions";
 
 xdescribe(RequestEffects.name, () => {
 

@@ -2,8 +2,8 @@ import { Observable, Observer, from, empty } from "rxjs";
 import { tap, defaultIfEmpty, first, catchError } from "rxjs/operators";
 
 export interface ObserveRequestPayload<T> {
-    request$: Promise<T> | Observable<T>;
-    observer: Observer<T>;
+    readonly request$: Promise<T> | Observable<T>;
+    readonly observer: Observer<T>;
 }
 
 /**

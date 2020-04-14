@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { closeHamburgerMenu } from "../actions/hamburger-shell.actions";
 import { hamburgerMenuModeSelector, isHamburgerMenuOpenSelector } from "../selectors/hamburger-shell.selectors";
-import { hasPendingRequestsSelector } from "../../request-store/selectors/request.selectors";
+import { hasPendingRequestsSelector } from "../../request-store/selectors";
 import { HamburgerShellState } from "../models/hamburger-shell-state.model";
 
 @Component({

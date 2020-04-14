@@ -6,9 +6,9 @@ import { concatMap } from "rxjs/operators";
 import { Actions } from "@ngrx/effects";
 import {
     registerRequest, scheduleRequest, unregisterRequest,
-} from "../actions/request.actions";
-import { RequestStoreState } from "../models/request-store-state.model";
-import { observeRequest } from "../functions/observe-request.function";
+} from "./actions";
+import { RequestStoreState } from "./models";
+import { observeRequest } from "./functions";
 
 @Injectable()
 export class RequestEffects {

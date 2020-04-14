@@ -1,4 +1,4 @@
-import { observeRequest } from "../observe-request.function";
+import { observeRequest } from "./functions";
 import { Observer, Observable, of, throwError } from "rxjs";
 
 describe("observeRequest", () => {

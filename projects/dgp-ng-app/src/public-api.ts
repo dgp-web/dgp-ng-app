@@ -83,18 +83,18 @@ export { LogState, logStoreFeature } from "./log/models/log.models";
 export { DgpLogModule } from "./log/log.module";
 
 // request-store
-export { requestStoreFeature } from "./request-store/models/request-store-state.model";
-export { RequestState } from "./request-store/models/request-state.model";
+export { requestStoreFeature } from "./request-store/models";
+export { RequestState } from "./request-store/models";
 export {
     ScheduleRequestAction, scheduleRequest, scheduleRequestActionType
-} from "./request-store/actions/request.actions";
+} from "./request-store/actions";
 export {
     hasPendingRequestsSelector, hasPendingRequests, requestStateSelector
-} from "./request-store/selectors/request.selectors";
+} from "./request-store/selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
-export * from "./routing-overlay/actions/routing-overlay.actions";
+export * from "./routing-overlay/actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
 
 // safe pipe

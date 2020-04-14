@@ -1,7 +1,7 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { FactoryProvider, InjectionToken } from "@angular/core";
 import { requestReducer } from "./request.reducer";
-import { RequestStoreState } from "../models/request-store-state.model";
+import { RequestStoreState } from "../models";
 
 export const requestStoreReducerImpl: ActionReducerMap<RequestStoreState> = {
     requests: requestReducer

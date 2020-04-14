@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
-import { requestStoreFeature } from "./models/request-store-state.model";
+import { requestStoreFeature } from "./models";
 import { requestStoreReducer, requestStoreReducerProviders } from "./reducers/reducer";
-import { RequestEffects } from "./effects/request.effects";
+import { RequestEffects } from "./effects";
 
 @NgModule({
     imports: [
