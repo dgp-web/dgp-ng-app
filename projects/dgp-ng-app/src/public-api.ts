@@ -118,7 +118,7 @@ export { themeSwitcherStoreFeature } from "./theme-switcher/models/theme-switche
 export { ThemeSwitcherConfig } from "./theme-switcher/models/theme-switcher-config.model";
 export { ThemeSwitcherState } from "./theme-switcher/models/theme-switcher-state.model";
 export {
-    themeSwitcherFeatureSelector, isDarkModeActiveSelector
+    themeSwitcherFeatureSelector, isDarkModeActiveSelector, isDarkModeActive
 } from "./theme-switcher/selectors/theme-switcher.selectors";
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 

@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { isDarkModeActiveSelector } from "../selectors/theme-switcher.selectors";
+import { isDarkModeActive } from "../selectors/theme-switcher.selectors";
 import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
 import { toggleDarkMode } from "../actions/theme-switcher.actions";
+import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({
     selector: "dgp-dark-mode-toggle",
@@ -21,17 +21,11 @@ import { toggleDarkMode } from "../actions/theme-switcher.actions";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class DarkModeToggleComponent {
+export class DarkModeToggleComponent extends DgpContainer<ThemeSwitcherState> {
 
-    readonly useDarkMode$ = this.store.select(isDarkModeActiveSelector);
+    readonly useDarkMode$ = this.select(isDarkModeActive);
 
-    constructor(
-        private readonly store: Store<ThemeSwitcherState>
-    ) {
+    toggleDarkMode() {
+        this.dispatch(toggleDarkMode());
     }
-
-    toggleDarkMode(): void {
-        this.store.dispatch(toggleDarkMode());
-    }
-
 }

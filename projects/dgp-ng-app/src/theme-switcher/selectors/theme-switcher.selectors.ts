@@ -9,3 +9,5 @@ export const themeSwitcherFeatureSelector = createFeatureSelector<ThemeSwitcherS
 export const isDarkModeActiveSelector = createSelector(
     themeSwitcherFeatureSelector, x => x.useDarkMode
 );
+
+export const isDarkModeActive = isDarkModeActiveSelector;

@@ -1,8 +1,8 @@
 import { async, TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
-import { isDarkModeActiveSelector, themeSwitcherStoreFeature } from "dgp-ng-app";
 import { first } from "rxjs/operators";
-import { themeSwitcherReducerImpl } from "dgp-ng-app/theme-switcher/reducers/theme-switcher.reducer";
+import { isDarkModeActiveSelector, themeSwitcherStoreFeature } from "../../public-api";
+import { themeSwitcherReducerImpl } from "../reducers/theme-switcher.reducer";
 
 describe("theme-switcher selectors", () => {
 

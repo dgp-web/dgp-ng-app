@@ -1,5 +1,5 @@
-import { initialThemeSwitcherState, themeSwitcherReducerImpl } from "dgp-ng-app/theme-switcher/reducers/theme-switcher.reducer";
-import { setIsDarkModeActive, toggleDarkMode } from "dgp-ng-app";
+import { setIsDarkModeActive, toggleDarkMode } from "../actions/theme-switcher.actions";
+import { initialThemeSwitcherState, themeSwitcherReducerImpl } from "./theme-switcher.reducer";
 
 describe("themeSwitcherReducer", () => {
 

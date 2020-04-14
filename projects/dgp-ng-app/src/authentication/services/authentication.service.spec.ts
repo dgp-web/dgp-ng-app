@@ -1,7 +1,8 @@
 import { AuthenticationService, AuthenticationServiceImpl } from "./authentication.service";
-import { authenticateUser, AuthenticationApiClient, registerAuthenticateError } from "dgp-ng-app";
 import { async, TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
+import { AuthenticationApiClient } from "../api-clients/authentication.api-client";
+import { authenticateUser, registerAuthenticateError } from "../actions/authentication.actions";
 
 interface TestUser {
     label: string;

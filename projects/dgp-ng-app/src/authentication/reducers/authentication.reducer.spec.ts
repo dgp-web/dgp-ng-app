@@ -1,8 +1,8 @@
 import { authenticationReducerImpl, initialAuthenticationState } from "./authentication.reducer";
-import { authenticateUser, AuthenticationState, cacheInitialUrl, registerAuthenticateError } from "dgp-ng-app";
+import { AuthenticationState } from "../models/authentication-result.model";
+import { authenticateUser, cacheInitialUrl, registerAuthenticateError } from "../actions/authentication.actions";
 
 describe("authenticationReducer", () => {
-
 
     it(`authenticateUser should set user to the action's payload and success to true`, () => {
 

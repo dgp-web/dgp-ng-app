@@ -1,12 +1,13 @@
-import {
-    AuthenticationApiClient, AuthenticationGuard,
-    DgpAuthenticationModule, getAuthenticatedUserSelector, getCachedInitialUrlSelector, getIsAuthenticatedSelector, hasCachedInitialUrlSelector, InitializationService
-} from "dgp-ng-app";
 import { async, TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { RouterStateSnapshot } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
+import { AuthenticationApiClient } from "../api-clients/authentication.api-client";
+import { InitializationService } from "../services/initialization.service";
+import { AuthenticationGuard } from "./authentication.guard";
+import { DgpAuthenticationModule } from "../authentication.module";
+import { getCachedInitialUrlSelector, hasCachedInitialUrlSelector } from "../selectors/authentication.selectors";
 
 interface TestUser {
     label: string;

@@ -1,10 +1,13 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ChangeDetectionStrategy } from "@angular/core";
-import { DarkModeToggleComponent, ThemeSwitcherState, themeSwitcherStoreFeature, toggleDarkMode } from "dgp-ng-app";
 import { Store, StoreModule } from "@ngrx/store";
 import { themeSwitcherReducerImpl } from "../reducers/theme-switcher.reducer";
 import { FormsModule } from "@angular/forms";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { toggleDarkMode } from "../actions/theme-switcher.actions";
+import { DarkModeToggleComponent } from "./dark-mode-toggle.component";
+import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
+import { themeSwitcherStoreFeature } from "../models/theme-switcher-store-feature.model";
 
 describe(DarkModeToggleComponent.name, () => {
 

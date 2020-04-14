@@ -37,7 +37,7 @@ xdescribe(RequestEffects.name, () => {
     });
 
     it(`should register scheduleRequest$ that doesn't dispatch an action.`, () => {
-        expect(metadata.scheduleRequest$).toEqual({dispatch: false});
+        expect(metadata.scheduleRequest$).toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should call observeRequest() with the passed request.`, async () => {

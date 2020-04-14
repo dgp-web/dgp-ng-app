@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ChangeDetectionStrategy } from "@angular/core";
-import { DgpEmptyStateModule, EmptyStateComponent } from "dgp-ng-app";
+import { EmptyStateComponent } from "./empty-state.component";
+import { DgpEmptyStateModule } from "../empty-state.module";
 
 describe(EmptyStateComponent.name, () => {
 

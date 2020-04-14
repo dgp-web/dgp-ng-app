@@ -1,10 +1,10 @@
-import { ThemeSwitcherEffects } from "dgp-ng-app/theme-switcher/effects/theme-switcher.effects";
 import { async, TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
-import { ThemeSwitcherState, themeSwitcherStoreFeature } from "dgp-ng-app";
-import { themeSwitcherReducerImpl } from "dgp-ng-app/theme-switcher/reducers/theme-switcher.reducer";
 import { EffectsMetadata, EffectsModule, getEffectsMetadata } from "@ngrx/effects";
-
+import { ThemeSwitcherEffects } from "./theme-switcher.effects";
+import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
+import { themeSwitcherStoreFeature } from "../models/theme-switcher-store-feature.model";
+import { themeSwitcherReducerImpl } from "../reducers/theme-switcher.reducer";
 
 describe(ThemeSwitcherEffects.name, () => {
 
@@ -31,8 +31,8 @@ describe(ThemeSwitcherEffects.name, () => {
         })
             .compileComponents();
 
-        store = TestBed.get(Store);
-        effects = TestBed.get(ThemeSwitcherEffects);
+        store = TestBed.inject(Store);
+        effects = TestBed.inject(ThemeSwitcherEffects);
         metadata = getEffectsMetadata(effects);
 
     }));
@@ -44,7 +44,7 @@ describe(ThemeSwitcherEffects.name, () => {
 
     it(`should register toggleDarkMode$ that doesn't dispatch an action.`, () => {
         expect(metadata.toggleDarkMode$)
-            .toEqual({dispatch: false, resubscribeOnError: true});
+            .toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
 });
