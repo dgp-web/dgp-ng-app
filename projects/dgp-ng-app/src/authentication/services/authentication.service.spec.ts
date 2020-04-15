@@ -1,21 +1,14 @@
 import { AuthenticationService, AuthenticationServiceImpl } from "./authentication.service";
 import { async, TestBed } from "@angular/core/testing";
-import { Store, StoreModule } from "@ngrx/store";
-import { AuthenticationApiClient } from "../api-clients/authentication.api-client";
+import { Store } from "@ngrx/store";
 import { authenticateUser, registerAuthenticateError } from "../actions/authentication.actions";
-
-interface TestUser {
-    label: string;
-}
-
-const testUser: TestUser = {label: ""};
-const testError: Error = {message: "", name: ""};
-
-class TestAuthenticationApiClient implements AuthenticationApiClient<TestUser> {
-    authenticate$(): Promise<TestUser> {
-        return Promise.resolve(testUser);
-    }
-}
+import {
+    configureAuthenticationTestingModule,
+    TestAuthenticationApiClient,
+    testError,
+    TestUser,
+    testUser
+} from "../test";
 
 describe(AuthenticationService.name, () => {
 
@@ -26,20 +19,9 @@ describe(AuthenticationService.name, () => {
 
     beforeEach(async(async () => {
 
-        await TestBed.configureTestingModule({
-            imports: [
-                StoreModule.forRoot({}, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
-                })
-            ]
-        });
+        await configureAuthenticationTestingModule();
 
-        store = TestBed.get(Store);
+        store = TestBed.inject(Store);
 
         authenticationService = new AuthenticationServiceImpl<TestUser>(
             store, authenticationApiClient

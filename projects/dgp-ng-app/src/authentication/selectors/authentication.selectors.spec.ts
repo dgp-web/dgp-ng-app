@@ -1,31 +1,10 @@
 import { async, TestBed } from "@angular/core/testing";
-import { Store, StoreModule } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { first } from "rxjs/operators";
-import { AuthenticationApiClient } from "../api-clients/authentication.api-client";
-import { InitializationService } from "../services/initialization.service";
-import { DgpAuthenticationModule } from "../authentication.module";
 import {
     getAuthenticatedUserSelector, getCachedInitialUrlSelector, getIsAuthenticatedSelector, hasCachedInitialUrlSelector
 } from "./authentication.selectors";
-
-interface TestUser {
-    label: string;
-}
-
-const testUser: TestUser = {label: ""};
-const testError: Error = {message: "", name: ""};
-
-class TestAuthenticationApiClient implements AuthenticationApiClient<TestUser> {
-    authenticate$(): Promise<TestUser> {
-        return Promise.resolve(testUser);
-    }
-}
-
-class TestInitializationService implements InitializationService<TestUser> {
-    runPostAuthenticationTask$(user: TestUser): Promise<void> {
-        return Promise.resolve();
-    }
-}
+import { configureAuthenticationTestingModule, testUser } from "../test";
 
 
 describe("authentication selectors", () => {
@@ -33,32 +12,8 @@ describe("authentication selectors", () => {
     let store: Store<any>;
 
     beforeEach(async(async () => {
-
-        await TestBed.configureTestingModule({
-            imports: [
-                StoreModule.forRoot({}, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
-                }),
-                DgpAuthenticationModule.forRoot({
-                    authenticationApiClientProvider: {
-                        provide: AuthenticationApiClient,
-                        useClass: TestAuthenticationApiClient
-                    },
-                    initializationServiceProvider: {
-                        provide: InitializationService,
-                        useClass: TestInitializationService
-                    }
-                })
-            ]
-        });
-
-        store = TestBed.get(Store);
-
+        await configureAuthenticationTestingModule();
+        store = TestBed.inject(Store);
     }));
 
     it("getAuthenticatedUserSelector should return the authenticatedUser", async () => {
