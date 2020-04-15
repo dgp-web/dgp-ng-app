@@ -3,13 +3,11 @@
  */
 
 // authentication
-export * from "./authentication/actions/authentication.actions";
+export * from "./authentication/actions";
 export * from "./authentication/api-clients/authentication.api-client";
 export * from "./authentication/guards/authentication.guard";
-export * from "./authentication/models/authentication-result.model";
-export * from "./authentication/models/authentication-store-feature";
-export * from "./authentication/models/post-authentication-task.model";
-export * from "./authentication/selectors/authentication.selectors";
+export * from "./authentication/models";
+export * from "./authentication/selectors";
 export * from "./authentication/services/authentication.service";
 export * from "./authentication/services/initialization.service";
 export * from "./authentication/authentication.module";

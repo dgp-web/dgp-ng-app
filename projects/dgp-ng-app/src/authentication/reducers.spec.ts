@@ -1,6 +1,6 @@
-import { authenticationReducerImpl, initialAuthenticationState } from "./authentication.reducer";
-import { AuthenticationState } from "../models/authentication-result.model";
-import { authenticateUser, cacheInitialUrl, registerAuthenticateError } from "../actions/authentication.actions";
+import { authenticationReducer, initialAuthenticationState } from "./reducers";
+import { AuthenticationState } from "./models";
+import { authenticateUser, cacheInitialUrl, registerAuthenticateError } from "./actions";
 
 describe("authenticationReducer", () => {
 
@@ -9,7 +9,7 @@ describe("authenticationReducer", () => {
         const user = {};
         const action = authenticateUser({user});
 
-        const state = authenticationReducerImpl(initialAuthenticationState, action);
+        const state = authenticationReducer(initialAuthenticationState, action);
 
         const expectedState: AuthenticationState = {
             ...initialAuthenticationState,
@@ -27,7 +27,7 @@ describe("authenticationReducer", () => {
         const initialUrl = "";
         const action = cacheInitialUrl({initialUrl});
 
-        const state = authenticationReducerImpl(initialAuthenticationState, action);
+        const state = authenticationReducer(initialAuthenticationState, action);
 
         const expectedState: AuthenticationState = {
             ...initialAuthenticationState,
@@ -44,7 +44,7 @@ describe("authenticationReducer", () => {
         const error = {};
         const action = registerAuthenticateError({error});
 
-        const state = authenticationReducerImpl(initialAuthenticationState, action);
+        const state = authenticationReducer(initialAuthenticationState, action);
 
         const expectedState: AuthenticationState = {
             ...initialAuthenticationState,

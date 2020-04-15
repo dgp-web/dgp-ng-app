@@ -1,7 +1,7 @@
 import { AuthenticationService, AuthenticationServiceImpl } from "./authentication.service";
 import { async, TestBed } from "@angular/core/testing";
 import { Store } from "@ngrx/store";
-import { authenticateUser, registerAuthenticateError } from "../actions/authentication.actions";
+import { authenticateUser, registerAuthenticateError } from "../actions";
 import {
     configureAuthenticationTestingModule,
     TestAuthenticationApiClient,

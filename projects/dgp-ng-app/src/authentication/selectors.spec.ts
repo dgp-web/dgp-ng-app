@@ -3,8 +3,8 @@ import { Store } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import {
     getAuthenticatedUserSelector, getCachedInitialUrlSelector, getIsAuthenticatedSelector, hasCachedInitialUrlSelector
-} from "./authentication.selectors";
-import { configureAuthenticationTestingModule, testUser } from "../test";
+} from "./selectors";
+import { configureAuthenticationTestingModule, testUser } from "./test";
 
 
 describe("authentication selectors", () => {

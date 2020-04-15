@@ -12,3 +12,7 @@ export interface AuthenticationState {
     readonly user?: any;
     readonly initialUrl: string;
 }
+
+export type PostAuthenticationTask<TUser> = (user: TUser) => Promise<void>;
+
+export const authenticationStoreFeature = "Authentication";

@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { RouterStateSnapshot } from "@angular/router";
 import { AuthenticationGuard } from "./authentication.guard";
-import { getCachedInitialUrlSelector, hasCachedInitialUrlSelector } from "../selectors/authentication.selectors";
+import { getCachedInitialUrlSelector, hasCachedInitialUrlSelector } from "../selectors";
 import { configureAuthenticationTestingModule } from "../test";
 
 describe("authentication selectors", () => {
