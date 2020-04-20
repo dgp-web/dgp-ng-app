@@ -3,9 +3,9 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import { defaultIfEmpty, map, switchMap } from "rxjs/operators";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { addLogEntry, logError } from "../actions/log.actions";
-import { LogEntry, Severity } from "../models/log.models";
-import { logStore } from "../reducers/log.reducer";
+import { addLogEntry, logError } from "./actions";
+import { LogEntry, Severity } from "./models";
+import { logStore } from "./reducers";
 
 @Injectable()
 export class LogEffects {

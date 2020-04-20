@@ -75,9 +75,9 @@ export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
 // log
-export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions/log.actions";
-export { LogEntry, Severity } from "./log/models/log.models";
-export { LogState, logStoreFeature } from "./log/models/log.models";
+export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
+export { LogEntry, Severity } from "./log/models";
+export { LogState, logStoreFeature } from "./log/models";
 export { DgpLogModule } from "./log/log.module";
 
 // request-store

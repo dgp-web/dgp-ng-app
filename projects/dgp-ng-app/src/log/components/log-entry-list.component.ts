@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
-import { Severity, LogState } from "../models/log.models";
-import { getAllLogEntries } from "../selectors/log.selectors";
+import { Severity, LogState } from "../models";
+import { getAllLogEntries } from "../selectors";
 
 @Component({
     selector: "dgp-log-entry-list",

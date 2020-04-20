@@ -1,5 +1,5 @@
 import { Action, createAction, props } from "@ngrx/store";
-import { LogEntry } from "../models/log.models";
+import { LogEntry } from "./models";
 
 export interface LogErrorPayload {
     readonly title: string;
@@ -7,7 +7,7 @@ export interface LogErrorPayload {
 }
 
 export const logError = createAction("[Log] LogError", props<{
-    readonly payload: LogErrorPayload
+    readonly payload: LogErrorPayload;
 }>());
 
 export const addLogEntry = createAction("[Log] AddLogEntry", props<{ readonly logEntry: LogEntry }>());

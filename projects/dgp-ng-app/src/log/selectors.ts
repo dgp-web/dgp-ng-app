@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { getAll } from "entity-store";
-import { LogState, logStoreFeature } from "../models/log.models";
-import { logStore } from "../reducers/log.reducer";
+import { LogState, logStoreFeature } from "./models";
+import { logStore } from "./reducers";
 
 export const logFeatureSelector = createFeatureSelector<LogState>(logStoreFeature);
 

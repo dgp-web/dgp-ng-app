@@ -44,7 +44,7 @@ describe("request selectors", () => {
         hasRequests = await store.select(hasPendingRequests)
             .pipe(first())
             .toPromise();
-        
+
         expect(hasRequests)
             .toBeTruthy();
 
