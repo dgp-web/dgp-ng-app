@@ -39,6 +39,7 @@ export * from "./file-viewer/components/fallback-file-viewer.component";
 export * from "./file-viewer/components/file-item-list.component";
 export * from "./file-viewer/components/file-viewer.component-base";
 export * from "./file-viewer/components/file-viewer.component";
+export * from "./file-viewer/components/dynamic-file-viewer.component";
 export * from "./file-viewer/components/jpg-viewer.component";
 export * from "./file-viewer/components/pdf-viewer.component";
 export * from "./file-viewer/components/png-viewer.component";
