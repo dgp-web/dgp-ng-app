@@ -9,6 +9,7 @@ import { provideMockActions } from "@ngrx/effects/testing";
 import { first } from "rxjs/operators";
 import { addLogEntry, logError } from "./actions";
 import { Severity } from "./models";
+import { logStore } from "./reducers";
 
 describe(LogEffects.name, () => {
 
@@ -24,7 +25,7 @@ describe(LogEffects.name, () => {
                 StoreModule.forRoot({}, {
                     runtimeChecks: {
                         strictActionImmutability: true,
-                        strictActionSerializability: false,
+                        strictActionSerializability: true,
                         strictStateImmutability: true,
                         strictStateSerializability: true
                     }
@@ -50,7 +51,7 @@ describe(LogEffects.name, () => {
     });
 
     it("should register logError$ that dispatches an action", () => {
-        expect(metadata.logError$).toEqual({dispatch: true, useEffectsErrorHandler: true});
+        expect(metadata.logError$).toEqual({ dispatch: true, useEffectsErrorHandler: true });
     });
 
     it(`logError$ should react to logError() and return addLogEntry()`, async () => {
@@ -86,6 +87,37 @@ describe(LogEffects.name, () => {
         expect(result.logEntry.title).toEqual(
             expectedResult.logEntry.title
         );
+
+    });
+
+    it("should register addLogEntry$ that dispatches an action", () => {
+        expect(metadata.addLogEntry$).toEqual({ dispatch: true, useEffectsErrorHandler: true });
+    });
+
+    it(`addLogEntry$ should react to addLogEntry() and call logStore.actions.composeEntityActions`, async () => {
+
+        const action = addLogEntry({
+            logEntry: {
+                severity: Severity.Error,
+                timeStamp: new Date(),
+                title: "title",
+                content: {}
+            }
+        });
+
+        actions.next(action);
+
+        spyOn(logStore.actions, "composeEntityActions").and.callThrough();
+
+        await effects.addLogEntry$.pipe(first()).toPromise();
+
+        expect(logStore.actions.composeEntityActions).toHaveBeenCalledWith({
+            add: {
+                logEntry: {
+                    [action.logEntry.timeStamp.toString()]: action.logEntry
+                }
+            }
+        });
 
     });
 
