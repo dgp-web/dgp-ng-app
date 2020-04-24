@@ -16,13 +16,13 @@ export class LogEffects {
         map(action => {
 
             const logEntry: LogEntry = {
-                timeStamp: new Date(),
+                timeStamp: new Date().valueOf(),
                 title: action.payload.title,
                 content: action.payload.error,
                 severity: Severity.Error
             };
 
-            return addLogEntry({ logEntry });
+            return addLogEntry({logEntry});
 
         })
     );
@@ -48,20 +48,14 @@ export class LogEffects {
     })
     readonly showErrorSnack = this.actions$.pipe(
         ofType(addLogEntry),
-        switchMap(action => {
-
-            return this.matSnackbar.open(action.logEntry.title, "Show log", {
-                duration: 5000
-            })
-                .onAction()
-                .pipe(
-                    map(() => {
-                        return this.router.navigate(["/logEntries", action.logEntry.timeStamp.toString()]);
-                    }),
-                    defaultIfEmpty(null)
-                );
-
+        switchMap(action => this.matSnackbar.open(action.logEntry.title, "Show log", {
+            duration: 5000
         })
+            .onAction()
+            .pipe(
+                map(() => this.router.navigate(["/logEntries", action.logEntry.timeStamp.toString()])),
+                defaultIfEmpty(null)
+            ))
     );
 
     constructor(

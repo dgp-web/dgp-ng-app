@@ -14,7 +14,7 @@ export const getAllLogEntries = createSelector(
     getLogEntryState, x => {
         const entries = getAll(x);
         entries.sort((a, b) => {
-            return b.timeStamp.getTime() - a.timeStamp.getTime();
+            return b.timeStamp - a.timeStamp;
         });
         return entries;
     });

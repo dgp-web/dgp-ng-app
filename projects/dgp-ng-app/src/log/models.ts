@@ -5,7 +5,7 @@ export enum Severity {
 }
 
 export interface LogEntry {
-    readonly timeStamp: Date;
+    readonly timeStamp: number;
     readonly title: string;
     readonly content?: any;
     readonly severity: Severity;

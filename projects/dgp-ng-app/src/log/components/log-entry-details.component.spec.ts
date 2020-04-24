@@ -4,6 +4,7 @@ import { DgpLogModule } from "../log.module";
 import { StoreModule } from "@ngrx/store";
 import { RouterTestingModule } from "@angular/router/testing";
 import { EffectsModule } from "@ngrx/effects";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe(LogEntryDetailsComponent.name, () => {
 

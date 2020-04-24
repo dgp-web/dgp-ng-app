@@ -1,7 +1,7 @@
 import { LogEffects } from "./effects";
 import { DgpLogModule } from "./log.module";
 import { TestBed, async } from "@angular/core/testing";
-import { StoreModule, Store } from "@ngrx/store";
+import { StoreModule } from "@ngrx/store";
 import { RouterTestingModule } from "@angular/router/testing";
 import { getEffectsMetadata, EffectsMetadata, EffectsModule } from "@ngrx/effects";
 import { ReplaySubject } from "rxjs";
@@ -10,6 +10,7 @@ import { first } from "rxjs/operators";
 import { addLogEntry, logError } from "./actions";
 import { Severity } from "./models";
 import { logStore } from "./reducers";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe(LogEffects.name, () => {
 
@@ -32,7 +33,8 @@ describe(LogEffects.name, () => {
                 }),
                 EffectsModule.forRoot([]),
                 RouterTestingModule,
-                DgpLogModule
+                DgpLogModule,
+                NoopAnimationsModule
             ],
             providers: [
                 LogEffects,
@@ -47,11 +49,13 @@ describe(LogEffects.name, () => {
     }));
 
     it("should create", () => {
-        expect(effects).toBeDefined();
+        expect(effects)
+            .toBeDefined();
     });
 
     it("should register logError$ that dispatches an action", () => {
-        expect(metadata.logError$).toEqual({ dispatch: true, useEffectsErrorHandler: true });
+        expect(metadata.logError$)
+            .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`logError$ should react to logError() and return addLogEntry()`, async () => {
@@ -65,33 +69,30 @@ describe(LogEffects.name, () => {
 
         actions.next(action);
 
-        const result = await effects.logError$.pipe(first()).toPromise();
+        const result = await effects.logError$.pipe(first())
+            .toPromise();
 
         const expectedResult = addLogEntry({
             logEntry: {
                 severity: Severity.Error,
-                timeStamp: new Date(),
+                timeStamp: new Date().valueOf(),
                 title: action.payload.title,
                 content: action.payload.error
             }
         });
 
-        expect(result.logEntry.severity).toEqual(
-            expectedResult.logEntry.severity
-        );
-
-        expect(result.logEntry.content).toEqual(
-            expectedResult.logEntry.content
-        );
-
-        expect(result.logEntry.title).toEqual(
-            expectedResult.logEntry.title
-        );
+        expect(result.logEntry.severity)
+            .toEqual(expectedResult.logEntry.severity);
+        expect(result.logEntry.content)
+            .toEqual(expectedResult.logEntry.content);
+        expect(result.logEntry.title)
+            .toEqual(expectedResult.logEntry.title);
 
     });
 
     it("should register addLogEntry$ that dispatches an action", () => {
-        expect(metadata.addLogEntry$).toEqual({ dispatch: true, useEffectsErrorHandler: true });
+        expect(metadata.addLogEntry$)
+            .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`addLogEntry$ should react to addLogEntry() and call logStore.actions.composeEntityActions`, async () => {
@@ -99,7 +100,7 @@ describe(LogEffects.name, () => {
         const action = addLogEntry({
             logEntry: {
                 severity: Severity.Error,
-                timeStamp: new Date(),
+                timeStamp: new Date().valueOf(),
                 title: "title",
                 content: {}
             }
@@ -107,17 +108,21 @@ describe(LogEffects.name, () => {
 
         actions.next(action);
 
-        spyOn(logStore.actions, "composeEntityActions").and.callThrough();
+        spyOn(logStore.actions, "composeEntityActions")
+            .and
+            .callThrough();
 
-        await effects.addLogEntry$.pipe(first()).toPromise();
+        await effects.addLogEntry$.pipe(first())
+            .toPromise();
 
-        expect(logStore.actions.composeEntityActions).toHaveBeenCalledWith({
-            add: {
-                logEntry: {
-                    [action.logEntry.timeStamp.toString()]: action.logEntry
+        expect(logStore.actions.composeEntityActions)
+            .toHaveBeenCalledWith({
+                add: {
+                    logEntry: {
+                        [action.logEntry.timeStamp.toString()]: action.logEntry
+                    }
                 }
-            }
-        });
+            });
 
     });
 
