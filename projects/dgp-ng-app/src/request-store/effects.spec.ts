@@ -27,7 +27,7 @@ xdescribe(RequestEffects.name, () => {
             ]
         }).compileComponents();
 
-        effects = TestBed.get(RequestEffects);
+        effects = TestBed.inject(RequestEffects);
         metadata = getEffectsMetadata(effects);
         actions = new ReplaySubject(1);
     }));
