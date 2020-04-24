@@ -22,14 +22,7 @@ describe(LogEntryListComponent.name, () => {
                 RouterTestingModule,
                 StoreModule.forRoot({
                     [logStoreFeature]: LOG_STORE_REDUCER
-                } as any, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
-                }),
+                } as any),
                 EffectsModule.forRoot([]),
                 DgpEmptyStateModule,
                 MatListModule,

@@ -19,14 +19,7 @@ describe(LogPageComponent.name, () => {
         await TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
-                StoreModule.forRoot({}, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
-                }),
+                StoreModule.forRoot({}),
                 EffectsModule.forRoot([]),
                 DgpLogModule,
                 NoopAnimationsModule

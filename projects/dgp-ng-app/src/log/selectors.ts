@@ -19,6 +19,9 @@ export const getAllLogEntries = createSelector(
         return entries;
     });
 
+export const hasLogEntries = createSelector(
+    getAllLogEntries, x => x && x.length > 0
+);
 
 export const getSelectedLogEntry = createSelector(
     logFeatureSelector, logStore.selectors.logEntry.getFirstSelected

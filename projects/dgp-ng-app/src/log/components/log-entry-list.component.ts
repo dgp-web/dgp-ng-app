@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { map } from "rxjs/operators";
 import { Severity, LogState } from "../models";
-import { getAllLogEntries } from "../selectors";
+import { getAllLogEntries, hasLogEntries } from "../selectors";
 import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({
@@ -10,7 +9,7 @@ import { DgpContainer } from "../../utils/container.component-base";
         <mat-nav-list *ngIf="hasLogEntries$ | async; else emptyState">
             <h3 mat-subheader>Entries</h3>
             <a mat-list-item
-               *ngFor="let logEntry of (logEntries$ | async)"
+               *ngFor="let logEntry of logEntries$ | async"
                [routerLink]="['/logEntries', logEntry.timeStamp.toString()]">
                 <mat-icon mat-list-icon
                           *ngIf="logEntry.severity === severityEnum.Error">
@@ -48,7 +47,6 @@ export class LogEntryListComponent extends DgpContainer<LogState> {
     readonly severityEnum = Severity;
 
     readonly logEntries$ = this.select(getAllLogEntries);
-
-    readonly hasLogEntries$ = this.logEntries$.pipe(map(x => x && x.length > 0));
+    readonly hasLogEntries$ = this.select(hasLogEntries);
 
 }
