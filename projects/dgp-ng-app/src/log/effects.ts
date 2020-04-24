@@ -30,23 +30,19 @@ export class LogEffects {
     @Effect()
     readonly addLogEntry$ = this.actions$.pipe(
         ofType(addLogEntry),
-        map(action => {
-
-            return logStore.actions.composeEntityActions({
-                add: {
-                    logEntry: {
-                        [action.logEntry.timeStamp.toString()]: action.logEntry
-                    }
+        map(action => logStore.actions.composeEntityActions({
+            add: {
+                logEntry: {
+                    [action.logEntry.timeStamp.toString()]: action.logEntry
                 }
-            });
-
-        })
+            }
+        }))
     );
 
     @Effect({
         dispatch: false
     })
-    readonly showErrorSnack = this.actions$.pipe(
+    readonly showErrorSnack$ = this.actions$.pipe(
         ofType(addLogEntry),
         switchMap(action => this.matSnackbar.open(action.logEntry.title, "Show log", {
             duration: 5000

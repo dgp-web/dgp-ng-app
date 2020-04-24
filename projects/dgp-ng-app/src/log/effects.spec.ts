@@ -4,19 +4,21 @@ import { TestBed, async } from "@angular/core/testing";
 import { StoreModule } from "@ngrx/store";
 import { RouterTestingModule } from "@angular/router/testing";
 import { getEffectsMetadata, EffectsMetadata, EffectsModule } from "@ngrx/effects";
-import { ReplaySubject } from "rxjs";
+import { of, ReplaySubject } from "rxjs";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { first } from "rxjs/operators";
 import { addLogEntry, logError } from "./actions";
 import { Severity } from "./models";
 import { logStore } from "./reducers";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from "@angular/material/snack-bar";
 
 describe(LogEffects.name, () => {
 
     let effects: LogEffects;
     let metadata: EffectsMetadata<LogEffects>;
     let actions: ReplaySubject<any>;
+    let snackBar: MatSnackBar;
 
     beforeEach(async(() => {
 
@@ -46,6 +48,7 @@ describe(LogEffects.name, () => {
         metadata = getEffectsMetadata(effects);
 
         actions = new ReplaySubject(1);
+        snackBar = testBed.inject(MatSnackBar);
     }));
 
     it("should create", () => {
@@ -124,6 +127,36 @@ describe(LogEffects.name, () => {
                 }
             });
 
+    });
+
+    it("should register showErrorSnack$ that doesn't dispatch an action", () => {
+        expect(metadata.showErrorSnack$)
+            .toEqual({dispatch: false, useEffectsErrorHandler: true});
+    });
+
+    it(`showErrorSnack$ should open a snack`, async () => {
+
+        const action = addLogEntry({
+            logEntry: {
+                severity: Severity.Error,
+                timeStamp: new Date().valueOf(),
+                title: "title",
+                content: {}
+            }
+        });
+
+        actions.next(action);
+
+        spyOn(snackBar, "open").and.returnValue({
+            onAction: () => of(null),
+        } as unknown as MatSnackBarRef<SimpleSnackBar>);
+
+        await effects.showErrorSnack$.pipe(first())
+            .toPromise();
+
+        expect(snackBar.open).toHaveBeenCalledWith(action.logEntry.title, "Show log", {
+            duration: 5000
+        });
     });
 
 });
