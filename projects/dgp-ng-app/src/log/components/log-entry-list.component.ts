@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { Severity, LogState } from "../models";
 import { getAllLogEntries } from "../selectors";
+import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({
     selector: "dgp-log-entry-list",
@@ -43,19 +43,12 @@ import { getAllLogEntries } from "../selectors";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class LogEntryListComponent {
+export class LogEntryListComponent extends DgpContainer<LogState> {
 
     readonly severityEnum = Severity;
 
-    readonly logEntries$ = this.store.select(getAllLogEntries);
+    readonly logEntries$ = this.select(getAllLogEntries);
 
-    readonly hasLogEntries$ = this.logEntries$.pipe(
-        map(x => x && x.length > 0)
-    );
-
-    constructor(
-        private readonly store: Store<LogState>
-    ) {
-    }
+    readonly hasLogEntries$ = this.logEntries$.pipe(map(x => x && x.length > 0));
 
 }

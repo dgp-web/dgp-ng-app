@@ -39,17 +39,13 @@ export class LogPageComponent {
     ) {
         activatedRoute.params
             .pipe(filter(params => params.logEntryId))
-            .subscribe(params => {
-
-                this.store.dispatch(
-                    logStore.actions.composeEntityActions({
-                        select: {
-                            logEntry: [params.logEntryId]
-                        }
-                    })
-                );
-
-            });
+            .subscribe(params => this.store.dispatch(
+                logStore.actions.composeEntityActions({
+                    select: {
+                        logEntry: [params.logEntryId]
+                    }
+                })
+            ));
     }
 
 }
