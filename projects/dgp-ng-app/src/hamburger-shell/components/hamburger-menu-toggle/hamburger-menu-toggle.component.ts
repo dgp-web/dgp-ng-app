@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { Store } from "@ngrx/store";
 import { toggleHamburgerMenu } from "../../actions";
 import { HamburgerShellState } from "../../models";
+import { DgpContainer } from "../../../utils/container.component-base";
 
 @Component({
     selector: "dgp-hamburger-menu-toggle",
@@ -19,15 +19,10 @@ import { HamburgerShellState } from "../../models";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class HamburgerMenuToggleComponent {
-
-    constructor(
-        private readonly store: Store<HamburgerShellState>
-    ) {
-    }
+export class HamburgerMenuToggleComponent extends DgpContainer<HamburgerShellState> {
 
     toggleHamburgerMenu(): void {
-        this.store.dispatch(toggleHamburgerMenu());
+        this.dispatch(toggleHamburgerMenu());
     }
 
 }
