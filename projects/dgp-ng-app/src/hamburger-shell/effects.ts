@@ -2,10 +2,11 @@ import { Inject, Injectable } from "@angular/core";
 import { Actions, Effect } from "@ngrx/effects";
 import { debounceTime, filter, map, switchMap } from "rxjs/operators";
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { setHamburgerMenuState, setListDetailsPageState } from "../actions/hamburger-shell.actions";
-import { HamburgerShellConfig, HamburgerShellMode, ListDetailsPageMode } from "../models/hamburger-shell-config.model";
-import { HAMBURGER_SHELL_CONFIG } from "../models/hamburger-shell-config-provider.model";
-import { HamburgerShellState } from "../models/hamburger-shell-state.model";
+import { setHamburgerMenuState, setListDetailsPageState } from "./actions";
+import {
+    HamburgerShellConfig, HamburgerShellMode, ListDetailsPageMode,
+    HamburgerShellState, HAMBURGER_SHELL_CONFIG
+} from "./models";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 

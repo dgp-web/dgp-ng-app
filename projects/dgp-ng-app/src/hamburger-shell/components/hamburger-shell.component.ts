@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { closeHamburgerMenu } from "../actions/hamburger-shell.actions";
-import { hamburgerMenuModeSelector, isHamburgerMenuOpenSelector } from "../selectors/hamburger-shell.selectors";
+import { closeHamburgerMenu } from "../actions";
+import { hamburgerMenuModeSelector, isHamburgerMenuOpenSelector } from "../selectors";
 import { hasPendingRequestsSelector } from "../../request-store/selectors";
-import { HamburgerShellState } from "../models/hamburger-shell-state.model";
+import { HamburgerShellState } from "../models";
 
 @Component({
     selector: "dgp-hamburger-shell",

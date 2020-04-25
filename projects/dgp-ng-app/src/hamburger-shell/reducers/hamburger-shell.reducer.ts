@@ -1,10 +1,10 @@
 import {
     closeHamburgerMenu, closeListDetailsMenu, setHamburgerMenuState, setListDetailsPageState,
     toggleHamburgerMenu, toggleListDetailsPageMenu
-} from "../actions/hamburger-shell.actions";
+} from "../actions";
 import { FactoryProvider, InjectionToken } from "@angular/core";
 import { ActionReducer, createReducer, on } from "@ngrx/store";
-import { HamburgerShellState } from "../models/hamburger-shell-state.model";
+import { HamburgerShellState } from "../models";
 
 const initialState: HamburgerShellState = {
     hamburgerMenuMode: "side",

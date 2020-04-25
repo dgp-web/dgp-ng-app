@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { HamburgerMenuMode, PageMenuMode } from "../models/hamburger-shell-state.model";
+import { HamburgerMenuMode, PageMenuMode } from "./models";
 
 // hamburger menu
 

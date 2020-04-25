@@ -53,7 +53,7 @@ export { fileUploadEntityStore } from "./file-upload/store";
 export * from "./file-upload/file-upload.module";
 
 // hamburger-shell
-export * from "./hamburger-shell/actions/hamburger-shell.actions";
+export * from "./hamburger-shell/actions";
 export * from "./hamburger-shell/components/hamburger-shell.component";
 export * from "./hamburger-shell/components/hamburger-menu-toggle/hamburger-menu-toggle.component";
 export * from "./hamburger-shell/components/hamburger-menu-toggle/hamburger-menu-toggle.module";
@@ -62,11 +62,8 @@ export * from "./hamburger-shell/components/list-details-page/list-details-page.
 export * from "./hamburger-shell/components/list-details-page/list-details-page.module";
 export * from "./hamburger-shell/components/page-header/page-header.component";
 export * from "./hamburger-shell/components/page-header/page-header.module";
-export * from "./hamburger-shell/models/hamburger-shell.store-feature";
-export * from "./hamburger-shell/models/hamburger-shell-config.model";
-export * from "./hamburger-shell/models/hamburger-shell-config-provider.model";
-export * from "./hamburger-shell/models/hamburger-shell-state.model";
-export * from "./hamburger-shell/selectors/hamburger-shell.selectors";
+export * from "./hamburger-shell/models";
+export * from "./hamburger-shell/selectors";
 export * from "./hamburger-shell/hamburger-shell.module";
 
 // hmr

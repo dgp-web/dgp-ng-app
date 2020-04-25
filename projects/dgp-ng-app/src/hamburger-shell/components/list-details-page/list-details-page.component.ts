@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { closeListDetailsMenu, toggleListDetailsPageMenu } from "../../actions/hamburger-shell.actions";
-import { isPageMenuOpenSelector, pageMenuModeSelector } from "../../selectors/hamburger-shell.selectors";
-import { HamburgerShellState } from "../../models/hamburger-shell-state.model";
+import { closeListDetailsMenu, toggleListDetailsPageMenu } from "../../actions";
+import { isPageMenuOpenSelector, pageMenuModeSelector } from "../../selectors";
+import { HamburgerShellState } from "../../models";
 
 @Component({
     selector: "dgp-list-details-page",

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { toggleHamburgerMenu } from "../../actions/hamburger-shell.actions";
-import { HamburgerShellState } from "../../models/hamburger-shell-state.model";
+import { toggleHamburgerMenu } from "../../actions";
+import { HamburgerShellState } from "../../models";
 
 @Component({
     selector: "dgp-hamburger-menu-toggle",
