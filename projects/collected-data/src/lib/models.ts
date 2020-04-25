@@ -1,3 +1,5 @@
+import { EntityStateMap } from "entity-store";
+
 export interface CollectedAttribute {
     readonly collectedAttributeId: string;
 }
@@ -21,14 +23,29 @@ export interface CollectedData {
     readonly collectedDataId: string;
 
     // references to related meta data
-    readonly collectedAttributeId: string;
-    readonly collectionConfigId: string;
-    readonly collectionTargetId: string;
-    readonly collectionTimeId: string;
+    readonly collectedAttributeId: string;  // WHAT aspect of the target under the specified config is collected?
+    readonly collectionConfigId: string;    // HOW are data collected?
+    readonly collectionTargetId: string;    // For WHOM are data collected?
+    readonly collectionTimeId: string;      // WHEN are data collected?
 
     // references to raw and summarized values
     readonly collectedDataSummaryId?: string;
     readonly collectedDataValuesId?: string;
+}
+
+export interface CollectedDataEntities {
+    readonly collectedData: CollectedData;
+
+    readonly collectedAttribute: CollectedAttribute;
+    readonly collectionConfig: CollectionConfig;
+    readonly collectionTarget: CollectionTarget;
+    readonly collectionTime: CollectionTime;
+
+    readonly collectedDataSummary: CollectedDataSummary;
+    readonly collectedDataValues: CollectedDataValues;
+}
+
+export interface CollectedDataState extends EntityStateMap<CollectedDataEntities> {
 }
 
 export interface CollectedDataSummary {
@@ -39,6 +56,9 @@ export interface CollectedDataValues<ValueStructure = ReadonlyArray<number>> {
     readonly collectedDataValuesId: string;
     readonly values: ValueStructure;
 }
+
+export type CollectedDataStoreFeature = "CollectedData";
+export const collectedDataStoreFeature: CollectedDataStoreFeature = "CollectedData";
 
 export interface CollectionTime {
     readonly collectionTimeId: string;
