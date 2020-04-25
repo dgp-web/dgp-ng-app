@@ -1,4 +1,4 @@
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { DgpModelEditorComponentBase } from "./model-editor.component-base";
 
 interface Model {
     readonly label: string;

@@ -3,13 +3,11 @@
  */
 
 // authentication
-export * from "./authentication/actions/authentication.actions";
+export * from "./authentication/actions";
 export * from "./authentication/api-clients/authentication.api-client";
 export * from "./authentication/guards/authentication.guard";
-export * from "./authentication/models/authentication-result.model";
-export * from "./authentication/models/authentication-store-feature";
-export * from "./authentication/models/post-authentication-task.model";
-export * from "./authentication/selectors/authentication.selectors";
+export * from "./authentication/models";
+export * from "./authentication/selectors";
 export * from "./authentication/services/authentication.service";
 export * from "./authentication/services/initialization.service";
 export * from "./authentication/authentication.module";
@@ -56,7 +54,7 @@ export { fileUploadEntityStore } from "./file-upload/store";
 export * from "./file-upload/file-upload.module";
 
 // hamburger-shell
-export * from "./hamburger-shell/actions/hamburger-shell.actions";
+export * from "./hamburger-shell/actions";
 export * from "./hamburger-shell/components/hamburger-shell.component";
 export * from "./hamburger-shell/components/hamburger-menu-toggle/hamburger-menu-toggle.component";
 export * from "./hamburger-shell/components/hamburger-menu-toggle/hamburger-menu-toggle.module";
@@ -65,11 +63,8 @@ export * from "./hamburger-shell/components/list-details-page/list-details-page.
 export * from "./hamburger-shell/components/list-details-page/list-details-page.module";
 export * from "./hamburger-shell/components/page-header/page-header.component";
 export * from "./hamburger-shell/components/page-header/page-header.module";
-export * from "./hamburger-shell/models/hamburger-shell.store-feature";
-export * from "./hamburger-shell/models/hamburger-shell-config.model";
-export * from "./hamburger-shell/models/hamburger-shell-config-provider.model";
-export * from "./hamburger-shell/models/hamburger-shell-state.model";
-export * from "./hamburger-shell/selectors/hamburger-shell.selectors";
+export * from "./hamburger-shell/models";
+export * from "./hamburger-shell/selectors";
 export * from "./hamburger-shell/hamburger-shell.module";
 
 // hmr
@@ -78,25 +73,29 @@ export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
 // log
-export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions/log.actions";
-export { LogEntry, Severity } from "./log/models/log.models";
-export { LogState, logStoreFeature } from "./log/models/log.models";
+export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
+export { LogEntry, Severity } from "./log/models";
+export { LogState, logStoreFeature } from "./log/models";
 export { DgpLogModule } from "./log/log.module";
 
 // request-store
-export { requestStoreFeature } from "./request-store/models/request-store-state.model";
-export { RequestState } from "./request-store/models/request-state.model";
+export { requestStoreFeature } from "./request-store/models";
+export { RequestState } from "./request-store/models";
 export {
     ScheduleRequestAction, scheduleRequest, scheduleRequestActionType
-} from "./request-store/actions/request.actions";
+} from "./request-store/actions";
 export {
     hasPendingRequestsSelector, hasPendingRequests, requestStateSelector
-} from "./request-store/selectors/request.selectors";
+} from "./request-store/selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // routing-overlay
-export * from "./routing-overlay/actions/routing-overlay.actions";
+export * from "./routing-overlay/actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
+
+// safe pipe
+export * from "./safe/safe.pipe";
+export * from "./safe/safe-pipe.module";
 
 // spacer
 export { SpacerComponent } from "./spacer/components/spacer.component";
@@ -108,15 +107,15 @@ export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/tabl
 export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
-export * from "./theme-switcher/actions/theme-switcher.actions";
+export * from "./theme-switcher/actions";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
-export { themeSwitcherStoreFeature } from "./theme-switcher/models/theme-switcher-store-feature.model";
-export { ThemeSwitcherConfig } from "./theme-switcher/models/theme-switcher-config.model";
-export { ThemeSwitcherState } from "./theme-switcher/models/theme-switcher-state.model";
+export { themeSwitcherStoreFeature } from "./theme-switcher/theme-switcher-store-feature.model";
+export { ThemeSwitcherConfig } from "./theme-switcher/models";
+export { ThemeSwitcherState } from "./theme-switcher/theme-switcher-state.model";
 export {
-    themeSwitcherFeatureSelector, isDarkModeActiveSelector
-} from "./theme-switcher/selectors/theme-switcher.selectors";
+    themeSwitcherFeatureSelector, isDarkModeActiveSelector, isDarkModeActive
+} from "./theme-switcher/selectors";
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 
 // utils

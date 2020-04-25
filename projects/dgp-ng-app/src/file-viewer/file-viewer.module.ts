@@ -6,7 +6,7 @@ import { FallbackFileViewerComponent } from "./components/fallback-file-viewer.c
 import { FileItemListComponent } from "./components/file-item-list.component";
 import { JpgViewerComponent } from "./components/jpg-viewer.component";
 import { SvgViewerComponent } from "./components/svg-viewer.component";
-import { SafePipe } from "./safe.pipe";
+import { SafePipe } from "../safe/safe.pipe";
 import { PlatformModule } from "@angular/cdk/platform";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatListModule } from "@angular/material/list";
@@ -19,6 +19,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { FILE_VIEWER_CONFIG, FileTypeViewerMap, FileViewerConfig } from "./models";
 import { DynamicFileViewerComponent } from "./components/dynamic-file-viewer.component";
+import { SafePipeModule } from "../safe/safe-pipe.module";
 
 // TODO: Add bmp
 
@@ -40,9 +41,9 @@ export const defaultFileViewerConfig: FileViewerConfig = {
         DgpSpacerModule,
         MatButtonModule,
         MatMenuModule,
+        SafePipeModule
     ],
     declarations: [
-        SafePipe,
         PdfViewerComponent,
         JpgViewerComponent,
         PngViewerComponent,
