@@ -106,15 +106,15 @@ export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/tabl
 export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
-export * from "./theme-switcher/actions/theme-switcher.actions";
+export * from "./theme-switcher/actions";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
-export { themeSwitcherStoreFeature } from "./theme-switcher/models/theme-switcher-store-feature.model";
-export { ThemeSwitcherConfig } from "./theme-switcher/models/theme-switcher-config.model";
-export { ThemeSwitcherState } from "./theme-switcher/models/theme-switcher-state.model";
+export { themeSwitcherStoreFeature } from "./theme-switcher/theme-switcher-store-feature.model";
+export { ThemeSwitcherConfig } from "./theme-switcher/models";
+export { ThemeSwitcherState } from "./theme-switcher/theme-switcher-state.model";
 export {
     themeSwitcherFeatureSelector, isDarkModeActiveSelector, isDarkModeActive
-} from "./theme-switcher/selectors/theme-switcher.selectors";
+} from "./theme-switcher/selectors";
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 
 // utils

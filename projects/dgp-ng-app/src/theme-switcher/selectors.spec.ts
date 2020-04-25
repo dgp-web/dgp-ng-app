@@ -1,9 +1,9 @@
 import { async, TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
 import { first } from "rxjs/operators";
-import { themeSwitcherReducerImpl } from "../reducers/theme-switcher.reducer";
-import { themeSwitcherStoreFeature } from "../models/theme-switcher-store-feature.model";
-import { isDarkModeActiveSelector } from "./theme-switcher.selectors";
+import { themeSwitcherReducer } from "./reducers";
+import { themeSwitcherStoreFeature } from "./theme-switcher-store-feature.model";
+import { isDarkModeActiveSelector } from "./selectors";
 
 describe("theme-switcher selectors", () => {
 
@@ -14,7 +14,7 @@ describe("theme-switcher selectors", () => {
         TestBed.configureTestingModule({
             imports: [
                 StoreModule.forRoot({
-                    [themeSwitcherStoreFeature]: themeSwitcherReducerImpl
+                    [themeSwitcherStoreFeature]: themeSwitcherReducer
                 }, {
                     runtimeChecks: {
                         strictActionImmutability: true,

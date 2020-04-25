@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { isDarkModeActive } from "../selectors/theme-switcher.selectors";
-import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
-import { toggleDarkMode } from "../actions/theme-switcher.actions";
+import { isDarkModeActive } from "../selectors";
+import { ThemeSwitcherState } from "../theme-switcher-state.model";
+import { toggleDarkMode } from "../actions";
 import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({

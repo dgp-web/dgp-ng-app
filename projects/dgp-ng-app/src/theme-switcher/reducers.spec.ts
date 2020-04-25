@@ -1,5 +1,5 @@
-import { setIsDarkModeActive, toggleDarkMode } from "../actions/theme-switcher.actions";
-import { initialThemeSwitcherState, themeSwitcherReducerImpl } from "./theme-switcher.reducer";
+import { setIsDarkModeActive, toggleDarkMode } from "./actions";
+import { initialThemeSwitcherState, themeSwitcherReducer } from "./reducers";
 
 describe("themeSwitcherReducer", () => {
 
@@ -7,7 +7,7 @@ describe("themeSwitcherReducer", () => {
 
         const action = setIsDarkModeActive({isDarkModeActive: true});
 
-        const updatedState = themeSwitcherReducerImpl(initialThemeSwitcherState, action);
+        const updatedState = themeSwitcherReducer(initialThemeSwitcherState, action);
 
         expect(updatedState.useDarkMode)
             .toBeTruthy();
@@ -18,7 +18,7 @@ describe("themeSwitcherReducer", () => {
 
         const action = toggleDarkMode();
 
-        const updatedState = themeSwitcherReducerImpl(initialThemeSwitcherState, action);
+        const updatedState = themeSwitcherReducer(initialThemeSwitcherState, action);
 
         expect(updatedState.useDarkMode)
             .not

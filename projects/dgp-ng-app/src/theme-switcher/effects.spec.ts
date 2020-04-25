@@ -1,10 +1,9 @@
 import { async, TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
 import { EffectsMetadata, EffectsModule, getEffectsMetadata } from "@ngrx/effects";
-import { ThemeSwitcherEffects } from "./theme-switcher.effects";
-import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
-import { themeSwitcherStoreFeature } from "../models/theme-switcher-store-feature.model";
-import { themeSwitcherReducerImpl } from "../reducers/theme-switcher.reducer";
+import { ThemeSwitcherEffects } from "./effects";
+import { ThemeSwitcherState, themeSwitcherStoreFeature } from "./models";
+import { themeSwitcherReducer } from "./reducers";
 
 describe(ThemeSwitcherEffects.name, () => {
 
@@ -17,7 +16,7 @@ describe(ThemeSwitcherEffects.name, () => {
         await TestBed.configureTestingModule({
             imports: [
                 StoreModule.forRoot({
-                    [themeSwitcherStoreFeature]: themeSwitcherReducerImpl
+                    [themeSwitcherStoreFeature]: themeSwitcherReducer
                 }, {
                     runtimeChecks: {
                         strictStateSerializability: true,

@@ -1,23 +1,32 @@
-import { ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
+import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Store, StoreModule } from "@ngrx/store";
-import { themeSwitcherStoreFeature } from "./models/theme-switcher-store-feature.model";
+import { ActionReducer, Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { isNullOrUndefined } from "util";
 import { OverlayModule } from "@angular/cdk/overlay";
-import { ThemeSwitcherEffects } from "./effects/theme-switcher.effects";
-import { themeSwitcherReducer, themeSwitcherReducerProvider } from "./reducers/theme-switcher.reducer";
+import { ThemeSwitcherEffects } from "./effects";
+import { themeSwitcherReducer } from "./reducers";
 import { ThemeHostDirective } from "./directives/theme-host.directive";
 import { DarkModeToggleComponent } from "./components/dark-mode-toggle.component";
 import {
     defaultThemeSwitcherConfig,
     THEME_SWITCHER_CONFIG,
-    ThemeSwitcherConfig
-} from "./models/theme-switcher-config.model";
-import { ThemeSwitcherState } from "./models/theme-switcher-state.model";
-import { setIsDarkModeActive } from "./actions/theme-switcher.actions";
+    ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature
+} from "./models";
+import { setIsDarkModeActive } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+
+export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");
+
+export function themeSwitcherReducerFactory() {
+    return themeSwitcherReducer;
+}
+
+export const themeSwitcherReducerProvider: FactoryProvider = {
+    provide: THEME_SWITCHER_REDUCER,
+    useFactory: themeSwitcherReducerFactory
+};
 
 @NgModule({
     imports: [
@@ -27,7 +36,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
         MatSlideToggleModule,
 
-        StoreModule.forFeature(themeSwitcherStoreFeature, themeSwitcherReducer),
+        StoreModule.forFeature(themeSwitcherStoreFeature, THEME_SWITCHER_REDUCER),
         EffectsModule.forFeature([
             ThemeSwitcherEffects
         ])
@@ -63,7 +72,7 @@ export class DgpThemeSwitcherModule {
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
         if (!isNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
-            this.store.dispatch(setIsDarkModeActive({ isDarkModeActive }));
+            this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
         }
     }
 
