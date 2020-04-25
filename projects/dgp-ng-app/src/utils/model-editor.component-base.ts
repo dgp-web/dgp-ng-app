@@ -5,6 +5,7 @@ import * as _ from "lodash";
  * Base class for classes for manipulating a model
  */
 @Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class DgpModelEditorComponentBase<TModel> {
 
     protected modelValue: TModel;

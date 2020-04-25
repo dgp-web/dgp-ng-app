@@ -1,9 +1,8 @@
 import { Directive, ElementRef, Inject, Renderer2 } from "@angular/core";
 import { select, Store } from "@ngrx/store";
 import { OverlayContainer } from "@angular/cdk/overlay";
-import { ThemeSwitcherState } from "../models/theme-switcher-state.model";
-import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig } from "../models/theme-switcher-config.model";
-import { isDarkModeActiveSelector } from "../selectors/theme-switcher.selectors";
+import { ThemeSwitcherState, THEME_SWITCHER_CONFIG, ThemeSwitcherConfig } from "../models";
+import { isDarkModeActiveSelector } from "../selectors";
 
 @Directive({
     selector: "[dgpThemeHost]",
@@ -21,17 +20,22 @@ export class ThemeHostDirective {
 
         this.store.pipe(
             select(isDarkModeActiveSelector)
-        ).subscribe(isDarkModeActive => {
+        )
+            .subscribe(isDarkModeActive => {
 
-            if (isDarkModeActive) {
-                this.renderer.addClass(elRef.nativeElement, this.config.darkThemeClassName);
-                this.overlayContainer.getContainerElement().classList.add(this.config.darkThemeClassName);
-            } else {
-                this.renderer.removeClass(elRef.nativeElement, this.config.darkThemeClassName);
-                this.overlayContainer.getContainerElement().classList.remove(this.config.darkThemeClassName);
-            }
+                if (isDarkModeActive) {
+                    this.renderer.addClass(elRef.nativeElement, this.config.darkThemeClassName);
+                    this.overlayContainer.getContainerElement()
+                        .classList
+                        .add(this.config.darkThemeClassName);
+                } else {
+                    this.renderer.removeClass(elRef.nativeElement, this.config.darkThemeClassName);
+                    this.overlayContainer.getContainerElement()
+                        .classList
+                        .remove(this.config.darkThemeClassName);
+                }
 
-        });
+            });
 
 
     }

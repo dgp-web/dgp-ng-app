@@ -1,32 +1,10 @@
-import {
-    AuthenticationApiClient, AuthenticationGuard,
-    DgpAuthenticationModule, getAuthenticatedUserSelector, getCachedInitialUrlSelector, getIsAuthenticatedSelector, hasCachedInitialUrlSelector, InitializationService
-} from "dgp-ng-app";
 import { async, TestBed } from "@angular/core/testing";
-import { Store, StoreModule } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { RouterStateSnapshot } from "@angular/router";
-import { RouterTestingModule } from "@angular/router/testing";
-
-interface TestUser {
-    label: string;
-}
-
-const testUser: TestUser = {label: ""};
-const testError: Error = {message: "", name: ""};
-
-class TestAuthenticationApiClient implements AuthenticationApiClient<TestUser> {
-    authenticate$(): Promise<TestUser> {
-        return Promise.resolve(testUser);
-    }
-}
-
-class TestInitializationService implements InitializationService<TestUser> {
-    runPostAuthenticationTask$(user: TestUser): Promise<void> {
-        return Promise.resolve();
-    }
-}
-
+import { AuthenticationGuard } from "./authentication.guard";
+import { getCachedInitialUrlSelector, hasCachedInitialUrlSelector } from "../selectors";
+import { configureAuthenticationTestingModule } from "../test";
 
 describe("authentication selectors", () => {
 
@@ -35,32 +13,10 @@ describe("authentication selectors", () => {
 
     beforeEach(async(async () => {
 
-        await TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                StoreModule.forRoot({}, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
-                }),
-                DgpAuthenticationModule.forRoot({
-                    authenticationApiClientProvider: {
-                        provide: AuthenticationApiClient,
-                        useClass: TestAuthenticationApiClient
-                    },
-                    initializationServiceProvider: {
-                        provide: InitializationService,
-                        useClass: TestInitializationService
-                    }
-                })
-            ]
-        });
+        await configureAuthenticationTestingModule();
 
-        store = TestBed.get(Store);
-        guard = TestBed.get(AuthenticationGuard);
+        store = TestBed.inject(Store);
+        guard = TestBed.inject(AuthenticationGuard);
 
     }));
 

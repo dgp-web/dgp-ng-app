@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { RequestState } from "../../../request-store/models/request-state.model";
-import { hasPendingRequestsSelector } from "../../../request-store/selectors/request.selectors";
+import { RequestState } from "../../../request-store/models";
+import { hasPendingRequestsSelector } from "../../../request-store/selectors";
+import { DgpContainer } from "../../../utils/container.component-base";
 
 @Component({
     selector: "dgp-page-header",
@@ -31,13 +31,8 @@ import { hasPendingRequestsSelector } from "../../../request-store/selectors/req
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class PageHeaderComponent {
+export class PageHeaderComponent extends DgpContainer<RequestState> {
 
-    readonly hasPendingRequests$ = this.store.select(hasPendingRequestsSelector);
-
-    constructor(
-        private readonly store: Store<RequestState>
-    ) {
-    }
+    readonly hasPendingRequests$ = this.select(hasPendingRequestsSelector);
 
 }

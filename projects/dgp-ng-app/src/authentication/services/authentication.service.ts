@@ -2,10 +2,9 @@ import { empty, forkJoin, from } from "rxjs";
 import { catchError, defaultIfEmpty, switchMap, tap } from "rxjs/operators";
 import { ClassProvider, Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { authenticateUser, registerAuthenticateError } from "../actions/authentication.actions";
+import { authenticateUser, registerAuthenticateError } from "../actions";
 import { AuthenticationApiClient } from "../api-clients/authentication.api-client";
-import { PostAuthenticationTask } from "../models/post-authentication-task.model";
-import { AuthenticationState } from "../models/authentication-result.model";
+import { AuthenticationState, PostAuthenticationTask } from "../models";
 
 export abstract class AuthenticationService<TUser = any> {
 

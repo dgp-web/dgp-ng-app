@@ -11,6 +11,7 @@
     "e2e": "ng e2e",
     "build:dgp-ng-app": "ng build --prod dgp-ng-app",
     "build:watch:dgp-ng-app": "ng build dgp-ng-app --watch",
+    "test:watch:dgp-ng-app": "ng test dgp-ng-app --watch",
     "postbuild:dgp-ng-app": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
     "publish:dgp-ng-app": "npm publish dist/dgp-ng-app",
     "build:dgp-ng-docs": "ng build --prod dgp-ng-docs",

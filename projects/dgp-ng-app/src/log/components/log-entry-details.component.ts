@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
-import { Severity, LogEntry } from "../models/log.models";
+import { Severity, LogEntry } from "../models";
 
 @Component({
     selector: "dgp-log-entry-details",

@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
+import { SafePipeModule } from "dgp-ng-app";
 import { DocsPageComponent } from "./docs-page.component";
 import { DocsPageContentComponent } from "./docs-page-content.component";
 import { DocsCodeBlockComponent } from "./docs-code-block.component";
-import { SafePipeModule } from "./safe-pipe/safe-pipe.module";
 import { DocsSectionTitleComponent } from "./docs-section-title.component";
 import { DocsChapterTitleComponent } from "./docs-chapter-title.component";
 

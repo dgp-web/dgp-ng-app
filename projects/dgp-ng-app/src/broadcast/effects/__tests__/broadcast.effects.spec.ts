@@ -117,31 +117,31 @@ describe(BroadcastEffects.name, () => {
     });
 
     it(`should register broadcastHeartbeat$ that doesn't dispatch an action`, () => {
-        expect(metadata.broadcastHeartbeat$).toEqual({dispatch: false, resubscribeOnError: true});
+        expect(metadata.broadcastHeartbeat$).toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should register observeBroadcastedHeartbeats$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedHeartbeats$).toEqual({dispatch: true, resubscribeOnError: true});
+        expect(metadata.observeBroadcastedHeartbeats$).toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`should register broadcastLeaderAction$ that doesn't dispatch an action`, () => {
-        expect(metadata.broadcastLeaderAction$).toEqual({dispatch: false, resubscribeOnError: true});
+        expect(metadata.broadcastLeaderAction$).toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should register broadcastPeonAction$ that doesn't dispatch an action`, () => {
-        expect(metadata.broadcastPeonAction$).toEqual({dispatch: false, resubscribeOnError: true});
+        expect(metadata.broadcastPeonAction$).toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should register observeBroadcastedActions$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedActions$).toEqual({dispatch: true, resubscribeOnError: true});
+        expect(metadata.observeBroadcastedActions$).toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`should register createLeaderAction$ that dispatches an action`, () => {
-        expect(metadata.createLeaderAction$).toEqual({dispatch: true, resubscribeOnError: true});
+        expect(metadata.createLeaderAction$).toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`should register displayBroadcastRoleInBrowserTabTitle$ that doesn't dispatch an action`, () => {
-        expect(metadata.displayBroadcastRoleInBrowserTabTitle$).toEqual({dispatch: false, resubscribeOnError: true});
+        expect(metadata.displayBroadcastRoleInBrowserTabTitle$).toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`broadcastLeaderAction$ should call channelService.postAction`, async () => {
