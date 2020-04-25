@@ -5,14 +5,14 @@ import {
 import { createReducer, on } from "@ngrx/store";
 import { HamburgerShellState } from "./models";
 
-const initialState: HamburgerShellState = {
+export const initialHamburgerShellState: HamburgerShellState = {
     hamburgerMenuMode: "side",
     isHamburgerMenuOpen: true,
     pageMenuMode: "side",
     isPageMenuOpen: true
 };
 
-export const hamburgerShellReducer = createReducer(initialState,
+export const hamburgerShellReducer = createReducer(initialHamburgerShellState,
     on(setHamburgerMenuState, ((state, action) => {
         return {
             ...state,
