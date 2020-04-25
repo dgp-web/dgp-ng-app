@@ -1,6 +1,5 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { themeSwitcherStoreFeature } from "./theme-switcher-store-feature.model";
-import { ThemeSwitcherState } from "./theme-switcher-state.model";
+import { ThemeSwitcherState, themeSwitcherStoreFeature } from "./models";
 
 export const themeSwitcherFeatureSelector = createFeatureSelector<ThemeSwitcherState>(
     themeSwitcherStoreFeature

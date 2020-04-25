@@ -1,7 +1,6 @@
-import { FactoryProvider, InjectionToken } from "@angular/core";
-import { ActionReducer, createReducer, on } from "@ngrx/store";
-import { ThemeSwitcherState } from "./theme-switcher-state.model";
+import { createReducer, on } from "@ngrx/store";
 import { setIsDarkModeActive, toggleDarkMode } from "./actions";
+import { ThemeSwitcherState } from "./models";
 
 export const initialThemeSwitcherState: ThemeSwitcherState = {
     useDarkMode: false
