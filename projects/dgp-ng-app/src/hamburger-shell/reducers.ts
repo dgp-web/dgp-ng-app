@@ -1,10 +1,9 @@
 import {
     closeHamburgerMenu, closeListDetailsMenu, setHamburgerMenuState, setListDetailsPageState,
     toggleHamburgerMenu, toggleListDetailsPageMenu
-} from "../actions";
-import { FactoryProvider, InjectionToken } from "@angular/core";
-import { ActionReducer, createReducer, on } from "@ngrx/store";
-import { HamburgerShellState } from "../models";
+} from "./actions";
+import { createReducer, on } from "@ngrx/store";
+import { HamburgerShellState } from "./models";
 
 const initialState: HamburgerShellState = {
     hamburgerMenuMode: "side",
@@ -13,7 +12,7 @@ const initialState: HamburgerShellState = {
     isPageMenuOpen: true
 };
 
-export const hamburgerShellReducerImpl = createReducer(initialState,
+export const hamburgerShellReducer = createReducer(initialState,
     on(setHamburgerMenuState, ((state, action) => {
         return {
             ...state,
@@ -53,15 +52,3 @@ export const hamburgerShellReducerImpl = createReducer(initialState,
         };
     }))
 );
-
-export const hamburgerShellReducer = new InjectionToken<ActionReducer<HamburgerShellState>>("hamburgerShellReducer");
-
-export function hamburgerShellReducerFactory() {
-    return hamburgerShellReducerImpl;
-}
-
-export const hamburgerShellReducerProvider: FactoryProvider = {
-    provide: hamburgerShellReducer,
-    useFactory: hamburgerShellReducerFactory
-};
-
