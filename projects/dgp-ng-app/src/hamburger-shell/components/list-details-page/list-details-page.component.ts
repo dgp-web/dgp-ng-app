@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { Store } from "@ngrx/store";
 import { closeListDetailsMenu, toggleListDetailsPageMenu } from "../../actions";
 import { isPageMenuOpenSelector, pageMenuModeSelector } from "../../selectors";
 import { HamburgerShellState } from "../../models";
+import { DgpContainer } from "../../../utils/container.component-base";
 
 @Component({
     selector: "dgp-list-details-page",
@@ -79,21 +79,16 @@ import { HamburgerShellState } from "../../models";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ListDetailsPageComponent {
+export class ListDetailsPageComponent extends DgpContainer<HamburgerShellState> {
 
-    readonly pageMenuDrawerMode$ = this.store.select(pageMenuModeSelector);
-    readonly isPageMenuDrawerOpen$ = this.store.select(isPageMenuOpenSelector);
-
-    constructor(
-        private readonly store: Store<HamburgerShellState>
-    ) {
-    }
+    readonly pageMenuDrawerMode$ = this.select(pageMenuModeSelector);
+    readonly isPageMenuDrawerOpen$ = this.select(isPageMenuOpenSelector);
 
     closePageMenuDrawer(): void {
-        this.store.dispatch(closeListDetailsMenu());
+        this.dispatch(closeListDetailsMenu());
     }
 
     togglePageMenuDrawer(): void {
-        this.store.dispatch(toggleListDetailsPageMenu());
+        this.dispatch(toggleListDetailsPageMenu());
     }
 }
