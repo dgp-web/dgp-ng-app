@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from "@angular/core";
+import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { DragFileListenerDirective } from "./directive/drag-file-listener.directive";
 import { EffectsModule } from "@ngrx/effects";
@@ -8,8 +8,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
 import { StoreModule } from "@ngrx/store";
-import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG, fileUploadStoreFeature } from "./models";
-import { fileUploadReducer, fileUploadReducerProvider } from "./store";
+import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG, FileUploadState, fileUploadStoreFeature } from "./models";
+import { fileUploadReducer } from "./store";
 import { MatListModule } from "@angular/material/list";
 import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
@@ -21,11 +21,22 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 
+export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
+
+export function fileUploadReducerFactory() {
+    return fileUploadReducer;
+}
+
+export const fileUploadReducerProvider: FactoryProvider = {
+    provide: FILE_UPLOAD_REDUCER,
+    useFactory: fileUploadReducerFactory
+};
+
 @NgModule({
     imports: [
         CommonModule,
         MatDialogModule,
-        StoreModule.forFeature(fileUploadStoreFeature, fileUploadReducer),
+        StoreModule.forFeature(fileUploadStoreFeature, FILE_UPLOAD_REDUCER),
         EffectsModule.forFeature([
             FileUploadEffects
         ]),
@@ -50,11 +61,11 @@ import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
         DragFileListenerDirective,
         OpenFileManagerViaShortKeyDirective
     ],
-    entryComponents: [
-        FileManagerComponent
-    ],
     providers: [
-        fileUploadReducerProvider
+        fileUploadReducerProvider, {
+            provide: FILE_UPLOAD_CONFIG,
+            useValue: defaultFileUploadConfig
+        }
     ]
 })
 export class DgpFileUploadModule {
