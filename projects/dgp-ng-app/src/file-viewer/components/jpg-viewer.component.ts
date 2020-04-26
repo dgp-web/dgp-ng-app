@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
-import { FileItem } from "../models";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
 
 @Component({
     selector: "dgp-jpg-viewer",
@@ -16,7 +16,7 @@ import { FileItem } from "../models";
             width: 100%;
             height: 100%;
         }
-        
+
         .image {
             max-width: 100%;
             max-height: 100%;
@@ -25,9 +25,5 @@ import { FileItem } from "../models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JpgViewerComponent {
-
-    @Input()
-    fileItem: FileItem;
-
+export class JpgViewerComponent extends FileViewerComponentBase {
 }

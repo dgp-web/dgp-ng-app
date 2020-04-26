@@ -1,28 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { ChangeDetectionStrategy } from "@angular/core";
 
 describe(${Component}.name, () => {
 
     let fixture: ComponentFixture<${Component}>;
     let component: ${Component};
 
-
     beforeEach(async(async () => {
 
-        await TestBed.configureTestingModule({
+        const testBed = TestBed.configureTestingModule({
             declarations: [
                 ${Component}
             ]
-        })
-            .compileComponents();
-
-        TestBed.overrideComponent(${Component}, {
-            set: {
-                changeDetection: ChangeDetectionStrategy.Default
-            }
         });
+        await testBed.compileComponents();
 
-        fixture = TestBed.createComponent(${Component});
+        fixture = testBed.createComponent(${Component});
         component = fixture.componentInstance;
 
     }));
