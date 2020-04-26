@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { FileItem } from "../models";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, SimpleChanges } from "@angular/core";
 import { Platform } from "@angular/cdk/platform";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
 
 @Component({
     selector: "dgp-pdf-viewer",
@@ -44,16 +44,15 @@ import { Platform } from "@angular/cdk/platform";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PdfViewerComponent implements OnChanges {
+export class PdfViewerComponent extends FileViewerComponentBase implements OnChanges {
 
-    @Input()
-    fileItem: FileItem;
     edgeHTML: any;
 
     constructor(
         public readonly platform: Platform,
         private readonly cd: ChangeDetectorRef
     ) {
+        super();
     }
 
     ngOnChanges(changes: SimpleChanges): void {

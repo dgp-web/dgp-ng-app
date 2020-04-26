@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
-import { FileItem } from "../models";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
 
 @Component({
     selector: "dgp-png-viewer",
@@ -25,9 +25,5 @@ import { FileItem } from "../models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PngViewerComponent {
-
-    @Input()
-    fileItem: FileItem;
-
+export class PngViewerComponent extends FileViewerComponentBase {
 }
