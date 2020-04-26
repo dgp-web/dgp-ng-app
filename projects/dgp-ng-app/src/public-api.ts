@@ -13,7 +13,7 @@ export * from "./authentication/services/initialization.service";
 export * from "./authentication/authentication.module";
 
 // broadcast
-export * from "./broadcast/actions/broadcast-channel.actions";
+export * from "./broadcast/actions";
 export * from "./broadcast/guards/no-peon.guard";
 export * from "./broadcast/functions/create-guid.function";
 export * from "./broadcast/models/broadcast-role.model";
@@ -23,7 +23,7 @@ export * from "./broadcast/models/broadcast-heartbeat.model";
 export * from "./broadcast/models/broadcast-participant.model";
 export * from "./broadcast/models/broadcast-role.model";
 export * from "./broadcast/models/broadcast-role-display-config.model";
-export * from "./broadcast/broadcast-store";
+export * from "./broadcast/store";
 export * from "./broadcast/broadcast-store.module";
 
 // empty-state
@@ -129,4 +129,17 @@ export { VirtualListPanelComponent } from "./virtual-list-panel/components/virtu
 export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-panel.module";
 
 export * from "./dgp-ng-app.module";
+export { actionBroadcastChannelId } from "./broadcast/models";
+export { heartbeatBroadcastChannelId } from "./broadcast/models";
+export { DataBroadcastChannel } from "./broadcast/models";
+export { BROADCAST_CONFIG } from "./broadcast/models";
+export { defaultBroadcastConfig } from "./broadcast/models";
+export { BroadcastConfig } from "./broadcast/models";
+export { SendInitialStateSignature } from "./broadcast/models";
+export { BroadcastHeartbeat } from "./broadcast/models";
+export { BroadcastParticipant } from "./broadcast/models";
+export { BroadcastRole } from "./broadcast/models";
+export { BroadcastRole } from "./broadcast/models";
+export { defaultBroadcastRoleDisplayConfig } from "./broadcast/models";
+export { BroadcastRoleDisplayConfig } from "./broadcast/models";
 

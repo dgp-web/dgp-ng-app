@@ -1,8 +1,7 @@
 import { isNullOrUndefined } from "util";
 import * as _ from "lodash";
-import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions/broadcast-channel.actions";
-import { BroadcastRole } from "../models/broadcast-role.model";
-import { BroadcastAction } from "../models/broadcast-action.model";
+import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions";
+import { BroadcastAction, BroadcastRole } from "../models";
 
 export interface FilterIncomingBroadcastActionPayload {
     readonly action: BroadcastAction;

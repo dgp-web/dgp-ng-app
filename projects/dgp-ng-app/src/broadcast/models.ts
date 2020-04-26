@@ -1,11 +1,50 @@
-import { actionBroadcastChannelId, heartbeatBroadcastChannelId } from "./broadcast-channel.model";
-import { InjectionToken } from "@angular/core";
-import { BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "./broadcast-role-display-config.model";
+import { Action } from "@ngrx/store";
 import { ComposedEntityActions, EntityStateMap, EntityTypeMap } from "entity-store";
+import { InjectionToken } from "@angular/core";
+
+export interface BroadcastParticipant {
+    /**
+     * Unique identifier of the window or tab that sends this
+     * request
+     */
+    readonly participantId: string;
+    readonly participantCreationDate: Date;
+}
+
+export interface DataBroadcastChannel extends BroadcastParticipant {
+    readonly dataId?: any;
+}
+
+export const heartbeatBroadcastChannelId = "HeartbeatBroadcastChannel";
+export const actionBroadcastChannelId = "ActionBroadcastChannel";
+
+export interface BroadcastAction extends DataBroadcastChannel, Action {
+
+}
+
+export interface BroadcastChannelLike {
+    postMessage(message: any): void;
+
+    addEventListener(type, listener, options?: boolean | AddEventListenerOptions): void;
+}
+
+export interface MessageEventLike {
+    readonly data: any;
+}
 
 export type SendInitialStateSignature<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = (
     state: EntityStateMap<TEntityTypeMap>
 ) => ComposedEntityActions<TEntityTypeMap, TStoreFeature>;
+
+export interface BroadcastRoleDisplayConfig {
+    readonly leaderBrowserTabTitleSuffix: string;
+    readonly peonBrowserTabTitleSuffix: string;
+}
+
+export const defaultBroadcastRoleDisplayConfig: BroadcastRoleDisplayConfig = {
+    leaderBrowserTabTitleSuffix: ": Leader",
+    peonBrowserTabTitleSuffix: ": Peon"
+};
 
 export interface BroadcastConfig<TEntityTypeMap extends EntityTypeMap = { [key: string]: any; }, TStoreFeature = string> {
     /**
@@ -54,7 +93,15 @@ export const defaultBroadcastConfig: BroadcastConfig = {
     actionTypesToPrefixWithPeon: [],
     updateBrowserTabTitleConfig: defaultBroadcastRoleDisplayConfig
 };
-
 export const BROADCAST_CONFIG = new InjectionToken<Readonly<BroadcastConfig>>(
     "DEFAULT_BROADCAST_CONFIG"
 );
+
+export interface BroadcastHeartbeat extends DataBroadcastChannel {
+}
+
+export enum BroadcastRole {
+    None,
+    Leader,
+    Peon
+}

@@ -1,8 +1,8 @@
-import { broadcastStoreProvider, BroadcastStoreDecorator } from "../broadcast-store.decorator";
+import { broadcastStoreProvider, BroadcastStoreDecorator } from "./broadcast-store.decorator";
 import { TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
-import { broadcastStoreFeature } from "../broadcast-store";
-import { BroadcastRole } from "../models/broadcast-role.model";
+import { broadcastStoreFeature } from "./store";
+import { BroadcastRole } from "./models";
 
 describe(BroadcastStoreDecorator.name, () => {
 

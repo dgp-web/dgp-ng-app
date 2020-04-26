@@ -1,8 +1,7 @@
 import { BroadcastFunctionsTestData } from "./broadcast-functions.test-data.spec";
 import {filterIncomingBroadcastAction} from "../filter-incoming-broadcast-action.function";
-import { leaderActionTypePrefix, peonActionTypePrefix } from "../../actions/broadcast-channel.actions";
-import { BroadcastRole } from "../../models/broadcast-role.model";
-import { BroadcastAction } from "../../models/broadcast-action.model";
+import { leaderActionTypePrefix, peonActionTypePrefix } from "../../actions";
+import { BroadcastAction, BroadcastRole } from "../../models";
 
 describe("filterIncomingBroadcastAction", () => {
 

@@ -1,5 +1,5 @@
 import { Action, createAction, props } from "@ngrx/store";
-import { BroadcastRole } from "../models/broadcast-role.model";
+import { BroadcastRole } from "./models";
 
 export const setOwnBroadcastRoleActionType = "[BroadcastChannel] SetOwnRole";
 

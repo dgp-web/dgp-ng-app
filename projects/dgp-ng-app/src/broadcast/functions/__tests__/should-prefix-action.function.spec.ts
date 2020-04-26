@@ -1,5 +1,5 @@
 import {shouldPrefixAction, ShouldPrefixActionPayload} from "../should-prefix-action.function";
-import { BroadcastRole } from "../../models/broadcast-role.model";
+import { BroadcastRole } from "../../models";
 
 describe("shouldPrefixAction", () => {
 
