@@ -1,4 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { appFeatures } from "../../../models/models";
+import { of } from "rxjs";
 
 @Component({
     selector: "dgp-home-page",
@@ -40,72 +42,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                 </p>
 
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">
-
-                    <dgp-tile route="/authentication"
-                              matIconName="person"
-                              label="Authentication"
-                              description="Authenticate users and perform startup tasks."></dgp-tile>
-
-                    <dgp-tile route="/broadcasting"
-                              matIconName="dynamic_feed"
-                              label="Broadcasting"
-                              description="Bidirectional data sync between windows and tabs."></dgp-tile>
-
-                    <dgp-tile route="/empty-state"
-                              matIconName="texture"
-                              label="Empty state"
-                              description="Configurable placeholder for empty views."></dgp-tile>
-
-                    <dgp-tile route="/file-upload"
-                              matIconName="attach_file"
-                              label="File upload"
-                              description="Configurable placeholder for empty views."></dgp-tile>
-
-                    <dgp-tile route="/hamburger-shell"
-                              matIconName="chrome_reader_mode"
-                              label="Hamburger shell"
-                              description="Responsive navigation drawer for applications."></dgp-tile>
-
-                    <dgp-tile route="/list-details-page"
-                              matIconName="vertical_split"
-                              label="List-details page"
-                              description="Page with a collapsible list and a central details view."></dgp-tile>
-
-                    <dgp-tile route="/log"
-                              matIconName="receipt"
-                              label="Log"
-                              description="Feature to create and view log entries."></dgp-tile>
-
-                    <dgp-tile route="/request-store"
-                              matIconName="import_export"
-                              label="Request store"
-                              description="A request queue that allows to dispatch requests as actions."></dgp-tile>
-
-                    <dgp-tile route="/routing-overlay"
-                              matIconName="schedule"
-                              label="Routing overlay"
-                              description="Loading spinner that indicates idle states when routing."></dgp-tile>
-
-                    <dgp-tile route="/spacer"
-                              matIconName="space_bar"
-                              label="Spacer"
-                              description="Invisible component that fills empty space."></dgp-tile>
-
-                    <dgp-tile route="/styling"
-                              matIconName="color_lens"
-                              label="Styling"
-                              description="Theming utilities for easy setup of bright/dark mode."></dgp-tile>
-
-                    <dgp-tile route="/table-cell-editor"
-                              matIconName="featured_video"
-                              label="Table-cell editor"
-                              description="Editing functionality for table cells."></dgp-tile>
-
-                    <dgp-tile route="/theme-switcher"
-                              matIconName="style"
-                              label="Theme switcher"
-                              description="Setup theming-related components in your app."></dgp-tile>
-
+                    <dgp-tile *ngFor="let appFeature of appFeatures$ | async"
+                              [route]="appFeature.route"
+                              [matIconName]="appFeature.matIconName"
+                              [label]="appFeature.label"
+                              [description]="appFeature.description"></dgp-tile>
                 </div>
 
             </dgp-docs-page-content>
@@ -115,6 +56,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 })
 export class HomePageComponent {
 
+    readonly appFeatures$ = of(appFeatures);
     readonly installationCode = `npm install --save dgp-ng-app`;
 
 }
