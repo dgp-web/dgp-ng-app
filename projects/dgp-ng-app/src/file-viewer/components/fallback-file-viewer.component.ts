@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from "@angular/core";
-import { FileItem } from "../models";
+import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core";
 import { getFileFromFileItem$ } from "../../file-upload/functions";
 import { Platform } from "@angular/cdk/platform";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
 
 @Component({
     selector: "dgp-fallback-file-viewer",
@@ -41,16 +41,15 @@ import { Platform } from "@angular/cdk/platform";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FallbackFileViewerComponent implements AfterViewInit {
-
-    @Input()
-    fileItem: FileItem;
+export class FallbackFileViewerComponent extends FileViewerComponentBase implements AfterViewInit {
 
     isTridentOrEdge: boolean;
 
     constructor(
         private readonly platform: Platform
     ) {
+        super();
+
         this.isTridentOrEdge = this.platform.TRIDENT || this.platform.EDGE;
     }
 

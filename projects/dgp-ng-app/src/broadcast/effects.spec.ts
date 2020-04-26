@@ -7,24 +7,22 @@ import { provideMockActions } from "@ngrx/effects/testing";
 
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 
-import { BroadcastEffects } from "../broadcast.effects";
-import { BroadcastFunctionsTestData } from "../../functions/__tests__/broadcast-functions.test-data.spec";
-import { broadcastReducer, BroadcastState, broadcastStoreFeature } from "../../broadcast-store";
+import { BroadcastEffects } from "./effects";
+import { BroadcastFunctionsTestData } from "./functions/__tests__/broadcast-functions.test-data.spec";
+import { BroadcastState, broadcastStoreFeature } from "./store";
 import {
     leaderActionTypePrefix,
     peonActionTypePrefix,
     SetOwnBroadcastRoleAction,
     setOwnBroadcastRoleActionType
-} from "../../actions/broadcast-channel.actions";
-import { BroadcastRole } from "../../models/broadcast-role.model";
+} from "./actions";
 import {
     defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig
-} from "../../functions/should-update-browser-tab-broadcast-role-display.function";
-import { BroadcastHeartbeat } from "../../models/broadcast-heartbeat.model";
-import { FilterIncomingBroadcastActionPayload } from "../../functions/filter-incoming-broadcast-action.function";
-import { BROADCAST_CONFIG, defaultBroadcastConfig } from "../../models/broadcast-config.model";
-import { BroadcastAction } from "../../models/broadcast-action.model";
-import { BroadcastChannelService } from "../../services/broadcast-channel.service";
+} from "./functions/should-update-browser-tab-broadcast-role-display.function";
+import { FilterIncomingBroadcastActionPayload } from "./functions/filter-incoming-broadcast-action.function";
+import { BroadcastChannelService } from "./services/broadcast-channel.service";
+import { BROADCAST_CONFIG, BroadcastAction, BroadcastHeartbeat, BroadcastRole, defaultBroadcastConfig } from "./models";
+import { BROADCAST_REDUCER } from "./broadcast-store.module";
 
 describe(BroadcastEffects.name, () => {
 
@@ -73,14 +71,7 @@ describe(BroadcastEffects.name, () => {
         await TestBed.configureTestingModule({
             imports: [
                 StoreModule.forRoot({
-                    [broadcastStoreFeature]: broadcastReducer as any
-                }, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
+                    [broadcastStoreFeature]: BROADCAST_REDUCER as any
                 }),
                 MatSnackBarModule
             ],
@@ -100,12 +91,12 @@ describe(BroadcastEffects.name, () => {
 
         actions = new ReplaySubject(3);
 
-        effects = TestBed.get(BroadcastEffects);
+        effects = TestBed.inject(BroadcastEffects);
         metadata = getEffectsMetadata(effects);
         effects.selectedDataId = BroadcastFunctionsTestData.dataId01;
         effects.participant = BroadcastFunctionsTestData.participant01;
-        channelService = TestBed.get(BroadcastChannelService);
-        store = TestBed.get(Store);
+        channelService = TestBed.inject(BroadcastChannelService);
+        store = TestBed.inject(Store);
 
         actions.next(leaderAction);
         actions.next(peonAction);
@@ -113,35 +104,43 @@ describe(BroadcastEffects.name, () => {
     }));
 
     it("should create.", () => {
-        expect(effects).toBeDefined();
+        expect(effects)
+            .toBeDefined();
     });
 
     it(`should register broadcastHeartbeat$ that doesn't dispatch an action`, () => {
-        expect(metadata.broadcastHeartbeat$).toEqual({dispatch: false, useEffectsErrorHandler: true});
+        expect(metadata.broadcastHeartbeat$)
+            .toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should register observeBroadcastedHeartbeats$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedHeartbeats$).toEqual({dispatch: true, useEffectsErrorHandler: true});
+        expect(metadata.observeBroadcastedHeartbeats$)
+            .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`should register broadcastLeaderAction$ that doesn't dispatch an action`, () => {
-        expect(metadata.broadcastLeaderAction$).toEqual({dispatch: false, useEffectsErrorHandler: true});
+        expect(metadata.broadcastLeaderAction$)
+            .toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should register broadcastPeonAction$ that doesn't dispatch an action`, () => {
-        expect(metadata.broadcastPeonAction$).toEqual({dispatch: false, useEffectsErrorHandler: true});
+        expect(metadata.broadcastPeonAction$)
+            .toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`should register observeBroadcastedActions$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedActions$).toEqual({dispatch: true, useEffectsErrorHandler: true});
+        expect(metadata.observeBroadcastedActions$)
+            .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`should register createLeaderAction$ that dispatches an action`, () => {
-        expect(metadata.createLeaderAction$).toEqual({dispatch: true, useEffectsErrorHandler: true});
+        expect(metadata.createLeaderAction$)
+            .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
     it(`should register displayBroadcastRoleInBrowserTabTitle$ that doesn't dispatch an action`, () => {
-        expect(metadata.displayBroadcastRoleInBrowserTabTitle$).toEqual({dispatch: false, useEffectsErrorHandler: true});
+        expect(metadata.displayBroadcastRoleInBrowserTabTitle$)
+            .toEqual({dispatch: false, useEffectsErrorHandler: true});
     });
 
     it(`broadcastLeaderAction$ should call channelService.postAction`, async () => {
@@ -150,7 +149,8 @@ describe(BroadcastEffects.name, () => {
 
         await effects.broadcastLeaderAction$.pipe(
             first()
-        ).toPromise();
+        )
+            .toPromise();
 
         const expectedArgument: BroadcastAction = {
             type: leaderAction.type,
@@ -159,7 +159,8 @@ describe(BroadcastEffects.name, () => {
             dataId: effects.selectedDataId
         };
 
-        expect(channelService.postAction).toHaveBeenCalledWith(expectedArgument);
+        expect(channelService.postAction)
+            .toHaveBeenCalledWith(expectedArgument);
 
     });
 
@@ -169,7 +170,8 @@ describe(BroadcastEffects.name, () => {
 
         await effects.broadcastPeonAction$.pipe(
             first()
-        ).toPromise();
+        )
+            .toPromise();
 
         const expectedArgument: BroadcastAction = {
             type: peonAction.type,
@@ -178,45 +180,46 @@ describe(BroadcastEffects.name, () => {
             dataId: effects.selectedDataId
         };
 
-        expect(channelService.postAction).toHaveBeenCalledWith(expectedArgument);
+        expect(channelService.postAction)
+            .toHaveBeenCalledWith(expectedArgument);
 
     });
 
-   /* xit(`observeBroadcastedActions$ should subscribe to channelService.getAction$()
-    and filter and trim incoming actions.`, async () => {
+    /* xit(`observeBroadcastedActions$ should subscribe to channelService.getAction$()
+     and filter and trim incoming actions.`, async () => {
 
-        spyOn(functions, "filterIncomingBroadcastAction").and.returnValue(true);
-        spyOn(functions, "trimIncomingBroadcastAction");
+         spyOn(functions, "filterIncomingBroadcastAction").and.returnValue(true);
+         spyOn(functions, "trimIncomingBroadcastAction");
 
-        await effects.observeBroadcastedActions$.pipe(
-            first()
-        ).toPromise();
+         await effects.observeBroadcastedActions$.pipe(
+             first()
+         ).toPromise();
 
-        const expectedArgument: FilterIncomingBroadcastActionPayload = {
-            action: leaderAction as BroadcastAction,
-            dataId: effects.selectedDataId,
-            ownBroadcastRole: effects.ownBroadcastRole
-        };
+         const expectedArgument: FilterIncomingBroadcastActionPayload = {
+             action: leaderAction as BroadcastAction,
+             dataId: effects.selectedDataId,
+             ownBroadcastRole: effects.ownBroadcastRole
+         };
 
-        expect(functions.filterIncomingBroadcastAction).toHaveBeenCalledWith(expectedArgument);
-        expect(functions.trimIncomingBroadcastAction).toHaveBeenCalledWith(leaderAction);
+         expect(functions.filterIncomingBroadcastAction).toHaveBeenCalledWith(expectedArgument);
+         expect(functions.trimIncomingBroadcastAction).toHaveBeenCalledWith(leaderAction);
 
-    });
+     });
 
-    xit(`displayBroadcastRoleInBrowserTabTitle$ should subscribe to setOwnBroadcastRoleActionType
-    and call shouldUpdateBrowserTabBroadcastRoleDisplay`, async () => {
+     xit(`displayBroadcastRoleInBrowserTabTitle$ should subscribe to setOwnBroadcastRoleActionType
+     and call shouldUpdateBrowserTabBroadcastRoleDisplay`, async () => {
 
-        spyOn(functions, "shouldUpdateBrowserTabBroadcastRoleDisplay").and.callThrough();
+         spyOn(functions, "shouldUpdateBrowserTabBroadcastRoleDisplay").and.callThrough();
 
-        await effects.displayBroadcastRoleInBrowserTabTitle$.pipe(
-            first()
-        ).toPromise();
+         await effects.displayBroadcastRoleInBrowserTabTitle$.pipe(
+             first()
+         ).toPromise();
 
-        expect(functions.shouldUpdateBrowserTabBroadcastRoleDisplay).toHaveBeenCalledWith({
-            currentBroadcastRole: setOwnBroadcastRoleAction.payload,
-            currentBrowserTabTitle: window.document.title
-        }, defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig);
+         expect(functions.shouldUpdateBrowserTabBroadcastRoleDisplay).toHaveBeenCalledWith({
+             currentBroadcastRole: setOwnBroadcastRoleAction.payload,
+             currentBrowserTabTitle: window.document.title
+         }, defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig);
 
-    });*/
+     });*/
 
 });

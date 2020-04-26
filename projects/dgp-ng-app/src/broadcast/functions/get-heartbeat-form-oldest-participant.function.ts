@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
+import { BroadcastHeartbeat } from "../models";
 
 export function getHeartbeatFromOldestParticipant(
     payload: ReadonlyArray<BroadcastHeartbeat>
