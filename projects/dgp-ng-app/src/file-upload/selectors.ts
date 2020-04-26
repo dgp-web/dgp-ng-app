@@ -28,7 +28,7 @@ export const canOpenFileDrawer = createSelector(fileUploadFeatureSelector, x => 
 export const isAddFilesDisabled = createSelector(fileUploadFeatureSelector, x => !x.initialConfig.editingCapabilities.canAddFiles);
 export const isRemoveFilesDisabled = createSelector(fileUploadFeatureSelector, x => !x.initialConfig.editingCapabilities.canRemoveFiles);
 
-
 export const isDropTargetVisible = createSelector(fileUploadFeatureSelector,
-    x => x.initialConfig.editingCapabilities.canAddFiles && (x.isDropTargetVisible || x.fileItem.ids.length === 0)
+    x => x.initialConfig.editingCapabilities.canAddFiles
+        && (x.isDropTargetVisible || x.fileItem.ids.length === 0)
 );
