@@ -1,17 +1,16 @@
 import { ApplicationRef, NgModule } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { AppComponent } from "./components";
+import { AppComponent } from "./app.component";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
 import { AppEntities, appEntityStore, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
-import { DgpHamburgerMenuModule, defaultBroadcastConfig, DgpBroadcastStoreModule, DgpNgApp, DgpNgAppModule, setBroadcastChannelDataId } from "dgp-ng-app";
+import { defaultBroadcastConfig, DgpBroadcastStoreModule, DgpNgApp, DgpNgAppModule, setBroadcastChannelDataId } from "dgp-ng-app";
 import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-docs.module";
 
 @NgModule({
     imports: [
-        DgpHamburgerMenuModule,
         DgpNgAppModule.forRoot<AppState>({
             appReducer: appEntityStore.reducers
         }),

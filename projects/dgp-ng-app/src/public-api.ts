@@ -117,6 +117,10 @@ export {
 } from "./theme-switcher/selectors";
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 
+// tile
+export { TileComponent } from "./tile/tile.component";
+export { DgpTileModule } from "./tile/tile.module";
+
 // utils
 export { DgpContainer } from "./utils/container.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
