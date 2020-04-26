@@ -3,8 +3,8 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from "@angul
 import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { BroadcastState, getOwnBroadcastRoleSelector } from "../broadcast-store";
-import { BroadcastRole } from "../models/broadcast-role.model";
+import { BroadcastState, getOwnBroadcastRoleSelector } from "../store";
+import { BroadcastRole } from "../models";
 
 @Injectable()
 export class NoPeonGuard implements CanActivate {

@@ -2,8 +2,7 @@
 import {createGuid} from "../create-guid.function";
 import {createBroadcastParticipant} from "../create-broadcast-participant.function";
 import {createBroadcastHeartbeat} from "../create-broadcast-heartbeat.function";
-import { BroadcastParticipant } from "../../models/broadcast-participant.model";
-import { BroadcastHeartbeat } from "../../models/broadcast-heartbeat.model";
+import { BroadcastHeartbeat, BroadcastParticipant } from "../../models";
 
 export interface DataVersion {
     readonly dataId: string;

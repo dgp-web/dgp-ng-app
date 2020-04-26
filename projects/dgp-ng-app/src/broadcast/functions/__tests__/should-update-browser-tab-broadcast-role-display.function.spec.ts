@@ -3,7 +3,7 @@ import {
     shouldUpdateBrowserTabBroadcastRoleDisplay,
     ShouldUpdateBrowserTabBroadcastRoleDisplayPayload
 } from "../should-update-browser-tab-broadcast-role-display.function";
-import { BroadcastRole } from "../../models/broadcast-role.model";
+import { BroadcastRole } from "../../models";
 
 
 describe("shouldUpdateBrowserTabBroadcastRoleDisplay", () => {

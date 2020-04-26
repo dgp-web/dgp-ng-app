@@ -1,9 +1,5 @@
 import { isNullOrUndefined } from "util";
-import {
-    BroadcastRoleDisplayConfig,
-    defaultBroadcastRoleDisplayConfig
-} from "../models/broadcast-role-display-config.model";
-import { BroadcastRole } from "../models/broadcast-role.model";
+import { BroadcastRole, BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "../models";
 
 export interface ShouldUpdateBrowserTabBroadcastRoleDisplayPayload {
     readonly currentBrowserTabTitle: Readonly<string>;

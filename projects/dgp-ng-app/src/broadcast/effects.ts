@@ -2,27 +2,23 @@ import { Inject, Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Action, select, Store } from "@ngrx/store";
 import { bufferTime, distinctUntilChanged, distinctUntilKeyChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
-import { BroadcastState, getOwnBroadcastRoleSelector } from "../broadcast-store";
+import { BroadcastState, getOwnBroadcastRoleSelector } from "./store";
 import { interval, of } from "rxjs";
 import { isNullOrUndefined } from "util";
-import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
-import { BroadcastParticipant } from "../models/broadcast-participant.model";
-import { createBroadcastHeartbeat } from "../functions/create-broadcast-heartbeat.function";
-import { createBroadcastParticipant } from "../functions/create-broadcast-participant.function";
-import { BroadcastRole } from "../models/broadcast-role.model";
+import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat.function";
+import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
     leaderActionTypePrefix, peonActionTypePrefix, requestInitialData, setBroadcastChannelDataId, setOwnBroadcastRole
-} from "../actions/broadcast-channel.actions";
-import { trimIncomingBroadcastAction } from "../functions/trim-incoming-broadcast-action.function";
-import { shouldBroadcastParticipantChangeRole } from "../functions/should-broadcast-participant-change-role.function";
-import { createBroadcastAction } from "../functions/create-broadcast-action.function";
-import { filterIncomingBroadcastAction } from "../functions/filter-incoming-broadcast-action.function";
-import { BroadcastAction } from "../models/broadcast-action.model";
-import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "../functions/should-update-browser-tab-broadcast-role-display.function";
-import { BroadcastChannelService } from "../services/broadcast-channel.service";
-import { filterActionToPrefixWithLeaderPredicate } from "../functions/filter-action-to-prefix-with-leader.predicate";
-import { BROADCAST_CONFIG, BroadcastConfig } from "../models/broadcast-config.model";
-import { prefixAction } from "../functions/prefix-action.function";
+} from "./actions";
+import { trimIncomingBroadcastAction } from "./functions/trim-incoming-broadcast-action.function";
+import { shouldBroadcastParticipantChangeRole } from "./functions/should-broadcast-participant-change-role.function";
+import { createBroadcastAction } from "./functions/create-broadcast-action.function";
+import { filterIncomingBroadcastAction } from "./functions/filter-incoming-broadcast-action.function";
+import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "./functions/should-update-browser-tab-broadcast-role-display.function";
+import { BroadcastChannelService } from "./services/broadcast-channel.service";
+import { filterActionToPrefixWithLeaderPredicate } from "./functions/filter-action-to-prefix-with-leader.predicate";
+import { prefixAction } from "./functions/prefix-action.function";
+import { BROADCAST_CONFIG, BroadcastAction, BroadcastConfig, BroadcastHeartbeat, BroadcastParticipant, BroadcastRole } from "./models";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;
