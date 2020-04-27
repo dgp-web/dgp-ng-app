@@ -102,7 +102,7 @@ export class RowOrColumn extends AbstractContentItemComponent {
     /**
      * Removes a child of this element
      *
-     * @param   {lm.items.AbstractContentItem} contentItem
+     * @param   {lm.topLevelItems.AbstractContentItem} contentItem
      * @param   {boolean} keepChild   If true the child will be removed, but not destroyed
      *
      * @returns {void}
@@ -151,8 +151,8 @@ export class RowOrColumn extends AbstractContentItemComponent {
     /**
      * Replaces a child of this Row or Column with another contentItem
      *
-     * @param   {lm.items.AbstractContentItem} oldChild
-     * @param   {lm.items.AbstractContentItem} newChild
+     * @param   {lm.topLevelItems.AbstractContentItem} oldChild
+     * @param   {lm.topLevelItems.AbstractContentItem} newChild
      *
      * @returns {void}
      */

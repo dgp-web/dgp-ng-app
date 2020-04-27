@@ -17,14 +17,14 @@ export class Component extends AbstractContentItemComponent {
     constructor(public layoutManager, public config, public parent) {
         super(layoutManager, config, parent);
 
-        let ComponentConstructor = layoutManager.getComponent(this.config.componentName),
+        let ComponentConstructor = layoutManager.getComponent(this.config.id),
             componentConfig = $.extend(true, {}, this.config.componentState || {});
 
-        componentConfig.componentName = this.config.componentName;
-        this.componentName = this.config.componentName;
+        componentConfig.componentName = this.config.id;
+        this.componentName = this.config.id;
 
-        if (this.config.title === "") {
-            this.config.title = this.config.componentName;
+        if (this.config.label === "") {
+            this.config.label = this.config.id;
         }
 
         this.isComponent = true;

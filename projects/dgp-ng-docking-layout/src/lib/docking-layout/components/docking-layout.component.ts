@@ -1,5 +1,4 @@
 import {
-    AfterContentInit,
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
@@ -18,14 +17,15 @@ import { KeyValueStore } from "entity-store";
 import { ResizeSensor } from "css-element-queries";
 import { uniqBy } from "lodash";
 import { DockingLayoutItemComponent } from "./docking-layout-item.component";
-import { timer } from "rxjs";
+import { combineLatest, timer } from "rxjs";
 import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../../custom-goldenlayout";
 import { createGuid } from "dgp-ng-app";
+import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 
 declare var $: any;
 
 @Component({
-    selector: "golden-layout",
+    selector: "dgp-docking-layout",
     template: "<ng-content></ng-content>",
     styles: [`
         :host {
@@ -37,9 +37,11 @@ declare var $: any;
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterContentInit, AfterViewInit {
+export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewInit {
 
-    @ContentChildren(DockingLayoutItemComponent) items: QueryList<DockingLayoutItemComponent>;
+    @ContentChildren(DockingLayoutItemComponent) topLevelItems: QueryList<DockingLayoutItemComponent>;
+    @ContentChildren(DockingLayoutItemComponent, {descendants: true}) allItems: QueryList<DockingLayoutItemComponent>;
+    @ContentChildren(DockingLayoutContainerComponent, {descendants: true}) allContainers: QueryList<DockingLayoutContainerComponent>;
 
     // Settings
     @Input() hasHeaders = false;
@@ -65,8 +67,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
     @Input() minimizeLabel = "minimize";
     @Input() popoutLabel = "open in new window";
 
-    // @Input() content: ItemConfiguration[];
-    // TODO: Type
     layout: any;
 
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
@@ -75,6 +75,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
     constructor(private readonly vcRef: ViewContainerRef,
                 private readonly elRef: ElementRef,
     ) {
+
     }
 
     ngOnDestroy(): void {
@@ -87,20 +88,25 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
         if (this.layout) this.layout.destroy();
     }
 
-    ngAfterContentInit(): void {
-        //  throw new Error("Method not implemented.");
+    ngAfterViewInit(): void {
+        combineLatest([
+            this.allItems.changes,
+            this.allContainers.changes,
+        ]).subscribe(
+            () => this.redraw()
+        );
     }
 
-    ngAfterViewInit(): void {
+    redraw(): void {
         // if (changes["content"]) {
         if (this.layout) this.layout.destroy();
         if (this.resizeSensor) this.resizeSensor.detach();
 
-        const content = this.items.toArray()
+        const content = this.topLevelItems.toArray()
             .map(x => x.configuration);
 
         const components = this.getComponents(content);
-        const uniqComponents = uniqBy(components, item => item.componentName);
+        const uniqComponents = uniqBy(components, item => item.id);
 
         const config: any = {
             content,
@@ -137,7 +143,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
         // TODO: Type container and state
         uniqComponents.forEach(component => {
 
-            this.layout.registerComponent(component.componentName, (container, componentState) => {
+            this.layout.registerComponent(component.id, (container, componentState) => {
 
                 const id = createGuid();
 
@@ -156,11 +162,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
         this.layout.init();
 
         const element = this.elRef.nativeElement;
-        this.resizeSensor = new ResizeSensor(element, () => {
-            this.updateLayout();
-        });
-        // TODO: Loading layout here produces a different (and wrong looking) result than in AfterViewInit
-        // }
+        this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
     }
 
     public ngOnChanges(changes: SimpleChanges): void {

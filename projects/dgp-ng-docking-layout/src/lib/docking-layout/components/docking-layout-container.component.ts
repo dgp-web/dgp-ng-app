@@ -3,18 +3,18 @@ import { ComponentConfiguration } from "../../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
 
 @Component({
-    selector: "gl-container",
+    selector: "dgp-docking-layout-container",
     template: "<ng-content></ng-content>",
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class DockingLayoutContainerComponent {
 
-    @ContentChild(TemplateRef) template: TemplateRef<any>;
+    @ContentChild(TemplateRef) templateRef: TemplateRef<any>;
 
     @Input() closable = true;
-    @Input() title: string;
-    @Input() componentName = createGuid();
+    @Input() label: string;
+    @Input() id = createGuid();
     @Input() width: number;
     @Input() height: number;
 
@@ -26,11 +26,11 @@ export class DockingLayoutContainerComponent {
             width: this.width,
             height: this.height,
             isClosable: this.closable,
-            componentName: this.componentName,
-            title: this.title,
+            componentName: this.id,
+            title: this.label,
             id: createGuid(),
             componentState: {
-                template: () => this.template
+                template: () => this.templateRef
             }
         };
 

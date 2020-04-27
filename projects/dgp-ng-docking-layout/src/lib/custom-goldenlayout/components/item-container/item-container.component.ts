@@ -15,7 +15,7 @@ export class ItemContainer extends EventEmitter {
         super();
         this.width = null;
         this.height = null;
-        this.title = config.componentName;
+        this.title = config.id;
         this.parent = parent;
         this.layoutManager = layoutManager;
         this.isHidden = false;

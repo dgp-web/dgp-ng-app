@@ -8,5 +8,6 @@ declare var $: any;
  * @returns {String} input without tags
  */
 export function stripHtmlTags(input) {
+    if (!input) return null;
     return $.trim(input.replace(/(<([^>]+)>)/ig, ""));
 }

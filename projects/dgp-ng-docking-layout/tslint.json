@@ -4,13 +4,13 @@
         "directive-selector": [
             true,
             "attribute",
-            "lib",
+            "dgp",
             "camelCase"
         ],
         "component-selector": [
             true,
             "element",
-            "lib",
+            "dgp",
             "kebab-case"
         ],
         "space-before-function-paren": false,

@@ -1,63 +1,69 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { interval } from "rxjs";
 
 @Component({
-    selector: "lib-dgp-ng-docking-layout",
+    selector: "dgp-ng-docking-layout-demo",
     template: `
-        <golden-layout style="height: 100%;">
 
-            <gl-item type="column">
+        <dgp-docking-layout>
 
-                <gl-item type="row"
-                         height="80">
+            <ng-container *ngIf="terser">
 
-                    <gl-item type="column"
-                             width="20">
-                        <gl-container [title]="'e'">
+                <dgp-docking-layout-item type="column">
+
+                    <dgp-docking-layout-item type="row"
+                                             height="80">
+
+                        <dgp-docking-layout-item type="column"
+                                                 width="20">
+                            <dgp-docking-layout-container [label]="'e'">
+                                <ng-template>
+                                    e
+                                </ng-template>
+                            </dgp-docking-layout-container>
+                        </dgp-docking-layout-item>
+
+                        <dgp-docking-layout-item type="column"
+                                                 width="80">
+                            <dgp-docking-layout-item type="stack">
+
+                                <dgp-docking-layout-container [label]="'d'">
+                                    <ng-template>
+                                        d
+                                    </ng-template>
+                                </dgp-docking-layout-container>
+
+                                <dgp-docking-layout-container [label]="'c'">
+                                    <ng-template>
+                                        c
+                                    </ng-template>
+                                </dgp-docking-layout-container>
+
+                                <dgp-docking-layout-container [label]="'b'">
+                                    <ng-template>
+                                        b
+                                    </ng-template>
+                                </dgp-docking-layout-container>
+
+                            </dgp-docking-layout-item>
+                        </dgp-docking-layout-item>
+
+                    </dgp-docking-layout-item>
+
+                    <dgp-docking-layout-item type="row"
+                                             height="20">
+                        <dgp-docking-layout-container [label]="'a'">
                             <ng-template>
-                                e
+                                a
                             </ng-template>
-                        </gl-container>
-                    </gl-item>
+                        </dgp-docking-layout-container>
+                    </dgp-docking-layout-item>
 
-                    <gl-item type="column"
-                             width="80">
-                        <gl-item type="stack">
+                </dgp-docking-layout-item>
 
-                            <gl-container [title]="'d'">
-                                <ng-template>
-                                    d
-                                </ng-template>
-                            </gl-container>
+            </ng-container>
 
-                            <gl-container [title]="'c'">
-                                <ng-template>
-                                    c
-                                </ng-template>
-                            </gl-container>
-
-                            <gl-container [title]="'b'">
-                                <ng-template>
-                                    b
-                                </ng-template>
-                            </gl-container>
-
-                        </gl-item>
-                    </gl-item>
-
-                </gl-item>
-
-                <gl-item type="row"
-                         height="20">
-                    <gl-container [title]="'a'">
-                        <ng-template>
-                            a
-                        </ng-template>
-                    </gl-container>
-                </gl-item>
-
-            </gl-item>
-
-        </golden-layout>
+        </dgp-docking-layout>
 
     `,
     styles: [`
@@ -71,7 +77,15 @@ import { Component, OnInit } from "@angular/core";
 })
 export class DgpNgDockingLayoutComponent implements OnInit {
 
-    constructor() {
+    terser: boolean;
+
+    constructor(
+        private readonly cd: ChangeDetectorRef
+    ) {
+        interval(2500).subscribe(() => {
+            this.terser = !this.terser;
+            this.cd.markForCheck();
+        });
     }
 
     ngOnInit(): void {

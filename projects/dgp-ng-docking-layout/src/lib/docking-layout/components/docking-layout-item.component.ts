@@ -4,7 +4,7 @@ import { ColumnConfiguration, RowConfiguration } from "../../custom-goldenlayout
 import { createGuid } from "dgp-ng-app";
 
 @Component({
-    selector: "gl-item",
+    selector: "dgp-docking-layout-item",
     template: "<ng-content></ng-content>",
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

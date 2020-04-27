@@ -70,9 +70,9 @@ export class DragProxy extends EventEmitter {
 
         $x.position(this.$element, coordinates);
         this.$element.find(".lm_tab")
-            .attr("title", stripHtmlTags(this.contentItem.config.title));
+            .attr("title", stripHtmlTags(this.contentItem.config.label));
         this.$element.find(".lm_title")
-            .html(this.contentItem.config.title);
+            .html(this.contentItem.config.label);
         this.childElementContainer = this.$element.find(".lm_content");
         this.childElementContainer.append(contentItem.element);
 

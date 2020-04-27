@@ -824,7 +824,7 @@ export class LayoutManager extends EventEmitter {
 
         popInButton.click(() => this.emit("popIn"));
 
-        document.title = stripHtmlTags(this.config.content[0].title);
+        document.title = stripHtmlTags(this.config.content[0].label);
 
         $("head")
             .append($("body link, body style, template, .gl_keep"));
