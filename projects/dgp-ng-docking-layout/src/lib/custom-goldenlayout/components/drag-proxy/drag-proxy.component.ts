@@ -19,7 +19,7 @@ const template = `
 </div>
 `;
 
-declare var $: any;
+
 
 /**
  * This class creates a temporary container

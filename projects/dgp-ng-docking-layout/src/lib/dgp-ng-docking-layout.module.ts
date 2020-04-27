@@ -5,13 +5,17 @@ import { CommonModule } from "@angular/common";
 import { DgpSplitPanelModule } from "./split-panel/split-panel.module";
 
 @NgModule({
-    declarations: [DgpNgDockingLayoutComponent],
+    declarations: [
+        DgpNgDockingLayoutComponent
+    ],
     imports: [
         DockingLayoutModule,
         CommonModule,
         DgpSplitPanelModule
     ],
-    exports: [DgpNgDockingLayoutComponent]
+    exports: [
+        DgpNgDockingLayoutComponent
+    ]
 })
 export class DgpNgDockingLayoutModule {
 }

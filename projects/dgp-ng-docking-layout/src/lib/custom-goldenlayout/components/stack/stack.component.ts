@@ -2,7 +2,7 @@ import { LayoutManagerUtilities } from "../../utilities";
 import { HeaderComponent } from "../header/header.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
 
-declare var $: any;
+
 
 export class Stack extends AbstractContentItemComponent {
     _activeContentItem: any;

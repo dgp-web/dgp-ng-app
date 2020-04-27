@@ -9,7 +9,7 @@ import { createGuid } from "dgp-ng-app";
 import { stripHtmlTags } from "../common/functions";
 import { ComponentDefinition, ContainerDefinition } from "./utilities/models";
 
-declare var $: any;
+
 
 /**
  * The main class that will be exposed as GoldenLayout.

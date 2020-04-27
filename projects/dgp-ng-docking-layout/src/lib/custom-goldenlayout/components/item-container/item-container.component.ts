@@ -1,6 +1,6 @@
 import { EventEmitter } from "../../utilities";
 
-declare var $: any;
+
 
 export class ItemContainer extends EventEmitter {
     private width: number;

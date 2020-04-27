@@ -16,7 +16,7 @@ import { DragListenerDirective } from "../drag-listener";
 import { stripHtmlTags } from "../../../common/functions";
 import { Vector2 } from "../../../common/models";
 
-declare var $: any;
+
 
 /**
  * Represents an individual tab within a Stack's header

@@ -10,7 +10,7 @@ import { HeaderButtonComponent } from "../header-button/header-button.component"
 import { TabComponent } from "../tab/tab.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
 
-declare var $: any;
+
 
 /**
  * This class represents a header above a Stack ContentItem.

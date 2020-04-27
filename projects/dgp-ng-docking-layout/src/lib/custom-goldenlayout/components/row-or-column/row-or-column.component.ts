@@ -2,7 +2,7 @@ import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../splitter/splitter.component";
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
 
-declare var $: any;
+
 
 export class RowOrColumn extends AbstractContentItemComponent {
 

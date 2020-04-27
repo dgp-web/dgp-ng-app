@@ -4,7 +4,7 @@ import { DragListenerDirective } from "../drag-listener";
 import { RxComponent } from "../../../common/app";
 import { Vector2 } from "../../../common/models";
 
-declare var $: any;
+
 
 /**
  * Allows for any DOM item to create a component on drag

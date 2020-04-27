@@ -1,6 +1,6 @@
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
 
-declare var $: any;
+
 
 export class Root extends AbstractContentItemComponent {
     isRoot: boolean;

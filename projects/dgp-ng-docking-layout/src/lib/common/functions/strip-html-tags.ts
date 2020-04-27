@@ -1,4 +1,4 @@
-declare var $: any;
+
 
 /**
  * Removes html tags from a string

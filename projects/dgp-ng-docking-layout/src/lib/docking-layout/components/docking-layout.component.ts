@@ -22,7 +22,7 @@ import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../../
 import { createGuid } from "dgp-ng-app";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 
-declare var $: any;
+
 
 @Component({
     selector: "dgp-docking-layout",

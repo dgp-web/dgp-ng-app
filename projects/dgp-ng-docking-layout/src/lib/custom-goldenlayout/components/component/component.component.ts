@@ -1,7 +1,7 @@
 import { AbstractContentItemComponent } from "../abstract-content-item";
 import { ItemContainer } from "../item-container";
 
-declare var $: any;
+
 
 /**
  * @param {[type]} layoutManager [description]

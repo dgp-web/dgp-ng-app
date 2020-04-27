@@ -1,6 +1,6 @@
 import { ALL_EVENT, EventEmitter } from "./event-emitter";
 
-declare var $: any;
+
 
 /**
  * An EventEmitter singleton that propagates events

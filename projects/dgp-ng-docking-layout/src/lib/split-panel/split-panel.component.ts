@@ -20,8 +20,6 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
 import { SplitPanelOrientation } from "./models";
 import { createComponentTree, createLayoutConfig } from "./functions";
 
-declare var $: any;
-
 @Component({
     selector: "dgp-split-panel",
     template: "<ng-content></ng-content>",

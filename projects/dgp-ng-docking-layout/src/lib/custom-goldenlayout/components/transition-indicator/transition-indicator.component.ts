@@ -1,7 +1,7 @@
 const template = `<div class="lm_transition_indicator"></div>`;
 import { LayoutManagerUtilities } from "../../utilities";
 
-declare var $: any;
+
 
 export class TransitionIndicatorComponent {
     private readonly _element: any;

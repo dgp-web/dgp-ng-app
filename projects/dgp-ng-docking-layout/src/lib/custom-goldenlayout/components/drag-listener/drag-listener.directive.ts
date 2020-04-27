@@ -6,7 +6,7 @@ export interface DragEvent extends Vector2 {
     event: any;
 }
 
-declare var $: any;
+
 
 /*@Directive({
     selector: "dgp-drag-listener"

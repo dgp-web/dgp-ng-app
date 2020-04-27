@@ -3,7 +3,7 @@ import { LayoutManagerUtilities } from "../../utilities/layout-manager.utilities
 import { ConfigMinifier } from "../../utilities/config-minifier";
 import { createGuid } from "dgp-ng-app";
 
-declare var $: any;
+
 
 /**
  * Pops a content item out into a new browser window.

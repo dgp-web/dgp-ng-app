@@ -2,7 +2,7 @@ const splitterTemplate = `<div class="lm_splitter"></div>`;
 const dragHandleTemplate = `<div class="lm_drag_handle"></div>`;
 import { DragListenerDirective } from "../drag-listener";
 
-declare var $: any;
+
 
 export class SplitterComponent {
 

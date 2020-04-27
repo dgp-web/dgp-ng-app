@@ -1,7 +1,5 @@
 const template = `<div class="lm_dropTargetIndicator"><div class="lm_inner"></div></div>`;
 
-declare var $: any;
-
 export class DropTargetIndicator {
 
     _template = template;
