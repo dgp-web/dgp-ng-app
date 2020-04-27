@@ -15,11 +15,10 @@ import {
 } from "@angular/core";
 import { KeyValueStore } from "entity-store";
 import { ResizeSensor } from "css-element-queries";
-import { combineLatest, timer } from "rxjs";
+import { timer } from "rxjs";
 import { uniqBy } from "lodash";
 import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../custom-goldenlayout";
 import { createGuid } from "dgp-ng-app";
-import { SplitPanelItemComponent } from "./split-panel-item.component";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 
 declare var $: any;
@@ -38,9 +37,10 @@ declare var $: any;
 })
 export class SplitPanelComponent implements OnChanges, OnDestroy, AfterViewInit {
 
-    @ContentChildren(SplitPanelItemComponent) topLevelItems: QueryList<SplitPanelItemComponent>;
-    @ContentChildren(SplitPanelItemComponent, {descendants: true}) allItems: QueryList<SplitPanelItemComponent>;
-    @ContentChildren(SplitPanelContentComponent, {descendants: true}) allContainers: QueryList<SplitPanelContentComponent>;
+    @ContentChildren(SplitPanelContentComponent) topLevelItems: QueryList<SplitPanelContentComponent>;
+
+    @Input()
+    orientation: "horizontal" | "vertical" = "vertical";
 
     // Settings
     @Input() hasHeaders = false;
@@ -88,10 +88,7 @@ export class SplitPanelComponent implements OnChanges, OnDestroy, AfterViewInit 
     }
 
     ngAfterViewInit(): void {
-        combineLatest([
-            this.allItems.changes,
-            this.allContainers.changes,
-        ]).subscribe(
+        this.topLevelItems.changes.subscribe(
             () => this.redraw()
         );
 
@@ -106,11 +103,37 @@ export class SplitPanelComponent implements OnChanges, OnDestroy, AfterViewInit 
         const content = this.topLevelItems.toArray()
             .map(x => x.configuration);
 
-        const components = this.getComponents(content);
+        // if vertical --> create column, then row, then stack
+
+        const topContent = {
+            type: "column",
+            id: createGuid(),
+            content: []
+        };
+
+        const content1: any = content.forEach(x => {
+
+            topContent.content.push({
+                type: "row",
+                id: createGuid(),
+                content: [{
+                    type: "stack",
+                    id: createGuid(),
+                    content: [
+                        x
+                    ]
+                }]
+            });
+
+        });
+
+        console.log(content1);
+
+        const components = this.getComponents([topContent] as any);
         const uniqComponents = uniqBy(components, item => item.id);
 
         const config: any = {
-            content,
+            content: [topContent],
             labels: {
                 close: this.closeLabel,
                 maximise: this.maximizeLabel,

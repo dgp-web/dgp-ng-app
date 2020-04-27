@@ -61,39 +61,24 @@ import { interval } from "rxjs";
 
         </dgp-docking-layout>-->
 
-        <dgp-split-panel>
-            <!-- TODO: This should be removed -->
-            <dgp-split-panel-item orientation="vertical">
-                <dgp-split-panel-item orientation="horizontal">
-                    <dgp-split-panel-item orientation="stack">
-                        <dgp-split-panel-content>
-                            <ng-template>
-                                A
-                            </ng-template>
-                        </dgp-split-panel-content>
-                    </dgp-split-panel-item>
-                </dgp-split-panel-item>
+        <dgp-split-panel orientation="vertical">
+            <dgp-split-panel-content>
+                <ng-template>
+                    A
+                </ng-template>
+            </dgp-split-panel-content>
 
-                <dgp-split-panel-item orientation="horizontal">
-                    <dgp-split-panel-item orientation="stack">
-                        <dgp-split-panel-content>
-                            <ng-template>
-                                B
-                            </ng-template>
-                        </dgp-split-panel-content>
-                    </dgp-split-panel-item>
-                </dgp-split-panel-item>
+            <dgp-split-panel-content>
+                <ng-template>
+                    B
+                </ng-template>
+            </dgp-split-panel-content>
 
-                <dgp-split-panel-item orientation="horizontal">
-                    <dgp-split-panel-item orientation="stack">
-                        <dgp-split-panel-content>
-                            <ng-template>
-                                C
-                            </ng-template>
-                        </dgp-split-panel-content>
-                    </dgp-split-panel-item>
-                </dgp-split-panel-item>
-            </dgp-split-panel-item>
+            <dgp-split-panel-content>
+                <ng-template>
+                    C
+                </ng-template>
+            </dgp-split-panel-content>
         </dgp-split-panel>
 
     `,
