@@ -205,16 +205,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     /**
-     * Removes the component from the layout and creates a new
-     * browser window with the component and its children inside
-     */
-    popout() {
-        const browserPopout = this.layoutManager.createPopout(this);
-        this.emitBubblingEvent("stateChanged");
-        return browserPopout;
-    }
-
-    /**
      * Maximises the Item or minimises it if it is already maximised
      */
     toggleMaximise(e?) {

@@ -44,15 +44,17 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
     layout: LayoutManager;
 
-    constructor(private readonly vcRef: ViewContainerRef,
-                private readonly elRef: ElementRef
+    constructor(private readonly viewContainerRef: ViewContainerRef,
+                private readonly elementRef: ElementRef
     ) {
     }
 
     static destroyEmbeddedView(id: string, context: SplitPanelComponent): void {
         const embeddedViewRef = context.embeddedViewRefs[id];
         delete context.embeddedViewRefs[id];
-        if (embeddedViewRef) embeddedViewRef.destroy();
+        if (embeddedViewRef) {
+            embeddedViewRef.destroy();
+        }
     }
 
     ngAfterViewInit(): void {
@@ -61,52 +63,51 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        Object.keys(this.embeddedViewRefs).forEach(key => this.embeddedViewRefs[key].destroy());
+        Object.keys(this.embeddedViewRefs)
+            .forEach(key => this.embeddedViewRefs[key].destroy());
         this.destroyLayout();
     }
 
     private redraw(): void {
         this.destroyLayout();
 
-        const componentConfigurations = this.topLevelItems.toArray().map(x => x.configuration);
+        const componentConfigurations = this.topLevelItems.toArray()
+            .map(x => x.configuration);
 
         const root = createComponentTree({
             content: componentConfigurations,
             orientation: this.orientation
         });
 
-        this.layout = new LayoutManager(createLayoutConfig(root), this.elRef.nativeElement);
+        this.layout = new LayoutManager(createLayoutConfig(root), this.elementRef.nativeElement);
 
-        componentConfigurations.forEach(componentConfig => {
-            this.layout.registerComponent(componentConfig.id, (container, component) => {
-                const instanceId = createGuid();
-                container.on("open",
-                    () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
-                );
-                container.on("destroy",
-                    () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
-                );
-            });
-        });
-
+        componentConfigurations.forEach(componentConfig => this.layout.registerComponent(componentConfig.id, (container, component) => {
+            const instanceId = createGuid();
+            container.on("open",
+                () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
+            );
+            container.on("destroy",
+                () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
+            );
+        }));
 
         this.initLayout();
     }
 
     private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: SplitPanelComponent): void {
-        const embeddedViewRef = context.vcRef.createEmbeddedView(template);
+        const embeddedViewRef = context.viewContainerRef.createEmbeddedView(template);
         context.embeddedViewRefs[id] = embeddedViewRef;
         const detached = $(embeddedViewRef.rootNodes)
             .detach();
         element$.append(detached);
 
-        timer(250).subscribe(() => embeddedViewRef.markForCheck());
+        timer(250)
+            .subscribe(() => embeddedViewRef.markForCheck());
     }
 
     private initLayout() {
         this.layout.init();
-
-        const element = this.elRef.nativeElement;
+        const element = this.elementRef.nativeElement;
         this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
     }
 
@@ -115,8 +116,12 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     }
 
     private destroyLayout() {
-        if (this.resizeSensor) this.resizeSensor.detach();
-        if (this.layout) this.layout.destroy();
+        if (this.resizeSensor) {
+            this.resizeSensor.detach();
+        }
+        if (this.layout) {
+            this.layout.destroy();
+        }
     }
 
 }

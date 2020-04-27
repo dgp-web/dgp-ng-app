@@ -5,7 +5,62 @@ import { interval } from "rxjs";
     selector: "dgp-ng-docking-layout-demo",
     template: `
 
-        <dgp-split-panel orientation="vertical">
+        <dgp-docking-layout>
+
+            <ng-container *ngIf="terser">
+
+                <dgp-docking-layout-item type="column">
+
+                    <dgp-docking-layout-item type="row">
+
+                        <dgp-docking-layout-item type="column">
+                            <dgp-docking-layout-container [label]="'e'">
+                                <ng-template>
+                                    e
+                                </ng-template>
+                            </dgp-docking-layout-container>
+                        </dgp-docking-layout-item>
+
+                        <dgp-docking-layout-item type="column">
+                            <dgp-docking-layout-item type="stack">
+
+                                <dgp-docking-layout-container [label]="'d'">
+                                    <ng-template>
+                                        d
+                                    </ng-template>
+                                </dgp-docking-layout-container>
+
+                                <dgp-docking-layout-container [label]="'c'">
+                                    <ng-template>
+                                        c
+                                    </ng-template>
+                                </dgp-docking-layout-container>
+
+                                <dgp-docking-layout-container [label]="'b'">
+                                    <ng-template>
+                                        b
+                                    </ng-template>
+                                </dgp-docking-layout-container>
+
+                            </dgp-docking-layout-item>
+                        </dgp-docking-layout-item>
+
+                    </dgp-docking-layout-item>
+
+                    <dgp-docking-layout-item type="row">
+                        <dgp-docking-layout-container [label]="'a'">
+                            <ng-template>
+                                a
+                            </ng-template>
+                        </dgp-docking-layout-container>
+                    </dgp-docking-layout-item>
+
+                </dgp-docking-layout-item>
+            </ng-container>
+        </dgp-docking-layout>
+
+        <dgp-split-panel orientation="vertical"
+                         *ngIf="!terser">
             <dgp-split-panel-content>
                 <ng-template>
                     A
@@ -42,10 +97,11 @@ export class DgpNgDockingLayoutComponent implements OnInit {
     constructor(
         private readonly cd: ChangeDetectorRef
     ) {
-        interval(2500).subscribe(() => {
-            this.terser = !this.terser;
-            this.cd.markForCheck();
-        });
+        interval(5000)
+            .subscribe(() => {
+                this.terser = !this.terser;
+                this.cd.markForCheck();
+            });
     }
 
     ngOnInit(): void {

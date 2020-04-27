@@ -11,7 +11,6 @@ import { TabComponent } from "../tab/tab.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
 
 
-
 /**
  * This class represents a header above a Stack ContentItem.
  *
@@ -231,7 +230,6 @@ export class HeaderComponent extends EventEmitter {
      */
     _createControls() {
         let closeStack,
-            popout,
             label,
             maximiseLabel,
             minimiseLabel,
@@ -247,16 +245,6 @@ export class HeaderComponent extends EventEmitter {
         tabDropdownLabel = this.layoutManager.config.labels.tabDropdown;
         this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, "lm_tabdropdown", showTabDropdown);
         this.tabDropdownButton.element.hide();
-
-        /**
-         * Popout control to launch component in new window.
-         */
-        if (this._getHeaderSetting("popout")) {
-            popout = () => this._onPopoutClick();
-            label = this._getHeaderSetting("popout");
-            // tslint:disable-next-line:no-unused-expression
-            new HeaderButtonComponent(this, label, "lm_popout", popout);
-        }
 
         /**
          * Maximise control - set the component to the full size of the layout
@@ -313,15 +301,6 @@ export class HeaderComponent extends EventEmitter {
     _isClosable() {
         return this.parent.config.isClosable && this.layoutManager.config.settings.showCloseIcon;
     }
-
-    _onPopoutClick() {
-        if (this.layoutManager.config.settings.popoutWholeStack === true) {
-            this.parent.popout();
-        } else {
-            this.activeContentItem.popout();
-        }
-    }
-
 
     /**
      * Invoked when the header's background is clicked (not it's tabs or controls)

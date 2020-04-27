@@ -143,13 +143,13 @@
                     "options": {
                         "tsConfig": "projects/dgp-ng-app/tsconfig.lib.json",
                         "project": "projects/dgp-ng-app/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-app/tsconfig.lib.prod.json"
+                        }
                     }
-                ,          "configurations": {
-            "production": {
-              "tsConfig": "projects/dgp-ng-app/tsconfig.lib.prod.json"
-            }
-          }
-},
+                },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
@@ -184,13 +184,13 @@
                     "options": {
                         "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.json",
                         "project": "projects/dgp-ng-docs/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.prod.json"
+                        }
                     }
-                ,          "configurations": {
-            "production": {
-              "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.prod.json"
-            }
-          }
-},
+                },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {

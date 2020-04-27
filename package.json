@@ -38,6 +38,7 @@
         "@ngrx/effects": "^9.0.0",
         "@ngrx/store": "^9.0.0",
         "@ngrx/store-devtools": "^9.0.0",
+        "bootstrap": "^4.4.1",
         "css-element-queries": "^1.2.3",
         "entity-store": "^1.5",
         "highlight.js": "^9.18.1",

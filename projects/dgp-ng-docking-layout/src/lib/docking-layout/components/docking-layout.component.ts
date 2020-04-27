@@ -22,8 +22,6 @@ import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../../
 import { createGuid } from "dgp-ng-app";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 
-
-
 @Component({
     selector: "dgp-docking-layout",
     template: "<ng-content></ng-content>",
@@ -44,10 +42,10 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     @ContentChildren(DockingLayoutContainerComponent, {descendants: true}) allContainers: QueryList<DockingLayoutContainerComponent>;
 
     // Settings
-    @Input() hasHeaders = false;
+    @Input() hasHeaders = true;
     @Input() constrainDragToContainer = true;
-    @Input() reorderEnabled = false;
-    @Input() selectionEnabled = false;
+    @Input() reorderEnabled = true;
+    @Input() selectionEnabled = true;
     @Input() popoutWholeStack = false;
     @Input() blockedPopoutsThrowError = true;
     @Input() closePopoutsOnUnload = true;
@@ -84,23 +82,32 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
                 this.embeddedViewRefs[key].destroy();
             });
 
-        if (this.resizeSensor) this.resizeSensor.detach();
-        if (this.layout) this.layout.destroy();
+        if (this.resizeSensor) {
+            this.resizeSensor.detach();
+        }
+        if (this.layout) {
+            this.layout.destroy();
+        }
     }
 
     ngAfterViewInit(): void {
         combineLatest([
             this.allItems.changes,
             this.allContainers.changes,
-        ]).subscribe(
-            () => this.redraw()
-        );
+        ])
+            .subscribe(
+                () => this.redraw()
+            );
     }
 
     redraw(): void {
         // if (changes["content"]) {
-        if (this.layout) this.layout.destroy();
-        if (this.resizeSensor) this.resizeSensor.detach();
+        if (this.layout) {
+            this.layout.destroy();
+        }
+        if (this.resizeSensor) {
+            this.resizeSensor.detach();
+        }
 
         const content = this.topLevelItems.toArray()
             .map(x => x.configuration);
@@ -194,14 +201,17 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             .detach();
         element$.append(detached);
 
-        timer(250).subscribe(() => {
-            embeddedViewRef.markForCheck();
-        });
+        timer(250)
+            .subscribe(() => {
+                embeddedViewRef.markForCheck();
+            });
     }
 
     private destroyEmbeddedView(id: string, context: DockingLayoutComponent): void {
         const embeddedViewRef = context.embeddedViewRefs[id];
         delete context.embeddedViewRefs[id];
-        if (embeddedViewRef) embeddedViewRef.destroy();
+        if (embeddedViewRef) {
+            embeddedViewRef.destroy();
+        }
     }
 }

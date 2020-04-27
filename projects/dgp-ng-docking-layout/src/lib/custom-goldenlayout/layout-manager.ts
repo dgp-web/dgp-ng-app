@@ -10,7 +10,6 @@ import { stripHtmlTags } from "../common/functions";
 import { ComponentDefinition, ContainerDefinition } from "./utilities/models";
 
 
-
 /**
  * The main class that will be exposed as GoldenLayout.
  */
@@ -28,16 +27,13 @@ export class LayoutManager extends EventEmitter {
     private _maximisedItem: any;
     private _maximisePlaceholder: any;
     private _creationTimeoutPassed: boolean;
-    private _subWindowsCreated: boolean;
     private _dragSources: any[];
     private _updatingColumnsResponsive: boolean;
     private _firstLoad: boolean;
     private width: number;
     private height: number;
     private root: any;
-    private openPopouts: any[];
     selectedItem: AbstractContentItemComponent;
-    private isSubWindow: boolean;
     private eventHub: EventHub;
     config: any;
     container: any;
@@ -58,15 +54,12 @@ export class LayoutManager extends EventEmitter {
         this.isInitialised = false;
         this._isFullPage = false;
         this._resizeTimeoutId = null;
-        // this._components = {"lm-react-component": lm.utils.ReactComponentHandler};
         this._components = {};
         this._itemAreas = [];
         this._resizeFunction = () => this._onResize();
-        this._unloadFunction = () => this._onUnload();
         this._maximisedItem = null;
         this._maximisePlaceholder = $("<div class=\"lm_maximise_place\"></div>");
         this._creationTimeoutPassed = false;
-        this._subWindowsCreated = false;
         this._dragSources = [];
         this._updatingColumnsResponsive = false;
         this._firstLoad = true;
@@ -74,20 +67,13 @@ export class LayoutManager extends EventEmitter {
         this.width = null;
         this.height = null;
         this.root = null;
-        this.openPopouts = [];
         this.selectedItem = null;
-        this.isSubWindow = false;
         this.eventHub = new EventHub(this);
         this.config = this._createConfig(config);
         this.container = container;
         this.dropTargetIndicator = null;
         this.transitionIndicator = null;
         this.tabDropPlaceholder = $("<div class=\"lm_drop_tab_placeholder\"></div>");
-        /*
-                if (this.isSubWindow === true) {
-                    $("body")
-                        .css("visibility", "hidden");
-                }*/
 
         this._typeToItem = {
             column: this.fnBind(components.RowOrColumn, this, [true]),
@@ -103,7 +89,7 @@ export class LayoutManager extends EventEmitter {
             return Function.prototype.bind.apply(fn, [context].concat(boundArgs || []));
         }
 
-        const bound = function () {
+        const bound = function() {
 
             // Join the already applied arguments to the now called ones (after converting to an array again).
             const args = (boundArgs || []).concat(Array.prototype.slice.call(arguments, 0));
@@ -173,7 +159,7 @@ export class LayoutManager extends EventEmitter {
          * Content
          */
         config.content = [];
-        next = function (configNode, item) {
+        next = function(configNode, item) {
             // tslint:disable-next-line:no-shadowed-variable
             let key, i;
 
@@ -199,14 +185,6 @@ export class LayoutManager extends EventEmitter {
             next(config, this.root);
         }
 
-        /*
-         * Retrieve config for subwindows
-         */
-        this._$reconcilePopoutWindows();
-        config.openPopouts = [];
-        for (i = 0; i < this.openPopouts.length; i++) {
-            config.openPopouts.push(this.openPopouts[i].toConfig());
-        }
 
         /*
          * Add maximised item
@@ -237,38 +215,14 @@ export class LayoutManager extends EventEmitter {
     init() {
 
         /**
-         * Create the popout windows straight away. If popouts are blocked
-         * an error is thrown on the same 'thread' rather than a timeout and can
-         * be caught. This also prevents any further initilisation from taking place.
-         */
-        if (this._subWindowsCreated === false) {
-            this._createSubWindows();
-            this._subWindowsCreated = true;
-        }
-
-
-        /**
          * If the document isn't ready yet, wait for it.
          */
         if (document.readyState === "loading" || document.body === null) {
-            $(document).ready(() => this.init());
+            $(document)
+                .ready(() => this.init());
             return;
         }
 
-        /**
-         * If this is a subwindow, wait a few milliseconds for the original
-         * page's js calls to be executed, then replace the bodies content
-         * with GoldenLayout
-         */
-        if (this.isSubWindow === true && this._creationTimeoutPassed === false) {
-            setTimeout(() => this.init(), 7);
-            this._creationTimeoutPassed = true;
-            return;
-        }
-
-        if (this.isSubWindow === true) {
-            this._adjustToWindowMode();
-        }
 
         this._setContainer();
         this.dropTargetIndicator = new DropTargetIndicator();
@@ -314,11 +268,8 @@ export class LayoutManager extends EventEmitter {
         if (this.isInitialised === false) {
             return;
         }
-        this._onUnload();
         $(window)
             .off("resize", this._resizeFunction);
-        $(window)
-            .off("unload beforeunload", this._unloadFunction);
         this.root.callDownwards("_$destroy", [], true);
         this.root.contentItems = [];
         this.tabDropPlaceholder.remove();
@@ -326,7 +277,7 @@ export class LayoutManager extends EventEmitter {
         this.transitionIndicator.destroy();
         this.eventHub.destroy();
 
-        this._dragSources.forEach(function (dragSource) {
+        this._dragSources.forEach(function(dragSource) {
             dragSource._dragListener.destroy();
             dragSource._element = null;
             dragSource._itemConfig = null;
@@ -344,11 +295,6 @@ export class LayoutManager extends EventEmitter {
 
         if (typeof config.type !== "string") {
             throw new ConfigurationError("Missing parameter 'type'", config);
-        }
-
-        if (config.type === "react-component") {
-            config.type = "component";
-            config.componentName = "lm-react-component";
         }
 
         if (!this._typeToItem[config.type]) {
@@ -371,10 +317,7 @@ export class LayoutManager extends EventEmitter {
             !(parent instanceof components.Stack) &&
 
             // and we have a parent
-            !!parent &&
-
-            // and it's not the topmost item in a new window
-            !(this.isSubWindow === true && parent instanceof components.Root)
+            !!parent
         ) {
             config = {
                 type: "stack",
@@ -386,96 +329,6 @@ export class LayoutManager extends EventEmitter {
 
         contentItem = new this._typeToItem[config.type](this, config, parent);
         return contentItem;
-    }
-
-    /**
-     * Creates a popout window with the specified content and dimensions
-     */
-    createPopout(configOrContentItem, dimensions?, parentId?: string, indexInParent?: number) {
-        let config = configOrContentItem,
-
-            windowLeft,
-            windowTop,
-            offset,
-            parent,
-            child,
-            browserPopout;
-
-        const isItem = configOrContentItem instanceof components.AbstractContentItemComponent
-            || configOrContentItem instanceof components.AbstractContentItemComponent;
-        const self = this;
-
-        parentId = parentId || null;
-
-        if (isItem) {
-            config = this.toConfig(configOrContentItem).content;
-            parentId = createGuid();
-
-            /**
-             * If the item is the only component within a stack or for some
-             * other reason the only child of its parent the parent will be destroyed
-             * when the child is removed.
-             *
-             * In order to support this we move up the tree until we find something
-             * that will remain after the item is being popped out
-             */
-            parent = configOrContentItem.parent;
-            child = configOrContentItem;
-            while (parent.contentItems.length === 1 && !parent.isRoot) {
-                parent = parent.parent;
-                child = child.parent;
-            }
-
-            parent.addId(parentId);
-            if (isNaN(indexInParent)) {
-                indexInParent = this.layoutManagerUtilities.indexOf(child, parent.contentItems);
-            }
-        } else {
-            if (!(config instanceof Array)) {
-                config = [config];
-            }
-        }
-
-
-        if (!dimensions && isItem) {
-            windowLeft = window.screenX || window.screenLeft;
-            windowTop = window.screenY || window.screenTop;
-            offset = configOrContentItem.element.offset();
-
-            dimensions = {
-                left: windowLeft + offset.left,
-                top: windowTop + offset.top,
-                width: configOrContentItem.element.width(),
-                height: configOrContentItem.element.height()
-            };
-        }
-
-        if (!dimensions && !isItem) {
-            dimensions = {
-                left: window.screenX || window.screenLeft + 20,
-                top: window.screenY || window.screenTop + 20,
-                width: 500,
-                height: 309
-            };
-        }
-
-        if (isItem) {
-            configOrContentItem.remove();
-        }
-
-        browserPopout = new components.BrowserPopout(config, dimensions, parentId, indexInParent, this);
-
-        browserPopout.on("initialised", function () {
-            self.emit("windowOpened", browserPopout);
-        });
-
-        browserPopout.on("closed", function () {
-            self._$reconcilePopoutWindows();
-        });
-
-        this.openPopouts.push(browserPopout);
-
-        return browserPopout;
     }
 
     /**
@@ -549,21 +402,6 @@ export class LayoutManager extends EventEmitter {
         this.emit("stateChanged");
     }
 
-    /**
-     * This method is used to get around sandboxed iframe restrictions.
-     * If 'allow-top-navigation' is not specified in the iframe's 'sandbox' attribute
-     * (as is the case with codepens) the parent window is forbidden from calling certain
-     * methods on the child, such as window.close() or setting document.location.href.
-     *
-     * This prevented GoldenLayout popouts from popping in in codepens. The fix is to call
-     * _$closeWindow on the child window's gl instance which (after a timeout to disconnect
-     * the invoking method from the close call) closes itself.
-     */
-    _$closeWindow() {
-        window.setTimeout(function () {
-            window.close();
-        }, 1);
-    }
 
     _$getArea(x, y) {
         let i, area, smallestSurface = Infinity, mathingArea = null;
@@ -593,10 +431,11 @@ export class LayoutManager extends EventEmitter {
         for (const side in sides) {
             const area = this.root._$getArea();
             area.side = side;
-            if (sides [side])
+            if (sides [side]) {
                 area[side] = area[sides [side]] - areaSize;
-            else
+            } else {
                 area[side] = areaSize;
+            }
             area.surface = (area.x2 - area.x1) * (area.y2 - area.y1);
             this._itemAreas.push(area);
         }
@@ -629,7 +468,6 @@ export class LayoutManager extends EventEmitter {
             area = allContentItems[i]._$getArea();
 
             if (area === null) {
-                continue;
             } else if (area instanceof Array) {
                 this._itemAreas = this._itemAreas.concat(area);
             } else {
@@ -657,7 +495,7 @@ export class LayoutManager extends EventEmitter {
             contentItemOrConfig = contentItemOrConfig();
         }
 
-        if (contentItemOrConfig instanceof components.AbstractContentItemComponent || contentItemOrConfig instanceof components.AbstractContentItemComponent) {
+        if (contentItemOrConfig instanceof components.AbstractContentItemComponent) {
             return contentItemOrConfig;
         }
 
@@ -670,30 +508,6 @@ export class LayoutManager extends EventEmitter {
         }
     }
 
-    /**
-     * Iterates through the array of open popout windows and removes the ones
-     * that are effectively closed. This is necessary due to the lack of reliably
-     * listening for window.close / unload events in a cross browser compatible fashion.
-     */
-    _$reconcilePopoutWindows() {
-        const openPopouts = [];
-
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < this.openPopouts.length; i++) {
-            if (this.openPopouts[i].getWindow().closed === false) {
-                openPopouts.push(this.openPopouts[i]);
-            } else {
-                this.emit("windowClosed", this.openPopouts[i]);
-            }
-        }
-
-        if (this.openPopouts.length !== openPopouts.length) {
-            this.emit("stateChanged");
-            this.openPopouts = openPopouts;
-        }
-
-    }
-
     /***************************
      * PRIVATE
      ***************************/
@@ -704,7 +518,7 @@ export class LayoutManager extends EventEmitter {
     _getAllContentItems() {
         const allContentItems = [];
 
-        const addChildren = function (contentItem) {
+        const addChildren = function(contentItem) {
             allContentItems.push(contentItem);
 
             if (contentItem.contentItems instanceof Array) {
@@ -749,7 +563,6 @@ export class LayoutManager extends EventEmitter {
         const windowConfigKey = this.layoutManagerUtilities.getQueryStringParam("gl-window");
 
         if (windowConfigKey) {
-            this.isSubWindow = true;
             config = localStorage.getItem(windowConfigKey);
             config = JSON.parse(config);
             config = (new ConfigMinifier()).unminifyConfig(config);
@@ -757,16 +570,12 @@ export class LayoutManager extends EventEmitter {
         }
 
         config = $.extend(true, {}, { // default config
-            openPopouts: [],
+
             settings: {
                 hasHeaders: true,
                 constrainDragToContainer: true,
                 reorderEnabled: true,
                 selectionEnabled: false,
-                popoutWholeStack: false,
-                blockedPopoutsThrowError: true,
-                closePopoutsOnUnload: true,
-                showPopoutIcon: true,
                 showMaximiseIcon: true,
                 showCloseIcon: true,
                 responsiveMode: "onload", // Can be onload, always, or none.
@@ -787,19 +596,14 @@ export class LayoutManager extends EventEmitter {
                 close: "close",
                 maximise: "maximise",
                 minimise: "minimise",
-                popout: "open in new window",
-                popin: "pop in",
                 tabDropdown: "additional tabs"
             }
         }, config);
 
-        const nextNode = function (node) {
+        const nextNode = function(node) {
             for (const key in node) {
                 if (key !== "props" && typeof node[key] === "object") {
                     nextNode(node[key]);
-                } else if (key === "type" && node[key] === "react-component") {
-                    node.type = "component";
-                    node.componentName = "lm-react-component";
                 }
             }
         };
@@ -811,61 +615,6 @@ export class LayoutManager extends EventEmitter {
         }
 
         return config;
-    }
-
-    /**
-     * This is executed when GoldenLayout detects that it is run
-     * within a previously opened popout window.
-     */
-    _adjustToWindowMode() {
-        const popInButton = $("<div class=\"lm_popin\" title=\"" + this.config.labels.popin + "\">" +
-            "<div class=\"lm_icon\"></div>" +
-            "<div class=\"lm_bg\"></div>" +
-            "</div>");
-
-        popInButton.click(() => this.emit("popIn"));
-
-        document.title = stripHtmlTags(this.config.content[0].label);
-
-        $("head")
-            .append($("body link, body style, template, .gl_keep"));
-
-        this.container = $("body")
-            .html("")
-            .css("visibility", "visible")
-            .append(popInButton);
-
-        /*
-         * This seems a bit pointless, but actually causes a reflow/re-evaluation getting around
-         * slickgrid's "Cannot find stylesheet." bug in chrome
-         */
-        const x = document.body.offsetHeight; // jshint ignore:line
-
-        /*
-         * Expose this instance on the window object
-         * to allow the opening window to interact with
-         * it
-         */
-        (window as any).__glInstance = this;
-    }
-
-    /**
-     * Creates Subwindows (if there are any). Throws an error
-     * if popouts are blocked.
-     */
-    _createSubWindows() {
-        let i, popout;
-
-        for (i = 0; i < this.config.openPopouts.length; i++) {
-            popout = this.config.openPopouts[i];
-
-            this.createPopout(
-                popout.content,
-                popout.dimensions,
-                popout.parentId,
-                popout.indexInParent
-            );
-        }
     }
 
     /**
@@ -885,12 +634,13 @@ export class LayoutManager extends EventEmitter {
         if (container[0] === document.body) {
             this._isFullPage = true;
 
-            $("html, body").css({
-                height: "100%",
-                margin: 0,
-                padding: 0,
-                overflow: "hidden"
-            });
+            $("html, body")
+                .css({
+                    height: "100%",
+                    margin: 0,
+                    padding: 0,
+                    overflow: "hidden"
+                });
         }
 
         this.container = container;
@@ -926,24 +676,17 @@ export class LayoutManager extends EventEmitter {
     }
 
     /**
-     * Called when the window is closed or the user navigates away
-     * from the page
-     */
-    _onUnload() {
-        if (this.config.settings.closePopoutsOnUnload === true) {
-            for (let i = 0; i < this.openPopouts.length; i++) {
-                this.openPopouts[i].close();
-            }
-        }
-    }
-
-    /**
      * Adjusts the number of columns to be lower to fit the screen and still maintain minItemWidth.
      */
     _adjustColumnsResponsive() {
 
         // If there is no min width set, or not content items, do nothing.
-        if (!this._useResponsiveLayout() || this._updatingColumnsResponsive || !this.config.dimensions || !this.config.dimensions.minItemWidth || this.root.contentItems.length === 0 || !this.root.contentItems[0].isRow) {
+        if (!this._useResponsiveLayout()
+            || this._updatingColumnsResponsive
+            || !this.config.dimensions
+            || !this.config.dimensions.minItemWidth
+            || this.root.contentItems.length === 0
+            || !this.root.contentItems[0].isRow) {
             this._firstLoad = false;
             return;
         }
@@ -989,11 +732,11 @@ export class LayoutManager extends EventEmitter {
     }
 
     /**
-     * Adds all children of a node to another container recursivel
+     * Adds all children of a node to another container recursively
      */
     _addChildContentItemsToContainer(container, node) {
         if (node.type === "stack") {
-            node.contentItems.forEach(function (item) {
+            node.contentItems.forEach(function(item) {
                 container.addChild(item);
                 node.removeChild(item, true);
             });
