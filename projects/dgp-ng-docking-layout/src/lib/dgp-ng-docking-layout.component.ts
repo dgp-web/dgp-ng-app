@@ -5,62 +5,6 @@ import { interval } from "rxjs";
     selector: "dgp-ng-docking-layout-demo",
     template: `
 
-        <!--<dgp-docking-layout>
-
-            <ng-container *ngIf="terser">
-
-                <dgp-docking-layout-item type="column">
-
-                    <dgp-docking-layout-item type="row">
-
-                        <dgp-docking-layout-item type="column">
-                            <dgp-docking-layout-container [label]="'e'">
-                                <ng-template>
-                                    e
-                                </ng-template>
-                            </dgp-docking-layout-container>
-                        </dgp-docking-layout-item>
-
-                        <dgp-docking-layout-item type="column">
-                            <dgp-docking-layout-item type="stack">
-
-                                <dgp-docking-layout-container [label]="'d'">
-                                    <ng-template>
-                                        d
-                                    </ng-template>
-                                </dgp-docking-layout-container>
-
-                                <dgp-docking-layout-container [label]="'c'">
-                                    <ng-template>
-                                        c
-                                    </ng-template>
-                                </dgp-docking-layout-container>
-
-                                <dgp-docking-layout-container [label]="'b'">
-                                    <ng-template>
-                                        b
-                                    </ng-template>
-                                </dgp-docking-layout-container>
-
-                            </dgp-docking-layout-item>
-                        </dgp-docking-layout-item>
-
-                    </dgp-docking-layout-item>
-
-                    <dgp-docking-layout-item type="row">
-                        <dgp-docking-layout-container [label]="'a'">
-                            <ng-template>
-                                a
-                            </ng-template>
-                        </dgp-docking-layout-container>
-                    </dgp-docking-layout-item>
-
-                </dgp-docking-layout-item>
-
-            </ng-container>
-
-        </dgp-docking-layout>-->
-
         <dgp-split-panel orientation="vertical">
             <dgp-split-panel-content>
                 <ng-template>

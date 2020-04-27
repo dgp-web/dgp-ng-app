@@ -6,20 +6,19 @@ import {
     ElementRef,
     EmbeddedViewRef,
     Input,
-    OnChanges,
     OnDestroy,
     QueryList,
-    SimpleChanges,
     TemplateRef,
     ViewContainerRef
 } from "@angular/core";
 import { KeyValueStore } from "entity-store";
 import { ResizeSensor } from "css-element-queries";
 import { timer } from "rxjs";
-import { uniqBy } from "lodash";
-import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../custom-goldenlayout";
+import { LayoutManager } from "../custom-goldenlayout";
 import { createGuid } from "dgp-ng-app";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
+import { SplitPanelOrientation } from "./models";
+import { createComponentTree, createLayoutConfig } from "./functions";
 
 declare var $: any;
 
@@ -30,185 +29,70 @@ declare var $: any;
         :host {
             flex-grow: 1;
             display: flex;
-            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SplitPanelComponent implements OnChanges, OnDestroy, AfterViewInit {
-
-    @ContentChildren(SplitPanelContentComponent) topLevelItems: QueryList<SplitPanelContentComponent>;
-
-    @Input()
-    orientation: "horizontal" | "vertical" = "vertical";
-
-    // Settings
-    @Input() hasHeaders = false;
-    @Input() constrainDragToContainer = true;
-    @Input() reorderEnabled = false;
-    @Input() selectionEnabled = false;
-    @Input() popoutWholeStack = false;
-    @Input() blockedPopoutsThrowError = true;
-    @Input() closePopoutsOnUnload = true;
-    @Input() showPopoutIcon = false;
-    @Input() showMaximiseIcon = false;
-    @Input() showCloseIcon = false;
-    // Dimensions
-    @Input() borderWidth = 5;
-    @Input() minItemHeight = 10;
-    @Input() minItemWidth = 10;
-    @Input() headerHeight = 20;
-    @Input() dragProxyWidth = 300;
-    @Input() dragProxyHeight = 200;
-    // Labels
-    @Input() closeLabel = "close";
-    @Input() maximizeLabel = "maximize";
-    @Input() minimizeLabel = "minimize";
-    @Input() popoutLabel = "open in new window";
-
-    layout: any;
+export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
     private resizeSensor: ResizeSensor;
 
-    constructor(private readonly vcRef: ViewContainerRef,
-                private readonly elRef: ElementRef,
-    ) {
+    @ContentChildren(SplitPanelContentComponent)
+    topLevelItems: QueryList<SplitPanelContentComponent>;
 
+    @Input()
+    orientation: SplitPanelOrientation = "vertical";
+
+    layout: LayoutManager;
+
+    constructor(private readonly vcRef: ViewContainerRef,
+                private readonly elRef: ElementRef
+    ) {
     }
 
-    ngOnDestroy(): void {
-        Object.keys(this.embeddedViewRefs)
-            .forEach(key => {
-                this.embeddedViewRefs[key].destroy();
-            });
-
-        if (this.resizeSensor) this.resizeSensor.detach();
-        if (this.layout) this.layout.destroy();
+    static destroyEmbeddedView(id: string, context: SplitPanelComponent): void {
+        const embeddedViewRef = context.embeddedViewRefs[id];
+        delete context.embeddedViewRefs[id];
+        if (embeddedViewRef) embeddedViewRef.destroy();
     }
 
     ngAfterViewInit(): void {
-        this.topLevelItems.changes.subscribe(
-            () => this.redraw()
-        );
-
+        this.topLevelItems.changes.subscribe(() => this.redraw());
         this.redraw();
     }
 
-    redraw(): void {
-        // if (changes["content"]) {
-        if (this.layout) this.layout.destroy();
-        if (this.resizeSensor) this.resizeSensor.detach();
+    ngOnDestroy(): void {
+        Object.keys(this.embeddedViewRefs).forEach(key => this.embeddedViewRefs[key].destroy());
+        this.destroyLayout();
+    }
 
-        const content = this.topLevelItems.toArray()
-            .map(x => x.configuration);
+    private redraw(): void {
+        this.destroyLayout();
 
-        // if vertical --> create column, then row, then stack
+        const componentConfigurations = this.topLevelItems.toArray().map(x => x.configuration);
 
-        const topContent = {
-            type: "column",
-            id: createGuid(),
-            content: []
-        };
+        const root = createComponentTree({
+            content: componentConfigurations,
+            orientation: this.orientation
+        });
 
-        const content1: any = content.forEach(x => {
+        this.layout = new LayoutManager(createLayoutConfig(root), this.elRef.nativeElement);
 
-            topContent.content.push({
-                type: "row",
-                id: createGuid(),
-                content: [{
-                    type: "stack",
-                    id: createGuid(),
-                    content: [
-                        x
-                    ]
-                }]
+        componentConfigurations.forEach(componentConfig => {
+            this.layout.registerComponent(componentConfig.id, (container, component) => {
+                const instanceId = createGuid();
+                container.on("open",
+                    () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
+                );
+                container.on("destroy",
+                    () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
+                );
             });
-
         });
 
-        console.log(content1);
 
-        const components = this.getComponents([topContent] as any);
-        const uniqComponents = uniqBy(components, item => item.id);
-
-        const config: any = {
-            content: [topContent],
-            labels: {
-                close: this.closeLabel,
-                maximise: this.maximizeLabel,
-                minimise: this.minimizeLabel,
-                popout: this.popoutLabel
-            },
-            settings: {
-                hasHeaders: this.hasHeaders,
-                constrainDragToContainer: this.constrainDragToContainer,
-                reorderEnabled: this.reorderEnabled,
-                selectionEnabled: this.selectionEnabled,
-                popoutWholeStack: this.popoutWholeStack,
-                blockedPopoutsThrowError: this.blockedPopoutsThrowError,
-                closePopoutsOnUnload: this.closePopoutsOnUnload,
-                showPopoutIcon: this.showPopoutIcon,
-                showMaximiseIcon: this.showMaximiseIcon,
-                showCloseIcon: this.showCloseIcon
-            },
-            dimensions: {
-                borderWidth: this.borderWidth,
-                minItemHeight: this.minItemHeight,
-                minItemWidth: this.minItemWidth,
-                headerHeight: this.headerHeight,
-                dragProxyWidth: this.dragProxyWidth,
-                dragProxyHeight: this.dragProxyHeight
-            }
-        };
-
-        this.layout = new LayoutManager(config, this.elRef.nativeElement);
-
-        // TODO: Type container and state
-        uniqComponents.forEach(component => {
-
-            this.layout.registerComponent(component.id, (container, componentState) => {
-
-                const id = createGuid();
-
-                container.on("open", () => {
-                    this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
-                });
-
-                container.on("destroy", () => {
-                    this.destroyEmbeddedView(id, this);
-                });
-
-            });
-
-        });
-
-        this.layout.init();
-
-        const element = this.elRef.nativeElement;
-        this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
-    }
-
-    public ngOnChanges(changes: SimpleChanges): void {
-
-    }
-
-    private getComponents(content: ItemConfiguration[]): ComponentConfiguration[] {
-        let result: ComponentConfiguration[] = [];
-
-        content.forEach(item => {
-            if (item.type === "component") {
-                result.push(item as ComponentConfiguration);
-            } else {
-                result = result.concat(this.getComponents((item as any).content));
-            }
-        });
-
-        return result;
-    }
-
-    updateLayout(): void {
-        this.layout.updateSize();
+        this.initLayout();
     }
 
     private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: SplitPanelComponent): void {
@@ -218,15 +102,23 @@ export class SplitPanelComponent implements OnChanges, OnDestroy, AfterViewInit 
             .detach();
         element$.append(detached);
 
-        timer(250).subscribe(() => {
-            embeddedViewRef.markForCheck();
-        });
+        timer(250).subscribe(() => embeddedViewRef.markForCheck());
     }
 
-    private destroyEmbeddedView(id: string, context: SplitPanelComponent): void {
-        const embeddedViewRef = context.embeddedViewRefs[id];
-        delete context.embeddedViewRefs[id];
-        if (embeddedViewRef) embeddedViewRef.destroy();
+    private initLayout() {
+        this.layout.init();
+
+        const element = this.elRef.nativeElement;
+        this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
+    }
+
+    private updateLayout() {
+        this.layout.updateSize();
+    }
+
+    private destroyLayout() {
+        if (this.resizeSensor) this.resizeSensor.detach();
+        if (this.layout) this.layout.destroy();
     }
 
 }

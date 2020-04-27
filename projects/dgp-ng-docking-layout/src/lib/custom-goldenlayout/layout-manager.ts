@@ -7,6 +7,7 @@ import { LayoutConfiguration } from "./types/golden-layout-configuration";
 import { AbstractContentItemComponent } from "./components/abstract-content-item";
 import { createGuid } from "dgp-ng-app";
 import { stripHtmlTags } from "../common/functions";
+import { ComponentDefinition, ContainerDefinition } from "./utilities/models";
 
 declare var $: any;
 
@@ -133,7 +134,7 @@ export class LayoutManager extends EventEmitter {
      * of type component is reached it will look up componentName and create the
      * associated component
      */
-    registerComponent(name, constructor) {
+    registerComponent(name, constructor: (container: ContainerDefinition, component: ComponentDefinition<any>) => void) {
         if (typeof constructor !== "function") {
             throw new Error("Please register a constructor function");
         }

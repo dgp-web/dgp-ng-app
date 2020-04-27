@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Input, TemplateRef } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ContentChild, TemplateRef } from "@angular/core";
 import { createGuid } from "dgp-ng-app";
 import { ComponentConfiguration } from "../custom-goldenlayout/types";
 
@@ -11,7 +11,7 @@ export class SplitPanelContentComponent {
 
     @ContentChild(TemplateRef) templateRef: TemplateRef<any>;
 
-    @Input() id = createGuid();
+    readonly id = createGuid();
 
     get configuration(): ComponentConfiguration {
 
@@ -20,7 +20,7 @@ export class SplitPanelContentComponent {
 
             isClosable: false,
             componentName: this.id,
-            id: createGuid(),
+            id: this.id,
             componentState: {
                 template: () => this.templateRef
             }

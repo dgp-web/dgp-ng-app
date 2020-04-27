@@ -8,7 +8,7 @@ export { DockingLayoutContainerComponent } from "./lib/docking-layout/components
 export { DockingLayoutItemComponent } from "./lib/docking-layout/components/docking-layout-item.component";
 export { DockingLayoutComponent } from "./lib/docking-layout/components/docking-layout.component";
 export { SplitPanelContentComponent } from "./lib/split-panel/split-panel-content.component";
-export { SplitPanelItemComponent } from "./lib/split-panel/split-panel-item.component";
+export * from "./lib/split-panel/models";
 export { SplitPanelComponent } from "./lib/split-panel/split-panel.component";
 export { DgpSplitPanelModule } from "./lib/split-panel/split-panel.module";
 export * from "./lib/jquery-extensions";
