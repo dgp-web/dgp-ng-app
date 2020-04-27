@@ -29,7 +29,7 @@ export class Component extends AbstractContentItemComponent {
 
         this.isComponent = true;
         this.container = new ItemContainer(this.config, this, layoutManager);
-        this.instance = new ComponentConstructor(this.container, componentConfig);
+        this.instance = ComponentConstructor(this.container, componentConfig);
         this.element = this.container._element;
     }
 

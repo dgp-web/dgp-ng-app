@@ -8,6 +8,5 @@ export { DockingLayoutContainerComponent } from "./lib/docking-layout/components
 export { DockingLayoutItemComponent } from "./lib/docking-layout/components/docking-layout-item.component";
 export { DockingLayoutComponent } from "./lib/docking-layout/components/docking-layout.component";
 export * from "./lib/jquery-extensions";
-export * from "./lib/dgp-ng-docking-layout.service";
 export * from "./lib/dgp-ng-docking-layout.component";
 export * from "./lib/dgp-ng-docking-layout.module";
