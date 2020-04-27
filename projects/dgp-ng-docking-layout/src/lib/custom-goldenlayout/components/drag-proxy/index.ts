@@ -1,0 +1,1 @@
+export * from "./drag-proxy.component.html";

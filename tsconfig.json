@@ -30,6 +30,10 @@
       ],
       "dgp-ng-docs/*": [
         "dist/dgp-ng-docs/*"
+      ],
+      "dgp-ng-docking-layout": [
+        "dist/dgp-ng-docking-layout/dgp-ng-docking-layout",
+        "dist/dgp-ng-docking-layout"
       ]
     }
   },

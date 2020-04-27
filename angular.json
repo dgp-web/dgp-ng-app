@@ -212,6 +212,46 @@
                     }
                 }
             }
+        },
+        "dgp-ng-docking-layout": {
+            "projectType": "library",
+            "root": "projects/dgp-ng-docking-layout",
+            "sourceRoot": "projects/dgp-ng-docking-layout/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.lib.json",
+                        "project": "projects/dgp-ng-docking-layout/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/dgp-ng-docking-layout/src/test.ts",
+                        "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.spec.json",
+                        "karmaConfig": "projects/dgp-ng-docking-layout/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/dgp-ng-docking-layout/tsconfig.lib.json",
+                            "projects/dgp-ng-docking-layout/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
         }
     },
     "defaultProject": "ng-app"
