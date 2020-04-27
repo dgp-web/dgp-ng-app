@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList } from "@angular/core";
-import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
-import { ColumnConfiguration, RowConfiguration } from "../../custom-goldenlayout/types";
+import { SplitPanelContentComponent } from "./split-panel-content.component";
+import { ColumnConfiguration, RowConfiguration } from "../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
 
 @Component({
-    selector: "dgp-docking-layout-item",
-    template: "<ng-content></ng-content>",
+    selector: "dgp-split-panel-item",
+    template: " <ng-content></ng-content>",
     styles: [`
         :host {
             display: flex;
@@ -15,17 +15,19 @@ import { createGuid } from "dgp-ng-app";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DockingLayoutItemComponent {
+export class SplitPanelItemComponent {
 
-    @ContentChildren(DockingLayoutItemComponent) items: QueryList<DockingLayoutItemComponent>;
-    @ContentChildren(DockingLayoutContainerComponent) containers: QueryList<DockingLayoutContainerComponent>;
+    @ContentChildren(SplitPanelItemComponent) items: QueryList<SplitPanelItemComponent>;
+    @ContentChildren(SplitPanelContentComponent) containers: QueryList<SplitPanelContentComponent>;
 
-    @Input() type: "row" | "column";
-
-    @Input() width: number;
-    @Input() height: number;
+    @Input()
+    orientation: "horizontal" | "vertical" = "vertical";
 
     get configuration(): RowConfiguration | ColumnConfiguration {
+
+
+        console.log("Collecting stuff");
+
 
         const items = this.items.toArray()
             .filter(x => x !== this)
@@ -39,14 +41,12 @@ export class DockingLayoutItemComponent {
             ...containers
         ];
 
-        if (this.type === "row") {
+        if (this.orientation === "horizontal") {
 
             return {
                 type: "row",
                 id: createGuid(),
-                content,
-                height: this.height,
-                width: this.width
+                content
             };
 
         } else {
@@ -54,9 +54,7 @@ export class DockingLayoutItemComponent {
             return {
                 type: "column",
                 id: createGuid(),
-                content,
-                height: this.height,
-                width: this.width
+                content
             };
 
         }

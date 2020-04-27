@@ -5,17 +5,15 @@ import { interval } from "rxjs";
     selector: "dgp-ng-docking-layout-demo",
     template: `
 
-        <dgp-docking-layout>
+        <!--<dgp-docking-layout>
 
             <ng-container *ngIf="terser">
 
                 <dgp-docking-layout-item type="column">
 
-                    <dgp-docking-layout-item type="row"
-                                             height="80">
+                    <dgp-docking-layout-item type="row">
 
-                        <dgp-docking-layout-item type="column"
-                                                 width="20">
+                        <dgp-docking-layout-item type="column">
                             <dgp-docking-layout-container [label]="'e'">
                                 <ng-template>
                                     e
@@ -23,8 +21,7 @@ import { interval } from "rxjs";
                             </dgp-docking-layout-container>
                         </dgp-docking-layout-item>
 
-                        <dgp-docking-layout-item type="column"
-                                                 width="80">
+                        <dgp-docking-layout-item type="column">
                             <dgp-docking-layout-item type="stack">
 
                                 <dgp-docking-layout-container [label]="'d'">
@@ -50,8 +47,7 @@ import { interval } from "rxjs";
 
                     </dgp-docking-layout-item>
 
-                    <dgp-docking-layout-item type="row"
-                                             height="20">
+                    <dgp-docking-layout-item type="row">
                         <dgp-docking-layout-container [label]="'a'">
                             <ng-template>
                                 a
@@ -63,7 +59,42 @@ import { interval } from "rxjs";
 
             </ng-container>
 
-        </dgp-docking-layout>
+        </dgp-docking-layout>-->
+
+        <dgp-split-panel>
+            <!-- TODO: This should be removed -->
+            <dgp-split-panel-item orientation="vertical">
+                <dgp-split-panel-item orientation="horizontal">
+                    <dgp-split-panel-item orientation="stack">
+                        <dgp-split-panel-content>
+                            <ng-template>
+                                A
+                            </ng-template>
+                        </dgp-split-panel-content>
+                    </dgp-split-panel-item>
+                </dgp-split-panel-item>
+
+                <dgp-split-panel-item orientation="horizontal">
+                    <dgp-split-panel-item orientation="stack">
+                        <dgp-split-panel-content>
+                            <ng-template>
+                                B
+                            </ng-template>
+                        </dgp-split-panel-content>
+                    </dgp-split-panel-item>
+                </dgp-split-panel-item>
+
+                <dgp-split-panel-item orientation="horizontal">
+                    <dgp-split-panel-item orientation="stack">
+                        <dgp-split-panel-content>
+                            <ng-template>
+                                C
+                            </ng-template>
+                        </dgp-split-panel-content>
+                    </dgp-split-panel-item>
+                </dgp-split-panel-item>
+            </dgp-split-panel-item>
+        </dgp-split-panel>
 
     `,
     styles: [`
