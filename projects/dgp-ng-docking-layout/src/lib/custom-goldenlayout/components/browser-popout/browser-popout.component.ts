@@ -1,7 +1,9 @@
 import { EventEmitter } from "../../utilities/event-emitter";
 import { LayoutManagerUtilities } from "../../utilities/layout-manager.utilities";
 import { ConfigMinifier } from "../../utilities/config-minifier";
-import { guid } from "@dgp/ngrx-entity-store";
+import { createGuid } from "dgp-ng-app";
+
+declare var $: any;
 
 /**
  * Pops a content item out into a new browser window.
@@ -26,7 +28,7 @@ export class BrowserPopout extends EventEmitter {
     private _parentId: any;
     private _indexInParent: any;
     private _layoutManager: any;
-    private _popoutWindow: null;
+    private _popoutWindow: any;
     private _id: null;
     private layoutManagerUtilities = new LayoutManagerUtilities();
 
@@ -163,7 +165,7 @@ export class BrowserPopout extends EventEmitter {
         if ( !this._popoutWindow ) {
             if ( this._layoutManager.config.settings.blockedPopoutsThrowError === true ) {
                 let error = new Error( "Popout blocked" );
-                error.type = "popoutBlocked";
+                (error as any).type = "popoutBlocked";
                 throw error;
             } else {
                 return;
@@ -213,10 +215,10 @@ export class BrowserPopout extends EventEmitter {
      */
     _createUrl() {
         let config = { content: this._config },
-            storageKey = "gl-window-config-" + guid(),
+            storageKey = "gl-window-config-" + createGuid(),
             urlParts;
 
-        config = ( new ConfigMinifier() ).minifyConfig( config );
+        config = ( new ConfigMinifier() ).minifyConfig( config ) as any;
 
         try {
             localStorage.setItem( storageKey, JSON.stringify( config ) );

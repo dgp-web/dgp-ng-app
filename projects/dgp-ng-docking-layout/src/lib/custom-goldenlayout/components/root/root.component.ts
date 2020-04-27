@@ -1,13 +1,15 @@
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
 
-export class Root extends AbstractContentItemComponent {
-    private isRoot: boolean;
-    private type: string;
-    private element: any;
-    private childElementContainer: any;
-    private _containerElement: any;
+declare var $: any;
 
-    constructor(private layoutManager, private config, private containerElement) {
+export class Root extends AbstractContentItemComponent {
+    isRoot: boolean;
+    type: any;
+    public element: any;
+    public childElementContainer: any;
+    public _containerElement: any;
+
+    constructor(public layoutManager, public config, public containerElement) {
         super(layoutManager, config, containerElement);
 
         this.isRoot = true;
@@ -73,8 +75,8 @@ export class Root extends AbstractContentItemComponent {
             const dimension = area.side[0] === "x" ? "width" : "height";
             const insertBefore = area.side[1] === "2";
             const column: AbstractContentItemComponent = this.contentItems[0];
-            if (!(column.isRow || column.isColumn) || column.type != type) { // TODO: move this type here
-                const rowOrColumn = this.layoutManager.createContentItem({type: type}, this);
+            if (!(column.isRow || column.isColumn) || column.type !== type) { // TODO: move this type here
+                const rowOrColumn = this.layoutManager.createContentItem({type}, this);
                 this.replaceChild(column, rowOrColumn);
                 rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
                 rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
@@ -82,7 +84,7 @@ export class Root extends AbstractContentItemComponent {
                 contentItem.config[dimension] = 50;
                 rowOrColumn.callDownwards("setSize");
             } else {
-                const sibbling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1]
+                const sibbling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
                 column.addChild(contentItem, insertBefore ? 0 : undefined, true);
                 sibbling.config[dimension] *= 0.5;
                 contentItem.config[dimension] = sibbling.config[dimension];

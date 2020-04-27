@@ -13,8 +13,13 @@
             "lib",
             "kebab-case"
         ],
+        "space-before-function-paren": false,
         "variable-name": false,
         "only-arrow-functions": false,
-        "one-variable-per-declaration": false
+        "one-variable-per-declaration": false,
+        "prefer-const": false,
+        "no-redundant-jsdoc": false,
+        "prefer-for-of": false,
+        "forin": false
     }
 }

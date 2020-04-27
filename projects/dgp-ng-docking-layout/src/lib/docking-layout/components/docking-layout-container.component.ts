@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, TemplateRef, ContentChild } from "@angular/core";
-import { ComponentConfiguration } from "@dgp/ng-bootstrap-ui";
-import { guid } from "@dgp/ngrx-entity-store";
+import { ChangeDetectionStrategy, Component, ContentChild, Input, TemplateRef } from "@angular/core";
+import { ComponentConfiguration } from "../../custom-goldenlayout/types";
+import { createGuid } from "dgp-ng-app";
 
 @Component({
     selector: "gl-container",
@@ -14,13 +14,13 @@ export class DockingLayoutContainerComponent {
 
     @Input() closable = true;
     @Input() title: string;
-    @Input() componentName = guid();
+    @Input() componentName = createGuid();
     @Input() width: number;
     @Input() height: number;
 
     get configuration(): ComponentConfiguration {
 
-        const configuration: ComponentConfiguration = {
+        return {
             type: "component",
 
             width: this.width,
@@ -28,13 +28,11 @@ export class DockingLayoutContainerComponent {
             isClosable: this.closable,
             componentName: this.componentName,
             title: this.title,
-            id: guid(),
+            id: createGuid(),
             componentState: {
                 template: () => this.template
             }
         };
-
-        return configuration;
 
     }
 }

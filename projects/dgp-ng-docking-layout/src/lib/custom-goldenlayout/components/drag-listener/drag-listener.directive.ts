@@ -1,16 +1,26 @@
-import { Vector2, Vector2Utils } from "@dgp/common";
 import { Directive, EventEmitter, Output } from "@angular/core";
-import { $x } from "@dgp/jquery-extensions";
+import { Vector2, Vector2Utils } from "../../../common/models";
+import { $x } from "../../../jquery-extensions";
 
 export interface DragEvent extends Vector2 {
-    event: JQuery.Event;
+    event: any;
 }
 
+declare var $: any;
 
-@Directive({
+/*@Directive({
     selector: "dgp-drag-listener"
-})
-export class DragListenerDirective  {
+})*/
+export class DragListenerDirective {
+
+    constructor(element: any) {
+        this.$element = $(element);
+        this.$document = $(document);
+        this.$body = $(document.body);
+
+        this.$element.on("mousedown touchstart", this.onMouseDown);
+
+    }
 
     @Output() dragStart$ = new EventEmitter<Vector2>();
     @Output() dragStop$ = new EventEmitter<{}>();
@@ -19,7 +29,7 @@ export class DragListenerDirective  {
     private $element: any;
     private $document: any;
     private $body: any;
-    private timeout: NodeJS.Timer;
+    private timeout: any;
 
     /**
      * The delay after which to start the drag in milliseconds
@@ -41,14 +51,7 @@ export class DragListenerDirective  {
 
     private isDragging = false;
 
-    constructor(element: any) {
-        this.$element = $(element);
-        this.$document = $(document);
-        this.$body = $(document.body);
-
-        this.$element.on("mousedown touchstart", this.onMouseDown);
-
-    }
+    on: any;
 
     destroy() {
         this.$element.unbind("mousedown touchstart", this.onMouseDown);
@@ -123,6 +126,5 @@ export class DragListenerDirective  {
 
         this.dragStart$.emit(this.originalCoordinates);
     }
-
 
 }

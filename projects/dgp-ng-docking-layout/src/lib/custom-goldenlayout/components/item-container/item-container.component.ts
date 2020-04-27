@@ -1,5 +1,7 @@
 import { EventEmitter } from "../../utilities";
 
+declare var $: any;
+
 export class ItemContainer extends EventEmitter {
     private width: number;
     private height: number;
@@ -63,7 +65,7 @@ export class ItemContainer extends EventEmitter {
         this.isHidden = false;
         this._element.show();
         // call shown only if the container has a valid size
-        if (this.height != 0 || this.width != 0) {
+        if (this.height !== 0 || this.width !== 0) {
             this.emit("shown");
         }
     }

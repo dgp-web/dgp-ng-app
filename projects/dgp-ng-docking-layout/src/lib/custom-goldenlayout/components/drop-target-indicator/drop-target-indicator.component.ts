@@ -1,4 +1,6 @@
-import * as template from "./drop-target-indicator.component.html";
+const template = `<div class="lm_dropTargetIndicator"><div class="lm_inner"></div></div>`;
+
+declare var $: any;
 
 export class DropTargetIndicator {
 
@@ -14,17 +16,17 @@ export class DropTargetIndicator {
         this.element.remove();
     }
 
-    highlight( x1, y1, x2, y2 ) {
-        this.highlightArea( { x1: x1, y1: y1, x2: x2, y2: y2 } );
+    highlight(x1, y1, x2, y2) {
+        this.highlightArea({x1, y1, x2, y2});
     }
 
-    highlightArea( area ) {
-        this.element.css( {
+    highlightArea(area) {
+        this.element.css({
             left: area.x1,
             top: area.y1,
             width: area.x2 - area.x1,
             height: area.y2 - area.y1
-        } ).show();
+        }).show();
     }
 
     hide() {

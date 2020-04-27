@@ -19,7 +19,7 @@ export class LayoutManager extends EventEmitter {
 
     private isInitialised: boolean;
     private _isFullPage: boolean;
-    private _resizeTimeoutId: null;
+    private _resizeTimeoutId: any;
     private _components: any;
     private _itemAreas: any[];
     private _resizeFunction: any;
@@ -42,7 +42,7 @@ export class LayoutManager extends EventEmitter {
     container: any;
     dropTargetIndicator: any;
     private transitionIndicator: any;
-    private tabDropPlaceholder: any;
+    tabDropPlaceholder: any;
     private _typeToItem: any;
 
     constructor(config: LayoutConfiguration, container: any) {
@@ -132,12 +132,6 @@ export class LayoutManager extends EventEmitter {
      * Register a component with the layout manager. If a configuration node
      * of type component is reached it will look up componentName and create the
      * associated component
-     *
-     *  {
-     *		type: "component",
-     *		componentName: "EquityNewsFeed",
-     *		componentState: { "feedTopic": "us-bluechips" }
-     *  }
      */
     registerComponent(name, constructor) {
         if (typeof constructor !== "function") {
@@ -179,6 +173,7 @@ export class LayoutManager extends EventEmitter {
          */
         config.content = [];
         next = function (configNode, item) {
+            // tslint:disable-next-line:no-shadowed-variable
             let key, i;
 
             for (key in item.config) {
@@ -405,7 +400,8 @@ export class LayoutManager extends EventEmitter {
             child,
             browserPopout;
 
-        const isItem = configOrContentItem instanceof components.AbstractContentItemComponent || configOrContentItem instanceof components.AbstractContentItemComponent;
+        const isItem = configOrContentItem instanceof components.AbstractContentItemComponent
+            || configOrContentItem instanceof components.AbstractContentItemComponent;
         const self = this;
 
         parentId = parentId || null;
@@ -592,6 +588,7 @@ export class LayoutManager extends EventEmitter {
     _$createRootItemAreas() {
         const areaSize = 50;
         const sides = {y2: 0, x2: 0, y1: "y2", x1: "x2"};
+        // tslint:disable-next-line:forin
         for (const side in sides) {
             const area = this.root._$getArea();
             area.side = side;
@@ -680,6 +677,7 @@ export class LayoutManager extends EventEmitter {
     _$reconcilePopoutWindows() {
         const openPopouts = [];
 
+        // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this.openPopouts.length; i++) {
             if (this.openPopouts[i].getWindow().closed === false) {
                 openPopouts.push(this.openPopouts[i]);

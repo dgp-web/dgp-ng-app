@@ -1,12 +1,25 @@
 import { EventEmitter } from "../../utilities/event-emitter";
-import * as template from "./drag-proxy.component.html";
 import { DragEvent, DragListenerDirective } from "../drag-listener";
 import { LayoutManager } from "../../layout-manager";
-import { AbstractContentItemComponent } from "../abstract-content-item";
 import { Vector2, Vector2Utils } from "../../../common/models";
 import { $x } from "../../../jquery-extensions";
+import { stripHtmlTags } from "../../../common/functions";
 
-declare var $: an;
+const template = `
+<div class="lm_dragProxy">
+    <div class="lm_header card-header"
+         style="height: auto !important;">
+        <ul class="lm_tabs card-header-tabs nav nav-tabs">
+            <li class="lm_tab lm_active"><i class="lm_left"></i>
+                <a class="lm_title"></a>
+                <i class="lm_right"></i></li>
+        </ul>
+    </div>
+    <div class="lm_content"></div>
+</div>
+`;
+
+declare var $: any;
 
 /**
  * This class creates a temporary container
@@ -185,7 +198,7 @@ export class DragProxy extends EventEmitter {
         let width = dimensions.dragProxyWidth;
         let height = dimensions.dragProxyHeight;
 
-        $x.size(this.$element, {x: width, y: height})
+        $x.size(this.$element, {x: width, y: height});
 
         width -= (this._sided ? dimensions.headerHeight : 0);
         height -= (!this._sided ? dimensions.headerHeight : 0);

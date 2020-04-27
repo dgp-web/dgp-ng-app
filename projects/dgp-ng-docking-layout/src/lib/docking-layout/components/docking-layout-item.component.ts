@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, ContentChildren, QueryList } from "@angular/core";
-import { ColumnConfiguration, RowConfiguration } from "@dgp/ng-bootstrap-ui";
-import { guid } from "@dgp/ngrx-entity-store";
+import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList } from "@angular/core";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
+import { ColumnConfiguration, RowConfiguration } from "../../custom-goldenlayout/types";
+import { createGuid } from "dgp-ng-app";
 
 @Component({
     selector: "gl-item",
@@ -35,27 +35,23 @@ export class DockingLayoutItemComponent {
 
         if (this.type === "row") {
 
-            const rowConfiguration: RowConfiguration = {
+            return {
                 type: "row",
-                id: guid(),
-                content: content,
+                id: createGuid(),
+                content,
                 height: this.height,
                 width: this.width
             };
-
-            return rowConfiguration;
 
         } else {
 
-            const columnConfiguration: ColumnConfiguration = {
+            return {
                 type: "column",
-                id: guid(),
-                content: content,
+                id: createGuid(),
+                content,
                 height: this.height,
                 width: this.width
             };
-
-            return columnConfiguration;
 
         }
     }

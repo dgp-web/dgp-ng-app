@@ -1,7 +1,10 @@
 import { DragProxy } from "../drag-proxy/drag-proxy.component";
 import { LayoutManagerUtilities } from "../../utilities";
-import { RxComponent, Vector2 } from "@dgp/common";
 import { DragListenerDirective } from "../drag-listener";
+import { RxComponent } from "../../../common/app";
+import { Vector2 } from "../../../common/models";
+
+declare var $: any;
 
 /**
  * Allows for any DOM item to create a component on drag
@@ -33,11 +36,11 @@ export class DragSourceComponent extends RxComponent {
      * @returns {void}
      */
     private createDragListener() {
-        if ( this.dragListener !== null ) {
+        if (this.dragListener !== null) {
             this.dragListener.destroy();
         }
 
-        this.dragListener = new DragListenerDirective( this.element );
+        this.dragListener = new DragListenerDirective(this.element);
 
         const dragStartSubscription = this.dragListener
             .dragStart$
@@ -54,20 +57,15 @@ export class DragSourceComponent extends RxComponent {
 
     /**
      * Callback for the DragListener's dragStart event
-     *
-     * @param   {int} x the x position of the mouse on dragStart
-     * @param   {int} y the x position of the mouse on dragStart
-     *
-     * @returns {void}
      */
     private onDragStart = (coordinates: Vector2) => {
         let itemConfig = this.itemConfig;
-        if ( new LayoutManagerUtilities().isFunction( itemConfig ) ) {
+        if (new LayoutManagerUtilities().isFunction(itemConfig)) {
             itemConfig = itemConfig();
         }
-        const contentItem = this.layoutManager._$normalizeContentItem( $.extend( true, {}, itemConfig ) ),
-            dragProxy = new DragProxy( coordinates, this.dragListener, this.layoutManager, contentItem, null );
+        const contentItem = this.layoutManager._$normalizeContentItem($.extend(true, {}, itemConfig)),
+            dragProxy = new DragProxy(coordinates, this.dragListener, this.layoutManager, contentItem, null);
 
-        this.layoutManager.transitionIndicator.transitionElements( this.element, dragProxy.$element );
+        this.layoutManager.transitionIndicator.transitionElements(this.element, dragProxy.$element);
     }
 }

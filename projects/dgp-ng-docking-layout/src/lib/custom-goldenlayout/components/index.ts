@@ -1,6 +1,6 @@
 export * from "./abstract-content-item";
 export * from "./browser-popout";
-export * from "./drag-handle";
+// export * from "./drag-handle";
 export * from "./drag-listener";
 export * from "./drag-proxy";
 export * from "./drag-source";

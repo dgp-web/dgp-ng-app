@@ -1,6 +1,8 @@
 import { AbstractContentItemComponent } from "../abstract-content-item";
 import { ItemContainer } from "../item-container";
 
+declare var $: any;
+
 /**
  * @param {[type]} layoutManager [description]
  * @param {[type]} config      [description]
@@ -8,20 +10,20 @@ import { ItemContainer } from "../item-container";
  */
 export class Component extends AbstractContentItemComponent {
     componentName: any;
-    private container: any;
-    private instance: any;
-    private element: any;
+    public container: any;
+    public instance: any;
+    public element: any;
 
-    constructor(private layoutManager, private config, private parent) {
+    constructor(public layoutManager, public config, public parent) {
         super(layoutManager, config, parent);
 
-        var ComponentConstructor = layoutManager.getComponent(this.config.componentName),
+        let ComponentConstructor = layoutManager.getComponent(this.config.componentName),
             componentConfig = $.extend(true, {}, this.config.componentState || {});
 
         componentConfig.componentName = this.config.componentName;
         this.componentName = this.config.componentName;
 
-        if (this.config.title === '') {
+        if (this.config.title === "") {
             this.config.title = this.config.componentName;
         }
 
@@ -36,7 +38,7 @@ export class Component extends AbstractContentItemComponent {
     }
 
     setSize() {
-        if (this.element.is(':visible')) {
+        if (this.element.is(":visible")) {
             // Do not update size of hidden components to prevent unwanted reflows
             this.container._$setSize(this.element.width(), this.element.height());
         }
@@ -44,7 +46,7 @@ export class Component extends AbstractContentItemComponent {
 
     _$init() {
         super._$init();
-        this.container.emit('open');
+        this.container.emit("open");
     }
 
     _$hide() {
@@ -59,11 +61,11 @@ export class Component extends AbstractContentItemComponent {
 
     _$shown() {
         this.container.shown();
-        super._$shown();
+        // super._$shown();
     }
 
     _$destroy() {
-        this.container.emit('destroy', this);
+        this.container.emit("destroy", this);
         super._$destroy();
     }
 

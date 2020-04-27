@@ -1,14 +1,14 @@
-import * as template from "./transition-indicator.component.html";
+const template = `<div class="lm_transition_indicator"></div>`;
 import { LayoutManagerUtilities } from "../../utilities";
 
 declare var $: any;
 
 export class TransitionIndicatorComponent {
-    private _element: any;
-    private _toElement: null;
-    private _fromDimensions: null;
-    private _totalAnimationDuration: number;
-    private _animationStartTime: null;
+    private readonly _element: any;
+    private _toElement: any;
+    private _fromDimensions: any;
+    private readonly _totalAnimationDuration: number;
+    private _animationStartTime: any;
 
     constructor() {
         this._element = $(template);
@@ -41,7 +41,7 @@ export class TransitionIndicatorComponent {
 
     _nextAnimationFrame() {
         let toDimensions = this._measure(this._toElement),
-            animationProgress = (new Date() - this._animationStartTime) / this._totalAnimationDuration,
+            animationProgress = (new Date().valueOf() - this._animationStartTime.valueOf()) / this._totalAnimationDuration,
             currentFrameStyles = {},
             cssProperty;
 
@@ -50,7 +50,7 @@ export class TransitionIndicatorComponent {
             return;
         }
 
-        toDimensions.opacity = 0;
+        (toDimensions as any).opacity = 0;
 
         for (cssProperty in this._fromDimensions) {
             currentFrameStyles[cssProperty] = this._fromDimensions[cssProperty] +

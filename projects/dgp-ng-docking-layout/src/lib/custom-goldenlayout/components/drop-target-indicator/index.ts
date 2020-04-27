@@ -1,1 +1,1 @@
-export * from "./drop-target-indicator.component.html";
+export * from "./drop-target-indicator.component";

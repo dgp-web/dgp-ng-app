@@ -1,1 +1,1 @@
-export * from "./drag-proxy.component.html";
+export * from "./drag-proxy.component";

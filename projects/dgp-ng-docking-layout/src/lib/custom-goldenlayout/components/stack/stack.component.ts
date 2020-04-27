@@ -1,19 +1,20 @@
 import { LayoutManagerUtilities } from "../../utilities";
-import { HeaderComponent } from "../header";
+import { HeaderComponent } from "../header/header.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
 
-export class Stack extends AbstractContentItemComponent {
-    private element: any;
-    private _activeContentItem: any;
-    private _header: any;
-    private _dropZones: any;
-    private _dropSegment: any;
-    private _contentAreaDimensions: any;
-    private _dropIndex: number;
-    private childElementContainer: any;
-    private header: HeaderComponent;
+declare var $: any;
 
-    constructor(private layoutManager, private config, private parent) {
+export class Stack extends AbstractContentItemComponent {
+    _activeContentItem: any;
+    _dropZones: any;
+    _dropSegment: any;
+    _contentAreaDimensions: any;
+    _dropIndex: number;
+    header: HeaderComponent;
+    _sided: any;
+    _side: any;
+
+    constructor(layoutManager, config, parent) {
         super(layoutManager, config, parent);
 
         this.element = $("<div class=\"lm_item lm_stack card\" style=\"border:none; outline: 1px solid rgba(0,0,0,.125);\"></div>");
@@ -109,7 +110,7 @@ export class Stack extends AbstractContentItemComponent {
         return this.header.activeContentItem;
     }
 
-    addChild(contentItem, index) {
+    addChild(contentItem, index?) {
         contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
@@ -141,8 +142,6 @@ export class Stack extends AbstractContentItemComponent {
      * Validates that the stack is still closable or not. If a stack is able
      * to close, but has a non closable component added to it, the stack is no
      * longer closable until all components are closable.
-     *
-     * @returns {void}
      */
     _$validateClosability() {
         let contentItem,
@@ -185,10 +184,6 @@ export class Stack extends AbstractContentItemComponent {
      *
      * Same thing for rows and left / right drop segments... so in total there are 9 things that can potentially happen
      * (left, top, right, bottom) * is child of the right parent (row, column) + header drop
-     *
-     * @param    {lm.item} contentItem
-     *
-     * @returns {void}
      */
     _$onDrop(contentItem) {
 
@@ -253,7 +248,7 @@ export class Stack extends AbstractContentItemComponent {
              */
         } else {
             type = isVertical ? "column" : "row";
-            rowOrColumn = this.layoutManager.createContentItem({type: type}, this);
+            rowOrColumn = this.layoutManager.createContentItem({type}, this);
             this.parent.replaceChild(this, rowOrColumn);
 
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
@@ -268,11 +263,6 @@ export class Stack extends AbstractContentItemComponent {
     /**
      * If the user hovers above the header part of the stack, indicate drop positions for tabs.
      * otherwise indicate which segment of the body the dragged item would be dropped on
-     *
-     * @param    {Int} x Absolute Screen X
-     * @param    {Int} y Absolute Screen Y
-     *
-     * @returns {void}
      */
     _$highlightDropZone(x, y) {
         let segment, area;

@@ -1,23 +1,26 @@
 import { LayoutManagerUtilities } from "../../utilities";
-import { SplitterComponent } from "../splitter";
+import { SplitterComponent } from "../splitter/splitter.component";
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
+
+declare var $: any;
 
 export class RowOrColumn extends AbstractContentItemComponent {
 
-    private element: any;
-    private childElementContainer: any;
-    private _splitterSize: number;
-    private _splitterGrabSize: any;
-    private _isColumn: boolean;
-    private _dimension: string;
-    private _splitter: any[];
-    private _splitterPosition: null;
-    private _splitterMinPosition: null;
-    private _splitterMaxPosition: null;
-    private layoutManagerUtilities = new LayoutManagerUtilities();
+    public readonly element: any;
+    public readonly _splitterSize: number;
+    public readonly _splitterGrabSize: any;
+    public readonly _isColumn: boolean;
+    public readonly _dimension: string;
+    public readonly _splitter: any[];
+
+    public childElementContainer: any;
+    public _splitterPosition: any;
+    public _splitterMinPosition: any;
+    public _splitterMaxPosition: any;
+    public layoutManagerUtilities = new LayoutManagerUtilities();
 
 
-    constructor(isColumn, private layoutManager, private config, private parent) {
+    constructor(isColumn, public layoutManager, public config, public parent) {
         super(layoutManager, config, parent);
 
 
@@ -258,10 +261,10 @@ export class RowOrColumn extends AbstractContentItemComponent {
         additionalPixel = Math.floor((this._isColumn ? totalHeight : totalWidth) - totalAssigned);
 
         return {
-            itemSizes: itemSizes,
-            additionalPixel: additionalPixel,
-            totalWidth: totalWidth,
-            totalHeight: totalHeight
+            itemSizes,
+            additionalPixel,
+            totalWidth,
+            totalHeight
         };
     }
 
@@ -400,7 +403,7 @@ export class RowOrColumn extends AbstractContentItemComponent {
          */
         reducePercent = totalUnderMin / totalOverMin;
         remainingWidth = totalUnderMin;
-        for (i = 0; i < entriesOverMin.length; i++) {
+        for (let i = 0; i < entriesOverMin.length; i++) {
             entry = entriesOverMin[i];
             reducedWidth = Math.round((entry.width - minItemWidth) * reducePercent);
             remainingWidth -= reducedWidth;
@@ -417,7 +420,7 @@ export class RowOrColumn extends AbstractContentItemComponent {
         /**
          * Set every items size relative to 100 relative to its size to total
          */
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.contentItems[i].config.width = (allEntries[i].width / sizeData.totalWidth) * 100;
         }
     }
@@ -561,8 +564,8 @@ export class RowOrColumn extends AbstractContentItemComponent {
         items.after.config[this._dimension] = (1 - splitterPositionInRange) * totalRelativeSize;
 
         splitter.element.css({
-            "top": 0,
-            "left": 0
+            top: 0,
+            left: 0
         });
 
         this.layoutManagerUtilities.animFrame(() => this.callDownwards("setSize"));

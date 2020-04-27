@@ -22,6 +22,8 @@ import { timer } from "rxjs";
 import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../../custom-goldenlayout";
 import { createGuid } from "dgp-ng-app";
 
+declare var $: any;
+
 @Component({
     selector: "golden-layout",
     template: "<ng-content></ng-content>",
@@ -172,7 +174,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
             if (item.type === "component") {
                 result.push(item as ComponentConfiguration);
             } else {
-                result = result.concat(this.getComponents((<any>item).content));
+                result = result.concat(this.getComponents((item as any).content));
             }
         });
 
@@ -183,7 +185,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterConten
         this.layout.updateSize();
     }
 
-    private createEmbeddedView(id: string, template: TemplateRef<any>, element$: JQuery, context: DockingLayoutComponent): void {
+    private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent): void {
         const embeddedViewRef = context.vcRef.createEmbeddedView(template);
         context.embeddedViewRefs[id] = embeddedViewRef;
         const detached = $(embeddedViewRef.rootNodes)

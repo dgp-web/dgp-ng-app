@@ -1,16 +1,25 @@
-import * as template from "./tab.component.html";
+const template = `
+<li class="lm_tab nav-item">
+    <a class="lm_title nav-link">
+    <button type="button"
+            class="close"
+            aria-label="Close"
+            style="cursor:pointer;margin-left:16px;">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </a>
+</li>
+`;
 import { DragProxy } from "../drag-proxy/drag-proxy.component";
-import { stripHtmlTags, Vector2 } from "@dgp/common";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { DragListenerDirective } from "../drag-listener";
+import { stripHtmlTags } from "../../../common/functions";
+import { Vector2 } from "../../../common/models";
+
+declare var $: any;
 
 /**
  * Represents an individual tab within a Stack's header
- *
- * @param {lm.controls.Header} header
- * @param {lm.items.AbstractContentItem} contentItem
- *
- * @constructor
  */
 export class TabComponent {
 
@@ -49,7 +58,7 @@ export class TabComponent {
             this._dragListener = new DragListenerDirective(this.element);
             const dragStartSubscription = this._dragListener
                 .dragStart$
-                .subscribe(x => this._onDragStart(x)) ;
+                .subscribe(x => this._onDragStart(x));
             this.subscriptions.push(dragStartSubscription);
             this.contentItem.on("destroy", this._dragListener.destroy, this._dragListener);
         }
@@ -80,9 +89,6 @@ export class TabComponent {
      * Sets the tab's title to the provided string and sets
      * its title attribute to a pure text representation (without
      * html tags) of the same string.
-     *
-     * @public
-     * @param {String} title can contain html
      */
     setTitle(title) {
         this.element.attr("title", stripHtmlTags(title));
@@ -93,9 +99,6 @@ export class TabComponent {
     /**
      * Sets this tab's active state. To programmatically
      * switch tabs, use header.setActiveContentItem( item ) instead.
-     *
-     * @public
-     * @param {Boolean} isActive
      */
     setActive(isActive) {
         if (isActive === this.isActive) {
@@ -121,9 +124,6 @@ export class TabComponent {
 
     /**
      * Destroys the tab
-     *
-     * @private
-     * @returns {void}
      */
     _$destroy() {
 
@@ -140,17 +140,12 @@ export class TabComponent {
 
     /**
      * Callback for the DragListener
-     *
-     * @param   {Number} x The tabs absolute x position
-     * @param   {Number} y The tabs absolute y position
-     *
-     * @private
-     * @returns {void}
      */
     _onDragStart(coordinates: Vector2) {
         if (this.contentItem.parent.isMaximised === true) {
             this.contentItem.parent.toggleMaximise();
         }
+        // tslint:disable-next-line:no-unused-expression
         new DragProxy(
             coordinates,
             this._dragListener,
@@ -162,11 +157,6 @@ export class TabComponent {
 
     /**
      * Callback when the tab is clicked
-     *
-     * @param {jQuery DOM event} event
-     *
-     * @private
-     * @returns {void}
      */
     _onTabClick(event) {
         // left mouse button or tap
@@ -185,11 +175,6 @@ export class TabComponent {
     /**
      * Callback when the tab's close button is
      * clicked
-     *
-     * @param   {jQuery DOM event} event
-     *
-     * @private
-     * @returns {void}
      */
     _onCloseClick(event) {
         event.stopPropagation();
@@ -200,11 +185,6 @@ export class TabComponent {
     /**
      * Callback to capture tab close button mousedown
      * to prevent tab from activating.
-     *
-     * @param (jQuery DOM event) event
-     *
-     * @private
-     * @returns {void}
      */
     _onCloseMousedown(event) {
         event.stopPropagation();

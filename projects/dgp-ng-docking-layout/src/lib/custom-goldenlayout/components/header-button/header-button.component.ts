@@ -1,3 +1,5 @@
+declare var $: any;
+
 export class HeaderButtonComponent {
     private _header: any;
     private element: any;

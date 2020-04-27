@@ -1,2 +1,1 @@
-export * from "./splitter.component.html";
-export * from "./splitter.component.ts";
+export * from "./splitter.component";

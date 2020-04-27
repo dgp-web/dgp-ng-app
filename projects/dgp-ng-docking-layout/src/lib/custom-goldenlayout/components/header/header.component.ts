@@ -1,8 +1,16 @@
-import * as template from "./header.component.html";
-import { LayoutManagerUtilities, EventEmitter } from "../../utilities";
+const template = `
+<div class="lm_header card-header">
+    <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+    <ul class="lm_controls"></ul>
+    <ul class="lm_tabdropdown_list"></ul>
+</div>
+`;
+import { EventEmitter } from "../../utilities";
 import { HeaderButtonComponent } from "../header-button/header-button.component";
 import { TabComponent } from "../tab/tab.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
+
+declare var $: any;
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -12,20 +20,20 @@ import { AbstractContentItemComponent } from "../abstract-content-item";
  */
 export class HeaderComponent extends EventEmitter {
 
-    _template = [template].join("")
+    _template = [template].join("");
     private layoutManager: any;
-    private element: any;
+    readonly element: any;
     private tabsContainer: any;
     private tabDropdownContainer: any;
     private controlsContainer: any;
     private parent: AbstractContentItemComponent;
-    private tabs: any;
-    private activeContentItem: any;
+    readonly tabs: any;
+    activeContentItem: any;
     private closeButton: any;
     private tabDropdownButton: any;
-    private hideAdditionalTabsDropdown: any;
+    private readonly hideAdditionalTabsDropdown: any;
     private _lastVisibleTabIndex: number;
-    private _tabControlOffset: any;
+    private readonly _tabControlOffset: any;
 
     constructor(layoutManager, parent) {
         super();
@@ -246,6 +254,7 @@ export class HeaderComponent extends EventEmitter {
         if (this._getHeaderSetting("popout")) {
             popout = () => this._onPopoutClick();
             label = this._getHeaderSetting("popout");
+            // tslint:disable-next-line:no-unused-expression
             new HeaderButtonComponent(this, label, "lm_popout", popout);
         }
 

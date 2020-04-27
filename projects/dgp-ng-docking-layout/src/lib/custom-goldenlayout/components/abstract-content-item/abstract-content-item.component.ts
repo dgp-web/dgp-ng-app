@@ -1,5 +1,5 @@
-import { BubblingEvent, ALL_EVENT, EventEmitter, LayoutManagerUtilities } from "../../utilities";
-import { ItemConfiguration, ItemType, itemDefaultConfig, ConfigurationError } from "../../types";
+import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { ConfigurationError, ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
 import { LayoutManager } from "../../layout-manager";
 
 /**
@@ -7,23 +7,13 @@ import { LayoutManager } from "../../layout-manager";
  * Most methods provide a subset of what the sub-classes do.
  *
  * It also provides a number of functions for tree traversal
- *
- * @param {LayoutManager} layoutManager
- * @param {ItemConfiguration} config
- * @param {AbstractContentItemComponent} parent
- *
- * @event stateChanged
- * @event beforeItemDestroyed
- * @event itemDestroyed
- * @event itemCreated
- * @event componentCreated
- * @event rowCreated
- * @event columnCreated
- * @event stackCreated
- *
- * @constructor
  */
 export abstract class AbstractContentItemComponent extends EventEmitter {
+
+    _side: any;
+    _sided: any;
+    _header: any;
+   // _setupHeaderPosition: any;
 
     contentItems: AbstractContentItemComponent[] = [];
 
@@ -37,12 +27,12 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     element: any;
     childElementContainer: any;
 
-    private pendingEventPropagations = {};
-    private throttledEvents = ["stateChanged"];
-    private type: ItemType;
-    private config: any;
+    pendingEventPropagations = {};
+    throttledEvents = ["stateChanged"];
+    type: ItemType;
+    config: any;
 
-    constructor(private layoutManager: LayoutManager, config: ItemConfiguration, private parent: AbstractContentItemComponent) {
+    constructor(readonly layoutManager: LayoutManager, config: ItemConfiguration, public parent: AbstractContentItemComponent) {
         super();
 
         this.type = config.type;
@@ -68,21 +58,11 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Set the size of the component and its children, called recursively
-     *
-     * @abstract
-     * @returns void
      */
     abstract setSize(width?: number, height?: number): void;
 
     /**
      * Calls a method recursively downwards on the tree
-     *
-     * @param   {String} functionName      the name of the function to be called
-     * @param   {[Array]}functionArguments optional arguments that are passed to every function
-     * @param   {[boolean]} bottomUp          Call methods from bottom to top, defaults to false
-     * @param   {[boolean]} skipSelf          Don't invoke the method on the class that calls it, defaults to false
-     *
-     * @returns {void}
      */
     callDownwards(functionName: string, functionArguments?: any[], bottomUp?: boolean, skipSelf?: boolean) {
         let i;
@@ -100,11 +80,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Removes a child node (and its children) from the tree
-     *
-     * @param   {AbstractContentItemComponent} contentItem
-     *
-     * @param keepChild
-     * @returns {void}
      */
     removeChild(contentItem: AbstractContentItemComponent, keepChild?: boolean) {
 
@@ -149,17 +124,14 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         } else if (!(this.isRoot) && this.config.isClosable === true) {
             this.parent.removeChild(this);
         }
-    };
+    }
 
     /**
      * Sets up the tree structure for the newly added child
      * The responsibility for the actual DOM manipulations lies
      * with the concrete item
-     *
-     * @param {AbstractContentItemComponent} contentItem
-     * @param {[Int]} index If omitted item will be appended
      */
-    addChild(contentItem: AbstractContentItemComponent, index?: number) {
+    addChild(contentItem: AbstractContentItemComponent, index?: number, foo?: boolean) {
         if (index === undefined) {
             index = this.contentItems.length;
         }
@@ -181,14 +153,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Replaces oldChild with newChild. this used to use jQuery.replaceWith... which for
      * some reason removes all event listeners, so isn't really an option.
-     *
-     * @param   {AbstractContentItemComponent} oldChild
-     * @param   {AbstractContentItemComponent} newChild
-     *
-     * @param _$destroyOldChild
-     * @returns {void}
      */
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, _$destroyOldChild: boolean) {
+    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, _$destroyOldChild?: boolean) {
 
         newChild = this.layoutManager._$normalizeContentItem(newChild);
 
@@ -233,8 +199,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Convenience method.
      * Shorthand for this.parent.removeChild( this )
-     *
-     * @returns {void}
      */
     remove() {
         this.parent.removeChild(this);
@@ -243,8 +207,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Removes the component from the layout and creates a new
      * browser window with the component and its children inside
-     *
-     * @returns {BrowserPopout}
      */
     popout() {
         const browserPopout = this.layoutManager.createPopout(this);
@@ -254,8 +216,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Maximises the Item or minimises it if it is already maximised
-     *
-     * @returns {void}
      */
     toggleMaximise(e?) {
         //noinspection TsLint
@@ -272,8 +232,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Selects the item if it is not already selected
-     *
-     * @returns {void}
      */
     select() {
         if (this.layoutManager.selectedItem !== this) {
@@ -284,8 +242,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * De-selects the item if it is selected
-     *
-     * @returns {void}
      */
     deselect() {
         if (this.layoutManager.selectedItem === this) {
@@ -296,11 +252,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Checks whether a provided id is present
-     *
-     * @public
-     * @param   {String}  id
-     *
-     * @returns {Boolean} isPresent
      */
     hasId(id: string) {
         if (!this.config.id) {
@@ -380,7 +331,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     getItemsById(id: string) {
         return this.getItemsByFilter(function (item) {
             if (item.config.id instanceof Array) {
-                return LayoutManagerUtilities()
+                return new LayoutManagerUtilities()
                     .indexOf(id, item.config.id) !== -1;
             } else {
                 return item.config.id === id;
@@ -410,7 +361,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.dropTargetIndicator.highlightArea(area);
     }
 
-    _$onDrop(contentItem: AbstractContentItemComponent) {
+    _$onDrop(contentItem: AbstractContentItemComponent, area?) {
         this.addChild(contentItem);
     }
 
@@ -456,16 +407,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Returns the area the component currently occupies in the format
-     *
-     * {
-	 *		x1: int
-	 *		xy: int
-	 *		y1: int
-	 *		y2: int
-	 *		contentItem: contentItem
-	 * }
      */
-    _$getArea(element) {
+    _$getArea(element): any {
         element = element || this.element;
 
         const offset = element.offset(),
@@ -623,6 +566,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.emit(name, event);
     }
 
-
+    _setupHeaderPosition() {}
 }
 
