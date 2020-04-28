@@ -2,10 +2,12 @@ import { NgModule } from "@angular/core";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 import { CommonModule } from "@angular/common";
 import { SplitPanelComponent } from "./split-panel.component";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        MatCardModule
     ],
     declarations: [
         SplitPanelContentComponent,

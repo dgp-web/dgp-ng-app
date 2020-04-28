@@ -3,19 +3,26 @@ import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { DgpSplitPanelModule, DgpDockingLayoutModule } from "dgp-ng-docking-layout";
+import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
+import { DgpThemeSwitcherModule } from "dgp-ng-app";
+import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+    declarations: [
+        AppComponent
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         DgpDockingLayoutModule,
-        DgpSplitPanelModule
+        DgpSplitPanelModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        DgpThemeSwitcherModule.forRoot()
     ],
-  providers: [],
-  bootstrap: [AppComponent]
+    providers: [],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

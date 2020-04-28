@@ -9,6 +9,7 @@ import {
     OnDestroy,
     QueryList,
     TemplateRef,
+    ViewChild,
     ViewContainerRef
 } from "@angular/core";
 import { KeyValueStore } from "entity-store";
@@ -22,11 +23,20 @@ import { createComponentTree, createLayoutConfig } from "./functions";
 
 @Component({
     selector: "dgp-split-panel",
-    template: "<ng-content></ng-content>",
+    template: "<mat-card #host><ng-content></ng-content></mat-card>",
     styles: [`
         :host {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+
+        mat-card {
+            padding: 0;
+            border-radius: 0;
             flex-grow: 1;
             display: flex;
+            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +46,9 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
     private resizeSensor: ResizeSensor;
 
+    @ViewChild("host", {read: ElementRef})
+    elementRef: ElementRef;
+
     @ContentChildren(SplitPanelContentComponent)
     topLevelItems: QueryList<SplitPanelContentComponent>;
 
@@ -44,8 +57,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
     layout: LayoutManager;
 
-    constructor(private readonly viewContainerRef: ViewContainerRef,
-                private readonly elementRef: ElementRef
+    constructor(private readonly viewContainerRef: ViewContainerRef
     ) {
     }
 

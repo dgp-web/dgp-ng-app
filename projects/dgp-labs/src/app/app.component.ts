@@ -54,10 +54,12 @@ import { Component } from "@angular/core";
             </dgp-docking-layout-item>
         </dgp-docking-layout>-->
 
-        <dgp-split-panel orientation="vertical">
+        <dgp-split-panel orientation="vertical"
+                        dgpThemeHost>
             <dgp-split-panel-content>
                 <ng-template>
                     A
+                    <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
                 </ng-template>
             </dgp-split-panel-content>
 
