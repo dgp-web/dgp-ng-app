@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { DgpNgDockingLayoutComponent } from "./dgp-ng-docking-layout.component";
-import { DockingLayoutModule } from "./docking-layout";
+import { DgpDockingLayoutModule } from "./docking-layout";
 import { CommonModule } from "@angular/common";
 import { DgpSplitPanelModule } from "./split-panel/split-panel.module";
 
@@ -9,9 +9,9 @@ import { DgpSplitPanelModule } from "./split-panel/split-panel.module";
         DgpNgDockingLayoutComponent
     ],
     imports: [
-        DockingLayoutModule,
         CommonModule,
-        DgpSplitPanelModule
+        DgpSplitPanelModule,
+        DgpDockingLayoutModule
     ],
     exports: [
         DgpNgDockingLayoutComponent

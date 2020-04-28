@@ -19,5 +19,5 @@ import { CommonModule } from "@angular/common";
         DockingLayoutComponent
     ]
 })
-export class DockingLayoutModule {
+export class DgpDockingLayoutModule {
 }

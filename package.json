@@ -20,7 +20,8 @@
         "publish:dgp-ng-docs": "npm publish dist/dgp-ng-docs",
         "start:docs-app": "ng serve --hmr --hmrWarning=false ng-app",
         "build:docs-app": "ng build --prod ng-app",
-        "publish:docs-app": "firebase deploy"
+        "publish:docs-app": "firebase deploy",
+        "start:dgp-labs": "ng serve --hmr --hmrWarning=false dgp-labs"
     },
     "private": true,
     "dependencies": {
