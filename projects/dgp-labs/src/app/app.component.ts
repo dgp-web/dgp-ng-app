@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 @Component({
     selector: "app-root",
     template: `
-        <!--<dgp-docking-layout>
+        <dgp-docking-layout dgpThemeHost>
 
             <dgp-docking-layout-item type="column">
 
@@ -52,10 +52,10 @@ import { Component } from "@angular/core";
                 </dgp-docking-layout-item>
 
             </dgp-docking-layout-item>
-        </dgp-docking-layout>-->
+        </dgp-docking-layout>
 
-        <dgp-split-panel orientation="vertical"
-                        dgpThemeHost>
+       <!-- <dgp-split-panel orientation="horizontal"
+                         dgpThemeHost>
             <dgp-split-panel-content>
                 <ng-template>
                     A
@@ -74,7 +74,7 @@ import { Component } from "@angular/core";
                     C
                 </ng-template>
             </dgp-split-panel-content>
-        </dgp-split-panel>
+        </dgp-split-panel>-->
     `,
     styleUrls: ["./app.component.scss"]
 })

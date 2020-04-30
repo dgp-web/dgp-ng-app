@@ -11,6 +11,7 @@ import {
     QueryList,
     SimpleChanges,
     TemplateRef,
+    ViewChild,
     ViewContainerRef
 } from "@angular/core";
 import { KeyValueStore } from "entity-store";
@@ -24,9 +25,17 @@ import { DockingLayoutContainerComponent } from "./docking-layout-container.comp
 
 @Component({
     selector: "dgp-docking-layout",
-    template: "<ng-content></ng-content>",
+    template: "<mat-card #host><ng-content></ng-content></mat-card>",
     styles: [`
         :host {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+
+        mat-card {
+            padding: 0;
+            border-radius: 0;
             flex-grow: 1;
             display: flex;
             height: 100%;
@@ -40,6 +49,9 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     @ContentChildren(DockingLayoutItemComponent) topLevelItems: QueryList<DockingLayoutItemComponent>;
     @ContentChildren(DockingLayoutItemComponent, {descendants: true}) allItems: QueryList<DockingLayoutItemComponent>;
     @ContentChildren(DockingLayoutContainerComponent, {descendants: true}) allContainers: QueryList<DockingLayoutContainerComponent>;
+
+    @ViewChild("host", {read: ElementRef})
+    elementRef: ElementRef;
 
     // Settings
     @Input() hasHeaders = true;
@@ -71,7 +83,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     private resizeSensor: ResizeSensor;
 
     constructor(private readonly vcRef: ViewContainerRef,
-                private readonly elRef: ElementRef,
     ) {
 
     }
@@ -98,6 +109,8 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             .subscribe(
                 () => this.redraw()
             );
+
+        this.redraw();
     }
 
     redraw(): void {
@@ -145,7 +158,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             }
         };
 
-        this.layout = new LayoutManager(config, this.elRef.nativeElement);
+        this.layout = new LayoutManager(config, this.elementRef.nativeElement);
 
         // TODO: Type container and state
         uniqComponents.forEach(component => {
@@ -168,7 +181,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
         this.layout.init();
 
-        const element = this.elRef.nativeElement;
+        const element = this.elementRef.nativeElement;
         this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
     }
 
