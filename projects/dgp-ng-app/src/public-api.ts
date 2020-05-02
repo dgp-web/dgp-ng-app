@@ -57,6 +57,11 @@ export * from "./hamburger-shell/components/list-details-page/list-details-page.
 export * from "./hamburger-shell/components/list-details-page/list-details-page.module";
 export * from "./hamburger-shell/components/page-header/page-header.component";
 export * from "./hamburger-shell/components/page-header/page-header.module";
+export { DgpHamburgerMenuModule } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.module";
+export { HamburgerMenuComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.component";
+export { HamburgerMenuHeaderComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu-header.component";
+export { HamburgerMenuEntriesComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu-entries.component";
+export { HamburgerMenuEntryComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu-entry.component";
 export * from "./hamburger-shell/models";
 export {
     hamburgerMenuModeSelector, hamburgerShellFeatureSelector, isHamburgerMenuOpenSelector, isPageMenuOpenSelector, pageMenuModeSelector
@@ -111,6 +116,10 @@ export {
     themeSwitcherFeatureSelector, isDarkModeActiveSelector, isDarkModeActive
 } from "./theme-switcher/selectors";
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
+
+// tile
+export { TileComponent } from "./tile/tile.component";
+export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { DgpContainer } from "./utils/container.component-base";

@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
 @Component({
     selector: "dgp-tile",
     template: `
-        <a [routerLink]="routerLinkToContent"
+        <a [routerLink]="route"
            class="container">
             <mat-card matRipple
                       class="card">
@@ -74,7 +74,7 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
 export class TileComponent {
 
     @Input()
-    routerLinkToContent: string;
+    route: string;
 
     @Input()
     matIconName: string;
