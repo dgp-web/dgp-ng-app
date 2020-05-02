@@ -1,5 +1,11 @@
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { AbstractContentItemComponent } from "../abstract-content-item";
 
+@Component({
+    selector: "dgp-item-container",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
 export class ItemContainer extends AbstractContentItemComponent {
     width: number;
     height: number;

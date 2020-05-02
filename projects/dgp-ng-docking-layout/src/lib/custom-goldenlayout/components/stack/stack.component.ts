@@ -1,11 +1,15 @@
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ItemType } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
-import { HeaderComponent } from "../header/header.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
+import { HeaderComponent } from "../header/header.component";
 
-
-
-export class Stack extends AbstractContentItemComponent {
+@Component({
+    selector: "dgp-stack",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class StackComponent extends AbstractContentItemComponent {
     _activeContentItem: any;
     _dropZones: any;
     _dropSegment: any;
@@ -29,11 +33,17 @@ export class Stack extends AbstractContentItemComponent {
             minimise: cfg.labels.minimise,
         };
         if (cfg.header) // load simplified version of header configuration (https://github.com/deepstreamIO/golden-layout/pull/245)
+        {
             Object.assign(this._header, cfg.header);
+        }
         if (config.header) // load from stack
+        {
             Object.assign(this._header, config.header);
+        }
         if (config.content && config.content[0] && config.content[0].header) // load from component if stack omitted
+        {
             Object.assign(this._header, config.content[0].header);
+        }
 
         this._dropZones = {};
         this._dropSegment = null;
@@ -70,7 +80,9 @@ export class Stack extends AbstractContentItemComponent {
     _$init() {
         let i, initialItem;
 
-        if (this.isInitialised === true) return;
+        if (this.isInitialised === true) {
+            return;
+        }
 
         super._$init();
 
@@ -500,8 +512,9 @@ export class Stack extends AbstractContentItemComponent {
         this._side = side;
         this._sided = ["right", "left"].indexOf(this._side) >= 0;
         this.element.removeClass("lm_left lm_right lm_bottom");
-        if (this._side)
+        if (this._side) {
             this.element.addClass("lm_" + this._side);
+        }
         if (this.element.find(".lm_header").length && this.childElementContainer) {
             const headerPosition = ["right", "bottom"].indexOf(this._side) >= 0 ? "before" : "after";
             this.header.element[headerPosition](this.childElementContainer);

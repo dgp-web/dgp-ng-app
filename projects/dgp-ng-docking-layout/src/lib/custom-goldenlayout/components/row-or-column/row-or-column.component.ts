@@ -1,10 +1,15 @@
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { LayoutManagerUtilities } from "../../utilities";
-import { SplitterComponent } from "../splitter/splitter.component";
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
+import { SplitterComponent } from "../splitter/splitter.component";
 
 
-
-export class RowOrColumn extends AbstractContentItemComponent {
+@Component({
+    selector: "dgp-row-or-column",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class RowOrColumnComponent extends AbstractContentItemComponent {
 
     public readonly element: any;
     public readonly _splitterSize: number;
@@ -188,7 +193,9 @@ export class RowOrColumn extends AbstractContentItemComponent {
      * @returns {void}
      */
     _$init() {
-        if (this.isInitialised === true) return;
+        if (this.isInitialised === true) {
+            return;
+        }
 
         let i;
 

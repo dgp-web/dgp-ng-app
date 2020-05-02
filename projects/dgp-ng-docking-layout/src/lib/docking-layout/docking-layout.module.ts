@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { DockingLayoutService } from "../custom-goldenlayout";
+import { DockingLayoutService, ItemContainer, RowOrColumnComponent, StackComponent } from "../custom-goldenlayout";
 import { DockingLayoutComponent } from "./components/docking-layout.component";
 import { DockingLayoutItemComponent } from "./components/docking-layout-item.component";
 import { DockingLayoutContainerComponent } from "./components/docking-layout-container.component";
@@ -14,12 +14,18 @@ import { MatCardModule } from "@angular/material/card";
     declarations: [
         DockingLayoutContainerComponent,
         DockingLayoutItemComponent,
-        DockingLayoutComponent
+        DockingLayoutComponent,
+        RowOrColumnComponent,
+        StackComponent,
+        ItemContainer
     ],
     exports: [
         DockingLayoutContainerComponent,
         DockingLayoutItemComponent,
-        DockingLayoutComponent
+        DockingLayoutComponent,
+        RowOrColumnComponent,
+        StackComponent,
+        ItemContainer
     ],
     providers: [
         DockingLayoutService

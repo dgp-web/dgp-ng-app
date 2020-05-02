@@ -1,3 +1,4 @@
+import { Directive } from "@angular/core";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { ConfigurationError, ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
 import { DockingLayoutService } from "../../docking-layout.service";
@@ -8,6 +9,8 @@ import { DockingLayoutService } from "../../docking-layout.service";
  *
  * It also provides a number of functions for tree traversal
  */
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractContentItemComponent extends EventEmitter {
 
     _side: any;

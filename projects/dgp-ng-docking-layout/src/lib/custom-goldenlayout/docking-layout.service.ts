@@ -1,6 +1,6 @@
 import { ComponentFactoryResolver, Injectable } from "@angular/core";
 import * as components from "./components";
-import { Component, RowOrColumn, Stack } from "./components";
+import { Component, RowOrColumnComponent, StackComponent } from "./components";
 import { AbstractContentItemComponent } from "./components/abstract-content-item";
 import { DropTargetIndicator } from "./components/drop-target-indicator/drop-target-indicator.component";
 import { ConfigurationError } from "./types/configuration-error";
@@ -46,9 +46,9 @@ export class DockingLayoutService extends EventEmitter {
     private transitionIndicator: any;
 
     private typeToComponentMap = {
-        column: this.fnBind(RowOrColumn, this, [true]),
-        row: this.fnBind(RowOrColumn, this, [false]),
-        stack: Stack,
+        column: this.fnBind(RowOrColumnComponent, this, [true]),
+        row: this.fnBind(RowOrColumnComponent, this, [false]),
+        stack: StackComponent,
         component: Component
     };
 
@@ -322,7 +322,7 @@ export class DockingLayoutService extends EventEmitter {
             config.type === "component" &&
 
             // and it's not already within a stack
-            !(parent instanceof components.Stack) &&
+            !(parent instanceof components.StackComponent) &&
 
             // and we have a parent
             !!parent
