@@ -1,23 +1,27 @@
-import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
+import { Injectable } from "@angular/core";
 import * as components from "./components";
+import { AbstractContentItemComponent } from "./components/abstract-content-item";
 import { DropTargetIndicator } from "./components/drop-target-indicator/drop-target-indicator.component";
 import { ConfigurationError } from "./types/configuration-error";
-import { EventHub } from "./utilities/event-hub";
 import { LayoutConfiguration } from "./types/golden-layout-configuration";
-import { AbstractContentItemComponent } from "./components/abstract-content-item";
-import { createGuid } from "dgp-ng-app";
-import { stripHtmlTags } from "../common/functions";
+import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
+import { EventHub } from "./utilities/event-hub";
 import { ComponentDefinition, ContainerDefinition } from "./utilities/models";
 
 
 /**
  * The main class that will be exposed as GoldenLayout.
  */
-export class LayoutManager extends EventEmitter {
+@Injectable()
+export class DockingLayoutService extends EventEmitter {
 
+    selectedItem: AbstractContentItemComponent;
+    config: any;
+    container: any;
+    dropTargetIndicator: any;
+    tabDropPlaceholder: any;
     private readonly layoutManagerUtilities = new LayoutManagerUtilities();
-
-    private isInitialised: boolean;
+    private isInitialised = false;
     private _isFullPage: boolean;
     private _resizeTimeoutId: any;
     private _components: any;
@@ -33,17 +37,11 @@ export class LayoutManager extends EventEmitter {
     private width: number;
     private height: number;
     private root: any;
-    selectedItem: AbstractContentItemComponent;
     private eventHub: EventHub;
-    config: any;
-    container: any;
-    dropTargetIndicator: any;
     private transitionIndicator: any;
-    tabDropPlaceholder: any;
     private _typeToItem: any;
 
-    constructor(config: LayoutConfiguration, container: any) {
-        super();
+    createDockingLayout(config: LayoutConfiguration, container: any) {
         if (!$ || typeof $.noConflict !== "function") {
             let errorMsg = "jQuery is missing as dependency for GoldenLayout. ";
             errorMsg += "Please either expose $ on GoldenLayout's scope (e.g. window) or add \"jquery\" to ";

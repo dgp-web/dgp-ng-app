@@ -1,27 +1,15 @@
 import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ContentChildren,
-    ElementRef,
-    EmbeddedViewRef,
-    Input,
-    OnChanges,
-    OnDestroy,
-    QueryList,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild,
-    ViewContainerRef
+    AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, EmbeddedViewRef, Input, OnChanges, OnDestroy, QueryList,
+    SimpleChanges, TemplateRef, ViewChild, ViewContainerRef
 } from "@angular/core";
-import { KeyValueStore } from "entity-store";
 import { ResizeSensor } from "css-element-queries";
-import { uniqBy } from "lodash";
-import { DockingLayoutItemComponent } from "./docking-layout-item.component";
-import { combineLatest, timer } from "rxjs";
-import { ComponentConfiguration, ItemConfiguration, LayoutManager } from "../../custom-goldenlayout";
 import { createGuid } from "dgp-ng-app";
+import { KeyValueStore } from "entity-store";
+import { uniqBy } from "lodash";
+import { combineLatest, timer } from "rxjs";
+import { ComponentConfiguration, DockingLayoutService, ItemConfiguration } from "../../custom-goldenlayout";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
+import { DockingLayoutItemComponent } from "./docking-layout-item.component";
 
 @Component({
     selector: "dgp-docking-layout",
@@ -43,7 +31,6 @@ import { DockingLayoutContainerComponent } from "./docking-layout-container.comp
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewInit {
 
     @ContentChildren(DockingLayoutItemComponent) topLevelItems: QueryList<DockingLayoutItemComponent>;
@@ -77,12 +64,11 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     @Input() minimizeLabel = "minimize";
     @Input() popoutLabel = "open in new window";
 
-    layout: any;
-
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
     private resizeSensor: ResizeSensor;
 
     constructor(private readonly vcRef: ViewContainerRef,
+                private readonly dockingLayoutService: DockingLayoutService
     ) {
 
     }
@@ -96,8 +82,8 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         if (this.resizeSensor) {
             this.resizeSensor.detach();
         }
-        if (this.layout) {
-            this.layout.destroy();
+        if (this.dockingLayoutService) {
+            this.dockingLayoutService.destroy();
         }
     }
 
@@ -115,8 +101,8 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
     redraw(): void {
         // if (changes["content"]) {
-        if (this.layout) {
-            this.layout.destroy();
+        if (this.dockingLayoutService) {
+            this.dockingLayoutService.destroy();
         }
         if (this.resizeSensor) {
             this.resizeSensor.detach();
@@ -158,12 +144,14 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             }
         };
 
-        this.layout = new LayoutManager(config, this.elementRef.nativeElement);
+        this.dockingLayoutService.createDockingLayout(
+            config, this.elementRef.nativeElement
+        );
 
         // TODO: Type container and state
         uniqComponents.forEach(component => {
 
-            this.layout.registerComponent(component.id, (container, componentState) => {
+            this.dockingLayoutService.registerComponent(component.id, (container, componentState) => {
 
                 const id = createGuid();
 
@@ -179,7 +167,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
         });
 
-        this.layout.init();
+        this.dockingLayoutService.init();
 
         const element = this.elementRef.nativeElement;
         this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
@@ -187,6 +175,10 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
     public ngOnChanges(changes: SimpleChanges): void {
 
+    }
+
+    updateLayout(): void {
+        this.dockingLayoutService.updateSize();
     }
 
     private getComponents(content: ItemConfiguration[]): ComponentConfiguration[] {
@@ -201,10 +193,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         });
 
         return result;
-    }
-
-    updateLayout(): void {
-        this.layout.updateSize();
     }
 
     private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent): void {

@@ -1,25 +1,15 @@
 import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ContentChildren,
-    ElementRef,
-    EmbeddedViewRef,
-    Input,
-    OnDestroy,
-    QueryList,
-    TemplateRef,
-    ViewChild,
-    ViewContainerRef
+    AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, EmbeddedViewRef, Input, OnDestroy, QueryList,
+    TemplateRef, ViewChild, ViewContainerRef
 } from "@angular/core";
-import { KeyValueStore } from "entity-store";
 import { ResizeSensor } from "css-element-queries";
-import { timer } from "rxjs";
-import { LayoutManager } from "../custom-goldenlayout";
 import { createGuid } from "dgp-ng-app";
-import { SplitPanelContentComponent } from "./split-panel-content.component";
-import { SplitPanelOrientation } from "./models";
+import { KeyValueStore } from "entity-store";
+import { timer } from "rxjs";
+import { DockingLayoutService } from "../custom-goldenlayout";
 import { createComponentTree, createLayoutConfig } from "./functions";
+import { SplitPanelOrientation } from "./models";
+import { SplitPanelContentComponent } from "./split-panel-content.component";
 
 @Component({
     selector: "dgp-split-panel",
@@ -43,21 +33,17 @@ import { createComponentTree, createLayoutConfig } from "./functions";
 })
 export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
+    @ViewChild("host", {read: ElementRef})
+    elementRef: ElementRef;
+    @ContentChildren(SplitPanelContentComponent)
+    topLevelItems: QueryList<SplitPanelContentComponent>;
+    @Input()
+    orientation: SplitPanelOrientation = "vertical";
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
     private resizeSensor: ResizeSensor;
 
-    @ViewChild("host", {read: ElementRef})
-    elementRef: ElementRef;
-
-    @ContentChildren(SplitPanelContentComponent)
-    topLevelItems: QueryList<SplitPanelContentComponent>;
-
-    @Input()
-    orientation: SplitPanelOrientation = "vertical";
-
-    layout: LayoutManager;
-
-    constructor(private readonly viewContainerRef: ViewContainerRef
+    constructor(private readonly viewContainerRef: ViewContainerRef,
+                private readonly dockingLayoutService: DockingLayoutService
     ) {
     }
 
@@ -91,9 +77,11 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
             orientation: this.orientation
         });
 
-        this.layout = new LayoutManager(createLayoutConfig(root), this.elementRef.nativeElement);
+        this.dockingLayoutService.createDockingLayout(
+            createLayoutConfig(root), this.elementRef.nativeElement
+        );
 
-        componentConfigurations.forEach(componentConfig => this.layout.registerComponent(componentConfig.id, (container, component) => {
+        componentConfigurations.forEach(componentConfig => this.dockingLayoutService.registerComponent(componentConfig.id, (container, component) => {
             const instanceId = createGuid();
             container.on("open",
                 () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
@@ -118,21 +106,21 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     }
 
     private initLayout() {
-        this.layout.init();
+        this.dockingLayoutService.init();
         const element = this.elementRef.nativeElement;
         this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
     }
 
     private updateLayout() {
-        this.layout.updateSize();
+        this.dockingLayoutService.updateSize();
     }
 
     private destroyLayout() {
         if (this.resizeSensor) {
             this.resizeSensor.detach();
         }
-        if (this.layout) {
-            this.layout.destroy();
+        if (this.dockingLayoutService) {
+            this.dockingLayoutService.destroy();
         }
     }
 

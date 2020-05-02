@@ -1,6 +1,6 @@
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { ConfigurationError, ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
-import { LayoutManager } from "../../layout-manager";
+import { DockingLayoutService } from "../../docking-layout.service";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -32,7 +32,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     type: ItemType;
     config: any;
 
-    constructor(readonly layoutManager: LayoutManager, config: ItemConfiguration, public parent: AbstractContentItemComponent) {
+    constructor(readonly layoutManager: DockingLayoutService, config: ItemConfiguration, public parent: AbstractContentItemComponent) {
         super();
 
         this.type = config.type;

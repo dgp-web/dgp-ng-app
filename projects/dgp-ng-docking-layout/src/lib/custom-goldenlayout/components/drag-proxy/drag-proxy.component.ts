@@ -1,6 +1,6 @@
 import { EventEmitter } from "../../utilities/event-emitter";
 import { DragEvent, DragListenerDirective } from "../drag-listener";
-import { LayoutManager } from "../../layout-manager";
+import { DockingLayoutService } from "../../docking-layout.service";
 import { Vector2, Vector2Utils } from "../../../common/models";
 import { $x } from "../../../jquery-extensions";
 import { stripHtmlTags } from "../../../common/functions";
@@ -41,7 +41,7 @@ export class DragProxy extends EventEmitter {
 
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
-                private readonly layoutManager: LayoutManager,
+                private readonly layoutManager: DockingLayoutService,
                 private readonly contentItem: any,
                 private readonly originalParent: any) {
         super();
