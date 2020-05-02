@@ -39,6 +39,7 @@ export interface ItemConfiguration {
     height?: number;
 
     content?: ItemConfiguration[];
+    header?: any;
 }
 
 export interface ComponentConfiguration extends ItemConfiguration {

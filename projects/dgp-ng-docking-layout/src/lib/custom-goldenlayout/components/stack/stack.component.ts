@@ -1,3 +1,4 @@
+import { ItemType } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { HeaderComponent } from "../header/header.component";
 import { AbstractContentItemComponent } from "../abstract-content-item";
@@ -213,7 +214,7 @@ export class Stack extends AbstractContentItemComponent {
             isHorizontal = this._dropSegment === "left" || this._dropSegment === "right",
             insertBefore = this._dropSegment === "top" || this._dropSegment === "left",
             hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow),
-            type = isVertical ? "column" : "row",
+            type: ItemType = isVertical ? "column" : "row",
             dimension = isVertical ? "height" : "width",
             index,
             stack,

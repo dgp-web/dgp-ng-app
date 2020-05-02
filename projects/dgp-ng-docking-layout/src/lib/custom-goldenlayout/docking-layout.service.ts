@@ -1,13 +1,18 @@
-import { Injectable } from "@angular/core";
+import { ComponentFactoryResolver, Injectable } from "@angular/core";
 import * as components from "./components";
+import { Component, RowOrColumn, Stack } from "./components";
 import { AbstractContentItemComponent } from "./components/abstract-content-item";
 import { DropTargetIndicator } from "./components/drop-target-indicator/drop-target-indicator.component";
 import { ConfigurationError } from "./types/configuration-error";
-import { LayoutConfiguration } from "./types/golden-layout-configuration";
+import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
 import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 import { ComponentDefinition, ContainerDefinition } from "./utilities/models";
 
+
+export interface TypeToComponentMap {
+    readonly [key: string]: typeof AbstractContentItemComponent;
+}
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -22,7 +27,7 @@ export class DockingLayoutService extends EventEmitter {
     tabDropPlaceholder: any;
     private readonly layoutManagerUtilities = new LayoutManagerUtilities();
     private isInitialised = false;
-    private _isFullPage: boolean;
+    private _isFullPage = false;
     private _resizeTimeoutId: any;
     private _components: any;
     private _itemAreas: any[];
@@ -39,7 +44,19 @@ export class DockingLayoutService extends EventEmitter {
     private root: any;
     private eventHub: EventHub;
     private transitionIndicator: any;
-    private _typeToItem: any;
+
+    private typeToComponentMap = {
+        column: this.fnBind(RowOrColumn, this, [true]),
+        row: this.fnBind(RowOrColumn, this, [false]),
+        stack: Stack,
+        component: Component
+    };
+
+    constructor(
+        private readonly componentFactoryResolver: ComponentFactoryResolver
+    ) {
+        super();
+    }
 
     createDockingLayout(config: LayoutConfiguration, container: any) {
         if (!$ || typeof $.noConflict !== "function") {
@@ -54,7 +71,7 @@ export class DockingLayoutService extends EventEmitter {
         this._resizeTimeoutId = null;
         this._components = {};
         this._itemAreas = [];
-        this._resizeFunction = () => this._onResize();
+        this._resizeFunction = () => this.onResize();
         this._maximisedItem = null;
         this._maximisePlaceholder = $("<div class=\"lm_maximise_place\"></div>");
         this._creationTimeoutPassed = false;
@@ -67,18 +84,11 @@ export class DockingLayoutService extends EventEmitter {
         this.root = null;
         this.selectedItem = null;
         this.eventHub = new EventHub(this);
-        this.config = this._createConfig(config);
+        this.config = this.createConfig(config);
         this.container = container;
         this.dropTargetIndicator = null;
         this.transitionIndicator = null;
         this.tabDropPlaceholder = $("<div class=\"lm_drop_tab_placeholder\"></div>");
-
-        this._typeToItem = {
-            column: this.fnBind(components.RowOrColumn, this, [true]),
-            row: this.fnBind(components.RowOrColumn, this, [false]),
-            stack: components.Stack,
-            component: components.Component
-        };
     }
 
     fnBind(fn, context, boundArgs?) {
@@ -222,14 +232,14 @@ export class DockingLayoutService extends EventEmitter {
         }
 
 
-        this._setContainer();
+        this.setContainer();
         this.dropTargetIndicator = new DropTargetIndicator();
         this.transitionIndicator = new components.TransitionIndicatorComponent();
         this.updateSize();
-        this._create(this.config);
-        this._bindEvents();
+        this.create(this.config);
+        this.bindEvents();
         this.isInitialised = true;
-        this._adjustColumnsResponsive();
+        this.adjustColumnsResponsive();
         this.emit("initialised");
     }
 
@@ -254,7 +264,7 @@ export class DockingLayoutService extends EventEmitter {
                 this._maximisedItem.callDownwards("setSize");
             }
 
-            this._adjustColumnsResponsive();
+            this.adjustColumnsResponsive();
         }
     }
 
@@ -288,16 +298,16 @@ export class DockingLayoutService extends EventEmitter {
      * Recursively creates new item tree structures based on a provided
      * ItemConfiguration object
      */
-    createContentItem(config, parent) {
+    createContentItem(config: ItemConfiguration, parent: AbstractContentItemComponent) {
         let typeErrorMsg, contentItem;
 
         if (typeof config.type !== "string") {
             throw new ConfigurationError("Missing parameter 'type'", config);
         }
 
-        if (!this._typeToItem[config.type]) {
+        if (!this.typeToComponentMap[config.type]) {
             typeErrorMsg = "Unknown type '" + config.type + "'. " +
-                "Valid types are " + Object.keys(this._typeToItem)
+                "Valid types are " + Object.keys(this.typeToComponentMap)
                     .join(",");
 
             throw new ConfigurationError(typeErrorMsg);
@@ -325,9 +335,31 @@ export class DockingLayoutService extends EventEmitter {
             };
         }
 
-        contentItem = new this._typeToItem[config.type](this, config, parent);
-        return contentItem;
+        /*     const fileType = fileItem.extension;
+             const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+                 this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default
+             );*/
+
+        // TODO: Replace this with component factory
+        // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
+        return new this.typeToComponentMap[config.type](this, config, parent);
     }
+
+    /*   private loadComponent(fileItem: FileItem) {
+           const fileType = fileItem.extension;
+           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+               this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default
+           );
+           this.viewContainerRef.clear();
+           const componentRef = this.viewContainerRef.createComponent(componentFactory);
+           const viewerComponent = componentRef.instance as FileViewerComponentBase;
+           viewerComponent.fileItem = this.fileItem;
+       }
+
+       private clear() {
+           this.viewContainerRef.clear();
+       }
+   */
 
     /**
      * Attaches DragListener to any given DOM element
@@ -441,7 +473,7 @@ export class DockingLayoutService extends EventEmitter {
 
     _$calculateItemAreas() {
         let i, area;
-        const allContentItems = this._getAllContentItems();
+        const allContentItems = this.getAllContentItems();
         this._itemAreas = [];
 
         /**
@@ -506,14 +538,7 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    /***************************
-     * PRIVATE
-     ***************************/
-    /**
-     * Returns a flattened array of all content items,
-     * regardles of level or type
-     */
-    _getAllContentItems() {
+    private getAllContentItems() {
         const allContentItems = [];
 
         const addChildren = function(contentItem) {
@@ -532,10 +557,7 @@ export class DockingLayoutService extends EventEmitter {
         return allContentItems;
     }
 
-    /**
-     * Binds to DOM/BOM events on init
-     */
-    _bindEvents() {
+    private bindEvents() {
         if (this._isFullPage) {
             $(window)
                 .resize(this._resizeFunction);
@@ -544,20 +566,12 @@ export class DockingLayoutService extends EventEmitter {
             .on("unload beforeunload", this._unloadFunction);
     }
 
-    /**
-     * Debounces resize events
-     */
-    _onResize() {
+    private onResize() {
         clearTimeout(this._resizeTimeoutId);
         this._resizeTimeoutId = setTimeout(() => this.updateSize(), 100);
     }
 
-    /**
-     * Extends the default config with the user specific settings and applies
-     * derivations. Please note that there's a seperate method (AbstractContentItem._extendItemNode)
-     * that deals with the extension of item configs
-     */
-    _createConfig(config) {
+    private createConfig(config) {
         const windowConfigKey = this.layoutManagerUtilities.getQueryStringParam("gl-window");
 
         if (windowConfigKey) {
@@ -615,10 +629,7 @@ export class DockingLayoutService extends EventEmitter {
         return config;
     }
 
-    /**
-     * Determines what element the layout will be created in
-     */
-    _setContainer() {
+    private setContainer() {
         const container = $(this.container || "body");
 
         if (container.length === 0) {
@@ -644,10 +655,7 @@ export class DockingLayoutService extends EventEmitter {
         this.container = container;
     }
 
-    /**
-     * Kicks of the initial, recursive creation chain
-     */
-    _create(config) {
+    private create(config) {
         let errorMsg;
 
         if (!(config.content instanceof Array)) {
@@ -673,13 +681,10 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    /**
-     * Adjusts the number of columns to be lower to fit the screen and still maintain minItemWidth.
-     */
-    _adjustColumnsResponsive() {
+    private adjustColumnsResponsive() {
 
         // If there is no min width set, or not content items, do nothing.
-        if (!this._useResponsiveLayout()
+        if (!this.useResponsiveLayout()
             || this._updatingColumnsResponsive
             || !this.config.dimensions
             || !this.config.dimensions.minItemWidth
@@ -712,56 +717,44 @@ export class DockingLayoutService extends EventEmitter {
         const stackColumnCount = columnCount - finalColumnCount;
 
         const rootContentItem = this.root.contentItems[0];
-        const firstStackContainer = this._findAllStackContainers()[0];
+        const firstStackContainer = this.findAllStackContainers()[0];
         for (let i = 0; i < stackColumnCount; i++) {
             // Stack from right.
             const column = rootContentItem.contentItems[rootContentItem.contentItems.length - 1];
-            this._addChildContentItemsToContainer(firstStackContainer, column);
+            this.addChildContentItemsToContainer(firstStackContainer, column);
         }
 
         this._updatingColumnsResponsive = false;
     }
 
-    /**
-     * Determines if responsive layout should be used.
-     */
-    _useResponsiveLayout() {
+    private useResponsiveLayout() {
         return this.config.settings && (this.config.settings.responsiveMode === "always" || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
     }
 
-    /**
-     * Adds all children of a node to another container recursively
-     */
-    _addChildContentItemsToContainer(container, node) {
+    private addChildContentItemsToContainer(container, node) {
         if (node.type === "stack") {
             node.contentItems.forEach(function(item) {
                 container.addChild(item);
                 node.removeChild(item, true);
             });
         } else {
-            node.contentItems.forEach(x => this._addChildContentItemsToContainer(container, x));
+            node.contentItems.forEach(x => this.addChildContentItemsToContainer(container, x));
         }
     }
 
-    /**
-     * Finds all the stack containers.
-     */
-    _findAllStackContainers() {
+    private findAllStackContainers() {
         const stackContainers = [];
-        this._findAllStackContainersRecursive(stackContainers, this.root);
+        this.findAllStackContainersRecursive(stackContainers, this.root);
 
         return stackContainers;
     }
 
-    /**
-     * Finds all the stack containers.
-     */
-    _findAllStackContainersRecursive(stackContainers, node) {
+    private findAllStackContainersRecursive(stackContainers, node) {
         node.contentItems.forEach(x => {
             if (x.type === "stack") {
                 stackContainers.push(x);
             } else if (!x.isComponent) {
-                this._findAllStackContainersRecursive(stackContainers, x);
+                this.findAllStackContainersRecursive(stackContainers, x);
             }
         });
     }

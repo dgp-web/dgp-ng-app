@@ -1,18 +1,16 @@
-import { EventEmitter } from "../../utilities";
+import { AbstractContentItemComponent } from "../abstract-content-item";
 
+export class ItemContainer extends AbstractContentItemComponent {
+    width: number;
+    height: number;
+    title: string;
+    isHidden: boolean;
+    _config: any;
+    _element: any;
+    _contentElement: any;
 
-
-export class ItemContainer extends EventEmitter {
-    private width: number;
-    private height: number;
-    private title: string;
-    private isHidden: boolean;
-    private _config: any;
-    private _element: any;
-    private _contentElement: any;
-
-    constructor(private config, private parent, private layoutManager) {
-        super();
+    constructor(readonly config, readonly parent, readonly layoutManager) {
+        super(layoutManager, config, parent);
         this.width = null;
         this.height = null;
         this.title = config.id;
