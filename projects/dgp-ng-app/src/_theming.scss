@@ -60,6 +60,10 @@
         @include dgp-list-item-theme($app-dark-theme);
     }
 
+    .dgp-bg--primary {
+        background: mat-color($primary) !important;
+    }
+
     mat-dialog-actions {
         display: flex;
         justify-content: flex-end;

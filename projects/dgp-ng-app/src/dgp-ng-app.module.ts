@@ -9,12 +9,13 @@ import { hmrReducer } from "./hmr/hmr.reducer";
 import { DgpLogModule } from "./log/log.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { DgpHamburgerMenuModule } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.module";
 
 export interface DgpNgAppConfig<TAppState> {
     readonly appReducer: ActionReducerMap<TAppState>;
 }
 
-export const appReducer = new InjectionToken<ActionReducerMap<any>>("AppReducer");
+export const APP_REDUCER = new InjectionToken<ActionReducerMap<any>>("AppReducer");
 
 @NgModule({
     imports: [
@@ -23,20 +24,22 @@ export const appReducer = new InjectionToken<ActionReducerMap<any>>("AppReducer"
         BrowserAnimationsModule,
 
 
-        StoreModule.forRoot(appReducer, {
+        StoreModule.forRoot(APP_REDUCER, {
             metaReducers: [hmrReducer]
         }),
         EffectsModule.forRoot([]),
 
         DgpHamburgerShellModule.forRoot(),
         DgpThemeSwitcherModule.forRoot(),
+        DgpHamburgerMenuModule,
         DgpLogModule,
         DgpRequestStoreModule,
         DgpRoutingOverlayModule
     ],
     exports: [
         DgpHamburgerShellModule,
-        DgpThemeSwitcherModule
+        DgpThemeSwitcherModule,
+        DgpHamburgerMenuModule
     ]
 })
 export class DgpNgAppModule {
@@ -46,7 +49,7 @@ export class DgpNgAppModule {
         return {
             ngModule: DgpNgAppModule,
             providers: [{
-                provide: appReducer,
+                provide: APP_REDUCER,
                 useValue: config.appReducer
             }]
         };
