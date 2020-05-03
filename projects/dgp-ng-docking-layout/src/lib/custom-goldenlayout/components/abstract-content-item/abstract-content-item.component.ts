@@ -481,7 +481,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
                 this.parent.emit.apply(this.parent, Array.prototype.slice.call(arguments, 0));
             } else {
                 this.scheduleEventPropagationToLayoutManager(name, event);
-            }
+            } 
         }
     }
 
