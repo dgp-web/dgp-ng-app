@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { ItemType } from "../../types";
+import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { ITEM_CONFIG, ItemConfiguration, ItemType } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
-import { AbstractContentItemComponent } from "../abstract-content-item";
+import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
 import { HeaderComponent } from "../header/header.component";
 
 @Component({
@@ -19,12 +20,16 @@ export class StackComponent extends AbstractContentItemComponent {
     _sided: any;
     _side: any;
 
-    constructor(layoutManager, config, parent) {
-        super(layoutManager, config, parent);
+    constructor(
+        dockingLayoutService: DockingLayoutService,
+        @Inject(ITEM_CONFIG) config: ItemConfiguration,
+        @Optional() parent: AbstractContentItemComponent
+    ) {
+        super(dockingLayoutService, config, parent);
 
         this.element = $("<div class=\"lm_item lm_stack card\" style=\"border:none; outline: 1px solid rgba(0,0,0,.125);\"></div>");
         this._activeContentItem = null;
-        const cfg = layoutManager.config;
+        const cfg = dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
             show: cfg.settings.hasHeaders === true && config.hasHeaders !== false,
             popout: cfg.settings.showPopoutIcon && cfg.labels.popout,
@@ -32,16 +37,13 @@ export class StackComponent extends AbstractContentItemComponent {
             close: cfg.settings.showCloseIcon && cfg.labels.close,
             minimise: cfg.labels.minimise,
         };
-        if (cfg.header) // load simplified version of header configuration (https://github.com/deepstreamIO/golden-layout/pull/245)
-        {
+        if (cfg.header) {
             Object.assign(this._header, cfg.header);
         }
-        if (config.header) // load from stack
-        {
+        if (config.header) {
             Object.assign(this._header, config.header);
         }
-        if (config.content && config.content[0] && config.content[0].header) // load from component if stack omitted
-        {
+        if (config.content && config.content[0] && config.content[0].header) {
             Object.assign(this._header, config.content[0].header);
         }
 
@@ -52,8 +54,8 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this.isStack = true;
 
-        this.childElementContainer = $("<div class=\"lm_items card-body\" style=\"padding: 0px;\"></div>");
-        this.header = new HeaderComponent(layoutManager, this);
+        this.childElementContainer = $("<div class=\"lm_items card-body\" style=\"padding: 0;\"></div>");
+        this.header = new HeaderComponent(dockingLayoutService, this);
 
         this.element.append(this.header.element);
         this.element.append(this.childElementContainer);
@@ -123,7 +125,7 @@ export class StackComponent extends AbstractContentItemComponent {
         return this.header.activeContentItem;
     }
 
-    addChild(contentItem, index?) {
+    addChild(contentItem: AbstractContentItemComponent, index?) {
         contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);

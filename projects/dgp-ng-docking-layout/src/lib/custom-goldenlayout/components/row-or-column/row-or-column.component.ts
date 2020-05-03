@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { ITEM_CONFIG, ItemConfiguration, ROW_OR_COLUMN } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
 import { SplitterComponent } from "../splitter/splitter.component";
@@ -24,10 +26,11 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
     public _splitterMaxPosition: any;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
-
-    constructor(isColumn, public layoutManager, public config, public parent) {
+    constructor(@Inject(ROW_OR_COLUMN) isColumn: boolean,
+                public layoutManager: DockingLayoutService,
+                @Inject(ITEM_CONFIG) config: ItemConfiguration,
+                @Optional() parent: AbstractContentItemComponent) {
         super(layoutManager, config, parent);
-
 
         this.isRow = !isColumn;
         this.isColumn = isColumn;

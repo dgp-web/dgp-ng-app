@@ -1,12 +1,14 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { AbstractContentItemComponent } from "../abstract-content-item";
+import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { ITEM_CONFIG, ItemConfiguration } from "../../types";
+import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
 
 @Component({
     selector: "dgp-item-container",
     template: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemContainer extends AbstractContentItemComponent {
+export class ItemContainerComponent extends AbstractContentItemComponent {
     width: number;
     height: number;
     title: string;
@@ -15,7 +17,10 @@ export class ItemContainer extends AbstractContentItemComponent {
     _element: any;
     _contentElement: any;
 
-    constructor(readonly config, readonly parent, readonly layoutManager) {
+    constructor(@Inject(ITEM_CONFIG)
+                readonly config: ItemConfiguration,
+                @Optional() readonly parent: AbstractContentItemComponent,
+                readonly layoutManager: DockingLayoutService) {
         super(layoutManager, config, parent);
         this.width = null;
         this.height = null;
@@ -98,7 +103,7 @@ export class ItemContainer extends AbstractContentItemComponent {
             i;
 
         while (!rowOrColumn.isColumn && !rowOrColumn.isRow) {
-            rowOrColumnChild = rowOrColumn;
+            rowOrColumnChild = rowOrColumn as any;
             rowOrColumn = rowOrColumn.parent;
 
 

@@ -1,5 +1,5 @@
 import { AbstractContentItemComponent } from "../abstract-content-item";
-import { ItemContainer } from "../item-container";
+import { ItemContainerComponent } from "../item-container";
 
 
 
@@ -28,7 +28,7 @@ export class Component extends AbstractContentItemComponent {
         }
 
         this.isComponent = true;
-        this.container = new ItemContainer(this.config, this, layoutManager);
+        this.container = new ItemContainerComponent(this.config, this, layoutManager);
         this.instance = ComponentConstructor(this.container, componentConfig);
         this.element = this.container._element;
     }

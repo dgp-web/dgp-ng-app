@@ -298,7 +298,7 @@ export class DockingLayoutService extends EventEmitter {
      * Recursively creates new item tree structures based on a provided
      * ItemConfiguration object
      */
-    createContentItem(config: ItemConfiguration, parent: AbstractContentItemComponent) {
+    createContentItem(config: ItemConfiguration, parent: AbstractContentItemComponent): AbstractContentItemComponent {
         let typeErrorMsg, contentItem;
 
         if (typeof config.type !== "string") {
@@ -337,18 +337,22 @@ export class DockingLayoutService extends EventEmitter {
 
         /*     const fileType = fileItem.extension;
              const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-                 this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default
+                 this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] :
+                 this.config.fileTypeViewerMap.default
              );*/
 
         // TODO: Replace this with component factory
         // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
+        // const foo = this.componentFactoryResolver.resolveComponentFactory();
+
         return new this.typeToComponentMap[config.type](this, config, parent);
     }
 
     /*   private loadComponent(fileItem: FileItem) {
            const fileType = fileItem.extension;
            const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-               this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default
+               this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] :
+               this.config.fileTypeViewerMap.default
            );
            this.viewContainerRef.clear();
            const componentRef = this.viewContainerRef.createComponent(componentFactory);
@@ -516,14 +520,7 @@ export class DockingLayoutService extends EventEmitter {
      * item and returns an initialised instance of the contentItem.
      * If the contentItem is a function, it is first called
      */
-    _$normalizeContentItem(contentItemOrConfig, parent?: AbstractContentItemComponent) {
-        if (!contentItemOrConfig) {
-            throw new Error("No content item defined");
-        }
-
-        if (this.layoutManagerUtilities.isFunction(contentItemOrConfig)) {
-            contentItemOrConfig = contentItemOrConfig();
-        }
+    _$normalizeContentItem(contentItemOrConfig: ItemConfiguration, parent?: AbstractContentItemComponent) {
 
         if (contentItemOrConfig instanceof components.AbstractContentItemComponent) {
             return contentItemOrConfig;
@@ -728,7 +725,8 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     private useResponsiveLayout() {
-        return this.config.settings && (this.config.settings.responsiveMode === "always" || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
+        return this.config.settings && (this.config.settings.responsiveMode === "always"
+            || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
     }
 
     private addChildContentItemsToContainer(container, node) {

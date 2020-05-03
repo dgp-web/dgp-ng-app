@@ -1,7 +1,7 @@
-import { Directive } from "@angular/core";
-import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
-import { ConfigurationError, ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
+import { Directive, InjectionToken } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
+import { ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
+import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -16,7 +16,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     _side: any;
     _sided: any;
     _header: any;
-   // _setupHeaderPosition: any;
+    // _setupHeaderPosition: any;
 
     contentItems: AbstractContentItemComponent[] = [];
 
@@ -35,7 +35,11 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     type: ItemType;
     config: any;
 
-    constructor(readonly layoutManager: DockingLayoutService, config: ItemConfiguration, public parent: AbstractContentItemComponent) {
+    constructor(
+        protected readonly layoutManager: DockingLayoutService,
+        config: ItemConfiguration,
+        public parent: AbstractContentItemComponent
+    ) {
         super();
 
         this.type = config.type;
@@ -58,6 +62,25 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
 
     }
+
+    //noinspection TsLint
+    /**
+     * Extends an item configuration node with default settings
+     * @private
+     * @param   {ItemConfiguration} config
+     *
+     * @returns {ItemConfiguration} extended config
+     */
+    private static extendItemNode(config: ItemConfiguration) {
+
+        for (const key in itemDefaultConfig) {
+            if (config[key] === undefined) {
+                config[key] = itemDefaultConfig[key];
+            }
+        }
+
+        return config;
+    };
 
     /**
      * Set the size of the component and its children, called recursively
@@ -306,7 +329,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      ****************************************/
     getItemsByFilter(filter) {
         const result = [];
-        const next = function (contentItem) {
+        const next = function(contentItem) {
             for (let i = 0; i < contentItem.contentItems.length; i++) {
 
                 if (filter(contentItem.contentItems[i]) === true) {
@@ -322,7 +345,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     getItemsById(id: string) {
-        return this.getItemsByFilter(function (item) {
+        return this.getItemsByFilter(function(item) {
             if (item.config.id instanceof Array) {
                 return new LayoutManagerUtilities()
                     .indexOf(id, item.config.id) !== -1;
@@ -340,7 +363,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * PACKAGE PRIVATE
      ****************************************/
     _$getItemsByProperty(key: string, value) {
-        return this.getItemsByFilter(function (item) {
+        return this.getItemsByFilter(function(item) {
             return item[key] === value;
         });
     }
@@ -357,7 +380,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     _$onDrop(contentItem: AbstractContentItemComponent, area?) {
         this.addChild(contentItem);
     }
-
 
     _$hide() {
         this._callOnActiveComponents("hide");
@@ -454,46 +476,23 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.emit(name, event);
     }
 
-    //noinspection TsLint
-    /**
-     * Private method, creates all content items for this node at initialisation time
-     * PLEASE NOTE, please see addChild for adding contentItems add runtime
-     * @private
-     * @param   {ItemConfiguration} config
-     *
-     * @returns {void}
-     */
-    private createContentItems(config: ItemConfiguration) {
-        let oContentItem, i;
+    _setupHeaderPosition() {
+    }
 
-        if (!(config.content instanceof Array)) {
-            throw new ConfigurationError("content must be an Array", config);
-        }
+    close(): void {
+    }
 
-        for (i = 0; i < config.content.length; i++) {
-            oContentItem = this.layoutManager.createContentItem(config.content[i], this);
-            this.contentItems.push(oContentItem);
-        }
+    setTitle(title: string): void {
     }
 
     //noinspection TsLint
     /**
-     * Extends an item configuration node with default settings
-     * @private
-     * @param   {ItemConfiguration} config
-     *
-     * @returns {ItemConfiguration} extended config
+     * Private method, creates all content items for this node at initialisation time
+     * PLEASE NOTE, please see addChild for adding contentItems add runtime
      */
-    private static extendItemNode(config: ItemConfiguration) {
-
-        for (const key in itemDefaultConfig) {
-            if (config[key] === undefined) {
-                config[key] = itemDefaultConfig[key];
-            }
-        }
-
-        return config;
-    };
+    private createContentItems(config: ItemConfiguration) {
+        this.contentItems = config.content.map(x => this.layoutManager.createContentItem(x, this));
+    }
 
     /**
      * Called for every event on the item tree. Decides whether the event is a bubbling
@@ -558,7 +557,5 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.pendingEventPropagations[name] = false;
         this.layoutManager.emit(name, event);
     }
-
-    _setupHeaderPosition() {}
 }
 

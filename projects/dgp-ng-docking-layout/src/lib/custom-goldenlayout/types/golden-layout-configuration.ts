@@ -1,4 +1,4 @@
-import { TemplateRef } from "@angular/core";
+import { InjectionToken, TemplateRef } from "@angular/core";
 
 export type ItemType = "row" | "column" | "stack" | "component";
 
@@ -37,6 +37,8 @@ export interface ItemConfiguration {
     id?: string;
     width?: number;
     height?: number;
+    isClosable?: boolean;
+    hasHeaders?: boolean;
 
     content?: ItemConfiguration[];
     header?: any;
@@ -64,3 +66,6 @@ export interface ColumnConfiguration extends ItemConfiguration {
 
     content: ItemConfiguration[];
 }
+
+export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
+export const ROW_OR_COLUMN = new InjectionToken<boolean>("RowOrColumn");

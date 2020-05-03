@@ -5,7 +5,7 @@ import { interval } from "rxjs";
     selector: "dgp-ng-docking-layout-demo",
     template: `
 
-        <dgp-docking-layout>
+      <!--  <dgp-docking-layout>
 
             <ng-container *ngIf="terser">
 
@@ -78,7 +78,7 @@ import { interval } from "rxjs";
                     C
                 </ng-template>
             </dgp-split-panel-content>
-        </dgp-split-panel>
+        </dgp-split-panel>-->
 
     `,
     styles: [`
