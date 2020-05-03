@@ -9,10 +9,11 @@ import { AbstractContentItemComponent } from "../abstract-content-item/abstract-
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemContainerComponent extends AbstractContentItemComponent {
+    
     width: number;
     height: number;
     title: string;
-    isHidden = false;
+    isHidden: boolean;
     _config: any;
     _element: any;
     _contentElement: any;
@@ -136,28 +137,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
             this.emit("close");
             this.parent.close();
         }
-    }
-
-    /**
-     * Returns the current state object
-     */
-    getState(): any {
-        return this._config.componentState;
-    }
-
-    /**
-     * Merges the provided state into the current one
-     */
-    extendState(state: any) {
-        this.setState($.extend(true, this.getState(), state));
-    }
-
-    /**
-     * Notifies the layout manager of a stateupdate
-     */
-    setState(state: any) {
-        this._config.componentState = state;
-        this.parent.emitBubblingEvent("stateChanged");
     }
 
     /**

@@ -44,15 +44,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         this.type = config.type;
         this.contentItems = [];
-
-        this.isInitialised = false;
-        this.isMaximised = false;
-        this.isRoot = false;
-        this.isRow = false;
-        this.isColumn = false;
-        this.isStack = false;
-        this.isComponent = false;
-
+        
         this.config = {
             ...itemDefaultConfig,
             ...config
