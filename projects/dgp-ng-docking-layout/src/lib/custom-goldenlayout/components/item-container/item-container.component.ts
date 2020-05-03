@@ -12,24 +12,19 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     width: number;
     height: number;
     title: string;
-    isHidden: boolean;
+    isHidden = false;
     _config: any;
     _element: any;
     _contentElement: any;
 
     constructor(@Inject(ITEM_CONFIG)
                 readonly config: ItemConfiguration,
-                @Optional() readonly parent: AbstractContentItemComponent,
+                @Optional()
+                readonly parent: AbstractContentItemComponent,
                 readonly layoutManager: DockingLayoutService) {
         super(layoutManager, config, parent);
-        this.width = null;
-        this.height = null;
-        this.title = config.id;
-        this.parent = parent;
-        this.layoutManager = layoutManager;
-        this.isHidden = false;
 
-        this._config = config;
+        this.title = config.id as string;
         this._element = $([
             "<div class=\"lm_item_container\">",
             "<div class=\"lm_content\"></div>",
@@ -42,8 +37,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     /**
      * Get the inner DOM element the container's content
      * is intended to live in
-     *
-     * @returns {DOM element}
      */
     getElement() {
         return this._contentElement;
@@ -53,8 +46,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      * Hide the container. Notifies the containers content first
      * and then hides the DOM node. If the container is already hidden
      * this should have no effect
-     *
-     * @returns {void}
      */
     hide() {
         this.emit("hide");
@@ -92,7 +83,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      *
      * @returns {Boolean} resizeSuccesful
      */
-    setSize(width, height) {
+    setSize(width: number, height: number) {
         let rowOrColumn = this.parent,
             rowOrColumnChild = this,
             totalPixel,
@@ -139,8 +130,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      * Closes the container if it is closable. Can be called by
      * both the component within at as well as the contentItem containing
      * it. Emits a close event before the container itself is closed.
-     *
-     * @returns {void}
      */
     close() {
         if (this._config.isClosable) {
@@ -151,40 +140,30 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
 
     /**
      * Returns the current state object
-     *
-     * @returns {Object} state
      */
-    getState() {
+    getState(): any {
         return this._config.componentState;
     }
 
     /**
      * Merges the provided state into the current one
-     *
-     * @param   {Object} state
-     *
-     * @returns {void}
      */
-    extendState(state) {
+    extendState(state: any) {
         this.setState($.extend(true, this.getState(), state));
     }
 
     /**
      * Notifies the layout manager of a stateupdate
-     *
-     * @param {serialisable} state
      */
-    setState(state) {
+    setState(state: any) {
         this._config.componentState = state;
         this.parent.emitBubblingEvent("stateChanged");
     }
 
     /**
      * Set's the components title
-     *
-     * @param {String} title
      */
-    setTitle(title) {
+    setTitle(title: string) {
         this.parent.setTitle(title);
     }
 
@@ -192,13 +171,8 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      * Set's the containers size. Called by the container's component.
      * To set the size programmatically from within the container please
      * use the public setSize method
-     *
-     * @param {[Int]} width  in px
-     * @param {[Int]} height in px
-     *
-     * @returns {void}
      */
-    _$setSize(width, height) {
+    _$setSize(width: number, height: number) {
         if (width !== this.width || height !== this.height) {
             this.width = width;
             this.height = height;

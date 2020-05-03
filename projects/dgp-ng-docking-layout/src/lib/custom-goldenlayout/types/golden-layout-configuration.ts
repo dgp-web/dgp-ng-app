@@ -34,11 +34,14 @@ export interface LayoutConfiguration {
 
 export interface ItemConfiguration {
     type: ItemType;
-    id?: string;
+    id?: string | string[];
     width?: number;
     height?: number;
     isClosable?: boolean;
     hasHeaders?: boolean;
+    reorderEnabled?: boolean;
+    title?: string;
+    activeItemIndex?: number;
 
     content?: ItemConfiguration[];
     header?: any;

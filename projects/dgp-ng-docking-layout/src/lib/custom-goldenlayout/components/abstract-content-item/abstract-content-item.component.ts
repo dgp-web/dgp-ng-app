@@ -1,4 +1,4 @@
-import { Directive, InjectionToken } from "@angular/core";
+import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
@@ -27,17 +27,17 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     isColumn = false;
     isStack = false;
     isComponent = false;
+
     element: any;
     childElementContainer: any;
 
     pendingEventPropagations = {};
     throttledEvents = ["stateChanged"];
     type: ItemType;
-    config: any;
 
-    constructor(
+    protected constructor(
         protected readonly layoutManager: DockingLayoutService,
-        config: ItemConfiguration,
+        readonly config: ItemConfiguration,
         public parent: AbstractContentItemComponent
     ) {
         super();
@@ -53,7 +53,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.isStack = false;
         this.isComponent = false;
 
-        this.config = AbstractContentItemComponent.extendItemNode(config);
+        this.config = {
+            ...itemDefaultConfig,
+            ...config
+        };
 
         this.on(ALL_EVENT, this.propagateEvent, this);
 
@@ -62,25 +65,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
 
     }
-
-    //noinspection TsLint
-    /**
-     * Extends an item configuration node with default settings
-     * @private
-     * @param   {ItemConfiguration} config
-     *
-     * @returns {ItemConfiguration} extended config
-     */
-    private static extendItemNode(config: ItemConfiguration) {
-
-        for (const key in itemDefaultConfig) {
-            if (config[key] === undefined) {
-                config[key] = itemDefaultConfig[key];
-            }
-        }
-
-        return config;
-    };
 
     /**
      * Set the size of the component and its children, called recursively
@@ -283,10 +267,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * Adds an id. Adds it as a string if the component doesn't
      * have an id yet or creates/uses an array
      *
-     * @public
-     * @param {String} id
-     *
-     * @returns {void}
      */
     addId(id: string) {
         if (this.hasId(id)) {
@@ -305,11 +285,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Removes an existing id. Throws an error
      * if the id is not present
-     *
-     * @public
-     * @param   {String} id
-     *
-     * @returns {void}
      */
     removeId(id: string) {
         if (!this.hasId(id)) {
@@ -466,10 +441,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Emit an event that bubbles up the item tree.
-     *
-     * @param   {String} name The name of the event
-     *
-     * @returns {void}
      */
     emitBubblingEvent(name: string) {
         const event = new BubblingEvent(name, this);
