@@ -14,6 +14,10 @@ export interface LayoutConfiguration {
         readonly showPopoutIcon?: boolean;
         readonly showMaximiseIcon?: boolean;
         readonly showCloseIcon?: boolean;
+        readonly responsiveMode?: string;
+        readonly tabOverlapAllowance?: number;
+        readonly reorderOnTabMenuClick?: boolean;
+        readonly tabControlOffset?: number;
     };
     readonly dimensions?: {
         readonly borderWidth?: number;
@@ -22,14 +26,16 @@ export interface LayoutConfiguration {
         readonly headerHeight?: number;
         readonly dragProxyWidth?: number;
         readonly dragProxyHeight?: number;
+        readonly borderGrabWidth?: number;
     };
     readonly labels?: {
         readonly close?: string;
         readonly maximise?: string;
         readonly minimise?: string;
         readonly popout?: string;
+        readonly tabDropdown?: string;
     };
-    readonly content: ItemConfiguration[];
+    readonly content?: ItemConfiguration[];
 }
 
 export interface ItemConfiguration {

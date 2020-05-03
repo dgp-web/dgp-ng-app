@@ -3,11 +3,14 @@ import * as components from "./components";
 import { Component, RowOrColumnComponent, StackComponent } from "./components";
 import { AbstractContentItemComponent } from "./components/abstract-content-item";
 import { DropTargetIndicator } from "./components/drop-target-indicator/drop-target-indicator.component";
+import { addChildContentItemsToContainer, findAllStackContainers } from "./functions";
+import { defaultLayoutConfig } from "./models";
 import { ComponentRegistry } from "./services/component-registry";
 import { ConfigurationError } from "./types/configuration-error";
 import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
 import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
+
 
 export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -552,36 +555,7 @@ export class DockingLayoutService extends EventEmitter {
             localStorage.removeItem(windowConfigKey);
         }
 
-        config = $.extend(true, {}, { // default config
-
-            settings: {
-                hasHeaders: true,
-                constrainDragToContainer: true,
-                reorderEnabled: true,
-                selectionEnabled: false,
-                showMaximiseIcon: true,
-                showCloseIcon: true,
-                responsiveMode: "onload", // Can be onload, always, or none.
-                tabOverlapAllowance: 0, // maximum pixel overlap per tab
-                reorderOnTabMenuClick: true,
-                tabControlOffset: 10
-            },
-            dimensions: {
-                borderWidth: 5,
-                borderGrabWidth: 15,
-                minItemHeight: 10,
-                minItemWidth: 10,
-                headerHeight: 20,
-                dragProxyWidth: 300,
-                dragProxyHeight: 200
-            },
-            labels: {
-                close: "close",
-                maximise: "maximise",
-                minimise: "minimise",
-                tabDropdown: "additional tabs"
-            }
-        }, config);
+        config = $.extend(true, {}, defaultLayoutConfig, config);
 
         const nextNode = function(node) {
             for (const key in node) {
@@ -688,11 +662,11 @@ export class DockingLayoutService extends EventEmitter {
         const stackColumnCount = columnCount - finalColumnCount;
 
         const rootContentItem = this.root.contentItems[0];
-        const firstStackContainer = this.findAllStackContainers()[0];
+        const firstStackContainer = findAllStackContainers(this.root)[0];
         for (let i = 0; i < stackColumnCount; i++) {
             // Stack from right.
             const column = rootContentItem.contentItems[rootContentItem.contentItems.length - 1];
-            this.addChildContentItemsToContainer(firstStackContainer, column);
+            addChildContentItemsToContainer(firstStackContainer, column);
         }
 
         this._updatingColumnsResponsive = false;
@@ -703,31 +677,4 @@ export class DockingLayoutService extends EventEmitter {
             || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
     }
 
-    private addChildContentItemsToContainer(container, node) {
-        if (node.type === "stack") {
-            node.contentItems.forEach(function(item) {
-                container.addChild(item);
-                node.removeChild(item, true);
-            });
-        } else {
-            node.contentItems.forEach(x => this.addChildContentItemsToContainer(container, x));
-        }
-    }
-
-    private findAllStackContainers() {
-        const stackContainers = [];
-        this.findAllStackContainersRecursive(stackContainers, this.root);
-
-        return stackContainers;
-    }
-
-    private findAllStackContainersRecursive(stackContainers, node) {
-        node.contentItems.forEach(x => {
-            if (x.type === "stack") {
-                stackContainers.push(x);
-            } else if (!x.isComponent) {
-                this.findAllStackContainersRecursive(stackContainers, x);
-            }
-        });
-    }
 }
