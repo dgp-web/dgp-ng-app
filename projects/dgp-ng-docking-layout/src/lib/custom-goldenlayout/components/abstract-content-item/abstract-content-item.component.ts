@@ -44,7 +44,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         this.type = config.type;
         this.contentItems = [];
-        
+
         this.config = {
             ...itemDefaultConfig,
             ...config
@@ -61,7 +61,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Set the size of the component and its children, called recursively
      */
-    abstract setSize(width?: number, height?: number): void;
+    setSize(width?: number, height?: number): void {}
 
     /**
      * Calls a method recursively downwards on the tree

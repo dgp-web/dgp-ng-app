@@ -9,7 +9,7 @@ import { AbstractContentItemComponent } from "../abstract-content-item/abstract-
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemContainerComponent extends AbstractContentItemComponent {
-    
+
     width: number;
     height: number;
     title: string;
@@ -58,8 +58,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      * Shows a previously hidden container. Notifies the
      * containers content first and then shows the DOM element.
      * If the container is already visible this has no effect.
-     *
-     * @returns {void}
      */
     show() {
         this.emit("show");
@@ -71,61 +69,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
         }
     }
 
-    /**
-     * Set the size from within the container. Traverses up
-     * the item tree until it finds a row or column element
-     * and resizes its items accordingly.
-     *
-     * If this container isn't a descendant of a row or column
-     * it returns false
-     * @todo  Rework!!!
-     * @param {Number} width  The new width in pixel
-     * @param {Number} height The new height in pixel
-     *
-     * @returns {Boolean} resizeSuccesful
-     */
-    setSize(width: number, height: number) {
-        let rowOrColumn = this.parent,
-            rowOrColumnChild = this,
-            totalPixel,
-            percentage,
-            direction,
-            newSize,
-            delta,
-            i;
-
-        while (!rowOrColumn.isColumn && !rowOrColumn.isRow) {
-            rowOrColumnChild = rowOrColumn as any;
-            rowOrColumn = rowOrColumn.parent;
-
-
-            /**
-             * No row or column has been found
-             */
-            if (rowOrColumn.isRoot) {
-                return false;
-            }
-        }
-
-        direction = rowOrColumn.isColumn ? "height" : "width";
-        newSize = direction === "height" ? height : width;
-
-        totalPixel = this[direction] * (1 / (rowOrColumnChild.config[direction] / 100));
-        percentage = (newSize / totalPixel) * 100;
-        delta = (rowOrColumnChild.config[direction] - percentage) / (rowOrColumn.contentItems.length - 1);
-
-        for (i = 0; i < rowOrColumn.contentItems.length; i++) {
-            if (rowOrColumn.contentItems[i] === rowOrColumnChild) {
-                rowOrColumn.contentItems[i].config[direction] = percentage;
-            } else {
-                rowOrColumn.contentItems[i].config[direction] += delta;
-            }
-        }
-
-        rowOrColumn.callDownwards("setSize");
-
-        return true;
-    }
 
     /**
      * Closes the container if it is closable. Can be called by
