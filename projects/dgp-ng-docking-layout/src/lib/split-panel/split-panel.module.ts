@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { DockingLayoutService } from "../custom-goldenlayout";
-import { SplitPanelContentComponent } from "./split-panel-content.component";
 import { CommonModule } from "@angular/common";
-import { SplitPanelComponent } from "./split-panel.component";
+import { NgModule } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
+import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
+import { SplitPanelContentComponent } from "./split-panel-content.component";
+import { SplitPanelComponent } from "./split-panel.component";
 
 @NgModule({
     imports: [
@@ -19,7 +19,8 @@ import { MatCardModule } from "@angular/material/card";
         SplitPanelComponent
     ],
     providers: [
-        DockingLayoutService
+        DockingLayoutService,
+        ComponentRegistry
     ]
 })
 export class DgpSplitPanelModule {

@@ -7,7 +7,7 @@ import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { uniqBy } from "lodash";
 import { combineLatest, timer } from "rxjs";
-import { ComponentConfiguration, DockingLayoutService, ItemConfiguration } from "../../custom-goldenlayout";
+import { ComponentConfiguration, ComponentRegistry, DockingLayoutService, ItemConfiguration } from "../../custom-goldenlayout";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./docking-layout-item.component";
 
@@ -68,7 +68,8 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     private resizeSensor: ResizeSensor;
 
     constructor(private readonly vcRef: ViewContainerRef,
-                private readonly dockingLayoutService: DockingLayoutService
+                private readonly dockingLayoutService: DockingLayoutService,
+                private readonly componentRegistry: ComponentRegistry
     ) {
 
     }
@@ -151,7 +152,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         // TODO: Type container and state
         uniqComponents.forEach(component => {
 
-            this.dockingLayoutService.registerComponent(component.id, (container, componentState) => {
+            this.componentRegistry.registerComponent(component.id, (container, componentState) => {
 
                 const id = createGuid();
 

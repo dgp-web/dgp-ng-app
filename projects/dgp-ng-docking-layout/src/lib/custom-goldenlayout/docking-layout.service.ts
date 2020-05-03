@@ -3,12 +3,11 @@ import * as components from "./components";
 import { Component, RowOrColumnComponent, StackComponent } from "./components";
 import { AbstractContentItemComponent } from "./components/abstract-content-item";
 import { DropTargetIndicator } from "./components/drop-target-indicator/drop-target-indicator.component";
+import { ComponentRegistry } from "./services/component-registry";
 import { ConfigurationError } from "./types/configuration-error";
 import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
 import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
-import { ComponentDefinition, ContainerDefinition } from "./utilities/models";
-
 
 export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -53,7 +52,8 @@ export class DockingLayoutService extends EventEmitter {
     };
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver
+        private readonly componentFactoryResolver: ComponentFactoryResolver,
+        private readonly componentRegistry: ComponentRegistry
     ) {
         super();
     }
@@ -124,23 +124,6 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     /**
-     * Register a component with the layout manager. If a configuration node
-     * of type component is reached it will look up componentName and create the
-     * associated component
-     */
-    registerComponent(name, constructor: (container: ContainerDefinition, component: ComponentDefinition<any>) => void) {
-        if (typeof constructor !== "function") {
-            throw new Error("Please register a constructor function");
-        }
-
-        if (this._components[name] !== undefined) {
-            throw new Error("Component " + name + " is already registered");
-        }
-
-        this._components[name] = constructor;
-    }
-
-    /**
      * Creates a layout configuration object based on the the current state
      */
     toConfig(root) {
@@ -201,16 +184,7 @@ export class DockingLayoutService extends EventEmitter {
         return config;
     }
 
-    /**
-     * Returns a previously registered component
-     */
-    getComponent(name) {
-        if (this._components[name] === undefined) {
-            throw new ConfigurationError("Unknown component '" + name + "'");
-        }
-
-        return this._components[name];
-    }
+    getComponent = x => this.componentRegistry.getComponent(x);
 
     /**
      * Creates the actual layout. Must be called after all initial components

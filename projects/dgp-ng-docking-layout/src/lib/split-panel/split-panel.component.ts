@@ -6,7 +6,7 @@ import { ResizeSensor } from "css-element-queries";
 import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { timer } from "rxjs";
-import { DockingLayoutService } from "../custom-goldenlayout";
+import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
 import { createComponentTree, createLayoutConfig } from "./functions";
 import { SplitPanelOrientation } from "./models";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
@@ -43,7 +43,8 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     private resizeSensor: ResizeSensor;
 
     constructor(private readonly viewContainerRef: ViewContainerRef,
-                private readonly dockingLayoutService: DockingLayoutService
+                private readonly dockingLayoutService: DockingLayoutService,
+                private readonly componentRegistry: ComponentRegistry
     ) {
     }
 
@@ -81,7 +82,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
             createLayoutConfig(root), this.elementRef.nativeElement
         );
 
-        componentConfigurations.forEach(componentConfig => this.dockingLayoutService.registerComponent(componentConfig.id, (container, component) => {
+        componentConfigurations.forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
             const instanceId = createGuid();
             container.on("open",
                 () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)

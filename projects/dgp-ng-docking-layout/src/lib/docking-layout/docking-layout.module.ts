@@ -5,6 +5,7 @@ import { ItemContainerComponent } from "../custom-goldenlayout/components/item-c
 import { RowOrColumnComponent } from "../custom-goldenlayout/components/row-or-column/row-or-column.component";
 import { StackComponent } from "../custom-goldenlayout/components/stack/stack.component";
 import { DockingLayoutService } from "../custom-goldenlayout/docking-layout.service";
+import { ComponentRegistry } from "../custom-goldenlayout/services/component-registry";
 import { DockingLayoutContainerComponent } from "./components/docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./components/docking-layout-item.component";
 import { DockingLayoutComponent } from "./components/docking-layout.component";
@@ -31,7 +32,8 @@ import { DockingLayoutComponent } from "./components/docking-layout.component";
         ItemContainerComponent
     ],
     providers: [
-        DockingLayoutService
+        DockingLayoutService,
+        ComponentRegistry
     ]
 })
 export class DgpDockingLayoutModule {
