@@ -1,3 +1,6 @@
+import { EntityStateMap } from "entity-store";
+import { LayoutConfiguration } from "../custom-goldenlayout/types";
+
 export interface DockingLayout {
     readonly dockingLayoutId: string;
     readonly isInitialised: boolean;
@@ -13,12 +16,20 @@ export interface DockingLayout {
     readonly rootItemId: string;
 }
 
+export interface DockingLayoutConfig extends LayoutConfiguration {
+    readonly dockingLayoutConfigId: string;
+}
+
 export interface DockingLayoutItem {
     readonly dockingLayoutItemId: string;
 }
 
 export interface DockingLayoutEntities {
     readonly dockingLayout: DockingLayout;
+    readonly dockingLayoutConfig: DockingLayoutConfig;
+}
+
+export interface DockingLayoutState extends EntityStateMap<DockingLayoutEntities> {
 }
 
 export type DockingLayoutStoreFeature = "DockingLayout";

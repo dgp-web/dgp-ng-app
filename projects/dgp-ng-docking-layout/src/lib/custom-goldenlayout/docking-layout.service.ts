@@ -10,6 +10,8 @@ import { ConfigurationError } from "./types/configuration-error";
 import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
 import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
+import { Store } from "@ngrx/store";
+import { DockingLayoutState } from "../docking-layout/models";
 
 
 export interface TypeToComponentMap {
@@ -56,7 +58,8 @@ export class DockingLayoutService extends EventEmitter {
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private readonly componentRegistry: ComponentRegistry
+        private readonly componentRegistry: ComponentRegistry,
+        private readonly store: Store<DockingLayoutState>
     ) {
         super();
     }
