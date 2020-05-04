@@ -69,6 +69,7 @@ export class DockingLayoutService extends EventEmitter {
             throw new Error(errorMsg);
         }
 
+        // TODO: Extract creation to store
         this.isInitialised = false;
         this._isFullPage = false;
         this._resizeTimeoutId = null;
