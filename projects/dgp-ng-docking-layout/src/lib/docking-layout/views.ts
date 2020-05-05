@@ -59,4 +59,49 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
             `;
         }
     },
+    rowOrColumn: {
+        render(model?: DockingLayoutViewModels["rowOrColumn"]) {
+            return `
+                <div class="lm_item lm_${model.isColumn ? "column" : "row"}"></div>
+            `;
+        }
+    },
+    stack: {
+        render() {
+            return `
+                <div class="lm_item lm_stack card"
+                     style="border:none; outline: 1px solid rgba(0,0,0,.125);"></div>
+            `;
+        }
+    },
+    stackContent: {
+        render() {
+            return `
+                <div class="lm_items card-body" style="padding: 0;"></div>
+            `;
+        }
+    },
+    tab: {
+        render() {
+            return `
+                <li class="lm_tab nav-item">
+                    <a class="lm_title nav-link">
+                    <button type="button"
+                            class="close"
+                            aria-label="Close"
+                            style="cursor:pointer;margin-left:16px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </a>
+                </li>
+            `;
+        }
+    },
+    transitionIndicator: {
+        render() {
+            return `
+                <div class="lm_transition_indicator"></div>
+            `;
+        }
+    }
 };

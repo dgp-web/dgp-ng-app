@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration, ROW_OR_COLUMN } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
@@ -35,7 +36,9 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
         this.isRow = !isColumn;
         this.isColumn = isColumn;
 
-        this.element = $("<div class=\"lm_item lm_" + (isColumn ? "column" : "row") + "\"></div>");
+        this.element = $(
+            dockingLayoutViewMap.rowOrColumn.render({isColumn})
+        );
         this.childElementContainer = this.element;
         this._splitterSize = layoutManager.config.dimensions.borderWidth;
         this._splitterGrabSize = layoutManager.config.dimensions.borderGrabWidth;
@@ -49,17 +52,8 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
 
     /**
      * Add a new contentItem to the Row or Column
-     *
-     * @param {lm.item.AbstractContentItem} contentItem
-     * @param {[int]} index The position of the new item within the Row or Column.
-     *                      If no index is provided the item will be added to the end
-     * @param {[bool]} _$suspendResize If true the items won't be resized. This will leave the item in
-     *                                 an inconsistent state and is only intended to be used if multiple
-     *                                 children need to be added in one go and resize is called afterwards
-     *
-     * @returns {void}
      */
-    addChild(contentItem, index, _$suspendResize) {
+    addChild(contentItem: AbstractContentItemComponent, index: number, _$suspendResize: boolean) {
 
         let newItemSize, itemSize, i, splitterElement;
 
@@ -109,13 +103,8 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
 
     /**
      * Removes a child of this element
-     *
-     * @param   {lm.topLevelItems.AbstractContentItem} contentItem
-     * @param   {boolean} keepChild   If true the child will be removed, but not destroyed
-     *
-     * @returns {void}
      */
-    removeChild(contentItem, keepChild) {
+    removeChild(contentItem: AbstractContentItemComponent, keepChild: boolean) {
         const removedItemSize = contentItem.config[this._dimension],
             index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems),
             splitterIndex = Math.max(index - 1, 0);
@@ -158,13 +147,8 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
 
     /**
      * Replaces a child of this Row or Column with another contentItem
-     *
-     * @param   {lm.topLevelItems.AbstractContentItem} oldChild
-     * @param   {lm.topLevelItems.AbstractContentItem} newChild
-     *
-     * @returns {void}
      */
-    replaceChild(oldChild, newChild) {
+    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent) {
         const size = oldChild.config[this._dimension];
         AbstractContentItemComponent.prototype.replaceChild.call(this, oldChild, newChild);
         newChild.config[this._dimension] = size;
@@ -174,8 +158,6 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
 
     /**
      * Called whenever the dimensions of this item or one of its parents change
-     *
-     * @returns {void}
      */
     setSize() {
         if (this.contentItems.length > 0) {

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration, ItemType } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
@@ -27,7 +28,9 @@ export class StackComponent extends AbstractContentItemComponent {
     ) {
         super(dockingLayoutService, config, parent);
 
-        this.element = $("<div class=\"lm_item lm_stack card\" style=\"border:none; outline: 1px solid rgba(0,0,0,.125);\"></div>");
+        this.element = $(
+            dockingLayoutViewMap.stack.render()
+        );
         this._activeContentItem = null;
         const cfg = dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
@@ -54,7 +57,9 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this.isStack = true;
 
-        this.childElementContainer = $("<div class=\"lm_items card-body\" style=\"padding: 0;\"></div>");
+        this.childElementContainer = $(
+            dockingLayoutViewMap.stackContent.render()
+        );
         this.header = new HeaderComponent(dockingLayoutService, this);
 
         this.element.append(this.header.element);

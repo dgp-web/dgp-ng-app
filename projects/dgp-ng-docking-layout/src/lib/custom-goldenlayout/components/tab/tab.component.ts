@@ -1,21 +1,9 @@
-const template = `
-<li class="lm_tab nav-item">
-    <a class="lm_title nav-link">
-    <button type="button"
-            class="close"
-            aria-label="Close"
-            style="cursor:pointer;margin-left:16px;">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </a>
-</li>
-`;
-import { DragProxy } from "../drag-proxy/drag-proxy.component";
 import { Subscription } from "rxjs";
-import { DragListenerDirective } from "../drag-listener";
 import { stripHtmlTags } from "../../../common/functions";
 import { Vector2 } from "../../../common/models";
-
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { DragListenerDirective } from "../drag-listener";
+import { DragProxy } from "../drag-proxy/drag-proxy.component";
 
 
 /**
@@ -25,7 +13,6 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
-    _template = template;
     private header: any;
     private contentItem: any;
     private element: any;
@@ -40,7 +27,9 @@ export class TabComponent {
     constructor(header, contentItem) {
         this.header = header;
         this.contentItem = contentItem;
-        this.element = $(this._template);
+        this.element = $(
+            dockingLayoutViewMap.tab.render()
+        );
         this.titleElement = this.element.find(".lm_title");
         this.closeElement = this.element.find(".close");
         this.closeElement[contentItem.config.isClosable ? "show" : "hide"]();

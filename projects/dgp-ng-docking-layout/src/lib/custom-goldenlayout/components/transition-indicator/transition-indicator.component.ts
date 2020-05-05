@@ -1,7 +1,5 @@
-const template = `<div class="lm_transition_indicator"></div>`;
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { LayoutManagerUtilities } from "../../utilities";
-
-
 
 export class TransitionIndicatorComponent {
     private readonly _element: any;
@@ -11,7 +9,9 @@ export class TransitionIndicatorComponent {
     private _animationStartTime: any;
 
     constructor() {
-        this._element = $(template);
+        this._element = $(
+            dockingLayoutViewMap.transitionIndicator.render()
+        );
         $(document.body)
             .append(this._element);
 

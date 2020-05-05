@@ -59,6 +59,11 @@ export interface DockingLayoutViewModels extends ViewModels {
     readonly headerButton: HeaderButtonViewModel;
     readonly itemContainer;
     readonly root;
+    readonly rowOrColumn: RowOrColumn;
+    readonly stack;
+    readonly stackContent;
+    readonly tab;
+    readonly transitionIndicator;
 }
 
 
@@ -68,4 +73,8 @@ export interface Area {
     readonly x2: number;
     readonly y2: number;
 
+}
+
+export interface RowOrColumn {
+    readonly isColumn: boolean;
 }
