@@ -57,6 +57,8 @@ export interface DockingLayoutViewModels extends ViewModels {
     readonly dropTargetIndicator;
     readonly header;
     readonly headerButton: HeaderButtonViewModel;
+    readonly itemContainer;
+    readonly root;
 }
 
 

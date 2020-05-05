@@ -42,5 +42,21 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
                <li class="${model.cssClass}" title="${model.label}"></li>
             `;
         }
-    }
+    },
+    itemContainer: {
+        render() {
+            return `
+                <div class="lm_item_container">
+                    <div class="lm_content"></div>
+                </div>
+            `;
+        }
+    },
+    root: {
+        render() {
+            return `
+                <div class="lm_goldenlayout lm_item lm_root"></div>
+            `;
+        }
+    },
 };

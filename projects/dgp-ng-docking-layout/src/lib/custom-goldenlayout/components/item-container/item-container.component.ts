@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration } from "../../types";
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
@@ -26,11 +27,9 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
         super(layoutManager, config, parent);
 
         this.title = config.id as string;
-        this._element = $([
-            "<div class=\"lm_item_container\">",
-            "<div class=\"lm_content\"></div>",
-            "</div>"
-        ].join(""));
+        this._element = $(
+            dockingLayoutViewMap.itemContainer.render()
+        );
 
         this._contentElement = this._element.find(".lm_content");
     }

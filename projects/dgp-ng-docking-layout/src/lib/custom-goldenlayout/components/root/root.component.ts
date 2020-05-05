@@ -1,5 +1,5 @@
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
-
 
 
 export class Root extends AbstractContentItemComponent {
@@ -14,7 +14,9 @@ export class Root extends AbstractContentItemComponent {
 
         this.isRoot = true;
         this.type = "root";
-        this.element = $("<div class=\"lm_goldenlayout lm_item lm_root\"></div>");
+        this.element = $(
+            dockingLayoutViewMap.root.render()
+        );
         this.childElementContainer = this.element;
         this._containerElement = containerElement;
         this._containerElement.append(this.element);
