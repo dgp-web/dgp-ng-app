@@ -50,3 +50,12 @@ export declare type ViewMap<TViewModels extends ViewModels> = {
 export interface DockingLayoutViewModels extends ViewModels {
     readonly dropTargetIndicator: null;
 }
+
+
+export interface Area {
+    readonly x1: number;
+    readonly y1: number;
+    readonly x2: number;
+    readonly y2: number;
+
+}

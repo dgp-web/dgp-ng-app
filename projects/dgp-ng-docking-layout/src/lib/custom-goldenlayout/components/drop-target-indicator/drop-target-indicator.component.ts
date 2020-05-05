@@ -1,8 +1,9 @@
+import { Area } from "../../../docking-layout/models";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 
 export class DropTargetIndicator {
 
-    element;
+    element: JQuery;
 
     constructor() {
         this.element = $(dockingLayoutViewMap.dropTargetIndicator.render());
@@ -14,11 +15,7 @@ export class DropTargetIndicator {
         this.element.remove();
     }
 
-    highlight(x1, y1, x2, y2) {
-        this.highlightArea({x1, y1, x2, y2});
-    }
-
-    highlightArea(area) {
+    highlightArea(area: Area) {
         this.element.css({
             left: area.x1,
             top: area.y1,
