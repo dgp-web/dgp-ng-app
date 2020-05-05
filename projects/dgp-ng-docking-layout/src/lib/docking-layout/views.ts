@@ -96,12 +96,5 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
                 </li>
             `;
         }
-    },
-    transitionIndicator: {
-        render() {
-            return `
-                <div class="lm_transition_indicator"></div>
-            `;
-        }
     }
 };

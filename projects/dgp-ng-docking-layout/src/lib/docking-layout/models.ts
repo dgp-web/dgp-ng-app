@@ -63,7 +63,6 @@ export interface DockingLayoutViewModels extends ViewModels {
     readonly stack;
     readonly stackContent;
     readonly tab;
-    readonly transitionIndicator;
 }
 
 

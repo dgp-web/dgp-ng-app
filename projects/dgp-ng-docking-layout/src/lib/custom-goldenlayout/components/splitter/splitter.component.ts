@@ -2,13 +2,11 @@ const splitterTemplate = `<div class="lm_splitter"></div>`;
 const dragHandleTemplate = `<div class="lm_drag_handle"></div>`;
 import { DragListenerDirective } from "../drag-listener";
 
-
-
 export class SplitterComponent {
 
+    _dragListener: DragListenerDirective;
     private grabSize: number;
     private element: any;
-    _dragListener: DragListenerDirective;
 
     constructor(
         private readonly isVertical: boolean,

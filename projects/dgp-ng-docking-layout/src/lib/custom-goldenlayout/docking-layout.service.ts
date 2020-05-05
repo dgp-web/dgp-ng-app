@@ -1,4 +1,6 @@
 import { ComponentFactoryResolver, Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { DockingLayoutState } from "../docking-layout/models";
 import * as components from "./components";
 import { Component, RowOrColumnComponent, StackComponent } from "./components";
 import { AbstractContentItemComponent } from "./components/abstract-content-item";
@@ -10,8 +12,6 @@ import { ConfigurationError } from "./types/configuration-error";
 import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
 import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
-import { Store } from "@ngrx/store";
-import { DockingLayoutState } from "../docking-layout/models";
 
 
 export interface TypeToComponentMap {
@@ -40,14 +40,12 @@ export class DockingLayoutService extends EventEmitter {
     private _maximisedItem: any;
     private _maximisePlaceholder: any;
     private _creationTimeoutPassed: boolean;
-    private _dragSources: any[];
     private _updatingColumnsResponsive: boolean;
     private _firstLoad: boolean;
     private width: number;
     private height: number;
     private root: any;
     private eventHub: EventHub;
-    private transitionIndicator: any;
 
     private typeToComponentMap = {
         column: this.fnBind(RowOrColumnComponent, this, [true]),
@@ -82,7 +80,6 @@ export class DockingLayoutService extends EventEmitter {
         this._maximisedItem = null;
         this._maximisePlaceholder = $("<div class=\"lm_maximise_place\"></div>");
         this._creationTimeoutPassed = false;
-        this._dragSources = [];
         this._updatingColumnsResponsive = false;
         this._firstLoad = true;
 
@@ -94,7 +91,6 @@ export class DockingLayoutService extends EventEmitter {
         this.config = this.createConfig(config);
         this.container = container;
         this.dropTargetIndicator = null;
-        this.transitionIndicator = null;
         this.tabDropPlaceholder = $("<div class=\"lm_drop_tab_placeholder\"></div>");
     }
 
@@ -215,7 +211,6 @@ export class DockingLayoutService extends EventEmitter {
 
         this.setContainer();
         this.dropTargetIndicator = new DropTargetIndicator();
-        this.transitionIndicator = new components.TransitionIndicatorComponent();
         this.updateSize();
         this.create(this.config);
         this.bindEvents();
@@ -263,16 +258,7 @@ export class DockingLayoutService extends EventEmitter {
         this.root.contentItems = [];
         this.tabDropPlaceholder.remove();
         this.dropTargetIndicator.destroy();
-        this.transitionIndicator.destroy();
         this.eventHub.destroy();
-
-        this._dragSources.forEach(function(dragSource) {
-            dragSource._dragListener.destroy();
-            dragSource._element = null;
-            dragSource._itemConfig = null;
-            dragSource._dragListener = null;
-        });
-        this._dragSources = [];
     }
 
     /**
@@ -345,19 +331,6 @@ export class DockingLayoutService extends EventEmitter {
            this.viewContainerRef.clear();
        }
    */
-
-    /**
-     * Attaches DragListener to any given DOM element
-     * and turns it into a way of creating new ContentItems
-     * by 'dragging' the DOM element into the layout
-     */
-    createDragSource(element, itemConfig) {
-        this.config.settings.constrainDragToContainer = false;
-        const dragSource = new components.DragSourceComponent($(element), itemConfig, this);
-        this._dragSources.push(dragSource);
-
-        return dragSource;
-    }
 
     /**
      * Programmatically selects an item. This deselects
