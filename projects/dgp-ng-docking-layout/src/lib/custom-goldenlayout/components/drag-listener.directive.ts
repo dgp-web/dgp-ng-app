@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, Output } from "@angular/core";
-import { Vector2, Vector2Utils } from "../../../common/models";
-import { $x } from "../../../jquery-extensions";
+import { Vector2, Vector2Utils } from "../../common/models";
+import { $x } from "../../jquery-extensions";
 
 export interface DragEvent extends Vector2 {
     event: any;

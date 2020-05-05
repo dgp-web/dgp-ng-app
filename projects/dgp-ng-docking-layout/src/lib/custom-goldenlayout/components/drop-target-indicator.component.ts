@@ -1,5 +1,5 @@
-import { Area } from "../../../docking-layout/models";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { Area } from "../../docking-layout/models";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
 
 export class DropTargetIndicator {
 

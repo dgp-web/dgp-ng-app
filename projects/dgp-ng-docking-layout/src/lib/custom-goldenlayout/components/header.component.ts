@@ -1,8 +1,8 @@
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { EventEmitter } from "../../utilities";
-import { AbstractContentItemComponent } from "../abstract-content-item";
-import { HeaderButtonComponent } from "../header-button/header-button.component";
-import { TabComponent } from "../tab/tab.component";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { EventEmitter } from "../utilities";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { HeaderButtonComponent } from "./header-button.component";
+import { TabComponent } from "./tab.component";
 
 /**
  * This class represents a header above a Stack ContentItem.

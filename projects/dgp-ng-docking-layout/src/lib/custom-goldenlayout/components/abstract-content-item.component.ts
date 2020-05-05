@@ -1,7 +1,7 @@
 import { Directive } from "@angular/core";
-import { DockingLayoutService } from "../../docking-layout.service";
-import { ItemConfiguration, itemDefaultConfig, ItemType } from "../../types";
-import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { DockingLayoutService } from "../docking-layout.service";
+import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
+import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -28,7 +28,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     isStack = false;
     isComponent = false;
 
-    element: any;
+    element: JQuery;
     childElementContainer: any;
 
     pendingEventPropagations = {};
@@ -376,8 +376,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Destroys this item ands its children
-     *
-     * @returns {void}
      */
     _$destroy() {
         this.unsubscribe();
@@ -460,11 +458,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Called for every event on the item tree. Decides whether the event is a bubbling
      * event and propagates it to its parent
-     *
-     * @param    {String} name the name of the event
-     * @param   {BubblingEvent} event
-     *
-     * @returns {void}
      */
     private propagateEvent(name: string, event: BubblingEvent) {
         if (event instanceof BubblingEvent &&
@@ -489,11 +482,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * All raw events bubble up to the root element. Some events that
      * are propagated to - and emitted by - the layoutManager however are
      * only string-based, batched and sanitized to make them more usable
-     *
-     * @param {String} name the name of the event
-     * @param event
-     * @private
-     * @returns {void}
      */
     private scheduleEventPropagationToLayoutManager(name: string, event) {
         if (new LayoutManagerUtilities().indexOf(name, this.throttledEvents) === -1) {
@@ -509,12 +497,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Callback for events scheduled by _scheduleEventPropagationToLayoutManager
-     *
-     * @param {String} name the name of the event
-     *
-     * @param event
-     * @private
-     * @returns {void}
      */
     private propagateEventToLayoutManager(name: string, event) {
         this.pendingEventPropagations[name] = false;

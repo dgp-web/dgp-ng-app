@@ -1,5 +1,5 @@
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
 
 export class Root extends AbstractContentItemComponent {

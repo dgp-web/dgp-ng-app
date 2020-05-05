@@ -1,7 +1,5 @@
-import { AbstractContentItemComponent } from "../abstract-content-item";
-import { ItemContainerComponent } from "../item-container";
-
-
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { ItemContainerComponent } from "./item-container.component";
 
 /**
  * @param {[type]} layoutManager [description]

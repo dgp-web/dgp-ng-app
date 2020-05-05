@@ -1,11 +1,11 @@
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { DragListenerDirective } from "../drag-listener";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { DragListenerDirective } from "./drag-listener.directive";
 
 export class SplitterComponent {
 
     _dragListener: DragListenerDirective;
-    private grabSize: number;
-    private element: any;
+    private readonly grabSize: number;
+    private readonly element: JQuery;
 
     constructor(
         private readonly isVertical: boolean,

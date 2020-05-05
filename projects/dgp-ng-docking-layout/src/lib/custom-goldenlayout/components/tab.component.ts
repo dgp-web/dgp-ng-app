@@ -1,10 +1,15 @@
 import { Subscription } from "rxjs";
-import { stripHtmlTags } from "../../../common/functions";
-import { Vector2 } from "../../../common/models";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { DragListenerDirective } from "../drag-listener";
-import { DragProxy } from "../drag-proxy/drag-proxy.component";
+import { stripHtmlTags } from "../../common/functions";
+import { Vector2 } from "../../common/models";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { DragListenerDirective } from "./drag-listener.directive";
+import { DragProxy } from "./drag-proxy.component";
 
+export abstract class JQueryComponent {
+
+    private readonly element: JQuery;
+
+}
 
 /**
  * Represents an individual tab within a Stack's header

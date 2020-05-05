@@ -1,6 +1,6 @@
-import { AbstractContentItemComponent } from "./components/abstract-content-item";
-import { ItemContainerComponent } from "./components/item-container";
-import { StackComponent } from "./components/stack";
+import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
+import { ItemContainerComponent } from "./components/item-container.component";
+import { StackComponent } from "./components/stack.component";
 
 export function addChildContentItemsToContainer(container: ItemContainerComponent, node: AbstractContentItemComponent) {
     if (node.type === "stack") {

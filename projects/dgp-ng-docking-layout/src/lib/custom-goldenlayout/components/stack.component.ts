@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { DockingLayoutService } from "../../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ItemType } from "../../types";
-import { LayoutManagerUtilities } from "../../utilities";
-import { AbstractContentItemComponent } from "../abstract-content-item/abstract-content-item.component";
-import { HeaderComponent } from "../header/header.component";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { DockingLayoutService } from "../docking-layout.service";
+import { ITEM_CONFIG, ItemConfiguration, ItemType } from "../types";
+import { LayoutManagerUtilities } from "../utilities";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { HeaderComponent } from "./header.component";
 
 @Component({
     selector: "dgp-stack",

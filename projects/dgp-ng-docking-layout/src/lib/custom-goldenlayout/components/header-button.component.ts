@@ -1,4 +1,4 @@
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
 
 export class HeaderButtonComponent {
     private _header: any;

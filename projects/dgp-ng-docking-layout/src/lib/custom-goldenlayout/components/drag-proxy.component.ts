@@ -1,10 +1,10 @@
-import { stripHtmlTags } from "../../../common/functions";
-import { Vector2, Vector2Utils } from "../../../common/models";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { $x } from "../../../jquery-extensions";
-import { DockingLayoutService } from "../../docking-layout.service";
-import { EventEmitter } from "../../utilities/event-emitter";
-import { DragEvent, DragListenerDirective } from "../drag-listener";
+import { stripHtmlTags } from "../../common/functions";
+import { Vector2, Vector2Utils } from "../../common/models";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { $x } from "../../jquery-extensions";
+import { DockingLayoutService } from "../docking-layout.service";
+import { EventEmitter } from "../utilities/event-emitter";
+import { DragEvent, DragListenerDirective } from "./drag-listener.directive";
 
 /**
  * This class creates a temporary container
