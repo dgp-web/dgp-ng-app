@@ -35,3 +35,18 @@ export interface DockingLayoutState extends EntityStateMap<DockingLayoutEntities
 export type DockingLayoutStoreFeature = "DockingLayout";
 export const dockingLayoutStoreFeature: DockingLayoutStoreFeature = "DockingLayout";
 
+export interface View<TModel = null> {
+    render(model?: TModel): string;
+}
+
+export interface ViewModels {
+    [key: string]: any;
+}
+
+export declare type ViewMap<TViewModels extends ViewModels> = {
+    readonly [K in keyof TViewModels]: View<TViewModels[K]>;
+};
+
+export interface DockingLayoutViewModels extends ViewModels {
+    readonly dropTargetIndicator: null;
+}

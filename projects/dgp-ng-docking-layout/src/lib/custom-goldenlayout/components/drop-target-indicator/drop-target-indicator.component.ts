@@ -1,13 +1,13 @@
-const template = `<div class="lm_dropTargetIndicator"><div class="lm_inner"></div></div>`;
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 
 export class DropTargetIndicator {
 
-    _template = template;
     element;
 
     constructor() {
-        this.element = $(this._template);
-        $(document.body).append(this.element);
+        this.element = $(dockingLayoutViewMap.dropTargetIndicator.render());
+        $(document.body)
+            .append(this.element);
     }
 
     destroy() {
@@ -24,7 +24,8 @@ export class DropTargetIndicator {
             top: area.y1,
             width: area.x2 - area.x1,
             height: area.y2 - area.y1
-        }).show();
+        })
+            .show();
     }
 
     hide() {
