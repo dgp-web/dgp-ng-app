@@ -1,5 +1,4 @@
-const splitterTemplate = `<div class="lm_splitter"></div>`;
-const dragHandleTemplate = `<div class="lm_drag_handle"></div>`;
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DragListenerDirective } from "../drag-listener";
 
 export class SplitterComponent {
@@ -28,8 +27,12 @@ export class SplitterComponent {
     }
 
     private createElement() {
-        const dragHandle = $(dragHandleTemplate);
-        const element = $(splitterTemplate);
+        const dragHandle = $(
+            dockingLayoutViewMap.dragHandle.render()
+        );
+        const element = $(
+            dockingLayoutViewMap.splitter.render()
+        );
         element.append(dragHandle);
 
         const handleExcessSize = this.grabSize - this.size;

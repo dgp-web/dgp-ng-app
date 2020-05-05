@@ -53,6 +53,7 @@ export interface HeaderButtonViewModel {
 }
 
 export interface DockingLayoutViewModels extends ViewModels {
+    readonly dragHandle;
     readonly dragProxy;
     readonly dropTargetIndicator;
     readonly header;
@@ -60,6 +61,7 @@ export interface DockingLayoutViewModels extends ViewModels {
     readonly itemContainer;
     readonly root;
     readonly rowOrColumn: RowOrColumn;
+    readonly splitter;
     readonly stack;
     readonly stackContent;
     readonly tab;

@@ -1,6 +1,13 @@
 import { DockingLayoutViewModels, HeaderButtonViewModel, ViewMap } from "./models";
 
 export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
+    dragHandle: {
+        render() {
+            return `
+                <div class="lm_drag_handle"></div>
+            `;
+        }
+    },
     dragProxy: {
         render() {
             return `
@@ -63,6 +70,13 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
         render(model?: DockingLayoutViewModels["rowOrColumn"]) {
             return `
                 <div class="lm_item lm_${model.isColumn ? "column" : "row"}"></div>
+            `;
+        }
+    },
+    splitter: {
+        render() {
+            return `
+                <div class="lm_splitter"></div>
             `;
         }
     },
