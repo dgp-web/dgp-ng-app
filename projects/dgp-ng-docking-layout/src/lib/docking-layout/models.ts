@@ -47,8 +47,16 @@ export declare type ViewMap<TViewModels extends ViewModels> = {
     readonly [K in keyof TViewModels]: View<TViewModels[K]>;
 };
 
+export interface HeaderButtonViewModel {
+    readonly cssClass: string;
+    readonly label: string;
+}
+
 export interface DockingLayoutViewModels extends ViewModels {
-    readonly dropTargetIndicator: null;
+    readonly dragProxy;
+    readonly dropTargetIndicator;
+    readonly header;
+    readonly headerButton: HeaderButtonViewModel;
 }
 
 

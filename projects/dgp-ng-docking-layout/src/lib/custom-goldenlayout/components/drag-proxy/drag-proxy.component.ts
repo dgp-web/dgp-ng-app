@@ -1,25 +1,10 @@
+import { stripHtmlTags } from "../../../common/functions";
+import { Vector2, Vector2Utils } from "../../../common/models";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { $x } from "../../../jquery-extensions";
+import { DockingLayoutService } from "../../docking-layout.service";
 import { EventEmitter } from "../../utilities/event-emitter";
 import { DragEvent, DragListenerDirective } from "../drag-listener";
-import { DockingLayoutService } from "../../docking-layout.service";
-import { Vector2, Vector2Utils } from "../../../common/models";
-import { $x } from "../../../jquery-extensions";
-import { stripHtmlTags } from "../../../common/functions";
-
-const template = `
-<div class="lm_dragProxy">
-    <div class="lm_header card-header"
-         style="height: auto !important;">
-        <ul class="lm_tabs card-header-tabs nav nav-tabs">
-            <li class="lm_tab lm_active"><i class="lm_left"></i>
-                <a class="lm_title"></a>
-                <i class="lm_right"></i></li>
-        </ul>
-    </div>
-    <div class="lm_content"></div>
-</div>
-`;
-
-
 
 /**
  * This class creates a temporary container
@@ -28,7 +13,6 @@ const template = `
  */
 export class DragProxy extends EventEmitter {
 
-    _template = template;
     _area = null;
     _lastValidArea = null;
     $element;
@@ -58,14 +42,15 @@ export class DragProxy extends EventEmitter {
 
         this.subscriptions.push(dragStopSubscription);
 
-        this.$element = $(this._template);
+        this.$element = $(dockingLayoutViewMap.dragProxy.render());
 
         if (originalParent && originalParent._side) {
             this._sided = originalParent._sided;
             this.$element.addClass("lm_" + originalParent._side);
-            if (["right", "bottom"].indexOf(originalParent._side) >= 0)
+            if (["right", "bottom"].indexOf(originalParent._side) >= 0) {
                 this.$element.find(".lm_content")
                     .after(this.$element.find(".lm_header"));
+            }
         }
 
         $x.position(this.$element, coordinates);

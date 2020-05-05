@@ -1,33 +1,22 @@
-const template = `
-<div class="lm_header card-header">
-    <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
-    <ul class="lm_controls"></ul>
-    <ul class="lm_tabdropdown_list"></ul>
-</div>
-`;
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { EventEmitter } from "../../utilities";
+import { AbstractContentItemComponent } from "../abstract-content-item";
 import { HeaderButtonComponent } from "../header-button/header-button.component";
 import { TabComponent } from "../tab/tab.component";
-import { AbstractContentItemComponent } from "../abstract-content-item";
-
 
 /**
  * This class represents a header above a Stack ContentItem.
- *
- * @param {lm.LayoutManager} layoutManager
- * @param {lm.item.AbstractContentItem} parent
  */
 export class HeaderComponent extends EventEmitter {
 
-    _template = [template].join("");
-    private layoutManager: any;
     readonly element: any;
+    readonly tabs: any;
+    activeContentItem: any;
+    private layoutManager: any;
     private tabsContainer: any;
     private tabDropdownContainer: any;
     private controlsContainer: any;
     private parent: AbstractContentItemComponent;
-    readonly tabs: any;
-    activeContentItem: any;
     private closeButton: any;
     private tabDropdownButton: any;
     private readonly hideAdditionalTabsDropdown: any;
@@ -38,7 +27,7 @@ export class HeaderComponent extends EventEmitter {
         super();
 
         this.layoutManager = layoutManager;
-        this.element = $(this._template);
+        this.element = $(dockingLayoutViewMap.header.render());
 
         if (this.layoutManager.config.settings.selectionEnabled === true) {
             this.element.addClass("lm_selectable");
@@ -169,8 +158,9 @@ export class HeaderComponent extends EventEmitter {
      */
     position(position) {
         let previous = this.parent._header.show;
-        if (previous && !this.parent._side)
+        if (previous && !this.parent._side) {
             previous = "top";
+        }
         if (position !== undefined && this.parent._header.show !== position) {
             this.parent._header.show = position;
             this.parent._setupHeaderPosition();
@@ -219,8 +209,9 @@ export class HeaderComponent extends EventEmitter {
      * @returns {string} when exists
      */
     _getHeaderSetting(name) {
-        if (name in this.parent._header)
+        if (name in this.parent._header) {
             return this.parent._header[name];
+        }
     }
 
     /**
@@ -255,11 +246,11 @@ export class HeaderComponent extends EventEmitter {
             minimiseLabel = this._getHeaderSetting("minimise");
             maximiseButton = new HeaderButtonComponent(this, maximiseLabel, "lm_maximise", maximise);
 
-            this.parent.on("maximised", function () {
+            this.parent.on("maximised", function() {
                 maximiseButton.element.attr("title", minimiseLabel);
             });
 
-            this.parent.on("minimised", function () {
+            this.parent.on("minimised", function() {
                 maximiseButton.element.attr("title", maximiseLabel);
             });
         }
@@ -328,7 +319,7 @@ export class HeaderComponent extends EventEmitter {
         // Show the menu based on function argument
         this.tabDropdownButton.element.toggle(showTabMenu === true);
 
-        const size = function (val) {
+        const size = function(val) {
             return val ? "width" : "height";
         };
         this.element.css(size(!this.parent._sided), "");
@@ -346,8 +337,9 @@ export class HeaderComponent extends EventEmitter {
             tabOverlapAllowanceExceeded = false,
             activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
             activeTab = this.tabs[activeIndex];
-        if (this.parent._sided)
+        if (this.parent._sided) {
             availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight() - this._tabControlOffset;
+        }
         this._lastVisibleTabIndex = -1;
 
         for (i = 0; i < this.tabs.length; i++) {

@@ -3,10 +3,11 @@ import { dockingLayoutViewMap } from "../../../docking-layout/views";
 
 export class DropTargetIndicator {
 
-    element: JQuery;
+    private readonly element: JQuery;
 
     constructor() {
         this.element = $(dockingLayoutViewMap.dropTargetIndicator.render());
+
         $(document.body)
             .append(this.element);
     }
