@@ -10,7 +10,7 @@ import { defaultLayoutConfig } from "./models";
 import { ComponentRegistry } from "./services/component-registry";
 import { ConfigurationError } from "./types/configuration-error";
 import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
-import { ConfigMinifier, EventEmitter, LayoutManagerUtilities } from "./utilities";
+import { EventEmitter, LayoutManagerUtilities } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 
 
@@ -116,14 +116,6 @@ export class DockingLayoutService extends EventEmitter {
         // Attach the prototype of the function to our newly created function.
         bound.prototype = fn.prototype;
         return bound;
-    }
-
-    minifyConfig(config) {
-        return (new ConfigMinifier()).minifyConfig(config);
-    }
-
-    unminifyConfig(config) {
-        return (new ConfigMinifier()).unminifyConfig(config);
     }
 
     /**
@@ -523,14 +515,6 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     private createConfig(config) {
-        const windowConfigKey = this.layoutManagerUtilities.getQueryStringParam("gl-window");
-
-        if (windowConfigKey) {
-            config = localStorage.getItem(windowConfigKey);
-            config = JSON.parse(config);
-            config = (new ConfigMinifier()).unminifyConfig(config);
-            localStorage.removeItem(windowConfigKey);
-        }
 
         config = $.extend(true, {}, defaultLayoutConfig, config);
 
