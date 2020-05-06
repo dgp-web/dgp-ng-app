@@ -1,18 +1,17 @@
 import { ComponentFactoryResolver, Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { DockingLayoutState } from "../docking-layout/models";
-import * as components from "./components";
-import { Component, RowOrColumnComponent, StackComponent } from "./components";
-import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
-import { DropTargetIndicator } from "./components/drop-target-indicator.component";
 import { addChildContentItemsToContainer, findAllStackContainers } from "./functions";
 import { defaultLayoutConfig } from "./models";
 import { ComponentRegistry } from "./services/component-registry";
-import { ConfigurationError } from "./types/configuration-error";
-import { ItemConfiguration, LayoutConfiguration } from "./types/golden-layout-configuration";
-import { EventEmitter, LayoutManagerUtilities } from "./utilities";
+import { ConfigurationError, ItemConfiguration, LayoutConfiguration } from "./types";
+import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
-
+import { dockingLayoutViewMap } from "../docking-layout/views";
+import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
+import { RowOrColumnComponent } from "./components/row-or-column.component";
+import { StackComponent } from "./components/stack.component";
+import { Component } from "./components/component.component";
+import { DropTargetIndicator } from "./components/drop-target-indicator.component";
+import { Root } from "./components/root.component";
 
 export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -28,15 +27,10 @@ export class DockingLayoutService extends EventEmitter {
     config: any;
     container: any;
     dropTargetIndicator: any;
-    tabDropPlaceholder: any;
-    private readonly layoutManagerUtilities = new LayoutManagerUtilities();
+    tabDropPlaceholder: JQuery;
     private isInitialised = false;
-    private _isFullPage = false;
-    private _resizeTimeoutId: any;
     private _components: any;
     private _itemAreas: any[];
-    private _resizeFunction: any;
-    private _unloadFunction: any;
     private _maximisedItem: any;
     private _maximisePlaceholder: any;
     private _creationTimeoutPassed: boolean;
@@ -56,8 +50,7 @@ export class DockingLayoutService extends EventEmitter {
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private readonly componentRegistry: ComponentRegistry,
-        private readonly store: Store<DockingLayoutState>
+        private readonly componentRegistry: ComponentRegistry
     ) {
         super();
     }
@@ -72,11 +65,8 @@ export class DockingLayoutService extends EventEmitter {
 
         // TODO: Extract creation to store
         this.isInitialised = false;
-        this._isFullPage = false;
-        this._resizeTimeoutId = null;
         this._components = {};
         this._itemAreas = [];
-        this._resizeFunction = () => this.onResize();
         this._maximisedItem = null;
         this._maximisePlaceholder = $("<div class=\"lm_maximise_place\"></div>");
         this._creationTimeoutPassed = false;
@@ -91,7 +81,9 @@ export class DockingLayoutService extends EventEmitter {
         this.config = this.createConfig(config);
         this.container = container;
         this.dropTargetIndicator = null;
-        this.tabDropPlaceholder = $("<div class=\"lm_drop_tab_placeholder\"></div>");
+        this.tabDropPlaceholder = $(
+            dockingLayoutViewMap.tabDropPlaceholder.render()
+        );
     }
 
     fnBind(fn, context, boundArgs?) {
@@ -124,27 +116,12 @@ export class DockingLayoutService extends EventEmitter {
      * Creates the actual layout. Must be called after all initial components
      * are registered. Recurses through the configuration and sets up
      * the item tree.
-     *
-     * If called before the document is ready it adds itself as a listener
-     * to the document.ready event
      */
     init() {
-
-        /**
-         * If the document isn't ready yet, wait for it.
-         */
-        if (document.readyState === "loading" || document.body === null) {
-            $(document)
-                .ready(() => this.init());
-            return;
-        }
-
-
         this.setContainer();
         this.dropTargetIndicator = new DropTargetIndicator();
         this.updateSize();
         this.create(this.config);
-        this.bindEvents();
         this.isInitialised = true;
         this.adjustColumnsResponsive();
         this.emit("initialised");
@@ -183,8 +160,6 @@ export class DockingLayoutService extends EventEmitter {
         if (this.isInitialised === false) {
             return;
         }
-        $(window)
-            .off("resize", this._resizeFunction);
         this.root.callDownwards("_$destroy", [], true);
         this.root.contentItems = [];
         this.tabDropPlaceholder.remove();
@@ -197,7 +172,7 @@ export class DockingLayoutService extends EventEmitter {
      * ItemConfiguration object
      */
     createContentItem(config: ItemConfiguration, parent: AbstractContentItemComponent): AbstractContentItemComponent {
-        let typeErrorMsg, contentItem;
+        let typeErrorMsg;
 
         if (typeof config.type !== "string") {
             throw new ConfigurationError("Missing parameter 'type'", config);
@@ -220,7 +195,7 @@ export class DockingLayoutService extends EventEmitter {
             config.type === "component" &&
 
             // and it's not already within a stack
-            !(parent instanceof components.StackComponent) &&
+            !(parent instanceof StackComponent) &&
 
             // and we have a parent
             !!parent
@@ -407,7 +382,7 @@ export class DockingLayoutService extends EventEmitter {
      */
     _$normalizeContentItem(contentItemOrConfig: ItemConfiguration, parent?: AbstractContentItemComponent) {
 
-        if (contentItemOrConfig instanceof components.AbstractContentItemComponent) {
+        if (contentItemOrConfig instanceof AbstractContentItemComponent) {
             return contentItemOrConfig;
         }
 
@@ -439,27 +414,13 @@ export class DockingLayoutService extends EventEmitter {
         return allContentItems;
     }
 
-    private bindEvents() {
-        if (this._isFullPage) {
-            $(window)
-                .resize(this._resizeFunction);
-        }
-        $(window)
-            .on("unload beforeunload", this._unloadFunction);
-    }
-
-    private onResize() {
-        clearTimeout(this._resizeTimeoutId);
-        this._resizeTimeoutId = setTimeout(() => this.updateSize(), 100);
-    }
-
     private createConfig(config) {
 
         config = $.extend(true, {}, defaultLayoutConfig, config);
 
         const nextNode = function (node) {
             for (const key in node) {
-                if (key !== "props" && typeof node[key] === "object") {
+                if (node.hasOwnProperty(key) && key !== "props" && typeof node[key] === "object") {
                     nextNode(node[key]);
                 }
             }
@@ -485,18 +446,6 @@ export class DockingLayoutService extends EventEmitter {
             throw new Error("GoldenLayout more than one container element specified");
         }
 
-        if (container[0] === document.body) {
-            this._isFullPage = true;
-
-            $("html, body")
-                .css({
-                    height: "100%",
-                    margin: 0,
-                    padding: 0,
-                    overflow: "hidden"
-                });
-        }
-
         this.container = container;
     }
 
@@ -518,7 +467,7 @@ export class DockingLayoutService extends EventEmitter {
             throw new ConfigurationError(errorMsg, config);
         }
 
-        this.root = new components.Root(this, {content: config.content}, this.container);
+        this.root = new Root(this, {content: config.content}, this.container);
         this.root.callDownwards("_$init");
 
         if (config.maximisedItemId === "__glMaximised") {

@@ -25,7 +25,7 @@ export class EventHub extends EventEmitter {
         this.layoutManager = layoutManager;
         this.dontPropagateToParent = null;
         this.childEventSource = null;
-        this.on(ALL_EVENT, (e) => this._onEventFromThis() as any);
+        this.on(ALL_EVENT, () => this._onEventFromThis() as any);
         this.boundOnEventFromChild = this._onEventFromChild;
         $(window)
             .on("gl_child_event", this.boundOnEventFromChild);

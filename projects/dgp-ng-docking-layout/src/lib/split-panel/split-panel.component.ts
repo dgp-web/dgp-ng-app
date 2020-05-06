@@ -36,7 +36,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     @ViewChild("host", {read: ElementRef})
     elementRef: ElementRef;
     @ContentChildren(SplitPanelContentComponent)
-    topLevelItems: QueryList<SplitPanelContentComponent>;
+    items: QueryList<SplitPanelContentComponent>;
     @Input()
     orientation: SplitPanelOrientation = "vertical";
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
@@ -57,7 +57,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.topLevelItems.changes.subscribe(() => this.redraw());
+        this.items.changes.subscribe(() => this.redraw());
         this.redraw();
     }
 
@@ -70,7 +70,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     private redraw(): void {
         this.destroyLayout();
 
-        const componentConfigurations = this.topLevelItems.toArray()
+        const componentConfigurations = this.items.toArray()
             .map(x => x.configuration);
 
         const root = createComponentTree({

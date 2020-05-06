@@ -110,5 +110,12 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
                 </li>
             `;
         }
+    },
+    tabDropPlaceholder: {
+        render() {
+            return `
+                <div class="lm_drop_tab_placeholder"></div>
+            `;
+        }
     }
 };
