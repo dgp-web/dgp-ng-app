@@ -13,9 +13,9 @@ import { Component } from "./components/component.component";
 import { DropTargetIndicator } from "./components/drop-target-indicator.component";
 import { Root } from "./components/root.component";
 
-export interface TypeToComponentMap {
+/*export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
-}
+}*/
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -25,20 +25,16 @@ export class DockingLayoutService extends EventEmitter {
 
     selectedItem: AbstractContentItemComponent;
     config: any;
-    container: any;
+    container: JQuery;
     dropTargetIndicator: any;
     tabDropPlaceholder: JQuery;
     private isInitialised = false;
-    private _components: any;
-    private _itemAreas: any[];
-    private _maximisedItem: any;
-    private _maximisePlaceholder: any;
-    private _creationTimeoutPassed: boolean;
-    private _updatingColumnsResponsive: boolean;
-    private _firstLoad: boolean;
+    private _itemAreas = [];
+    private _updatingColumnsResponsive = false;
+    private _firstLoad = true;
     private width: number;
     private height: number;
-    private root: any;
+    private root: Root;
     private eventHub: EventHub;
 
     private typeToComponentMap = {
@@ -55,7 +51,7 @@ export class DockingLayoutService extends EventEmitter {
         super();
     }
 
-    createDockingLayout(config: LayoutConfiguration, container: any) {
+    createDockingLayout(config: LayoutConfiguration, container: HTMLElement) {
         if (!$ || typeof $.noConflict !== "function") {
             let errorMsg = "jQuery is missing as dependency for GoldenLayout. ";
             errorMsg += "Please either expose $ on GoldenLayout's scope (e.g. window) or add \"jquery\" to ";
@@ -63,29 +59,18 @@ export class DockingLayoutService extends EventEmitter {
             throw new Error(errorMsg);
         }
 
+        this.container = $(container);
         // TODO: Extract creation to store
-        this.isInitialised = false;
-        this._components = {};
-        this._itemAreas = [];
-        this._maximisedItem = null;
-        this._maximisePlaceholder = $("<div class=\"lm_maximise_place\"></div>");
-        this._creationTimeoutPassed = false;
-        this._updatingColumnsResponsive = false;
-        this._firstLoad = true;
 
-        this.width = null;
-        this.height = null;
-        this.root = null;
-        this.selectedItem = null;
         this.eventHub = new EventHub(this);
         this.config = this.createConfig(config);
-        this.container = container;
         this.dropTargetIndicator = null;
         this.tabDropPlaceholder = $(
             dockingLayoutViewMap.tabDropPlaceholder.render()
         );
     }
 
+    // TODO: This can be removed by extracting 2 components
     fnBind(fn, context, boundArgs?) {
 
         if (Function.prototype.bind !== undefined) {
@@ -118,7 +103,6 @@ export class DockingLayoutService extends EventEmitter {
      * the item tree.
      */
     init() {
-        this.setContainer();
         this.dropTargetIndicator = new DropTargetIndicator();
         this.updateSize();
         this.create(this.config);
@@ -141,12 +125,6 @@ export class DockingLayoutService extends EventEmitter {
 
         if (this.isInitialised === true) {
             this.root.callDownwards("setSize", [this.width, this.height]);
-
-            if (this._maximisedItem) {
-                this._maximisedItem.element.width(this.container.width());
-                this._maximisedItem.element.height(this.container.height());
-                this._maximisedItem.callDownwards("setSize");
-            }
 
             this.adjustColumnsResponsive();
         }
@@ -269,33 +247,6 @@ export class DockingLayoutService extends EventEmitter {
     /*************************
      * PACKAGE PRIVATE
      *************************/
-    _$maximiseItem(contentItem) {
-        if (this._maximisedItem !== null) {
-            this._$minimiseItem(this._maximisedItem);
-        }
-        this._maximisedItem = contentItem;
-        this._maximisedItem.addId("__glMaximised");
-        contentItem.element.addClass("lm_maximised");
-        contentItem.element.after(this._maximisePlaceholder);
-        this.root.element.prepend(contentItem.element);
-        contentItem.element.width(this.container.width());
-        contentItem.element.height(this.container.height());
-        contentItem.callDownwards("setSize");
-        this._maximisedItem.emit("maximised");
-        this.emit("stateChanged");
-    }
-
-    _$minimiseItem(contentItem) {
-        contentItem.element.removeClass("lm_maximised");
-        contentItem.removeId("__glMaximised");
-        this._maximisePlaceholder.after(contentItem.element);
-        this._maximisePlaceholder.remove();
-        contentItem.parent.callDownwards("setSize");
-        this._maximisedItem = null;
-        contentItem.emit("minimised");
-        this.emit("stateChanged");
-    }
-
 
     _$getArea(x, y) {
         let i, area, smallestSurface = Infinity, mathingArea = null;
@@ -433,20 +384,6 @@ export class DockingLayoutService extends EventEmitter {
         }
 
         return config;
-    }
-
-    private setContainer() {
-        const container = $(this.container || "body");
-
-        if (container.length === 0) {
-            throw new Error("GoldenLayout container not found");
-        }
-
-        if (container.length > 1) {
-            throw new Error("GoldenLayout more than one container element specified");
-        }
-
-        this.container = container;
     }
 
     private create(config) {

@@ -61,7 +61,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Set the size of the component and its children, called recursively
      */
-    setSize(width?: number, height?: number): void {}
+    setSize(width?: number, height?: number): void {
+    }
 
     /**
      * Calls a method recursively downwards on the tree
@@ -207,22 +208,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     /**
-     * Maximises the Item or minimises it if it is already maximised
-     */
-    toggleMaximise(e?) {
-        //noinspection TsLint
-        e && e.preventDefault();
-        if (this.isMaximised === true) {
-            this.layoutManager._$minimiseItem(this);
-        } else {
-            this.layoutManager._$maximiseItem(this);
-        }
-
-        this.isMaximised = !this.isMaximised;
-        this.emitBubblingEvent("stateChanged");
-    }
-
-    /**
      * Selects the item if it is not already selected
      */
     select() {
@@ -296,7 +281,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      ****************************************/
     getItemsByFilter(filter) {
         const result = [];
-        const next = function(contentItem) {
+        const next = function (contentItem) {
             for (let i = 0; i < contentItem.contentItems.length; i++) {
 
                 if (filter(contentItem.contentItems[i]) === true) {
@@ -312,7 +297,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     getItemsById(id: string) {
-        return this.getItemsByFilter(function(item) {
+        return this.getItemsByFilter(function (item) {
             if (item.config.id instanceof Array) {
                 return new LayoutManagerUtilities()
                     .indexOf(id, item.config.id) !== -1;
@@ -330,7 +315,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * PACKAGE PRIVATE
      ****************************************/
     _$getItemsByProperty(key: string, value) {
-        return this.getItemsByFilter(function(item) {
+        return this.getItemsByFilter(function (item) {
             return item[key] === value;
         });
     }
@@ -388,7 +373,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Returns the area the component currently occupies in the format
      */
-    _$getArea(element): any {
+    _$getArea(element?: JQuery): any {
         element = element || this.element;
 
         const offset = element.offset(),

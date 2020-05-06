@@ -237,23 +237,6 @@ export class HeaderComponent extends EventEmitter {
         this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, "lm_tabdropdown", showTabDropdown);
         this.tabDropdownButton.element.hide();
 
-        /**
-         * Maximise control - set the component to the full size of the layout
-         */
-        if (this._getHeaderSetting("maximise")) {
-            maximise = () => this.parent.toggleMaximise();
-            maximiseLabel = this._getHeaderSetting("maximise");
-            minimiseLabel = this._getHeaderSetting("minimise");
-            maximiseButton = new HeaderButtonComponent(this, maximiseLabel, "lm_maximise", maximise);
-
-            this.parent.on("maximised", function() {
-                maximiseButton.element.attr("title", minimiseLabel);
-            });
-
-            this.parent.on("minimised", function() {
-                maximiseButton.element.attr("title", maximiseLabel);
-            });
-        }
 
         /**
          * Close button
