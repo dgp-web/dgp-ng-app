@@ -100,7 +100,7 @@ export class DockingLayoutService extends EventEmitter {
             return Function.prototype.bind.apply(fn, [context].concat(boundArgs || []));
         }
 
-        const bound = function() {
+        const bound = function () {
 
             // Join the already applied arguments to the now called ones (after converting to an array again).
             const args = (boundArgs || []).concat(Array.prototype.slice.call(arguments, 0));
@@ -116,67 +116,6 @@ export class DockingLayoutService extends EventEmitter {
         // Attach the prototype of the function to our newly created function.
         bound.prototype = fn.prototype;
         return bound;
-    }
-
-    /**
-     * Creates a layout configuration object based on the the current state
-     */
-    toConfig(root) {
-        let config, next, i;
-
-        if (this.isInitialised === false) {
-            throw new Error("Can't create config, layout not yet initialised");
-        }
-
-        if (root && !(root instanceof components.AbstractContentItemComponent)) {
-            throw new Error("Root must be a ContentItem");
-        }
-
-        /*
-         * settings & labels
-         */
-        config = {
-            settings: Object.assign({}, this.config.settings),
-            dimensions: Object.assign({}, this.config.dimensions),
-            labels: Object.assign({}, this.config.labels)
-        };
-
-        /*
-         * Content
-         */
-        config.content = [];
-        next = function(configNode, item) {
-            // tslint:disable-next-line:no-shadowed-variable
-            let key, i;
-
-            for (key in item.config) {
-                if (key !== "content") {
-                    configNode[key] = item.config[key];
-                }
-            }
-
-            if (item.contentItems.length) {
-                configNode.content = [];
-
-                for (i = 0; i < item.contentItems.length; i++) {
-                    configNode.content[i] = {};
-                    next(configNode.content[i], item.contentItems[i]);
-                }
-            }
-        };
-
-        if (root) {
-            next(config, {contentItems: [root]});
-        } else {
-            next(config, this.root);
-        }
-
-
-        /*
-         * Add maximised item
-         */
-        config.maximisedItemId = this._maximisedItem ? "__glMaximised" : null;
-        return config;
     }
 
     getComponent = x => this.componentRegistry.getComponent(x);
@@ -484,7 +423,7 @@ export class DockingLayoutService extends EventEmitter {
     private getAllContentItems() {
         const allContentItems = [];
 
-        const addChildren = function(contentItem) {
+        const addChildren = function (contentItem) {
             allContentItems.push(contentItem);
 
             if (contentItem.contentItems instanceof Array) {
@@ -518,7 +457,7 @@ export class DockingLayoutService extends EventEmitter {
 
         config = $.extend(true, {}, defaultLayoutConfig, config);
 
-        const nextNode = function(node) {
+        const nextNode = function (node) {
             for (const key in node) {
                 if (key !== "props" && typeof node[key] === "object") {
                     nextNode(node[key]);
