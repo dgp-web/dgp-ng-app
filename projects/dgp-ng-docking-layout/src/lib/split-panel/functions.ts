@@ -64,14 +64,14 @@ export function createComponentTree(payload: {
     return topContent;
 }
 
-export function createLayoutConfig(root: RowConfiguration | ColumnConfiguration): LayoutConfiguration {
+export function createLayoutConfig(root: RowConfiguration | ColumnConfiguration, splitterSize: number): LayoutConfiguration {
     return {
         content: [root],
         settings: {
             hasHeaders: false
         },
         dimensions: {
-            borderWidth: 5,
+            borderWidth: splitterSize,
             minItemHeight: 10,
             minItemWidth: 10
         }

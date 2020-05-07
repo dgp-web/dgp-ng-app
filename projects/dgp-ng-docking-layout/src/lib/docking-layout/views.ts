@@ -83,8 +83,7 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
     stack: {
         render() {
             return `
-                <div class="lm_item lm_stack card"
-                     style="border:none; outline: 1px solid rgba(0,0,0,.125);"></div>
+                <div class="lm_item lm_stack card"></div>
             `;
         }
     },

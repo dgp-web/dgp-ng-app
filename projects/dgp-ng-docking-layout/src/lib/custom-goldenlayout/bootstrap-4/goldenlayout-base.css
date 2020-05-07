@@ -86,7 +86,7 @@
 
 .lm_header .lm_tabs {
     position: absolute;
-    position:inherit;
+    position: inherit;
 }
 
 .lm_header .lm_tab {
@@ -122,6 +122,11 @@
     top: 0;
     right: 0;
     text-align: center
+}
+
+.lm_stack {
+    border: none;
+    outline: 1px solid lightgray;
 }
 
 .lm_stack.lm_left .lm_header, .lm_stack.lm_right .lm_header {

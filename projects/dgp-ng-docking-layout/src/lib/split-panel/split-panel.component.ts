@@ -42,6 +42,9 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
     private resizeSensor: ResizeSensor;
 
+    @Input()
+    splitterSize = 1;
+
     constructor(private readonly viewContainerRef: ViewContainerRef,
                 private readonly dockingLayoutService: DockingLayoutService,
                 private readonly componentRegistry: ComponentRegistry
@@ -79,7 +82,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         });
 
         this.dockingLayoutService.createDockingLayout(
-            createLayoutConfig(root), this.elementRef.nativeElement
+            createLayoutConfig(root, this.splitterSize), this.elementRef.nativeElement
         );
 
         componentConfigurations.forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
