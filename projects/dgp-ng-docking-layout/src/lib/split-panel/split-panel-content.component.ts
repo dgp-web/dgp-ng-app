@@ -4,8 +4,7 @@ import { ComponentConfiguration } from "../custom-goldenlayout/types";
 import { SplitPanelContentConfig } from "./models";
 
 export const defaultSplitPanelContentConfig: SplitPanelContentConfig = {
-    height: null,
-    width: null
+    size: null
 };
 
 @Component({
@@ -20,16 +19,13 @@ export class SplitPanelContentComponent implements SplitPanelContentConfig {
     readonly id = createGuid();
 
     @Input()
-    width = defaultSplitPanelContentConfig.width;
-
-    @Input()
-    height = defaultSplitPanelContentConfig.height;
+    size = defaultSplitPanelContentConfig.size;
 
     get configuration(): ComponentConfiguration {
 
         return {
-            width: this.width,
-            height: this.height,
+            width: this.size,
+            height: this.size,
 
             type: "component",
 

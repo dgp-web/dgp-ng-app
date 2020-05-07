@@ -56,20 +56,20 @@ import { Component } from "@angular/core";
 
         <dgp-split-panel orientation="horizontal"
                          dgpThemeHost>
-            <dgp-split-panel-content width="20">
+            <dgp-split-panel-content size="20">
                 <ng-template>
                     A
                     <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
                 </ng-template>
             </dgp-split-panel-content>
 
-            <dgp-split-panel-content width="30">
+            <dgp-split-panel-content size="30">
                 <ng-template>
                     B
                 </ng-template>
             </dgp-split-panel-content>
 
-            <dgp-split-panel-content  width="50">
+            <dgp-split-panel-content  size="50">
                 <ng-template>
                     C
                 </ng-template>

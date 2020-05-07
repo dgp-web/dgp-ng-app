@@ -24,7 +24,6 @@ export function createComponentTree(payload: {
 
             topContent.content.push({
                 type: "row",
-                width: x.width,
                 height: x.height,
                 id: createGuid(),
                 content: [{
@@ -50,7 +49,6 @@ export function createComponentTree(payload: {
             topContent.content.push({
                 type: "column",
                 width: x.width,
-                height: x.height,
                 id: createGuid(),
                 content: [{
                     type: "stack",
