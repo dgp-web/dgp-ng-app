@@ -30,6 +30,10 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        DockingLayoutService,
+        ComponentRegistry
+    ]
 })
 export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
