@@ -1,6 +1,6 @@
 import {
     AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, EmbeddedViewRef, Input, OnDestroy, QueryList,
-    TemplateRef, ViewChild, ViewContainerRef
+    TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation
 } from "@angular/core";
 import { ResizeSensor } from "css-element-queries";
 import { createGuid } from "dgp-ng-app";
@@ -14,22 +14,11 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
 @Component({
     selector: "dgp-split-panel",
     template: "<mat-card #host><ng-content></ng-content></mat-card>",
-    styles: [`
-        :host {
-            width: 100vw;
-            height: 100vh;
-            display: block;
-        }
-
-        mat-card {
-            padding: 0;
-            border-radius: 0;
-            flex-grow: 1;
-            display: flex;
-            height: 100%;
-        }
-    `],
+    styleUrls: [
+        "./split-panel.component.scss"
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
     providers: [
         DockingLayoutService,
         ComponentRegistry
@@ -103,14 +92,17 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     }
 
     private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: SplitPanelComponent): void {
-        const embeddedViewRef = context.viewContainerRef.createEmbeddedView(template);
-        context.embeddedViewRefs[id] = embeddedViewRef;
-        const detached = $(embeddedViewRef.rootNodes)
-            .detach();
-        element$.append(detached);
+        timer(0).subscribe(() => {
 
-        timer(250)
-            .subscribe(() => embeddedViewRef.markForCheck());
+            const embeddedViewRef = context.viewContainerRef.createEmbeddedView(template);
+            context.embeddedViewRefs[id] = embeddedViewRef;
+            const detached = $(embeddedViewRef.rootNodes)
+                .detach();
+            element$.append(detached);
+
+            timer(0)
+                .subscribe(() => embeddedViewRef.markForCheck());
+        });
     }
 
     private initLayout() {
