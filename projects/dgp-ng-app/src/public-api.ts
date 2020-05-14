@@ -123,6 +123,7 @@ export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { DgpContainer } from "./utils/container.component-base";
+export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 export { DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig } from "./utils/select-entity-via-route.resolver-base";
 
