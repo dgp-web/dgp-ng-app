@@ -279,7 +279,6 @@
                         ],
                         "styles": [
                             "projects/dgp-ng-docking-layout/src/lib/custom-goldenlayout/bootstrap-4/goldenlayout-base.css",
-                            "projects/dgp-ng-docking-layout/src/lib/custom-goldenlayout/bootstrap-4/goldenlayout-light-theme.css",
                             "projects/dgp-labs/src/styles.scss"
                         ],
                         "scripts": [
