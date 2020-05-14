@@ -1,24 +1,54 @@
-# DgpNgDockingLayout
+# dgp-ng-docking-layout
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.7.
+Docking layout and split panels for Angular material apps.
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name --project dgp-ng-docking-layout` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project dgp-ng-docking-layout`.
-> Note: Don't forget to add `--project dgp-ng-docking-layout` or else it will be added to the default project in your `angular.json` file. 
+```
+npm install --save dgp-ng-docking-layout 
+```
 
-## Build
+Notes
+- dgp-ng-docking-layout requires JQuery ^3
 
-Run `ng build dgp-ng-docking-layout` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Usage
 
-## Publishing
+Include the stylesheet in your global styles.scss.
 
-After building your library with `ng build dgp-ng-docking-layout`, go to the dist folder `cd dist/dgp-ng-docking-layout` and run `npm publish`.
+```
+@import '~dgp-ng-docking-layout/theming';
+```
 
-## Running unit tests
+### Split panel
+```
+<!-- Add dgp-split-panel and set its orientation -->
+<dgp-split-panel orientation="horizontal">
 
-Run `ng test dgp-ng-docking-layout` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    <!-- Add dgp-split-panel-content and set its size (a percentage value) -->
+    <dgp-split-panel-content size="20">
+        <!-- Wrap your content in ng-templates -->
+        <ng-template>A</ng-template>
+    </dgp-split-panel-content>
 
-## Further help
+    <dgp-split-panel-content size="30">
+        <ng-template>B</ng-template>
+    </dgp-split-panel-content>
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    <dgp-split-panel-content size="50">
+        <ng-template>
+
+            <!-- Nested panel -->
+            <dgp-split-panel orientation="vertical">
+                <dgp-split-panel-content size="50">
+                    <ng-template>C</ng-template>
+                </dgp-split-panel-content>
+
+                <dgp-split-panel-content size="50">
+                    <ng-template>D</ng-template>
+                </dgp-split-panel-content>
+            </dgp-split-panel>
+        </ng-template>
+
+    </dgp-split-panel-content>
+</dgp-split-panel>
+```

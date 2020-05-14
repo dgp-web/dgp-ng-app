@@ -273,12 +273,12 @@
                         "polyfills": "projects/dgp-labs/src/polyfills.ts",
                         "tsConfig": "projects/dgp-labs/tsconfig.app.json",
                         "aot": true,
+                        "progress": false,
                         "assets": [
                             "projects/dgp-labs/src/favicon.ico",
                             "projects/dgp-labs/src/assets"
                         ],
                         "styles": [
-                            "projects/dgp-ng-docking-layout/src/lib/custom-goldenlayout/bootstrap-4/goldenlayout-base.css",
                             "projects/dgp-labs/src/styles.scss"
                         ],
                         "scripts": [
