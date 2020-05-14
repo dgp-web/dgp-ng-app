@@ -143,13 +143,13 @@
                     "options": {
                         "tsConfig": "projects/dgp-ng-app/tsconfig.lib.json",
                         "project": "projects/dgp-ng-app/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-app/tsconfig.lib.prod.json"
+                        }
                     }
-                ,          "configurations": {
-            "production": {
-              "tsConfig": "projects/dgp-ng-app/tsconfig.lib.prod.json"
-            }
-          }
-},
+                },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
@@ -184,13 +184,13 @@
                     "options": {
                         "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.json",
                         "project": "projects/dgp-ng-docs/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.prod.json"
+                        }
                     }
-                ,          "configurations": {
-            "production": {
-              "tsConfig": "projects/dgp-ng-docs/tsconfig.lib.prod.json"
-            }
-          }
-},
+                },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
@@ -209,6 +209,170 @@
                         "exclude": [
                             "**/node_modules/**"
                         ]
+                    }
+                }
+            }
+        },
+        "dgp-ng-docking-layout": {
+            "projectType": "library",
+            "root": "projects/dgp-ng-docking-layout",
+            "sourceRoot": "projects/dgp-ng-docking-layout/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.lib.json",
+                        "project": "projects/dgp-ng-docking-layout/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/dgp-ng-docking-layout/src/test.ts",
+                        "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.spec.json",
+                        "karmaConfig": "projects/dgp-ng-docking-layout/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/dgp-ng-docking-layout/tsconfig.lib.json",
+                            "projects/dgp-ng-docking-layout/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "dgp-labs": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/dgp-labs",
+            "sourceRoot": "projects/dgp-labs/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/dgp-labs",
+                        "index": "projects/dgp-labs/src/index.html",
+                        "main": "projects/dgp-labs/src/main.ts",
+                        "polyfills": "projects/dgp-labs/src/polyfills.ts",
+                        "tsConfig": "projects/dgp-labs/tsconfig.app.json",
+                        "aot": true,
+                        "progress": false,
+                        "assets": [
+                            "projects/dgp-labs/src/favicon.ico",
+                            "projects/dgp-labs/src/assets"
+                        ],
+                        "styles": [
+                            "projects/dgp-labs/src/styles.scss"
+                        ],
+                        "scripts": [
+                            "node_modules/jquery/dist/jquery.min.js"
+                        ]
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/dgp-labs/src/environments/environment.ts",
+                                    "with": "projects/dgp-labs/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "dgp-labs:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "dgp-labs:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "dgp-labs:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/dgp-labs/src/test.ts",
+                        "polyfills": "projects/dgp-labs/src/polyfills.ts",
+                        "tsConfig": "projects/dgp-labs/tsconfig.spec.json",
+                        "karmaConfig": "projects/dgp-labs/karma.conf.js",
+                        "assets": [
+                            "projects/dgp-labs/src/favicon.ico",
+                            "projects/dgp-labs/src/assets"
+                        ],
+                        "styles": [
+                            "projects/dgp-labs/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/dgp-labs/tsconfig.app.json",
+                            "projects/dgp-labs/tsconfig.spec.json",
+                            "projects/dgp-labs/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/dgp-labs/e2e/protractor.conf.js",
+                        "devServerTarget": "dgp-labs:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "dgp-labs:serve:production"
+                        }
                     }
                 }
             }

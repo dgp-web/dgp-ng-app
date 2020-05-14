@@ -1,0 +1,15 @@
+// @import "../custom-goldenlayout/bootstrap-4/goldenlayout-base.css";
+
+dgp-split-panel {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+
+    mat-card {
+        padding: 0 !important;
+        border-radius: 0 !important;
+        flex-grow: 1 !important;
+        display: flex !important;
+        height: 100% !important;
+    }
+}

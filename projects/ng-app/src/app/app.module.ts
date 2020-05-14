@@ -6,7 +6,13 @@ import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from ".
 import { AppEntities, appEntityStore, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
-import { defaultBroadcastConfig, DgpBroadcastStoreModule, DgpNgApp, DgpNgAppModule, setBroadcastChannelDataId } from "dgp-ng-app";
+import {
+    defaultBroadcastConfig,
+    DgpBroadcastStoreModule,
+    DgpNgApp,
+    DgpNgAppModule,
+    setBroadcastChannelDataId
+} from "dgp-ng-app";
 import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-docs.module";
 import { CommonModule } from "@angular/common";
 
@@ -57,8 +63,7 @@ import { CommonModule } from "@angular/common";
         features.SpacerDocsModule,
         features.StylingDocsModule,
         features.TableCellEditorDocsModule,
-        features.ThemeSwitcherDocsModule,
-        CommonModule,
+        CommonModule
     ],
     declarations: [
         AppComponent

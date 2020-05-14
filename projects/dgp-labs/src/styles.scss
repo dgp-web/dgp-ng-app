@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+@import '../../dgp-ng-app/src/theming';
+@import '../../dgp-ng-docking-layout/src/lib/theming';
+@import '../../dgp-ng-docs/src/lib/styles';
+
+@include mat-core();
+
+$app-primary: mat-palette($mat-light-green, 800, 900);
+$app-accent: mat-palette($mat-green, A200, A100, A400);
+
+@include dgp-ng-app-theme($app-primary, $app-accent);
