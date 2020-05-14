@@ -7,7 +7,7 @@ import { Action, Selector } from "entity-store";
 // tslint:disable-next-line:directive-class-suffix
 export abstract class HybridComponentBase<TModel, TState, TData> extends DgpModelEditorComponentBase<TModel> {
 
-    protected constructor(
+    constructor(
         protected readonly store: Store<TState>
     ) {
         super();
