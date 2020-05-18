@@ -1,6 +1,8 @@
 import { BuilderContext, BuilderOutput, createBuilder } from "@angular-devkit/architect";
 import * as childProcess from "child_process";
 import { JsonObject } from "@angular-devkit/core";
+import * as path from "path";
+export * from "./webpack.config.vendor";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly outputPath: string;
@@ -17,7 +19,15 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
 
     return new Promise<BuilderOutput>(resolve => {
 
-        const command = "dgp build --projectPath projects/dgp-labs --distPath dist/dgp-labs";
+        // TODO: then do webpack
+
+        const webpackConfigPath = path.join(
+            process.cwd(),
+            "node_modules/dgp-ng-app-builder/src/webpack.config.vendor.js"
+        );
+
+        // const command = "dgp build --projectPath projects/dgp-labs --distPath dist/dgp-labs";
+        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/dgp-labs --env.distPath dist/dgp-labs`;
         console.log("Command: " + command);
 
         const child = childProcess.exec(command, err => {
@@ -29,10 +39,10 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
         if (child && child.stdout) {
             child.stdout.pipe(process.stdout);
         }
-
+/*
         if (child && child.stderr) {
             child.stderr.pipe(process.stderr);
-        }
+        }*/
 
 
         child.on("error", (error: any) => {

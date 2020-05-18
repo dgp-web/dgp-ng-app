@@ -16,6 +16,8 @@
         "skipLibCheck": true,
         "sourceMap": true,
         "strictNullChecks": true,
-        "types": ["node", "jasmine"]
+        "types": [
+            "node"
+        ]
     }
 }
