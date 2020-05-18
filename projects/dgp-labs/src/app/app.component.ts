@@ -54,7 +54,9 @@ import { Component } from "@angular/core";
             </dgp-docking-layout-item>
         </dgp-docking-layout>-->
 
-        <dgp-split-panel orientation="horizontal"
+        Test
+
+        <!--<dgp-split-panel orientation="horizontal"
                          dgpThemeHost>
             <dgp-split-panel-content size="20">
                 <ng-template>
@@ -88,9 +90,9 @@ import { Component } from "@angular/core";
 
                 </ng-template>
             </dgp-split-panel-content>
-        </dgp-split-panel>
+        </dgp-split-panel>-->
     `,
-    styleUrls: ["./app.component.scss"]
+    // styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
 

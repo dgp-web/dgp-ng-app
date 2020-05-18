@@ -44,6 +44,7 @@
         "@ngrx/store": "^9.0.0",
         "@ngrx/store-devtools": "^9.0.0",
         "bootstrap": "^4.4.1",
+        "core-js": "^3.6.5",
         "css-element-queries": "^1.2.3",
         "dgp-ng-app-tools": "file:./dev-tools/dgp-ng-app-tools",
         "entity-store": "^1.5",
