@@ -9,6 +9,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
+        "build:dgp-ng-app-builder": "tsc -p projects/builders/tsconfig.json && cpx projects/builders/package.json node_modules/dgp-ng-app-builder && cpx projects/builders/builders.json node_modules/dgp-ng-app-builder && cpx projects/builders/command/schema.json node_modules/dgp-ng-app-builder/command",
         "build:dgp-ng-app": "ng build --prod dgp-ng-app",
         "build:watch:dgp-ng-app": "ng build dgp-ng-app --watch",
         "build:watch:dgp-ng-docking-layout": "ng build dgp-ng-docking-layout --watch",
