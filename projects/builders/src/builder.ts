@@ -4,7 +4,6 @@ import { JsonObject } from "@angular-devkit/core";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
-import * as cpx from "cpx";
 
 export * from "./webpack.config.vendor";
 export * from "./webpack.config";
@@ -12,7 +11,6 @@ export * from "./webpack.config";
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly projectName: string;
 }
-
 
 
 async function createVendorBundle(options: DgpNgAppBuilderOptions, context: BuilderContext) {
@@ -73,11 +71,11 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
             "index.html"
         );
 
-        const indexHTML = require(indexHTMLPath) as string;
+        const indexHTML = fs.readFileSync(indexHTMLPath, "utf8");
         const updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
 
         fs.writeFileSync(destinationPath, updatedIndexHTML);
-
+        resolve();
     });
 
 }
@@ -123,8 +121,9 @@ export default createBuilder(dgpNgAppBuilder);
 function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise<BuilderOutput>(async (resolve, reject) => {
-        //await createVendorBundle(options, context);
+        await createVendorBundle(options, context);
         await copyAndModifyIndexHtmlToDist(options, context);
-        //await runWebpack(options, context);
+        await runWebpack(options, context);
+        resolve();
     });
 }

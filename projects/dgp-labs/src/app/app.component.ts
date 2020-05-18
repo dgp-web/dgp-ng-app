@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
     selector: "app-root",
     template: `
 
-        12345678
+        123456789
 
         <!--<dgp-docking-layout dgpThemeHost>
 
@@ -93,6 +93,7 @@ import { Component } from "@angular/core";
             </dgp-split-panel-content>
         </dgp-split-panel>-->
     `,
+    styles: [``]
     // styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
