@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 
-export interface WebpackConfig {
+export interface WebpackVendorConfig {
     readonly projectPath: string;
     readonly distPath: string;
 }
@@ -9,7 +9,7 @@ export interface WebpackConfig {
 /**
  * Factory for a tsconfig file for specs
  */
-module.exports = (env: WebpackConfig) => {
+module.exports = (env: WebpackVendorConfig) => {
 
     const config = {
         rootDirectory: path.join(process.cwd(), env.projectPath),
@@ -41,13 +41,30 @@ module.exports = (env: WebpackConfig) => {
                 "@angular/compiler",
                 "@angular/core",
                 "@angular/forms",
+                "@angular/material/autocomplete",
+                "@angular/material/badge",
+                "@angular/material/bottom-sheet",
                 "@angular/material/button",
+                "@angular/material/checkbox",
+                "@angular/material/chips",
+                "@angular/material/datepicker",
                 "@angular/material/dialog",
+                "@angular/material/divider",
                 "@angular/material/form-field",
+                "@angular/material/icon",
                 "@angular/material/input",
+                "@angular/material/list",
+                "@angular/material/menu",
+                "@angular/material/progress-bar",
+                "@angular/material/progress-spinner",
+                "@angular/material/radio",
                 "@angular/material/select",
                 "@angular/material/slide-toggle",
+                "@angular/material/snack-bar",
+                "@angular/material/table",
                 "@angular/material/tabs",
+                "@angular/material/toolbar",
+                "@angular/material/tooltip",
                 "@angular/platform-browser",
                 "@angular/platform-browser-dynamic",
                 "@angular/router",

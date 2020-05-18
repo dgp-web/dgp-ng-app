@@ -1,48 +1,54 @@
-const path = require('path');
-const webpack = require('webpack');
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin").TsconfigPathsPlugin;
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
+import * as path from "path";
+import * as webpack from "webpack";
+import * as HardSourceWebpackPlugin from "hard-source-webpack-plugin";
 
-// TODO: Add polyfills plugin
-// TODO: Add vendor plugin
+export interface WebpackConfig {
+    readonly projectPath: string;
+    readonly tsconfigFile: string;
+    readonly distPath: string;
+}
 
-/**
- * Factory for a shared-app tsconfig file
- *
- * @param env {{distDirectory: string, rootDirectory: string, tsconfigFile: string}}
- */
-module.exports = function (env) {
+module.exports = (env: WebpackConfig) => {
 
+    const config = {
+        rootDirectory: path.join(process.cwd(), env.projectPath),
+        distDirectory: path.join(process.cwd(), env.distPath)
+    };
+
+    const tsconfigFile = path.join(config.rootDirectory, env.tsconfigFile);
+
+    // noinspection RegExpSingleCharAlternation
     return {
         mode: "development",
         devtool: false,
         watch: true,
 
         devServer: {
-            contentBase: env.distDirectory,
+            contentBase: config.distDirectory,
             hot: true
         },
         entry: {
-            'main': path.join(env.rootDirectory + '/src/main.ts')
+            main: path.join(config.rootDirectory + "/src/main.ts")
         },
         module: {
             rules: [{
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
                 loaders: [{
-                    loader: 'ts-loader',
+                    loader: "angular2-template-loader",
+                }, {
+                    loader: "ts-loader",
                     options: {
                         transpileOnly: true,
-                        configFile: env.tsconfigFile
+                        configFile: tsconfigFile
                     }
-                }, {
-                    loader: 'angular2-template-loader',
                 }]
             }, {
                 test: /\.html$/,
-                loader: 'raw-loader'
+                loader: "raw-loader"
             }, {
                 test: /\.css/,
-                loader: 'raw-loader'
+                loader: "raw-loader"
             }, {
                 test: /\.scss$/,
                 use: [{
@@ -56,11 +62,11 @@ module.exports = function (env) {
                 // Removing this will cause deprecation warnings to appear.
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
                 parser: {system: true},
-            },]
+            }]
         },
 
         resolve: {
-            extensions: ['.js', '.ts'],
+            extensions: [".js", ".ts"],
             plugins: [
                 new TsconfigPathsPlugin()
             ]
@@ -68,11 +74,11 @@ module.exports = function (env) {
 
         stats: "errors-only",
 
-        context: env.rootDirectory,
+        context: config.rootDirectory,
 
         output: {
-            path: env.distDirectory,
-            filename: '[name].js'
+            path: config.distDirectory,
+            filename: "[name].js"
         },
 
         plugins: [
@@ -81,13 +87,13 @@ module.exports = function (env) {
             new webpack.HotModuleReplacementPlugin(),
 
             new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map',
-                moduleFilenameTemplate: path.relative(env.distDirectory, '[resourcePath]')
+                filename: "[file].map",
+                moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
             }),
 
             new webpack.DllReferencePlugin({
-                context: '.',
-                manifest: require(path.join(env.distDirectory, "vendor-manifest.json"))
+                context: ".",
+                manifest: require(path.join(config.distDirectory, "vendor-manifest.json"))
             }),
             new HardSourceWebpackPlugin()
 
