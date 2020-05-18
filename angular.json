@@ -264,6 +264,15 @@
             "sourceRoot": "projects/dgp-labs/src",
             "prefix": "app",
             "architect": {
+                "touch": {
+                    "builder": "dgp-ng-app-builder:command",
+                    "options": {
+                        "command": "touch",
+                        "args": [
+                            "src/main.ts"
+                        ]
+                    }
+                },
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
