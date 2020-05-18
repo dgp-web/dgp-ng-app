@@ -267,10 +267,7 @@
                 "dgp-serve": {
                     "builder": "dgp-ng-app-builder:serve",
                     "options": {
-                        "outputPath": "dist/dgp-labs",
-                        "main": "projects/dgp-labs/src/main.ts",
-                        "index": "projects/dgp-labs/src/index.html",
-                        "tsConfig": "projects/dgp-labs/tsconfig.app.json"
+                        "projectName": "dgp-labs"
                     }
                 },
                 "build": {

@@ -1,18 +1,14 @@
 import { BuilderContext, createBuilder } from "@angular-devkit/architect";
-import * as childProcess from "child_process";
-import { JsonObject } from "@angular-devkit/core";
-import * as path from "path";
 import { BuilderOutput } from "@angular-devkit/architect/src/api";
+import { JsonObject } from "@angular-devkit/core";
+import * as childProcess from "child_process";
+import * as path from "path";
 
 export * from "./webpack.config.vendor";
 export * from "./webpack.config";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
-    readonly outputPath: string;
-    readonly main: string;
-    readonly index: string;
-    readonly tsConfig: string;
-    readonly polyfills: string;
+    readonly projectName: string;
 }
 
 async function createVendorBundle(options: DgpNgAppBuilderOptions, context: BuilderContext) {
@@ -24,7 +20,7 @@ async function createVendorBundle(options: DgpNgAppBuilderOptions, context: Buil
             "node_modules/dgp-ng-app-builder/src/webpack.config.vendor.js"
         );
 
-        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/dgp-labs --env.distPath dist/dgp-labs`;
+        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}`;
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
@@ -58,7 +54,7 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
             "node_modules/dgp-ng-app-builder/src/webpack.config.js"
         );
 
-        const command = `webpack-dev-server --port=4200 --config ${webpackConfigPath} --env.projectPath projects/dgp-labs --env.distPath dist/dgp-labs  --env.tsconfigFile tsconfig.app.json`;
+        const command = `webpack-dev-server --port=4200 --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}  --env.tsconfigFile tsconfig.app.json`;
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
