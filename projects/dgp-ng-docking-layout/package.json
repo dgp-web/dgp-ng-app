@@ -4,6 +4,7 @@
     "peerDependencies": {
         "@angular/common": "^9.0.7",
         "@angular/core": "^9.0.7",
+        "css-element-queries": "^1.2.3",
         "tslib": "^1.10.0",
         "jquery": "^3",
         "@types/jquery": "^3"

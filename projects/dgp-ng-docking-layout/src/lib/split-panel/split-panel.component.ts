@@ -1,6 +1,16 @@
 import {
-    AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, EmbeddedViewRef, Input, OnDestroy, QueryList,
-    TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ContentChildren,
+    ElementRef,
+    EmbeddedViewRef,
+    Input,
+    OnDestroy,
+    QueryList,
+    TemplateRef,
+    ViewChild,
+    ViewContainerRef
 } from "@angular/core";
 import { ResizeSensor } from "css-element-queries";
 import { createGuid } from "dgp-ng-app";
@@ -14,11 +24,22 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
 @Component({
     selector: "dgp-split-panel",
     template: "<mat-card #host><ng-content></ng-content></mat-card>",
-    styleUrls: [
-        "./split-panel.component.scss"
-    ],
+    styles: [`
+        :host {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+
+        mat-card {
+            padding: 0 !important;
+            border-radius: 0 !important;
+            flex-grow: 1 !important;
+            display: flex !important;
+            height: 100% !important;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
     providers: [
         DockingLayoutService,
         ComponentRegistry
