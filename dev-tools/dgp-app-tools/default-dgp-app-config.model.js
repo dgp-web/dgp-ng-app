@@ -1,5 +1,5 @@
 module.exports = {
     tsconfigFile: "tsconfig.json",
-    distDirectory: "wwwroot",
+    distDirectory: "dist",
     testsMatcher: "karma-tests.js"
 };

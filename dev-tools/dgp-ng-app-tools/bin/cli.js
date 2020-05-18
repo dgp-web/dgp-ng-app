@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const argv = require('yargs').argv;
+const projectPath = argv.projectPath;
 
 // This helps exectute scripts
 function execute(command) {
@@ -13,14 +14,12 @@ function execute(command) {
         }
     });
 
-    child.stdout.pipe(process.stdout)
-    child.stderr.pipe(process.stderr)
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
 }
 
 const commandName = argv["_"][0];
 const development = argv.development;
-
-const includePlayground = argv["includePlayground"] ? true : false;
 
 if (commandName === "test") {
     if (development === true) {
@@ -31,10 +30,7 @@ if (commandName === "test") {
 } else if (commandName === "vendor") {
     execute("webpack --config " + __dirname + "\\webpack.config.vendor.js");
 } else if (commandName === "build") {
-    if (includePlayground) {
-        execute("angular-playground --no-serve --no-watch");
-    }
-    execute("webpack --config " + __dirname + "\\webpack.config.js --env.development=true" + " --include-playground=" + includePlayground);
+    execute("webpack --config " + __dirname + "\\webpack.config.js --env.projectPath=" + projectPath);
 }
 
 

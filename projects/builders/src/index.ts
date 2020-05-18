@@ -16,20 +16,10 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
 
     return new Promise<BuilderOutput>(resolve => {
 
-        const command = "dgp build --development ";
+        const command = "dgp build --projectPath projects/dgp-labs";
         console.log("Command: " + command);
 
-        const child = childProcess.exec(command, (err, stdout, stderr) => {
-            console.log("Started!");
-
-            if (stdout !== null && stdout !== undefined) {
-                console.log(stdout);
-            }
-
-            if (stderr !== null && stderr !== undefined) {
-                console.error(stderr);
-            }
-
+        const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
                 console.error(err);
             }
@@ -42,6 +32,7 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
         if (child && child.stderr) {
             child.stderr.pipe(process.stderr);
         }
+
 
         child.on("error", (error: any) => {
             console.error(error);
