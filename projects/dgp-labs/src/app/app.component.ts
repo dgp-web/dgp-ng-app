@@ -3,6 +3,9 @@ import { Component } from "@angular/core";
 @Component({
     selector: "app-root",
     template: `
+
+        12345
+
         <!--<dgp-docking-layout dgpThemeHost>
 
             <dgp-docking-layout-item type="column">
@@ -53,8 +56,6 @@ import { Component } from "@angular/core";
 
             </dgp-docking-layout-item>
         </dgp-docking-layout>-->
-
-        Test 123456789
 
         <!--<dgp-split-panel orientation="horizontal"
                          dgpThemeHost>

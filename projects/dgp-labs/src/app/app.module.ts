@@ -7,6 +7,7 @@ import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layo
 import { DgpNgApp, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { EffectsModule } from "@ngrx/effects";
         DgpSplitPanelModule,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
-        DgpThemeSwitcherModule.forRoot()
+        DgpThemeSwitcherModule.forRoot(),
+        MatButtonModule
     ],
     providers: [],
     bootstrap: [AppComponent]
