@@ -2,7 +2,9 @@ import { BuilderContext, createBuilder } from "@angular-devkit/architect";
 import { BuilderOutput } from "@angular-devkit/architect/src/api";
 import { JsonObject } from "@angular-devkit/core";
 import * as childProcess from "child_process";
+import * as fs from "fs";
 import * as path from "path";
+import * as cpx from "cpx";
 
 export * from "./webpack.config.vendor";
 export * from "./webpack.config";
@@ -10,6 +12,8 @@ export * from "./webpack.config";
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly projectName: string;
 }
+
+
 
 async function createVendorBundle(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
@@ -45,6 +49,39 @@ async function createVendorBundle(options: DgpNgAppBuilderOptions, context: Buil
 
 }
 
+const scriptsSnippet = `
+    <script src="vendor.js"></script>
+    <script src="main.js"></script>
+`;
+
+async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, context: BuilderContext) {
+
+    return new Promise((resolve, reject) => {
+
+        const indexHTMLPath = path.join(
+            process.cwd(),
+            "projects",
+            options.projectName,
+            "src",
+            "index.html"
+        );
+
+        const destinationPath = path.join(
+            process.cwd(),
+            "dist",
+            options.projectName,
+            "index.html"
+        );
+
+        const indexHTML = require(indexHTMLPath) as string;
+        const updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
+
+        fs.writeFileSync(destinationPath, updatedIndexHTML);
+
+    });
+
+}
+
 async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise((resolve, reject) => {
@@ -53,6 +90,8 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
             process.cwd(),
             "node_modules/dgp-ng-app-builder/src/webpack.config.js"
         );
+
+        // TODO: Take HTML file and copy it to dist and add
 
         const command = `webpack-dev-server --port=4200 --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}  --env.tsconfigFile tsconfig.app.json`;
 
@@ -84,7 +123,8 @@ export default createBuilder(dgpNgAppBuilder);
 function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise<BuilderOutput>(async (resolve, reject) => {
-        await createVendorBundle(options, context);
-        await runWebpack(options, context);
+        //await createVendorBundle(options, context);
+        await copyAndModifyIndexHtmlToDist(options, context);
+        //await runWebpack(options, context);
     });
 }
