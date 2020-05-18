@@ -2,6 +2,7 @@
 
 const argv = require('yargs').argv;
 const projectPath = argv.projectPath;
+const distPath = argv.distPath;
 
 // This helps exectute scripts
 function execute(command) {
@@ -30,7 +31,7 @@ if (commandName === "test") {
 } else if (commandName === "vendor") {
     execute("webpack --config " + __dirname + "\\webpack.config.vendor.js");
 } else if (commandName === "build") {
-    execute("webpack --config " + __dirname + "\\webpack.config.js --env.projectPath=" + projectPath);
+    execute("webpack --config " + __dirname + "\\webpack.config.js --env.projectPath=" + projectPath + " --env.distPath=" + distPath);
 }
 
 

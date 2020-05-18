@@ -16,7 +16,7 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
 
     return new Promise<BuilderOutput>(resolve => {
 
-        const command = "dgp build --projectPath projects/dgp-labs";
+        const command = "dgp build --projectPath projects/dgp-labs --distPath dist/dgp-labs";
         console.log("Command: " + command);
 
         const child = childProcess.exec(command, err => {

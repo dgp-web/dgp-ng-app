@@ -6,7 +6,7 @@ module.exports = function (env) {
     const dgpNgAppTools = DgpNgAppTools({
         rootDirectory: path.join(process.cwd(), env.projectPath),
         tsconfigFile: "tsconfig.app.json",
-        distDirectory: "dist/dgp-labs"
+        distDirectory: path.join(process.cwd(),  env.distPath)
     });
 
     return dgpNgAppTools.createWebpackAppConfig({

@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin").TsconfigPathsPlugin;
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
@@ -55,7 +54,7 @@ module.exports = function (env) {
         context: env.rootDirectory,
 
         output: {
-            path: path.join(env.rootDirectory, env.distDirectory),
+            path: env.distDirectory,
             filename: '[name].js',
             // publicPath: '/public/'
         },
@@ -64,10 +63,10 @@ module.exports = function (env) {
 
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
 
-           /* new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map',
-                moduleFilenameTemplate: path.relative(env.distDirectory, '[resourcePath]')
-            }),*/
+            /* new webpack.SourceMapDevToolPlugin({
+                 filename: '[file].map',
+                 moduleFilenameTemplate: path.relative(env.distDirectory, '[resourcePath]')
+             }),*/
 
             /* new webpack.DllReferencePlugin({
                  context: '.',
