@@ -1,8 +1,8 @@
 {
     "builders": {
         "command": {
-            "implementation": "./command",
-            "schema": "./command/schema.json",
+            "implementation": "./src",
+            "schema": "./src/schema.json",
             "description": "Runs any command line in the operating system."
         }
     }

@@ -9,12 +9,14 @@ interface Options extends JsonObject {
 
 export default createBuilder<Options>((options, context) => {
     return new Promise<BuilderOutput>((resolve, reject) => {
-        context.reportStatus(`Executing "${options.command}"...`);
-        const child = childProcess.spawn(options.command, options.args, {stdio: "pipe"});
+        // context.reportStatus(`Executing "${options.command}"...`);
+        console.log(options);
+        const child = childProcess.spawn("echo 'hello'", [], {stdio: "pipe"});
 
         child.stdout.on("data", (data) => {
             context.logger.info(data.toString());
         });
+
         child.stderr.on("data", (data) => {
             context.logger.error(data.toString());
             reject();

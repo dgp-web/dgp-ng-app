@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "../../node_modules/dgp-ng-app-builder/command",
+        "outDir": "../../node_modules/dgp-ng-app-builder/src",
         "baseUrl": "tsconfig",
         "target": "es6",
         "declaration": true,

@@ -267,10 +267,8 @@
                 "touch": {
                     "builder": "dgp-ng-app-builder:command",
                     "options": {
-                        "command": "touch",
-                        "args": [
-                            "src/main.ts"
-                        ]
+                        "command": "dgp build",
+                        "args": []
                     }
                 },
                 "build": {

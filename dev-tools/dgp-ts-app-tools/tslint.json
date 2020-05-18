@@ -1,0 +1,3 @@
+{
+    "extends": "dgp-app-tools/tslint.json"
+}
