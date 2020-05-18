@@ -14,7 +14,7 @@ module.exports = function (env) {
     return webpackMerge(baseConfig, {
         entry: {
             vendor: [
-                'zone.js/dist/zone',
+                /*'zone.js/dist/zone',
                 'hammerjs',
                 'rxjs',
                 'lodash',
@@ -32,7 +32,7 @@ module.exports = function (env) {
                 '@angularclass/hmr',
                 '@ngrx/store',
                 '@ngrx/effects',
-                '@ngrx/store-devtools'
+                '@ngrx/store-devtools'*/
             ]
         },
         module: {

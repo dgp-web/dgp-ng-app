@@ -9,9 +9,6 @@ module.exports = function (env) {
         distDirectory: path.join(process.cwd(),  env.distPath)
     });
 
-    return dgpNgAppTools.createWebpackAppConfig({
-        ...env,
-        development: true
-    });
+    return dgpNgAppTools.createWebpackAppConfig(env);
 
 };

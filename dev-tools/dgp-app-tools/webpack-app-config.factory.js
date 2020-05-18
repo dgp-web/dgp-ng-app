@@ -12,8 +12,7 @@ module.exports = function (env) {
     return webpackMerge(sharedConfigFactory(env), {
 
         entry: {
-            'main-client': env.rootDirectory + '/src/main.ts',
-            'main-playground': env.rootDirectory + '/src/main.playground.ts'
+            'main-client': env.rootDirectory + '/src/main.ts'
         }
 
     });

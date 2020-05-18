@@ -3,12 +3,17 @@ const webpack = require('webpack');
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin").TsconfigPathsPlugin;
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
+// TODO: Add polyfills plugin
+// TODO: Add vendor plugin
+
 /**
  * Factory for a shared-app tsconfig file
  *
  * @param env {{distDirectory: string, rootDirectory: string, tsconfigFile: string}}
  */
 module.exports = function (env) {
+
+    console.log(env.distDirectory);
 
     return {
         mode: "development",
@@ -50,7 +55,7 @@ module.exports = function (env) {
                 // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
                 // Removing this will cause deprecation warnings to appear.
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
-                parser: { system: true },
+                parser: {system: true},
             },]
         },
 
@@ -67,8 +72,7 @@ module.exports = function (env) {
 
         output: {
             path: env.distDirectory,
-            filename: '[name].js',
-            // publicPath: '/public/'
+            filename: '[name].js'
         },
 
         plugins: [
@@ -76,18 +80,15 @@ module.exports = function (env) {
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
             new webpack.HotModuleReplacementPlugin(),
 
-             new webpack.SourceMapDevToolPlugin({
-                 filename: '[file].map',
-                 moduleFilenameTemplate: path.relative(env.distDirectory, '[resourcePath]')
-             }),
+            new webpack.SourceMapDevToolPlugin({
+                filename: '[file].map',
+                moduleFilenameTemplate: path.relative(env.distDirectory, '[resourcePath]')
+            }),
 
-            /* new webpack.DllReferencePlugin({
-                 context: '.',
-                 manifest: require(
-                     path.join(env.rootDirectory, env.distDirectory, "vendor-manifest.json")
-                 )
-             }),
- */
+            new webpack.DllReferencePlugin({
+                context: '.',
+                manifest: require(path.join(env.distDirectory, "vendor-manifest.json"))
+            }),
             new HardSourceWebpackPlugin()
 
         ]

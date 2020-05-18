@@ -7,6 +7,7 @@ export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly main: string;
     readonly index: string;
     readonly tsConfig: string;
+    readonly polyfills: string;
 }
 
 export default createBuilder(dgpNgAppBuilder);
