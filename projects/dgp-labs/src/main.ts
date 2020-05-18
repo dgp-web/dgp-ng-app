@@ -15,11 +15,6 @@ export function main() {
     return platformBrowserDynamic()
         .bootstrapModule(AppModule)
         .then((ngModuleRef: any) => {
-            const newHost = document.createElement("app-root");
-            const body = document.querySelector("body");
-
-            body.insertAdjacentElement("afterbegin", newHost);
-
             return hmrModule(ngModuleRef, module);
         })
         .catch(err => console.error(err));

@@ -1,11 +1,11 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { ApplicationRef, NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
-import { DgpThemeSwitcherModule } from "dgp-ng-app";
-import { StoreModule } from "@ngrx/store";
+import { DgpNgApp, DgpThemeSwitcherModule } from "dgp-ng-app";
+import { Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
@@ -24,5 +24,11 @@ import { EffectsModule } from "@ngrx/effects";
     providers: [],
     bootstrap: [AppComponent]
 })
-export class AppModule {
+export class AppModule extends DgpNgApp {
+
+    constructor(public readonly appRef: ApplicationRef,
+                protected readonly ngrxStore: Store<any>) {
+        super(appRef, ngrxStore);
+    }
+
 }

@@ -96,8 +96,6 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
 
-    terser: boolean;
-
     /* constructor(
          private readonly cd: ChangeDetectorRef
      ) {
