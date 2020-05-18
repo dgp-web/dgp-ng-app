@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
     selector: "app-root",
     template: `
 
-        12345
+        1234567890
 
         <!--<dgp-docking-layout dgpThemeHost>
 
