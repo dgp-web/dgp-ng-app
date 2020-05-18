@@ -31,7 +31,7 @@ if (commandName === "test") {
 } else if (commandName === "vendor") {
     execute("webpack --config " + __dirname + "\\webpack.config.vendor.js");
 } else if (commandName === "build") {
-    execute("webpack --config " + __dirname + "\\webpack.config.js --env.projectPath=" + projectPath + " --env.distPath=" + distPath);
+    execute("webpack-dev-server --port=4200 --config " + __dirname + "\\webpack.config.js --env.projectPath=" + projectPath + " --env.distPath=" + distPath);
 }
 
 

@@ -14,6 +14,11 @@ module.exports = function (env) {
         devtool: false,
         watch: true,
 
+        devServer: {
+            contentBase: env.distDirectory,
+            hot: true
+        },
+
         module: {
             rules: [{
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
@@ -62,6 +67,7 @@ module.exports = function (env) {
         plugins: [
 
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
+            new webpack.HotModuleReplacementPlugin(),
 
             /* new webpack.SourceMapDevToolPlugin({
                  filename: '[file].map',
