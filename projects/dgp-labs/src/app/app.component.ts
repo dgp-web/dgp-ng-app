@@ -54,7 +54,7 @@ import { Component } from "@angular/core";
             </dgp-docking-layout-item>
         </dgp-docking-layout>-->
 
-        Test 12345
+        Test 12356
 
         <!--<dgp-split-panel orientation="horizontal"
                          dgpThemeHost>

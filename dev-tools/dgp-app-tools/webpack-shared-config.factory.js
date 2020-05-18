@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin").TsconfigPathsPlugin;
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
@@ -44,7 +45,13 @@ module.exports = function (env) {
                 }, {
                     loader: "sass-loader"
                 }]
-            }]
+            }, {
+                // https://github.com/angular/universal-starter/pull/593/files
+                // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
+                // Removing this will cause deprecation warnings to appear.
+                test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
+                parser: { system: true },
+            },]
         },
 
         resolve: {
@@ -69,10 +76,10 @@ module.exports = function (env) {
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
             new webpack.HotModuleReplacementPlugin(),
 
-            /* new webpack.SourceMapDevToolPlugin({
+             new webpack.SourceMapDevToolPlugin({
                  filename: '[file].map',
                  moduleFilenameTemplate: path.relative(env.distDirectory, '[resourcePath]')
-             }),*/
+             }),
 
             /* new webpack.DllReferencePlugin({
                  context: '.',
