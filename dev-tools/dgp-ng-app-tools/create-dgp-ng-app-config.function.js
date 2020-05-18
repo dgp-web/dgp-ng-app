@@ -1,4 +1,4 @@
-const createDgpAppConfig = require("dgp-app-tools/create-dgp-app-config.function");
+const createDgpAppConfig = require("../dgp-app-tools/create-dgp-app-config.function");
 
 /**
  *

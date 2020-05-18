@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 
-const sharedConfigFactory = require("dgp-app-tools/webpack-shared-config.factory");
+const sharedConfigFactory = require("../dgp-app-tools/webpack-shared-config.factory");
 
 /**
  * Factory for a tsconfig file

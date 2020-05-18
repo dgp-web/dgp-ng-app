@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
-const createBaseWebpackVendor = require("dgp-app-tools/webpack-vendor-config.factory");
+const createBaseWebpackVendor = require("../dgp-app-tools/webpack-vendor-config.factory");
 
 /**
  * Factory for a tsconfig file for specs

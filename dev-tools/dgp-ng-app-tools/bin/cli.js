@@ -14,8 +14,8 @@ function execute(command) {
     });
 
     child.stdout.pipe(process.stdout)
+    child.stderr.pipe(process.stderr)
 }
-
 
 const commandName = argv["_"][0];
 const development = argv.development;
@@ -34,7 +34,7 @@ if (commandName === "test") {
     if (includePlayground) {
         execute("angular-playground --no-serve --no-watch");
     }
-    execute("webpack --config " + __dirname + "\\webpack.config.js --env.development=false" + " --include-playground=" + includePlayground);
+    execute("webpack --config " + __dirname + "\\webpack.config.js --env.development=true" + " --include-playground=" + includePlayground);
 }
 
 

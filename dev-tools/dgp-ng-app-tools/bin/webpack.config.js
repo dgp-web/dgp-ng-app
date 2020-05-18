@@ -1,9 +1,12 @@
 const path = require("path");
 const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 const DgpNgAppTools = require("../index");
+
 const dgpNgAppTools = DgpNgAppTools({
     rootDirectory: process.cwd()
 });
+
+
 
 module.exports = function (env) {
 
@@ -11,7 +14,7 @@ module.exports = function (env) {
         ...env,
         development: env.development,
         angularCompilerPlugin: new AngularCompilerPlugin({
-            tsConfigPath: path.join(process.cwd(), 'tsconfig.app.json'),
+            tsConfigPath: path.join(process.cwd(), 'tsconfig.json'),
             entryModule: path.resolve(process.cwd()) + '/src/app/app.module#AppModule',
             sourceMap: false,
         })
