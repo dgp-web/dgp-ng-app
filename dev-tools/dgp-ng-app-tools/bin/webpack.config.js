@@ -12,7 +12,7 @@ module.exports = function (env) {
 
     return dgpNgAppTools.createWebpackAppConfig({
         ...env,
-        development: env.development,
+        development: true,
         angularCompilerPlugin: new AngularCompilerPlugin({
             tsConfigPath: path.join(process.cwd(), 'tsconfig.json'),
             entryModule: path.resolve(process.cwd()) + '/src/app/app.module#AppModule',

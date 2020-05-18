@@ -3,8 +3,10 @@ import * as childProcess from "child_process";
 import { JsonObject } from "@angular-devkit/core";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
-    readonly command: string;
-    readonly args: Array<string>;
+    readonly outputPath: string;
+    readonly main: string;
+    readonly index: string;
+    readonly tsConfig: string;
 }
 
 export default createBuilder(dgpNgAppBuilder);
@@ -14,7 +16,7 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
 
     return new Promise<BuilderOutput>(resolve => {
 
-        const command = "dgp build --development " + options.args[0];
+        const command = "dgp build --development ";
         console.log("Command: " + command);
 
         const child = childProcess.exec(command, (err, stdout, stderr) => {

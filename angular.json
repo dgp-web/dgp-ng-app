@@ -264,13 +264,13 @@
             "sourceRoot": "projects/dgp-labs/src",
             "prefix": "app",
             "architect": {
-                "touch": {
-                    "builder": "dgp-ng-app-builder:command",
+                "dgp-serve": {
+                    "builder": "dgp-ng-app-builder:serve",
                     "options": {
-                        "command": "echo",
-                        "args": [
-                            "projects/dgp-labs/src/main.ts"
-                        ]
+                        "outputPath": "dist/dgp-labs",
+                        "main": "projects/dgp-labs/src/main.ts",
+                        "index": "projects/dgp-labs/src/index.html",
+                        "tsConfig": "projects/dgp-labs/tsconfig.app.json"
                     }
                 },
                 "build": {
