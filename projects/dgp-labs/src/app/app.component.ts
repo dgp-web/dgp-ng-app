@@ -4,9 +4,9 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
-    styleUrls: [`
+    styleUrls: [
         "./app.component.scss"
-    `]
+    ]
 })
 export class AppComponent extends DgpContainer {
 

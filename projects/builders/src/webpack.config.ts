@@ -1,7 +1,7 @@
-import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
-import * as path from "path";
-import * as webpack from "webpack";
 import * as HardSourceWebpackPlugin from "hard-source-webpack-plugin";
+import * as path from "path";
+import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
+import * as webpack from "webpack";
 
 export interface WebpackConfig {
     readonly projectPath: string;
@@ -54,14 +54,27 @@ module.exports = (env: WebpackConfig) => {
                 }]
             }, {
                 test: /\.html$/,
-                loader: "html-loader"
+                loaders: [{
+                    loader: "raw-loader",
+                    options: {
+                        esModule: false,
+                    }
+                }]
             }, {
                 test: /\.css/,
-                loader: "css-loader"
+                loaders: [{
+                    loader: "raw-loader",
+                    options: {
+                        esModule: false,
+                    }
+                }]
             }, {
                 test: /\.scss$/,
-                use: [{
-                    loader: "css-loader"
+                loaders: [{
+                    loader: "raw-loader",
+                    options: {
+                        esModule: false,
+                    }
                 }, {
                     loader: "sass-loader"
                 }]
