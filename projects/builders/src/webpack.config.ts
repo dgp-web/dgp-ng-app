@@ -33,16 +33,14 @@ module.exports = (env: WebpackConfig) => {
         },
         module: {
             rules: [{
-                test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+                test: /\.ts$/,
                 loaders: [{
                     loader: "ts-loader",
                     options: {
                         transpileOnly: true,
                         configFile: tsconfigFile
                     }
-                }, {
-                    loader: "angular2-template-loader",
-                }]
+                }, "angular2-template-loader"]
             }, {
                 test: /\.html$/,
                 loader: "raw-loader"

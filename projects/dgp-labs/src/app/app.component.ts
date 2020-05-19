@@ -4,8 +4,6 @@ import { Component } from "@angular/core";
     selector: "app-root",
     template: `
 
-        123456789
-
         <!--<dgp-docking-layout dgpThemeHost>
 
             <dgp-docking-layout-item type="column">
@@ -57,7 +55,7 @@ import { Component } from "@angular/core";
             </dgp-docking-layout-item>
         </dgp-docking-layout>-->
 
-        <!--<dgp-split-panel orientation="horizontal"
+        <dgp-split-panel orientation="horizontal"
                          dgpThemeHost>
             <dgp-split-panel-content size="20">
                 <ng-template>
@@ -91,10 +89,17 @@ import { Component } from "@angular/core";
 
                 </ng-template>
             </dgp-split-panel-content>
-        </dgp-split-panel>-->
+        </dgp-split-panel>
     `,
-    styles: [``]
-    // styleUrls: ["./app.component.scss"]
+    styles: [`
+        :host {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+        }
+    `]
 })
 export class AppComponent {
 

@@ -108,7 +108,6 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
         if (options.assets !== null && options.assets !== undefined) {
             options.assets.reverse().forEach(asset => {
                 const assetSourcePath = path.join(process.cwd(), asset);
-                const assetFileName = assetSourcePath.replace(/^.*[\\\/]/, "");
                 const assetTargetPath = path.join(destinationPath, "assets");
 
                 cpx.copySync(assetSourcePath, assetTargetPath);
