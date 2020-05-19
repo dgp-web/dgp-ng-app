@@ -4,6 +4,7 @@ import { JsonObject } from "@angular-devkit/core";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+
 const cpx = require("cpx");
 
 export * from "./webpack.config.vendor";
@@ -94,15 +95,24 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
             options.scripts.reverse().forEach(script => {
                 const scriptSourcePath = path.join(process.cwd(), script);
                 const scriptFileName = scriptSourcePath.replace(/^.*[\\\/]/, "");
-                const scriptTargetPath = path.join(destinationPath, scriptFileName);
 
-                cpx.copySync(scriptSourcePath, scriptTargetPath);
+                cpx.copySync(scriptSourcePath, destinationPath);
 
-                const scriptSnippet = createScriptSnippet(scriptFileName + "/" + scriptFileName);
+                const scriptSnippet = createScriptSnippet(scriptFileName);
 
                 updatedIndexHTML = updatedIndexHTML.replace("</head>", `${scriptSnippet}</head>`);
             });
 
+        }
+
+        if (options.assets !== null && options.assets !== undefined) {
+            options.assets.reverse().forEach(asset => {
+                const assetSourcePath = path.join(process.cwd(), asset);
+                const assetFileName = assetSourcePath.replace(/^.*[\\\/]/, "");
+                const assetTargetPath = path.join(destinationPath, "assets");
+
+                cpx.copySync(assetSourcePath, assetTargetPath);
+            });
         }
 
         fs.writeFileSync(destinationHTMLPath, updatedIndexHTML);
