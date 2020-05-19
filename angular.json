@@ -267,7 +267,10 @@
                 "dgp-serve": {
                     "builder": "dgp-ng-app-builder:serve",
                     "options": {
-                        "projectName": "dgp-labs"
+                        "projectName": "dgp-labs",
+                        "scripts": [
+                            "node_modules/jquery/dist/jquery.min.js"
+                        ]
                     }
                 },
                 "build": {

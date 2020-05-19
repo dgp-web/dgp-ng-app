@@ -4,12 +4,16 @@ import { JsonObject } from "@angular-devkit/core";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+const cpx = require("cpx");
 
 export * from "./webpack.config.vendor";
 export * from "./webpack.config";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly projectName: string;
+    readonly assets: Array<string>;
+    readonly scripts: Array<string>;
+    readonly styles: Array<string>;
 }
 
 
@@ -52,6 +56,12 @@ const scriptsSnippet = `
     <script src="main.js"></script>
 `;
 
+export function createScriptSnippet(src: string) {
+    return `
+        <script src="${src}"></script>
+    `;
+}
+
 async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise((resolve, reject) => {
@@ -67,14 +77,35 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
         const destinationPath = path.join(
             process.cwd(),
             "dist",
+            options.projectName
+        );
+
+        const destinationHTMLPath = path.join(
+            process.cwd(),
+            "dist",
             options.projectName,
             "index.html"
         );
 
         const indexHTML = fs.readFileSync(indexHTMLPath, "utf8");
-        const updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
+        let updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
+        if (options.scripts !== null && options.scripts !== undefined) {
 
-        fs.writeFileSync(destinationPath, updatedIndexHTML);
+            options.scripts.reverse().forEach(script => {
+                const scriptSourcePath = path.join(process.cwd(), script);
+                const scriptFileName = scriptSourcePath.replace(/^.*[\\\/]/, "");
+                const scriptTargetPath = path.join(destinationPath, scriptFileName);
+
+                cpx.copySync(scriptSourcePath, scriptTargetPath);
+
+                const scriptSnippet = createScriptSnippet(scriptFileName + "/" + scriptFileName);
+
+                updatedIndexHTML = updatedIndexHTML.replace("</head>", `${scriptSnippet}</head>`);
+            });
+
+        }
+
+        fs.writeFileSync(destinationHTMLPath, updatedIndexHTML);
         resolve();
     });
 
