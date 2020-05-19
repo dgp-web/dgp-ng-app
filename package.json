@@ -9,6 +9,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
+        "dgp-serve:docs-app": "ng run ng-app:dgp-serve",
         "dgp-serve:dgp-labs": "ng run dgp-labs:dgp-serve",
         "build:dgp-ng-app-builder": "tsc -p projects/builders/tsconfig.json && cpx projects/builders/package.json node_modules/dgp-ng-app-builder && cpx projects/builders/builders.json node_modules/dgp-ng-app-builder && cpx projects/builders/src/schema.json node_modules/dgp-ng-app-builder/src",
         "publish:dgp-ng-app-builder": "npm publish node_modules/dgp-ng-app-builder",

@@ -14,6 +14,20 @@
             "sourceRoot": "projects/ng-app/src",
             "prefix": "app",
             "architect": {
+                "dgp-serve": {
+                    "builder": "dgp-ng-app-builder:serve",
+                    "options": {
+                        "projectName": "ng-app",
+                        "assets": [
+                            "projects/ng-app/src/favicon.ico",
+                            "projects/ng-app/src/assets"
+                        ],
+                        "scripts": [],
+                        "styles": [
+                            "projects/ng-app/src/styles.scss"
+                        ]
+                    }
+                },
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {

@@ -26,7 +26,11 @@ module.exports = (env: WebpackConfig) => {
 
         devServer: {
             contentBase: config.distDirectory,
-            hot: true
+            hot: true,
+            historyApiFallback: {
+                disableDotRule: true
+            },
+            writeToDisk: true
         },
         entry: {
             main: path.join(config.rootDirectory + "/src/main.ts")
@@ -38,7 +42,11 @@ module.exports = (env: WebpackConfig) => {
                     loader: "ts-loader",
                     options: {
                         transpileOnly: true,
-                        configFile: tsconfigFile
+                        configFile: tsconfigFile,
+                        compilerOptions: {
+                            emitDecoratorMetadata: true,
+                            experimentalDecorators: true,
+                        }
                     }
                 }, "angular2-template-loader"]
             }, {
@@ -82,7 +90,6 @@ module.exports = (env: WebpackConfig) => {
         plugins: [
 
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
-            new webpack.HotModuleReplacementPlugin(),
 
             new webpack.SourceMapDevToolPlugin({
                 filename: "[file].map",

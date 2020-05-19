@@ -38,6 +38,7 @@ module.exports = (env: WebpackVendorConfig) => {
                 "@angular/animations",
                 "@angular/cdk",
                 "@angular/common",
+                "@angular/common/http",
                 "@angular/compiler",
                 "@angular/core",
                 "@angular/forms",
@@ -72,7 +73,7 @@ module.exports = (env: WebpackVendorConfig) => {
                 "@ngrx/store",
                 "@ngrx/effects",
                 "@ngrx/store-devtools",
-                // 'dgp-ng-app'
+                // "dgp-ng-app"
             ]
         },
         module: {

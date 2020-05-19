@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
 @Component({
     selector: "app-root",
@@ -101,19 +102,9 @@ import { Component } from "@angular/core";
         }
     `]
 })
-export class AppComponent {
+export class AppComponent extends DgpContainer {
 
-    /* constructor(
-         private readonly cd: ChangeDetectorRef
-     ) {
-         interval(5000)
-             .subscribe(() => {
-                 this.terser = !this.terser;
-                 this.cd.markForCheck();
-             });
-     }
+    readonly authenticatedUser$ = this.select(getAuthenticatedUserSelector);
 
-     ngOnInit(): void {
-     }
- */
+
 }

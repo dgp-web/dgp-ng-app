@@ -2,8 +2,6 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "../../out-tsc/app",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
         "types": [
             "node"
         ]
