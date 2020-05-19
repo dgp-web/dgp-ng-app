@@ -129,7 +129,7 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
 
                 const result = sass.renderSync({
                     file: styleSourcePath,
-                    sourceMap: true,
+                    sourceMap: false,
                     outFile: styleTargetPath,
                     importer: (url, prev, done) => {
                         // ...

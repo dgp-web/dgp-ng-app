@@ -27,6 +27,7 @@ module.exports = (env: WebpackConfig) => {
         devServer: {
             contentBase: config.distDirectory,
             hot: true,
+            liveReload: false,
             historyApiFallback: {
                 disableDotRule: true
             },
@@ -48,17 +49,19 @@ module.exports = (env: WebpackConfig) => {
                             experimentalDecorators: true,
                         }
                     }
-                }, "angular2-template-loader"]
+                }, {
+                    loader: "angular2-template-loader"
+                }]
             }, {
                 test: /\.html$/,
-                loader: "raw-loader"
+                loader: "html-loader"
             }, {
                 test: /\.css/,
-                loader: "raw-loader"
+                loader: "css-loader"
             }, {
                 test: /\.scss$/,
                 use: [{
-                    loader: "raw-loader"
+                    loader: "css-loader"
                 }, {
                     loader: "sass-loader"
                 }]

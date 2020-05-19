@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app-builder",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Power-build large apps blazing fast in dev mode",
     "main": "src/builder.js",
     "builders": "builders.json",
@@ -11,13 +11,14 @@
         "angular2-template-loader": "^0",
         "hard-source-webpack-plugin": "^0",
         "tsconfig-paths-webpack-plugin": "^3",
+        "css-loader": "^3.5.3",
         "sass-loader": "^7.1.0",
         "ts-loader": "^6",
         "webpack": "^4",
         "webpack-cli": "^3",
         "path": "^0",
         "core-js": "^3",
-        "raw-loader": "^1.0.0",
+        "html-loader": "^1.1.0",
         "webpack-dev-server": "^3"
     },
     "peerDependencies": {

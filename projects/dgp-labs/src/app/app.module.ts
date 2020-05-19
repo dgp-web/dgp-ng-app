@@ -21,6 +21,7 @@ import { Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { MatButtonModule } from "@angular/material/button";
 import { createEntityStore } from "entity-store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -87,6 +88,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
             metaReducers: [hmrReducer]
         }),
         EffectsModule.forRoot([]),
+        StoreDevtoolsModule.instrument(),
         DgpAuthenticationModule.forRoot({
             authenticationApiClientProvider,
             initializationServiceProvider
