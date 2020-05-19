@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 const cpx = require("cpx");
+const sass = require("sass");
 
 export * from "./webpack.config.vendor";
 export * from "./webpack.config";
@@ -63,6 +64,12 @@ export function createScriptSnippet(src: string) {
     `;
 }
 
+export function createStyleSheetSnippet(src: string) {
+    return `
+        <link rel="stylesheet" href="${src}">
+    `;
+}
+
 async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise((resolve, reject) => {
@@ -111,6 +118,32 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
                 const assetTargetPath = path.join(destinationPath, "assets");
 
                 cpx.copySync(assetSourcePath, assetTargetPath);
+            });
+        }
+
+        if (options.styles !== null && options.styles !== undefined) {
+            options.styles.reverse().forEach(style => {
+                const styleSourcePath = path.join(process.cwd(), style);
+                const styleFileName = styleSourcePath.replace(/^.*[\\\/]/, "").replace("scss", "css");
+                const styleTargetPath = path.join(destinationPath, styleFileName);
+
+                const result = sass.renderSync({
+                    file: styleSourcePath,
+                    sourceMap: true,
+                    outFile: styleTargetPath,
+                    importer: (url, prev, done) => {
+                        // ...
+                        if (url[0] === "~") {
+                            url = path.resolve("node_modules", url.substr(1));
+                        }
+
+                        return {file: url};
+                    },
+                });
+
+                fs.writeFileSync(styleTargetPath, result.css);
+                const styleSheetSnippet = createStyleSheetSnippet(styleFileName);
+                updatedIndexHTML = updatedIndexHTML.replace("</head>", `${styleSheetSnippet}</head>`);
             });
         }
 

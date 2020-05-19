@@ -82,6 +82,7 @@
         "ng-packagr": "^9.0.0",
         "protractor": "~5.4.0",
         "puppeteer": "^2.0.0",
+        "sass": "^1.26.5",
         "ts-node": "~7.0.0",
         "tslint": "~5.15.0",
         "ts-loader": "^6",

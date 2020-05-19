@@ -274,6 +274,9 @@
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js"
+                        ],
+                        "styles": [
+                            "projects/dgp-labs/src/styles.scss"
                         ]
                     }
                 },
