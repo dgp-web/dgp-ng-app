@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 @Component({
     selector: "dgp-hamburger-menu-entry",
     template: `
-        <a *ngIf="route; else emptyRoute"
+        <a *ngIf="isNonEmptyRoute(); else emptyRoute"
            mat-list-item
            [routerLink]="route"
            [routerLinkActive]="'dgp-list-item--selected'"
@@ -47,4 +47,9 @@ export class HamburgerMenuEntryComponent {
 
     @Input()
     disabled: any;
+
+    isNonEmptyRoute() {
+        return this.route && this.route.length !== 0;
+    }
+
 }
