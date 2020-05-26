@@ -22,7 +22,9 @@
                             "projects/ng-app/src/favicon.ico",
                             "projects/ng-app/src/assets"
                         ],
-                        "scripts": [],
+                        "scripts": [
+                            "node_modules/event-source-polyfill/src/eventsource.min.js"
+                        ],
                         "styles": [
                             "projects/ng-app/src/styles.scss"
                         ]

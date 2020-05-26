@@ -47,6 +47,7 @@ module.exports = (env: WebpackConfig) => {
                         compilerOptions: {
                             emitDecoratorMetadata: true,
                             experimentalDecorators: true,
+                            target: "es5",
                         }
                     }
                 }, {
@@ -107,10 +108,10 @@ module.exports = (env: WebpackConfig) => {
 
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
 
-            new webpack.SourceMapDevToolPlugin({
+            /*new webpack.SourceMapDevToolPlugin({
                 filename: "[file].map",
                 moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
-            }),
+            }),*/
 
             new webpack.DllReferencePlugin({
                 context: ".",

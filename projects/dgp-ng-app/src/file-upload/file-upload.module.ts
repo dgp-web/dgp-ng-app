@@ -61,6 +61,9 @@ export const fileUploadReducerProvider: FactoryProvider = {
         DragFileListenerDirective,
         OpenFileManagerViaShortKeyDirective
     ],
+    entryComponents: [
+        FileManagerComponent
+    ],
     providers: [
         fileUploadReducerProvider, {
             provide: FILE_UPLOAD_CONFIG,

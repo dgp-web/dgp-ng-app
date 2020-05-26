@@ -90,10 +90,10 @@ module.exports = (env: WebpackVendorConfig) => {
         },
         plugins: [
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
-            new webpack.SourceMapDevToolPlugin({
+            /*new webpack.SourceMapDevToolPlugin({
                 filename: "[file].map",
                 moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
-            }),
+            }),*/
             new webpack.DllPlugin({
                 path: path.join(config.distDirectory, "[name]-manifest.json"),
                 name: "[name]_[hash]"
