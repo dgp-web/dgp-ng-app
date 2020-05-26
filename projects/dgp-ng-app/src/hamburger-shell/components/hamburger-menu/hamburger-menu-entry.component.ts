@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 @Component({
     selector: "dgp-hamburger-menu-entry",
     template: `
-        <a mat-list-item
+        <a *ngIf="route; else emptyRoute"
+           mat-list-item
            [routerLink]="route"
            [routerLinkActive]="'dgp-list-item--selected'"
            [class.disabled]="disabled"
@@ -11,6 +12,15 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
             <mat-icon>{{ matIconName }}</mat-icon>
             {{ label }}
         </a>
+
+        <ng-template #emptyRoute>
+            <a mat-list-item
+               class="disabled"
+               tabindex="-1">
+                <mat-icon>{{ matIconName }}</mat-icon>
+                {{ label }}
+            </a>
+        </ng-template>
     `,
     styles: [`
         mat-icon {
