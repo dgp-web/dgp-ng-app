@@ -467,11 +467,11 @@
 .dark-theme {
 
     .card {
-        background-color: initial !important;
+        background-color: #303030 !important;
     }
 
     .card-header {
-        background-color: #303030 !important;
+        background-color: #424242 !important;
     }
 
     .nav-tabs .nav-link {
@@ -481,8 +481,12 @@
 
     .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
         border-width: 1px 1px 0 0;
-        background-color: #424242 !important;
-        border-color: #424242;
+        background-color: #303030 !important;
+        border-color: #303030;
+    }
+
+    .lm_stack {
+        outline-color: #424242;
     }
 
 }
