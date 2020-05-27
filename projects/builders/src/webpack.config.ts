@@ -27,7 +27,6 @@ module.exports = (env: WebpackConfig) => {
         devServer: {
             contentBase: config.distDirectory,
             hot: true,
-            liveReload: false,
             historyApiFallback: {
                 disableDotRule: true
             },
@@ -48,6 +47,7 @@ module.exports = (env: WebpackConfig) => {
                             emitDecoratorMetadata: true,
                             experimentalDecorators: true,
                             target: "es5",
+                            sourceMap: false
                         }
                     }
                 }, {
@@ -108,15 +108,11 @@ module.exports = (env: WebpackConfig) => {
 
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
 
-            /*new webpack.SourceMapDevToolPlugin({
-                filename: "[file].map",
-                moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
-            }),*/
-
             new webpack.DllReferencePlugin({
                 context: ".",
                 manifest: require(path.join(config.distDirectory, "vendor-manifest.json"))
             }),
+
             new HardSourceWebpackPlugin()
 
         ]

@@ -2,17 +2,32 @@
     "$schema": "http://json-schema.org/schema",
     "type": "object",
     "properties": {
-        "outputPath": {
+        "projectName": {
             "type": "string"
         },
-        "main": {
-            "type": "string"
+        "assets": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
-        "index": {
-            "type": "string"
+        "scripts": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
-        "tsConfig": {
-            "type": "string"
+        "styles": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "additionalVendorLibraries": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     }
 }

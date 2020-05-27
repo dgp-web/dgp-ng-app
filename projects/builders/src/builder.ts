@@ -16,6 +16,7 @@ export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly assets: Array<string>;
     readonly scripts: Array<string>;
     readonly styles: Array<string>;
+    readonly additionalVendorLibraries: Array<string>;
 }
 
 
@@ -28,7 +29,11 @@ async function createVendorBundle(options: DgpNgAppBuilderOptions, context: Buil
             "node_modules/dgp-ng-app-builder/src/webpack.config.vendor.js"
         );
 
-        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}`;
+        const additionalVendorLibraryCLIParameter = options.additionalVendorLibraries
+            ? options.additionalVendorLibraries.join("&")
+            : "";
+
+        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName} ${additionalVendorLibraryCLIParameter ? "--env.additionalVendorLibraries " + additionalVendorLibraryCLIParameter : "" }`;
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {

@@ -4,6 +4,7 @@ const webpack = require("webpack");
 export interface WebpackVendorConfig {
     readonly projectPath: string;
     readonly distPath: string;
+    readonly additionalVendorLibraries: string;
 }
 
 /**
@@ -13,7 +14,10 @@ module.exports = (env: WebpackVendorConfig) => {
 
     const config = {
         rootDirectory: path.join(process.cwd(), env.projectPath),
-        distDirectory: path.join(process.cwd(), env.distPath)
+        distDirectory: path.join(process.cwd(), env.distPath),
+        additionalVendorLibraries: env.additionalVendorLibraries
+            ? env.additionalVendorLibraries.split("&")
+            : []
     };
 
     // noinspection RegExpSingleCharAlternation
@@ -72,9 +76,8 @@ module.exports = (env: WebpackVendorConfig) => {
                 "@angularclass/hmr",
                 "@ngrx/store",
                 "@ngrx/effects",
-                "@ngrx/store-devtools",
-                // "dgp-ng-app"
-            ]
+                "@ngrx/store-devtools"
+            ].concat(config.additionalVendorLibraries)
         },
         module: {
             rules: [{
@@ -90,10 +93,7 @@ module.exports = (env: WebpackVendorConfig) => {
         },
         plugins: [
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
-            /*new webpack.SourceMapDevToolPlugin({
-                filename: "[file].map",
-                moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
-            }),*/
+
             new webpack.DllPlugin({
                 path: path.join(config.distDirectory, "[name]-manifest.json"),
                 name: "[name]_[hash]"
