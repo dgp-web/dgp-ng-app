@@ -31,8 +31,6 @@ export class TabComponent {
 
     constructor(header, contentItem) {
 
-        console.log(contentItem);
-
         this.header = header;
         this.contentItem = contentItem;
         this.element = $(
@@ -43,7 +41,7 @@ export class TabComponent {
         this.closeElement[contentItem.config.isClosable ? "show" : "hide"]();
         this.isActive = false;
 
-        this.setTitle(contentItem.config.label);
+        this.setTitle(contentItem.config.title);
         this.contentItem.on("titleChanged", this.setTitle, this);
 
         this._layoutManager = this.contentItem.layoutManager;
