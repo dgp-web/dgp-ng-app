@@ -1,3 +1,5 @@
+@import "~bootstrap/scss/bootstrap";
+
 .lm_root {
     position: relative
 }
@@ -462,6 +464,28 @@
     opacity: 1
 }
 
+.dark-theme {
+
+    .card {
+        background-color: initial !important;
+    }
+
+    .card-header {
+        background-color: #303030 !important;
+    }
+
+    .nav-tabs .nav-link {
+        background-color: initial !important;
+        color: #fff;
+    }
+
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+        border-width: 1px 1px 0 0;
+        background-color: #424242 !important;
+        border-color: #424242;
+    }
+
+}
 
 // overrides of bootstrap styles
 /*

@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
-@import "~bootstrap/scss/bootstrap";
 @import '../../dgp-ng-app/src/theming';
 @import '../../dgp-ng-docking-layout/src/lib/theming';
 @import '../../dgp-ng-docs/src/lib/styles';
@@ -12,25 +11,3 @@ $app-accent: mat-palette($mat-green, A200, A100, A400);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);
 
-.dark-theme {
-
-    .card {
-        background-color: initial !important;
-    }
-
-    .card-header {
-        background-color: #303030 !important;
-    }
-
-    .nav-tabs .nav-link {
-        background-color: initial !important;
-        color: #fff;
-    }
-
-    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-        border-width: 1px 1px 0 0;
-        background-color: #424242 !important;
-        border-color: #424242;
-    }
-
-}
