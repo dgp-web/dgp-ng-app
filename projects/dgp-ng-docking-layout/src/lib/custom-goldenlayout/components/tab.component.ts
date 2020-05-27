@@ -30,6 +30,9 @@ export class TabComponent {
     private _onCloseClickFn: any;
 
     constructor(header, contentItem) {
+
+        console.log(contentItem);
+
         this.header = header;
         this.contentItem = contentItem;
         this.element = $(

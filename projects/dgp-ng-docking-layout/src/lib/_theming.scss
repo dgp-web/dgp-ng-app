@@ -92,7 +92,8 @@
 .lm_header .lm_tab {
     cursor: pointer;
     float: left;
-    position: relative
+    position: relative;
+    display: flex;
 }
 
 .lm_header .lm_tab i {
@@ -460,3 +461,11 @@
 .lm_popin:hover .lm_icon {
     opacity: 1
 }
+
+
+// overrides of bootstrap styles
+/*
+.card {
+    background-color: initial !important;
+}
+*/

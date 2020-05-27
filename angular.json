@@ -289,10 +289,14 @@
                             "projects/dgp-labs/src/assets"
                         ],
                         "scripts": [
+                            "node_modules/event-source-polyfill/src/eventsource.min.js",
                             "node_modules/jquery/dist/jquery.min.js"
                         ],
                         "styles": [
                             "projects/dgp-labs/src/styles.scss"
+                        ],
+                        "additionalVendorLibraries": [
+                            "css-element-queries"
                         ]
                     }
                 },

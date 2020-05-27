@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="build:prod:dgp-ng-docking-layout" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="labs:dgp-serve" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="build:prod:dgp-ng-docking-layout" />
+      <script value="dgp-serve:dgp-labs" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

@@ -197,16 +197,17 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     }
 
     private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent): void {
-        const embeddedViewRef = context.vcRef.createEmbeddedView(template);
-        context.embeddedViewRefs[id] = embeddedViewRef;
-        const detached = $(embeddedViewRef.rootNodes)
-            .detach();
-        element$.append(detached);
+        timer(0).subscribe(() => {
 
-        timer(250)
-            .subscribe(() => {
-                embeddedViewRef.markForCheck();
-            });
+            const embeddedViewRef = context.vcRef.createEmbeddedView(template);
+            context.embeddedViewRefs[id] = embeddedViewRef;
+            const detached = $(embeddedViewRef.rootNodes)
+                .detach();
+            element$.append(detached);
+
+            timer(0)
+                .subscribe(() => embeddedViewRef.markForCheck());
+        });
     }
 
     private destroyEmbeddedView(id: string, context: DockingLayoutComponent): void {

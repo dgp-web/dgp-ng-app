@@ -12,7 +12,8 @@ export class DockingLayoutContainerComponent {
 
     @ContentChild(TemplateRef) templateRef: TemplateRef<any>;
 
-    @Input() closable = true;
+    closable = false;
+    //  @Input() closable = false;
     @Input() label: string;
     @Input() id = createGuid();
     @Input() width: number;
