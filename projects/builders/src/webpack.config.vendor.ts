@@ -16,7 +16,7 @@ module.exports = (env: WebpackVendorConfig) => {
         rootDirectory: path.join(process.cwd(), env.projectPath),
         distDirectory: path.join(process.cwd(), env.distPath),
         additionalVendorLibraries: env.additionalVendorLibraries
-            ? env.additionalVendorLibraries.split("&")
+            ? env.additionalVendorLibraries.split("___")
             : []
     };
 
@@ -40,7 +40,13 @@ module.exports = (env: WebpackVendorConfig) => {
                 "lodash",
                 "entity-store",
                 "@angular/animations",
-                "@angular/cdk",
+                "@angular/cdk/collections",
+                "@angular/cdk/platform",
+                "@angular/cdk/keycodes",
+                "@angular/cdk/scrolling",
+                "@angular/cdk/drag-drop",
+                "@angular/cdk/a11y",
+                "@angular/cdk/layout",
                 "@angular/common",
                 "@angular/common/http",
                 "@angular/compiler",
@@ -64,6 +70,7 @@ module.exports = (env: WebpackVendorConfig) => {
                 "@angular/material/progress-spinner",
                 "@angular/material/radio",
                 "@angular/material/select",
+                "@angular/material/sidenav",
                 "@angular/material/slide-toggle",
                 "@angular/material/snack-bar",
                 "@angular/material/table",
@@ -93,6 +100,11 @@ module.exports = (env: WebpackVendorConfig) => {
         },
         plugins: [
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
+
+            new webpack.SourceMapDevToolPlugin({
+                filename: "[file].map",
+                moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
+            }),
 
             new webpack.DllPlugin({
                 path: path.join(config.distDirectory, "[name]-manifest.json"),

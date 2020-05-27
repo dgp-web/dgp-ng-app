@@ -108,6 +108,11 @@ module.exports = (env: WebpackConfig) => {
 
             new webpack.ContextReplacementPlugin(/(.+)?angular(\\|\/)core(.+)?/, "", {}),
 
+            new webpack.SourceMapDevToolPlugin({
+                filename: "[file].map",
+                moduleFilenameTemplate: path.relative(config.distDirectory, "[resourcePath]")
+            }),
+
             new webpack.DllReferencePlugin({
                 context: ".",
                 manifest: require(path.join(config.distDirectory, "vendor-manifest.json"))

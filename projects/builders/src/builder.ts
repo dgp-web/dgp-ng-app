@@ -30,7 +30,7 @@ async function createVendorBundle(options: DgpNgAppBuilderOptions, context: Buil
         );
 
         const additionalVendorLibraryCLIParameter = options.additionalVendorLibraries
-            ? options.additionalVendorLibraries.join("&")
+            ? options.additionalVendorLibraries.join("___")
             : "";
 
         const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName} ${additionalVendorLibraryCLIParameter ? "--env.additionalVendorLibraries " + additionalVendorLibraryCLIParameter : "" }`;
