@@ -5,20 +5,43 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
     selector: "app-root",
     template: `
         <dgp-docking-layout dgpThemeHost>
-            <dgp-docking-layout-item type="column">
-                <dgp-docking-layout-container [label]="'e'">
-                    <ng-template>
-                        A
 
-                        <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+            <dgp-docking-layout-item type="row">
 
-                    </ng-template>
-                </dgp-docking-layout-container>
-                <dgp-docking-layout-container [label]="'e'">
-                    <ng-template>
-                        B
-                    </ng-template>
-                </dgp-docking-layout-container>
+                <dgp-docking-layout-item type="column"
+                                         width="20">
+                    <dgp-docking-layout-container label="Available items">
+                        <ng-template>
+                            <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+                        </ng-template>
+                    </dgp-docking-layout-container>
+                </dgp-docking-layout-item>
+
+                <dgp-docking-layout-item type="column"
+                                         width="60">
+                    <dgp-docking-layout-container label="Main area">
+                        <ng-template>
+                            Main
+                        </ng-template>
+                    </dgp-docking-layout-container>
+                </dgp-docking-layout-item>
+
+                <dgp-docking-layout-item type="column"
+                                         width="20">
+                    <dgp-docking-layout-container label="Details">
+                        <ng-template>
+                            Some content
+                        </ng-template>
+                    </dgp-docking-layout-container>
+
+                    <dgp-docking-layout-container label="Some more info">
+                        <ng-template>
+                            Some more info
+                        </ng-template>
+                    </dgp-docking-layout-container>
+
+                </dgp-docking-layout-item>
+
             </dgp-docking-layout-item>
         </dgp-docking-layout>
         <!--<dgp-split-panel orientation="horizontal"
