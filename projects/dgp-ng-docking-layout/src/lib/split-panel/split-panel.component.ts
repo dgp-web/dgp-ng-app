@@ -26,9 +26,12 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
     template: "<mat-card #host><ng-content></ng-content></mat-card>",
     styles: [`
         :host {
-            width: 100vw;
-            height: 100vh;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+            flex-grow: 1;
         }
 
         mat-card {

@@ -157,6 +157,8 @@ export class DragProxy extends EventEmitter {
         this.$element.remove();
 
         this.layoutManager.emit("itemDropped", this.contentItem);
+
+        this.layoutManager.updateSize();
     };
 
     /**

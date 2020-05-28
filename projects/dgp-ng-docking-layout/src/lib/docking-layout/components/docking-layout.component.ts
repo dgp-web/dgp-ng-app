@@ -16,17 +16,21 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
     template: "<mat-card #host><ng-content></ng-content></mat-card>",
     styles: [`
         :host {
-            width: 100vw;
-            height: 100vh;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+            flex-grow: 1;
         }
 
         mat-card {
-            padding: 0;
-            border-radius: 0;
-            flex-grow: 1;
-            display: flex;
-            height: 100%;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            flex-grow: 1 !important;
+            display: flex !important;
+            height: 100% !important;
+            overflow: hidden;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
