@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList } from "@angular/core";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
-import { ColumnConfiguration, RowConfiguration } from "../../custom-goldenlayout/types";
+import { ColumnConfiguration, RowConfiguration, StackConfiguration } from "../../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
 
 @Component({
@@ -20,12 +20,12 @@ export class DockingLayoutItemComponent {
     @ContentChildren(DockingLayoutItemComponent) items: QueryList<DockingLayoutItemComponent>;
     @ContentChildren(DockingLayoutContainerComponent) containers: QueryList<DockingLayoutContainerComponent>;
 
-    @Input() type: "row" | "column";
+    @Input() type: "row" | "column" | "stack";
 
     @Input() width: number;
     @Input() height: number;
 
-    get configuration(): RowConfiguration | ColumnConfiguration {
+    get configuration(): RowConfiguration | ColumnConfiguration | StackConfiguration {
 
         const items = this.items.toArray()
             .filter(x => x !== this)
@@ -39,7 +39,15 @@ export class DockingLayoutItemComponent {
             ...containers
         ];
 
-        if (this.type === "row") {
+        if (this.type === "stack") {
+
+            return {
+                type: "stack",
+                id: createGuid(),
+                content
+            };
+
+        } else if (this.type === "row") {
 
             return {
                 type: "row",

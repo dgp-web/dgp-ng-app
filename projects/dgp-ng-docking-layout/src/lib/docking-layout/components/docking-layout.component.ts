@@ -40,6 +40,9 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     @ViewChild("host", {read: ElementRef})
     elementRef: ElementRef;
 
+    @Input()
+    splitterSize = 2;
+
     // Settings
     @Input() hasHeaders = true;
     @Input() constrainDragToContainer = true;
@@ -136,7 +139,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
                 showCloseIcon: this.showCloseIcon
             },
             dimensions: {
-                borderWidth: this.borderWidth,
+                borderWidth: this.splitterSize,
                 minItemHeight: this.minItemHeight,
                 minItemWidth: this.minItemWidth,
                 headerHeight: this.headerHeight,

@@ -19,11 +19,20 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
                 <dgp-docking-layout-item type="column"
                                          width="60">
-                    <dgp-docking-layout-container label="Main area">
-                        <ng-template>
-                            Main
-                        </ng-template>
-                    </dgp-docking-layout-container>
+
+                    <dgp-docking-layout-item type="stack">
+                        <dgp-docking-layout-container label="Main tab">
+                            <ng-template>
+                                Main
+                            </ng-template>
+                        </dgp-docking-layout-container>
+                        <dgp-docking-layout-container label="Secondary tab">
+                            <ng-template>
+                                Secondary
+                            </ng-template>
+                        </dgp-docking-layout-container>
+                    </dgp-docking-layout-item>
+
                 </dgp-docking-layout-item>
 
                 <dgp-docking-layout-item type="column"

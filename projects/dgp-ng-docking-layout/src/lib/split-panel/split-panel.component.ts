@@ -17,7 +17,7 @@ import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { timer } from "rxjs";
 import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
-import { createComponentTree, createLayoutConfig } from "./functions";
+import { createSplitPanelComponentTree, createLayoutConfig } from "./functions";
 import { SplitPanelOrientation } from "./models";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 
@@ -90,7 +90,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         const componentConfigurations = this.items.toArray()
             .map(x => x.configuration);
 
-        const root = createComponentTree({
+        const root = createSplitPanelComponentTree({
             content: componentConfigurations,
             orientation: this.orientation
         });
