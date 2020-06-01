@@ -7,6 +7,7 @@ import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { uniqBy } from "lodash";
 import { combineLatest, timer } from "rxjs";
+import { switchMap, tap } from "rxjs/operators";
 import { ComponentConfiguration, ComponentRegistry, DockingLayoutService, ItemConfiguration } from "../../custom-goldenlayout";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./docking-layout-item.component";
@@ -107,6 +108,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         this.redraw();
     }
 
+
     redraw(): void {
         // if (changes["content"]) {
         if (this.dockingLayoutService) {
@@ -163,13 +165,51 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
                 const id = createGuid();
 
+                // creation and closing
                 container.on("open", () => {
-                    this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
+                    this.createEmbeddedView(id, componentState.template(), container.getElement(), this)
+                        .then(() => {
+
+                            let isCreated = true;
+
+                            container.on("hide", () => {
+                                this.destroyEmbeddedView(id, this);
+                                isCreated = false;
+                            });
+
+                            container.on("show", () => {
+
+                                if (isCreated) {
+                                    return;
+                                }
+
+                                timer(0)
+                                    .subscribe(() => {
+
+                                        if (isCreated) {
+                                            return;
+                                        }
+
+                                        isCreated = true;
+                                        this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
+                                    });
+                            });
+
+                        });
                 });
 
                 container.on("destroy", () => {
                     this.destroyEmbeddedView(id, this);
                 });
+
+                container.on("resize", () => {
+
+                });
+
+                container.on("tab", () => {
+
+                });
+
 
             });
 
@@ -203,18 +243,26 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         return result;
     }
 
-    private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent): void {
-        timer(0).subscribe(() => {
+    private async createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent) {
 
-            const embeddedViewRef = context.vcRef.createEmbeddedView(template);
-            context.embeddedViewRefs[id] = embeddedViewRef;
-            const detached = $(embeddedViewRef.rootNodes)
-                .detach();
-            element$.append(detached);
+        return timer(0)
+            .pipe(
+                switchMap(() => {
 
-            timer(0)
-                .subscribe(() => embeddedViewRef.markForCheck());
-        });
+                    const embeddedViewRef = context.vcRef.createEmbeddedView(template);
+                    context.embeddedViewRefs[id] = embeddedViewRef;
+                    const detached = $(embeddedViewRef.rootNodes)
+                        .detach();
+                    element$.append(detached);
+
+                    return timer(0)
+                        .pipe(
+                            tap(() => embeddedViewRef.markForCheck())
+                        );
+                })
+            )
+            .toPromise();
+
     }
 
     private destroyEmbeddedView(id: string, context: DockingLayoutComponent): void {
