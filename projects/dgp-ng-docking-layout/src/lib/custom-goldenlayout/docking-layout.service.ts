@@ -68,6 +68,15 @@ export class DockingLayoutService extends EventEmitter {
         this.tabDropPlaceholder = $(
             dockingLayoutViewMap.tabDropPlaceholder.render()
         );
+
+        this.on("stateChanged", (x) => {
+            console.log(x);
+            try {
+                console.log(this.toConfig(this.root));
+            } catch (e) {
+                console.error(e);
+            }
+        });
     }
 
     // TODO: This can be removed by extracting 2 components
@@ -461,6 +470,52 @@ export class DockingLayoutService extends EventEmitter {
     private useResponsiveLayout() {
         return this.config.settings && (this.config.settings.responsiveMode === "always"
             || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
+    }
+
+    toConfig(root) {
+        let config, next;
+
+        /*
+         * settings & labels
+         */
+        config = {
+            settings: this.config.settings,
+            dimensions: this.config.dimensions,
+            labels: this.config.labels
+        };
+
+        /*
+         * Content
+         */
+        config.content = [];
+        next = function (configNode, item) {
+            let key, i;
+
+            for (key in item.config) {
+                if (key !== "content") {
+                    configNode[key] = item.config[key];
+                }
+            }
+
+            if (item.contentItems.length) {
+                configNode.content = [];
+
+                for (i = 0; i < item.contentItems.length; i++) {
+                    configNode.content[i] = {};
+                    next(configNode.content[i], item.contentItems[i]);
+                }
+            }
+        };
+
+        if (root) {
+            next(config, {
+                contentItems: [root]
+            });
+        } else {
+            next(config, this.root);
+        }
+
+        return config;
     }
 
 }
