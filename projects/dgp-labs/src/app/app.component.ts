@@ -20,7 +20,8 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                 <dgp-docking-layout-item type="column"
                                          width="60">
 
-                    <dgp-docking-layout-item type="stack">
+                    <dgp-docking-layout-item type="stack"
+                                             selectedItemIndex="1">
                         <dgp-docking-layout-container label="Main tab">
                             <ng-template>
                                 Main

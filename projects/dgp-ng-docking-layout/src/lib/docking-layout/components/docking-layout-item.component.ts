@@ -24,6 +24,7 @@ export class DockingLayoutItemComponent {
 
     @Input() width: number;
     @Input() height: number;
+    @Input() selectedItemIndex = 0;
 
     get configuration(): RowConfiguration | ColumnConfiguration | StackConfiguration {
 
@@ -44,7 +45,8 @@ export class DockingLayoutItemComponent {
             return {
                 type: "stack",
                 id: createGuid(),
-                content
+                content,
+                activeItemIndex: this.selectedItemIndex
             };
 
         } else if (this.type === "row") {
