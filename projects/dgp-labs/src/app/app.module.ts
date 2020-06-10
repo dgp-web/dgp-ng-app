@@ -1,13 +1,12 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { ApplicationRef, FactoryProvider, Injectable, InjectionToken, NgModule } from "@angular/core";
-
-import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import {
     AuthenticationApiClient,
     AuthenticationApiClientProvider,
     DgpAuthenticationModule,
+    DgpHamburgerMenuModule,
     DgpHamburgerShellModule,
     DgpNgApp,
     DgpRequestStoreModule,
@@ -22,6 +21,10 @@ import { EffectsModule } from "@ngrx/effects";
 import { MatButtonModule } from "@angular/material/button";
 import { createEntityStore } from "entity-store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { SplitPanelLabsModule } from "./features/split-panel/split-panel-labs.module";
+import { DockingLayoutLabsModule } from "./features/docking-layout/docking-layout-labs.module";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterModule } from "@angular/router";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -82,7 +85,15 @@ export const initializationServiceProvider: InitializationServiceProvider = {
     ],
     imports: [
         BrowserModule,
-        AppRoutingModule,
+        BrowserAnimationsModule,
+        RouterModule.forRoot([{
+            path: "",
+            pathMatch: "full",
+            redirectTo: "/docking-layout"
+        }, {
+            path: "**",
+            redirectTo: "/docking-layout"
+        }]),
 
         StoreModule.forRoot(APP_REDUCER, {
             metaReducers: [hmrReducer]
@@ -101,6 +112,10 @@ export const initializationServiceProvider: InitializationServiceProvider = {
 
         DgpDockingLayoutModule,
         DgpSplitPanelModule,
+
+        SplitPanelLabsModule,
+        DockingLayoutLabsModule,
+        DgpHamburgerMenuModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

@@ -4,91 +4,30 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 @Component({
     selector: "app-root",
     template: `
-        <dgp-docking-layout dgpThemeHost>
+        <dgp-hamburger-shell dgpThemeHost>
 
-            <dgp-docking-layout-item type="row">
+            <dgp-hamburger-menu dgp-hamburger-menu>
 
-                <dgp-docking-layout-item type="column"
-                                         width="20">
-                    <dgp-docking-layout-container label="Available items">
-                        <ng-template>
-                            <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
-                        </ng-template>
-                    </dgp-docking-layout-container>
-                </dgp-docking-layout-item>
+                <dgp-hamburger-menu-header>
+                    DGP labs
+                </dgp-hamburger-menu-header>
 
-                <dgp-docking-layout-item type="column"
-                                         width="60">
+                <dgp-hamburger-menu-entries>
 
-                    <dgp-docking-layout-item type="stack"
-                                             selectedItemIndex="1">
-                        <dgp-docking-layout-container label="Main tab">
-                            <ng-template>
-                                Main
-                            </ng-template>
-                        </dgp-docking-layout-container>
-                        <dgp-docking-layout-container label="Secondary tab">
-                            <ng-template>
-                                Secondary
-                            </ng-template>
-                        </dgp-docking-layout-container>
-                    </dgp-docking-layout-item>
+                    <dgp-hamburger-menu-entry label="Split panel"
+                                              route="/split-panel"
+                                              matIconName="view_array"></dgp-hamburger-menu-entry>
 
-                </dgp-docking-layout-item>
+                    <dgp-hamburger-menu-entry label="Docking layout"
+                                              route="/docking-layout"
+                                              matIconName="view_quilt"></dgp-hamburger-menu-entry>
 
-                <dgp-docking-layout-item type="column"
-                                         width="20">
-                    <dgp-docking-layout-container label="Details">
-                        <ng-template>
-                            Some content
-                        </ng-template>
-                    </dgp-docking-layout-container>
+                </dgp-hamburger-menu-entries>
+            </dgp-hamburger-menu>
 
-                    <dgp-docking-layout-container label="Some more info">
-                        <ng-template>
-                            Some more info
-                        </ng-template>
-                    </dgp-docking-layout-container>
+            <router-outlet></router-outlet>
 
-                </dgp-docking-layout-item>
-
-            </dgp-docking-layout-item>
-        </dgp-docking-layout>
-        <!--<dgp-split-panel orientation="horizontal"
-                         dgpThemeHost>
-            <dgp-split-panel-content size="20">
-                <ng-template>
-                    A
-                    <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
-                </ng-template>
-            </dgp-split-panel-content>
-
-            <dgp-split-panel-content size="30">
-                <ng-template>
-                    B
-                </ng-template>
-            </dgp-split-panel-content>
-
-            <dgp-split-panel-content size="50">
-                <ng-template>
-
-                    <dgp-split-panel orientation="vertical">
-                        <dgp-split-panel-content size="50">
-                            <ng-template>
-                                C
-                            </ng-template>
-                        </dgp-split-panel-content>
-
-                        <dgp-split-panel-content size="50">
-                            <ng-template>
-                                D
-                            </ng-template>
-                        </dgp-split-panel-content>
-                    </dgp-split-panel>
-
-                </ng-template>
-            </dgp-split-panel-content>
-        </dgp-split-panel>-->
+        </dgp-hamburger-shell>
     `,
     styleUrls: [
         "./app.component.scss"
@@ -97,6 +36,5 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 export class AppComponent extends DgpContainer {
 
     readonly authenticatedUser$ = this.select(getAuthenticatedUserSelector);
-
 
 }

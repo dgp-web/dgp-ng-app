@@ -17,7 +17,7 @@ import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { timer } from "rxjs";
 import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
-import { createSplitPanelComponentTree, createLayoutConfig } from "./functions";
+import { createLayoutConfig, createSplitPanelComponentTree } from "./functions";
 import { SplitPanelOrientation } from "./models";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 
@@ -105,14 +105,14 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         componentConfigurations
             .filter(componentConfig => !this.componentRegistry.hasComponent(componentConfig.id as string))
             .forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
-            const instanceId = createGuid();
-            container.on("open",
-                () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
-            );
-            container.on("destroy",
-                () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
-            );
-        }));
+                const instanceId = createGuid();
+                container.on("open",
+                    () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
+                );
+                container.on("destroy",
+                    () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
+                );
+            }));
 
         this.initLayout();
     }
