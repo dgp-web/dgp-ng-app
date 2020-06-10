@@ -102,7 +102,9 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
             createLayoutConfig(root, this.splitterSize), this.elementRef.nativeElement
         );
 
-        componentConfigurations.forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
+        componentConfigurations
+            .filter(componentConfig => !this.componentRegistry.hasComponent(componentConfig.id as string))
+            .forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
             const instanceId = createGuid();
             container.on("open",
                 () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)

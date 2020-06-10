@@ -159,7 +159,9 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         );
 
         // TODO: Type container and state
-        uniqComponents.forEach(component => {
+        uniqComponents
+            .filter(componentConfig => !this.componentRegistry.hasComponent(componentConfig.id as string))
+            .forEach(component => {
 
             this.componentRegistry.registerComponent(component.id, (container, componentState) => {
 
