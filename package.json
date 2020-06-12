@@ -28,7 +28,8 @@
         "start:docs-app": "ng serve --hmr --hmrWarning=false ng-app",
         "build:docs-app": "ng build --prod ng-app",
         "publish:docs-app": "firebase deploy",
-        "start:dgp-labs": "ng serve --hmr --hmrWarning=false dgp-labs"
+        "start:dgp-labs": "ng serve --hmr --hmrWarning=false dgp-labs",
+        "test:dgp-labs": "ng test dgp-labs"
     },
     "private": true,
     "dependencies": {

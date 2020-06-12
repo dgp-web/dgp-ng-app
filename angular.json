@@ -383,7 +383,8 @@
                         "styles": [
                             "projects/dgp-labs/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "progress": false
                     }
                 },
                 "lint": {
