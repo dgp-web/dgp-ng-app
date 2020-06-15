@@ -1,7 +1,7 @@
 {
     "hosting": [
         {
-            "target": "docs-app",
+            "target": "dgp-ng-app",
             "public": "dist/ng-app",
             "ignore": [
                 "firebase.json",
