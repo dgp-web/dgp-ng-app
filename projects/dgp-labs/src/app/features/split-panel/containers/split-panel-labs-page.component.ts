@@ -11,8 +11,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         <dgp-split-panel orientation="horizontal">
             <dgp-split-panel-content size="20">
                 <ng-template>
-                    A
-                    <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+                    <div class="panel-content">
+                        A
+                        <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+                    </div>
                 </ng-template>
             </dgp-split-panel-content>
 
@@ -49,6 +51,13 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             flex-direction: column;
             flex-grow: 1;
             height: 100%;
+            overflow: auto;
+        }
+
+        .panel-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
             overflow: auto;
         }
     `],

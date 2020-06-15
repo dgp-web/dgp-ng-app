@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="labs:start" type="js.build_tools.npm">
+  <configuration default="false" name="dgp-labs:ng-serve" type="js.build_tools.npm" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start:dgp-labs" />
+      <script value="dgp-labs:ng-serve" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
