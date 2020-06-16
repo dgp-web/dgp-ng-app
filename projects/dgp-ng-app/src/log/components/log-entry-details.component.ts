@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
-import { Severity, LogEntry } from "../models";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { LogEntry, Severity } from "../models";
 
 @Component({
     selector: "dgp-log-entry-details",
@@ -38,7 +38,12 @@ import { Severity, LogEntry } from "../models";
                 </h2>
                 <div class="content__body"
                      *ngIf="logEntry.content; else noContentTemplate">
-                    {{ logEntry.content | json }}
+                    <ng-container *ngIf="!isApiError(); else apiError">
+                        {{ logEntry.content | json }}
+                    </ng-container>
+                    <ng-template #apiError>
+                        <div [innerHTML]="logEntry.content.error | safe:'html'"></div>
+                    </ng-template>
                 </div>
                 <ng-template #noContentTemplate>
                     <div class="content__placeholder">
@@ -123,5 +128,13 @@ export class LogEntryDetailsComponent {
 
     @Input()
     logEntry: LogEntry;
+
+    isApiError(): boolean {
+        if (this.logEntry.content?.hasOwnProperty("status") && this.logEntry.content?.hasOwnProperty("error")) {
+            return true;
+        }
+
+        return false;
+    }
 
 }
