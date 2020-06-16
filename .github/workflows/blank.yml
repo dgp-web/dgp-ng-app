@@ -38,6 +38,6 @@ jobs:
       run: npm run docs-app:build:prod
 
     - name: Publish docs-app to firebase
-      run: docs-app:publish
+      run: npm run docs-app:publish
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
