@@ -1,5 +1,18 @@
 {
-  "projects": {
-    "default": "dgp-ng-app"
+  "targets": {
+    "dgp-ng-app": {
+      "hosting": {
+        "dgp-ng-app": [
+          "dgp-ng-app"
+        ]
+      }
+    },
+    "dgp-labs": {
+      "hosting": {
+        "dgp-labs": [
+          "dgp-labs"
+        ]
+      }
+    }
   }
 }

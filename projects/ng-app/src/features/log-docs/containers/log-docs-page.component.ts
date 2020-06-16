@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { AppState } from "../../../store";
 import { Store } from "@ngrx/store";
 import { LogErrorAction } from "dgp-ng-app";
@@ -46,10 +46,22 @@ import { LogErrorAction } from "dgp-ng-app";
 })
 export class LogDocsPageComponent {
 
+    readonly apiError = {
+        headers: {normalizedNames: [], lazyUpdate: null},
+        status: 500,
+        statusText: "Internal Server Error",
+        url: "http://localhost:3000/platzhalter",
+        ok: false,
+        name: "HttpErrorResponse",
+        message: "Http failure response for http://test.de 500 Internal Server Error",
+        error: "<html lang=en><meta charset=utf-8><title>Error</title><body>Not implemented</body></html>"
+    };
+
     constructor(
         private readonly store: Store<AppState>
     ) {
         this.store.dispatch(new LogErrorAction({title: "Hallo", error: "Welt"}));
+        this.store.dispatch(new LogErrorAction({title: "Hallo", error: this.apiError}));
     }
 
     readonly moduleCode = `

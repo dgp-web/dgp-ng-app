@@ -1,17 +1,29 @@
-import { ModuleWithProviders, NgModule } from "@angular/core";
-import { StoreModule } from "@ngrx/store";
+import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
+import { ActionReducerMap, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { broadcastReducer, broadcastReducerProvider, broadcastStoreFeature } from "./broadcast-store";
+import { broadcastReducer, BroadcastState, broadcastStoreFeature } from "./store";
 import { broadcastStoreProvider } from "./broadcast-store.decorator";
 import { broadcastChannelServiceProvider } from "./services/broadcast-channel.service";
-import { BroadcastEffects } from "./effects/broadcast.effects";
-import { BROADCAST_CONFIG, BroadcastConfig, defaultBroadcastConfig } from "./models/broadcast-config.model";
+import { BroadcastEffects } from "./effects";
 import { NoPeonGuard } from "./guards/no-peon.guard";
+import { EntityTypeMap } from "entity-store";
+import { BROADCAST_CONFIG, BroadcastConfig, defaultBroadcastConfig } from "./models";
+
+export const BROADCAST_REDUCER = new InjectionToken<ActionReducerMap<BroadcastState>>("BroadcastStoreReducer");
+
+export function broadcastReducerFactory() {
+    return broadcastReducer;
+}
+
+export const broadcastReducerProvider: FactoryProvider = {
+    provide: BROADCAST_REDUCER,
+    useFactory: broadcastReducerFactory
+};
 
 @NgModule({
     imports: [
-        StoreModule.forFeature(broadcastStoreFeature, broadcastReducer),
+        StoreModule.forFeature(broadcastStoreFeature, BROADCAST_REDUCER),
         EffectsModule.forFeature([
             BroadcastEffects
         ]),
@@ -29,12 +41,14 @@ import { NoPeonGuard } from "./guards/no-peon.guard";
 })
 export class DgpBroadcastStoreModule {
 
-    static forRoot(config: BroadcastConfig = defaultBroadcastConfig): ModuleWithProviders<DgpBroadcastStoreModule> {
+    static forRoot<TEntityTypeMap extends EntityTypeMap = { [key: string]: any; }, TStoreFeature = string>(
+        config: BroadcastConfig<TEntityTypeMap, TStoreFeature> = defaultBroadcastConfig as any
+    ): ModuleWithProviders<DgpBroadcastStoreModule> {
         return {
             ngModule: DgpBroadcastStoreModule,
             providers: [{
                 provide: BROADCAST_CONFIG,
-                useValue: config as BroadcastConfig
+                useValue: config
             }, broadcastStoreProvider]
         };
     }

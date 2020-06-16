@@ -1,12 +1,11 @@
 import { Action, ActionsSubject, ReducerManager, select, StateObservable, Store } from "@ngrx/store";
 import { ClassProvider, Inject, Injectable } from "@angular/core";
-import { getOwnBroadcastRoleSelector } from "./broadcast-store";
+import { getOwnBroadcastRoleSelector } from "./store";
 import { Subscription } from "rxjs";
 import { prefixAction } from "./functions/prefix-action.function";
-import { peonActionTypePrefix } from "./actions/broadcast-channel.actions";
-import { BroadcastRole } from "./models/broadcast-role.model";
-import { BROADCAST_CONFIG, BroadcastConfig } from "./models/broadcast-config.model";
+import { peonActionTypePrefix } from "./actions";
 import { shouldPrefixAction } from "./functions/should-prefix-action.function";
+import { BROADCAST_CONFIG, BroadcastConfig, BroadcastRole } from "./models";
 
 @Injectable()
 export class BroadcastStoreDecorator<T> extends Store<T> {

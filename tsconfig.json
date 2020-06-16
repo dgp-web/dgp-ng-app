@@ -20,16 +20,20 @@
     ],
     "paths": {
       "dgp-ng-app": [
-        "projects/dgp-ng-app/src/public-api.ts"
+        "dist/dgp-ng-app"
       ],
       "dgp-ng-app/*": [
-        "projects/dgp-ng-app/src/*"
+        "dist/dgp-ng-app/*"
       ],
       "dgp-ng-docs": [
         "dist/dgp-ng-docs"
       ],
       "dgp-ng-docs/*": [
         "dist/dgp-ng-docs/*"
+      ],
+      "dgp-ng-docking-layout": [
+        "dist/dgp-ng-docking-layout/dgp-ng-docking-layout",
+        "dist/dgp-ng-docking-layout"
       ]
     }
   },

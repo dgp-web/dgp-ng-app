@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ChangeDetectionStrategy } from "@angular/core";
-import { DgpTableCellComponent, DgpTableCellModule } from "dgp-ng-app";
+import { DgpTableCellModule } from "../table-cell.module";
+import { DgpTableCellComponent } from "./table-cell.component";
 
 describe(DgpTableCellComponent.name, () => {
 

@@ -1,5 +1,5 @@
-import { BroadcastParticipant } from "../models/broadcast-participant.model";
-import { BroadcastHeartbeat } from "../models/broadcast-heartbeat.model";
+
+import { BroadcastHeartbeat, BroadcastParticipant } from "../models";
 
 export interface CreateBroadcastHeartbeatPayload {
     readonly participant: Readonly<BroadcastParticipant>;

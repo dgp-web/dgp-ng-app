@@ -1,0 +1,35 @@
+{
+    "name": "dgp-ng-app-builder",
+    "version": "0.1.2",
+    "description": "Power-build large apps blazing fast in dev mode",
+    "main": "src/builder.js",
+    "builders": "builders.json",
+    "keywords": [],
+    "author": "dgp-web",
+    "license": "MIT",
+    "dependencies": {
+        "angular2-template-loader": "^0",
+        "hard-source-webpack-plugin": "^0",
+        "tsconfig-paths-webpack-plugin": "^3",
+        "css-loader": "^3.5.3",
+        "sass-loader": "^7.1.0",
+        "ts-loader": "^6",
+        "webpack": "^4",
+        "webpack-cli": "^3",
+        "path": "^0",
+        "core-js": "^3",
+        "html-loader": "^1.1.0",
+        "sass": "^1",
+        "webpack-dev-server": "^3"
+    },
+    "peerDependencies": {
+        "@angular/core": "^9",
+        "@angular/material": "^9",
+        "@ngrx/store": "^9",
+        "@ngrx/effects": "^9",
+        "dgp-ng-app": "^9",
+        "entity-store": "^1.5",
+        "lodash": "^4",
+        "rxjs": "^6"
+    }
+}

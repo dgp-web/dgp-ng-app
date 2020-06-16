@@ -3,13 +3,12 @@ import {
     Component,
     ComponentFactoryResolver,
     Inject,
-    Input,
     OnChanges,
     SimpleChanges,
     ViewContainerRef
 } from "@angular/core";
 import { FILE_VIEWER_CONFIG, FileItem, FileViewerConfig } from "../models";
-import { ViewerComponentBase } from "./file-viewer.component-base";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
 
 @Component({
     selector: "dgp-dynamic-file-viewer",
@@ -25,10 +24,7 @@ import { ViewerComponentBase } from "./file-viewer.component-base";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynamicFileViewerComponent implements OnChanges {
-
-    @Input()
-    fileItem: FileItem;
+export class DynamicFileViewerComponent extends FileViewerComponentBase implements OnChanges {
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
@@ -36,6 +32,7 @@ export class DynamicFileViewerComponent implements OnChanges {
         @Inject(FILE_VIEWER_CONFIG)
         private readonly config: FileViewerConfig
     ) {
+        super();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -55,7 +52,7 @@ export class DynamicFileViewerComponent implements OnChanges {
         );
         this.viewContainerRef.clear();
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        const viewerComponent = componentRef.instance as ViewerComponentBase;
+        const viewerComponent = componentRef.instance as FileViewerComponentBase;
         viewerComponent.fileItem = this.fileItem;
     }
 

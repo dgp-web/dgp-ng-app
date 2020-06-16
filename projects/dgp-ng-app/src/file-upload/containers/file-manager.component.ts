@@ -13,6 +13,7 @@ import {
 import { getFileItemsFromFileList } from "../functions";
 import { MatDialogRef } from "@angular/material/dialog";
 import { FileItem } from "../../file-viewer/models";
+import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({
     selector: "dgp-file-manager",
@@ -121,25 +122,25 @@ import { FileItem } from "../../file-viewer/models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileManagerComponent implements AfterViewInit, OnDestroy {
+export class FileManagerComponent extends DgpContainer<FileUploadState> implements AfterViewInit, OnDestroy {
 
     isMaximized = false;
 
-    readonly isDropTargetVisible$ = this.store.select(isDropTargetVisible);
-    readonly fileItemListModel$ = this.store.select(getFileItemListModel);
-    readonly selectedFileItem$ = this.store.select(getSelectedFileItem);
-    readonly isRemoveFilesDisabled$ = this.store.select(isRemoveFilesDisabled);
-    readonly isAddFilesDisabled$ = this.store.select(isAddFilesDisabled);
-    readonly canOpenFileDrawer$ = this.store.select(canOpenFileDrawer);
+    readonly isDropTargetVisible$ = this.select(isDropTargetVisible);
+    readonly fileItemListModel$ = this.select(getFileItemListModel);
+    readonly selectedFileItem$ = this.select(getSelectedFileItem);
+    readonly isRemoveFilesDisabled$ = this.select(isRemoveFilesDisabled);
+    readonly isAddFilesDisabled$ = this.select(isAddFilesDisabled);
+    readonly canOpenFileDrawer$ = this.select(canOpenFileDrawer);
 
     readonly dragEnterHandler = (e) => {
         e.preventDefault();
-        this.store.dispatch(showDropTarget());
+        this.dispatch(showDropTarget());
     };
 
     readonly dragLeaveHandler = (e) => {
         e.preventDefault();
-        this.store.dispatch(hideDropTarget());
+        this.dispatch(hideDropTarget());
     };
 
     readonly dragOverHandler = (e) => {
@@ -155,12 +156,13 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     };
 
     constructor(
+        protected readonly store: Store<FileUploadState>,
         private readonly elementRef: ElementRef,
-        private readonly store: Store<FileUploadState>,
         private readonly dialogRef: MatDialogRef<FileManagerComponent>,
         @Inject(FILE_UPLOAD_CONFIG)
         private readonly moduleConfig: FileUploadConfig
     ) {
+        super(store);
     }
 
     ngAfterViewInit(): void {
@@ -178,12 +180,12 @@ export class FileManagerComponent implements AfterViewInit, OnDestroy {
     }
 
     removeFileItem(fileItem: FileItem) {
-        this.store.dispatch(removeFile({fileItem}));
+        this.dispatch(removeFile({fileItem}));
     }
 
     onFileSelected(e) {
         const fileItems = getFileItemsFromFileList(e.target.files);
-        this.store.dispatch(addFilesViaDrop({fileItems}));
+        this.dispatch(addFilesViaDrop({fileItems}));
     }
 
     maximize() {

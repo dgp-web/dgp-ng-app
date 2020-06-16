@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { ActivatedRoute } from "@angular/router";
-import { getSelectedLogEntry } from "../selectors/log.selectors";
-import { LogState } from "../models/log.models";
-import { logStore } from "../reducers/log.reducer";
+import { getSelectedLogEntry } from "../selectors";
+import { LogState } from "../models";
+import { logStore } from "../reducers";
 import { filter } from "rxjs/operators";
 
 @Component({
@@ -39,17 +39,13 @@ export class LogPageComponent {
     ) {
         activatedRoute.params
             .pipe(filter(params => params.logEntryId))
-            .subscribe(params => {
-
-                this.store.dispatch(
-                    logStore.actions.composeEntityActions({
-                        select: {
-                            logEntry: [params.logEntryId]
-                        }
-                    })
-                );
-
-            });
+            .subscribe(params => this.store.dispatch(
+                logStore.actions.composeEntityActions({
+                    select: {
+                        logEntry: [params.logEntryId]
+                    }
+                })
+            ));
     }
 
 }

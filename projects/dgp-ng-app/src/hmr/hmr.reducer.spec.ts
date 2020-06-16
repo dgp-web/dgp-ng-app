@@ -1,5 +1,5 @@
 import { hmrReducer } from "./hmr.reducer";
-import { hotReload } from "dgp-ng-app";
+import { hotReload } from "./hmr.actions";
 
 describe("hmrReducer should decorate a reducer that", () => {
 

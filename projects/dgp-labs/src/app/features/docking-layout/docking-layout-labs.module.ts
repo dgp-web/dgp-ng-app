@@ -1,0 +1,23 @@
+import { NgModule } from "@angular/core";
+import { DockingLayoutLabsPageComponent } from "./containers/docking-layout-labs-page.component";
+import { DgpDockingLayoutModule } from "dgp-ng-docking-layout";
+import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
+import { RouterModule } from "@angular/router";
+
+@NgModule({
+    imports: [
+        DgpDockingLayoutModule,
+        DgpThemeSwitcherModule,
+        RouterModule.forRoot([{
+            path: "docking-layout",
+            component: DockingLayoutLabsPageComponent
+        }]),
+        DgpPageHeaderModule,
+        DgpHamburgerMenuToggleModule
+    ],
+    declarations: [
+        DockingLayoutLabsPageComponent
+    ]
+})
+export class DockingLayoutLabsModule {
+}

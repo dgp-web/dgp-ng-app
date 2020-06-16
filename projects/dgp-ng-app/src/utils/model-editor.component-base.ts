@@ -1,13 +1,16 @@
 import { EventEmitter, Input, Output, Directive } from "@angular/core";
 import * as _ from "lodash";
+import { BehaviorSubject } from "rxjs";
 
 /**
  * Base class for classes for manipulating a model
  */
 @Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class DgpModelEditorComponentBase<TModel> {
 
     protected modelValue: TModel;
+    readonly model$ = new BehaviorSubject<TModel>(this.modelValue);
 
     @Input()
     get model(): TModel {
@@ -19,7 +22,7 @@ export abstract class DgpModelEditorComponentBase<TModel> {
         if (_.isEqual(value, this.modelValue)) { return; }
 
         this.modelValue = value;
-
+        this.model$.next(value);
     }
 
     @Output()

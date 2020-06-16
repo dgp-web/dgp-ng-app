@@ -1,38 +1,38 @@
 import { ApplicationRef, NgModule } from "@angular/core";
-import { Store, StoreModule } from "@ngrx/store";
-import { AppComponent } from "./components";
+import { Store } from "@ngrx/store";
+import { AppComponent } from "./app.component";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
-import { appReducer, appReducerProviders, AppState } from "../store";
+import { AppEntities, appEntityStore, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
-import { defaultBroadcastConfig, DgpBroadcastStoreModule, DgpNgApp, setBroadcastChannelDataId } from "dgp-ng-app";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { EffectsModule } from "@ngrx/effects";
 import {
-    hmrReducer, DgpRoutingOverlayModule, DgpRequestStoreModule, DgpLogModule, DgpThemeSwitcherModule,
-    DgpHamburgerShellModule
+    defaultBroadcastConfig,
+    DgpBroadcastStoreModule,
+    DgpNgApp,
+    DgpNgAppModule,
+    setBroadcastChannelDataId
 } from "dgp-ng-app";
 import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-docs.module";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
     imports: [
+        DgpNgAppModule.forRoot<AppState>({
+            appReducer: appEntityStore.reducers
+        }),
 
-        BrowserModule,
-        BrowserAnimationsModule,
-
-
-        UiSharedModule,
-
-        ApiClientModule.forRoot({
-            provide: ApiClientSettings,
-            useValue: {}
-        } as ApiClientSettingsProvider),
+        DgpBroadcastStoreModule.forRoot<AppEntities>({
+            ...defaultBroadcastConfig,
+            actionTypesToPrefixWithPeon: [
+                "[DocsApp]"
+            ],
+            sendInitialState: state => appEntityStore.actions.composeEntityActions({
+                set: {
+                    user: state.user.entities
+                }
+            })
+        }),
 
         RouterModule.forRoot([{
             path: "",
@@ -43,32 +43,12 @@ import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-d
             redirectTo: "/home"
         }]),
 
-        StoreModule.forRoot(appReducer, {
-            metaReducers: [hmrReducer]
-        }),
-        EffectsModule.forRoot([]),
-        DgpHamburgerShellModule.forRoot(),
-        DgpThemeSwitcherModule.forRoot(),
-        DgpLogModule,
-        DgpRequestStoreModule,
-        DgpRoutingOverlayModule,
+        UiSharedModule,
 
-        /*DgpBroadcastStoreModule.forRoot({
-            ...defaultBroadcastConfig,
-            actionTypesToPrefixWithPeon: [
-                "[DocsApp]"
-            ]
-        }),*/
-
-        StoreDevtoolsModule.instrument(),
-        /*
-
-                DgpNgAppModule.forRoot<AppState>(() => {
-                    return {
-                        appReducer: appEntityStore.reducers
-                    };
-                }),
-        */
+        ApiClientModule.forRoot({
+            provide: ApiClientSettings,
+            useValue: {}
+        } as ApiClientSettingsProvider),
 
         features.HomeModule,
         features.AuthenticationDocsModule,
@@ -83,11 +63,13 @@ import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-d
         features.SpacerDocsModule,
         features.StylingDocsModule,
         features.TableCellEditorDocsModule,
-        features.ThemeSwitcherDocsModule
+        CommonModule
     ],
-    bootstrap: [AppComponent],
-    providers: [
-        appReducerProviders
+    declarations: [
+        AppComponent
+    ],
+    bootstrap: [
+        AppComponent
     ]
 })
 export class AppModule extends DgpNgApp {

@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-docs",
-    "version": "1.0.0",
+    "version": "9.3.5",
     "license": "MIT",
     "description": "Components for documenting code",
     "keywords": [
@@ -16,8 +16,8 @@
         "url": "https://github.com/dgp-web/dgp-ng-app"
     },
     "peerDependencies": {
-        "@angular/common": "^8.2.14",
-        "@angular/core": "^8.2.14",
+        "@angular/common": "^9",
+        "@angular/core": "^9",
         "highlight.js": "^9.18.1"
     }
 }

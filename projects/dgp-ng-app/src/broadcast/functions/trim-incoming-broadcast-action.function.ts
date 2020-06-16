@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions/broadcast-channel.actions";
+import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions";
 
 export function trimIncomingBroadcastAction(action: Action) {
 

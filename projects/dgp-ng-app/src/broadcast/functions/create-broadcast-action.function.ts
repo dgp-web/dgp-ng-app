@@ -1,6 +1,5 @@
 import {Action} from "@ngrx/store";
-import { BroadcastParticipant } from "../models/broadcast-participant.model";
-import { BroadcastAction } from "../models/broadcast-action.model";
+import { BroadcastAction, BroadcastParticipant } from "../models";
 
 export interface CreateBroadcastActionPayload {
     readonly participant: Readonly<BroadcastParticipant>;

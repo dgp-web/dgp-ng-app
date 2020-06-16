@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
 import { RoutingOverlayComponent } from "./components/routing-overlay.component";
-import { RoutingOverlayEffects } from "./effects/routing-overlay.effects";
+import { RoutingOverlayEffects } from "./effects";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatDialogModule } from "@angular/material/dialog";
 

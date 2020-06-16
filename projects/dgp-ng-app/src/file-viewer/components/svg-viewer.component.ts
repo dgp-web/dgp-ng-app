@@ -1,12 +1,21 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
-import { FileItem } from "../models";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
+import { Platform } from "@angular/cdk/platform";
 
 @Component({
     selector: "dgp-svg-viewer",
     template: `
-        <img [src]="fileItem.url | safe:'url'"
+        <img *ngIf="!isTrident; else fallback"
+             [src]="fileItem.url | safe:'url'"
              class="image"
              alt="{{ fileItem.fileName }}">
+        <ng-template #fallback>
+            <div class="trident-container">
+                <img [src]="fileItem.url | safe:'url'"
+                     class="trident-image"
+                     alt="{{ fileItem.fileName }}">
+            </div>
+        </ng-template>
     `,
     styles: [`
         :host {
@@ -22,12 +31,29 @@ import { FileItem } from "../models";
             max-height: 100%;
             object-fit: contain;
         }
+
+        .trident-container {
+            display: flex;
+            overflow: auto;
+            flex-shrink: 0;
+        }
+
+        .trident-image {
+            margin: auto;
+            flex-shrink: 0;
+        }
+
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SvgViewerComponent {
+export class SvgViewerComponent extends FileViewerComponentBase {
 
-    @Input()
-    fileItem: FileItem;
+    readonly isTrident = this.platform.TRIDENT;
+
+    constructor(
+        private readonly platform: Platform
+    ) {
+        super();
+    }
 
 }

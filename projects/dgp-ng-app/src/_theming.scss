@@ -23,7 +23,6 @@
     $accent: map-get($theme, accent);
 
     .dgp-list-item.--selected {
-        color: white;
         border-left-color: mat-color($primary, 300);
         border-left-width: 4px;
         border-left-style: solid;
@@ -34,14 +33,12 @@
     }
 
     .dgp-list-item--selected {
-        color: white;
         border-left-color: mat-color($primary, 300);
         border-left-width: 4px;
         border-left-style: solid;
         pointer-events: none;
 
         &:hover {
-            color: white;
             background-color: mat-color($accent, 300);
         }
     }
@@ -61,6 +58,10 @@
     .dark-theme {
         @include angular-material-theme($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
+    }
+
+    .dgp-bg--primary {
+        background: mat-color($primary) !important;
     }
 
     mat-dialog-actions {
@@ -86,7 +87,7 @@
 
 }
 
-.dgp-file-manager-overlay.--maximized {
+.dgp-file-manager-overlay--maximized {
     width: 100% !important;
     height: 100% !important;
     max-width: 100% !important;

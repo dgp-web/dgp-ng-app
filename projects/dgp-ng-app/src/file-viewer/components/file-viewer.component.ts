@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { FILE_VIEWER_CONFIG, FileItem, FileViewerConfig } from "../models";
+import { ChangeDetectionStrategy, Component, Inject, OnChanges, SimpleChanges } from "@angular/core";
+import { FILE_VIEWER_CONFIG, FileViewerConfig } from "../models";
+import { FileViewerComponentBase } from "./file-viewer.component-base";
 
 @Component({
     selector: "dgp-file-viewer",
@@ -36,10 +37,7 @@ import { FILE_VIEWER_CONFIG, FileItem, FileViewerConfig } from "../models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileViewerComponent implements OnChanges {
-
-    @Input()
-    fileItem: FileItem;
+export class FileViewerComponent extends FileViewerComponentBase implements OnChanges {
 
     isKnownFileType: boolean;
 
@@ -47,6 +45,7 @@ export class FileViewerComponent implements OnChanges {
         @Inject(FILE_VIEWER_CONFIG)
         private readonly config: FileViewerConfig
     ) {
+        super();
     }
 
     ngOnChanges(changes: SimpleChanges): void {

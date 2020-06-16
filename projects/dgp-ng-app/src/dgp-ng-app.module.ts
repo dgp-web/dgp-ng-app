@@ -9,43 +9,48 @@ import { hmrReducer } from "./hmr/hmr.reducer";
 import { DgpLogModule } from "./log/log.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { DgpHamburgerMenuModule } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.module";
 
 export interface DgpNgAppConfig<TAppState> {
     readonly appReducer: ActionReducerMap<TAppState>;
 }
 
-export const appReducer = new InjectionToken<ActionReducerMap<any>>("AppReducer");
+export const APP_REDUCER = new InjectionToken<ActionReducerMap<any>>("AppReducer");
 
 @NgModule({
     imports: [
+
         BrowserModule,
         BrowserAnimationsModule,
 
-        StoreModule.forRoot(appReducer, {
-            metaReducers: [ hmrReducer ]
+
+        StoreModule.forRoot(APP_REDUCER, {
+            metaReducers: [hmrReducer]
         }),
         EffectsModule.forRoot([]),
+
         DgpHamburgerShellModule.forRoot(),
         DgpThemeSwitcherModule.forRoot(),
+        DgpHamburgerMenuModule,
         DgpLogModule,
         DgpRequestStoreModule,
         DgpRoutingOverlayModule
     ],
     exports: [
         DgpHamburgerShellModule,
-        DgpThemeSwitcherModule
+        DgpThemeSwitcherModule,
+        DgpHamburgerMenuModule
     ]
 })
 export class DgpNgAppModule {
 
-    static forRoot<TAppState>(createAppConfig: () => DgpNgAppConfig<TAppState>): ModuleWithProviders<DgpNgAppModule> {
-
-        const config = createAppConfig();
+    static forRoot<TAppState>(config: DgpNgAppConfig<TAppState>): ModuleWithProviders<DgpNgAppModule> {
 
         return {
             ngModule: DgpNgAppModule,
             providers: [{
-                provide: appReducer, useFactory: () => config.appReducer
+                provide: APP_REDUCER,
+                useValue: config.appReducer
             }]
         };
     }
