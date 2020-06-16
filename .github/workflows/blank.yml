@@ -18,9 +18,6 @@ jobs:
     - name: Install npm packages
       run: npm ci --loglevel=error
 
-    - name: Test dgp-ng-app
-      run: npm run dgp-ng-app:test:prod
-
     - name: Build dgp-ng-app
       run: npm run dgp-ng-app:build:prod
 
