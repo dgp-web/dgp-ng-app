@@ -7,6 +7,7 @@ import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { uniqBy } from "lodash";
 import { combineLatest, timer } from "rxjs";
+import { switchMap, tap } from "rxjs/operators";
 import { ComponentConfiguration, ComponentRegistry, DockingLayoutService, ItemConfiguration } from "../../custom-goldenlayout";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./docking-layout-item.component";
@@ -16,17 +17,21 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
     template: "<mat-card #host><ng-content></ng-content></mat-card>",
     styles: [`
         :host {
-            width: 100vw;
-            height: 100vh;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+            flex-grow: 1;
         }
 
         mat-card {
-            padding: 0;
-            border-radius: 0;
-            flex-grow: 1;
-            display: flex;
-            height: 100%;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            flex-grow: 1 !important;
+            display: flex !important;
+            height: 100% !important;
+            overflow: hidden;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -39,6 +44,9 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
     @ViewChild("host", {read: ElementRef})
     elementRef: ElementRef;
+
+    @Input()
+    splitterSize = 2;
 
     // Settings
     @Input() hasHeaders = true;
@@ -100,6 +108,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         this.redraw();
     }
 
+
     redraw(): void {
         // if (changes["content"]) {
         if (this.dockingLayoutService) {
@@ -136,7 +145,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
                 showCloseIcon: this.showCloseIcon
             },
             dimensions: {
-                borderWidth: this.borderWidth,
+                borderWidth: this.splitterSize,
                 minItemHeight: this.minItemHeight,
                 minItemWidth: this.minItemWidth,
                 headerHeight: this.headerHeight,
@@ -150,19 +159,59 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         );
 
         // TODO: Type container and state
-        uniqComponents.forEach(component => {
+        uniqComponents
+            .filter(componentConfig => !this.componentRegistry.hasComponent(componentConfig.id as string))
+            .forEach(component => {
 
             this.componentRegistry.registerComponent(component.id, (container, componentState) => {
 
                 const id = createGuid();
 
+                // creation and closing
                 container.on("open", () => {
-                    this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
+                    this.createEmbeddedView(id, componentState.template(), container.getElement(), this)
+                        .then(() => {
+
+                            let isCreated = true;
+
+                            container.on("hide", () => {
+                                this.destroyEmbeddedView(id, this);
+                                isCreated = false;
+                            });
+
+                            container.on("show", () => {
+
+                                if (isCreated) {
+                                    return;
+                                }
+
+                                timer(0)
+                                    .subscribe(() => {
+
+                                        if (isCreated) {
+                                            return;
+                                        }
+
+                                        isCreated = true;
+                                        this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
+                                    });
+                            });
+
+                        });
                 });
 
                 container.on("destroy", () => {
                     this.destroyEmbeddedView(id, this);
                 });
+
+                container.on("resize", () => {
+
+                });
+
+                container.on("tab", () => {
+
+                });
+
 
             });
 
@@ -196,17 +245,26 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         return result;
     }
 
-    private createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent): void {
-        const embeddedViewRef = context.vcRef.createEmbeddedView(template);
-        context.embeddedViewRefs[id] = embeddedViewRef;
-        const detached = $(embeddedViewRef.rootNodes)
-            .detach();
-        element$.append(detached);
+    private async createEmbeddedView(id: string, template: TemplateRef<any>, element$: any, context: DockingLayoutComponent) {
 
-        timer(250)
-            .subscribe(() => {
-                embeddedViewRef.markForCheck();
-            });
+        return timer(0)
+            .pipe(
+                switchMap(() => {
+
+                    const embeddedViewRef = context.vcRef.createEmbeddedView(template);
+                    context.embeddedViewRefs[id] = embeddedViewRef;
+                    const detached = $(embeddedViewRef.rootNodes)
+                        .detach();
+                    element$.append(detached);
+
+                    return timer(0)
+                        .pipe(
+                            tap(() => embeddedViewRef.markForCheck())
+                        );
+                })
+            )
+            .toPromise();
+
     }
 
     private destroyEmbeddedView(id: string, context: DockingLayoutComponent): void {

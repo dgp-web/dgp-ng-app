@@ -18,6 +18,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { SafePipeModule } from "../safe/safe-pipe.module";
 
 export const LOG_STORE_REDUCER = new InjectionToken<typeof logStore.reducers>("LogStoreReducer");
 
@@ -56,7 +57,8 @@ export const logStoreReducerProvider: FactoryProvider = {
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
         DgpListDetailsPageModule,
-        DgpEmptyStateModule
+        DgpEmptyStateModule,
+        SafePipeModule
     ],
     declarations: [
         LogEntryDetailsComponent,

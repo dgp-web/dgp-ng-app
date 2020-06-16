@@ -64,6 +64,13 @@ export interface ComponentConfiguration extends ItemConfiguration {
     title?: string;
 }
 
+export interface StackConfiguration extends ItemConfiguration {
+    type: "stack";
+    activeItemIndex: number;
+
+    content: ItemConfiguration[];
+}
+
 export interface RowConfiguration extends ItemConfiguration {
     type: "row";
 

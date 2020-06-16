@@ -7,13 +7,15 @@ import { MatListModule } from "@angular/material/list";
 import { HamburgerMenuEntryComponent } from "./hamburger-menu-entry.component";
 import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
     imports: [
         MatToolbarModule,
         MatListModule,
         RouterModule,
-        MatIconModule
+        MatIconModule,
+        CommonModule
     ],
     declarations: [
         HamburgerMenuComponent,

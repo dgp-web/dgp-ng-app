@@ -6,7 +6,7 @@ import {
     LayoutConfiguration, RowConfiguration
 } from "../custom-goldenlayout/types";
 
-export function createComponentTree(payload: {
+export function createSplitPanelComponentTree(payload: {
     readonly orientation: SplitPanelOrientation;
     readonly content: ReadonlyArray<ComponentConfiguration>;
 }) {

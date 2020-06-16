@@ -6,6 +6,6 @@ export interface ComponentDefinition<T> {
 
 export interface ContainerDefinition {
     getElement(): any;
-    on(eventName: "open" | "destroy", callback: () => void): void;
+    on(eventName: "open" | "destroy" | "hide" | "show" | "resize" | "tab", callback: () => void): void;
 }
 

@@ -17,7 +17,7 @@ import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { timer } from "rxjs";
 import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
-import { createComponentTree, createLayoutConfig } from "./functions";
+import { createLayoutConfig, createSplitPanelComponentTree } from "./functions";
 import { SplitPanelOrientation } from "./models";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 
@@ -26,9 +26,12 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
     template: "<mat-card #host><ng-content></ng-content></mat-card>",
     styles: [`
         :host {
-            width: 100vw;
-            height: 100vh;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+            flex-grow: 1;
         }
 
         mat-card {
@@ -90,7 +93,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         const componentConfigurations = this.items.toArray()
             .map(x => x.configuration);
 
-        const root = createComponentTree({
+        const root = createSplitPanelComponentTree({
             content: componentConfigurations,
             orientation: this.orientation
         });
@@ -99,15 +102,17 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
             createLayoutConfig(root, this.splitterSize), this.elementRef.nativeElement
         );
 
-        componentConfigurations.forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
-            const instanceId = createGuid();
-            container.on("open",
-                () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
-            );
-            container.on("destroy",
-                () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
-            );
-        }));
+        componentConfigurations
+            .filter(componentConfig => !this.componentRegistry.hasComponent(componentConfig.id as string))
+            .forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
+                const instanceId = createGuid();
+                container.on("open",
+                    () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
+                );
+                container.on("destroy",
+                    () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
+                );
+            }));
 
         this.initLayout();
     }

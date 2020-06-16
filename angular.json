@@ -14,6 +14,22 @@
             "sourceRoot": "projects/ng-app/src",
             "prefix": "app",
             "architect": {
+                "dgp-serve": {
+                    "builder": "dgp-ng-app-builder:serve",
+                    "options": {
+                        "projectName": "ng-app",
+                        "assets": [
+                            "projects/ng-app/src/favicon.ico",
+                            "projects/ng-app/src/assets"
+                        ],
+                        "scripts": [
+                            "node_modules/event-source-polyfill/src/eventsource.min.js"
+                        ],
+                        "styles": [
+                            "projects/ng-app/src/styles.scss"
+                        ]
+                    }
+                },
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
@@ -264,6 +280,26 @@
             "sourceRoot": "projects/dgp-labs/src",
             "prefix": "app",
             "architect": {
+                "dgp-serve": {
+                    "builder": "dgp-ng-app-builder:serve",
+                    "options": {
+                        "projectName": "dgp-labs",
+                        "assets": [
+                            "projects/dgp-labs/src/favicon.ico",
+                            "projects/dgp-labs/src/assets"
+                        ],
+                        "scripts": [
+                            "node_modules/event-source-polyfill/src/eventsource.min.js",
+                            "node_modules/jquery/dist/jquery.min.js"
+                        ],
+                        "styles": [
+                            "projects/dgp-labs/src/styles.scss"
+                        ],
+                        "additionalVendorLibraries": [
+                            "css-element-queries"
+                        ]
+                    }
+                },
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
@@ -347,7 +383,8 @@
                         "styles": [
                             "projects/dgp-labs/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "progress": false
                     }
                 },
                 "lint": {

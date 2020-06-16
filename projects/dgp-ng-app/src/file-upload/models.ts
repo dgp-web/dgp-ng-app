@@ -28,7 +28,7 @@ export const defaultFileUploadConfig: FileUploadConfig = {
         width: "80%",
         panelClass: "dgp-file-manager-overlay"
     },
-    maximizedClass: "--maximized",
+    maximizedClass: "dgp-file-manager-overlay--maximized",
     openFileManagerShortKeyFilter,
     editingCapabilities: {
         canAddFiles: true,

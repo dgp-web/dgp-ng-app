@@ -1,0 +1,9 @@
+{
+    "builders": {
+        "serve": {
+            "implementation": "./src/builder",
+            "schema": "./src/schema.json",
+            "description": "Runs dgp-ng-app-tools build."
+        }
+    }
+}
