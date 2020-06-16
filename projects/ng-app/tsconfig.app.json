@@ -6,6 +6,9 @@
             "node"
         ]
     },
+    "angularCompilerOptions": {
+        "enableIvy": false
+    },
     "files": [
         "src/main.ts",
         "src/polyfills.ts"
