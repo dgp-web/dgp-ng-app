@@ -54,7 +54,6 @@
         "bootstrap": "^4.4.1",
         "core-js": "^3.6.5",
         "css-element-queries": "^1.2.3",
-        "dgp-ng-app-tools": "file:./projects/dgp-ng-app-tools",
         "entity-store": "^1.5",
         "highlight.js": "^9.18.1",
         "jquery": "^3.5.0",
