@@ -16,7 +16,7 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
 
     - name: Install npm packages
-      run: npm ci --ignore-scripts --loglevel=error
+      run: npm ci --loglevel=error
 
     - name: Test dgp-ng-app
       run: npm run dgp-ng-app:test:prod
@@ -34,13 +34,13 @@ jobs:
       run: npm run dgp-ng-app:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        
+
     - name: Publish dgp-ng-docs to npm
       run: npm run dgp-ng-docs:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        
+
     - name: Publish docs-app to firebase
       run: docs-app:publish
       env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}   
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
