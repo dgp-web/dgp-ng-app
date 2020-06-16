@@ -13,7 +13,7 @@
         "dgp-ng-app-builder:publish": "npm publish node_modules/dgp-ng-app-builder",
         "dgp-ng-app:build:prod": "ng build --prod dgp-ng-app",
         "postdgp-ng-app:build:prod": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
-        "dgp-ng-app:test:prod": "ng test --single-run dgp-ng-app",
+        "dgp-ng-app:test:prod": "ng test dgp-ng-app",
         "dgp-ng-app:build:watch": "ng build dgp-ng-app --watch",
         "dgp-ng-app:publish": "npm publish dist/dgp-ng-app",
         "dgp-ng-app:test:watch": "ng test dgp-ng-app --watch",
