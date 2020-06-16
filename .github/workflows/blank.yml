@@ -24,9 +24,6 @@ jobs:
     - name: Build dgp-ng-docs
       run: npm run dgp-ng-docs:build:prod
 
-    - name: build docs-app
-      run: npm run docs-app:build:prod
-
     - name: Publish dgp-ng-app to npm
       run: npm run dgp-ng-app:publish
       env:
@@ -36,6 +33,9 @@ jobs:
       run: npm run dgp-ng-docs:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+    - name: build docs-app
+      run: npm run docs-app:build:prod
 
     - name: Publish docs-app to firebase
       run: docs-app:publish
