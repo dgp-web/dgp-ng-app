@@ -19,21 +19,20 @@ export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly additionalVendorLibraries: Array<string>;
 }
 
-
 async function createVendorBundle(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise((resolve, reject) => {
 
         const webpackConfigPath = path.join(
             process.cwd(),
-            "node_modules/dgp-ng-app-builder/src/webpack.config.vendor.js"
+            "node_modules/dgp-ng-app-builder/src/serve/webpack.config.vendor.js"
         );
 
         const additionalVendorLibraryCLIParameter = options.additionalVendorLibraries
             ? options.additionalVendorLibraries.join("___")
             : "";
 
-        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName} ${additionalVendorLibraryCLIParameter ? "--env.additionalVendorLibraries " + additionalVendorLibraryCLIParameter : "" }`;
+        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName} ${additionalVendorLibraryCLIParameter ? "--env.additionalVendorLibraries " + additionalVendorLibraryCLIParameter : ""}`;
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
@@ -164,7 +163,7 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
 
         const webpackConfigPath = path.join(
             process.cwd(),
-            "node_modules/dgp-ng-app-builder/src/webpack.config.js"
+            "node_modules/dgp-ng-app-builder/src/serve/webpack.config.js"
         );
 
         // TODO: Take HTML file and copy it to dist and add
