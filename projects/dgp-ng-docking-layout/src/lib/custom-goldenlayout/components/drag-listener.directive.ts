@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Output } from "@angular/core";
+import { EventEmitter, Output } from "@angular/core";
 import { Vector2, Vector2Utils } from "../../common/models";
 import { $x } from "../../jquery-extensions";
 
@@ -7,18 +7,19 @@ export interface DragEvent extends Vector2 {
 }
 
 
-
 /*@Directive({
     selector: "dgp-drag-listener"
 })*/
 export class DragListenerDirective {
 
     constructor(element: any) {
+        this.element = element[0];
         this.$element = $(element);
         this.$document = $(document);
         this.$body = $(document.body);
 
-        this.$element.on("mousedown touchstart", this.onMouseDown);
+        this.element.addEventListener("touchstart", this.onMouseDown, {passive: true});
+        this.element.addEventListener("mousedown", this.onMouseDown, {passive: true});
 
     }
 
@@ -26,7 +27,8 @@ export class DragListenerDirective {
     @Output() dragStop$ = new EventEmitter<{}>();
     @Output() drag$ = new EventEmitter<DragEvent>();
 
-    private $element: any;
+    private element: any;
+    private $element: JQuery;
     private $document: any;
     private $body: any;
     private timeout: any;
@@ -54,21 +56,35 @@ export class DragListenerDirective {
     on: any;
 
     destroy() {
-        this.$element.unbind("mousedown touchstart", this.onMouseDown);
-        this.$document.unbind("mouseup touchend", this.onMouseUp);
+        this.element.removeEventListener("touchstart", this.onMouseDown);
+        this.element.removeEventListener("mousedown", this.onMouseDown);
+
+        document.removeEventListener("mouseup", this.onMouseUp);
+        document.removeEventListener("touchend", this.onMouseUp);
+
         this.$element = null;
         this.$document = null;
         this.$body = null;
     }
 
     onMouseDown = (e) => {
-        e.preventDefault();
 
         if (e.button === 0 || e.type === "touchstart") {
             this.originalCoordinates = $x.getPointerCoordinates(e);
 
-            this.$document.on("mousemove touchmove", this.onMouseMove);
-            this.$document.one("mouseup touchend", this.onMouseUp);
+            document.addEventListener("mousemove", this.onMouseMove, {
+                passive: true
+            });
+            document.addEventListener("touchmove", this.onMouseMove, {
+                passive: true
+            });
+
+            document.addEventListener("mouseup", this.onMouseUp, {
+                passive: true
+            });
+            document.addEventListener("touchend", this.onMouseUp, {
+                passive: true
+            });
 
             this.timeout = setTimeout(() => this.startDragging(), this.delay);
         }
@@ -76,7 +92,6 @@ export class DragListenerDirective {
 
     onMouseMove = (e) => {
         if (this.timeout != null) {
-            e.preventDefault();
 
             const coordinates = $x.getPointerCoordinates(e);
 
@@ -108,8 +123,12 @@ export class DragListenerDirective {
             this.$body.removeClass("lm_dragging");
             this.$element.removeClass("lm_dragging");
             this.$document.find("iframe").css("pointer-events", "");
-            this.$document.unbind("mousemove touchmove", this.onMouseMove);
-            this.$document.unbind("mouseup touchend", this.onMouseUp);
+
+            document.removeEventListener("mousemove", this.onMouseMove);
+            document.removeEventListener("touchmove", this.onMouseMove);
+
+            document.removeEventListener("mouseup", this.onMouseUp);
+            document.removeEventListener("touchend", this.onMouseUp);
 
             if (this.isDragging === true) {
                 this.isDragging = false;

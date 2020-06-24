@@ -69,14 +69,14 @@ export class DockingLayoutService extends EventEmitter {
             dockingLayoutViewMap.tabDropPlaceholder.render()
         );
 
-        this.on("stateChanged", (x) => {
+        /*this.on("stateChanged", (x) => {
             console.log(x);
             try {
                 console.log(this.toConfig(this.root));
             } catch (e) {
                 console.error(e);
             }
-        });
+        });*/
     }
 
     // TODO: This can be removed by extracting 2 components
