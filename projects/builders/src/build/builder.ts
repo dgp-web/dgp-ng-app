@@ -125,9 +125,10 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
             "node_modules/dgp-ng-app-builder/src/build/webpack.config.js"
         );
 
-        // TODO: Take HTML file and copy it to dist and add
-
         const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}  --env.tsconfigFile tsconfig.app.json`;
+
+        console.log("Command: ");
+        console.log(command);
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
@@ -159,7 +160,8 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
     return new Promise<BuilderOutput>(async (resolve, reject) => {
         await copyAndModifyIndexHtmlToDist(options, context);
         await runWebpack(options, context);
-        resolve();
+
+        resolve({success: true});
     });
 
 }
