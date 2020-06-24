@@ -10,6 +10,7 @@ import { TabComponent } from "./tab.component";
 export class HeaderComponent extends EventEmitter {
 
     readonly element: any;
+    readonly rawElement: any;
     readonly tabs: any;
     activeContentItem: any;
     private layoutManager: any;
@@ -28,10 +29,18 @@ export class HeaderComponent extends EventEmitter {
 
         this.layoutManager = layoutManager;
         this.element = $(dockingLayoutViewMap.header.render());
+        this.rawElement = this.element[0];
 
         if (this.layoutManager.config.settings.selectionEnabled === true) {
             this.element.addClass("lm_selectable");
-            this.element.on("click touchstart", (x) => this._onHeaderClick(x));
+
+            this.rawElement.addEventListener("click", (x) => this._onHeaderClick(x), {
+                passive: true
+            });
+            this.rawElement.addEventListener("touchstart", (x) => this._onHeaderClick(x), {
+                passive: true
+            });
+
         }
 
         this.tabsContainer = this.element.find(".lm_tabs");
@@ -302,7 +311,7 @@ export class HeaderComponent extends EventEmitter {
         // Show the menu based on function argument
         this.tabDropdownButton.element.toggle(showTabMenu === true);
 
-        const size = function(val) {
+        const size = function (val) {
             return val ? "width" : "height";
         };
         this.element.css(size(!this.parent._sided), "");

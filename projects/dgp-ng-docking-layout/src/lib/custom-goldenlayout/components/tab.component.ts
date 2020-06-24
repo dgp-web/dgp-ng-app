@@ -28,6 +28,7 @@ export class TabComponent {
     private _dragListener: DragListenerDirective;
     private _onTabClickFn: any;
     private _onCloseClickFn: any;
+    private rawElement: any;
 
     constructor(header, contentItem) {
 
@@ -36,6 +37,7 @@ export class TabComponent {
         this.element = $(
             dockingLayoutViewMap.tab.render()
         );
+        this.rawElement = this.element[0];
         this.titleElement = this.element.find(".lm_title");
         this.closeElement = this.element.find(".close");
         this.closeElement[contentItem.config.isClosable ? "show" : "hide"]();
@@ -61,7 +63,12 @@ export class TabComponent {
         this._onTabClickFn = (x) => this._onTabClick(x);
         this._onCloseClickFn = (x) => this._onCloseClick(x);
 
-        this.element.on("mousedown touchstart", this._onTabClickFn);
+        this.rawElement.addEventListener("mousedown", this._onTabClickFn, {
+            passive: true
+        });
+        this.rawElement.addEventListener("touchstart", this._onTabClickFn, {
+            passive: true
+        });
 
         if (this.contentItem.config.isClosable) {
             this.closeElement.on("click touchstart", this._onCloseClickFn);
@@ -124,7 +131,9 @@ export class TabComponent {
 
         this.subscriptions.forEach(x => x.unsubscribe());
 
-        this.element.off("mousedown touchstart", this._onTabClickFn);
+        this.rawElement.removeEventListener("mousedown", this._onTabClickFn);
+        this.rawElement.removeEventListener("touchstart", this._onTabClickFn);
+
         this.closeElement.off("click touchstart", this._onCloseClickFn);
         if (this._dragListener) {
             this.contentItem.off("destroy", this._dragListener.destroy, this._dragListener);
