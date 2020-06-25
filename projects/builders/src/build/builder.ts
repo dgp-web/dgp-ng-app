@@ -12,7 +12,7 @@ export * from "./webpack.config";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly projectName: string;
-    readonly basePath: string;
+    readonly baseHref: string;
     readonly assets: Array<string>;
     readonly scripts: Array<string>;
     readonly styles: Array<string>;
@@ -65,15 +65,15 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
             "index.html"
         );
 
-        const basePath = options.basePath || "/";
+        const baseHref = options.baseHref || "/";
 
         const indexHTML = fs.readFileSync(indexHTMLPath, "utf8");
         let updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
 
         if (updatedIndexHTML.includes(`<base href="/">`)) {
-            updatedIndexHTML = updatedIndexHTML.replace(`<base href="/">`, `${createBasePathSnippet(basePath)}`);
+            updatedIndexHTML = updatedIndexHTML.replace(`<base href="/">`, `${createBasePathSnippet(baseHref)}`);
         } else {
-            updatedIndexHTML = updatedIndexHTML.replace("<head>", `<head>${createBasePathSnippet(basePath)}`);
+            updatedIndexHTML = updatedIndexHTML.replace("<head>", `<head>${createBasePathSnippet(baseHref)}`);
         }
 
         if (options.scripts !== null && options.scripts !== undefined) {
