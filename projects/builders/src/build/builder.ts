@@ -12,6 +12,7 @@ export * from "./webpack.config";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly projectName: string;
+    readonly basePath: string;
     readonly assets: Array<string>;
     readonly scripts: Array<string>;
     readonly styles: Array<string>;
@@ -20,6 +21,12 @@ export interface DgpNgAppBuilderOptions extends JsonObject {
 const scriptsSnippet = `
     <script src="main.js"></script>
 `;
+
+export function createBasePathSnippet(basePath: string) {
+    return `
+       <base href="${basePath}">
+    `;
+}
 
 export function createScriptSnippet(src: string) {
     return `
@@ -58,8 +65,17 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
             "index.html"
         );
 
+        const basePath = options.basePath || "/";
+
         const indexHTML = fs.readFileSync(indexHTMLPath, "utf8");
         let updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
+
+        if (updatedIndexHTML.includes(`<base href="/">`)) {
+            updatedIndexHTML = updatedIndexHTML.replace(`<base href="/">`, `${createBasePathSnippet(basePath)}`);
+        } else {
+            updatedIndexHTML = updatedIndexHTML.replace("<head>", `<head>${createBasePathSnippet(basePath)}`);
+        }
+
         if (options.scripts !== null && options.scripts !== undefined) {
 
             options.scripts.reverse().forEach(script => {
@@ -76,12 +92,14 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
         }
 
         if (options.assets !== null && options.assets !== undefined) {
+
             options.assets.reverse().forEach(asset => {
                 const assetSourcePath = path.join(process.cwd(), asset);
                 const assetTargetPath = path.join(destinationPath, "assets");
 
                 cpx.copySync(assetSourcePath, assetTargetPath);
             });
+
         }
 
         if (options.styles !== null && options.styles !== undefined) {

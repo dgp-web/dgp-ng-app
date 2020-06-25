@@ -34,6 +34,7 @@
                     "builder": "dgp-ng-app-builder:build",
                     "options": {
                         "projectName": "ng-app",
+                        "basePath": "/",
                         "assets": [
                             "projects/ng-app/src/favicon.ico",
                             "projects/ng-app/src/assets"
