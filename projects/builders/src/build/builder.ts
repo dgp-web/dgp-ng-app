@@ -8,60 +8,25 @@ import * as path from "path";
 const cpx = require("cpx");
 const sass = require("sass");
 
-export * from "./webpack.config.vendor";
 export * from "./webpack.config";
 
 export interface DgpNgAppBuilderOptions extends JsonObject {
     readonly projectName: string;
+    readonly baseHref: string;
     readonly assets: Array<string>;
     readonly scripts: Array<string>;
     readonly styles: Array<string>;
-    readonly additionalVendorLibraries: Array<string>;
-}
-
-
-async function createVendorBundle(options: DgpNgAppBuilderOptions, context: BuilderContext) {
-
-    return new Promise((resolve, reject) => {
-
-        const webpackConfigPath = path.join(
-            process.cwd(),
-            "node_modules/dgp-ng-app-builder/src/webpack.config.vendor.js"
-        );
-
-        const additionalVendorLibraryCLIParameter = options.additionalVendorLibraries
-            ? options.additionalVendorLibraries.join("___")
-            : "";
-
-        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName} ${additionalVendorLibraryCLIParameter ? "--env.additionalVendorLibraries " + additionalVendorLibraryCLIParameter : "" }`;
-
-        const child = childProcess.exec(command, err => {
-            if (err !== null && err !== undefined) {
-                console.error(err);
-            }
-        });
-
-        if (child && child.stdout) {
-            child.stdout.pipe(process.stdout);
-        }
-
-        child.on("error", (error: any) => {
-            console.error(error);
-            context.logger.error(error.toString());
-        });
-
-        child.on("close", (code: any) => {
-            resolve({success: code === 0});
-        });
-    });
-
-
 }
 
 const scriptsSnippet = `
-    <script src="vendor.js"></script>
     <script src="main.js"></script>
 `;
+
+export function createBasePathSnippet(basePath: string) {
+    return `
+       <base href="${basePath}">
+    `;
+}
 
 export function createScriptSnippet(src: string) {
     return `
@@ -100,8 +65,17 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
             "index.html"
         );
 
+        const baseHref = options.baseHref || "/";
+
         const indexHTML = fs.readFileSync(indexHTMLPath, "utf8");
         let updatedIndexHTML = indexHTML.replace("</body>", `${scriptsSnippet}</body>`);
+
+        if (updatedIndexHTML.includes(`<base href="/">`)) {
+            updatedIndexHTML = updatedIndexHTML.replace(`<base href="/">`, `${createBasePathSnippet(baseHref)}`);
+        } else {
+            updatedIndexHTML = updatedIndexHTML.replace("<head>", `<head>${createBasePathSnippet(baseHref)}`);
+        }
+
         if (options.scripts !== null && options.scripts !== undefined) {
 
             options.scripts.reverse().forEach(script => {
@@ -118,12 +92,14 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
         }
 
         if (options.assets !== null && options.assets !== undefined) {
+
             options.assets.reverse().forEach(asset => {
                 const assetSourcePath = path.join(process.cwd(), asset);
                 const assetTargetPath = path.join(destinationPath, "assets");
 
                 cpx.copySync(assetSourcePath, assetTargetPath);
             });
+
         }
 
         if (options.styles !== null && options.styles !== undefined) {
@@ -164,12 +140,13 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
 
         const webpackConfigPath = path.join(
             process.cwd(),
-            "node_modules/dgp-ng-app-builder/src/webpack.config.js"
+            "node_modules/dgp-ng-app-builder/src/build/webpack.config.js"
         );
 
-        // TODO: Take HTML file and copy it to dist and add
+        const command = `webpack --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}  --env.tsconfigFile tsconfig.app.json`;
 
-        const command = `webpack-dev-server --port=4200 --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}  --env.tsconfigFile tsconfig.app.json`;
+        console.log("Command: ");
+        console.log(command);
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
@@ -199,9 +176,10 @@ export default createBuilder(dgpNgAppBuilder);
 function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
     return new Promise<BuilderOutput>(async (resolve, reject) => {
-        await createVendorBundle(options, context);
         await copyAndModifyIndexHtmlToDist(options, context);
         await runWebpack(options, context);
-        resolve();
+
+        resolve({success: true});
     });
+
 }

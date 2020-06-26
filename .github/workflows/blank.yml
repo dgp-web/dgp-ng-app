@@ -27,6 +27,12 @@ jobs:
     - name: Build dgp-ng-docs
       run: npm run dgp-ng-docs:build:prod
 
+    - name: Build dgp-ng-docking-layout
+      run: npm run dgp-ng-docking-layout:build:prod
+
+    - name: Build dgp-ng-app-builder:build
+      run: npm run dgp-ng-app-builder:build
+
     - name: Publish dgp-ng-app to npm
       run: npm run dgp-ng-app:publish
       env:
@@ -37,10 +43,28 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+    - name: Publish dgp-ng-docking-layout to npm
+      run: npm run dgp-ng-docking-layout:publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+    - name: Publish dgp-ng-app-builder to npm
+      run: npm run dgp-ng-app-builder:publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
     - name: build docs-app
       run: npm run docs-app:build:prod
 
     - name: Publish docs-app to firebase
       run: npm run docs-app:publish
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+    - name: build dgp-labs
+      run: npm run dgp-labs:build:prod
+
+    - name: Publish dgp-labs to firebase
+      run: npm run dgp-labs:publish
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

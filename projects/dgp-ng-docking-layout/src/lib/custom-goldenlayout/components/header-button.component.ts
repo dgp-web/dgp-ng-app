@@ -3,6 +3,7 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 export class HeaderButtonComponent {
     private _header: any;
     private readonly element: any;
+    private readonly rawElement: any;
     private readonly _action: any;
 
     constructor(header, label, cssClass, action) {
@@ -12,9 +13,15 @@ export class HeaderButtonComponent {
                 label, cssClass
             })
         );
+        this.rawElement = this.element[0];
         this._header.on("destroy", this._$destroy, this);
         this._action = action;
-        this.element.on("click touchstart", this._action);
+        this.rawElement.addEventListener("click", this._action, {
+            passive: true
+        });
+        this.rawElement.addEventListener("touchstart", this._action, {
+            passive: true
+        });
         this._header.controlsContainer.append(this.element);
     }
 

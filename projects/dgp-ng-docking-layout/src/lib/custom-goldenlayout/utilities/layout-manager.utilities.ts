@@ -10,7 +10,7 @@ export class LayoutManagerUtilities {
      * b) it shouldn't pass on the time that has passed
      */
     animFrame(fn) {
-        return (window.requestAnimationFrame ||
+        return window.setTimeout(() => (window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             // tslint:disable-next-line:only-arrow-functions
             function (callback) {
@@ -18,7 +18,7 @@ export class LayoutManagerUtilities {
                 // tslint:disable-next-line:only-arrow-functions
             })(function () {
             fn();
-        });
+        }), 0);
     }
 
     indexOf(needle, haystack) {
