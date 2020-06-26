@@ -30,6 +30,20 @@
                         ]
                     }
                 },
+                "dgp-build": {
+                    "builder": "dgp-ng-app-builder:build",
+                    "options": {
+                        "projectName": "ng-app",
+                        "baseHref": "/",
+                        "assets": [
+                            "projects/ng-app/src/favicon.ico",
+                            "projects/ng-app/src/assets"
+                        ],
+                        "styles": [
+                            "projects/ng-app/src/styles.scss"
+                        ]
+                    }
+                },
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {

@@ -9,6 +9,7 @@ import { CommonModule } from "@angular/common";
 import { logStoreFeature } from "../models";
 import { LOG_STORE_REDUCER, logStoreReducerProvider } from "../log.module";
 import { logError } from "../actions";
+import { MatIconModule } from "@angular/material/icon";
 
 describe(LogEntryListComponent.name, () => {
 
@@ -27,6 +28,7 @@ describe(LogEntryListComponent.name, () => {
                 DgpEmptyStateModule,
                 MatListModule,
                 CommonModule,
+                MatIconModule
             ],
             declarations: [
                 LogEntryListComponent

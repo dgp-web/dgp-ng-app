@@ -3,7 +3,7 @@
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="dgp-serve:docs-app" />
+      <script value="docs-app:dgp-serve" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
