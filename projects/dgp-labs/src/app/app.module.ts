@@ -25,6 +25,7 @@ import { SplitPanelLabsModule } from "./features/split-panel/split-panel-labs.mo
 import { DockingLayoutLabsModule } from "./features/docking-layout/docking-layout-labs.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
+import { ChartsLabsModule } from "./features/charts/charts-labs.module";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -115,6 +116,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
 
         SplitPanelLabsModule,
         DockingLayoutLabsModule,
+        ChartsLabsModule,
         DgpHamburgerMenuModule
     ],
     providers: [appReducerProvider],

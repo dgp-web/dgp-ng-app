@@ -1,8 +1,11 @@
 import { NgModule } from "@angular/core";
 import { components } from "./components";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
-    imports: [],
+    imports: [
+        CommonModule
+    ],
     declarations: [
         ...components
     ],

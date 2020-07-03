@@ -22,6 +22,10 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                                               route="/docking-layout"
                                               matIconName="view_quilt"></dgp-hamburger-menu-entry>
 
+                    <dgp-hamburger-menu-entry label="Charts"
+                                              route="/charts"
+                                              matIconName="pie_chart"></dgp-hamburger-menu-entry>
+
                 </dgp-hamburger-menu-entries>
             </dgp-hamburger-menu>
 

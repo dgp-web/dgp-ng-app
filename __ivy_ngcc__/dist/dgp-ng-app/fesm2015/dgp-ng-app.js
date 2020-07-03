@@ -2,31 +2,33 @@ import { createAction, props, createFeatureSelector, createSelector, select, Sto
 import { __awaiter, __decorate, __param } from 'tslib';
 import { first, tap, switchMap, catchError, defaultIfEmpty, map, bufferTime, filter, distinctUntilChanged, debounceTime, take, concatMap, distinctUntilKeyChanged } from 'rxjs/operators';
 import { Router, RouterModule, ActivatedRoute, ActivationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { Injectable, InjectionToken, APP_INITIALIZER, NgModule, Inject, Input, Component, ChangeDetectionStrategy, EventEmitter, Output, Directive, ComponentFactoryResolver, ViewContainerRef, ChangeDetectorRef, Pipe, ElementRef, ContentChild, TemplateRef, ViewChild, ViewEncapsulation, Renderer2 } from '@angular/core';
-import { isNullOrUndefined, isDate } from 'util';
-import { from, forkJoin, empty, fromEventPattern, interval, of, fromEvent, timer } from 'rxjs';
+import { Injectable, APP_INITIALIZER, InjectionToken, NgModule, Inject, Input, Component, ChangeDetectionStrategy, Directive, EventEmitter, Output, ComponentFactoryResolver, ViewContainerRef, ChangeDetectorRef, Pipe, ElementRef, ContentChild, TemplateRef, ViewChild, ViewEncapsulation, Renderer2 } from '@angular/core';
+import { isNullOrUndefined as isNullOrUndefined$1, isDate } from 'util';
+import { from, forkJoin, empty, fromEventPattern, interval, of, fromEvent, timer, BehaviorSubject } from 'rxjs';
 import { ofType, Actions, Effect, EffectsModule } from '@ngrx/effects';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { uniqBy, isEqual, minBy } from 'lodash';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
-import { DomSanitizer, BrowserModule } from '@angular/platform-browser';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { DomSanitizer, BrowserModule } from '@angular/platform-browser';
 import { getAll, getFirstSelected, createEntityStore, createKVSFromArray, composeEntityActions } from 'entity-store';
 import { MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { Breakpoints, BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { createNewHosts, removeNgStyles } from '@angularclass/hmr';
 import { MatDividerModule } from '@angular/material/divider';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -53,7 +55,8 @@ import * as ɵngcc19 from '@angular/material/snack-bar';
 import * as ɵngcc20 from '@angular/material/slide-toggle';
 import * as ɵngcc21 from '@angular/forms';
 import * as ɵngcc22 from '@angular/cdk/overlay';
-import * as ɵngcc23 from '@angular/cdk/scrolling';
+import * as ɵngcc23 from '@angular/material/card';
+import * as ɵngcc24 from '@angular/cdk/scrolling';
 
 function EmptyStateComponent_dgp_empty_state_icon_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementStart(0, "dgp-empty-state-icon");
@@ -214,6 +217,25 @@ function FileViewerComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
     const ctx_r16 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵproperty("fileItem", ctx_r16.fileItem);
 } }
+function JpgViewerComponent_img_0_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelement(0, "img", 2);
+    ɵngcc0.ɵɵpipe(1, "safe");
+} if (rf & 2) {
+    const ctx_r22 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵpropertyInterpolate("alt", ctx_r22.fileItem.fileName);
+    ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(1, 2, ctx_r22.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
+} }
+function JpgViewerComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "div", 3);
+    ɵngcc0.ɵɵelement(1, "img", 4);
+    ɵngcc0.ɵɵpipe(2, "safe");
+    ɵngcc0.ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r24 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵadvance(1);
+    ɵngcc0.ɵɵpropertyInterpolate("alt", ctx_r24.fileItem.fileName);
+    ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(2, 2, ctx_r24.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
+} }
 function PdfViewerComponent_ng_container_0_ng_container_1_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementContainerStart(0);
     ɵngcc0.ɵɵelementStart(1, "object", 3);
@@ -222,11 +244,11 @@ function PdfViewerComponent_ng_container_0_ng_container_1_Template(rf, ctx) { if
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const ctx_r25 = ɵngcc0.ɵɵnextContext(2);
+    const ctx_r28 = ɵngcc0.ɵɵnextContext(2);
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵattribute("data", ɵngcc0.ɵɵpipeBind2(2, 2, ctx_r25.fileItem.url, "resourceUrl"), ɵngcc0.ɵɵsanitizeResourceUrl);
+    ɵngcc0.ɵɵattribute("data", ɵngcc0.ɵɵpipeBind2(2, 2, ctx_r28.fileItem.url, "resourceUrl"), ɵngcc0.ɵɵsanitizeResourceUrl);
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵproperty("fileItem", ctx_r25.fileItem);
+    ɵngcc0.ɵɵproperty("fileItem", ctx_r28.fileItem);
 } }
 function PdfViewerComponent_ng_container_0_ng_container_2_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementContainerStart(0);
@@ -234,9 +256,9 @@ function PdfViewerComponent_ng_container_0_ng_container_2_Template(rf, ctx) { if
     ɵngcc0.ɵɵpipe(2, "safe");
     ɵngcc0.ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const ctx_r26 = ɵngcc0.ɵɵnextContext(2);
+    const ctx_r29 = ɵngcc0.ɵɵnextContext(2);
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵproperty("innerHTML", ɵngcc0.ɵɵpipeBind2(2, 1, ctx_r26.edgeHTML, "html"), ɵngcc0.ɵɵsanitizeHtml);
+    ɵngcc0.ɵɵproperty("innerHTML", ɵngcc0.ɵɵpipeBind2(2, 1, ctx_r29.edgeHTML, "html"), ɵngcc0.ɵɵsanitizeHtml);
 } }
 function PdfViewerComponent_ng_container_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementContainerStart(0);
@@ -244,41 +266,79 @@ function PdfViewerComponent_ng_container_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵtemplate(2, PdfViewerComponent_ng_container_0_ng_container_2_Template, 3, 4, "ng-container", 2);
     ɵngcc0.ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const ctx_r22 = ɵngcc0.ɵɵnextContext();
+    const ctx_r25 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵproperty("ngIf", ctx_r22.platform.FIREFOX || ctx_r22.platform.BLINK);
+    ɵngcc0.ɵɵproperty("ngIf", ctx_r25.platform.FIREFOX || ctx_r25.platform.BLINK);
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵproperty("ngIf", ctx_r22.platform.EDGE);
+    ɵngcc0.ɵɵproperty("ngIf", ctx_r25.platform.EDGE);
 } }
 function PdfViewerComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelement(0, "dgp-fallback-file-viewer", 4);
 } if (rf & 2) {
-    const ctx_r24 = ɵngcc0.ɵɵnextContext();
-    ɵngcc0.ɵɵproperty("fileItem", ctx_r24.fileItem);
+    const ctx_r27 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵproperty("fileItem", ctx_r27.fileItem);
+} }
+function PngViewerComponent_img_0_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelement(0, "img", 2);
+    ɵngcc0.ɵɵpipe(1, "safe");
+} if (rf & 2) {
+    const ctx_r30 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵpropertyInterpolate("alt", ctx_r30.fileItem.fileName);
+    ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(1, 2, ctx_r30.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
+} }
+function PngViewerComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "div", 3);
+    ɵngcc0.ɵɵelement(1, "img", 4);
+    ɵngcc0.ɵɵpipe(2, "safe");
+    ɵngcc0.ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r32 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵadvance(1);
+    ɵngcc0.ɵɵpropertyInterpolate("alt", ctx_r32.fileItem.fileName);
+    ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(2, 2, ctx_r32.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
+} }
+function SvgViewerComponent_img_0_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelement(0, "img", 2);
+    ɵngcc0.ɵɵpipe(1, "safe");
+} if (rf & 2) {
+    const ctx_r33 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵpropertyInterpolate("alt", ctx_r33.fileItem.fileName);
+    ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(1, 2, ctx_r33.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
+} }
+function SvgViewerComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "div", 3);
+    ɵngcc0.ɵɵelement(1, "img", 4);
+    ɵngcc0.ɵɵpipe(2, "safe");
+    ɵngcc0.ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r35 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵadvance(1);
+    ɵngcc0.ɵɵpropertyInterpolate("alt", ctx_r35.fileItem.fileName);
+    ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(2, 2, ctx_r35.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
 } }
 function FileManagerComponent_ng_container_0_button_4_Template(rf, ctx) { if (rf & 1) {
-    const _r36 = ɵngcc0.ɵɵgetCurrentView();
+    const _r45 = ɵngcc0.ɵɵgetCurrentView();
     ɵngcc0.ɵɵelementStart(0, "button", 7);
-    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_container_0_button_4_Template_button_click_0_listener() { ɵngcc0.ɵɵrestoreView(_r36); const ctx_r35 = ɵngcc0.ɵɵnextContext(2); return ctx_r35.maximize(); });
+    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_container_0_button_4_Template_button_click_0_listener() { ɵngcc0.ɵɵrestoreView(_r45); const ctx_r44 = ɵngcc0.ɵɵnextContext(2); return ctx_r44.maximize(); });
     ɵngcc0.ɵɵelementStart(1, "mat-icon");
     ɵngcc0.ɵɵtext(2, "crop_din");
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementEnd();
 } }
 function FileManagerComponent_ng_container_0_button_5_Template(rf, ctx) { if (rf & 1) {
-    const _r38 = ɵngcc0.ɵɵgetCurrentView();
+    const _r47 = ɵngcc0.ɵɵgetCurrentView();
     ɵngcc0.ɵɵelementStart(0, "button", 8);
-    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_container_0_button_5_Template_button_click_0_listener() { ɵngcc0.ɵɵrestoreView(_r38); const ctx_r37 = ɵngcc0.ɵɵnextContext(2); return ctx_r37.minimize(); });
+    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_container_0_button_5_Template_button_click_0_listener() { ɵngcc0.ɵɵrestoreView(_r47); const ctx_r46 = ɵngcc0.ɵɵnextContext(2); return ctx_r46.minimize(); });
     ɵngcc0.ɵɵelementStart(1, "mat-icon");
     ɵngcc0.ɵɵtext(2, "filter_none");
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementEnd();
 } }
 function FileManagerComponent_ng_container_0_dgp_list_details_page_9_mat_nav_list_6_Template(rf, ctx) { if (rf & 1) {
-    const _r42 = ɵngcc0.ɵɵgetCurrentView();
+    const _r51 = ɵngcc0.ɵɵgetCurrentView();
     ɵngcc0.ɵɵelementStart(0, "mat-nav-list");
     ɵngcc0.ɵɵelementStart(1, "a", 13);
-    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_container_0_dgp_list_details_page_9_mat_nav_list_6_Template_a_click_1_listener() { ɵngcc0.ɵɵrestoreView(_r42); const _r40 = ɵngcc0.ɵɵreference(7); return _r40.click(); });
+    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_container_0_dgp_list_details_page_9_mat_nav_list_6_Template_a_click_1_listener() { ɵngcc0.ɵɵrestoreView(_r51); const _r49 = ɵngcc0.ɵɵreference(7); return _r49.click(); });
     ɵngcc0.ɵɵelementStart(2, "mat-icon");
     ɵngcc0.ɵɵtext(3, " open_in_new ");
     ɵngcc0.ɵɵelementEnd();
@@ -286,17 +346,17 @@ function FileManagerComponent_ng_container_0_dgp_list_details_page_9_mat_nav_lis
     ɵngcc0.ɵɵtext(5, " Choose file via picker ");
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementStart(6, "input", 15, 16);
-    ɵngcc0.ɵɵlistener("change", function FileManagerComponent_ng_container_0_dgp_list_details_page_9_mat_nav_list_6_Template_input_change_6_listener($event) { ɵngcc0.ɵɵrestoreView(_r42); const ctx_r43 = ɵngcc0.ɵɵnextContext(3); return ctx_r43.onFileSelected($event); });
+    ɵngcc0.ɵɵlistener("change", function FileManagerComponent_ng_container_0_dgp_list_details_page_9_mat_nav_list_6_Template_input_change_6_listener($event) { ɵngcc0.ɵɵrestoreView(_r51); const ctx_r52 = ɵngcc0.ɵɵnextContext(3); return ctx_r52.onFileSelected($event); });
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementEnd();
 } }
 function FileManagerComponent_ng_container_0_dgp_list_details_page_9_Template(rf, ctx) { if (rf & 1) {
-    const _r45 = ɵngcc0.ɵɵgetCurrentView();
+    const _r54 = ɵngcc0.ɵɵgetCurrentView();
     ɵngcc0.ɵɵelementStart(0, "dgp-list-details-page");
     ɵngcc0.ɵɵelementContainerStart(1, 9);
     ɵngcc0.ɵɵelementStart(2, "dgp-file-item-list", 10);
-    ɵngcc0.ɵɵlistener("fileItemRemoved", function FileManagerComponent_ng_container_0_dgp_list_details_page_9_Template_dgp_file_item_list_fileItemRemoved_2_listener($event) { ɵngcc0.ɵɵrestoreView(_r45); const ctx_r44 = ɵngcc0.ɵɵnextContext(2); return ctx_r44.removeFileItem($event); });
+    ɵngcc0.ɵɵlistener("fileItemRemoved", function FileManagerComponent_ng_container_0_dgp_list_details_page_9_Template_dgp_file_item_list_fileItemRemoved_2_listener($event) { ɵngcc0.ɵɵrestoreView(_r54); const ctx_r53 = ɵngcc0.ɵɵnextContext(2); return ctx_r53.removeFileItem($event); });
     ɵngcc0.ɵɵpipe(3, "async");
     ɵngcc0.ɵɵpipe(4, "async");
     ɵngcc0.ɵɵelementEnd();
@@ -308,20 +368,20 @@ function FileManagerComponent_ng_container_0_dgp_list_details_page_9_Template(rf
     ɵngcc0.ɵɵpipe(9, "async");
     ɵngcc0.ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r32 = ɵngcc0.ɵɵnextContext(2);
+    const ctx_r41 = ɵngcc0.ɵɵnextContext(2);
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵproperty("model", ɵngcc0.ɵɵpipeBind1(3, 4, ctx_r32.fileItemListModel$))("disabled", ɵngcc0.ɵɵpipeBind1(4, 6, ctx_r32.isRemoveFilesDisabled$));
+    ɵngcc0.ɵɵproperty("model", ɵngcc0.ɵɵpipeBind1(3, 4, ctx_r41.fileItemListModel$))("disabled", ɵngcc0.ɵɵpipeBind1(4, 6, ctx_r41.isRemoveFilesDisabled$));
     ɵngcc0.ɵɵadvance(4);
-    ɵngcc0.ɵɵproperty("ngIf", !ɵngcc0.ɵɵpipeBind1(7, 8, ctx_r32.isAddFilesDisabled$));
+    ɵngcc0.ɵɵproperty("ngIf", !ɵngcc0.ɵɵpipeBind1(7, 8, ctx_r41.isAddFilesDisabled$));
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵproperty("fileItem", ɵngcc0.ɵɵpipeBind1(9, 10, ctx_r32.selectedFileItem$));
+    ɵngcc0.ɵɵproperty("fileItem", ɵngcc0.ɵɵpipeBind1(9, 10, ctx_r41.selectedFileItem$));
 } }
 function FileManagerComponent_ng_container_0_ng_template_11_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelement(0, "dgp-file-viewer", 12);
     ɵngcc0.ɵɵpipe(1, "async");
 } if (rf & 2) {
-    const ctx_r34 = ɵngcc0.ɵɵnextContext(2);
-    ɵngcc0.ɵɵproperty("fileItem", ɵngcc0.ɵɵpipeBind1(1, 1, ctx_r34.selectedFileItem$));
+    const ctx_r43 = ɵngcc0.ɵɵnextContext(2);
+    ɵngcc0.ɵɵproperty("fileItem", ɵngcc0.ɵɵpipeBind1(1, 1, ctx_r43.selectedFileItem$));
 } }
 function FileManagerComponent_ng_container_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementContainerStart(0);
@@ -341,24 +401,24 @@ function FileManagerComponent_ng_container_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵtemplate(11, FileManagerComponent_ng_container_0_ng_template_11_Template, 2, 3, "ng-template", null, 6, ɵngcc0.ɵɵtemplateRefExtractor);
     ɵngcc0.ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const _r33 = ɵngcc0.ɵɵreference(12);
-    const ctx_r27 = ɵngcc0.ɵɵnextContext();
+    const _r42 = ɵngcc0.ɵɵreference(12);
+    const ctx_r36 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵadvance(4);
-    ɵngcc0.ɵɵproperty("ngIf", !ctx_r27.isMaximized);
+    ɵngcc0.ɵɵproperty("ngIf", !ctx_r36.isMaximized);
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵproperty("ngIf", ctx_r27.isMaximized);
+    ɵngcc0.ɵɵproperty("ngIf", ctx_r36.isMaximized);
     ɵngcc0.ɵɵadvance(4);
-    ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(10, 4, ctx_r27.canOpenFileDrawer$))("ngIfElse", _r33);
+    ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(10, 4, ctx_r36.canOpenFileDrawer$))("ngIfElse", _r42);
 } }
 function FileManagerComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
-    const _r48 = ɵngcc0.ɵɵgetCurrentView();
+    const _r57 = ɵngcc0.ɵɵgetCurrentView();
     ɵngcc0.ɵɵelementStart(0, "dgp-empty-state", 17);
     ɵngcc0.ɵɵtext(1, " Drop one or more files into this zone to upload them. ");
     ɵngcc0.ɵɵelement(2, "br");
     ɵngcc0.ɵɵtext(3, " You can preview them afterward. ");
     ɵngcc0.ɵɵelement(4, "br");
     ɵngcc0.ɵɵelementStart(5, "button", 18);
-    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_template_2_Template_button_click_5_listener() { ɵngcc0.ɵɵrestoreView(_r48); const _r46 = ɵngcc0.ɵɵreference(11); return _r46.click(); });
+    ɵngcc0.ɵɵlistener("click", function FileManagerComponent_ng_template_2_Template_button_click_5_listener() { ɵngcc0.ɵɵrestoreView(_r57); const _r55 = ɵngcc0.ɵɵreference(11); return _r55.click(); });
     ɵngcc0.ɵɵpipe(6, "async");
     ɵngcc0.ɵɵelementStart(7, "mat-icon", 19);
     ɵngcc0.ɵɵtext(8, "open_in_new");
@@ -366,13 +426,13 @@ function FileManagerComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵtext(9, " Choose file via picker ");
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementStart(10, "input", 15, 16);
-    ɵngcc0.ɵɵlistener("change", function FileManagerComponent_ng_template_2_Template_input_change_10_listener($event) { ɵngcc0.ɵɵrestoreView(_r48); const ctx_r49 = ɵngcc0.ɵɵnextContext(); return ctx_r49.onFileSelected($event); });
+    ɵngcc0.ɵɵlistener("change", function FileManagerComponent_ng_template_2_Template_input_change_10_listener($event) { ɵngcc0.ɵɵrestoreView(_r57); const ctx_r58 = ɵngcc0.ɵɵnextContext(); return ctx_r58.onFileSelected($event); });
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r29 = ɵngcc0.ɵɵnextContext();
+    const ctx_r38 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵadvance(5);
-    ɵngcc0.ɵɵproperty("disabled", ɵngcc0.ɵɵpipeBind1(6, 1, ctx_r29.isAddFilesDisabled$));
+    ɵngcc0.ɵɵproperty("disabled", ɵngcc0.ɵɵpipeBind1(6, 1, ctx_r38.isAddFilesDisabled$));
 } }
 function PageHeaderComponent_mat_progress_bar_2_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelement(0, "mat-progress-bar", 3);
@@ -394,6 +454,37 @@ function HamburgerShellComponent_mat_progress_bar_5_Template(rf, ctx) { if (rf &
 } }
 const _c5 = [[["", "dgp-hamburger-menu", ""]], "*"];
 const _c6 = ["[dgp-hamburger-menu]", "*"];
+function HamburgerMenuEntryComponent_a_0_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "a", 2);
+    ɵngcc0.ɵɵelementStart(1, "mat-icon");
+    ɵngcc0.ɵɵtext(2);
+    ɵngcc0.ɵɵelementEnd();
+    ɵngcc0.ɵɵtext(3);
+    ɵngcc0.ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r64 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵclassProp("disabled", ctx_r64.disabled);
+    ɵngcc0.ɵɵproperty("routerLink", ctx_r64.route)("routerLinkActive", "dgp-list-item--selected");
+    ɵngcc0.ɵɵattribute("tabindex", ctx_r64.disabled ? 0 - 1 : 0);
+    ɵngcc0.ɵɵadvance(2);
+    ɵngcc0.ɵɵtextInterpolate(ctx_r64.matIconName);
+    ɵngcc0.ɵɵadvance(1);
+    ɵngcc0.ɵɵtextInterpolate1(" ", ctx_r64.label, " ");
+} }
+function HamburgerMenuEntryComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "a", 3);
+    ɵngcc0.ɵɵelementStart(1, "mat-icon");
+    ɵngcc0.ɵɵtext(2);
+    ɵngcc0.ɵɵelementEnd();
+    ɵngcc0.ɵɵtext(3);
+    ɵngcc0.ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r66 = ɵngcc0.ɵɵnextContext();
+    ɵngcc0.ɵɵadvance(2);
+    ɵngcc0.ɵɵtextInterpolate(ctx_r66.matIconName);
+    ɵngcc0.ɵɵadvance(1);
+    ɵngcc0.ɵɵtextInterpolate1(" ", ctx_r66.label, " ");
+} }
 function LogEntryListComponent_mat_nav_list_0_a_3_mat_icon_1_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementStart(0, "mat-icon", 7);
     ɵngcc0.ɵɵtext(1, " error ");
@@ -412,15 +503,15 @@ function LogEntryListComponent_mat_nav_list_0_a_3_Template(rf, ctx) { if (rf & 1
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementEnd();
 } if (rf & 2) {
-    const logEntry_r59 = ctx.$implicit;
-    const ctx_r58 = ɵngcc0.ɵɵnextContext(2);
-    ɵngcc0.ɵɵproperty("routerLink", ɵngcc0.ɵɵpureFunction1(7, _c7, logEntry_r59.timeStamp.toString()));
+    const logEntry_r71 = ctx.$implicit;
+    const ctx_r70 = ɵngcc0.ɵɵnextContext(2);
+    ɵngcc0.ɵɵproperty("routerLink", ɵngcc0.ɵɵpureFunction1(7, _c7, logEntry_r71.timeStamp.toString()));
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵproperty("ngIf", logEntry_r59.severity === ctx_r58.severityEnum.Error);
+    ɵngcc0.ɵɵproperty("ngIf", logEntry_r71.severity === ctx_r70.severityEnum.Error);
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵtextInterpolate1(" ", logEntry_r59.title, " ");
+    ɵngcc0.ɵɵtextInterpolate1(" ", logEntry_r71.title, " ");
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵtextInterpolate1(" ", ɵngcc0.ɵɵpipeBind2(6, 4, logEntry_r59.timeStamp, "medium"), " ");
+    ɵngcc0.ɵɵtextInterpolate1(" ", ɵngcc0.ɵɵpipeBind2(6, 4, logEntry_r71.timeStamp, "medium"), " ");
 } }
 function LogEntryListComponent_mat_nav_list_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelementStart(0, "mat-nav-list");
@@ -431,9 +522,9 @@ function LogEntryListComponent_mat_nav_list_0_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵpipe(4, "async");
     ɵngcc0.ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r55 = ɵngcc0.ɵɵnextContext();
+    const ctx_r67 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵadvance(3);
-    ɵngcc0.ɵɵproperty("ngForOf", ɵngcc0.ɵɵpipeBind1(4, 1, ctx_r55.logEntries$));
+    ɵngcc0.ɵɵproperty("ngForOf", ɵngcc0.ɵɵpipeBind1(4, 1, ctx_r67.logEntries$));
 } }
 function LogEntryListComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     ɵngcc0.ɵɵelement(0, "dgp-empty-state", 8);
@@ -448,18 +539,36 @@ function LogEntryDetailsComponent_ng_container_0_ng_container_14_Template(rf, ct
     ɵngcc0.ɵɵtext(1, " Error ");
     ɵngcc0.ɵɵelementContainerEnd();
 } }
-function LogEntryDetailsComponent_ng_container_0_div_17_Template(rf, ctx) { if (rf & 1) {
-    ɵngcc0.ɵɵelementStart(0, "div", 10);
+function LogEntryDetailsComponent_ng_container_0_div_17_ng_container_1_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementContainerStart(0);
     ɵngcc0.ɵɵtext(1);
     ɵngcc0.ɵɵpipe(2, "json");
+    ɵngcc0.ɵɵelementContainerEnd();
+} if (rf & 2) {
+    const ctx_r81 = ɵngcc0.ɵɵnextContext(3);
+    ɵngcc0.ɵɵadvance(1);
+    ɵngcc0.ɵɵtextInterpolate1(" ", ɵngcc0.ɵɵpipeBind1(2, 1, ctx_r81.logEntry.content), " ");
+} }
+function LogEntryDetailsComponent_ng_container_0_div_17_ng_template_2_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelement(0, "div", 16);
+    ɵngcc0.ɵɵpipe(1, "safe");
+} if (rf & 2) {
+    const ctx_r83 = ɵngcc0.ɵɵnextContext(3);
+    ɵngcc0.ɵɵproperty("innerHTML", ɵngcc0.ɵɵpipeBind2(1, 1, ctx_r83.logEntry.content.error, "html"), ɵngcc0.ɵɵsanitizeHtml);
+} }
+function LogEntryDetailsComponent_ng_container_0_div_17_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "div", 10);
+    ɵngcc0.ɵɵtemplate(1, LogEntryDetailsComponent_ng_container_0_div_17_ng_container_1_Template, 3, 3, "ng-container", 0);
+    ɵngcc0.ɵɵtemplate(2, LogEntryDetailsComponent_ng_container_0_div_17_ng_template_2_Template, 2, 4, "ng-template", null, 15, ɵngcc0.ɵɵtemplateRefExtractor);
     ɵngcc0.ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r66 = ɵngcc0.ɵɵnextContext(2);
+    const _r82 = ɵngcc0.ɵɵreference(3);
+    const ctx_r78 = ɵngcc0.ɵɵnextContext(2);
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵtextInterpolate1(" ", ɵngcc0.ɵɵpipeBind1(2, 1, ctx_r66.logEntry.content), " ");
+    ɵngcc0.ɵɵproperty("ngIf", !ctx_r78.isApiError())("ngIfElse", _r82);
 } }
 function LogEntryDetailsComponent_ng_container_0_ng_template_18_Template(rf, ctx) { if (rf & 1) {
-    ɵngcc0.ɵɵelementStart(0, "div", 15);
+    ɵngcc0.ɵɵelementStart(0, "div", 17);
     ɵngcc0.ɵɵtext(1, " This log entry doesn't contain additional content. ");
     ɵngcc0.ɵɵelementEnd();
 } }
@@ -488,26 +597,26 @@ function LogEntryDetailsComponent_ng_container_0_Template(rf, ctx) { if (rf & 1)
     ɵngcc0.ɵɵelementStart(15, "h2", 9);
     ɵngcc0.ɵɵtext(16, " Content ");
     ɵngcc0.ɵɵelementEnd();
-    ɵngcc0.ɵɵtemplate(17, LogEntryDetailsComponent_ng_container_0_div_17_Template, 3, 3, "div", 12);
+    ɵngcc0.ɵɵtemplate(17, LogEntryDetailsComponent_ng_container_0_div_17_Template, 4, 2, "div", 12);
     ɵngcc0.ɵɵtemplate(18, LogEntryDetailsComponent_ng_container_0_ng_template_18_Template, 2, 0, "ng-template", null, 13, ɵngcc0.ɵɵtemplateRefExtractor);
     ɵngcc0.ɵɵelementEnd();
     ɵngcc0.ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const _r67 = ɵngcc0.ɵɵreference(19);
-    const ctx_r61 = ɵngcc0.ɵɵnextContext();
+    const _r79 = ɵngcc0.ɵɵreference(19);
+    const ctx_r73 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵproperty("ngIf", ctx_r61.logEntry.severity === ctx_r61.severityEnum.Error);
+    ɵngcc0.ɵɵproperty("ngIf", ctx_r73.logEntry.severity === ctx_r73.severityEnum.Error);
     ɵngcc0.ɵɵadvance(3);
-    ɵngcc0.ɵɵtextInterpolate1(" ", ctx_r61.logEntry.title, " ");
+    ɵngcc0.ɵɵtextInterpolate1(" ", ctx_r73.logEntry.title, " ");
     ɵngcc0.ɵɵadvance(2);
-    ɵngcc0.ɵɵtextInterpolate1(" ", ɵngcc0.ɵɵpipeBind2(8, 6, ctx_r61.logEntry.timeStamp, "medium"), " ");
+    ɵngcc0.ɵɵtextInterpolate1(" ", ɵngcc0.ɵɵpipeBind2(8, 6, ctx_r73.logEntry.timeStamp, "medium"), " ");
     ɵngcc0.ɵɵadvance(7);
-    ɵngcc0.ɵɵproperty("ngIf", ctx_r61.logEntry.severity === ctx_r61.severityEnum.Error);
+    ɵngcc0.ɵɵproperty("ngIf", ctx_r73.logEntry.severity === ctx_r73.severityEnum.Error);
     ɵngcc0.ɵɵadvance(3);
-    ɵngcc0.ɵɵproperty("ngIf", ctx_r61.logEntry.content)("ngIfElse", _r67);
+    ɵngcc0.ɵɵproperty("ngIf", ctx_r73.logEntry.content)("ngIfElse", _r79);
 } }
 function LogEntryDetailsComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
-    ɵngcc0.ɵɵelementStart(0, "dgp-empty-state", 16);
+    ɵngcc0.ɵɵelementStart(0, "dgp-empty-state", 18);
     ɵngcc0.ɵɵtext(1, " Pick one from the list to the left. ");
     ɵngcc0.ɵɵelementEnd();
 } }
@@ -521,10 +630,10 @@ function VirtualListPanelComponent_ng_container_1_Template(rf, ctx) { if (rf & 1
     ɵngcc0.ɵɵtemplate(1, VirtualListPanelComponent_ng_container_1_ng_container_1_Template, 1, 0, "ng-container", 2);
     ɵngcc0.ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const item_r71 = ctx.$implicit;
-    const ctx_r70 = ɵngcc0.ɵɵnextContext();
+    const item_r86 = ctx.$implicit;
+    const ctx_r85 = ɵngcc0.ɵɵnextContext();
     ɵngcc0.ɵɵadvance(1);
-    ɵngcc0.ɵɵproperty("ngTemplateOutlet", ctx_r70.itemTemplate)("ngTemplateOutletContext", ɵngcc0.ɵɵpureFunction1(2, _c9, item_r71));
+    ɵngcc0.ɵɵproperty("ngTemplateOutlet", ctx_r85.itemTemplate)("ngTemplateOutletContext", ɵngcc0.ɵɵpureFunction1(2, _c9, item_r86));
 } }
 const authenticateUser = createAction("[Authentication] AuthenticateUser", props());
 const cacheInitialUrl = createAction("[Authentication] CacheInitialUrl", props());
@@ -545,7 +654,7 @@ const ɵ1 = x => x.user;
 const getAuthenticatedUserSelector = createSelector(authenticationFeatureSelector, ɵ1);
 const ɵ2 = x => x.initialUrl;
 const getCachedInitialUrlSelector = createSelector(authenticationFeatureSelector, ɵ2);
-const ɵ3 = x => !isNullOrUndefined(x);
+const ɵ3 = x => !isNullOrUndefined$1(x);
 const hasCachedInitialUrlSelector = createSelector(getCachedInitialUrlSelector, ɵ3);
 
 let AuthenticationGuard = class AuthenticationGuard {
@@ -632,15 +741,7 @@ const ɵ0$1 = (state, action) => {
 }, ɵ2$1 = (state, action) => {
     return Object.assign(Object.assign({}, state), { error: action.error, success: false });
 };
-const authenticationReducerImpl = createReducer(initialAuthenticationState, on(authenticateUser, ɵ0$1), on(cacheInitialUrl, ɵ1$1), on(registerAuthenticateError, ɵ2$1));
-const authenticationReducer = new InjectionToken("authenticationReducer");
-function authenticationReducerFactory() {
-    return authenticationReducerImpl;
-}
-const authenticationReducerProvider = {
-    provide: authenticationReducer,
-    useFactory: authenticationReducerFactory
-};
+const authenticationReducer = createReducer(initialAuthenticationState, on(authenticateUser, ɵ0$1), on(cacheInitialUrl, ɵ1$1), on(registerAuthenticateError, ɵ2$1));
 
 /**
  * Logic executed before the app loads
@@ -665,6 +766,14 @@ const appInitializerProvider = {
 };
 
 var DgpAuthenticationModule_1;
+const AUTHENTICATION_REDUCER = new InjectionToken("authenticationReducer");
+function authenticationReducerFactory() {
+    return authenticationReducer;
+}
+const authenticationReducerProvider = {
+    provide: AUTHENTICATION_REDUCER,
+    useFactory: authenticationReducerFactory
+};
 let DgpAuthenticationModule = DgpAuthenticationModule_1 = class DgpAuthenticationModule {
     static forRoot(settings) {
         return {
@@ -683,7 +792,7 @@ DgpAuthenticationModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function D
         AuthenticationGuard,
         authenticationServiceProvider
     ], imports: [[
-            StoreModule.forFeature(authenticationStoreFeature, authenticationReducer)
+            StoreModule.forFeature(authenticationStoreFeature, AUTHENTICATION_REDUCER)
         ]] });
 
 const setOwnBroadcastRoleActionType = "[BroadcastChannel] SetOwnRole";
@@ -708,6 +817,21 @@ const peonActionTypePrefix = "[Peon] ";
 const compositeActionTypePrefix = "[Composite] ";
 const trackRequestActionTypePrefix = "[Request] ";
 
+const heartbeatBroadcastChannelId = "HeartbeatBroadcastChannel";
+const actionBroadcastChannelId = "ActionBroadcastChannel";
+const defaultBroadcastRoleDisplayConfig = {
+    leaderBrowserTabTitleSuffix: ": Leader",
+    peonBrowserTabTitleSuffix: ": Peon"
+};
+const defaultBroadcastConfig = {
+    heartbeartBroadcastInterval: 1000,
+    incomingHeartbeatBufferInterval: 3000,
+    heartbeatBroadcastChannelId,
+    actionBroadcastChannelId,
+    actionTypesToPrefixWithPeon: [],
+    updateBrowserTabTitleConfig: defaultBroadcastRoleDisplayConfig
+};
+const BROADCAST_CONFIG = new InjectionToken("DEFAULT_BROADCAST_CONFIG");
 var BroadcastRole;
 (function (BroadcastRole) {
     BroadcastRole[BroadcastRole["None"] = 0] = "None";
@@ -717,22 +841,14 @@ var BroadcastRole;
 
 const broadcastStoreFeature = "Broadcast";
 const broadcastStoreFeatureSelector = createFeatureSelector(broadcastStoreFeature);
-const broadcastReducer = new InjectionToken("BroadcastStoreReducer");
 const ɵ0$2 = (state, action) => {
     return {
         ownRole: action.broadcastRole
     };
 };
-const broadcastReducerImpl = createReducer({ ownRole: BroadcastRole.None }, on(setOwnBroadcastRole, ɵ0$2));
-function broadcastReducerFactory() {
-    return broadcastReducerImpl;
-}
-const broadcastReducerProvider = {
-    provide: broadcastReducer,
-    useFactory: broadcastReducerFactory
-};
+const broadcastReducer = createReducer({ ownRole: BroadcastRole.None }, on(setOwnBroadcastRole, ɵ0$2));
 const ɵ1$2 = (x) => {
-    if (isNullOrUndefined(x)) {
+    if (isNullOrUndefined$1(x)) {
         return null;
     }
     return x.ownRole;
@@ -755,30 +871,13 @@ NoPeonGuard.ctorParameters = () => [
     { type: Store }
 ];
 
+const crypto = window.crypto || window.msCrypto; // for IE 11
 function createGuid() {
     // @ts-ignore
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => 
     // tslint:disable-next-line:no-bitwise
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
 }
-
-const heartbeatBroadcastChannelId = "HeartbeatBroadcastChannel";
-const actionBroadcastChannelId = "ActionBroadcastChannel";
-
-const defaultBroadcastRoleDisplayConfig = {
-    leaderBrowserTabTitleSuffix: ": Leader",
-    peonBrowserTabTitleSuffix: ": Peon"
-};
-
-const defaultBroadcastConfig = {
-    heartbeartBroadcastInterval: 1000,
-    incomingHeartbeatBufferInterval: 3000,
-    heartbeatBroadcastChannelId,
-    actionBroadcastChannelId,
-    actionTypesToPrefixWithPeon: [],
-    updateBrowserTabTitleConfig: defaultBroadcastRoleDisplayConfig
-};
-const BROADCAST_CONFIG = new InjectionToken("DEFAULT_BROADCAST_CONFIG");
 
 function prefixAction(payload) {
     return Object.assign({}, payload.action, {
@@ -867,7 +966,7 @@ class BroadcastChannelLocalStorageFallbackService {
             if (ev.key !== this.channelId) {
                 return;
             }
-            if (isNullOrUndefined(ev.newValue)) {
+            if (isNullOrUndefined$1(ev.newValue)) {
                 return;
             }
             const message = JSON.parse(ev.newValue);
@@ -985,12 +1084,12 @@ function trimIncomingBroadcastAction(action) {
  * @param payload
  */
 function getDistinctHeartbeatsForChannel(payload) {
-    if (isNullOrUndefined(payload.channelDataId)) {
+    if (isNullOrUndefined$1(payload.channelDataId)) {
         return [];
     }
     const distinctHearbeats = uniqBy(payload.heartbeats, (x) => x.participantId);
     return distinctHearbeats.filter(x => {
-        if (isNullOrUndefined(x.dataId)) {
+        if (isNullOrUndefined$1(x.dataId)) {
             return false;
         }
         return isEqual(x.dataId, payload.channelDataId);
@@ -1007,7 +1106,7 @@ function shouldBroadcastParticipantChangeRole(payload) {
         newRole: null
     };
     const ownHeartbeat = payload.heartbeats.find(x => x.participantId === payload.participantId);
-    if (isNullOrUndefined(ownHeartbeat.dataId)) {
+    if (isNullOrUndefined$1(ownHeartbeat.dataId)) {
         if (payload.currentBroadcastRole !== BroadcastRole.None) {
             return {
                 newBroadcastRole: BroadcastRole.None,
@@ -1068,8 +1167,8 @@ function createBroadcastAction(payload) {
 }
 
 function filterIncomingBroadcastAction(payload) {
-    const doDataIdsExist = !isNullOrUndefined(payload.action.dataId)
-        && !isNullOrUndefined(payload.dataId);
+    const doDataIdsExist = !isNullOrUndefined$1(payload.action.dataId)
+        && !isNullOrUndefined$1(payload.dataId);
     if (!doDataIdsExist) {
         return false;
     }
@@ -1105,7 +1204,7 @@ function shouldUpdateBrowserTabBroadcastRoleDisplay(payload, config = defaultSho
             broadcastRoleLabel = config.peonBrowserTabTitleSuffix;
             break;
     }
-    if (!isNullOrUndefined(broadcastRoleLabel)) {
+    if (!isNullOrUndefined$1(broadcastRoleLabel)) {
         updatedTabTitle = payload.currentBrowserTabTitle;
         if (updatedTabTitle.endsWith(config.leaderBrowserTabTitleSuffix)) {
             updatedTabTitle = updatedTabTitle.replace(config.leaderBrowserTabTitleSuffix, "");
@@ -1127,7 +1226,7 @@ function shouldUpdateBrowserTabBroadcastRoleDisplay(payload, config = defaultSho
     if (updatedTabTitle !== payload.currentBrowserTabTitle) {
         result.updatedBrowserTabTitle = updatedTabTitle;
     }
-    result.shouldUpdateRoleDisplay = !isNullOrUndefined(result.updatedBrowserTabTitle);
+    result.shouldUpdateRoleDisplay = !isNullOrUndefined$1(result.updatedBrowserTabTitle);
     return result;
 }
 
@@ -1186,8 +1285,8 @@ let BroadcastEffects = class BroadcastEffects {
             else {
                 return null;
             }
-        }), filter(x => !isNullOrUndefined(x)));
-        this.displayBroadcastRoleInBrowserTabTitle$ = this.actions$.pipe(ofType(setOwnBroadcastRole), filter(() => !isNullOrUndefined(this.config.updateBrowserTabTitleConfig)), tap(action => {
+        }), filter(x => !isNullOrUndefined$1(x)));
+        this.displayBroadcastRoleInBrowserTabTitle$ = this.actions$.pipe(ofType(setOwnBroadcastRole), filter(() => !isNullOrUndefined$1(this.config.updateBrowserTabTitleConfig)), tap(action => {
             const result = shouldUpdateBrowserTabBroadcastRoleDisplay({
                 currentBroadcastRole: action.broadcastRole,
                 currentBrowserTabTitle: window.document.title
@@ -1211,7 +1310,7 @@ let BroadcastEffects = class BroadcastEffects {
             else {
                 return of(null);
             }
-        }), filter(x => !isNullOrUndefined(x)), map((action) => {
+        }), filter(x => !isNullOrUndefined$1(x)), map((action) => {
             return Object.assign({}, action, {
                 type: leaderActionTypePrefix + action.type
             });
@@ -1306,6 +1405,14 @@ BroadcastEffects = __decorate([ __param(3, Inject(BROADCAST_CONFIG))
 ], BroadcastEffects);
 
 var DgpBroadcastStoreModule_1;
+const BROADCAST_REDUCER = new InjectionToken("BroadcastStoreReducer");
+function broadcastReducerFactory() {
+    return broadcastReducer;
+}
+const broadcastReducerProvider = {
+    provide: BROADCAST_REDUCER,
+    useFactory: broadcastReducerFactory
+};
 const ɵ0$3 = defaultBroadcastConfig;
 let DgpBroadcastStoreModule = DgpBroadcastStoreModule_1 = class DgpBroadcastStoreModule {
     static forRoot(config = defaultBroadcastConfig) {
@@ -1328,7 +1435,7 @@ DgpBroadcastStoreModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function D
         NoPeonGuard,
         broadcastReducerProvider
     ], imports: [[
-            StoreModule.forFeature(broadcastStoreFeature, broadcastReducer),
+            StoreModule.forFeature(broadcastStoreFeature, BROADCAST_REDUCER),
             EffectsModule.forFeature([
                 BroadcastEffects
             ]),
@@ -1450,8 +1557,19 @@ function getFileFromFileItem$(fileItem) {
     });
 }
 
-let FallbackFileViewerComponent = class FallbackFileViewerComponent {
+let FileViewerComponentBase = 
+// tslint:disable-next-line:directive-class-suffix
+class FileViewerComponentBase {
+};
+FileViewerComponentBase.ɵfac = function FileViewerComponentBase_Factory(t) { return new (t || FileViewerComponentBase)(); };
+FileViewerComponentBase.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: FileViewerComponentBase, inputs: { fileItem: "fileItem" } });
+__decorate([
+    Input()
+], FileViewerComponentBase.prototype, "fileItem", void 0);
+
+let FallbackFileViewerComponent = class FallbackFileViewerComponent extends FileViewerComponentBase {
     constructor(platform) {
+        super();
         this.platform = platform;
         this.isTridentOrEdge = this.platform.TRIDENT || this.platform.EDGE;
     }
@@ -1466,7 +1584,7 @@ let FallbackFileViewerComponent = class FallbackFileViewerComponent {
     }
 };
 FallbackFileViewerComponent.ɵfac = function FallbackFileViewerComponent_Factory(t) { return new (t || FallbackFileViewerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc6.Platform)); };
-FallbackFileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FallbackFileViewerComponent, selectors: [["dgp-fallback-file-viewer"]], inputs: { fileItem: "fileItem" }, decls: 4, vars: 2, consts: [["title", "No preview available", "matIconName", "get_app"], ["class", "download-link", "target", "_blank", 3, "href", 4, "ngIf", "ngIfElse"], ["ieFallback", ""], ["target", "_blank", 1, "download-link", 3, "href"], ["href", "javascript:;", 1, "download-link", 3, "click"]], template: function FallbackFileViewerComponent_Template(rf, ctx) { if (rf & 1) {
+FallbackFileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FallbackFileViewerComponent, selectors: [["dgp-fallback-file-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 4, vars: 2, consts: [["title", "No preview available", "matIconName", "get_app"], ["class", "download-link", "target", "_blank", 3, "href", 4, "ngIf", "ngIfElse"], ["ieFallback", ""], ["target", "_blank", 1, "download-link", 3, "href"], ["href", "javascript:;", 1, "download-link", 3, "click"]], template: function FallbackFileViewerComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵelementStart(0, "dgp-empty-state", 0);
         ɵngcc0.ɵɵtemplate(1, FallbackFileViewerComponent_a_1_Template, 3, 4, "a", 1);
         ɵngcc0.ɵɵtemplate(2, FallbackFileViewerComponent_ng_template_2_Template, 2, 0, "ng-template", null, 2, ɵngcc0.ɵɵtemplateRefExtractor);
@@ -1479,9 +1597,6 @@ FallbackFileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: Fallback
 FallbackFileViewerComponent.ctorParameters = () => [
     { type: Platform }
 ];
-__decorate([
-    Input()
-], FallbackFileViewerComponent.prototype, "fileItem", void 0);
 
 let FileItemListComponent = class FileItemListComponent {
     constructor() {
@@ -1515,16 +1630,9 @@ __decorate([
     Input()
 ], FileItemListComponent.prototype, "model", void 0);
 
-let ViewerComponentBase = class ViewerComponentBase {
-};
-ViewerComponentBase.ɵfac = function ViewerComponentBase_Factory(t) { return new (t || ViewerComponentBase)(); };
-ViewerComponentBase.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: ViewerComponentBase, inputs: { fileItem: "fileItem" } });
-__decorate([
-    Input()
-], ViewerComponentBase.prototype, "fileItem", void 0);
-
-let FileViewerComponent = class FileViewerComponent {
+let FileViewerComponent = class FileViewerComponent extends FileViewerComponentBase {
     constructor(config) {
+        super();
         this.config = config;
     }
     ngOnChanges(changes) {
@@ -1537,7 +1645,7 @@ let FileViewerComponent = class FileViewerComponent {
     }
 };
 FileViewerComponent.ɵfac = function FileViewerComponent_Factory(t) { return new (t || FileViewerComponent)(ɵngcc0.ɵɵdirectiveInject(FILE_VIEWER_CONFIG)); };
-FileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FileViewerComponent, selectors: [["dgp-file-viewer"]], inputs: { fileItem: "fileItem" }, features: [ɵngcc0.ɵɵNgOnChangesFeature], decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["dynamicViewer", ""], [3, "ngSwitch"], [3, "fileItem", 4, "ngSwitchCase"], [3, "fileItem", 4, "ngSwitchDefault"], [3, "fileItem"]], template: function FileViewerComponent_Template(rf, ctx) { if (rf & 1) {
+FileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FileViewerComponent, selectors: [["dgp-file-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature, ɵngcc0.ɵɵNgOnChangesFeature], decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["dynamicViewer", ""], [3, "ngSwitch"], [3, "fileItem", 4, "ngSwitchCase"], [3, "fileItem", 4, "ngSwitchDefault"], [3, "fileItem"]], template: function FileViewerComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵtemplate(0, FileViewerComponent_ng_container_0_Template, 7, 5, "ng-container", 0);
         ɵngcc0.ɵɵtemplate(1, FileViewerComponent_ng_template_1_Template, 1, 1, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
@@ -1552,14 +1660,12 @@ FileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FileViewerCompon
 FileViewerComponent.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [FILE_VIEWER_CONFIG,] }] }
 ];
-__decorate([
-    Input()
-], FileViewerComponent.prototype, "fileItem", void 0);
 FileViewerComponent = __decorate([ __param(0, Inject(FILE_VIEWER_CONFIG))
 ], FileViewerComponent);
 
-let DynamicFileViewerComponent = class DynamicFileViewerComponent {
+let DynamicFileViewerComponent = class DynamicFileViewerComponent extends FileViewerComponentBase {
     constructor(componentFactoryResolver, viewContainerRef, config) {
+        super();
         this.componentFactoryResolver = componentFactoryResolver;
         this.viewContainerRef = viewContainerRef;
         this.config = config;
@@ -1587,34 +1693,37 @@ let DynamicFileViewerComponent = class DynamicFileViewerComponent {
     }
 };
 DynamicFileViewerComponent.ɵfac = function DynamicFileViewerComponent_Factory(t) { return new (t || DynamicFileViewerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ComponentFactoryResolver), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ViewContainerRef), ɵngcc0.ɵɵdirectiveInject(FILE_VIEWER_CONFIG)); };
-DynamicFileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: DynamicFileViewerComponent, selectors: [["dgp-dynamic-file-viewer"]], inputs: { fileItem: "fileItem" }, features: [ɵngcc0.ɵɵNgOnChangesFeature], decls: 0, vars: 0, template: function DynamicFileViewerComponent_Template(rf, ctx) { }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }"], changeDetection: 0 });
+DynamicFileViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: DynamicFileViewerComponent, selectors: [["dgp-dynamic-file-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature, ɵngcc0.ɵɵNgOnChangesFeature], decls: 0, vars: 0, template: function DynamicFileViewerComponent_Template(rf, ctx) { }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }"], changeDetection: 0 });
 DynamicFileViewerComponent.ctorParameters = () => [
     { type: ComponentFactoryResolver },
     { type: ViewContainerRef },
     { type: undefined, decorators: [{ type: Inject, args: [FILE_VIEWER_CONFIG,] }] }
 ];
-__decorate([
-    Input()
-], DynamicFileViewerComponent.prototype, "fileItem", void 0);
 DynamicFileViewerComponent = __decorate([ __param(2, Inject(FILE_VIEWER_CONFIG))
 ], DynamicFileViewerComponent);
 
-let JpgViewerComponent = class JpgViewerComponent {
+let JpgViewerComponent = class JpgViewerComponent extends FileViewerComponentBase {
+    constructor(platform) {
+        super();
+        this.platform = platform;
+        this.isTrident = this.platform.TRIDENT;
+    }
 };
-JpgViewerComponent.ɵfac = function JpgViewerComponent_Factory(t) { return new (t || JpgViewerComponent)(); };
-JpgViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: JpgViewerComponent, selectors: [["dgp-jpg-viewer"]], inputs: { fileItem: "fileItem" }, decls: 2, vars: 5, consts: [[1, "image", 3, "src", "alt"]], template: function JpgViewerComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵngcc0.ɵɵelement(0, "img", 0);
-        ɵngcc0.ɵɵpipe(1, "safe");
+JpgViewerComponent.ɵfac = function JpgViewerComponent_Factory(t) { return new (t || JpgViewerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc6.Platform)); };
+JpgViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: JpgViewerComponent, selectors: [["dgp-jpg-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 3, vars: 2, consts: [["class", "image", 3, "src", "alt", 4, "ngIf", "ngIfElse"], ["fallback", ""], [1, "image", 3, "src", "alt"], [1, "trident-container"], [1, "trident-image", 3, "src", "alt"]], template: function JpgViewerComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵtemplate(0, JpgViewerComponent_img_0_Template, 2, 5, "img", 0);
+        ɵngcc0.ɵɵtemplate(1, JpgViewerComponent_ng_template_1_Template, 3, 5, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        ɵngcc0.ɵɵpropertyInterpolate("alt", ctx.fileItem.fileName);
-        ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(1, 2, ctx.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
-    } }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n        \n        .image[_ngcontent-%COMP%] {\n            max-width: 100%;\n            max-height: 100%;\n            object-fit: contain;\n        }"], changeDetection: 0 });
-__decorate([
-    Input()
-], JpgViewerComponent.prototype, "fileItem", void 0);
+        const _r23 = ɵngcc0.ɵɵreference(2);
+        ɵngcc0.ɵɵproperty("ngIf", !ctx.isTrident)("ngIfElse", _r23);
+    } }, directives: function () { return [ɵngcc4.NgIf]; }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .image[_ngcontent-%COMP%] {\n            max-width: 100%;\n            max-height: 100%;\n            object-fit: contain;\n        }\n\n        .trident-container[_ngcontent-%COMP%] {\n            display: flex;\n            overflow: auto;\n            flex-shrink: 0;\n        }\n\n        .trident-image[_ngcontent-%COMP%] {\n            margin: auto;\n            flex-shrink: 0;\n        }"], changeDetection: 0 });
+JpgViewerComponent.ctorParameters = () => [
+    { type: Platform }
+];
 
-let PdfViewerComponent = class PdfViewerComponent {
+let PdfViewerComponent = class PdfViewerComponent extends FileViewerComponentBase {
     constructor(platform, cd) {
+        super();
         this.platform = platform;
         this.cd = cd;
     }
@@ -1631,48 +1740,65 @@ let PdfViewerComponent = class PdfViewerComponent {
     }
 };
 PdfViewerComponent.ɵfac = function PdfViewerComponent_Factory(t) { return new (t || PdfViewerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc6.Platform), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ChangeDetectorRef)); };
-PdfViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PdfViewerComponent, selectors: [["dgp-pdf-viewer"]], inputs: { fileItem: "fileItem" }, features: [ɵngcc0.ɵɵNgOnChangesFeature], decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["fallback", ""], [4, "ngIf"], ["type", "application/pdf", "width", "100%", "height", "100%"], [3, "fileItem"], [1, "edge-helper", 3, "innerHTML"]], template: function PdfViewerComponent_Template(rf, ctx) { if (rf & 1) {
+PdfViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PdfViewerComponent, selectors: [["dgp-pdf-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature, ɵngcc0.ɵɵNgOnChangesFeature], decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["fallback", ""], [4, "ngIf"], ["type", "application/pdf", "width", "100%", "height", "100%"], [3, "fileItem"], [1, "edge-helper", 3, "innerHTML"]], template: function PdfViewerComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵtemplate(0, PdfViewerComponent_ng_container_0_Template, 3, 2, "ng-container", 0);
         ɵngcc0.ɵɵtemplate(1, PdfViewerComponent_ng_template_1_Template, 1, 1, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        const _r23 = ɵngcc0.ɵɵreference(2);
-        ɵngcc0.ɵɵproperty("ngIf", ctx.platform.FIREFOX || ctx.platform.BLINK || ctx.platform.EDGE)("ngIfElse", _r23);
+        const _r26 = ɵngcc0.ɵɵreference(2);
+        ɵngcc0.ɵɵproperty("ngIf", ctx.platform.FIREFOX || ctx.platform.BLINK || ctx.platform.EDGE)("ngIfElse", _r26);
     } }, directives: function () { return [ɵngcc4.NgIf, FallbackFileViewerComponent]; }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .edge-helper[_ngcontent-%COMP%] {\n            flex-grow: 1;\n        }"], changeDetection: 0 });
 PdfViewerComponent.ctorParameters = () => [
     { type: Platform },
     { type: ChangeDetectorRef }
 ];
-__decorate([
-    Input()
-], PdfViewerComponent.prototype, "fileItem", void 0);
 
-let PngViewerComponent = class PngViewerComponent {
+let PngViewerComponent = class PngViewerComponent extends FileViewerComponentBase {
+    constructor(platform) {
+        super();
+        this.platform = platform;
+        this.isTrident = this.platform.TRIDENT;
+    }
 };
-PngViewerComponent.ɵfac = function PngViewerComponent_Factory(t) { return new (t || PngViewerComponent)(); };
-PngViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PngViewerComponent, selectors: [["dgp-png-viewer"]], inputs: { fileItem: "fileItem" }, decls: 2, vars: 5, consts: [[1, "image", 3, "src", "alt"]], template: function PngViewerComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵngcc0.ɵɵelement(0, "img", 0);
-        ɵngcc0.ɵɵpipe(1, "safe");
+PngViewerComponent.ɵfac = function PngViewerComponent_Factory(t) { return new (t || PngViewerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc6.Platform)); };
+PngViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PngViewerComponent, selectors: [["dgp-png-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 3, vars: 2, consts: [["class", "image", 3, "src", "alt", 4, "ngIf", "ngIfElse"], ["fallback", ""], [1, "image", 3, "src", "alt"], [1, "trident-container"], [1, "trident-image", 3, "src", "alt"]], template: function PngViewerComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵtemplate(0, PngViewerComponent_img_0_Template, 2, 5, "img", 0);
+        ɵngcc0.ɵɵtemplate(1, PngViewerComponent_ng_template_1_Template, 3, 5, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        ɵngcc0.ɵɵpropertyInterpolate("alt", ctx.fileItem.fileName);
-        ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(1, 2, ctx.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
-    } }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .image[_ngcontent-%COMP%] {\n            max-width: 100%;\n            max-height: 100%;\n            object-fit: contain;\n        }"], changeDetection: 0 });
-__decorate([
-    Input()
-], PngViewerComponent.prototype, "fileItem", void 0);
+        const _r31 = ɵngcc0.ɵɵreference(2);
+        ɵngcc0.ɵɵproperty("ngIf", !ctx.isTrident)("ngIfElse", _r31);
+    } }, directives: function () { return [ɵngcc4.NgIf]; }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .image[_ngcontent-%COMP%] {\n            max-width: 100%;\n            max-height: 100%;\n            object-fit: contain;\n        }\n\n        .trident-container[_ngcontent-%COMP%] {\n            display: flex;\n            overflow: auto;\n            flex-shrink: 0;\n        }\n\n        .trident-image[_ngcontent-%COMP%] {\n            margin: auto;\n            flex-shrink: 0;\n        }"], changeDetection: 0 });
+PngViewerComponent.ctorParameters = () => [
+    { type: Platform }
+];
 
-let SvgViewerComponent = class SvgViewerComponent {
+let SvgViewerComponent = class SvgViewerComponent extends FileViewerComponentBase {
+    constructor(platform) {
+        super();
+        this.platform = platform;
+        this.isTrident = this.platform.TRIDENT;
+    }
 };
-SvgViewerComponent.ɵfac = function SvgViewerComponent_Factory(t) { return new (t || SvgViewerComponent)(); };
-SvgViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: SvgViewerComponent, selectors: [["dgp-svg-viewer"]], inputs: { fileItem: "fileItem" }, decls: 2, vars: 5, consts: [[1, "image", 3, "src", "alt"]], template: function SvgViewerComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵngcc0.ɵɵelement(0, "img", 0);
-        ɵngcc0.ɵɵpipe(1, "safe");
+SvgViewerComponent.ɵfac = function SvgViewerComponent_Factory(t) { return new (t || SvgViewerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc6.Platform)); };
+SvgViewerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: SvgViewerComponent, selectors: [["dgp-svg-viewer"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 3, vars: 2, consts: [["class", "image", 3, "src", "alt", 4, "ngIf", "ngIfElse"], ["fallback", ""], [1, "image", 3, "src", "alt"], [1, "trident-container"], [1, "trident-image", 3, "src", "alt"]], template: function SvgViewerComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵtemplate(0, SvgViewerComponent_img_0_Template, 2, 5, "img", 0);
+        ɵngcc0.ɵɵtemplate(1, SvgViewerComponent_ng_template_1_Template, 3, 5, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        ɵngcc0.ɵɵpropertyInterpolate("alt", ctx.fileItem.fileName);
-        ɵngcc0.ɵɵproperty("src", ɵngcc0.ɵɵpipeBind2(1, 2, ctx.fileItem.url, "url"), ɵngcc0.ɵɵsanitizeUrl);
-    } }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .image[_ngcontent-%COMP%] {\n            max-width: 100%;\n            max-height: 100%;\n            object-fit: contain;\n        }"], changeDetection: 0 });
-__decorate([
-    Input()
-], SvgViewerComponent.prototype, "fileItem", void 0);
+        const _r34 = ɵngcc0.ɵɵreference(2);
+        ɵngcc0.ɵɵproperty("ngIf", !ctx.isTrident)("ngIfElse", _r34);
+    } }, directives: function () { return [ɵngcc4.NgIf]; }, pipes: function () { return [SafePipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .image[_ngcontent-%COMP%] {\n            max-width: 100%;\n            max-height: 100%;\n            object-fit: contain;\n        }\n\n        .trident-container[_ngcontent-%COMP%] {\n            display: flex;\n            overflow: auto;\n            flex-shrink: 0;\n        }\n\n        .trident-image[_ngcontent-%COMP%] {\n            margin: auto;\n            flex-shrink: 0;\n        }"], changeDetection: 0 });
+SvgViewerComponent.ctorParameters = () => [
+    { type: Platform }
+];
+
+let SpacerComponent = class SpacerComponent {
+};
+SpacerComponent.ɵfac = function SpacerComponent_Factory(t) { return new (t || SpacerComponent)(); };
+SpacerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: SpacerComponent, selectors: [["dgp-spacer"]], decls: 0, vars: 0, template: function SpacerComponent_Template(rf, ctx) { }, styles: ["[_nghost-%COMP%] {\n            flex-grow: 1;\n        }"], changeDetection: 0 });
+
+let DgpSpacerModule = class DgpSpacerModule {
+};
+DgpSpacerModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpSpacerModule });
+DgpSpacerModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpSpacerModule_Factory(t) { return new (t || DgpSpacerModule)(); } });
 
 let SafePipe = class SafePipe {
     constructor(sanitizer) {
@@ -1701,15 +1827,10 @@ SafePipe.ctorParameters = () => [
     { type: DomSanitizer }
 ];
 
-let SpacerComponent = class SpacerComponent {
+let SafePipeModule = class SafePipeModule {
 };
-SpacerComponent.ɵfac = function SpacerComponent_Factory(t) { return new (t || SpacerComponent)(); };
-SpacerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: SpacerComponent, selectors: [["dgp-spacer"]], decls: 0, vars: 0, template: function SpacerComponent_Template(rf, ctx) { }, styles: ["[_nghost-%COMP%] {\n            flex-grow: 1;\n        }"], changeDetection: 0 });
-
-let DgpSpacerModule = class DgpSpacerModule {
-};
-DgpSpacerModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpSpacerModule });
-DgpSpacerModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpSpacerModule_Factory(t) { return new (t || DgpSpacerModule)(); } });
+SafePipeModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: SafePipeModule });
+SafePipeModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function SafePipeModule_Factory(t) { return new (t || SafePipeModule)(); } });
 
 var DgpFileViewerModule_1;
 // TODO: Add bmp
@@ -1743,6 +1864,7 @@ DgpFileViewerModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpFi
             DgpSpacerModule,
             MatButtonModule,
             MatMenuModule,
+            SafePipeModule
         ]] });
 
 const openFileManagerOverlay = createAction("[FileUpload] OpenFileManagerOverlay", props());
@@ -1782,7 +1904,7 @@ const defaultFileUploadConfig = {
         width: "80%",
         panelClass: "dgp-file-manager-overlay"
     },
-    maximizedClass: "--maximized",
+    maximizedClass: "dgp-file-manager-overlay--maximized",
     openFileManagerShortKeyFilter,
     editingCapabilities: {
         canAddFiles: true,
@@ -1820,7 +1942,8 @@ const ɵ9 = x => !x.initialConfig.editingCapabilities.canAddFiles;
 const isAddFilesDisabled = createSelector(fileUploadFeatureSelector, ɵ9);
 const ɵ10 = x => !x.initialConfig.editingCapabilities.canRemoveFiles;
 const isRemoveFilesDisabled = createSelector(fileUploadFeatureSelector, ɵ10);
-const ɵ11 = x => x.initialConfig.editingCapabilities.canAddFiles && (x.isDropTargetVisible || x.fileItem.ids.length === 0);
+const ɵ11 = x => x.initialConfig.editingCapabilities.canAddFiles
+    && (x.isDropTargetVisible || x.fileItem.ids.length === 0);
 const isDropTargetVisible = createSelector(fileUploadFeatureSelector, ɵ11);
 
 let OpenFileManagerViaShortKeyDirective = class OpenFileManagerViaShortKeyDirective {
@@ -1855,7 +1978,6 @@ const fileUploadEntityStore = createEntityStore({
         "fileItem"
     ]
 });
-const fileUploadReducer = new InjectionToken("hamburgerShellReducer");
 const ɵ0$5 = (state = false, action) => {
     switch (action.type) {
         case openFileManagerOverlay.type:
@@ -1882,35 +2004,44 @@ const ɵ0$5 = (state = false, action) => {
         return state;
     }
 };
-const fileUploadReducerImpl = Object.assign(Object.assign({}, fileUploadEntityStore.reducers), { isFileManagerOpen: ɵ0$5, isDropTargetVisible: ɵ1$4, initialConfig: ɵ2$3 });
-function fileUploadReducerFactory() {
-    return fileUploadReducerImpl;
-}
-const fileUploadReducerProvider = {
-    provide: fileUploadReducer,
-    useFactory: fileUploadReducerFactory
-};
+const fileUploadReducer = Object.assign(Object.assign({}, fileUploadEntityStore.reducers), { isFileManagerOpen: ɵ0$5, isDropTargetVisible: ɵ1$4, initialConfig: ɵ2$3 });
 
-let FileManagerComponent = class FileManagerComponent {
-    constructor(elementRef, store, dialogRef, moduleConfig) {
-        this.elementRef = elementRef;
+let DgpContainer = 
+// tslint:disable-next-line:directive-class-suffix
+class DgpContainer {
+    constructor(store) {
         this.store = store;
+        this.dispatch = (x) => this.store.dispatch(x);
+        this.select = (x) => this.store.select(x);
+    }
+};
+DgpContainer.ɵfac = function DgpContainer_Factory(t) { return new (t || DgpContainer)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
+DgpContainer.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: DgpContainer });
+DgpContainer.ctorParameters = () => [
+    { type: Store }
+];
+
+let FileManagerComponent = class FileManagerComponent extends DgpContainer {
+    constructor(store, elementRef, dialogRef, moduleConfig) {
+        super(store);
+        this.store = store;
+        this.elementRef = elementRef;
         this.dialogRef = dialogRef;
         this.moduleConfig = moduleConfig;
         this.isMaximized = false;
-        this.isDropTargetVisible$ = this.store.select(isDropTargetVisible);
-        this.fileItemListModel$ = this.store.select(getFileItemListModel);
-        this.selectedFileItem$ = this.store.select(getSelectedFileItem);
-        this.isRemoveFilesDisabled$ = this.store.select(isRemoveFilesDisabled);
-        this.isAddFilesDisabled$ = this.store.select(isAddFilesDisabled);
-        this.canOpenFileDrawer$ = this.store.select(canOpenFileDrawer);
+        this.isDropTargetVisible$ = this.select(isDropTargetVisible);
+        this.fileItemListModel$ = this.select(getFileItemListModel);
+        this.selectedFileItem$ = this.select(getSelectedFileItem);
+        this.isRemoveFilesDisabled$ = this.select(isRemoveFilesDisabled);
+        this.isAddFilesDisabled$ = this.select(isAddFilesDisabled);
+        this.canOpenFileDrawer$ = this.select(canOpenFileDrawer);
         this.dragEnterHandler = (e) => {
             e.preventDefault();
-            this.store.dispatch(showDropTarget());
+            this.dispatch(showDropTarget());
         };
         this.dragLeaveHandler = (e) => {
             e.preventDefault();
-            this.store.dispatch(hideDropTarget());
+            this.dispatch(hideDropTarget());
         };
         this.dragOverHandler = (e) => {
             e.preventDefault();
@@ -1935,11 +2066,11 @@ let FileManagerComponent = class FileManagerComponent {
         this.elementRef.nativeElement.removeEventListener("dragover", this.dragOverHandler);
     }
     removeFileItem(fileItem) {
-        this.store.dispatch(removeFile({ fileItem }));
+        this.dispatch(removeFile({ fileItem }));
     }
     onFileSelected(e) {
         const fileItems = getFileItemsFromFileList(e.target.files);
-        this.store.dispatch(addFilesViaDrop({ fileItems }));
+        this.dispatch(addFilesViaDrop({ fileItems }));
     }
     maximize() {
         this.dialogRef.addPanelClass(this.moduleConfig.maximizedClass);
@@ -1950,20 +2081,20 @@ let FileManagerComponent = class FileManagerComponent {
         this.isMaximized = false;
     }
 };
-FileManagerComponent.ɵfac = function FileManagerComponent_Factory(t) { return new (t || FileManagerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ElementRef), ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store), ɵngcc0.ɵɵdirectiveInject(ɵngcc13.MatDialogRef), ɵngcc0.ɵɵdirectiveInject(FILE_UPLOAD_CONFIG)); };
-FileManagerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FileManagerComponent, selectors: [["dgp-file-manager"]], decls: 4, vars: 4, consts: [[4, "ngIf", "ngIfElse"], ["dropTarget", ""], ["mat-dialog-title", "", 2, "display", "flex", "align-items", "center"], ["mat-icon-button", "", "matTooltip", "Maximize", 3, "click", 4, "ngIf"], ["mat-icon-button", "", "matTooltip", "Minimize", 3, "click", 4, "ngIf"], ["mat-icon-button", "", "mat-dialog-close", "", "matTooltip", "Close dialog"], ["singleFileMode", ""], ["mat-icon-button", "", "matTooltip", "Maximize", 3, "click"], ["mat-icon-button", "", "matTooltip", "Minimize", 3, "click"], ["dgp-list-details-page-menu", ""], [3, "model", "disabled", "fileItemRemoved"], [4, "ngIf"], [3, "fileItem"], ["mat-list-item", "", 3, "click"], ["matLine", ""], ["hidden", "", "multiple", "", "type", "file", 3, "change"], ["filePicker", ""], ["title", "Drop file here", "matIconName", "get_app", 1, "drop-target"], ["mat-button", "", 2, "display", "flex", "max-width", "480px", "width", "100%", "justify-content", "center", "margin-top", "16px", 3, "disabled", "click"], [2, "margin-right", "4px"]], template: function FileManagerComponent_Template(rf, ctx) { if (rf & 1) {
+FileManagerComponent.ɵfac = function FileManagerComponent_Factory(t) { return new (t || FileManagerComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ElementRef), ɵngcc0.ɵɵdirectiveInject(ɵngcc13.MatDialogRef), ɵngcc0.ɵɵdirectiveInject(FILE_UPLOAD_CONFIG)); };
+FileManagerComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: FileManagerComponent, selectors: [["dgp-file-manager"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 4, vars: 4, consts: [[4, "ngIf", "ngIfElse"], ["dropTarget", ""], ["mat-dialog-title", "", 2, "display", "flex", "align-items", "center"], ["mat-icon-button", "", "matTooltip", "Maximize", 3, "click", 4, "ngIf"], ["mat-icon-button", "", "matTooltip", "Minimize", 3, "click", 4, "ngIf"], ["mat-icon-button", "", "mat-dialog-close", "", "matTooltip", "Close dialog"], ["singleFileMode", ""], ["mat-icon-button", "", "matTooltip", "Maximize", 3, "click"], ["mat-icon-button", "", "matTooltip", "Minimize", 3, "click"], ["dgp-list-details-page-menu", ""], [3, "model", "disabled", "fileItemRemoved"], [4, "ngIf"], [3, "fileItem"], ["mat-list-item", "", 3, "click"], ["matLine", ""], ["hidden", "", "multiple", "", "type", "file", 3, "change"], ["filePicker", ""], ["title", "Drop file here", "matIconName", "get_app", 1, "drop-target"], ["mat-button", "", 2, "display", "flex", "max-width", "480px", "width", "100%", "justify-content", "center", "margin-top", "16px", 3, "disabled", "click"], [2, "margin-right", "4px"]], template: function FileManagerComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵtemplate(0, FileManagerComponent_ng_container_0_Template, 13, 6, "ng-container", 0);
         ɵngcc0.ɵɵpipe(1, "async");
         ɵngcc0.ɵɵtemplate(2, FileManagerComponent_ng_template_2_Template, 12, 3, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        const _r28 = ɵngcc0.ɵɵreference(3);
-        ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(1, 2, ctx.isDropTargetVisible$) === false)("ngIfElse", _r28);
+        const _r37 = ɵngcc0.ɵɵreference(3);
+        ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(1, 2, ctx.isDropTargetVisible$) === false)("ngIfElse", _r37);
     } }, directives: function () { return [ɵngcc4.NgIf, ɵngcc13.MatDialogTitle, SpacerComponent, ɵngcc10.MatButton, ɵngcc13.MatDialogClose, ɵngcc8.MatTooltip, ɵngcc5.MatIcon, ListDetailsPageComponent,
         FileItemListComponent,
         FileViewerComponent, ɵngcc7.MatNavList, ɵngcc7.MatListItem, ɵngcc9.MatLine, EmptyStateComponent]; }, pipes: function () { return [ɵngcc4.AsyncPipe]; }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            width: 100%;\n            height: 100%;\n        }\n\n        .drop-target[_ngcontent-%COMP%] {\n            border: 2px dashed white;\n            max-height: 100%;\n        }"], changeDetection: 0 });
 FileManagerComponent.ctorParameters = () => [
-    { type: ElementRef },
     { type: Store },
+    { type: ElementRef },
     { type: MatDialogRef },
     { type: undefined, decorators: [{ type: Inject, args: [FILE_UPLOAD_CONFIG,] }] }
 ];
@@ -2104,14 +2235,14 @@ const hasPendingRequests = createSelector(requestStateSelector, ɵ0$6);
 const ɵ1$5 = x => x;
 const hasPendingRequestsSelector = createSelector(hasPendingRequests, ɵ1$5);
 
-let PageHeaderComponent = class PageHeaderComponent {
-    constructor(store) {
-        this.store = store;
-        this.hasPendingRequests$ = this.store.select(hasPendingRequestsSelector);
+let PageHeaderComponent = class PageHeaderComponent extends DgpContainer {
+    constructor() {
+        super(...arguments);
+        this.hasPendingRequests$ = this.select(hasPendingRequestsSelector);
     }
 };
-PageHeaderComponent.ɵfac = function PageHeaderComponent_Factory(t) { return new (t || PageHeaderComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
-PageHeaderComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PageHeaderComponent, selectors: [["dgp-page-header"]], ngContentSelectors: _c0, decls: 5, vars: 3, consts: [["color", "primary", 1, "toolbar"], [1, "progress-bar-container"], ["color", "accent", "mode", "query", 4, "ngIf"], ["color", "accent", "mode", "query"]], template: function PageHeaderComponent_Template(rf, ctx) { if (rf & 1) {
+PageHeaderComponent.ɵfac = function PageHeaderComponent_Factory(t) { return ɵPageHeaderComponent_BaseFactory(t || PageHeaderComponent); };
+PageHeaderComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PageHeaderComponent, selectors: [["dgp-page-header"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], ngContentSelectors: _c0, decls: 5, vars: 3, consts: [["color", "primary", 1, "toolbar"], [1, "progress-bar-container"], ["color", "accent", "mode", "query", 4, "ngIf"], ["color", "accent", "mode", "query"]], template: function PageHeaderComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵprojectionDef();
         ɵngcc0.ɵɵelementStart(0, "mat-toolbar", 0);
         ɵngcc0.ɵɵelementStart(1, "div", 1);
@@ -2124,9 +2255,6 @@ PageHeaderComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: PageHeaderCompon
         ɵngcc0.ɵɵadvance(2);
         ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(3, 1, ctx.hasPendingRequests$));
     } }, directives: [ɵngcc14.MatToolbar, ɵngcc4.NgIf, ɵngcc15.MatProgressBar], pipes: [ɵngcc4.AsyncPipe], styles: [".toolbar[_ngcontent-%COMP%] {\n            position: relative;\n        }\n\n        .progress-bar-container[_ngcontent-%COMP%] {\n            position: absolute;\n            top: 0;\n            left: 0;\n            right: 0;\n        }"], changeDetection: 0 });
-PageHeaderComponent.ctorParameters = () => [
-    { type: Store }
-];
 
 let DgpPageHeaderModule = class DgpPageHeaderModule {
 };
@@ -2146,6 +2274,51 @@ const setListDetailsPageState = createAction("[HamburgerShell] SetListDetailsPag
 const toggleListDetailsPageMenu = createAction("[HamburgerShell] ToggleListDetailsPageMenu");
 const closeListDetailsMenu = createAction("[HamburgerShell] CloseListDetailsPageMenu");
 
+var HamburgerShellMode;
+(function (HamburgerShellMode) {
+    HamburgerShellMode[HamburgerShellMode["Responsive"] = 0] = "Responsive";
+    HamburgerShellMode[HamburgerShellMode["Overlay"] = 1] = "Overlay";
+    HamburgerShellMode[HamburgerShellMode["SideNav"] = 2] = "SideNav";
+})(HamburgerShellMode || (HamburgerShellMode = {}));
+var ListDetailsPageMode;
+(function (ListDetailsPageMode) {
+    ListDetailsPageMode[ListDetailsPageMode["Responsive"] = 0] = "Responsive";
+    ListDetailsPageMode[ListDetailsPageMode["Overlay"] = 1] = "Overlay";
+    ListDetailsPageMode[ListDetailsPageMode["SideNav"] = 2] = "SideNav";
+})(ListDetailsPageMode || (ListDetailsPageMode = {}));
+const responsiveHamburgerShellConfig = {
+    hamburgerShellMode: HamburgerShellMode.Responsive,
+    hamburgerMenuBreakpoints: [
+        Breakpoints.XLarge
+    ],
+    listDetailsPageMode: ListDetailsPageMode.Responsive,
+    listDetailsPageMenuBreakpoints: [
+        Breakpoints.Large,
+        Breakpoints.XLarge
+    ]
+};
+const sideNavHamburgerShellConfig = {
+    hamburgerShellMode: HamburgerShellMode.SideNav,
+    listDetailsPageMode: ListDetailsPageMode.SideNav
+};
+const overlayHamburgerShellConfig = {
+    hamburgerShellMode: HamburgerShellMode.Overlay,
+    listDetailsPageMode: ListDetailsPageMode.Overlay
+};
+const defaultHamburgerShellConfig = responsiveHamburgerShellConfig;
+const HAMBURGER_SHELL_CONFIG = new InjectionToken("HamburgerShellConfig");
+const sideNavHamburgerShellConfigProvider = {
+    provide: HAMBURGER_SHELL_CONFIG,
+    useValue: sideNavHamburgerShellConfig
+};
+const overlayHamburgerShellConfigProvider = {
+    provide: HAMBURGER_SHELL_CONFIG,
+    useValue: overlayHamburgerShellConfig
+};
+const defaultHamburgerShellConfigProvider = {
+    provide: HAMBURGER_SHELL_CONFIG,
+    useValue: defaultHamburgerShellConfig
+};
 const hamburgerShellStoreFeature = "HamburgerShell";
 
 const hamburgerShellFeatureSelector = createFeatureSelector(hamburgerShellStoreFeature);
@@ -2158,21 +2331,21 @@ const pageMenuModeSelector = createSelector(hamburgerShellFeatureSelector, ɵ2$4
 const ɵ3$2 = x => x.isPageMenuOpen;
 const isPageMenuOpenSelector = createSelector(hamburgerShellFeatureSelector, ɵ3$2);
 
-let ListDetailsPageComponent = class ListDetailsPageComponent {
-    constructor(store) {
-        this.store = store;
-        this.pageMenuDrawerMode$ = this.store.select(pageMenuModeSelector);
-        this.isPageMenuDrawerOpen$ = this.store.select(isPageMenuOpenSelector);
+let ListDetailsPageComponent = class ListDetailsPageComponent extends DgpContainer {
+    constructor() {
+        super(...arguments);
+        this.pageMenuDrawerMode$ = this.select(pageMenuModeSelector);
+        this.isPageMenuDrawerOpen$ = this.select(isPageMenuOpenSelector);
     }
     closePageMenuDrawer() {
-        this.store.dispatch(closeListDetailsMenu());
+        this.dispatch(closeListDetailsMenu());
     }
     togglePageMenuDrawer() {
-        this.store.dispatch(toggleListDetailsPageMenu());
+        this.dispatch(toggleListDetailsPageMenu());
     }
 };
-ListDetailsPageComponent.ɵfac = function ListDetailsPageComponent_Factory(t) { return new (t || ListDetailsPageComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
-ListDetailsPageComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: ListDetailsPageComponent, selectors: [["dgp-list-details-page"]], ngContentSelectors: _c4, decls: 13, vars: 10, consts: [[1, "page-menu-drawer-container"], [1, "page-menu-drawer", "mat-elevation-z4", 3, "mode", "opened", "closed"], [1, "page-menu-drawer-content"], [1, "page-menu-drawer-toggle-container"], ["mat-icon-button", "", "matTooltip", "Toggle menu drawer", 3, "click"], [4, "ngIf", "ngIfElse"], ["closedIcon", ""]], template: function ListDetailsPageComponent_Template(rf, ctx) { if (rf & 1) {
+ListDetailsPageComponent.ɵfac = function ListDetailsPageComponent_Factory(t) { return ɵListDetailsPageComponent_BaseFactory(t || ListDetailsPageComponent); };
+ListDetailsPageComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: ListDetailsPageComponent, selectors: [["dgp-list-details-page"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], ngContentSelectors: _c4, decls: 13, vars: 10, consts: [[1, "page-menu-drawer-container"], [1, "page-menu-drawer", "mat-elevation-z4", 3, "mode", "opened", "closed"], [1, "page-menu-drawer-content"], [1, "page-menu-drawer-toggle-container"], ["mat-icon-button", "", "matTooltip", "Toggle menu drawer", 3, "click"], [4, "ngIf", "ngIfElse"], ["closedIcon", ""]], template: function ListDetailsPageComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵprojectionDef(_c3);
         ɵngcc0.ɵɵelementStart(0, "mat-drawer-container", 0);
         ɵngcc0.ɵɵelementStart(1, "mat-drawer", 1);
@@ -2194,15 +2367,12 @@ ListDetailsPageComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: ListDetails
         ɵngcc0.ɵɵelementEnd();
         ɵngcc0.ɵɵelementEnd();
     } if (rf & 2) {
-        const _r52 = ɵngcc0.ɵɵreference(11);
+        const _r61 = ɵngcc0.ɵɵreference(11);
         ɵngcc0.ɵɵadvance(1);
         ɵngcc0.ɵɵproperty("mode", ɵngcc0.ɵɵpipeBind1(2, 4, ctx.pageMenuDrawerMode$))("opened", ɵngcc0.ɵɵpipeBind1(3, 6, ctx.isPageMenuDrawerOpen$));
         ɵngcc0.ɵɵadvance(7);
-        ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(9, 8, ctx.isPageMenuDrawerOpen$))("ngIfElse", _r52);
+        ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(9, 8, ctx.isPageMenuDrawerOpen$))("ngIfElse", _r61);
     } }, directives: [ɵngcc16.MatDrawerContainer, ɵngcc16.MatDrawer, ɵngcc16.MatDrawerContent, ɵngcc10.MatButton, ɵngcc8.MatTooltip, ɵngcc4.NgIf, ɵngcc5.MatIcon], pipes: [ɵngcc4.AsyncPipe], styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            overflow: auto;\n            flex-grow: 1;\n        }\n\n        .page-menu-drawer-container[_ngcontent-%COMP%] {\n            display: flex;\n            flex-grow: 1;\n            overflow: inherit;\n        }\n\n        .page-menu-drawer[_ngcontent-%COMP%] {\n            width: 360px;\n        }\n\n        .page-menu-drawer-content[_ngcontent-%COMP%] {\n            overflow: auto;\n            flex-grow: 1;\n            display: flex;\n            position: relative;\n        }\n\n        .page-menu-drawer-toggle-container[_ngcontent-%COMP%] {\n            display: flex;\n            align-items: center;\n            top: 0;\n            bottom: 0;\n            position: absolute;\n        }"], changeDetection: 0 });
-ListDetailsPageComponent.ctorParameters = () => [
-    { type: Store }
-];
 
 let ListDetailsPageContentComponent = class ListDetailsPageContentComponent {
 };
@@ -2224,6 +2394,15 @@ DgpListDetailsPageModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function 
         ]] });
 
 var DgpFileUploadModule_1;
+const FILE_UPLOAD_REDUCER = new InjectionToken("hamburgerShellReducer");
+function fileUploadReducerFactory() {
+    return fileUploadReducer;
+}
+const fileUploadReducerProvider = {
+    provide: FILE_UPLOAD_REDUCER,
+    useFactory: fileUploadReducerFactory
+};
+const ɵ0$8 = defaultFileUploadConfig;
 let DgpFileUploadModule = DgpFileUploadModule_1 = class DgpFileUploadModule {
     static forRoot(config = defaultFileUploadConfig) {
         return {
@@ -2237,11 +2416,14 @@ let DgpFileUploadModule = DgpFileUploadModule_1 = class DgpFileUploadModule {
 };
 DgpFileUploadModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpFileUploadModule });
 DgpFileUploadModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpFileUploadModule_Factory(t) { return new (t || DgpFileUploadModule)(); }, providers: [
-        fileUploadReducerProvider
+        fileUploadReducerProvider, {
+            provide: FILE_UPLOAD_CONFIG,
+            useValue: ɵ0$8
+        }
     ], imports: [[
             CommonModule,
             MatDialogModule,
-            StoreModule.forFeature(fileUploadStoreFeature, fileUploadReducer),
+            StoreModule.forFeature(fileUploadStoreFeature, FILE_UPLOAD_REDUCER),
             EffectsModule.forFeature([
                 FileUploadEffects
             ]),
@@ -2297,16 +2479,13 @@ HamburgerShellComponent.ctorParameters = () => [
     { type: Store }
 ];
 
-let HamburgerMenuToggleComponent = class HamburgerMenuToggleComponent {
-    constructor(store) {
-        this.store = store;
-    }
+let HamburgerMenuToggleComponent = class HamburgerMenuToggleComponent extends DgpContainer {
     toggleHamburgerMenu() {
-        this.store.dispatch(toggleHamburgerMenu());
+        this.dispatch(toggleHamburgerMenu());
     }
 };
-HamburgerMenuToggleComponent.ɵfac = function HamburgerMenuToggleComponent_Factory(t) { return new (t || HamburgerMenuToggleComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
-HamburgerMenuToggleComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: HamburgerMenuToggleComponent, selectors: [["dgp-hamburger-menu-toggle"]], decls: 3, vars: 0, consts: [["mat-icon-button", "", 3, "click"]], template: function HamburgerMenuToggleComponent_Template(rf, ctx) { if (rf & 1) {
+HamburgerMenuToggleComponent.ɵfac = function HamburgerMenuToggleComponent_Factory(t) { return ɵHamburgerMenuToggleComponent_BaseFactory(t || HamburgerMenuToggleComponent); };
+HamburgerMenuToggleComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: HamburgerMenuToggleComponent, selectors: [["dgp-hamburger-menu-toggle"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 3, vars: 0, consts: [["mat-icon-button", "", 3, "click"]], template: function HamburgerMenuToggleComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵelementStart(0, "button", 0);
         ɵngcc0.ɵɵlistener("click", function HamburgerMenuToggleComponent_Template_button_click_0_listener() { return ctx.toggleHamburgerMenu(); });
         ɵngcc0.ɵɵelementStart(1, "mat-icon");
@@ -2314,9 +2493,6 @@ HamburgerMenuToggleComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: Hamburg
         ɵngcc0.ɵɵelementEnd();
         ɵngcc0.ɵɵelementEnd();
     } }, directives: [ɵngcc10.MatButton, ɵngcc5.MatIcon], styles: ["[_nghost-%COMP%] {\n            margin-right: 8px;\n        }"], changeDetection: 0 });
-HamburgerMenuToggleComponent.ctorParameters = () => [
-    { type: Store }
-];
 
 let DgpHamburgerMenuToggleModule = class DgpHamburgerMenuToggleModule {
 };
@@ -2327,84 +2503,70 @@ DgpHamburgerMenuToggleModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: funct
             MatIconModule
         ]] });
 
-var HamburgerShellMode;
-(function (HamburgerShellMode) {
-    HamburgerShellMode[HamburgerShellMode["Responsive"] = 0] = "Responsive";
-    HamburgerShellMode[HamburgerShellMode["Overlay"] = 1] = "Overlay";
-    HamburgerShellMode[HamburgerShellMode["SideNav"] = 2] = "SideNav";
-})(HamburgerShellMode || (HamburgerShellMode = {}));
-var ListDetailsPageMode;
-(function (ListDetailsPageMode) {
-    ListDetailsPageMode[ListDetailsPageMode["Responsive"] = 0] = "Responsive";
-    ListDetailsPageMode[ListDetailsPageMode["Overlay"] = 1] = "Overlay";
-    ListDetailsPageMode[ListDetailsPageMode["SideNav"] = 2] = "SideNav";
-})(ListDetailsPageMode || (ListDetailsPageMode = {}));
-const responsiveHamburgerShellConfig = {
-    hamburgerShellMode: HamburgerShellMode.Responsive,
-    hamburgerMenuBreakpoints: [
-        Breakpoints.XLarge
-    ],
-    listDetailsPageMode: ListDetailsPageMode.Responsive,
-    listDetailsPageMenuBreakpoints: [
-        Breakpoints.Large,
-        Breakpoints.XLarge
-    ]
+let HamburgerMenuComponent = class HamburgerMenuComponent {
 };
-const sideNavHamburgerShellConfig = {
-    hamburgerShellMode: HamburgerShellMode.SideNav,
-    listDetailsPageMode: ListDetailsPageMode.SideNav
-};
-const overlayHamburgerShellConfig = {
-    hamburgerShellMode: HamburgerShellMode.Overlay,
-    listDetailsPageMode: ListDetailsPageMode.Overlay
-};
-const defaultHamburgerShellConfig = responsiveHamburgerShellConfig;
+HamburgerMenuComponent.ɵfac = function HamburgerMenuComponent_Factory(t) { return new (t || HamburgerMenuComponent)(); };
+HamburgerMenuComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: HamburgerMenuComponent, selectors: [["dgp-hamburger-menu"]], ngContentSelectors: _c0, decls: 1, vars: 0, template: function HamburgerMenuComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵprojectionDef();
+        ɵngcc0.ɵɵprojection(0);
+    } }, styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            height: 100%;\n        }"], changeDetection: 0 });
 
-const HAMBURGER_SHELL_CONFIG = new InjectionToken("HamburgerShellConfig");
-const ɵ0$8 = sideNavHamburgerShellConfig;
-const sideNavHamburgerShellConfigProvider = {
-    provide: HAMBURGER_SHELL_CONFIG,
-    useValue: ɵ0$8
+let HamburgerMenuHeaderComponent = class HamburgerMenuHeaderComponent {
 };
-const ɵ1$7 = overlayHamburgerShellConfig;
-const overlayHamburgerShellConfigProvider = {
-    provide: HAMBURGER_SHELL_CONFIG,
-    useValue: ɵ1$7
-};
-const ɵ2$5 = defaultHamburgerShellConfig;
-const defaultHamburgerShellConfigProvider = {
-    provide: HAMBURGER_SHELL_CONFIG,
-    useValue: ɵ2$5
-};
+HamburgerMenuHeaderComponent.ɵfac = function HamburgerMenuHeaderComponent_Factory(t) { return new (t || HamburgerMenuHeaderComponent)(); };
+HamburgerMenuHeaderComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: HamburgerMenuHeaderComponent, selectors: [["dgp-hamburger-menu-header"]], ngContentSelectors: _c0, decls: 2, vars: 0, consts: [["color", "primary", 1, "hamburger-menu__header"]], template: function HamburgerMenuHeaderComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵprojectionDef();
+        ɵngcc0.ɵɵelementStart(0, "mat-toolbar", 0);
+        ɵngcc0.ɵɵprojection(1);
+        ɵngcc0.ɵɵelementEnd();
+    } }, directives: [ɵngcc14.MatToolbar], styles: [""], changeDetection: 0 });
 
-const initialState = {
-    hamburgerMenuMode: "side",
-    isHamburgerMenuOpen: true,
-    pageMenuMode: "side",
-    isPageMenuOpen: true
+let HamburgerMenuEntriesComponent = class HamburgerMenuEntriesComponent {
 };
-const ɵ0$9 = (state, action) => {
-    return Object.assign(Object.assign({}, state), { hamburgerMenuMode: action.hamburgerMenuMode, isHamburgerMenuOpen: action.isHamburgerMenuOpen });
-}, ɵ1$8 = (state) => {
-    return Object.assign(Object.assign({}, state), { isHamburgerMenuOpen: !state.isHamburgerMenuOpen });
-}, ɵ2$6 = (state) => {
-    return Object.assign(Object.assign({}, state), { isHamburgerMenuOpen: false });
-}, ɵ3$3 = (state, action) => {
-    return Object.assign(Object.assign({}, state), { pageMenuMode: action.pageMenuMode, isPageMenuOpen: action.isPageMenuOpen });
-}, ɵ4$1 = (state) => {
-    return Object.assign(Object.assign({}, state), { isPageMenuOpen: !state.isPageMenuOpen });
-}, ɵ5$1 = (state) => {
-    return Object.assign(Object.assign({}, state), { isPageMenuOpen: false });
+HamburgerMenuEntriesComponent.ɵfac = function HamburgerMenuEntriesComponent_Factory(t) { return new (t || HamburgerMenuEntriesComponent)(); };
+HamburgerMenuEntriesComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: HamburgerMenuEntriesComponent, selectors: [["dgp-hamburger-menu-entries"]], ngContentSelectors: _c0, decls: 2, vars: 0, template: function HamburgerMenuEntriesComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵprojectionDef();
+        ɵngcc0.ɵɵelementStart(0, "mat-nav-list");
+        ɵngcc0.ɵɵprojection(1);
+        ɵngcc0.ɵɵelementEnd();
+    } }, directives: [ɵngcc7.MatNavList], styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            overflow: auto;\n            flex-grow: 1;\n        }\n\n        mat-nav-list[_ngcontent-%COMP%] {\n            flex-grow: 1;\n        }"], changeDetection: 0 });
+
+let HamburgerMenuEntryComponent = class HamburgerMenuEntryComponent {
+    isNonEmptyRoute() {
+        return this.route && this.route.length !== 0;
+    }
 };
-const hamburgerShellReducerImpl = createReducer(initialState, on(setHamburgerMenuState, (ɵ0$9)), on(toggleHamburgerMenu, (ɵ1$8)), on(closeHamburgerMenu, (ɵ2$6)), on(setListDetailsPageState, (ɵ3$3)), on(toggleListDetailsPageMenu, (ɵ4$1)), on(closeListDetailsMenu, (ɵ5$1)));
-const hamburgerShellReducer = new InjectionToken("hamburgerShellReducer");
-function hamburgerShellReducerFactory() {
-    return hamburgerShellReducerImpl;
-}
-const hamburgerShellReducerProvider = {
-    provide: hamburgerShellReducer,
-    useFactory: hamburgerShellReducerFactory
+HamburgerMenuEntryComponent.ɵfac = function HamburgerMenuEntryComponent_Factory(t) { return new (t || HamburgerMenuEntryComponent)(); };
+HamburgerMenuEntryComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: HamburgerMenuEntryComponent, selectors: [["dgp-hamburger-menu-entry"]], inputs: { matIconName: "matIconName", label: "label", route: "route", disabled: "disabled" }, decls: 3, vars: 2, consts: [["mat-list-item", "", 3, "routerLink", "routerLinkActive", "disabled", 4, "ngIf", "ngIfElse"], ["emptyRoute", ""], ["mat-list-item", "", 3, "routerLink", "routerLinkActive"], ["mat-list-item", "", "tabindex", "-1", 1, "disabled"]], template: function HamburgerMenuEntryComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵtemplate(0, HamburgerMenuEntryComponent_a_0_Template, 4, 7, "a", 0);
+        ɵngcc0.ɵɵtemplate(1, HamburgerMenuEntryComponent_ng_template_1_Template, 4, 2, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
+    } if (rf & 2) {
+        const _r65 = ɵngcc0.ɵɵreference(2);
+        ɵngcc0.ɵɵproperty("ngIf", ctx.isNonEmptyRoute())("ngIfElse", _r65);
+    } }, directives: [ɵngcc4.NgIf, ɵngcc7.MatListItem, ɵngcc2.RouterLinkWithHref, ɵngcc2.RouterLinkActive, ɵngcc5.MatIcon], styles: ["mat-icon[_ngcontent-%COMP%] {\n            margin-right: 16px;\n        }\n\n        .disabled[_ngcontent-%COMP%] {\n            pointer-events: none;\n            color: gray !important;\n        }"], changeDetection: 0 });
+__decorate([
+    Input()
+], HamburgerMenuEntryComponent.prototype, "matIconName", void 0);
+__decorate([
+    Input()
+], HamburgerMenuEntryComponent.prototype, "label", void 0);
+__decorate([
+    Input()
+], HamburgerMenuEntryComponent.prototype, "route", void 0);
+__decorate([
+    Input()
+], HamburgerMenuEntryComponent.prototype, "disabled", void 0);
+
+let DgpHamburgerMenuModule = class DgpHamburgerMenuModule {
 };
+DgpHamburgerMenuModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpHamburgerMenuModule });
+DgpHamburgerMenuModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpHamburgerMenuModule_Factory(t) { return new (t || DgpHamburgerMenuModule)(); }, imports: [[
+            MatToolbarModule,
+            MatListModule,
+            RouterModule,
+            MatIconModule,
+            CommonModule
+        ]] });
 
 let HamburgerShellEffects = class HamburgerShellEffects {
     constructor(actions, store, breakpointObserver, hamburgerShellConfig) {
@@ -2477,7 +2639,36 @@ __decorate([
 HamburgerShellEffects = __decorate([ __param(3, Inject(HAMBURGER_SHELL_CONFIG))
 ], HamburgerShellEffects);
 
+const initialHamburgerShellState = {
+    hamburgerMenuMode: "side",
+    isHamburgerMenuOpen: true,
+    pageMenuMode: "side",
+    isPageMenuOpen: true
+};
+const ɵ0$9 = (state, action) => {
+    return Object.assign(Object.assign({}, state), { hamburgerMenuMode: action.hamburgerMenuMode, isHamburgerMenuOpen: action.isHamburgerMenuOpen });
+}, ɵ1$7 = (state) => {
+    return Object.assign(Object.assign({}, state), { isHamburgerMenuOpen: !state.isHamburgerMenuOpen });
+}, ɵ2$5 = (state) => {
+    return Object.assign(Object.assign({}, state), { isHamburgerMenuOpen: false });
+}, ɵ3$3 = (state, action) => {
+    return Object.assign(Object.assign({}, state), { pageMenuMode: action.pageMenuMode, isPageMenuOpen: action.isPageMenuOpen });
+}, ɵ4$1 = (state) => {
+    return Object.assign(Object.assign({}, state), { isPageMenuOpen: !state.isPageMenuOpen });
+}, ɵ5$1 = (state) => {
+    return Object.assign(Object.assign({}, state), { isPageMenuOpen: false });
+};
+const hamburgerShellReducer = createReducer(initialHamburgerShellState, on(setHamburgerMenuState, (ɵ0$9)), on(toggleHamburgerMenu, (ɵ1$7)), on(closeHamburgerMenu, (ɵ2$5)), on(setListDetailsPageState, (ɵ3$3)), on(toggleListDetailsPageMenu, (ɵ4$1)), on(closeListDetailsMenu, (ɵ5$1)));
+
 var DgpHamburgerShellModule_1;
+const HAMBURGER_SHELL_REDUCER = new InjectionToken("hamburgerShellReducer");
+function hamburgerShellReducerFactory() {
+    return hamburgerShellReducer;
+}
+const hamburgerShellReducerProvider = {
+    provide: HAMBURGER_SHELL_REDUCER,
+    useFactory: hamburgerShellReducerFactory
+};
 let DgpHamburgerShellModule = DgpHamburgerShellModule_1 = class DgpHamburgerShellModule {
     static forRoot(configProvider = defaultHamburgerShellConfigProvider) {
         return {
@@ -2499,7 +2690,7 @@ DgpHamburgerShellModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function D
             MatIconModule,
             MatProgressBarModule,
             MatSidenavModule,
-            StoreModule.forFeature(hamburgerShellStoreFeature, hamburgerShellReducer),
+            StoreModule.forFeature(hamburgerShellStoreFeature, HAMBURGER_SHELL_REDUCER),
             EffectsModule.forFeature([
                 HamburgerShellEffects
             ]),
@@ -2586,14 +2777,16 @@ const logStore = createEntityStore({
 const logFeatureSelector = createFeatureSelector(logStoreFeature);
 const ɵ0$a = x => x.logEntry;
 const getLogEntryState = createSelector(logFeatureSelector, ɵ0$a);
-const ɵ1$9 = x => {
+const ɵ1$8 = x => {
     const entries = getAll(x);
     entries.sort((a, b) => {
-        return b.timeStamp.getTime() - a.timeStamp.getTime();
+        return b.timeStamp - a.timeStamp;
     });
     return entries;
 };
-const getAllLogEntries = createSelector(getLogEntryState, ɵ1$9);
+const getAllLogEntries = createSelector(getLogEntryState, ɵ1$8);
+const ɵ2$6 = x => x && x.length > 0;
+const hasLogEntries = createSelector(getAllLogEntries, ɵ2$6);
 const getSelectedLogEntry = createSelector(logFeatureSelector, logStore.selectors.logEntry.getFirstSelected);
 
 let LogPageComponent = class LogPageComponent {
@@ -2603,13 +2796,11 @@ let LogPageComponent = class LogPageComponent {
         this.logEntry$ = this.store.select(getSelectedLogEntry);
         activatedRoute.params
             .pipe(filter(params => params.logEntryId))
-            .subscribe(params => {
-            this.store.dispatch(logStore.actions.composeEntityActions({
-                select: {
-                    logEntry: [params.logEntryId]
-                }
-            }));
-        });
+            .subscribe(params => this.store.dispatch(logStore.actions.composeEntityActions({
+            select: {
+                logEntry: [params.logEntryId]
+            }
+        })));
     }
 };
 LogPageComponent.ɵfac = function LogPageComponent_Factory(t) { return new (t || LogPageComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store), ɵngcc0.ɵɵdirectiveInject(ɵngcc2.ActivatedRoute)); };
@@ -2641,40 +2832,44 @@ LogPageComponent.ctorParameters = () => [
     { type: ActivatedRoute }
 ];
 
-let LogEntryListComponent = class LogEntryListComponent {
-    constructor(store) {
-        this.store = store;
+let LogEntryListComponent = class LogEntryListComponent extends DgpContainer {
+    constructor() {
+        super(...arguments);
         this.severityEnum = Severity;
-        this.logEntries$ = this.store.select(getAllLogEntries);
-        this.hasLogEntries$ = this.logEntries$.pipe(map(x => x && x.length > 0));
+        this.logEntries$ = this.select(getAllLogEntries);
+        this.hasLogEntries$ = this.select(hasLogEntries);
     }
 };
-LogEntryListComponent.ɵfac = function LogEntryListComponent_Factory(t) { return new (t || LogEntryListComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
-LogEntryListComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: LogEntryListComponent, selectors: [["dgp-log-entry-list"]], decls: 4, vars: 4, consts: [[4, "ngIf", "ngIfElse"], ["emptyState", ""], ["mat-subheader", ""], ["mat-list-item", "", 3, "routerLink", 4, "ngFor", "ngForOf"], ["mat-list-item", "", 3, "routerLink"], ["mat-list-icon", "", 4, "ngIf"], ["mat-line", ""], ["mat-list-icon", ""], ["matIconName", "error", "title", "No entries available"]], template: function LogEntryListComponent_Template(rf, ctx) { if (rf & 1) {
+LogEntryListComponent.ɵfac = function LogEntryListComponent_Factory(t) { return ɵLogEntryListComponent_BaseFactory(t || LogEntryListComponent); };
+LogEntryListComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: LogEntryListComponent, selectors: [["dgp-log-entry-list"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 4, vars: 4, consts: [[4, "ngIf", "ngIfElse"], ["emptyState", ""], ["mat-subheader", ""], ["mat-list-item", "", 3, "routerLink", 4, "ngFor", "ngForOf"], ["mat-list-item", "", 3, "routerLink"], ["mat-list-icon", "", 4, "ngIf"], ["mat-line", ""], ["mat-list-icon", ""], ["matIconName", "error", "title", "No entries available"]], template: function LogEntryListComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵtemplate(0, LogEntryListComponent_mat_nav_list_0_Template, 5, 3, "mat-nav-list", 0);
         ɵngcc0.ɵɵpipe(1, "async");
         ɵngcc0.ɵɵtemplate(2, LogEntryListComponent_ng_template_2_Template, 1, 0, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        const _r56 = ɵngcc0.ɵɵreference(3);
-        ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(1, 2, ctx.hasLogEntries$))("ngIfElse", _r56);
+        const _r68 = ɵngcc0.ɵɵreference(3);
+        ɵngcc0.ɵɵproperty("ngIf", ɵngcc0.ɵɵpipeBind1(1, 2, ctx.hasLogEntries$))("ngIfElse", _r68);
     } }, directives: [ɵngcc4.NgIf, ɵngcc7.MatNavList, ɵngcc7.MatListSubheaderCssMatStyler, ɵngcc4.NgForOf, ɵngcc7.MatListItem, ɵngcc2.RouterLinkWithHref, ɵngcc9.MatLine, ɵngcc5.MatIcon, ɵngcc7.MatListIconCssMatStyler, EmptyStateComponent], pipes: [ɵngcc4.AsyncPipe, ɵngcc4.DatePipe], styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-grow: 1;\n            flex-direction: column;\n            height: 100%;\n        }"], changeDetection: 0 });
-LogEntryListComponent.ctorParameters = () => [
-    { type: Store }
-];
 
 let LogEntryDetailsComponent = class LogEntryDetailsComponent {
     constructor() {
         this.severityEnum = Severity;
     }
+    isApiError() {
+        var _a, _b;
+        if (((_a = this.logEntry.content) === null || _a === void 0 ? void 0 : _a.hasOwnProperty("status")) && ((_b = this.logEntry.content) === null || _b === void 0 ? void 0 : _b.hasOwnProperty("error"))) {
+            return true;
+        }
+        return false;
+    }
 };
 LogEntryDetailsComponent.ɵfac = function LogEntryDetailsComponent_Factory(t) { return new (t || LogEntryDetailsComponent)(); };
-LogEntryDetailsComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: LogEntryDetailsComponent, selectors: [["dgp-log-entry-details"]], inputs: { logEntry: "logEntry" }, decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["noLogEntryTemplate", ""], [1, "header"], ["class", "header__icon", 4, "ngIf"], [1, "header__title-container"], [1, "header__title", "mat-h1"], [1, "header__subtitle"], [1, "vertical-separator"], [1, "content"], [1, "content__heading", "mat-h2"], [1, "content__body"], [4, "ngIf"], ["class", "content__body", 4, "ngIf", "ngIfElse"], ["noContentTemplate", ""], [1, "header__icon"], [1, "content__placeholder"], ["title", "No entry selected", "matIconName", "error"]], template: function LogEntryDetailsComponent_Template(rf, ctx) { if (rf & 1) {
+LogEntryDetailsComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: LogEntryDetailsComponent, selectors: [["dgp-log-entry-details"]], inputs: { logEntry: "logEntry" }, decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["noLogEntryTemplate", ""], [1, "header"], ["class", "header__icon", 4, "ngIf"], [1, "header__title-container"], [1, "header__title", "mat-h1"], [1, "header__subtitle"], [1, "vertical-separator"], [1, "content"], [1, "content__heading", "mat-h2"], [1, "content__body"], [4, "ngIf"], ["class", "content__body", 4, "ngIf", "ngIfElse"], ["noContentTemplate", ""], [1, "header__icon"], ["apiError", ""], [3, "innerHTML"], [1, "content__placeholder"], ["title", "No entry selected", "matIconName", "error"]], template: function LogEntryDetailsComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵtemplate(0, LogEntryDetailsComponent_ng_container_0_Template, 20, 9, "ng-container", 0);
         ɵngcc0.ɵɵtemplate(1, LogEntryDetailsComponent_ng_template_1_Template, 2, 0, "ng-template", null, 1, ɵngcc0.ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        const _r62 = ɵngcc0.ɵɵreference(2);
-        ɵngcc0.ɵɵproperty("ngIf", ctx.logEntry)("ngIfElse", _r62);
-    } }, directives: [ɵngcc4.NgIf, ɵngcc18.MatDivider, ɵngcc5.MatIcon, EmptyStateComponent], pipes: [ɵngcc4.DatePipe, ɵngcc4.JsonPipe], styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            overflow: auto;\n            word-break: break-word;\n        }\n\n        .header[_ngcontent-%COMP%] {\n            display: flex;\n            align-items: center;\n        }\n\n        .header__icon[_ngcontent-%COMP%] {\n            font-size: 40px;\n            width: 40px;\n            height: 40px;\n            margin-left: 16px;\n            margin-right: 16px;\n        }\n\n        .header__title-container[_ngcontent-%COMP%] {\n            flex-grow: 1;\n        }\n\n        .header__title[_ngcontent-%COMP%] {\n            margin-top: 8px;\n            margin-bottom: 8px;\n        }\n\n        .header__subtitle[_ngcontent-%COMP%] {\n            display: flex;\n        }\n\n        .content[_ngcontent-%COMP%] {\n        }\n\n        .content__heading[_ngcontent-%COMP%] {\n            margin-top: 8px;\n            margin-bottom: 8px;\n        }\n\n        .content__body[_ngcontent-%COMP%] {\n\n        }\n\n        .content__placeholder[_ngcontent-%COMP%] {\n\n        }\n\n        .vertical-separator[_ngcontent-%COMP%] {\n            margin-top: 16px;\n            margin-bottom: 16px;\n        }"], changeDetection: 0 });
+        const _r74 = ɵngcc0.ɵɵreference(2);
+        ɵngcc0.ɵɵproperty("ngIf", ctx.logEntry)("ngIfElse", _r74);
+    } }, directives: [ɵngcc4.NgIf, ɵngcc18.MatDivider, ɵngcc5.MatIcon, EmptyStateComponent], pipes: [ɵngcc4.DatePipe, ɵngcc4.JsonPipe, SafePipe], styles: ["[_nghost-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            flex-grow: 1;\n            overflow: auto;\n            word-break: break-word;\n        }\n\n        .header[_ngcontent-%COMP%] {\n            display: flex;\n            align-items: center;\n        }\n\n        .header__icon[_ngcontent-%COMP%] {\n            font-size: 40px;\n            width: 40px;\n            height: 40px;\n            margin-left: 16px;\n            margin-right: 16px;\n        }\n\n        .header__title-container[_ngcontent-%COMP%] {\n            flex-grow: 1;\n        }\n\n        .header__title[_ngcontent-%COMP%] {\n            margin-top: 8px;\n            margin-bottom: 8px;\n        }\n\n        .header__subtitle[_ngcontent-%COMP%] {\n            display: flex;\n        }\n\n        .content[_ngcontent-%COMP%] {\n        }\n\n        .content__heading[_ngcontent-%COMP%] {\n            margin-top: 8px;\n            margin-bottom: 8px;\n        }\n\n        .content__body[_ngcontent-%COMP%] {\n\n        }\n\n        .content__placeholder[_ngcontent-%COMP%] {\n\n        }\n\n        .vertical-separator[_ngcontent-%COMP%] {\n            margin-top: 16px;\n            margin-bottom: 16px;\n        }"], changeDetection: 0 });
 __decorate([
     Input()
 ], LogEntryDetailsComponent.prototype, "logEntry", void 0);
@@ -2686,31 +2881,25 @@ let LogEffects = class LogEffects {
         this.router = router;
         this.logError$ = this.actions$.pipe(ofType(logError), map(action => {
             const logEntry = {
-                timeStamp: new Date(),
+                timeStamp: new Date().valueOf(),
                 title: action.payload.title,
                 content: action.payload.error,
                 severity: Severity.Error
             };
             return addLogEntry({ logEntry });
         }));
-        this.addLogEntry$ = this.actions$.pipe(ofType(addLogEntry), map(action => {
-            return logStore.actions.composeEntityActions({
-                add: {
-                    logEntry: {
-                        [action.logEntry.timeStamp.toString()]: action.logEntry
-                    }
+        this.addLogEntry$ = this.actions$.pipe(ofType(addLogEntry), map(action => logStore.actions.composeEntityActions({
+            add: {
+                logEntry: {
+                    [action.logEntry.timeStamp.toString()]: action.logEntry
                 }
-            });
-        }));
-        this.showErrorSnack = this.actions$.pipe(ofType(addLogEntry), switchMap(action => {
-            return this.matSnackbar.open(action.logEntry.title, "Show log", {
-                duration: 5000
-            })
-                .onAction()
-                .pipe(map(() => {
-                return this.router.navigate(["/logEntries", action.logEntry.timeStamp.toString()]);
-            }), defaultIfEmpty(null));
-        }));
+            }
+        })));
+        this.showErrorSnack$ = this.actions$.pipe(ofType(addLogEntry), switchMap(action => this.matSnackbar.open(action.logEntry.title, "Show log", {
+            duration: 5000
+        })
+            .onAction()
+            .pipe(map(() => this.router.navigate(["/logEntries", action.logEntry.timeStamp.toString()])), defaultIfEmpty(null))));
     }
 };
 LogEffects.ɵfac = function LogEffects_Factory(t) { return new (t || LogEffects)(ɵngcc0.ɵɵinject(ɵngcc3.Actions), ɵngcc0.ɵɵinject(ɵngcc19.MatSnackBar), ɵngcc0.ɵɵinject(ɵngcc2.Router)); };
@@ -2730,14 +2919,14 @@ __decorate([
     Effect({
         dispatch: false
     })
-], LogEffects.prototype, "showErrorSnack", void 0);
+], LogEffects.prototype, "showErrorSnack$", void 0);
 
-const logStoreReducer = new InjectionToken("LogStoreReducer");
+const LOG_STORE_REDUCER = new InjectionToken("LogStoreReducer");
 function createLogStoreReducer() {
     return logStore.reducers;
 }
 const logStoreReducerProvider = {
-    provide: logStoreReducer,
+    provide: LOG_STORE_REDUCER,
     useFactory: createLogStoreReducer
 };
 let DgpLogModule = class DgpLogModule {
@@ -2748,7 +2937,7 @@ DgpLogModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpLogModule
     ], imports: [[
             CommonModule,
             FormsModule,
-            StoreModule.forFeature(logStoreFeature, logStoreReducer),
+            StoreModule.forFeature(logStoreFeature, LOG_STORE_REDUCER),
             EffectsModule.forFeature([
                 LogEffects
             ]),
@@ -2766,7 +2955,8 @@ DgpLogModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpLogModule
             DgpHamburgerMenuToggleModule,
             DgpPageHeaderModule,
             DgpListDetailsPageModule,
-            DgpEmptyStateModule
+            DgpEmptyStateModule,
+            SafePipeModule
         ]] });
 
 const scheduleRequestActionType = "[ScheduleRequest] ScheduleRequestAction";
@@ -2783,41 +2973,6 @@ const unregisterRequestActionType = "[Request] Unregister";
 const unregisterRequest = createAction(unregisterRequestActionType);
 const resetRequestsActionType = "[Request] Reset";
 const resetRequests = createAction(resetRequestsActionType);
-
-const requestReducer = (state = { pendingRequests: 0 }, action) => {
-    switch (action.type) {
-        case registerRequestActionType: {
-            return {
-                pendingRequests: state.pendingRequests + 1
-            };
-        }
-        case unregisterRequestActionType: {
-            return {
-                pendingRequests: state.pendingRequests - 1
-            };
-        }
-        case resetRequestsActionType: {
-            return {
-                pendingRequests: 0
-            };
-        }
-        default: {
-            return state;
-        }
-    }
-};
-
-const requestStoreReducerImpl = {
-    requests: requestReducer
-};
-const requestStoreReducer = new InjectionToken("RequestStoreReducer");
-function requestStoreReducerFactory() {
-    return requestStoreReducerImpl;
-}
-const requestStoreReducerProviders = [{
-        provide: requestStoreReducer,
-        useFactory: requestStoreReducerFactory
-    }];
 
 /**
  * Observes a promise or observable based
@@ -2889,14 +3044,39 @@ __decorate([
     })
 ], RequestEffects.prototype, "scheduleRequest$", void 0);
 
+const ɵ0$b = state => {
+    return {
+        pendingRequests: state.pendingRequests + 1
+    };
+}, ɵ1$9 = state => {
+    return {
+        pendingRequests: state.pendingRequests - 1
+    };
+}, ɵ2$7 = () => {
+    return {
+        pendingRequests: 0
+    };
+};
+const requestReducer = createReducer({ pendingRequests: 0 }, on(registerRequest, ɵ0$b), on(unregisterRequest, ɵ1$9), on(resetRequests, ɵ2$7));
+const requestStoreReducer = {
+    requests: requestReducer
+};
+
+const REQUEST_STORE_REDUCER = new InjectionToken("RequestStoreReducer");
+function requestStoreReducerFactory() {
+    return requestStoreReducer;
+}
+const requestStoreReducerProvider = {
+    provide: REQUEST_STORE_REDUCER,
+    useFactory: requestStoreReducerFactory
+};
 let DgpRequestStoreModule = class DgpRequestStoreModule {
 };
 DgpRequestStoreModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpRequestStoreModule });
 DgpRequestStoreModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpRequestStoreModule_Factory(t) { return new (t || DgpRequestStoreModule)(); }, providers: [
-        requestStoreReducerProviders,
-        RequestEffects
+        requestStoreReducerProvider
     ], imports: [[
-            StoreModule.forFeature(requestStoreFeature, requestStoreReducer),
+            StoreModule.forFeature(requestStoreFeature, REQUEST_STORE_REDUCER),
             EffectsModule.forFeature([
                 RequestEffects
             ])
@@ -2926,7 +3106,7 @@ let RoutingOverlayEffects = class RoutingOverlayEffects {
                 return showLoadingSpinner({ showSpinner: false });
             }
             return null;
-        }), filter(event => !isNullOrUndefined(event)));
+        }), filter(event => !isNullOrUndefined$1(event)));
         this.showLoadingSpinner$ = this.actions$.pipe(ofType(showLoadingSpinner), distinctUntilKeyChanged("showSpinner"), switchMap(action => {
             if (action.showSpinner) {
                 return timer(500).pipe(tap(() => {
@@ -2939,7 +3119,7 @@ let RoutingOverlayEffects = class RoutingOverlayEffects {
             }
             else {
                 return of(null).pipe(tap(() => {
-                    if (!isNullOrUndefined(this.dialogRef)) {
+                    if (!isNullOrUndefined$1(this.dialogRef)) {
                         this.dialogRef.close();
                     }
                 }));
@@ -3100,23 +3280,28 @@ DgpTableCellModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpTab
 const toggleDarkMode = createAction("[ThemeSwitcher] ToggleDarkMode");
 const setIsDarkModeActive = createAction("[ThemeSwitcher] SetIsDarkModeActive", props());
 
+const defaultThemeSwitcherConfig = {
+    darkThemeClassName: "dark-theme"
+};
+const THEME_SWITCHER_CONFIG = new InjectionToken("ThemeSwitcherConfig");
 const themeSwitcherStoreFeature = "ThemeSwitcher";
 
 const themeSwitcherFeatureSelector = createFeatureSelector(themeSwitcherStoreFeature);
-const ɵ0$b = x => x.useDarkMode;
-const isDarkModeActiveSelector = createSelector(themeSwitcherFeatureSelector, ɵ0$b);
+const ɵ0$c = x => x.useDarkMode;
+const isDarkModeActiveSelector = createSelector(themeSwitcherFeatureSelector, ɵ0$c);
+const isDarkModeActive = isDarkModeActiveSelector;
 
-let DarkModeToggleComponent = class DarkModeToggleComponent {
-    constructor(store) {
-        this.store = store;
-        this.useDarkMode$ = this.store.select(isDarkModeActiveSelector);
+let DarkModeToggleComponent = class DarkModeToggleComponent extends DgpContainer {
+    constructor() {
+        super(...arguments);
+        this.useDarkMode$ = this.select(isDarkModeActive);
     }
     toggleDarkMode() {
-        this.store.dispatch(toggleDarkMode());
+        this.dispatch(toggleDarkMode());
     }
 };
-DarkModeToggleComponent.ɵfac = function DarkModeToggleComponent_Factory(t) { return new (t || DarkModeToggleComponent)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
-DarkModeToggleComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: DarkModeToggleComponent, selectors: [["dgp-dark-mode-toggle"]], decls: 3, vars: 3, consts: [[3, "ngModel", "ngModelChange"]], template: function DarkModeToggleComponent_Template(rf, ctx) { if (rf & 1) {
+DarkModeToggleComponent.ɵfac = function DarkModeToggleComponent_Factory(t) { return ɵDarkModeToggleComponent_BaseFactory(t || DarkModeToggleComponent); };
+DarkModeToggleComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: DarkModeToggleComponent, selectors: [["dgp-dark-mode-toggle"]], features: [ɵngcc0.ɵɵInheritDefinitionFeature], decls: 3, vars: 3, consts: [[3, "ngModel", "ngModelChange"]], template: function DarkModeToggleComponent_Template(rf, ctx) { if (rf & 1) {
         ɵngcc0.ɵɵelementStart(0, "mat-slide-toggle", 0);
         ɵngcc0.ɵɵlistener("ngModelChange", function DarkModeToggleComponent_Template_mat_slide_toggle_ngModelChange_0_listener() { return ctx.toggleDarkMode(); });
         ɵngcc0.ɵɵpipe(1, "async");
@@ -3125,14 +3310,6 @@ DarkModeToggleComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: DarkModeTogg
     } if (rf & 2) {
         ɵngcc0.ɵɵproperty("ngModel", ɵngcc0.ɵɵpipeBind1(1, 1, ctx.useDarkMode$));
     } }, directives: [ɵngcc20.MatSlideToggle, ɵngcc21.NgControlStatus, ɵngcc21.NgModel], pipes: [ɵngcc4.AsyncPipe], styles: ["[_nghost-%COMP%] {\n            margin-left: 16px;\n            margin-right: 16px;\n        }"], changeDetection: 0 });
-DarkModeToggleComponent.ctorParameters = () => [
-    { type: Store }
-];
-
-const defaultThemeSwitcherConfig = {
-    darkThemeClassName: "dark-theme"
-};
-const THEME_SWITCHER_CONFIG = new InjectionToken("ThemeSwitcherConfig");
 
 let ThemeHostDirective = class ThemeHostDirective {
     constructor(elRef, renderer, store, config, overlayContainer) {
@@ -3141,14 +3318,19 @@ let ThemeHostDirective = class ThemeHostDirective {
         this.store = store;
         this.config = config;
         this.overlayContainer = overlayContainer;
-        this.store.pipe(select(isDarkModeActiveSelector)).subscribe(isDarkModeActive => {
+        this.store.pipe(select(isDarkModeActiveSelector))
+            .subscribe(isDarkModeActive => {
             if (isDarkModeActive) {
                 this.renderer.addClass(elRef.nativeElement, this.config.darkThemeClassName);
-                this.overlayContainer.getContainerElement().classList.add(this.config.darkThemeClassName);
+                this.overlayContainer.getContainerElement()
+                    .classList
+                    .add(this.config.darkThemeClassName);
             }
             else {
                 this.renderer.removeClass(elRef.nativeElement, this.config.darkThemeClassName);
-                this.overlayContainer.getContainerElement().classList.remove(this.config.darkThemeClassName);
+                this.overlayContainer.getContainerElement()
+                    .classList
+                    .remove(this.config.darkThemeClassName);
             }
         });
     }
@@ -3191,27 +3373,27 @@ __decorate([
 const initialThemeSwitcherState = {
     useDarkMode: false
 };
-const ɵ0$c = (state, action) => {
+const ɵ0$d = (state, action) => {
     return Object.assign(Object.assign({}, state), { useDarkMode: action.isDarkModeActive });
 }, ɵ1$a = (state) => {
     return Object.assign(Object.assign({}, state), { useDarkMode: !state.useDarkMode });
 };
-const themeSwitcherReducerImpl = createReducer(initialThemeSwitcherState, on(setIsDarkModeActive, ɵ0$c), on(toggleDarkMode, ɵ1$a));
-const themeSwitcherReducer = new InjectionToken("ThemeSwitcherReducer");
-function themeSwitcherReducerFactory() {
-    return themeSwitcherReducerImpl;
-}
-const themeSwitcherReducerProvider = {
-    provide: themeSwitcherReducer,
-    useFactory: themeSwitcherReducerFactory
-};
+const themeSwitcherReducer = createReducer(initialThemeSwitcherState, on(setIsDarkModeActive, ɵ0$d), on(toggleDarkMode, ɵ1$a));
 
 var DgpThemeSwitcherModule_1;
+const THEME_SWITCHER_REDUCER = new InjectionToken("ThemeSwitcherReducer");
+function themeSwitcherReducerFactory() {
+    return themeSwitcherReducer;
+}
+const themeSwitcherReducerProvider = {
+    provide: THEME_SWITCHER_REDUCER,
+    useFactory: themeSwitcherReducerFactory
+};
 let DgpThemeSwitcherModule = DgpThemeSwitcherModule_1 = class DgpThemeSwitcherModule {
     constructor(store) {
         this.store = store;
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
-        if (!isNullOrUndefined(isDarkModeActiveJSON)) {
+        if (!isNullOrUndefined$1(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
             this.store.dispatch(setIsDarkModeActive({ isDarkModeActive }));
         }
@@ -3234,7 +3416,7 @@ DgpThemeSwitcherModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function Dg
             FormsModule,
             OverlayModule,
             MatSlideToggleModule,
-            StoreModule.forFeature(themeSwitcherStoreFeature, themeSwitcherReducer),
+            StoreModule.forFeature(themeSwitcherStoreFeature, THEME_SWITCHER_REDUCER),
             EffectsModule.forFeature([
                 ThemeSwitcherEffects
             ])
@@ -3243,26 +3425,67 @@ DgpThemeSwitcherModule.ctorParameters = () => [
     { type: Store }
 ];
 
-let DgpContainer = 
-// tslint:disable-next-line:directive-class-suffix
-class DgpContainer {
-    constructor(store) {
-        this.store = store;
-        this.dispatch = (x) => this.store.dispatch(x);
-        this.select = (x) => this.store.select(x);
-    }
+let TileComponent = class TileComponent {
 };
-DgpContainer.ɵfac = function DgpContainer_Factory(t) { return new (t || DgpContainer)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
-DgpContainer.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: DgpContainer });
-DgpContainer.ctorParameters = () => [
-    { type: Store }
-];
+TileComponent.ɵfac = function TileComponent_Factory(t) { return new (t || TileComponent)(); };
+TileComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: TileComponent, selectors: [["dgp-tile"]], inputs: { route: "route", matIconName: "matIconName", label: "label", description: "description" }, decls: 10, vars: 4, consts: [[1, "container", 3, "routerLink"], ["matRipple", "", 1, "card"], [1, "description"], [1, "icon", "dgp-bg--primary"], [1, "label"], [1, "divider"]], template: function TileComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵelementStart(0, "a", 0);
+        ɵngcc0.ɵɵelementStart(1, "mat-card", 1);
+        ɵngcc0.ɵɵelementStart(2, "mat-card-content", 2);
+        ɵngcc0.ɵɵelementStart(3, "mat-icon", 3);
+        ɵngcc0.ɵɵtext(4);
+        ɵngcc0.ɵɵelementEnd();
+        ɵngcc0.ɵɵelementStart(5, "div", 4);
+        ɵngcc0.ɵɵtext(6);
+        ɵngcc0.ɵɵelementEnd();
+        ɵngcc0.ɵɵelement(7, "mat-divider", 5);
+        ɵngcc0.ɵɵelementStart(8, "div");
+        ɵngcc0.ɵɵtext(9);
+        ɵngcc0.ɵɵelementEnd();
+        ɵngcc0.ɵɵelementEnd();
+        ɵngcc0.ɵɵelementEnd();
+        ɵngcc0.ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵngcc0.ɵɵproperty("routerLink", ctx.route);
+        ɵngcc0.ɵɵadvance(4);
+        ɵngcc0.ɵɵtextInterpolate(ctx.matIconName);
+        ɵngcc0.ɵɵadvance(2);
+        ɵngcc0.ɵɵtextInterpolate1(" ", ctx.label, " ");
+        ɵngcc0.ɵɵadvance(3);
+        ɵngcc0.ɵɵtextInterpolate1(" ", ctx.description, " ");
+    } }, directives: [ɵngcc2.RouterLinkWithHref, ɵngcc23.MatCard, ɵngcc9.MatRipple, ɵngcc23.MatCardContent, ɵngcc5.MatIcon, ɵngcc18.MatDivider], styles: [".container[_ngcontent-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            max-height: 224px;\n            min-height: 224px;\n            height: 100%;\n            max-width: 224px;\n            min-width: 224px;\n            width: 100%;\n            text-decoration: inherit;\n            margin: 8px;\n        }\n\n        .card[_ngcontent-%COMP%] {\n            flex-grow: 1;\n        }\n\n        .description[_ngcontent-%COMP%] {\n            display: flex;\n            flex-direction: column;\n            justify-content: center;\n            align-items: center;\n            height: 100%;\n        }\n\n        .icon[_ngcontent-%COMP%] {\n            font-size: 40px;\n            height: 64px;\n            width: 64px;\n            color: white !important;\n            border-radius: 32px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            margin-bottom: 16px;\n        }\n\n        .label[_ngcontent-%COMP%] {\n            font-size: larger;\n        }\n\n        .divider[_ngcontent-%COMP%] {\n            position: relative !important;\n            margin-top: 16px;\n            margin-bottom: 16px;\n        }"], changeDetection: 0 });
+__decorate([
+    Input()
+], TileComponent.prototype, "route", void 0);
+__decorate([
+    Input()
+], TileComponent.prototype, "matIconName", void 0);
+__decorate([
+    Input()
+], TileComponent.prototype, "label", void 0);
+__decorate([
+    Input()
+], TileComponent.prototype, "description", void 0);
+
+let DgpTileModule = class DgpTileModule {
+};
+DgpTileModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpTileModule });
+DgpTileModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpTileModule_Factory(t) { return new (t || DgpTileModule)(); }, imports: [[
+            RouterModule,
+            MatCardModule,
+            MatRippleModule,
+            MatIconModule,
+            MatDividerModule
+        ]] });
 
 /**
  * Base class for classes for manipulating a model
  */
-let DgpModelEditorComponentBase = class DgpModelEditorComponentBase {
+let DgpModelEditorComponentBase = 
+// tslint:disable-next-line:directive-class-suffix
+class DgpModelEditorComponentBase {
     constructor() {
+        this.model$ = new BehaviorSubject(this.modelValue);
         this.modelChange = new EventEmitter();
     }
     get model() {
@@ -3273,6 +3496,7 @@ let DgpModelEditorComponentBase = class DgpModelEditorComponentBase {
             return;
         }
         this.modelValue = value;
+        this.model$.next(value);
     }
     setModel(value) {
         this.model = value;
@@ -3296,6 +3520,24 @@ __decorate([
 __decorate([
     Output()
 ], DgpModelEditorComponentBase.prototype, "modelChange", void 0);
+
+let HybridComponentBase = 
+// tslint:disable-next-line:directive-class-suffix
+class HybridComponentBase extends DgpModelEditorComponentBase {
+    constructor(store) {
+        super();
+        this.store = store;
+        this.dispatch = (x) => this.store.dispatch(x);
+        this.select = (x) => this.store.select(x);
+        // tslint:disable-next-line:member-ordering
+        this.data$ = this.select(this.getData());
+    }
+};
+HybridComponentBase.ɵfac = function HybridComponentBase_Factory(t) { return new (t || HybridComponentBase)(ɵngcc0.ɵɵdirectiveInject(ɵngcc1.Store)); };
+HybridComponentBase.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: HybridComponentBase, features: [ɵngcc0.ɵɵInheritDefinitionFeature] });
+HybridComponentBase.ctorParameters = () => [
+    { type: Store }
+];
 
 class DgpSelectEntityViaRouteResolver {
     constructor(store, config) {
@@ -3321,6 +3563,12 @@ class DgpSelectEntityViaRouteResolver {
         });
     }
 }
+
+function isNullOrUndefined(value) {
+    return value === null || value === undefined;
+}
+const nullOrUndefined = isNullOrUndefined;
+const notNullOrUndefined = x => !nullOrUndefined(x);
 
 let VirtualListItemDirective = class VirtualListItemDirective {
 };
@@ -3354,7 +3602,7 @@ VirtualListPanelComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: VirtualLis
         ɵngcc0.ɵɵproperty("itemSize", ctx.itemSize);
         ɵngcc0.ɵɵadvance(1);
         ɵngcc0.ɵɵproperty("cdkVirtualForOf", ctx.items);
-    } }, directives: [ɵngcc23.CdkVirtualScrollViewport, ɵngcc23.CdkFixedSizeVirtualScroll, ɵngcc23.CdkVirtualForOf, ɵngcc4.NgTemplateOutlet], encapsulation: 2, changeDetection: 0 });
+    } }, directives: [ɵngcc24.CdkVirtualScrollViewport, ɵngcc24.CdkFixedSizeVirtualScroll, ɵngcc24.CdkVirtualForOf, ɵngcc4.NgTemplateOutlet], encapsulation: 2, changeDetection: 0 });
 VirtualListPanelComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 }
@@ -3378,13 +3626,13 @@ DgpVirtualListPanelModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function
         ]] });
 
 var DgpNgAppModule_1;
-const appReducer = new InjectionToken("AppReducer");
+const APP_REDUCER = new InjectionToken("AppReducer");
 let DgpNgAppModule = DgpNgAppModule_1 = class DgpNgAppModule {
     static forRoot(config) {
         return {
             ngModule: DgpNgAppModule_1,
             providers: [{
-                    provide: appReducer,
+                    provide: APP_REDUCER,
                     useValue: config.appReducer
                 }]
         };
@@ -3394,18 +3642,20 @@ DgpNgAppModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: DgpNgAppModule });
 DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppModule_Factory(t) { return new (t || DgpNgAppModule)(); }, imports: [[
             BrowserModule,
             BrowserAnimationsModule,
-            StoreModule.forRoot(appReducer, {
+            StoreModule.forRoot(APP_REDUCER, {
                 metaReducers: [hmrReducer]
             }),
             EffectsModule.forRoot([]),
             DgpHamburgerShellModule.forRoot(),
             DgpThemeSwitcherModule.forRoot(),
+            DgpHamburgerMenuModule,
             DgpLogModule,
             DgpRequestStoreModule,
             DgpRoutingOverlayModule
         ],
         DgpHamburgerShellModule,
-        DgpThemeSwitcherModule] });
+        DgpThemeSwitcherModule,
+        DgpHamburgerMenuModule] });
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(AuthenticationGuard, [{
         type: Injectable
     }], function () { return [{ type: ɵngcc1.Store }, { type: ɵngcc2.Router }]; }, null); })();
@@ -3417,7 +3667,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         type: NgModule,
         args: [{
                 imports: [
-                    StoreModule.forFeature(authenticationStoreFeature, authenticationReducer)
+                    StoreModule.forFeature(authenticationStoreFeature, AUTHENTICATION_REDUCER)
                 ],
                 providers: [
                     appInitializerProvider,
@@ -3462,7 +3712,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         type: NgModule,
         args: [{
                 imports: [
-                    StoreModule.forFeature(broadcastStoreFeature, broadcastReducer),
+                    StoreModule.forFeature(broadcastStoreFeature, BROADCAST_REDUCER),
                     EffectsModule.forFeature([
                         BroadcastEffects
                     ]),
@@ -3588,6 +3838,11 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 ]
             }]
     }], null, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(FileViewerComponentBase, [{
+        type: Directive
+    }], null, { fileItem: [{
+            type: Input
+        }] }); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(FallbackFileViewerComponent, [{
         type: Component,
         args: [{
@@ -3628,9 +3883,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }
     `]
             }]
-    }], function () { return [{ type: ɵngcc6.Platform }]; }, { fileItem: [{
-            type: Input
-        }] }); })();
+    }], function () { return [{ type: ɵngcc6.Platform }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(FileItemListComponent, [{
         type: Component,
         args: [{
@@ -3710,11 +3963,6 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }], model: [{
             type: Input
         }] }); })();
-/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(ViewerComponentBase, [{
-        type: Directive
-    }], null, { fileItem: [{
-            type: Input
-        }] }); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(FileViewerComponent, [{
         type: Component,
         args: [{
@@ -3755,9 +4003,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
     }], function () { return [{ type: undefined, decorators: [{
                 type: Inject,
                 args: [FILE_VIEWER_CONFIG]
-            }] }]; }, { fileItem: [{
-            type: Input
-        }] }); })();
+            }] }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DynamicFileViewerComponent, [{
         type: Component,
         args: [{
@@ -3777,17 +4023,23 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
     }], function () { return [{ type: ɵngcc0.ComponentFactoryResolver }, { type: ɵngcc0.ViewContainerRef }, { type: undefined, decorators: [{
                 type: Inject,
                 args: [FILE_VIEWER_CONFIG]
-            }] }]; }, { fileItem: [{
-            type: Input
-        }] }); })();
+            }] }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(JpgViewerComponent, [{
         type: Component,
         args: [{
                 selector: "dgp-jpg-viewer",
                 template: `
-        <img [src]="fileItem.url | safe:'url'"
+        <img *ngIf="!isTrident; else fallback"
+             [src]="fileItem.url | safe:'url'"
              class="image"
              alt="{{ fileItem.fileName }}">
+        <ng-template #fallback>
+            <div class="trident-container">
+                <img [src]="fileItem.url | safe:'url'"
+                     class="trident-image"
+                     alt="{{ fileItem.fileName }}">
+            </div>
+        </ng-template>
     `,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 styles: [`
@@ -3798,17 +4050,26 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
             width: 100%;
             height: 100%;
         }
-        
+
         .image {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
+
+        .trident-container {
+            display: flex;
+            overflow: auto;
+            flex-shrink: 0;
+        }
+
+        .trident-image {
+            margin: auto;
+            flex-shrink: 0;
+        }
     `]
             }]
-    }], null, { fileItem: [{
-            type: Input
-        }] }); })();
+    }], function () { return [{ type: ɵngcc6.Platform }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(PdfViewerComponent, [{
         type: Component,
         args: [{
@@ -3853,17 +4114,23 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }
     `]
             }]
-    }], function () { return [{ type: ɵngcc6.Platform }, { type: ɵngcc0.ChangeDetectorRef }]; }, { fileItem: [{
-            type: Input
-        }] }); })();
+    }], function () { return [{ type: ɵngcc6.Platform }, { type: ɵngcc0.ChangeDetectorRef }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(PngViewerComponent, [{
         type: Component,
         args: [{
                 selector: "dgp-png-viewer",
                 template: `
-        <img [src]="fileItem.url | safe:'url'"
+        <img *ngIf="!isTrident; else fallback"
+             [src]="fileItem.url | safe:'url'"
              class="image"
              alt="{{ fileItem.fileName }}">
+        <ng-template #fallback>
+            <div class="trident-container">
+                <img [src]="fileItem.url | safe:'url'"
+                     class="trident-image"
+                     alt="{{ fileItem.fileName }}">
+            </div>
+        </ng-template>
     `,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 styles: [`
@@ -3880,19 +4147,37 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
             max-height: 100%;
             object-fit: contain;
         }
+
+        .trident-container {
+            display: flex;
+            overflow: auto;
+            flex-shrink: 0;
+        }
+
+        .trident-image {
+            margin: auto;
+            flex-shrink: 0;
+        }
+
     `]
             }]
-    }], null, { fileItem: [{
-            type: Input
-        }] }); })();
+    }], function () { return [{ type: ɵngcc6.Platform }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(SvgViewerComponent, [{
         type: Component,
         args: [{
                 selector: "dgp-svg-viewer",
                 template: `
-        <img [src]="fileItem.url | safe:'url'"
+        <img *ngIf="!isTrident; else fallback"
+             [src]="fileItem.url | safe:'url'"
              class="image"
              alt="{{ fileItem.fileName }}">
+        <ng-template #fallback>
+            <div class="trident-container">
+                <img [src]="fileItem.url | safe:'url'"
+                     class="trident-image"
+                     alt="{{ fileItem.fileName }}">
+            </div>
+        </ng-template>
     `,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 styles: [`
@@ -3909,17 +4194,21 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
             max-height: 100%;
             object-fit: contain;
         }
+
+        .trident-container {
+            display: flex;
+            overflow: auto;
+            flex-shrink: 0;
+        }
+
+        .trident-image {
+            margin: auto;
+            flex-shrink: 0;
+        }
+
     `]
             }]
-    }], null, { fileItem: [{
-            type: Input
-        }] }); })();
-/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(SafePipe, [{
-        type: Pipe,
-        args: [{
-                name: "safe"
-            }]
-    }], function () { return [{ type: ɵngcc12.DomSanitizer }]; }, null); })();
+    }], function () { return [{ type: ɵngcc6.Platform }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(SpacerComponent, [{
         type: Component,
         args: [{
@@ -3945,8 +4234,25 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 ]
             }]
     }], null, null); })();
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpFileViewerModule, { declarations: function () { return [SafePipe,
-        PdfViewerComponent,
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(SafePipe, [{
+        type: Pipe,
+        args: [{
+                name: "safe"
+            }]
+    }], function () { return [{ type: ɵngcc12.DomSanitizer }]; }, null); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(SafePipeModule, { declarations: [SafePipe], exports: [SafePipe] }); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(SafePipeModule, [{
+        type: NgModule,
+        args: [{
+                declarations: [
+                    SafePipe
+                ],
+                exports: [
+                    SafePipe
+                ]
+            }]
+    }], null, null); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpFileViewerModule, { declarations: function () { return [PdfViewerComponent,
         JpgViewerComponent,
         PngViewerComponent,
         SvgViewerComponent,
@@ -3962,7 +4268,8 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         MatIconModule,
         DgpSpacerModule,
         MatButtonModule,
-        MatMenuModule]; }, exports: function () { return [PdfViewerComponent,
+        MatMenuModule,
+        SafePipeModule]; }, exports: function () { return [PdfViewerComponent,
         JpgViewerComponent,
         PngViewerComponent,
         SvgViewerComponent,
@@ -3984,9 +4291,9 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                     DgpSpacerModule,
                     MatButtonModule,
                     MatMenuModule,
+                    SafePipeModule
                 ],
                 declarations: [
-                    SafePipe,
                     PdfViewerComponent,
                     JpgViewerComponent,
                     PngViewerComponent,
@@ -4027,6 +4334,9 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 type: Inject,
                 args: [FILE_UPLOAD_CONFIG]
             }] }]; }, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpContainer, [{
+        type: Directive
+    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(FileManagerComponent, [{
         type: Component,
         args: [{
@@ -4136,7 +4446,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
 
     `]
             }]
-    }], function () { return [{ type: ɵngcc0.ElementRef }, { type: ɵngcc1.Store }, { type: ɵngcc13.MatDialogRef }, { type: undefined, decorators: [{
+    }], function () { return [{ type: ɵngcc1.Store }, { type: ɵngcc0.ElementRef }, { type: ɵngcc13.MatDialogRef }, { type: undefined, decorators: [{
                 type: Inject,
                 args: [FILE_UPLOAD_CONFIG]
             }] }]; }, null); })();
@@ -4146,6 +4456,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 type: Inject,
                 args: [FILE_UPLOAD_CONFIG]
             }] }]; }, null); })();
+const ɵPageHeaderComponent_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(PageHeaderComponent);
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(PageHeaderComponent, [{
         type: Component,
         args: [{
@@ -4175,7 +4486,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }
     `]
             }]
-    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+    }], null, null); })();
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpPageHeaderModule, { declarations: function () { return [PageHeaderComponent]; }, imports: function () { return [CommonModule,
         MatToolbarModule,
         MatProgressBarModule]; }, exports: function () { return [PageHeaderComponent]; } }); })();
@@ -4196,6 +4507,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 providers: []
             }]
     }], null, null); })();
+const ɵListDetailsPageComponent_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(ListDetailsPageComponent);
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(ListDetailsPageComponent, [{
         type: Component,
         args: [{
@@ -4272,7 +4584,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
 
     `]
             }]
-    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+    }], null, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(ListDetailsPageContentComponent, [{
         type: Component,
         args: [{
@@ -4342,7 +4654,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 imports: [
                     CommonModule,
                     MatDialogModule,
-                    StoreModule.forFeature(fileUploadStoreFeature, fileUploadReducer),
+                    StoreModule.forFeature(fileUploadStoreFeature, FILE_UPLOAD_REDUCER),
                     EffectsModule.forFeature([
                         FileUploadEffects
                     ]),
@@ -4371,7 +4683,10 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                     FileManagerComponent
                 ],
                 providers: [
-                    fileUploadReducerProvider
+                    fileUploadReducerProvider, {
+                        provide: FILE_UPLOAD_CONFIG,
+                        useValue: ɵ0$8
+                    }
                 ]
             }]
     }], null, null); })();
@@ -4439,6 +4754,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
     `]
             }]
     }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+const ɵHamburgerMenuToggleComponent_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(HamburgerMenuToggleComponent);
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(HamburgerMenuToggleComponent, [{
         type: Component,
         args: [{
@@ -4456,7 +4772,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }
     `]
             }]
-    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+    }], null, null); })();
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpHamburgerMenuToggleModule, { declarations: function () { return [HamburgerMenuToggleComponent]; }, imports: function () { return [CommonModule,
         MatButtonModule,
         MatIconModule]; }, exports: function () { return [HamburgerMenuToggleComponent]; } }); })();
@@ -4473,6 +4789,142 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 ],
                 exports: [
                     HamburgerMenuToggleComponent
+                ]
+            }]
+    }], null, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(HamburgerMenuComponent, [{
+        type: Component,
+        args: [{
+                selector: "dgp-hamburger-menu",
+                template: `<ng-content></ng-content>`,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [`
+        :host {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            height: 100%;
+        }
+    `]
+            }]
+    }], null, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(HamburgerMenuHeaderComponent, [{
+        type: Component,
+        args: [{
+                selector: "dgp-hamburger-menu-header",
+                template: `
+        <mat-toolbar color="primary"
+                     class="hamburger-menu__header">
+            <ng-content></ng-content>
+        </mat-toolbar>
+    `,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [`
+    
+   `]
+            }]
+    }], null, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(HamburgerMenuEntriesComponent, [{
+        type: Component,
+        args: [{
+                selector: "dgp-hamburger-menu-entries",
+                template: `
+        <mat-nav-list>
+            <ng-content></ng-content>
+        </mat-nav-list>
+    `,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [`
+        :host {
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            flex-grow: 1;
+        }
+
+        mat-nav-list {
+            flex-grow: 1;
+        }
+    `]
+            }]
+    }], null, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(HamburgerMenuEntryComponent, [{
+        type: Component,
+        args: [{
+                selector: "dgp-hamburger-menu-entry",
+                template: `
+        <a *ngIf="isNonEmptyRoute(); else emptyRoute"
+           mat-list-item
+           [routerLink]="route"
+           [routerLinkActive]="'dgp-list-item--selected'"
+           [class.disabled]="disabled"
+           [attr.tabindex]="disabled ? -1 : 0">
+            <mat-icon>{{ matIconName }}</mat-icon>
+            {{ label }}
+        </a>
+
+        <ng-template #emptyRoute>
+            <a mat-list-item
+               class="disabled"
+               tabindex="-1">
+                <mat-icon>{{ matIconName }}</mat-icon>
+                {{ label }}
+            </a>
+        </ng-template>
+    `,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [`
+        mat-icon {
+            margin-right: 16px;
+        }
+
+        .disabled {
+            pointer-events: none;
+            color: gray !important;
+        }
+    `]
+            }]
+    }], null, { matIconName: [{
+            type: Input
+        }], label: [{
+            type: Input
+        }], route: [{
+            type: Input
+        }], disabled: [{
+            type: Input
+        }] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpHamburgerMenuModule, { declarations: function () { return [HamburgerMenuComponent,
+        HamburgerMenuHeaderComponent,
+        HamburgerMenuEntriesComponent,
+        HamburgerMenuEntryComponent]; }, imports: function () { return [MatToolbarModule,
+        MatListModule,
+        RouterModule,
+        MatIconModule,
+        CommonModule]; }, exports: function () { return [HamburgerMenuComponent,
+        HamburgerMenuHeaderComponent,
+        HamburgerMenuEntriesComponent,
+        HamburgerMenuEntryComponent]; } }); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpHamburgerMenuModule, [{
+        type: NgModule,
+        args: [{
+                imports: [
+                    MatToolbarModule,
+                    MatListModule,
+                    RouterModule,
+                    MatIconModule,
+                    CommonModule
+                ],
+                declarations: [
+                    HamburgerMenuComponent,
+                    HamburgerMenuHeaderComponent,
+                    HamburgerMenuEntriesComponent,
+                    HamburgerMenuEntryComponent
+                ],
+                exports: [
+                    HamburgerMenuComponent,
+                    HamburgerMenuHeaderComponent,
+                    HamburgerMenuEntriesComponent,
+                    HamburgerMenuEntryComponent
                 ]
             }]
     }], null, null); })();
@@ -4500,7 +4952,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                     MatIconModule,
                     MatProgressBarModule,
                     MatSidenavModule,
-                    StoreModule.forFeature(hamburgerShellStoreFeature, hamburgerShellReducer),
+                    StoreModule.forFeature(hamburgerShellStoreFeature, HAMBURGER_SHELL_REDUCER),
                     EffectsModule.forFeature([
                         HamburgerShellEffects
                     ]),
@@ -4542,6 +4994,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 changeDetection: ChangeDetectionStrategy.OnPush
             }]
     }], function () { return [{ type: ɵngcc1.Store }, { type: ɵngcc2.ActivatedRoute }]; }, null); })();
+const ɵLogEntryListComponent_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(LogEntryListComponent);
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(LogEntryListComponent, [{
         type: Component,
         args: [{
@@ -4550,7 +5003,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         <mat-nav-list *ngIf="hasLogEntries$ | async; else emptyState">
             <h3 mat-subheader>Entries</h3>
             <a mat-list-item
-               *ngFor="let logEntry of (logEntries$ | async)"
+               *ngFor="let logEntry of logEntries$ | async"
                [routerLink]="['/logEntries', logEntry.timeStamp.toString()]">
                 <mat-icon mat-list-icon
                           *ngIf="logEntry.severity === severityEnum.Error">
@@ -4582,7 +5035,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }
     `]
             }]
-    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+    }], null, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(LogEntryDetailsComponent, [{
         type: Component,
         args: [{
@@ -4622,7 +5075,12 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 </h2>
                 <div class="content__body"
                      *ngIf="logEntry.content; else noContentTemplate">
-                    {{ logEntry.content | json }}
+                    <ng-container *ngIf="!isApiError(); else apiError">
+                        {{ logEntry.content | json }}
+                    </ng-container>
+                    <ng-template #apiError>
+                        <div [innerHTML]="logEntry.content.error | safe:'html'"></div>
+                    </ng-template>
                 </div>
                 <ng-template #noContentTemplate>
                     <div class="content__placeholder">
@@ -4716,14 +5174,15 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
         DgpListDetailsPageModule,
-        DgpEmptyStateModule]; } }); })();
+        DgpEmptyStateModule,
+        SafePipeModule]; } }); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpLogModule, [{
         type: NgModule,
         args: [{
                 imports: [
                     CommonModule,
                     FormsModule,
-                    StoreModule.forFeature(logStoreFeature, logStoreReducer),
+                    StoreModule.forFeature(logStoreFeature, LOG_STORE_REDUCER),
                     EffectsModule.forFeature([
                         LogEffects
                     ]),
@@ -4741,7 +5200,8 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                     DgpHamburgerMenuToggleModule,
                     DgpPageHeaderModule,
                     DgpListDetailsPageModule,
-                    DgpEmptyStateModule
+                    DgpEmptyStateModule,
+                    SafePipeModule
                 ],
                 declarations: [
                     LogEntryDetailsComponent,
@@ -4761,14 +5221,13 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         type: NgModule,
         args: [{
                 imports: [
-                    StoreModule.forFeature(requestStoreFeature, requestStoreReducer),
+                    StoreModule.forFeature(requestStoreFeature, REQUEST_STORE_REDUCER),
                     EffectsModule.forFeature([
                         RequestEffects
                     ])
                 ],
                 providers: [
-                    requestStoreReducerProviders,
-                    RequestEffects
+                    requestStoreReducerProvider
                 ]
             }]
     }], null, null); })();
@@ -4905,6 +5364,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 ]
             }]
     }], null, null); })();
+const ɵDarkModeToggleComponent_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(DarkModeToggleComponent);
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DarkModeToggleComponent, [{
         type: Component,
         args: [{
@@ -4923,7 +5383,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }
     `]
             }]
-    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+    }], null, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(ThemeHostDirective, [{
         type: Directive,
         args: [{
@@ -4950,7 +5410,7 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                     FormsModule,
                     OverlayModule,
                     MatSlideToggleModule,
-                    StoreModule.forFeature(themeSwitcherStoreFeature, themeSwitcherReducer),
+                    StoreModule.forFeature(themeSwitcherStoreFeature, THEME_SWITCHER_REDUCER),
                     EffectsModule.forFeature([
                         ThemeSwitcherEffects
                     ])
@@ -4968,9 +5428,111 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
                 ]
             }]
     }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
-/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpContainer, [{
-        type: Directive
-    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(TileComponent, [{
+        type: Component,
+        args: [{
+                selector: "dgp-tile",
+                template: `
+        <a [routerLink]="route"
+           class="container">
+            <mat-card matRipple
+                      class="card">
+                <mat-card-content class="description">
+                    <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
+                    <div class="label">
+                        {{ label }}
+                    </div>
+                    <mat-divider class="divider"></mat-divider>
+                    <div>
+                        {{ description }}
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+        </a>
+    `,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [`
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-height: 224px;
+            min-height: 224px;
+            height: 100%;
+            max-width: 224px;
+            min-width: 224px;
+            width: 100%;
+            text-decoration: inherit;
+            margin: 8px;
+        }
+
+        .card {
+            flex-grow: 1;
+        }
+
+        .description {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .icon {
+            font-size: 40px;
+            height: 64px;
+            width: 64px;
+            color: white !important;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .label {
+            font-size: larger;
+        }
+
+        .divider {
+            position: relative !important;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+    `]
+            }]
+    }], null, { route: [{
+            type: Input
+        }], matIconName: [{
+            type: Input
+        }], label: [{
+            type: Input
+        }], description: [{
+            type: Input
+        }] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpTileModule, { declarations: function () { return [TileComponent]; }, imports: function () { return [RouterModule,
+        MatCardModule,
+        MatRippleModule,
+        MatIconModule,
+        MatDividerModule]; }, exports: function () { return [TileComponent]; } }); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpTileModule, [{
+        type: NgModule,
+        args: [{
+                imports: [
+                    RouterModule,
+                    MatCardModule,
+                    MatRippleModule,
+                    MatIconModule,
+                    MatDividerModule
+                ],
+                declarations: [
+                    TileComponent
+                ],
+                exports: [
+                    TileComponent
+                ]
+            }]
+    }], null, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpModelEditorComponentBase, [{
         type: Directive
     }], function () { return []; }, { modelChange: [{
@@ -4978,6 +5540,9 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
         }], model: [{
             type: Input
         }] }); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(HybridComponentBase, [{
+        type: Directive
+    }], function () { return [{ type: ɵngcc1.Store }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(VirtualListItemDirective, [{
         type: Directive,
         args: [{
@@ -5030,29 +5595,33 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(DgpNgAppModule, { imports: function () { return [BrowserModule,
         BrowserAnimationsModule, ɵngcc1.StoreRootModule, ɵngcc3.EffectsRootModule, DgpHamburgerShellModule,
         DgpThemeSwitcherModule,
+        DgpHamburgerMenuModule,
         DgpLogModule,
         DgpRequestStoreModule,
         DgpRoutingOverlayModule]; }, exports: function () { return [DgpHamburgerShellModule,
-        DgpThemeSwitcherModule]; } }); })();
+        DgpThemeSwitcherModule,
+        DgpHamburgerMenuModule]; } }); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DgpNgAppModule, [{
         type: NgModule,
         args: [{
                 imports: [
                     BrowserModule,
                     BrowserAnimationsModule,
-                    StoreModule.forRoot(appReducer, {
+                    StoreModule.forRoot(APP_REDUCER, {
                         metaReducers: [hmrReducer]
                     }),
                     EffectsModule.forRoot([]),
                     DgpHamburgerShellModule.forRoot(),
                     DgpThemeSwitcherModule.forRoot(),
+                    DgpHamburgerMenuModule,
                     DgpLogModule,
                     DgpRequestStoreModule,
                     DgpRoutingOverlayModule
                 ],
                 exports: [
                     DgpHamburgerShellModule,
-                    DgpThemeSwitcherModule
+                    DgpThemeSwitcherModule,
+                    DgpHamburgerMenuModule
                 ]
             }]
     }], null, null); })();
@@ -5065,6 +5634,6 @@ DgpNgAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function DgpNgAppMo
  * Generated bundle index. Do not edit.
  */
 
-export { AuthenticationApiClient, AuthenticationGuard, AuthenticationService, AuthenticationServiceImpl, BROADCAST_CONFIG, BroadcastRole, DarkModeToggleComponent, DgpAuthenticationModule, DgpBroadcastStoreModule, DgpContainer, DgpEmptyStateModule, DgpFileUploadModule, DgpFileViewerModule, DgpHamburgerMenuToggleModule, DgpHamburgerShellModule, DgpListDetailsPageModule, DgpLogModule, DgpModelEditorComponentBase, DgpNgApp, DgpNgAppModule, DgpPageHeaderModule, DgpRequestStoreModule, DgpRoutingOverlayModule, DgpSelectEntityViaRouteResolver, DgpSpacerModule, DgpTableCelLEditorDirective, DgpTableCellComponent, DgpTableCellModule, DgpThemeSwitcherModule, DgpVirtualListPanelModule, DragFileListenerDirective, DynamicFileViewerComponent, EmptyStateComponent, FILE_UPLOAD_CONFIG, FILE_VIEWER_CONFIG, FallbackFileViewerComponent, FileItemListComponent, FileViewerComponent, HAMBURGER_SHELL_CONFIG, HamburgerMenuToggleComponent, HamburgerShellComponent, HamburgerShellMode, InitializationService, JpgViewerComponent, ListDetailsPageComponent, ListDetailsPageContentComponent, ListDetailsPageMode, LogErrorAction, NoPeonGuard, OpenFileManagerViaShortKeyDirective, PageHeaderComponent, PdfViewerComponent, PngViewerComponent, ScheduleRequestAction, SetBroadcastChannelDataIdAction, SetOwnBroadcastRoleAction, Severity, SpacerComponent, SvgViewerComponent, ThemeHostDirective, ViewerComponentBase, VirtualListItemDirective, VirtualListPanelComponent, actionBroadcastChannelId, addFiles, addFilesViaDrop, addLogEntry, appReducer, authenticateUser, authenticationFeatureSelector, authenticationServiceProvider, authenticationStoreFeature, broadcastReducer, broadcastReducerFactory, broadcastReducerImpl, broadcastReducerProvider, broadcastStoreFeature, broadcastStoreFeatureSelector, cacheInitialUrl, closeFileManager, closeHamburgerMenu, closeListDetailsMenu, compositeActionTypePrefix, createGuid, defaultBroadcastConfig, defaultBroadcastRoleDisplayConfig, defaultFileTypeViewerMap, defaultFileUploadConfig, defaultFileViewerConfig, defaultHamburgerShellConfig, defaultHamburgerShellConfigProvider, fileUploadEntityStore, fileUploadStoreFeature, getAuthenticatedUserSelector, getCachedInitialUrlSelector, getFileFromFileItem$, getFileItemSizeLabel, getFileItemsFromFileList, getIsAuthenticatedSelector, getMimeTypeFromExtension, getOwnBroadcastRoleSelector, hamburgerMenuModeSelector, hamburgerShellFeatureSelector, hamburgerShellStoreFeature, hasCachedInitialUrlSelector, hasPendingRequests, hasPendingRequestsSelector, heartbeatBroadcastChannelId, hideDropTarget, hmrReducer, hotReload, isDarkModeActiveSelector, isHamburgerMenuOpenSelector, isPageMenuOpenSelector, leaderActionTypePrefix, logError, logErrorActionType, logStoreFeature, openFileManager, openFileManagerOverlay, openFileManagerShortKeyFilter, overlayHamburgerShellConfig, overlayHamburgerShellConfigProvider, pageMenuModeSelector, parseFileNameWithExtension, peonActionTypePrefix, registerAuthenticateError, removeFile, requestInitialData, requestStateSelector, requestStoreFeature, responsiveHamburgerShellConfig, scheduleRequest, scheduleRequestActionType, setBroadcastChannelDataId, setBroadcastChannelDataIdActionType, setConfig, setHamburgerMenuState, setIsDarkModeActive, setListDetailsPageState, setOwnBroadcastRole, setOwnBroadcastRoleActionType, showDropTarget, showLoadingSpinner, sideNavHamburgerShellConfig, sideNavHamburgerShellConfigProvider, themeSwitcherFeatureSelector, themeSwitcherStoreFeature, toggleDarkMode, toggleHamburgerMenu, toggleListDetailsPageMenu, trackRequestActionTypePrefix, ɵ0, ɵ1, ɵ2, ɵ3, fileUploadReducer as ɵa, fileUploadReducerImpl as ɵb, SafePipe as ɵba, FileUploadEffects as ɵbb, FileManagerComponent as ɵbc, hamburgerShellReducerImpl as ɵbd, hamburgerShellReducer as ɵbe, hamburgerShellReducerFactory as ɵbf, hamburgerShellReducerProvider as ɵbg, HamburgerShellEffects as ɵbh, LogEffects as ɵbi, LogPageComponent as ɵbj, LogEntryDetailsComponent as ɵbk, LogEntryListComponent as ɵbl, logStore as ɵbm, requestStoreReducerImpl as ɵbn, requestStoreReducer as ɵbo, requestStoreReducerFactory as ɵbp, requestStoreReducerProviders as ɵbq, RequestEffects as ɵbr, requestReducer as ɵbs, RoutingOverlayEffects as ɵbt, RoutingOverlayComponent as ɵbu, initialThemeSwitcherState as ɵbv, themeSwitcherReducerImpl as ɵbw, themeSwitcherReducer as ɵbx, themeSwitcherReducerFactory as ɵby, themeSwitcherReducerProvider as ɵbz, fileUploadReducerFactory as ɵc, ThemeSwitcherEffects as ɵca, fileUploadReducerProvider as ɵd, logStoreReducer as ɵe, createLogStoreReducer as ɵf, logStoreReducerProvider as ɵg, defaultThemeSwitcherConfig as ɵi, THEME_SWITCHER_CONFIG as ɵj, initialAuthenticationState as ɵk, authenticationReducerImpl as ɵl, authenticationReducer as ɵm, authenticationReducerFactory as ɵn, authenticationReducerProvider as ɵo, appInitializer as ɵp, appInitializerProvider as ɵq, BroadcastEffects as ɵr, BroadcastChannelService as ɵs, BroadcastChannelServiceImpl as ɵt, broadcastChannelServiceProvider as ɵu, BroadcastStoreDecorator as ɵv, broadcastStoreProvider as ɵw, EmptyStateContentComponent as ɵx, EmptyStateIconComponent as ɵy, EmptyStateTitleComponent as ɵz };
+export { APP_REDUCER, AuthenticationApiClient, AuthenticationGuard, AuthenticationService, AuthenticationServiceImpl, BROADCAST_CONFIG, BroadcastRole, DarkModeToggleComponent, DgpAuthenticationModule, DgpBroadcastStoreModule, DgpContainer, DgpEmptyStateModule, DgpFileUploadModule, DgpFileViewerModule, DgpHamburgerMenuModule, DgpHamburgerMenuToggleModule, DgpHamburgerShellModule, DgpListDetailsPageModule, DgpLogModule, DgpModelEditorComponentBase, DgpNgApp, DgpNgAppModule, DgpPageHeaderModule, DgpRequestStoreModule, DgpRoutingOverlayModule, DgpSelectEntityViaRouteResolver, DgpSpacerModule, DgpTableCelLEditorDirective, DgpTableCellComponent, DgpTableCellModule, DgpThemeSwitcherModule, DgpTileModule, DgpVirtualListPanelModule, DragFileListenerDirective, DynamicFileViewerComponent, EmptyStateComponent, FILE_UPLOAD_CONFIG, FILE_VIEWER_CONFIG, FallbackFileViewerComponent, FileItemListComponent, FileViewerComponent, FileViewerComponentBase, HAMBURGER_SHELL_CONFIG, HamburgerMenuComponent, HamburgerMenuEntriesComponent, HamburgerMenuEntryComponent, HamburgerMenuHeaderComponent, HamburgerMenuToggleComponent, HamburgerShellComponent, HamburgerShellMode, HybridComponentBase, InitializationService, JpgViewerComponent, ListDetailsPageComponent, ListDetailsPageContentComponent, ListDetailsPageMode, LogErrorAction, NoPeonGuard, OpenFileManagerViaShortKeyDirective, PageHeaderComponent, PdfViewerComponent, PngViewerComponent, SafePipe, SafePipeModule, ScheduleRequestAction, SetBroadcastChannelDataIdAction, SetOwnBroadcastRoleAction, Severity, SpacerComponent, SvgViewerComponent, ThemeHostDirective, TileComponent, VirtualListItemDirective, VirtualListPanelComponent, actionBroadcastChannelId, addFiles, addFilesViaDrop, addLogEntry, authenticateUser, authenticationServiceProvider, authenticationStoreFeature, broadcastStoreFeature, broadcastStoreFeatureSelector, closeFileManager, closeHamburgerMenu, closeListDetailsMenu, createGuid, defaultBroadcastConfig, defaultBroadcastRoleDisplayConfig, defaultFileTypeViewerMap, defaultFileUploadConfig, defaultFileViewerConfig, defaultHamburgerShellConfig, defaultHamburgerShellConfigProvider, fileUploadEntityStore, fileUploadStoreFeature, getAuthenticatedUserSelector, getFileFromFileItem$, getFileItemSizeLabel, getFileItemsFromFileList, getIsAuthenticatedSelector, getMimeTypeFromExtension, getOwnBroadcastRoleSelector, hamburgerMenuModeSelector, hamburgerShellFeatureSelector, hamburgerShellStoreFeature, hasPendingRequests, hasPendingRequestsSelector, heartbeatBroadcastChannelId, hideDropTarget, hmrReducer, hotReload, isDarkModeActive, isDarkModeActiveSelector, isHamburgerMenuOpenSelector, isNullOrUndefined, isPageMenuOpenSelector, logError, logErrorActionType, logStoreFeature, notNullOrUndefined, nullOrUndefined, openFileManager, openFileManagerOverlay, openFileManagerShortKeyFilter, overlayHamburgerShellConfig, overlayHamburgerShellConfigProvider, pageMenuModeSelector, parseFileNameWithExtension, removeFile, requestStateSelector, requestStoreFeature, responsiveHamburgerShellConfig, scheduleRequest, scheduleRequestActionType, setBroadcastChannelDataId, setConfig, setHamburgerMenuState, setIsDarkModeActive, setListDetailsPageState, showDropTarget, showLoadingSpinner, sideNavHamburgerShellConfig, sideNavHamburgerShellConfigProvider, themeSwitcherFeatureSelector, themeSwitcherStoreFeature, toggleDarkMode, toggleHamburgerMenu, toggleListDetailsPageMenu, cacheInitialUrl as ɵa, registerAuthenticateError as ɵb, requestStoreReducerFactory as ɵba, requestStoreReducerProvider as ɵbb, defaultThemeSwitcherConfig as ɵbc, THEME_SWITCHER_CONFIG as ɵbd, THEME_SWITCHER_REDUCER as ɵbe, themeSwitcherReducerFactory as ɵbf, themeSwitcherReducerProvider as ɵbg, appInitializer as ɵbh, appInitializerProvider as ɵbi, initialAuthenticationState as ɵbj, authenticationReducer as ɵbk, BroadcastEffects as ɵbl, BroadcastChannelService as ɵbm, BroadcastChannelServiceImpl as ɵbn, broadcastChannelServiceProvider as ɵbo, BroadcastStoreDecorator as ɵbp, broadcastStoreProvider as ɵbq, EmptyStateContentComponent as ɵbr, EmptyStateIconComponent as ɵbs, EmptyStateTitleComponent as ɵbt, FileUploadEffects as ɵbu, FileManagerComponent as ɵbv, HamburgerShellEffects as ɵbw, initialHamburgerShellState as ɵbx, hamburgerShellReducer as ɵby, LogEffects as ɵbz, authenticationFeatureSelector as ɵc, LogPageComponent as ɵca, LogEntryDetailsComponent as ɵcb, LogEntryListComponent as ɵcc, logStore as ɵcd, RequestEffects as ɵce, requestReducer as ɵcf, requestStoreReducer as ɵcg, RoutingOverlayEffects as ɵch, RoutingOverlayComponent as ɵci, ThemeSwitcherEffects as ɵcj, initialThemeSwitcherState as ɵck, themeSwitcherReducer as ɵcl, AUTHENTICATION_REDUCER as ɵd, authenticationReducerFactory as ɵe, authenticationReducerProvider as ɵf, setOwnBroadcastRole as ɵg, broadcastReducer as ɵh, BROADCAST_REDUCER as ɵi, broadcastReducerFactory as ɵj, broadcastReducerProvider as ɵk, fileUploadReducer as ɵl, FILE_UPLOAD_REDUCER as ɵm, fileUploadReducerFactory as ɵn, fileUploadReducerProvider as ɵo, HAMBURGER_SHELL_REDUCER as ɵp, hamburgerShellReducerFactory as ɵq, hamburgerShellReducerProvider as ɵr, LOG_STORE_REDUCER as ɵs, createLogStoreReducer as ɵt, logStoreReducerProvider as ɵu, registerRequest as ɵw, unregisterRequest as ɵx, resetRequests as ɵy, REQUEST_STORE_REDUCER as ɵz };
 
 //# sourceMappingURL=dgp-ng-app.js.map
