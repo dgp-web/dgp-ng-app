@@ -34,6 +34,10 @@
       "dgp-ng-docking-layout": [
         "dist/dgp-ng-docking-layout/dgp-ng-docking-layout",
         "dist/dgp-ng-docking-layout"
+      ],
+      "dgp-ng-charts": [
+        "dist/dgp-ng-charts/dgp-ng-charts",
+        "dist/dgp-ng-charts"
       ]
     }
   },
