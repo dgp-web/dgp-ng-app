@@ -1,13 +1,13 @@
 import * as d3 from "d3";
 import { createGuid, notNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
-import { Box, BoxValues, defaultBoxOutlierConfig } from "./models";
+import { Box, BoxValues } from "./models";
 
 export function computeBoxFromValues(payload: {
     readonly values: BoxValues;
     readonly boxId?: string;
     readonly boxGroupId?: string;
-}, config = defaultBoxOutlierConfig): Box {
+}): Box {
 
     const values = payload.values.originalValues
         .filter(notNullOrUndefined)

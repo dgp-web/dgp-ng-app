@@ -34,22 +34,6 @@ export interface BoxQuantiles {
 }
 
 
-export interface BoxOutlierConfig {
-    /**
-     * Values below this limit are considered outliers
-     */
-    readonly lowerQuantilePercentage: number;
-    /**
-     * Values above this limit are considered outliers
-     */
-    readonly upperQuantilePercentage: number;
-}
-
-export const defaultBoxOutlierConfig: BoxOutlierConfig = {
-    lowerQuantilePercentage: 2.5,
-    upperQuantilePercentage: 97.5
-};
-
 export interface BoxGroup<TValue = any> {
     readonly boxGroupId?: string;
     readonly label: string;
