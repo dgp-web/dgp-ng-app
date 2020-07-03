@@ -451,7 +451,8 @@
                     "options": {
                         "main": "projects/dgp-ng-charts/src/test.ts",
                         "tsConfig": "projects/dgp-ng-charts/tsconfig.spec.json",
-                        "karmaConfig": "projects/dgp-ng-charts/karma.conf.js"
+                        "karmaConfig": "projects/dgp-ng-charts/karma.conf.js",
+                        "progress": false
                     }
                 },
                 "lint": {
