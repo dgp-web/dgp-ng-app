@@ -1,11 +1,14 @@
 import { NgModule } from "@angular/core";
-import { DgpNgChartsComponent } from "./dgp-ng-charts.component";
-
+import { components } from "./components";
 
 @NgModule({
-    declarations: [DgpNgChartsComponent],
     imports: [],
-    exports: [DgpNgChartsComponent]
+    declarations: [
+        ...components
+    ],
+    exports: [
+        ...components
+    ]
 })
 export class DgpNgChartsModule {
 }
