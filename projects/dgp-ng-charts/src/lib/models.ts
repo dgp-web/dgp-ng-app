@@ -34,10 +34,11 @@ export interface BoxQuantiles {
 }
 
 
-export interface BoxGroup<TValue = any> {
+export interface BoxGroup<TValue = string | number> {
     readonly boxGroupId?: string;
     readonly label: string;
     readonly value?: TValue;
+    readonly boxes: ReadonlyArray<Box>;
 }
 
 export interface BoxValues {
