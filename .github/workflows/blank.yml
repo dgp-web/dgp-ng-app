@@ -30,6 +30,9 @@ jobs:
     - name: Build dgp-ng-docking-layout
       run: npm run dgp-ng-docking-layout:build:prod
 
+    - name: Build dgp-ng-charts
+      run: npm run dgp-ng-charts:build:prod
+
     - name: Build dgp-ng-app-builder:build
       run: npm run dgp-ng-app-builder:build
 
@@ -45,6 +48,11 @@ jobs:
 
     - name: Publish dgp-ng-docking-layout to npm
       run: npm run dgp-ng-docking-layout:publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+    - name: Publish dgp-ng-charts to npm
+      run: npm run dgp-ng-charts:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
