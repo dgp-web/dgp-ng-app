@@ -37,7 +37,6 @@ export class ChartsLabsComponent {
         boxGroupId: "first",
         boxes: [{
             boxId: "first01",
-            boxValuesId: "first01Values",
             quantiles: {
                 min: 1,
                 lower: 2.25,
@@ -47,6 +46,18 @@ export class ChartsLabsComponent {
             },
             outliers: [
                 17, 18
+            ]
+        }, {
+            boxId: "first02",
+            quantiles: {
+                min: 2,
+                lower: 3.25,
+                median: 5,
+                upper: 6,
+                max: 9
+            },
+            outliers: [
+                12, 14
             ]
         }],
         label: "First"
