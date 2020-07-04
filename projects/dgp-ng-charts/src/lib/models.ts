@@ -13,6 +13,8 @@ export interface Box {
     readonly quantiles: BoxQuantiles;
 
     readonly outliers?: ReadonlyArray<number>;
+
+    readonly colorHex: string;
 }
 
 export interface BoxBody {

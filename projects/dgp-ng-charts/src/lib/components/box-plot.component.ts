@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild, ViewEncapsulation } from "@angular/core";
 import * as d3 from "d3";
-import { isNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
 import * as seedrandom from "seedrandom";
 import { Box, BoxGroup } from "../models";
@@ -252,14 +251,6 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             boxGroups: this.model
         });
 
-        /*  const xAxisScale = d3.scaleBand()
-              .domain(this.model.map(x => x.value.toString()))
-              .range([0, 400]);
-
-          const yAxisScale = d3.scaleLinear()
-              .domain([0, 20])
-              .range([0, 400]);
-  */
         svg.append("g")
             .attr("class", "chart__x-axis")
             .attr("transform", "translate(0," + d3Scales.yAxis.range()[1] + ")")
@@ -274,7 +265,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                .attr("transform", "translate(0," + payload.d3Scales.yAxis.range()[0] + ")")
                .call(d3.axisBottom(payload.d3Scales.xAxis)
                    .tickValues(xAxisTicks as any)
-                   .tickFormat(formatReadoutTick)
+                   .tickFormat(formatTick)
                );*/
         /*
 
@@ -339,7 +330,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.lower);
             })
-            .attr("stroke", "#f00")
+            .attr("stroke", x => x.colorHex)
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -355,7 +346,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.max);
             })
-            .attr("stroke", "#f00") // ???
+            .attr("stroke", x => x.colorHex) // ???
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("rect")
@@ -370,8 +361,8 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                 );
             })
             .attr("width", xSubgroup.bandwidth())
-            .attr("stroke", "#f00")
-            .attr("fill", "#ff000066")
+            .attr("stroke", x => x.colorHex)
+            .attr("fill", x => x.colorHex + "66")
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -387,7 +378,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.min);
             })
-            .attr("stroke", "#f00")
+            .attr("stroke", x => x.colorHex)
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -403,7 +394,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.max);
             })
-            .attr("stroke", "#f00")
+            .attr("stroke", x => x.colorHex)
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -419,7 +410,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.median);
             })
-            .attr("stroke", "#f00")
+            .attr("stroke", x => x.colorHex)
             .style("stroke-width", 2);
     }
 
@@ -433,16 +424,11 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .selectAll("circle")
             .data(datum => {
 
-               /* if (isNullOrUndefined(datum.boxValuesId)
-                    || isNullOrUndefined(datum.outliers)) {
-                    return [];
-                }*/
-
                 return datum.outliers.map(x => {
 
                     return {
                         boxId: datum.boxId,
-                        // colorHex: datum.colorHex, ???
+                        colorHex: datum.colorHex,
                         value: x
                     };
 
@@ -460,7 +446,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                 return payload.d3Scales.yAxis(d.value);
             })
             .attr("r", 3)
-            .style("fill", "#f00")
+            .style("fill", x => x.colorHex)
         ;
 
     }

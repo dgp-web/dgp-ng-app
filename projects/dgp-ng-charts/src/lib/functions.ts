@@ -7,6 +7,7 @@ export function computeBoxFromValues(payload: {
     readonly values: BoxValues;
     readonly boxId?: string;
     readonly boxGroupId?: string;
+    readonly colorHex?: string;
 }): Box {
 
     const values = payload.values.originalValues
@@ -29,6 +30,7 @@ export function computeBoxFromValues(payload: {
     return {
         boxId: payload.boxId || createGuid(),
         boxGroupId: payload.boxGroupId || createGuid(),
+        colorHex: payload.colorHex || "#3000f0",
         boxValuesId: payload.values.boxValuesId,
         quantiles: {
             min: _.min(valuesForOutlierComputation),

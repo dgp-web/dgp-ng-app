@@ -49,7 +49,8 @@ export class ChartsLabsComponent {
             },
             outliers: [
                 17, 18
-            ]
+            ],
+            colorHex: "#3000f0"
         }, {
             boxId: "first02",
             quantiles: {
@@ -61,7 +62,8 @@ export class ChartsLabsComponent {
             },
             outliers: [
                 12, 14
-            ]
+            ],
+            colorHex: "#309000"
         }],
         label: "First"
     }];

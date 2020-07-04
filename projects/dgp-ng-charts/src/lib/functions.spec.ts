@@ -15,16 +15,19 @@ describe("dgp-ng-charts functions", () => {
 
         const boxId = createGuid();
         const boxGroupId = createGuid();
+        const colorHex = "#fff";
 
         const box = computeBoxFromValues({
             values,
             boxId,
-            boxGroupId
+            boxGroupId,
+            colorHex
         });
 
         const expectedBox: Box = {
             boxId,
             boxGroupId,
+            colorHex,
             boxValuesId: values.boxValuesId,
             quantiles: {
                 max: 10,
