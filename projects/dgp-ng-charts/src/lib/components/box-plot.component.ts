@@ -78,6 +78,8 @@ export function createD3Scales(payload: {
     const yMin = _.min(valuesForExtemumComputation);
     const yMax = _.max(valuesForExtemumComputation);
 
+    const distance = Math.abs(yMax - yMin);
+
     // Compute reference margin left
     /*  const referenceYDomainLabelLength = _.max(
           [yAxisLimits.min, yAxisLimits.max].map(x => {
@@ -109,7 +111,7 @@ export function createD3Scales(payload: {
         - defaultTimeSeriesChartConfig.margin.bottom;
 
     const yAxis = d3.scaleLinear()
-        .domain([yMax, yMin]) // TODO: Offset min and max
+        .domain([yMax + distance * 0.05, yMin - distance * 0.05]) // TODO: Offset min and max
         .range([0, barAreaHeight]);
 
     const xAxis = d3.scaleBand()
