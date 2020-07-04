@@ -1,10 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild, ViewEncapsulation } from "@angular/core";
 import * as d3 from "d3";
-import { ScaleBand, ScaleLinear } from "d3-scale";
 import { isNullOrUndefined } from "dgp-ng-app";
+import * as _ from "lodash";
 import { Box, BoxGroup } from "../models";
 import { ChartComponentBase } from "./chart.component-base";
-
 
 const margins = {
     top: 10,
@@ -12,6 +11,96 @@ const margins = {
     left: 50,
     bottom: 20
 };
+
+export interface BoxPlotConfig {
+    readonly margin: {
+        readonly top: number;
+        readonly bottom: number;
+        readonly left: number;
+        readonly right: number;
+    };
+    readonly groupPadding: number;
+    readonly subGroupPadding: number;
+}
+
+export const defaultTimeSeriesChartConfig: BoxPlotConfig = {
+    margin: {
+        top: 10,
+        right: 30,
+        left: 50,
+        bottom: 20
+    },
+    groupPadding: 0.2,
+    subGroupPadding: 0.05
+};
+
+
+export interface BoxPlotD3Scales {
+    readonly xAxis: d3.ScaleBand<string>;
+    readonly xAxisSubgroup: d3.ScaleBand<string>;
+    readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
+    /**
+     * Needed for correctly offsetting the chart and to
+     * avoid that tick labels overlap the axis label
+     */
+    readonly leftChartMargin: number;
+}
+
+
+export function createD3Scales(payload: {
+    readonly boxGroups: ReadonlyArray<BoxGroup>;
+    readonly containerWidth: number;
+    readonly containerHeight: number;
+    /*
+     readonly config: BoxPlotConfig;*/
+}): BoxPlotD3Scales {
+
+    const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
+    const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));
+
+    // Compute reference margin left
+    /*  const referenceYDomainLabelLength = _.max(
+          [yAxisLimits.min, yAxisLimits.max].map(x => {
+              return d3.format("~r")(x).length;
+          })
+      );*/
+
+    /* const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
+
+     const marginLeft = payload.config.margin.left >= estimatedNeededMaxYTickWidthPx
+         ? payload.config.margin.left
+         : estimatedNeededMaxYTickWidthPx;
+
+     const barAreaWidth = payload.containerWidth
+         - marginLeft
+         - payload.dummyConfig.margin.right;
+
+     const barAreaHeight = payload.containerHeight
+         - payload.dummyConfig.margin.top
+         - payload.dummyConfig.margin.bottom;
+ */
+    const yAxis = d3.scaleLinear()
+        .domain([20, 0])
+        .range([0, 400]);
+
+    const xAxis = d3.scaleBand()
+        .domain(boxGroupKeys)
+        .range([0, 400])
+        .padding(0.2);
+
+    return {
+        xAxis,
+        yAxis,
+        xAxisSubgroup: d3.scaleBand()
+            .domain(boxIds)
+            .range([0, xAxis.bandwidth()])
+            .padding(0.05),
+
+        leftChartMargin: 40
+    };
+
+}
+
 
 @Component({
     selector: "dgp-box-plot",
@@ -148,22 +237,27 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                 + ")"
             );
 
-        const xAxisScale = d3.scaleBand()
-            .domain(this.model.map(x => x.value.toString()))
-            .range([0, 400]);
+        const d3Scales = createD3Scales({
+            containerHeight, containerWidth,
+            boxGroups: this.model
+        });
 
-        const yAxisScale = d3.scaleLinear()
-            .domain([0, 20])
-            .range([0, 400]);
+        /*  const xAxisScale = d3.scaleBand()
+              .domain(this.model.map(x => x.value.toString()))
+              .range([0, 400]);
 
+          const yAxisScale = d3.scaleLinear()
+              .domain([0, 20])
+              .range([0, 400]);
+  */
         svg.append("g")
             .attr("class", "chart__x-axis")
-            .attr("transform", "translate(0," + yAxisScale.range()[1] + ")")
-            .call(d3.axisBottom(xAxisScale));
+            .attr("transform", "translate(0," + d3Scales.yAxis.range()[1] + ")")
+            .call(d3.axisBottom(d3Scales.xAxis));
 
         svg.append("g")
             .attr("class", "chart__y-axis")
-            .call(d3.axisLeft(yAxisScale));
+            .call(d3.axisLeft(d3Scales.yAxis));
 
         /*   svg.append("g")
                .attr("class", "chart__x-axis")
@@ -194,7 +288,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .enter()
             .append("g")
             .attr("transform", (d) => {
-                return "translate(" + xAxisScale(d.value.toString()) + ",0)";
+                return "translate(" + d3Scales.xAxis(d.boxGroupId.toString()) + ",0)";
             })
             .selectAll("rect")
             .data(boxGroup => boxGroup.boxes as Array<Box>)
@@ -202,10 +296,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
 
         this.drawBoxPlot({
             d3OnGroupDataEnter,
-            d3Scales: {
-                xAxisSubgroup: xAxisScale,
-                yAxis: yAxisScale
-            }
+            d3Scales
         });
         /*this.drawBoxPlotOutliers({
             d3OnGroupDataEnter,
@@ -220,10 +311,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
     private drawBoxPlot(payload: {
         readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box,
             SVGElement, BoxGroup>;
-        readonly d3Scales: {
-            yAxis: ScaleLinear<number, number>;
-            xAxisSubgroup: ScaleBand<string>;
-        };
+        readonly d3Scales: BoxPlotD3Scales;
     }): void {
 
         const xSubgroup = payload.d3Scales.xAxisSubgroup;
@@ -243,7 +331,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.lower);
             })
-            // .attr("stroke", d => d.colorHex) ???
+            .attr("stroke", "#f00")
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -259,7 +347,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.max);
             })
-            // .attr("stroke", d => d.colorHex) ???
+            .attr("stroke", "#f00") // ???
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("rect")
@@ -268,15 +356,15 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                 return (yAxis(d.quantiles.upper));
             })
             .attr("height", (d) => {
+
                 return Math.abs(
                     (yAxis(d.quantiles.lower) - yAxis(d.quantiles.upper))
                 );
             })
             .attr("width", xSubgroup.bandwidth())
-            // .attr("stroke", d => d.colorHex)
-            .style("stroke-width", 2)
-        // .style("fill", d => d.colorHex + "66")
-        ;
+            .attr("stroke", "#f00")
+            .attr("fill", "#ff000066")
+            .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
             .attr("x1", (d: Box) => {
@@ -291,7 +379,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.min);
             })
-            // .attr("stroke", d => d.colorHex) ???
+            .attr("stroke", "#f00")
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -307,7 +395,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.max);
             })
-            // .attr("stroke", d => d.colorHex) ???
+            .attr("stroke", "#f00")
             .style("stroke-width", 2);
 
         d3OnGroupDataEnter.append("line")
@@ -323,17 +411,14 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("y2", (d) => {
                 return yAxis(d.quantiles.median);
             })
-            // .attr("stroke", d => d.colorHex) ???
+            .attr("stroke", "#f00")
             .style("stroke-width", 2);
     }
 
     private drawBoxPlotOutliers(payload: {
         readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box,
             SVGElement, BoxGroup>;
-        readonly d3Scales: {
-            yAxis: ScaleLinear<number, number>;
-            xAxisSubgroup: ScaleBand<string>;
-        }
+        readonly d3Scales: BoxPlotD3Scales
     }): void {
 
         payload.d3OnGroupDataEnter
