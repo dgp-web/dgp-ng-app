@@ -58,6 +58,26 @@ export function createD3Scales(payload: {
     const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
     const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));
 
+    const valuesForExtemumComputation = payload.boxGroups.reduce((previousValue, currentValue) => {
+
+        currentValue.boxes.forEach(box => {
+            box.outliers.forEach(outlier => previousValue.push(outlier));
+            const quantiles = [
+                box.quantiles.max,
+                box.quantiles.upper,
+                box.quantiles.median,
+                box.quantiles.lower,
+                box.quantiles.min,
+            ];
+            quantiles.forEach(quantile => previousValue.push(quantile));
+        });
+
+        return previousValue;
+    }, new Array<number>());
+
+    const yMin = _.min(valuesForExtemumComputation);
+    const yMax = _.max(valuesForExtemumComputation);
+
     // Compute reference margin left
     /*  const referenceYDomainLabelLength = _.max(
           [yAxisLimits.min, yAxisLimits.max].map(x => {
@@ -89,7 +109,7 @@ export function createD3Scales(payload: {
         - defaultTimeSeriesChartConfig.margin.bottom;
 
     const yAxis = d3.scaleLinear()
-        .domain([20, 0])
+        .domain([yMax, yMin]) // TODO: Offset min and max
         .range([0, barAreaHeight]);
 
     const xAxis = d3.scaleBand()
@@ -259,6 +279,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
         svg.append("g")
             .attr("class", "chart__y-axis")
             .call(d3.axisLeft(d3Scales.yAxis));
+
 
         /*   svg.append("g")
                .attr("class", "chart__x-axis")
