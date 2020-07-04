@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -9,7 +10,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         </dgp-page-header>
 
         <div>
-            <dgp-line-chart></dgp-line-chart>
+            <!--<dgp-line-chart></dgp-line-chart>-->
+            <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
         </div>
     `,
     styles: [`
@@ -21,7 +23,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             overflow: auto;
         }
 
-        dgp-line-chart {
+        dgp-line-chart, dgp-box-plot {
             height: 400px;
             width: 400px;
         }
@@ -29,5 +31,23 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartsLabsComponent {
+
+    readonly boxGroups: ReadonlyArray<BoxGroup> = [{
+        value: "first",
+        boxGroupId: "first",
+        boxes: [{
+            boxId: "first01",
+            boxValuesId: "first01Values",
+            quantiles: {
+                min: 1,
+                lower: 2.25,
+                median: 5.5,
+                upper: 6.75,
+                max: 10
+            },
+            outliers: []
+        }],
+        label: "First"
+    }];
 
 }

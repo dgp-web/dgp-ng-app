@@ -42,20 +42,20 @@ const margins = {
 
     `,
     styles: [`
-        dgp-line-chart {
+        dgp-box-plot {
             display: flex;
             flex-grow: 1;
             font-size: smaller;
         }
 
-        dgp-line-chart .chart {
+        dgp-box-plot .chart {
             display: flex;
             flex-direction: column;
             justify-content: center;
             flex-grow: 1;
         }
 
-        dgp-line-chart .chart__title {
+        dgp-box-plot .chart__title {
             justify-content: center;
             align-items: center;
             display: flex;
@@ -64,20 +64,20 @@ const margins = {
         }
 
 
-        dgp-line-chart .chart__y-axis {
+        dgp-box-plot .chart__y-axis {
             font-size: 16px;
         }
 
-        dgp-line-chart .chart__x-axis {
+        dgp-box-plot .chart__x-axis {
             font-size: 16px;
         }
 
-        dgp-line-chart .chart__inner-container {
+        dgp-box-plot .chart__inner-container {
             display: flex;
             flex-grow: 1;
         }
 
-        dgp-line-chart .chart_y-axis-label-container {
+        dgp-box-plot .chart_y-axis-label-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -85,28 +85,28 @@ const margins = {
             max-width: 40px;
         }
 
-        dgp-line-chart .chart__y-axis-label {
+        dgp-box-plot .chart__y-axis-label {
             transform: rotate(-90deg);
             white-space: nowrap;
         }
 
-        dgp-line-chart .chart__d3-hook {
+        dgp-box-plot .chart__d3-hook {
             flex-grow: 1;
             height: 100%;
         }
 
-        dgp-line-chart .chart__x-axis-label {
+        dgp-box-plot .chart__x-axis-label {
             min-height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        dgp-line-chart .chart-svg {
+        dgp-box-plot .chart-svg {
             overflow: visible;
         }
 
-        dgp-line-chart .tick {
+        dgp-box-plot .tick {
             font-size: smaller;
         }
 
@@ -153,7 +153,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .range([0, 400]);
 
         const yAxisScale = d3.scaleLinear()
-            .domain([0, 100])
+            .domain([0, 20])
             .range([0, 400]);
 
         svg.append("g")
@@ -187,13 +187,10 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                     );
         */
 
-        const boxGroups = [];
-        const valueSets = [];
-
         const d3OnGroupDataEnter = svg.append("g")
             .attr("class", "measurement-result-root")
             .selectAll("g")
-            .data(boxGroups as Array<BoxGroup>)
+            .data(this.model as Array<BoxGroup>)
             .enter()
             .append("g")
             .attr("transform", (d) => {
@@ -210,13 +207,13 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                 yAxis: yAxisScale
             }
         });
-        this.drawBoxPlotOutliers({
+        /*this.drawBoxPlotOutliers({
             d3OnGroupDataEnter,
             d3Scales: {
                 xAxisSubgroup: xAxisScale,
                 yAxis: yAxisScale
             }
-        });
+        });*/
 
     }
 
