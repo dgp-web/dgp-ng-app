@@ -61,11 +61,11 @@ export class ChartsLabsComponent {
                 max: 9
             },
             outliers: [
-                12, 14
+                -2, -1, 14
             ],
             colorHex: "#309000"
         }],
-        label: "First"
+        label: "First group"
     }];
 
 }

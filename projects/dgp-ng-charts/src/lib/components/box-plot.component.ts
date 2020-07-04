@@ -274,7 +274,11 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
         svg.append("g")
             .attr("class", "chart__x-axis")
             .attr("transform", "translate(0," + d3Scales.yAxis.range()[1] + ")")
-            .call(d3.axisBottom(d3Scales.xAxis));
+            .call(d3.axisBottom(d3Scales.xAxis)
+                /*.tickValues(this.model as any)
+                .tickFormat(x => (x as any).label)*/
+                // TODO: Display labels of BoxGroups here
+            );
 
         svg.append("g")
             .attr("class", "chart__y-axis")
