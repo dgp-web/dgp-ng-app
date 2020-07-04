@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, V
 import * as d3 from "d3";
 import { isNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
+import * as seedrandom from "seedrandom";
 import { Box, BoxGroup } from "../models";
 import { ChartComponentBase } from "./chart.component-base";
 
@@ -298,13 +299,11 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             d3OnGroupDataEnter,
             d3Scales
         });
-        /*this.drawBoxPlotOutliers({
+
+        this.drawBoxPlotOutliers({
             d3OnGroupDataEnter,
-            d3Scales: {
-                xAxisSubgroup: xAxisScale,
-                yAxis: yAxisScale
-            }
-        });*/
+            d3Scales
+        });
 
     }
 
@@ -425,10 +424,10 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .selectAll("circle")
             .data(datum => {
 
-                if (isNullOrUndefined(datum.boxValuesId)
+               /* if (isNullOrUndefined(datum.boxValuesId)
                     || isNullOrUndefined(datum.outliers)) {
                     return [];
-                }
+                }*/
 
                 return datum.outliers.map(x => {
 
@@ -444,19 +443,28 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .enter()
             .append("circle")
             .attr("cx", (d) => {
-
                 return payload.d3Scales.xAxisSubgroup(d.boxId)
                     + payload.d3Scales.xAxisSubgroup.bandwidth() / 2
-                    // + this.getJitter(d.boxId + d.value)
-                    ;
+                    + this.getJitter(d.boxId + d.value);
             })
             .attr("cy", (d) => {
                 return payload.d3Scales.yAxis(d.value);
             })
             .attr("r", 3)
-        // .style("fill", d => d.colorHex)
+            .style("fill", "#f00")
         ;
 
     }
+
+
+    private getJitter(seed: string): number {
+
+        const jitterWidth = 50;
+
+        const rdm = seedrandom.alea(seed);
+        return -jitterWidth / 2 + rdm() * jitterWidth;
+
+    }
+
 
 }

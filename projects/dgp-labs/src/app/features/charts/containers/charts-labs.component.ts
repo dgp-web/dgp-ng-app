@@ -45,7 +45,9 @@ export class ChartsLabsComponent {
                 upper: 6.75,
                 max: 10
             },
-            outliers: []
+            outliers: [
+                17, 18
+            ]
         }],
         label: "First"
     }];
