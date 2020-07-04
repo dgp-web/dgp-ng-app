@@ -11,7 +11,10 @@ import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
 
         <div>
             <!--<dgp-line-chart></dgp-line-chart>-->
-            <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
+            <dgp-box-plot [model]="boxGroups"
+                          chartTitle="Chart title"
+                          yAxisTitle="y axis"
+                          xAxisTitle="x axis"></dgp-box-plot>
         </div>
     `,
     styles: [`

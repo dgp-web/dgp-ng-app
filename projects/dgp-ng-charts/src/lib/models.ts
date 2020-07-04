@@ -39,6 +39,7 @@ export interface BoxGroup<TValue = string | number> {
     readonly label: string;
     readonly value?: TValue;
     readonly boxes: ReadonlyArray<Box>;
+    readonly boxValues?: ReadonlyArray<BoxValues>;
 }
 
 export interface BoxValues {

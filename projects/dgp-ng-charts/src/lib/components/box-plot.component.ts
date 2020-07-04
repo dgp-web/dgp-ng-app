@@ -80,13 +80,22 @@ export function createD3Scales(payload: {
          - payload.dummyConfig.margin.top
          - payload.dummyConfig.margin.bottom;
  */
+
+    const barAreaWidth = payload.containerWidth
+        - defaultTimeSeriesChartConfig.margin.left
+        - defaultTimeSeriesChartConfig.margin.right;
+
+    const barAreaHeight = payload.containerHeight
+        - defaultTimeSeriesChartConfig.margin.top
+        - defaultTimeSeriesChartConfig.margin.bottom;
+
     const yAxis = d3.scaleLinear()
         .domain([20, 0])
-        .range([0, 400]);
+        .range([0, barAreaHeight]);
 
     const xAxis = d3.scaleBand()
         .domain(boxGroupKeys)
-        .range([0, 400])
+        .range([0, barAreaWidth])
         .padding(0.2);
 
     return {
