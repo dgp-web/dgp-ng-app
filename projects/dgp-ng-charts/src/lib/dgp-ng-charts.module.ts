@@ -1,16 +1,17 @@
 import { NgModule } from "@angular/core";
-import { components } from "./components";
-import { CommonModule } from "@angular/common";
+import { DgpBoxPlotModule } from "./box-plot/box-plot.module";
+import { LineChartComponent } from "./line-chart/line-chart.component";
 
 @NgModule({
     imports: [
-        CommonModule
+        DgpBoxPlotModule
     ],
     declarations: [
-        ...components
+        LineChartComponent
     ],
     exports: [
-        ...components
+        LineChartComponent,
+        DgpBoxPlotModule
     ]
 })
 export class DgpNgChartsModule {

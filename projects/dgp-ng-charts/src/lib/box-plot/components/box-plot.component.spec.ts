@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { BoxPlotComponent } from "./box-plot.component";
-import { DgpNgChartsModule } from "../dgp-ng-charts.module";
+import { DgpNgChartsModule } from "../../dgp-ng-charts.module";
 
 describe(BoxPlotComponent.name, () => {
 

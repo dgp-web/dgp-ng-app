@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import * as d3 from "d3";
 import { Box, BoxGroup } from "../models";
-import { ChartComponentBase } from "./chart.component-base";
+import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functions";
 

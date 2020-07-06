@@ -6,7 +6,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { ChartComponentBase } from "./chart.component-base";
+import { ChartComponentBase } from "../shared/chart.component-base";
 import * as d3 from "d3";
 
 const margins = {

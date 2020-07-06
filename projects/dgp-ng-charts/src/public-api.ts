@@ -4,10 +4,27 @@
 
 export * from "./lib/dgp-ng-charts.module";
 
-export * from "./lib/constants";
-export * from "./lib/functions";
-export * from "./lib/models";
+/**
+ * -----
+ * Box plot
+ * -----
+ */
+export * from "./lib/box-plot/constants";
+export * from "./lib/box-plot/functions";
+export * from "./lib/box-plot/models";
 
-export { BoxPlotComponent } from "./lib/components/box-plot.component";
-export { ChartComponentBase } from "./lib/components/chart.component-base";
-export { LineChartComponent } from "./lib/components/line-chart.component";
+export { BoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
+
+/**
+ * -----
+ * Line chart
+ * -----
+ */
+export { LineChartComponent } from "./lib/line-chart/line-chart.component";
+
+/**
+ * -----
+ * Shared
+ * -----
+ */
+export { ChartComponentBase } from "./lib/shared/chart.component-base";
