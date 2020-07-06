@@ -11,23 +11,23 @@ import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functi
         <div class="chart"
              #chartRef>
             <div *ngIf="chartTitle"
-                 class="chart__title">
+                 class="title">
                 {{ chartTitle }}
             </div>
 
-            <div class="chart__inner-container">
+            <div class="inner-container">
                 <div *ngIf="yAxisTitle"
-                     class="chart_y-axis-label-container">
-                    <div class="chart__y-axis-label">
+                     class="y-axis-label-container">
+                    <div class="y-axis-label">
                         {{ yAxisTitle }}
                     </div>
                 </div>
                 <div #chartElRef
-                     class="chart__d3-hook"></div>
+                     class="d3-hook"></div>
             </div>
 
             <div *ngIf="xAxisTitle"
-                 class="chart__x-axis-label">
+                 class="x-axis-label">
                 {{ xAxisTitle }}
             </div>
         </div>
@@ -47,7 +47,7 @@ import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functi
             flex-grow: 1;
         }
 
-        .chart__title {
+        .title {
             justify-content: center;
             align-items: center;
             display: flex;
@@ -55,13 +55,12 @@ import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functi
             word-break: break-all;
         }
 
-
-        .chart__inner-container {
+        .inner-container {
             display: flex;
             flex-grow: 1;
         }
 
-        .chart_y-axis-label-container {
+        .y-axis-label-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -69,17 +68,17 @@ import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functi
             max-width: 40px;
         }
 
-        .chart__y-axis-label {
+        .y-axis-label {
             transform: rotate(-90deg);
             white-space: nowrap;
         }
 
-        .chart__d3-hook {
+        .d3-hook {
             flex-grow: 1;
             height: 100%;
         }
 
-        .chart__x-axis-label {
+        .x-axis-label {
             min-height: 56px;
             display: flex;
             align-items: center;
@@ -173,7 +172,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .append("g")
             .attr("transform", x => "translate(" + d3Scales.xAxis(x.boxGroupId.toString()) + ",0)")
             .selectAll("rect")
-            .data(boxGroup => boxGroup.boxes as Array<Box>)
+            .data(x => x.boxes as Array<Box>)
             .enter();
 
         drawBoxPlot({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
