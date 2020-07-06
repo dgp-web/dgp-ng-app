@@ -1,9 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core";
 import * as d3 from "d3";
-import { Box, BoxGroup } from "../models";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functions";
+import { Box, BoxGroup, BoxPlotConfig } from "../models";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -34,7 +34,6 @@ import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functi
                 {{ xAxisTitle }}
             </div>
         </div>
-
     `,
     styles: [`
         :host {
@@ -87,31 +86,19 @@ import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functi
             align-items: center;
             justify-content: center;
         }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BoxPlotComponent extends ChartComponentBase implements AfterViewInit {
+export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>, BoxPlotConfig> implements AfterViewInit {
 
-    @ViewChild("chartElRef", {static: false})
-    chartElRef: ElementRef;
-
-    @Input()
-    model: ReadonlyArray<BoxGroup>;
-
-    @Input()
     config = defaultBoxPlotConfig;
-
-    ngAfterViewInit(): void {
-        super.ngAfterViewInit();
-
-        this.drawD3Chart();
-    }
 
     protected drawD3Chart(): void {
 
-        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement).style("width"), 10);
-        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement).style("height"), 10);
+        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement)
+            .style("width"), 10);
+        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
+            .style("height"), 10);
 
         const svg = d3.select(this.chartElRef.nativeElement)
             .append("svg")

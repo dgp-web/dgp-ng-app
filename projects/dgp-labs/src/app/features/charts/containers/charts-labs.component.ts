@@ -9,13 +9,11 @@ import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
             Charts
         </dgp-page-header>
 
-        <div>
-            <!--<dgp-line-chart></dgp-line-chart>-->
-            <dgp-box-plot [model]="boxGroups"
-                          chartTitle="Chart title"
-                          yAxisTitle="y axis"
-                          xAxisTitle="x axis"></dgp-box-plot>
-        </div>
+        <dgp-box-plot [model]="boxGroups"
+                      chartTitle="Chart title"
+                      yAxisTitle="y axis"
+                      xAxisTitle="x axis"></dgp-box-plot>
+        
     `,
     styles: [`
         :host {
@@ -27,8 +25,8 @@ import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
         }
 
         dgp-line-chart, dgp-box-plot {
-            height: 400px;
-            width: 400px;
+            height: 100%;
+            width: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -117,7 +117,7 @@ const margins = {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class LineChartComponent extends ChartComponentBase implements AfterViewInit {
+export class LineChartComponent extends ChartComponentBase<any, any> implements AfterViewInit {
 
     @ViewChild("chartElRef", {static: false})
     chartElRef: ElementRef;
