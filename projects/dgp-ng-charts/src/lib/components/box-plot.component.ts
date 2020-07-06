@@ -1,9 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import * as d3 from "d3";
-import { Box, BoxGroup, BoxPlotScales } from "../models";
+import { Box, BoxGroup } from "../models";
 import { ChartComponentBase } from "./chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales, getJitter } from "../functions";
+import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functions";
 
 @Component({
     selector: "dgp-box-plot",
@@ -108,10 +108,8 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
 
     protected drawD3Chart(): void {
 
-        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement)
-            .style("width"), 10);
-        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
-            .style("height"), 10);
+        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement).style("width"), 10);
+        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement).style("height"), 10);
 
         const svg = d3.select(this.chartElRef.nativeElement)
             .append("svg")
@@ -167,174 +165,21 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
                     );
         */
 
-        const d3OnGroupDataEnter = svg.append("g")
+        const onDataEnter = svg.append("g")
             .attr("class", "measurement-result-root")
             .selectAll("g")
             .data(this.model as Array<BoxGroup>)
             .enter()
             .append("g")
-            .attr("transform", (d) => {
-                return "translate(" + d3Scales.xAxis(d.boxGroupId.toString()) + ",0)";
-            })
+            .attr("transform", x => "translate(" + d3Scales.xAxis(x.boxGroupId.toString()) + ",0)")
             .selectAll("rect")
             .data(boxGroup => boxGroup.boxes as Array<Box>)
             .enter();
 
-        this.drawBoxPlot({
-            d3OnGroupDataEnter,
-            d3Scales
-        });
+        drawBoxPlot({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
-        this.drawBoxPlotOutliers({
-            d3OnGroupDataEnter,
-            d3Scales
-        });
+        drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
     }
-
-    private drawBoxPlot(payload: {
-        readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box,
-            SVGElement, BoxGroup>;
-        readonly d3Scales: BoxPlotScales;
-    }): void {
-
-        const xSubgroup = payload.d3Scales.xAxisSubgroup;
-        const yAxis = payload.d3Scales.yAxis;
-        const d3OnGroupDataEnter = payload.d3OnGroupDataEnter;
-
-        d3OnGroupDataEnter.append("line")
-            .attr("x1", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
-            })
-            .attr("x2", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
-            })
-            .attr("y1", (d) => {
-                return yAxis(d.quantiles.min);
-            })
-            .attr("y2", (d) => {
-                return yAxis(d.quantiles.lower);
-            })
-            .attr("stroke", x => x.colorHex)
-            .style("stroke-width", 2);
-
-        d3OnGroupDataEnter.append("line")
-            .attr("x1", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
-            })
-            .attr("x2", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
-            })
-            .attr("y1", (d) => {
-                return yAxis(d.quantiles.upper);
-            })
-            .attr("y2", (d) => {
-                return yAxis(d.quantiles.max);
-            })
-            .attr("stroke", x => x.colorHex) // ???
-            .style("stroke-width", 2);
-
-        d3OnGroupDataEnter.append("rect")
-            .attr("x", d => xSubgroup(d.boxId))
-            .attr("y", (d) => {
-                return (yAxis(d.quantiles.upper));
-            })
-            .attr("height", (d) => {
-
-                return Math.abs(
-                    (yAxis(d.quantiles.lower) - yAxis(d.quantiles.upper))
-                );
-            })
-            .attr("width", xSubgroup.bandwidth())
-            .attr("stroke", x => x.colorHex)
-            .attr("fill", x => x.colorHex + "66")
-            .style("stroke-width", 2);
-
-        d3OnGroupDataEnter.append("line")
-            .attr("x1", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.25;
-            })
-            .attr("x2", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.75;
-            })
-            .attr("y1", (d) => {
-                return yAxis(d.quantiles.min);
-            })
-            .attr("y2", (d) => {
-                return yAxis(d.quantiles.min);
-            })
-            .attr("stroke", x => x.colorHex)
-            .style("stroke-width", 2);
-
-        d3OnGroupDataEnter.append("line")
-            .attr("x1", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.25;
-            })
-            .attr("x2", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.75;
-            })
-            .attr("y1", (d) => {
-                return yAxis(d.quantiles.max);
-            })
-            .attr("y2", (d) => {
-                return yAxis(d.quantiles.max);
-            })
-            .attr("stroke", x => x.colorHex)
-            .style("stroke-width", 2);
-
-        d3OnGroupDataEnter.append("line")
-            .attr("x1", (d: Box) => {
-                return xSubgroup(d.boxId);
-            })
-            .attr("x2", (d: Box) => {
-                return xSubgroup(d.boxId) + xSubgroup.bandwidth();
-            })
-            .attr("y1", (d) => {
-                return yAxis(d.quantiles.median);
-            })
-            .attr("y2", (d) => {
-                return yAxis(d.quantiles.median);
-            })
-            .attr("stroke", x => x.colorHex)
-            .style("stroke-width", 2);
-    }
-
-    private drawBoxPlotOutliers(payload: {
-        readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box,
-            SVGElement, BoxGroup>;
-        readonly d3Scales: BoxPlotScales
-    }): void {
-
-        payload.d3OnGroupDataEnter
-            .selectAll("circle")
-            .data(datum => {
-
-                return datum.outliers.map(x => {
-
-                    return {
-                        boxId: datum.boxId,
-                        colorHex: datum.colorHex,
-                        value: x
-                    };
-
-                });
-
-            })
-            .enter()
-            .append("circle")
-            .attr("cx", (d) => {
-                return payload.d3Scales.xAxisSubgroup(d.boxId)
-                    + payload.d3Scales.xAxisSubgroup.bandwidth() / 2
-                    + getJitter(d.boxId + d.value, this.config);
-            })
-            .attr("cy", (d) => {
-                return payload.d3Scales.yAxis(d.value);
-            })
-            .attr("r", 3)
-            .style("fill", x => x.colorHex)
-        ;
-
-    }
-
 
 }

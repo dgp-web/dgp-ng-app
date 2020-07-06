@@ -136,6 +136,137 @@ export function createBoxPlotScales(payload: {
 }
 
 
+export function drawBoxPlot(payload: {
+    readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box, SVGElement, BoxGroup>;
+    readonly d3Scales: BoxPlotScales;
+}, config = defaultBoxPlotConfig): void {
+
+    const xSubgroup = payload.d3Scales.xAxisSubgroup;
+    const yAxis = payload.d3Scales.yAxis;
+    const d3OnGroupDataEnter = payload.d3OnGroupDataEnter;
+
+    d3OnGroupDataEnter.append("line")
+        .attr("x1", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+        })
+        .attr("x2", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+        })
+        .attr("y1", (d) => {
+            return yAxis(d.quantiles.min);
+        })
+        .attr("y2", (d) => {
+            return yAxis(d.quantiles.lower);
+        })
+        .attr("stroke", x => x.colorHex)
+        .style("stroke-width", 2);
+
+    d3OnGroupDataEnter.append("line")
+        .attr("x1", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+        })
+        .attr("x2", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+        })
+        .attr("y1", (d) => {
+            return yAxis(d.quantiles.upper);
+        })
+        .attr("y2", (d) => {
+            return yAxis(d.quantiles.max);
+        })
+        .attr("stroke", x => x.colorHex) // ???
+        .style("stroke-width", 2);
+
+    d3OnGroupDataEnter.append("rect")
+        .attr("x", d => xSubgroup(d.boxId))
+        .attr("y", (d) => {
+            return (yAxis(d.quantiles.upper));
+        })
+        .attr("height", (d) => {
+
+            return Math.abs(
+                (yAxis(d.quantiles.lower) - yAxis(d.quantiles.upper))
+            );
+        })
+        .attr("width", xSubgroup.bandwidth())
+        .attr("stroke", x => x.colorHex)
+        .attr("fill", x => x.colorHex + "66")
+        .style("stroke-width", 2);
+
+    d3OnGroupDataEnter.append("line")
+        .attr("x1", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.25;
+        })
+        .attr("x2", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.75;
+        })
+        .attr("y1", (d) => {
+            return yAxis(d.quantiles.min);
+        })
+        .attr("y2", (d) => {
+            return yAxis(d.quantiles.min);
+        })
+        .attr("stroke", x => x.colorHex)
+        .style("stroke-width", 2);
+
+    d3OnGroupDataEnter.append("line")
+        .attr("x1", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.25;
+        })
+        .attr("x2", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.75;
+        })
+        .attr("y1", (d) => {
+            return yAxis(d.quantiles.max);
+        })
+        .attr("y2", (d) => {
+            return yAxis(d.quantiles.max);
+        })
+        .attr("stroke", x => x.colorHex)
+        .style("stroke-width", 2);
+
+    d3OnGroupDataEnter.append("line")
+        .attr("x1", (d: Box) => {
+            return xSubgroup(d.boxId);
+        })
+        .attr("x2", (d: Box) => {
+            return xSubgroup(d.boxId) + xSubgroup.bandwidth();
+        })
+        .attr("y1", (d) => {
+            return yAxis(d.quantiles.median);
+        })
+        .attr("y2", (d) => {
+            return yAxis(d.quantiles.median);
+        })
+        .attr("stroke", x => x.colorHex)
+        .style("stroke-width", 2);
+}
+
+export function drawBoxPlotOutliers(payload: {
+    readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box, SVGElement, BoxGroup>;
+    readonly d3Scales: BoxPlotScales
+}, config = defaultBoxPlotConfig): void {
+
+    payload.d3OnGroupDataEnter
+        .selectAll("circle")
+        .data(datum => datum.outliers.map(x => ({
+                boxId: datum.boxId,
+                colorHex: datum.colorHex,
+                value: x
+            }))
+        )
+        .enter()
+        .append("circle")
+        .attr("cx", x => payload.d3Scales.xAxisSubgroup(x.boxId)
+            + payload.d3Scales.xAxisSubgroup.bandwidth() / 2
+            + getJitter(x.boxId + x.value, config)
+        )
+        .attr("cy", x => payload.d3Scales.yAxis(x.value))
+        .attr("r", 3)
+        .style("fill", x => x.colorHex);
+
+}
+
 export function getJitter(seed: string, config = defaultBoxPlotConfig): number {
 
     const jitterWidth = config.jitterWidth;
