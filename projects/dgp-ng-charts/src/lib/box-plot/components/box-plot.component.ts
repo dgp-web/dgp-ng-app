@@ -167,8 +167,49 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
         drawBoxPlot({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
-        drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
+        const outliers = drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
+
+
+        // Function that is triggered when brushing is performed
+        function updateChart() {
+            const extent = d3.event.selection;
+
+            outliers.classed("selected", (x) => {
+                // TODO: Exact X is hard to define
+                return isBrushed(
+                    extent,
+                    d3Scales.xAxis(x.boxGroupId.toString()) + d3Scales.xAxisSubgroup(x.boxId.toString()),
+                    d3Scales.yAxis(x.value)
+                );
+            });
+        }
+
+        // A function that return TRUE or FALSE according if a dot is in the selection or not
+        function isBrushed(brush_coords, cx, cy) {
+            var x0 = brush_coords[0][0],
+                x1 = brush_coords[1][0],
+                y0 = brush_coords[0][1],
+                y1 = brush_coords[1][1];
+            console.log(brush_coords);
+            console.log(cx);
+            console.log(cy);
+            console.log(x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1);
+
+            return x0 <= cx
+                && cx <= x1
+                && y0 <= cy
+                && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
+        }
+
+
+        // Add brushing
+        svg.call(d3.brush()
+            .extent([[0, 0], [containerWidth, containerHeight]])
+            .on("start brush", updateChart)
+        );
+
 
     }
+
 
 }

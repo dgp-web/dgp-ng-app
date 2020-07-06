@@ -245,12 +245,13 @@ export function drawBoxPlot(payload: {
 export function drawBoxPlotOutliers(payload: {
     readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box, SVGElement, BoxGroup>;
     readonly d3Scales: BoxPlotScales
-}, config = defaultBoxPlotConfig): void {
+}, config = defaultBoxPlotConfig) {
 
-    payload.d3OnGroupDataEnter
+    return payload.d3OnGroupDataEnter
         .selectAll("circle")
         .data(datum => datum.outliers.map(x => ({
                 boxId: datum.boxId,
+                boxGroupId: datum.boxGroupId,
                 colorHex: datum.colorHex,
                 value: x
             }))

@@ -13,7 +13,7 @@ import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
                       chartTitle="Chart title"
                       yAxisTitle="y axis"
                       xAxisTitle="x axis"></dgp-box-plot>
-        
+
     `,
     styles: [`
         :host {
@@ -38,6 +38,7 @@ export class ChartsLabsComponent {
         boxGroupId: "first",
         boxes: [{
             boxId: "first01",
+            boxGroupId: "first",
             quantiles: {
                 min: 1,
                 lower: 2.25,
@@ -51,6 +52,7 @@ export class ChartsLabsComponent {
             colorHex: "#3000f0"
         }, {
             boxId: "first02",
+            boxGroupId: "first",
             quantiles: {
                 min: 2,
                 lower: 3.25,
