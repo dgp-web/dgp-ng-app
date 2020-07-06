@@ -5,6 +5,9 @@ import { ChartComponentBase } from "./chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functions";
 
+// TODO: Extract logic for coloring
+// TODO: Extract logic for logarithmic y-axis scale
+
 @Component({
     selector: "dgp-box-plot",
     template: `
