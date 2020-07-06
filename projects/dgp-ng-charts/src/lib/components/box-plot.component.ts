@@ -1,19 +1,9 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ElementRef,
-    Input,
-    ViewChild,
-    ViewEncapsulation
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import * as d3 from "d3";
-import * as seedrandom from "seedrandom";
 import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { ChartComponentBase } from "./chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales } from "../functions";
-
+import { createBoxPlotScales, getJitter } from "../functions";
 
 @Component({
     selector: "dgp-box-plot",
@@ -44,20 +34,20 @@ import { createBoxPlotScales } from "../functions";
 
     `,
     styles: [`
-        dgp-box-plot {
+        :host {
             display: flex;
             flex-grow: 1;
             font-size: smaller;
         }
 
-        dgp-box-plot .chart {
+        .chart {
             display: flex;
             flex-direction: column;
             justify-content: center;
             flex-grow: 1;
         }
 
-        dgp-box-plot .chart__title {
+        .chart__title {
             justify-content: center;
             align-items: center;
             display: flex;
@@ -66,20 +56,12 @@ import { createBoxPlotScales } from "../functions";
         }
 
 
-        dgp-box-plot .chart__y-axis {
-            font-size: 16px;
-        }
-
-        dgp-box-plot .chart__x-axis {
-            font-size: 16px;
-        }
-
-        dgp-box-plot .chart__inner-container {
+        .chart__inner-container {
             display: flex;
             flex-grow: 1;
         }
 
-        dgp-box-plot .chart_y-axis-label-container {
+        .chart_y-axis-label-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -87,34 +69,25 @@ import { createBoxPlotScales } from "../functions";
             max-width: 40px;
         }
 
-        dgp-box-plot .chart__y-axis-label {
+        .chart__y-axis-label {
             transform: rotate(-90deg);
             white-space: nowrap;
         }
 
-        dgp-box-plot .chart__d3-hook {
+        .chart__d3-hook {
             flex-grow: 1;
             height: 100%;
         }
 
-        dgp-box-plot .chart__x-axis-label {
+        .chart__x-axis-label {
             min-height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        dgp-box-plot .chart-svg {
-            overflow: visible;
-        }
-
-        dgp-box-plot .tick {
-            font-size: smaller;
-        }
-
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxPlotComponent extends ChartComponentBase implements AfterViewInit {
 
@@ -123,6 +96,9 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
 
     @Input()
     model: ReadonlyArray<BoxGroup>;
+
+    @Input()
+    config = defaultBoxPlotConfig;
 
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
@@ -144,9 +120,9 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("class", "chart-svg")
             .append("g")
             .attr("transform",
-                "translate(" + defaultBoxPlotConfig.margin.left
+                "translate(" + this.config.margin.left
                 + ","
-                + defaultBoxPlotConfig.margin.top
+                + this.config.margin.top
                 + ")"
             );
 
@@ -349,7 +325,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("cx", (d) => {
                 return payload.d3Scales.xAxisSubgroup(d.boxId)
                     + payload.d3Scales.xAxisSubgroup.bandwidth() / 2
-                    + this.getJitter(d.boxId + d.value);
+                    + getJitter(d.boxId + d.value, this.config);
             })
             .attr("cy", (d) => {
                 return payload.d3Scales.yAxis(d.value);
@@ -357,16 +333,6 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("r", 3)
             .style("fill", x => x.colorHex)
         ;
-
-    }
-
-
-    private getJitter(seed: string): number {
-
-        const jitterWidth = 50;
-
-        const rdm = seedrandom.alea(seed);
-        return -jitterWidth / 2 + rdm() * jitterWidth;
 
     }
 

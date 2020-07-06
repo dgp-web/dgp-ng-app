@@ -60,6 +60,7 @@ export interface BoxPlotConfig {
      * default: 0.05
      */
     readonly cardinalScaleOffset: number;
+    readonly jitterWidth: number;
 }
 
 export interface BoxPlotScales {

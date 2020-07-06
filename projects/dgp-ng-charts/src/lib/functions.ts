@@ -3,6 +3,7 @@ import { createGuid, notNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
 import { Box, BoxGroup, BoxPlotScales, BoxValues, Limits } from "./models";
 import { defaultBoxPlotConfig } from "./constants";
+import * as seedrandom from "seedrandom";
 
 export function computeBoxFromValues(payload: {
     readonly values: BoxValues;
@@ -133,6 +134,17 @@ export function createBoxPlotScales(payload: {
     };
 
 }
+
+
+export function getJitter(seed: string, config = defaultBoxPlotConfig): number {
+
+    const jitterWidth = config.jitterWidth;
+
+    const rdm = seedrandom.alea(seed);
+    return -jitterWidth / 2 + rdm() * jitterWidth;
+
+}
+
 
 /**
  * Applies offset to limits
