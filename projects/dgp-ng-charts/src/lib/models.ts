@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 export interface Box {
     readonly boxId: string;
     /**
@@ -44,8 +46,42 @@ export interface BoxGroup<TValue = string | number> {
     readonly boxValues?: ReadonlyArray<BoxValues>;
 }
 
+export interface BoxPlotConfig {
+    readonly margin: ChartMargin;
+    readonly groupPadding: number;
+    readonly subGroupPadding: number;
+    /**
+     * Normalized share with which the extreme values
+     * are offset from the borders of the drawing area.
+     *
+     * If this is 0, then the extreme values are
+     * drawn directly onto the borders
+     *
+     * default: 0.05
+     */
+    readonly cardinalScaleOffset: number;
+}
+
+export interface BoxPlotScales {
+    readonly xAxis: d3.ScaleBand<string>;
+    readonly xAxisSubgroup: d3.ScaleBand<string>;
+    readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
+}
+
 export interface BoxValues {
     readonly boxValuesId: string;
 
     readonly originalValues: ReadonlyArray<number>;
+}
+
+export interface ChartMargin {
+    readonly top: number;
+    readonly bottom: number;
+    readonly left: number;
+    readonly right: number;
+}
+
+export interface Limits<T = number> {
+    readonly min: T;
+    readonly max: T;
 }

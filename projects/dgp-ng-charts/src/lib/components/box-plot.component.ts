@@ -1,136 +1,18 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild, ViewEncapsulation } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    Input,
+    ViewChild,
+    ViewEncapsulation
+} from "@angular/core";
 import * as d3 from "d3";
-import * as _ from "lodash";
 import * as seedrandom from "seedrandom";
-import { Box, BoxGroup } from "../models";
+import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { ChartComponentBase } from "./chart.component-base";
-
-const margins = {
-    top: 10,
-    right: 30,
-    left: 50,
-    bottom: 20
-};
-
-export interface BoxPlotConfig {
-    readonly margin: {
-        readonly top: number;
-        readonly bottom: number;
-        readonly left: number;
-        readonly right: number;
-    };
-    readonly groupPadding: number;
-    readonly subGroupPadding: number;
-}
-
-export const defaultTimeSeriesChartConfig: BoxPlotConfig = {
-    margin: {
-        top: 10,
-        right: 30,
-        left: 50,
-        bottom: 20
-    },
-    groupPadding: 0.2,
-    subGroupPadding: 0.05
-};
-
-
-export interface BoxPlotD3Scales {
-    readonly xAxis: d3.ScaleBand<string>;
-    readonly xAxisSubgroup: d3.ScaleBand<string>;
-    readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
-    /**
-     * Needed for correctly offsetting the chart and to
-     * avoid that tick labels overlap the axis label
-     */
-    readonly leftChartMargin: number;
-}
-
-
-export function createD3Scales(payload: {
-    readonly boxGroups: ReadonlyArray<BoxGroup>;
-    readonly containerWidth: number;
-    readonly containerHeight: number;
-    /*
-     readonly config: BoxPlotConfig;*/
-}): BoxPlotD3Scales {
-
-    const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
-    const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));
-
-    const valuesForExtemumComputation = payload.boxGroups.reduce((previousValue, currentValue) => {
-
-        currentValue.boxes.forEach(box => {
-            box.outliers.forEach(outlier => previousValue.push(outlier));
-            const quantiles = [
-                box.quantiles.max,
-                box.quantiles.upper,
-                box.quantiles.median,
-                box.quantiles.lower,
-                box.quantiles.min,
-            ];
-            quantiles.forEach(quantile => previousValue.push(quantile));
-        });
-
-        return previousValue;
-    }, new Array<number>());
-
-    const yMin = _.min(valuesForExtemumComputation);
-    const yMax = _.max(valuesForExtemumComputation);
-
-    const distance = Math.abs(yMax - yMin);
-
-    // Compute reference margin left
-    /*  const referenceYDomainLabelLength = _.max(
-          [yAxisLimits.min, yAxisLimits.max].map(x => {
-              return d3.format("~r")(x).length;
-          })
-      );*/
-
-    /* const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
-
-     const marginLeft = payload.config.margin.left >= estimatedNeededMaxYTickWidthPx
-         ? payload.config.margin.left
-         : estimatedNeededMaxYTickWidthPx;
-
-     const barAreaWidth = payload.containerWidth
-         - marginLeft
-         - payload.dummyConfig.margin.right;
-
-     const barAreaHeight = payload.containerHeight
-         - payload.dummyConfig.margin.top
-         - payload.dummyConfig.margin.bottom;
- */
-
-    const barAreaWidth = payload.containerWidth
-        - defaultTimeSeriesChartConfig.margin.left
-        - defaultTimeSeriesChartConfig.margin.right;
-
-    const barAreaHeight = payload.containerHeight
-        - defaultTimeSeriesChartConfig.margin.top
-        - defaultTimeSeriesChartConfig.margin.bottom;
-
-    const yAxis = d3.scaleLinear()
-        .domain([yMax + distance * 0.05, yMin - distance * 0.05]) // TODO: Offset min and max
-        .range([0, barAreaHeight]);
-
-    const xAxis = d3.scaleBand()
-        .domain(boxGroupKeys)
-        .range([0, barAreaWidth])
-        .padding(0.2);
-
-    return {
-        xAxis,
-        yAxis,
-        xAxisSubgroup: d3.scaleBand()
-            .domain(boxIds)
-            .range([0, xAxis.bandwidth()])
-            .padding(0.05),
-
-        leftChartMargin: 40
-    };
-
-}
+import { defaultBoxPlotConfig } from "../constants";
+import { createBoxPlotScales } from "../functions";
 
 
 @Component({
@@ -262,13 +144,13 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
             .attr("class", "chart-svg")
             .append("g")
             .attr("transform",
-                "translate(" + margins.left
+                "translate(" + defaultBoxPlotConfig.margin.left
                 + ","
-                + margins.top
+                + defaultBoxPlotConfig.margin.top
                 + ")"
             );
 
-        const d3Scales = createD3Scales({
+        const d3Scales = createBoxPlotScales({
             containerHeight, containerWidth,
             boxGroups: this.model
         });
@@ -337,7 +219,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
     private drawBoxPlot(payload: {
         readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box,
             SVGElement, BoxGroup>;
-        readonly d3Scales: BoxPlotD3Scales;
+        readonly d3Scales: BoxPlotScales;
     }): void {
 
         const xSubgroup = payload.d3Scales.xAxisSubgroup;
@@ -444,7 +326,7 @@ export class BoxPlotComponent extends ChartComponentBase implements AfterViewIni
     private drawBoxPlotOutliers(payload: {
         readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box,
             SVGElement, BoxGroup>;
-        readonly d3Scales: BoxPlotD3Scales
+        readonly d3Scales: BoxPlotScales
     }): void {
 
         payload.d3OnGroupDataEnter
