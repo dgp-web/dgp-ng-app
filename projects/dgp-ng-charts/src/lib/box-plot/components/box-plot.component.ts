@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core
 import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functions";
+import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getJitter } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig } from "../models";
 
 // TODO: Extract logic for coloring
@@ -170,15 +170,20 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
         const outliers = drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
 
+        const self = this;
+
         // Function that is triggered when brushing is performed
         function updateChart() {
             const extent = d3.event.selection;
 
             outliers.classed("selected", (x) => {
-                // TODO: Exact X is hard to define
+
                 return isBrushed(
                     extent,
-                    d3Scales.xAxis(x.boxGroupId.toString()) + d3Scales.xAxisSubgroup(x.boxId.toString()),
+                    d3Scales.xAxis(x.boxGroupId.toString())
+                    + d3Scales.xAxisSubgroup.bandwidth() / 2
+                    + d3Scales.xAxisSubgroup(x.boxId.toString())
+                    + getJitter(x.boxId + x.value, self.config),
                     d3Scales.yAxis(x.value)
                 );
             });
@@ -190,10 +195,14 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
                 x1 = brush_coords[1][0],
                 y0 = brush_coords[0][1],
                 y1 = brush_coords[1][1];
-            console.log(brush_coords);
-            console.log(cx);
-            console.log(cy);
-            console.log(x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1);
+
+            if (x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1) {
+                console.log("Found: ");
+
+                console.log(cx);
+                console.log(cy);
+                console.log(x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1);
+            }
 
             return x0 <= cx
                 && cx <= x1
