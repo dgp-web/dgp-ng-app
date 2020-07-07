@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core
 import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getJitter } from "../functions";
+import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getJitter, isBrushed } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig } from "../models";
 
 // TODO: Extract logic for coloring
@@ -169,56 +169,22 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
         const outliers = drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
+        /*svg.call(d3.brush()
+            .extent([[0, 0], [containerWidth, containerHeight]])
+            .on("start brush", () => {
+                const extent = d3.event.selection;
 
-        const self = this;
-
-        // Function that is triggered when brushing is performed
-        function updateChart() {
-            const extent = d3.event.selection;
-
-            outliers.classed("selected", (x) => {
-
-                return isBrushed(
+                outliers.classed("selected", x => isBrushed(
                     extent,
                     d3Scales.xAxis(x.boxGroupId.toString())
                     + d3Scales.xAxisSubgroup.bandwidth() / 2
                     + d3Scales.xAxisSubgroup(x.boxId.toString())
-                    + getJitter(x.boxId + x.value, self.config),
+                    + getJitter(x.boxId + x.value, this.config),
                     d3Scales.yAxis(x.value)
-                );
-            });
-        }
-
-        // A function that return TRUE or FALSE according if a dot is in the selection or not
-        function isBrushed(brush_coords, cx, cy) {
-            var x0 = brush_coords[0][0],
-                x1 = brush_coords[1][0],
-                y0 = brush_coords[0][1],
-                y1 = brush_coords[1][1];
-
-            if (x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1) {
-                console.log("Found: ");
-
-                console.log(cx);
-                console.log(cy);
-                console.log(x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1);
-            }
-
-            return x0 <= cx
-                && cx <= x1
-                && y0 <= cy
-                && cy <= y1;    // This return TRUE or FALSE depending on if the points is in the selected area
-        }
-
-
-        // Add brushing
-        svg.call(d3.brush()
-            .extent([[0, 0], [containerWidth, containerHeight]])
-            .on("start brush", updateChart)
-        );
-
+                ));
+            })
+        );*/
 
     }
-
 
 }

@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { createGuid, notNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
-import { Box, BoxGroup, BoxPlotScales, BoxValues, Limits } from "./models";
+import { Box, BoxGroup, BoxPlotScales, BoxValues, BrushCoordinates, Limits } from "./models";
 import { defaultBoxPlotConfig } from "./constants";
 import * as seedrandom from "seedrandom";
 
@@ -139,7 +139,7 @@ export function createBoxPlotScales(payload: {
 export function drawBoxPlot(payload: {
     readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box, SVGElement, BoxGroup>;
     readonly d3Scales: BoxPlotScales;
-}, config = defaultBoxPlotConfig): void {
+}, config = defaultBoxPlotConfig) {
 
     const xSubgroup = payload.d3Scales.xAxisSubgroup;
     const yAxis = payload.d3Scales.yAxis;
@@ -291,4 +291,16 @@ export function getYAxisLimitsWithOffset(payload: {
         max: payload.limitsFromValues.max + distance * config.cardinalScaleOffset,
         min: payload.limitsFromValues.min - distance * config.cardinalScaleOffset
     };
+}
+
+export function isBrushed(brushCoordinates: BrushCoordinates, cx: number, cy: number) {
+    const x0 = brushCoordinates[0][0];
+    const x1 = brushCoordinates[1][0];
+    const y0 = brushCoordinates[0][1];
+    const y1 = brushCoordinates[1][1];
+
+    return x0 <= cx
+        && cx <= x1
+        && y0 <= cy
+        && cy <= y1;
 }

@@ -75,6 +75,8 @@ export interface BoxValues {
     readonly originalValues: ReadonlyArray<number>;
 }
 
+export type BrushCoordinates = [[number, number], [number, number]];
+
 export interface ChartMargin {
     readonly top: number;
     readonly bottom: number;
