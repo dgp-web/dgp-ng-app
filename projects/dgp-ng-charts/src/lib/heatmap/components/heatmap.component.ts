@@ -133,7 +133,7 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
             .padding(0.01);
 
         svg.append("g")
-            .call(d3.axisLeft(yAxis));
+            .call(d3.axisLeft(yAxis).tickValues([]).tickSize(0));
 
         const colorScale = d3.scaleLinear()
             .range(["white", "#69b3a2"] as any)

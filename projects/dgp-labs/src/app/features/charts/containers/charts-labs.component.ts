@@ -73,19 +73,25 @@ export class ChartsLabsComponent {
         label: "First group"
     }];
 
-    readonly heatmapTiles: ReadonlyArray<HeatmapTile> = [{
-        x: 1, y: 1,
-        value: 30
-    }, {
-        x: 1, y: 2,
-        value: 11
-    }, {
-        x: 2, y: 1,
-        value: 89
-    }, {
-        x: 2, y: 2,
-        value: 53
-    }];
+    readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
+
+    constructor() {
+
+        const heatmapTiles = new Array<HeatmapTile>();
+
+        for (let i = 0; i < 100; i++) {
+            for (let j = 0; j < 300; j++) {
+                heatmapTiles.push({
+                    x: j,
+                    y: i,
+                    value: Math.random() * 100
+                });
+            }
+        }
+
+        this.heatmapTiles = heatmapTiles;
+
+    }
 
     selectOutliers($event: BoxPlotSelection) {
         console.log($event);
