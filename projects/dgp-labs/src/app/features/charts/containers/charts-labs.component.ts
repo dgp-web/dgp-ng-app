@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
+import { BoxGroup, BoxPlotSelection } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -12,7 +12,8 @@ import { BoxGroup } from "../../../../../../dgp-ng-charts/src/lib/models";
         <dgp-box-plot [model]="boxGroups"
                       chartTitle="Chart title"
                       yAxisTitle="y axis"
-                      xAxisTitle="x axis"></dgp-box-plot>
+                      xAxisTitle="x axis"
+                      (selectionChange)="selectOutliers($event)"></dgp-box-plot>
 
     `,
     styles: [`
@@ -68,4 +69,7 @@ export class ChartsLabsComponent {
         label: "First group"
     }];
 
+    selectOutliers($event: BoxPlotSelection) {
+        console.log($event);
+    }
 }

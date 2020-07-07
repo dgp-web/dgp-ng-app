@@ -1,9 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output } from "@angular/core";
 import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getJitter, isBrushed } from "../functions";
-import { Box, BoxGroup, BoxPlotConfig } from "../models";
+import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -91,6 +91,9 @@ import { Box, BoxGroup, BoxPlotConfig } from "../models";
 })
 export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>, BoxPlotConfig> implements AfterViewInit {
 
+    @Output()
+    readonly selectionChange = new EventEmitter<BoxPlotSelection>();
+
     config = defaultBoxPlotConfig;
 
     protected drawD3Chart(): void {
@@ -169,11 +172,46 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
         const outliers = drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
-        /*svg.call(d3.brush()
+        const self = this;
+
+        // TODO: Add tooltip on mouseover
+
+        outliers.on("mouseover", function (x) {
+
+            /*self.outlierSelectionChange.emit({
+                outliers: [x]
+            });*/
+
+            d3.select(this)
+                .style("stroke", "black")
+                .style("opacity", 1);
+        }).on("mouseleave", function (x) {
+
+            // self.outlierSelectionChange.emit({});
+
+            d3.select(this)
+                .style("stroke", "none")
+                .style("opacity", 0.8);
+        });
+
+        svg.call(d3.brush()
             .extent([[0, 0], [containerWidth, containerHeight]])
             .on("start brush", () => {
                 const extent = d3.event.selection;
 
+                const filteredOutliers = outliers.filter(x => isBrushed(
+                    extent,
+                    d3Scales.xAxis(x.boxGroupId.toString())
+                    + d3Scales.xAxisSubgroup.bandwidth() / 2
+                    + d3Scales.xAxisSubgroup(x.boxId.toString())
+                    + getJitter(x.boxId + x.value, this.config),
+                    d3Scales.yAxis(x.value)
+                )).data();
+
+                this.selectionChange.emit({
+                    outliers: filteredOutliers
+                });
+/*
                 outliers.classed("selected", x => isBrushed(
                     extent,
                     d3Scales.xAxis(x.boxGroupId.toString())
@@ -181,9 +219,9 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
                     + d3Scales.xAxisSubgroup(x.boxId.toString())
                     + getJitter(x.boxId + x.value, this.config),
                     d3Scales.yAxis(x.value)
-                ));
+                ));*/
             })
-        );*/
+        );
 
     }
 

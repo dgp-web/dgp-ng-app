@@ -75,6 +75,7 @@ export interface BoxValues {
     readonly originalValues: ReadonlyArray<number>;
 }
 
+
 export type BrushCoordinates = [[number, number], [number, number]];
 
 export interface ChartMargin {
@@ -87,4 +88,19 @@ export interface ChartMargin {
 export interface Limits<T = number> {
     readonly min: T;
     readonly max: T;
+}
+
+export interface BoxOutlierId {
+    readonly boxId: string;
+    readonly boxGroupId: string;
+    readonly outlierIndex: number;
+}
+
+export interface BoxOutlier extends BoxOutlierId {
+    readonly value: any;
+    readonly colorHex: string;
+}
+
+export interface BoxPlotSelection {
+    readonly outliers?: ReadonlyArray<BoxOutlier>;
 }

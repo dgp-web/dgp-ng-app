@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { createGuid, notNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
-import { Box, BoxGroup, BoxPlotScales, BoxValues, BrushCoordinates, Limits } from "./models";
+import { Box, BoxGroup, BoxOutlier, BoxPlotScales, BoxValues, BrushCoordinates, Limits } from "./models";
 import { defaultBoxPlotConfig } from "./constants";
 import * as seedrandom from "seedrandom";
 
@@ -249,12 +249,13 @@ export function drawBoxPlotOutliers(payload: {
 
     return payload.d3OnGroupDataEnter
         .selectAll("circle")
-        .data(datum => datum.outliers.map(x => ({
+        .data(datum => datum.outliers.map((x, outlierIndex) => ({
                 boxId: datum.boxId,
                 boxGroupId: datum.boxGroupId,
                 colorHex: datum.colorHex,
+                outlierIndex,
                 value: x
-            }))
+            } as BoxOutlier))
         )
         .enter()
         .append("circle")
