@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { BoxGroup, BoxPlotSelection } from "dgp-ng-charts";
+import { BoxGroup, BoxPlotSelection, HeatmapTile } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -15,6 +15,10 @@ import { BoxGroup, BoxPlotSelection } from "dgp-ng-charts";
                       xAxisTitle="x axis"
                       (selectionChange)="selectOutliers($event)"></dgp-box-plot>
 
+        <dgp-heatmap [model]="heatmapTiles"
+                     chartTitle="Chart title"
+                     yAxisTitle="y axis"
+                     xAxisTitle="x axis"></dgp-heatmap>
     `,
     styles: [`
         :host {
@@ -25,9 +29,9 @@ import { BoxGroup, BoxPlotSelection } from "dgp-ng-charts";
             overflow: auto;
         }
 
-        dgp-line-chart, dgp-box-plot {
-            height: 100%;
-            width: 100%;
+        dgp-line-chart, dgp-box-plot, dgp-heatmap {
+            height: 480px;
+            width: 640px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -67,6 +71,20 @@ export class ChartsLabsComponent {
             colorHex: "#309000"
         }],
         label: "First group"
+    }];
+
+    readonly heatmapTiles: ReadonlyArray<HeatmapTile> = [{
+        x: 1, y: 1,
+        value: 30
+    }, {
+        x: 1, y: 2,
+        value: 11
+    }, {
+        x: 2, y: 1,
+        value: 89
+    }, {
+        x: 2, y: 2,
+        value: 53
     }];
 
     selectOutliers($event: BoxPlotSelection) {

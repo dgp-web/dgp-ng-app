@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { ChartMargin } from "../shared/models";
 
 export interface Box {
     readonly boxId: string;
@@ -77,13 +78,6 @@ export interface BoxValues {
 
 
 export type BrushCoordinates = [[number, number], [number, number]];
-
-export interface ChartMargin {
-    readonly top: number;
-    readonly bottom: number;
-    readonly left: number;
-    readonly right: number;
-}
 
 export interface Limits<T = number> {
     readonly min: T;

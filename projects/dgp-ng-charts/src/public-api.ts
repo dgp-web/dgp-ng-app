@@ -40,4 +40,6 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  * Shared
  * -----
  */
+export * from "./lib/shared/models";
+
 export { ChartComponentBase } from "./lib/shared/chart.component-base";
