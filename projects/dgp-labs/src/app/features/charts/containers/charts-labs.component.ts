@@ -13,6 +13,7 @@ import { BoxGroup, BoxPlotSelection, HeatmapTile } from "dgp-ng-charts";
                       chartTitle="Chart title"
                       yAxisTitle="y axis"
                       xAxisTitle="x axis"
+                      selectionMode="Brush"
                       (selectionChange)="selectOutliers($event)"></dgp-box-plot>
 
         <dgp-heatmap [model]="heatmapTiles"

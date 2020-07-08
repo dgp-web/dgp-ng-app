@@ -97,3 +97,5 @@ export interface BoxOutlier extends BoxOutlierId {
 export interface BoxPlotSelection {
     readonly outliers?: ReadonlyArray<BoxOutlier>;
 }
+
+export type BoxPlotSelectionMode = "None" | "Brush";

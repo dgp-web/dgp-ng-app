@@ -1,9 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
-import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
+import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection, BoxPlotSelectionMode } from "../models";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -94,6 +94,9 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
+    @Input()
+    selectionMode: BoxPlotSelectionMode = "None";
+
     config = defaultBoxPlotConfig;
 
     protected drawD3Chart(payload): void {
@@ -131,35 +134,38 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
         // TODO: Add tooltip on mouseover
 
         // showTooltip
-        outliers.on("mouseover", function(x) {
+        /* outliers.on("mouseover", function(x) {
 
-            d3.select(this)
-                .style("stroke", "black")
-                .style("opacity", 1);
-        })
-            .on("mouseleave", function(x) {
+             d3.select(this)
+                 .style("stroke", "black")
+                 .style("opacity", 1);
+         })
+             .on("mouseleave", function(x) {
 
-                d3.select(this)
-                    .style("stroke", "none")
-                    .style("opacity", 0.8);
-            });
+                 d3.select(this)
+                     .style("stroke", "none")
+                     .style("opacity", 0.8);
+             });*/
 
-        payload.svg.call(d3.brush()
-            .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
-            .on("start brush", () => {
-                const extent = d3.event.selection;
+        if (this.selectionMode === "Brush") {
 
-                const filteredOutliers = outliers.filter(x => isBrushed(
-                    extent, getOutlierXPosition(x, d3Scales, this.config),
-                    d3Scales.yAxis(x.value)
-                ))
-                    .data();
+            payload.svg.call(d3.brush()
+                .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
+                .on("start brush", () => {
+                    const extent = d3.event.selection;
 
-                this.selectionChange.emit({
-                    outliers: filteredOutliers
-                });
-            })
-        );
+                    const filteredOutliers = outliers.filter(x => isBrushed(
+                        extent, getOutlierXPosition(x, d3Scales, this.config),
+                        d3Scales.yAxis(x.value)
+                    ))
+                        .data();
+
+                    this.selectionChange.emit({
+                        outliers: filteredOutliers
+                    });
+                })
+            );
+        }
 
     }
 
