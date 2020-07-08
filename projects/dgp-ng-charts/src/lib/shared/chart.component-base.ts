@@ -4,10 +4,11 @@ import * as d3 from "d3";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { from, interval, Subscription, timer } from "rxjs";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
+import { SharedChartConfig } from "./models";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class ChartComponentBase<TModel, TConfig> implements AfterViewInit, OnChanges, OnDestroy {
+export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild("chartElRef", {static: false})
     chartElRef: ElementRef;
@@ -85,7 +86,11 @@ export abstract class ChartComponentBase<TModel, TConfig> implements AfterViewIn
         this.drawChartActionScheduler.emit();
     }
 
-    protected abstract drawD3Chart(): void;
+    protected abstract drawD3Chart(payload: {
+        readonly svg: d3.Selection<SVGElement, unknown, null, undefined>;
+        readonly containerWidth: number;
+        readonly containerHeight: number;
+    }): void;
 
     private readonly onResize = () => this.scheduleDrawChartAction();
 
@@ -105,7 +110,33 @@ export abstract class ChartComponentBase<TModel, TConfig> implements AfterViewIn
 
         d3.select(this.chartElRef.nativeElement)
             .html("");
-        this.drawD3Chart();
+
+        if (this.model && this.config) {
+
+            const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement)
+                .style("width"), 10);
+            const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
+                .style("height"), 10);
+
+            const svg = d3.select(this.chartElRef.nativeElement)
+                .append("svg")
+                .attr("width", containerWidth)
+                .attr("height", containerHeight)
+                .attr("class", "chart-svg")
+                .append("g")
+                .attr("transform",
+                    "translate(" + this.config.margin.left
+                    + ","
+                    + this.config.margin.top
+                    + ")"
+                );
+
+            this.drawD3Chart({
+                svg,
+                containerHeight,
+                containerWidth
+            });
+        }
 
         this.isInitialResize = true;
         this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);

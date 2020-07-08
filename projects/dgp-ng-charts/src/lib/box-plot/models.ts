@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { ChartMargin } from "../shared/models";
+import { ChartMargin, SharedChartConfig } from "../shared/models";
 
 export interface Box {
     readonly boxId: string;
@@ -47,8 +47,7 @@ export interface BoxGroup<TValue = string | number> {
     readonly boxValues?: ReadonlyArray<BoxValues>;
 }
 
-export interface BoxPlotConfig {
-    readonly margin: ChartMargin;
+export interface BoxPlotConfig extends SharedChartConfig {
     readonly groupPadding: number;
     readonly subGroupPadding: number;
     /**

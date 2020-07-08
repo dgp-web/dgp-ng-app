@@ -5,3 +5,7 @@ export interface ChartMargin {
     readonly left: number;
     readonly right: number;
 }
+
+export interface SharedChartConfig {
+    readonly margin: ChartMargin;
+}

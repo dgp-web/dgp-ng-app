@@ -90,24 +90,7 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
     config = defaultHeatmapConfig;
 
-    protected drawD3Chart(): void {
-        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement)
-            .style("width"), 10);
-        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
-            .style("height"), 10);
-
-        const svg = d3.select(this.chartElRef.nativeElement)
-            .append("svg")
-            .attr("width", containerWidth)
-            .attr("height", containerHeight)
-            .attr("class", "chart-svg")
-            .append("g")
-            .attr("transform",
-                "translate(" + this.config.margin.left
-                + ","
-                + this.config.margin.top
-                + ")"
-            );
+    protected drawD3Chart(payload): void {
 
         // Labels of row and columns
         const rowValues = uniq(this.model.map(x => x.x.toString()))
@@ -118,36 +101,38 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
         // Build X scales and axis:
         const xAxis = d3.scaleBand()
-            .range([0, containerWidth])
+            .range([0, payload.containerWidth])
             .domain(rowValues)
             .padding(0.01);
 
-        svg.append("g")
-            .attr("transform", "translate(0," + containerHeight + ")")
+        payload.svg.append("g")
+            .attr("transform", "translate(0," + payload.containerHeight + ")")
             .call(d3.axisBottom(xAxis));
 
         // Build X scales and axis:
         const yAxis = d3.scaleBand()
-            .range([containerHeight, 0])
+            .range([payload.containerHeight, 0])
             .domain(columnValues)
             .padding(0.01);
 
-        svg.append("g")
-            .call(d3.axisLeft(yAxis).tickValues([]).tickSize(0));
+        payload.svg.append("g")
+            .call(d3.axisLeft(yAxis)
+                .tickValues([])
+                .tickSize(0));
 
         const colorScale = d3.scaleLinear()
             .range(["white", "#69b3a2"] as any)
             .domain([1, 100]);
 
-        svg.selectAll()
+        payload.svg.selectAll()
             .data(this.model as Array<HeatmapTile>, x => x.x.toString() + x.y.toString())
             .enter()
             .append("rect")
             .attr("x", x => xAxis(x.x.toString()))
             .attr("y", x => yAxis(x.y.toString()))
-            .attr("width", xAxis.bandwidth() )
-            .attr("height", yAxis.bandwidth() )
-            .style("fill", x => colorScale(x.value) );
+            .attr("width", xAxis.bandwidth())
+            .attr("height", yAxis.bandwidth())
+            .style("fill", x => colorScale(x.value));
     }
 
 }

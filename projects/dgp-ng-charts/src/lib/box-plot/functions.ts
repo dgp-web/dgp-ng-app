@@ -278,6 +278,16 @@ export function getJitter(seed: string, config = defaultBoxPlotConfig): number {
 
 }
 
+export function getOutlierXPosition(
+    outlier: BoxOutlier,
+    scales: BoxPlotScales,
+    config = defaultBoxPlotConfig
+): number {
+    return scales.xAxis(outlier.boxGroupId.toString())
+        + scales.xAxisSubgroup.bandwidth() / 2
+        + scales.xAxisSubgroup(outlier.boxId.toString())
+        + getJitter(outlier.boxId + outlier.value, config);
+}
 
 /**
  * Applies offset to limits

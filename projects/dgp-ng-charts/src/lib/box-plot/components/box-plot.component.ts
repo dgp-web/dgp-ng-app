@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output
 import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getJitter, isBrushed } from "../functions";
+import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 
 // TODO: Extract logic for coloring
@@ -96,68 +96,24 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
     config = defaultBoxPlotConfig;
 
-    protected drawD3Chart(): void {
-
-        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement)
-            .style("width"), 10);
-        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
-            .style("height"), 10);
-
-        const svg = d3.select(this.chartElRef.nativeElement)
-            .append("svg")
-            .attr("width", containerWidth)
-            .attr("height", containerHeight)
-            .attr("class", "chart-svg")
-            .append("g")
-            .attr("transform",
-                "translate(" + this.config.margin.left
-                + ","
-                + this.config.margin.top
-                + ")"
-            );
+    protected drawD3Chart(payload): void {
 
         const d3Scales = createBoxPlotScales({
-            containerHeight, containerWidth,
+            containerHeight: payload.containerHeight,
+            containerWidth: payload.containerWidth,
             boxGroups: this.model
         });
 
-        svg.append("g")
+        payload.svg.append("g")
             .attr("class", "chart__x-axis")
             .attr("transform", "translate(0," + d3Scales.yAxis.range()[1] + ")")
-            .call(d3.axisBottom(d3Scales.xAxis)
-                /*.tickValues(this.model as any)
-                .tickFormat(x => (x as any).label)*/
-                // TODO: Display labels of BoxGroups here
-            );
+            .call(d3.axisBottom(d3Scales.xAxis));
 
-        svg.append("g")
+        payload.svg.append("g")
             .attr("class", "chart__y-axis")
             .call(d3.axisLeft(d3Scales.yAxis));
 
-
-        /*   svg.append("g")
-               .attr("class", "chart__x-axis")
-               .attr("transform", "translate(0," + payload.d3Scales.yAxis.range()[0] + ")")
-               .call(d3.axisBottom(payload.d3Scales.xAxis)
-                   .tickValues(xAxisTicks as any)
-                   .tickFormat(formatTick)
-               );*/
-        /*
-
-                svg.append("g")
-                    .attr("class", "chart__y-axis")
-                    .call(d3.axisLeft(payload.d3Scales.yAxis)
-                        .ticks(yAxisTickCount)
-                        .tickFormat(domainValue => {
-
-                            const formattedValue = d3.format("~r")(domainValue);
-                            return formattedValue;
-
-                        })
-                    );
-        */
-
-        const onDataEnter = svg.append("g")
+        const onDataEnter = payload.svg.append("g")
             .attr("class", "measurement-result-root")
             .selectAll("g")
             .data(this.model as Array<BoxGroup>)
@@ -172,54 +128,36 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
         const outliers = drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
 
-        const self = this;
-
         // TODO: Add tooltip on mouseover
 
-        outliers.on("mouseover", function (x) {
-
-            /*self.outlierSelectionChange.emit({
-                outliers: [x]
-            });*/
+        // showTooltip
+        outliers.on("mouseover", function(x) {
 
             d3.select(this)
                 .style("stroke", "black")
                 .style("opacity", 1);
-        }).on("mouseleave", function (x) {
+        })
+            .on("mouseleave", function(x) {
 
-            // self.outlierSelectionChange.emit({});
+                d3.select(this)
+                    .style("stroke", "none")
+                    .style("opacity", 0.8);
+            });
 
-            d3.select(this)
-                .style("stroke", "none")
-                .style("opacity", 0.8);
-        });
-
-        svg.call(d3.brush()
-            .extent([[0, 0], [containerWidth, containerHeight]])
+        payload.svg.call(d3.brush()
+            .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
             .on("start brush", () => {
                 const extent = d3.event.selection;
 
                 const filteredOutliers = outliers.filter(x => isBrushed(
-                    extent,
-                    d3Scales.xAxis(x.boxGroupId.toString())
-                    + d3Scales.xAxisSubgroup.bandwidth() / 2
-                    + d3Scales.xAxisSubgroup(x.boxId.toString())
-                    + getJitter(x.boxId + x.value, this.config),
+                    extent, getOutlierXPosition(x, d3Scales, this.config),
                     d3Scales.yAxis(x.value)
-                )).data();
+                ))
+                    .data();
 
                 this.selectionChange.emit({
                     outliers: filteredOutliers
                 });
-/*
-                outliers.classed("selected", x => isBrushed(
-                    extent,
-                    d3Scales.xAxis(x.boxGroupId.toString())
-                    + d3Scales.xAxisSubgroup.bandwidth() / 2
-                    + d3Scales.xAxisSubgroup(x.boxId.toString())
-                    + getJitter(x.boxId + x.value, this.config),
-                    d3Scales.yAxis(x.value)
-                ));*/
             })
         );
 

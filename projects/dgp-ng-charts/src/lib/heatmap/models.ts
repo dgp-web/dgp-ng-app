@@ -1,4 +1,4 @@
-import { ChartMargin } from "../shared/models";
+import { SharedChartConfig } from "../shared/models";
 
 export interface HeatmapTile {
     readonly x: number;
@@ -7,6 +7,5 @@ export interface HeatmapTile {
 }
 
 
-export interface HeatmapConfig {
-    readonly margin: ChartMargin;
+export interface HeatmapConfig extends SharedChartConfig {
 }

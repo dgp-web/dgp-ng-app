@@ -9,13 +9,6 @@ import {
 import { ChartComponentBase } from "../shared/chart.component-base";
 import * as d3 from "d3";
 
-const margins = {
-    top: 10,
-    right: 30,
-    left: 50,
-    bottom: 20
-};
-
 @Component({
     selector: "dgp-line-chart",
     template: `
@@ -122,39 +115,17 @@ export class LineChartComponent extends ChartComponentBase<any, any> implements 
     @ViewChild("chartElRef", {static: false})
     chartElRef: ElementRef;
 
-    ngAfterViewInit(): void {
-        super.ngAfterViewInit();
-
-        this.drawD3Chart();
-    }
-
-    protected drawD3Chart(): void {
-
-        const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement).style("width"), 10);
-        const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement).style("height"), 10);
-
-        const svg = d3.select(this.chartElRef.nativeElement)
-            .append("svg")
-            .attr("width", containerWidth)
-            .attr("height", containerHeight)
-            .attr("class", "chart-svg")
-            .append("g")
-            .attr("transform",
-                "translate(" + margins.left
-                + ","
-                + margins.top
-                + ")"
-            );
+    protected drawD3Chart(payload): void {
 
         const xAxisScale = d3.scaleLinear().domain([0, 100]).range([0, 400]);
         const yAxisScale = d3.scaleLinear().domain([0, 100]).range([0, 400]);
 
-        svg.append("g")
+        payload.svg.append("g")
             .attr("class", "chart__x-axis")
             .attr("transform", "translate(0," + yAxisScale.range()[1] + ")")
             .call(d3.axisBottom(xAxisScale));
 
-        svg.append("g")
+        payload.svg.append("g")
             .attr("class", "chart__y-axis")
             .call(d3.axisLeft(yAxisScale));
 
