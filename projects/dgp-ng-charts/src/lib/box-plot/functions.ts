@@ -12,11 +12,11 @@ export function computeBoxFromValues(payload: {
     readonly colorHex?: string;
 }): Box {
 
-    const values = payload.values.originalValues
-        .filter(notNullOrUndefined)
-        .sort();
+    const values = _.sortBy(payload.values.originalValues)
+        .filter(notNullOrUndefined);
 
     const lowerQuantile = d3.quantile(values, 0.25);
+    const median = d3.quantile(values, 0.5);
     const upperQuantile = d3.quantile(values, 0.75);
 
     const interquartileRange = upperQuantile - lowerQuantile;
@@ -25,8 +25,7 @@ export function computeBoxFromValues(payload: {
     const outlierUpperLimit = upperQuantile + 3 * interquartileRange;
 
     const valuesForOutlierComputation = values.filter(x =>
-        x <= outlierUpperLimit
-        && x >= outlierLowerLimit
+        x <= outlierUpperLimit && x >= outlierLowerLimit
     );
 
     return {
@@ -37,13 +36,12 @@ export function computeBoxFromValues(payload: {
         quantiles: {
             min: _.min(valuesForOutlierComputation),
             lower: lowerQuantile,
-            median: d3.median(values),
+            median,
             upper: upperQuantile,
             max: _.max(valuesForOutlierComputation)
         },
         outliers: values.filter(x =>
-            x > outlierUpperLimit
-            || x < outlierLowerLimit
+            x > outlierUpperLimit || x < outlierLowerLimit
         )
     };
 

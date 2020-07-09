@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { BoxGroup, BoxPlotSelection, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
+import { BoxGroup, BoxPlotSelection, BoxValues, computeBoxFromValues, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -41,7 +41,7 @@ import { BoxGroup, BoxPlotSelection, HeatmapSelection, HeatmapTile } from "dgp-n
 })
 export class ChartsLabsComponent {
 
-    readonly boxGroups: ReadonlyArray<BoxGroup> = [{
+    boxGroups: ReadonlyArray<BoxGroup> = [{
         value: "first",
         boxGroupId: "first",
         boxes: [{
@@ -82,12 +82,12 @@ export class ChartsLabsComponent {
 
         const heatmapTiles = new Array<HeatmapTile>();
 
-        for (let i = 0; i < 100; i++) {
-            for (let j = 0; j < 300; j++) {
+        for (let i = 0; i < 50; i++) {
+            for (let j = 0; j < 150; j++) {
                 heatmapTiles.push({
                     x: j,
                     y: i,
-                    value: Math.random() * 100
+                    value: Math.random() * (i + j)
                 });
             }
         }
@@ -100,7 +100,51 @@ export class ChartsLabsComponent {
         console.log($event);
     }
 
-    selectTiles($event: HeatmapSelection) {
-        console.log($event);
+    selectTiles(heatmapTiles: HeatmapSelection) {
+        this.computeBoxes(heatmapTiles.tiles);
+    }
+
+    private computeBoxes(heatmapTiles: ReadonlyArray<HeatmapTile>) {
+
+        /*value: "first",
+            boxGroupId: "first",
+            boxes: [{
+            boxId: "first01",
+            boxGroupId: "first",
+            quantiles: {
+                min: 1,
+                lower: 2.25,
+                median: 5.5,
+                upper: 6.75,
+                max: 10
+            },
+            outliers: [
+                17, 18
+            ],
+            colorHex: "#3000f0"
+        }
+        */
+
+        const values: BoxValues = {
+            boxValuesId: "test",
+            originalValues: heatmapTiles.map(x => x.value)
+        };
+
+        const box = computeBoxFromValues({
+            values,
+            boxId: "first01",
+            boxGroupId: "first",
+            colorHex: "#3000f0"
+        });
+
+        console.log(box);
+
+        this.boxGroups = [{
+            value: "first",
+            boxGroupId: "first",
+            label: "First group",
+            boxes: [box]
+        }];
+
     }
 }

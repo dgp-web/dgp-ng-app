@@ -128,7 +128,7 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
                 .tickValues([])
                 .tickSize(0));
 
-        const colorScale = d3.scaleLog()
+        const colorScale = d3.scaleLinear()
             .range(["#309000", "#3000f0"] as any)
             .domain([1, 100]);
 
