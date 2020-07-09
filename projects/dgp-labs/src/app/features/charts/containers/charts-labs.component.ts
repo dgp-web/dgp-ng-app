@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { BoxGroup, BoxPlotSelection, HeatmapTile } from "dgp-ng-charts";
+import { BoxGroup, BoxPlotSelection, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -19,7 +19,9 @@ import { BoxGroup, BoxPlotSelection, HeatmapTile } from "dgp-ng-charts";
         <dgp-heatmap [model]="heatmapTiles"
                      chartTitle="Chart title"
                      yAxisTitle="y axis"
-                     xAxisTitle="x axis"></dgp-heatmap>
+                     xAxisTitle="x axis"
+                     selectionMode="Brush"
+                     (selectionChange)="selectTiles($event)"></dgp-heatmap>
     `,
     styles: [`
         :host {
@@ -95,6 +97,10 @@ export class ChartsLabsComponent {
     }
 
     selectOutliers($event: BoxPlotSelection) {
+        console.log($event);
+    }
+
+    selectTiles($event: HeatmapSelection) {
         console.log($event);
     }
 }

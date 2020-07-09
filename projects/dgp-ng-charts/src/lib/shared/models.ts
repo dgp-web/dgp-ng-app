@@ -9,3 +9,5 @@ export interface ChartMargin {
 export interface SharedChartConfig {
     readonly margin: ChartMargin;
 }
+
+export type ChartSelectionMode = "None" | "Brush";

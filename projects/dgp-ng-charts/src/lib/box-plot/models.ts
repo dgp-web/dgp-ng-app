@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { ChartMargin, SharedChartConfig } from "../shared/models";
+import { SharedChartConfig } from "../shared/models";
 
 export interface Box {
     readonly boxId: string;
@@ -97,5 +97,3 @@ export interface BoxOutlier extends BoxOutlierId {
 export interface BoxPlotSelection {
     readonly outliers?: ReadonlyArray<BoxOutlier>;
 }
-
-export type BoxPlotSelectionMode = "None" | "Brush";

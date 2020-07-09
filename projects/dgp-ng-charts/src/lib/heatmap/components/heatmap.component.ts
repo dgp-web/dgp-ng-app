@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as d3 from "d3";
 import { uniq } from "lodash";
+import { isBrushed } from "../../box-plot/functions";
 import { ChartComponentBase } from "../../shared/chart.component-base";
+import { ChartSelectionMode } from "../../shared/models";
 import { defaultHeatmapConfig } from "../constants";
-import { HeatmapTile } from "../models";
+import { HeatmapSelection, HeatmapTile } from "../models";
 
 @Component({
     selector: "dgp-heatmap",
@@ -90,6 +92,12 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
     config = defaultHeatmapConfig;
 
+    @Input()
+    selectionMode: ChartSelectionMode = "None";
+
+    @Output()
+    readonly selectionChange = new EventEmitter<HeatmapSelection>();
+
     protected drawD3Chart(payload): void {
 
         // Labels of row and columns
@@ -120,11 +128,11 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
                 .tickValues([])
                 .tickSize(0));
 
-        const colorScale = d3.scaleLinear()
-            .range(["white", "#69b3a2"] as any)
+        const colorScale = d3.scaleLog()
+            .range(["#309000", "#3000f0"] as any)
             .domain([1, 100]);
 
-        payload.svg.selectAll()
+        const tileRefs = payload.svg.selectAll()
             .data(this.model as Array<HeatmapTile>, x => x.x.toString() + x.y.toString())
             .enter()
             .append("rect")
@@ -133,6 +141,28 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
             .attr("width", xAxis.bandwidth())
             .attr("height", yAxis.bandwidth())
             .style("fill", x => colorScale(x.value));
+
+        if (this.selectionMode === "Brush") {
+
+            payload.svg.call(d3.brush()
+                .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
+                .on("start brush", () => {
+                    const extent = d3.event.selection;
+
+                    const tiles = tileRefs.filter(x => isBrushed(
+                        extent,
+                        xAxis(x.x.toString()),
+                        yAxis(x.y.toString())
+                    ))
+                        .data();
+
+                    this.selectionChange.emit({
+                        tiles
+                    });
+                })
+            );
+        }
+
     }
 
 }

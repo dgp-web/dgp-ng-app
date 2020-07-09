@@ -9,3 +9,8 @@ export interface HeatmapTile {
 
 export interface HeatmapConfig extends SharedChartConfig {
 }
+
+
+export interface HeatmapSelection {
+    readonly tiles?: ReadonlyArray<HeatmapTile>;
+}

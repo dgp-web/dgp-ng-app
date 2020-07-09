@@ -1,9 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
+import { ChartSelectionMode } from "../../shared/models";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
-import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection, BoxPlotSelectionMode } from "../models";
+import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -95,7 +96,7 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
     @Input()
-    selectionMode: BoxPlotSelectionMode = "None";
+    selectionMode: ChartSelectionMode = "None";
 
     config = defaultBoxPlotConfig;
 
