@@ -126,6 +126,7 @@ export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 export { DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig } from "./utils/select-entity-via-route.resolver-base";
+export { nullOrUndefined, isNullOrUndefined, notNullOrUndefined } from "./utils/null-checking.functions";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
