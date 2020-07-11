@@ -73,6 +73,10 @@ export { hotReload } from "./hmr/hmr.actions";
 export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
+// inspector
+export { DgpInspectorSectionComponent } from "./inspector/components/inspector-section.component";
+export { DgpInspectorModule } from "./inspector/inspector.module";
+
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
 export { LogEntry, Severity } from "./log/models";
