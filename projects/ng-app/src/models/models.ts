@@ -31,6 +31,11 @@ export const appFeatures: ReadonlyArray<AppFeature> = [{
     label: "Hamburger shell",
     description: "Responsive navigation drawer for applications."
 }, {
+    route: "/inspector",
+    matIconName: "view_sidebar",
+    label: "Inspector",
+    description: "Compact, elegant detail menus."
+}, {
     route: "/list-details-page",
     matIconName: "vertical_split",
     label: "List-details page",
