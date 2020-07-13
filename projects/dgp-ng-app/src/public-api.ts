@@ -74,7 +74,9 @@ export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
 // inspector
-export { DgpInspectorSectionComponent } from "./inspector/components/inspector-section.component";
+export { InspectorComponent } from "./inspector/components/inspector.component";
+export { InspectorItemComponent } from "./inspector/components/inspector-item.component";
+export { InspectorSectionComponent } from "./inspector/components/inspector-section.component";
 export { DgpInspectorModule } from "./inspector/inspector.module";
 
 // log

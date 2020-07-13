@@ -1,5 +1,6 @@
 import { ApplicationRef, NgModule } from "@angular/core";
 import { Store } from "@ngrx/store";
+import { InspectorDocsModule } from "../features/inspector-docs/inspector-docs.module";
 import { AppComponent } from "./app.component";
 import { UiSharedModule } from "../ui/shared";
 import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
@@ -56,6 +57,7 @@ import { CommonModule } from "@angular/common";
         features.EmptyStateDocsModule,
         FileUploadDocsModule,
         features.HamburgerShellDocsModule,
+        InspectorDocsModule,
         features.ListDetailsPageDocsModule,
         features.LogDocsModule,
         features.RequestStoreDocsModule,
