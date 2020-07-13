@@ -427,6 +427,47 @@
                     }
                 }
             }
+        },
+        "dgp-ng-charts": {
+            "projectType": "library",
+            "root": "projects/dgp-ng-charts",
+            "sourceRoot": "projects/dgp-ng-charts/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-ng-packagr:build",
+                    "options": {
+                        "tsConfig": "projects/dgp-ng-charts/tsconfig.lib.json",
+                        "project": "projects/dgp-ng-charts/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-charts/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/dgp-ng-charts/src/test.ts",
+                        "tsConfig": "projects/dgp-ng-charts/tsconfig.spec.json",
+                        "karmaConfig": "projects/dgp-ng-charts/karma.conf.js",
+                        "progress": false
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/dgp-ng-charts/tsconfig.lib.json",
+                            "projects/dgp-ng-charts/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
         }
     },
     "defaultProject": "ng-app"

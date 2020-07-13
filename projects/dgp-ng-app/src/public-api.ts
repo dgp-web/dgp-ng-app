@@ -73,6 +73,12 @@ export { hotReload } from "./hmr/hmr.actions";
 export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
+// inspector
+export { InspectorComponent } from "./inspector/components/inspector.component";
+export { InspectorItemComponent } from "./inspector/components/inspector-item.component";
+export { InspectorSectionComponent } from "./inspector/components/inspector-section.component";
+export { DgpInspectorModule } from "./inspector/inspector.module";
+
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
 export { LogEntry, Severity } from "./log/models";
@@ -126,6 +132,7 @@ export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 export { DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig } from "./utils/select-entity-via-route.resolver-base";
+export { nullOrUndefined, isNullOrUndefined, notNullOrUndefined } from "./utils/null-checking.functions";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
