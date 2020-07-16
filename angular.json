@@ -44,6 +44,22 @@
                         ]
                     }
                 },
+                "dgp-test": {
+                    "builder": "dgp-ng-app-builder:test",
+                    "options": {
+                        "projectName": "ng-app",
+                        "assets": [
+                            "projects/ng-app/src/favicon.ico",
+                            "projects/ng-app/src/assets"
+                        ],
+                        "scripts": [
+                            "node_modules/event-source-polyfill/src/eventsource.min.js"
+                        ],
+                        "styles": [
+                            "projects/ng-app/src/styles.scss"
+                        ]
+                    }
+                },
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {

@@ -9,6 +9,11 @@
             "implementation": "./src/serve/builder",
             "schema": "./src/serve/schema.json",
             "description": "Runs dgp-ng-app-tools build."
+        },
+        "test": {
+            "implementation": "./src/test/builder",
+            "schema": "./src/test/schema.json",
+            "description": "Run tests in watch mode."
         }
     }
 }
