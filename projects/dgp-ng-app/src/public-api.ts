@@ -4,7 +4,9 @@
 
 // authentication
 export { authenticateUser } from "./authentication/actions";
-export { AuthenticationApiClient, AuthenticationApiClientProvider } from "./authentication/api-clients/authentication.api-client";
+export {
+    AuthenticationApiClient, AuthenticationApiClientProvider
+} from "./authentication/api-clients/authentication.api-client";
 export { AuthenticationGuard } from "./authentication/guards/authentication.guard";
 export { AuthenticationState, authenticationStoreFeature } from "./authentication/models";
 export { getAuthenticatedUserSelector, getIsAuthenticatedSelector } from "./authentication/selectors";
@@ -13,11 +15,15 @@ export { InitializationService, InitializationServiceProvider } from "./authenti
 export { DgpAuthenticationModule, AuthenticationModuleSettings } from "./authentication/authentication.module";
 
 // broadcast
-export { setBroadcastChannelDataId, SetBroadcastChannelDataIdAction, SetOwnBroadcastRoleAction } from "./broadcast/actions";
+export {
+    setBroadcastChannelDataId, SetBroadcastChannelDataIdAction, SetOwnBroadcastRoleAction
+} from "./broadcast/actions";
 export { NoPeonGuard } from "./broadcast/guards/no-peon.guard";
 export { createGuid } from "./broadcast/functions/create-guid.function";
 export * from "./broadcast/models";
-export { BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector } from "./broadcast/store";
+export {
+    BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector
+} from "./broadcast/store";
 export { DgpBroadcastStoreModule } from "./broadcast/broadcast-store.module";
 
 // empty-state
@@ -59,12 +65,22 @@ export * from "./hamburger-shell/components/page-header/page-header.component";
 export * from "./hamburger-shell/components/page-header/page-header.module";
 export { DgpHamburgerMenuModule } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.module";
 export { HamburgerMenuComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.component";
-export { HamburgerMenuHeaderComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu-header.component";
-export { HamburgerMenuEntriesComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu-entries.component";
-export { HamburgerMenuEntryComponent } from "./hamburger-shell/components/hamburger-menu/hamburger-menu-entry.component";
+export {
+    HamburgerMenuHeaderComponent
+} from "./hamburger-shell/components/hamburger-menu/hamburger-menu-header.component";
+export {
+    HamburgerMenuEntriesComponent
+} from "./hamburger-shell/components/hamburger-menu/hamburger-menu-entries.component";
+export {
+    HamburgerMenuEntryComponent
+} from "./hamburger-shell/components/hamburger-menu/hamburger-menu-entry.component";
 export * from "./hamburger-shell/models";
 export {
-    hamburgerMenuModeSelector, hamburgerShellFeatureSelector, isHamburgerMenuOpenSelector, isPageMenuOpenSelector, pageMenuModeSelector
+    hamburgerMenuModeSelector,
+    hamburgerShellFeatureSelector,
+    isHamburgerMenuOpenSelector,
+    isPageMenuOpenSelector,
+    pageMenuModeSelector
 } from "./hamburger-shell/selectors";
 export { DgpHamburgerShellModule } from "./hamburger-shell/hamburger-shell.module";
 
@@ -129,9 +145,12 @@ export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { DgpContainer } from "./utils/container.component-base";
+export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
-export { DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig } from "./utils/select-entity-via-route.resolver-base";
+export {
+    DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig
+} from "./utils/select-entity-via-route.resolver-base";
 export { nullOrUndefined, isNullOrUndefined, notNullOrUndefined } from "./utils/null-checking.functions";
 
 // virtual-list panel
