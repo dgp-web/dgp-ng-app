@@ -7,6 +7,7 @@ export interface ComputeClipPathForContinuousAxisPayload {
 }
 
 export interface ComputeClipPathForContinuousAxisResult {
+    readonly hasClipPath: boolean;
     /**
      * To be added to a data-root in a d3 chart like this
      * <SELECTOR-OF-YOUR-DATA-ROOT>.style("clip-path", clipPath);
@@ -57,12 +58,15 @@ function computeClipPathForContinuousAxis(payload: {
         const clipPathResults = "inset(" + topClipPath + "% 0 " + (bottomClipPath) + "% 0)";
 
         return {
+            hasClipPath: true,
             clipPath: clipPathResults
         };
 
     }
 
-    return {};
+    return {
+        hasClipPath: false
+    };
 }
 
 export const contentPathComputationService = {
