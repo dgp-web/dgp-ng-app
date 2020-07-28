@@ -1,3 +1,6 @@
+import * as _ from "lodash";
+import * as d3 from "d3";
+
 export interface TrimCategoricalXAxisTicksConfig {
     readonly assumedTickWidth: number;
 }
@@ -67,7 +70,58 @@ function estimateContinuousYAxisTickCount(
     return payload.containerHeight / config.assumedTickHeight;
 }
 
+export interface ComputeMaxContinuousYAxisTickCharCountPayload {
+    readonly yValuesToConsider: ReadonlyArray<number>;
+}
+
+export interface ComputeMaxContinuousYAxisTickCharCountConfig {
+    /**
+     * Describes how values are transformed
+     */
+    readonly valueFormatter: (x: number) => string;
+}
+
+export const defaultComputeMaxContinuousYAxisTickCharCountConfig: ComputeMaxContinuousYAxisTickCharCountConfig = {
+    valueFormatter: d3.format("~r")
+};
+
+function computeMaxContinuousYAxisTickCharCount(
+    payload: ComputeMaxContinuousYAxisTickCharCountPayload,
+    config = defaultComputeMaxContinuousYAxisTickCharCountConfig
+): number {
+    return _.max(
+        payload.yValuesToConsider.map(x => config.valueFormatter(x).length)
+    );
+}
+
+export interface EstimateMaxYAxisTickWidthPayload {
+    readonly maxYAxisTickChartCount: number;
+}
+
+export interface EstimateMaxYAxisTickWidthConfig {
+    readonly estimatedCharWidthPx: number;
+}
+
+export const defaultEstimateMaxYAxisTickWidthConfig: EstimateMaxYAxisTickWidthConfig = {
+    estimatedCharWidthPx: 10
+};
+
+export interface EstimateMaxYAxisTickWidthResult {
+    readonly maxTickWidthPx: number;
+}
+
+function estimateMaxYAxisTickWidth(
+    payload: EstimateMaxYAxisTickWidthPayload,
+    config = defaultEstimateMaxYAxisTickWidthConfig
+): EstimateMaxYAxisTickWidthResult {
+    return {
+        maxTickWidthPx: payload.maxYAxisTickChartCount * config.estimatedCharWidthPx
+    };
+}
+
 export const axisTickFormattingService = {
     trimCategoricalXAxisTicks,
-    estimateContinuousYAxisTickCount
+    estimateContinuousYAxisTickCount,
+    estimateMaxYAxisTickWidth,
+    computeMaxContinuousYAxisTickCharCount
 };
