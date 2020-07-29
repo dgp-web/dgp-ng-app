@@ -103,7 +103,7 @@ export interface EstimateMaxYAxisTickWidthConfig {
 }
 
 export const defaultEstimateMaxYAxisTickWidthConfig: EstimateMaxYAxisTickWidthConfig = {
-    estimatedCharWidthPx: 10
+    estimatedCharWidthPx: 8
 };
 
 export interface EstimateMaxYAxisTickWidthResult {
@@ -119,9 +119,51 @@ function estimateMaxYAxisTickWidth(
     };
 }
 
+function getYAxisTickDomainValues(getYAxisTickPayload: {
+    readonly yAxisTickCount: number;
+    readonly yAxisDomain: [number, number];
+    readonly isLogarithmic?: boolean;
+}): ReadonlyArray<number> {
+
+    const values: Array<number> = [];
+
+    const domainStart = getYAxisTickPayload.yAxisDomain[0];
+    const domainEnd = getYAxisTickPayload.yAxisDomain[1];
+    const totalDistance = domainEnd - domainStart;
+
+    const tickCount = Math.ceil(getYAxisTickPayload.yAxisTickCount);
+
+    for (let i = 0; i < tickCount; i++) {
+
+        let distance: number;
+
+        if (!getYAxisTickPayload.isLogarithmic) {
+            distance = domainStart + totalDistance * (i / tickCount);
+        } else {
+            distance = i === 0 ? domainStart : Math.pow(10,
+                Math.log10(domainStart) + (Math.log10(domainEnd) - Math.log10(domainStart)) * (i / tickCount)
+            );
+
+        }
+
+        values.push(distance);
+
+    }
+    console.log(values);
+    return values;
+
+}
+
+function formatValueTick(value: number): string {
+    return value.toPrecision(3);
+    // return d3.format("~r")(value);
+}
+
 export const axisTickFormattingService = {
     trimCategoricalXAxisTicks,
     estimateContinuousYAxisTickCount,
     estimateMaxYAxisTickWidth,
-    computeMaxContinuousYAxisTickCharCount
+    computeMaxContinuousYAxisTickCharCount,
+    getYAxisTickDomainValues,
+    formatValueTick
 };
