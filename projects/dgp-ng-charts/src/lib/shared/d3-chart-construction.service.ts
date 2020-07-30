@@ -59,7 +59,7 @@ function addCategoricalXAxisToChart(payload: {
 
     payload.svg.append("g")
         .attr("class", config.axisClass)
-        .attr("transform", "translate(0," + payload.yAxisScale.range()[1] + ")")
+        .attr("transform", "translate(0," + payload.yAxisScale.range()[0] + ")")
         .call(axisBottom);
 }
 
