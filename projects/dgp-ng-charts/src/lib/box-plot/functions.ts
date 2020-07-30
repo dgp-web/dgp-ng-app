@@ -114,7 +114,7 @@ export function createBoxPlotScales(payload: {
     }, config);
 
     const yAxis = d3.scaleLinear()
-        .domain([yAxisDomain.min, yAxisDomain.max])
+        .domain([yAxisDomain.max, yAxisDomain.min])
         .range([0, barAreaHeight]);
 
     const xAxis = d3.scaleBand()
