@@ -1,10 +1,21 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from "@angular/core";
+import {
+    AfterViewInit,
+    Directive,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    ViewChild
+} from "@angular/core";
 import { ResizeSensor } from "css-element-queries";
 import * as d3 from "d3";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { from, interval, Subscription, timer } from "rxjs";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
 import { SharedChartConfig } from "./models";
+import { d3ChartConstructionService } from "./d3-chart-construction.service";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -118,18 +129,13 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
             const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
                 .style("height"), 10);
 
-            const svg = d3.select(this.chartElRef.nativeElement)
-                .append("svg")
-                .attr("width", containerWidth)
-                .attr("height", containerHeight)
-                .attr("class", "chart-svg")
-                .append("g")
-                .attr("transform",
-                    "translate(" + this.config.margin.left
-                    + ","
-                    + this.config.margin.top
-                    + ")"
-                );
+            const svg = d3ChartConstructionService.createChart({
+                nativeElement: this.chartElRef.nativeElement,
+                marginTop: this.config.margin.top,
+                marginLeft: this.config.margin.left,
+                containerWidth,
+                containerHeight
+            });
 
             this.drawD3Chart({
                 svg,

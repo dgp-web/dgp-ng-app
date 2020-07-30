@@ -5,6 +5,7 @@ import { ChartSelectionMode } from "../../shared/models";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
+import { d3ChartConstructionService } from "../../shared/d3-chart-construction.service";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -108,14 +109,16 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
             boxGroups: this.model
         });
 
-        payload.svg.append("g")
-            .attr("class", "chart__x-axis")
-            .attr("transform", "translate(0," + d3Scales.yAxis.range()[1] + ")")
-            .call(d3.axisBottom(d3Scales.xAxis));
+        d3ChartConstructionService.addCategoricalXAxisToChart({
+            xAxisScale: d3Scales.xAxis,
+            yAxisScale: d3Scales.yAxis,
+            svg: payload.svg
+        });
 
-        payload.svg.append("g")
-            .attr("class", "chart__y-axis")
-            .call(d3.axisLeft(d3Scales.yAxis));
+        d3ChartConstructionService.addYAxisToChart({
+            yAxisScale: d3Scales.yAxis,
+            svg: payload.svg
+        });
 
         const onDataEnter = payload.svg.append("g")
             .attr("class", "measurement-result-root")
