@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { ChartSelectionMode } from "../../shared/models";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
+import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 import { d3ChartConstructionService } from "../../shared/d3-chart-construction.service";
 
@@ -80,6 +80,7 @@ import { d3ChartConstructionService } from "../../shared/d3-chart-construction.s
         .d3-hook {
             flex-grow: 1;
             height: 100%;
+            position: relative;
         }
 
         .x-axis-label {
@@ -137,21 +138,43 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
         // TODO: Add tooltip on mouseover
 
+        const tooltip = d3.select(this.chartElRef.nativeElement)
+            .append("div")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("visibility", "hidden")
+            .text("I'm a tooltip!");
+
         // showTooltip
-        /* outliers.on("mouseover", function(x) {
+        outliers.on("mouseover", function (x) {
 
-             d3.select(this)
-                 .style("stroke", "black")
-                 .style("opacity", 1);
-         })
-             .on("mouseleave", function(x) {
+            console.log(x);
+            console.log(this);
+            const cxLeft = d3.select(this).style("cx");
+            const numericCxLeft = +cxLeft.replace("px", "");
+            const adjustedNumericCxLeft = numericCxLeft + d3Scales.xAxisSubgroup.bandwidth();
+            const left = adjustedNumericCxLeft + "px";
+            const top = d3.select(this).style("cy");
 
-                 d3.select(this)
-                     .style("stroke", "none")
-                     .style("opacity", 0.8);
-             });*/
+            tooltip.style("visibility", "visible")
+                .style("top", top)
+                .style("left", left);
 
-        if (this.selectionMode === "Brush") {
+            d3.select(this)
+                .style("stroke", "black")
+                .style("opacity", 1);
+        })
+            .on("mouseleave", function (x) {
+
+
+                tooltip .style("visibility", "hidden");
+
+                d3.select(this)
+                    .style("stroke", "none")
+                    .style("opacity", 0.8);
+            });
+
+        /*if (this.selectionMode === "Brush") {
 
             payload.svg.call(d3.brush()
                 .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
@@ -169,7 +192,7 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
                     });
                 })
             );
-        }
+        }*/
 
     }
 

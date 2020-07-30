@@ -149,7 +149,7 @@ function getYAxisTickDomainValues(getYAxisTickPayload: {
         values.push(distance);
 
     }
-    console.log(values);
+    
     return values;
 
 }
