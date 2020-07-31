@@ -61,6 +61,7 @@ export interface BoxPlotConfig extends SharedChartConfig {
      */
     readonly cardinalScaleOffset: number;
     readonly jitterWidth: number;
+    readonly showOutlierTooltips: boolean;
 }
 
 export interface BoxPlotScales {
