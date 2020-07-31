@@ -25,6 +25,7 @@ function createChart(payload: {
         );
 }
 
+
 function addYAxisToChart(payload: {
     readonly svg: d3.Selection<SVGElement, {}, null, undefined>;
     readonly yAxisScale: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;

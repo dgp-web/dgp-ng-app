@@ -6,6 +6,7 @@ import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 import { d3ChartConstructionService } from "../../shared/d3-chart-construction.service";
+import { d3TooltipService } from "../../shared/d3-tooltip.service";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -139,37 +140,21 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
         if (this.config.showOutlierTooltips) {
 
-            const tooltip = d3.select(this.chartElRef.nativeElement)
-                .append("div")
-                .attr("class", "tooltip")
-                .style("position", "fixed")
-                .style("visibility", "hidden");
+            const tooltip = d3TooltipService.createTooltip({
+                nativeElement: this.chartElRef.nativeElement
+            });
 
             const self = this;
 
-            // showTooltip
             outliers.on("mouseover", function (x) {
-
-                const node = d3.select(this).node();
-                const rect = node.getBoundingClientRect();
-
-                tooltip.style("visibility", "visible")
-                    .style("top", rect.top - 24 + "px")
-                    .style("left", rect.left + 24 + "px")
-                    .text(self.config.outlierTooltipTextComputer(x));
-
-                d3.select(this)
-                    .style("stroke", "black")
-                    .style("opacity", 1);
+                d3TooltipService.showTooltip({
+                    text: self.config.outlierTooltipTextComputer(x),
+                    referenceD3Element: d3.select(this),
+                    tooltipD3Element: tooltip
+                });
             })
                 .on("mouseleave", function (x) {
-
-
-                    tooltip.style("visibility", "hidden");
-
-                    d3.select(this)
-                        .style("stroke", "none")
-                        .style("opacity", 0.8);
+                    d3TooltipService.hideTooltip({tooltipD3Element: tooltip});
                 });
 
         }
