@@ -143,18 +143,20 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
                 .append("div")
                 .attr("class", "tooltip")
                 .style("position", "fixed")
-                .style("visibility", "hidden")
-                .text("I'm a tooltip!");
+                .style("visibility", "hidden");
+
+            const self = this;
 
             // showTooltip
-            outliers.on("mouseover", function (x, y, z) {
+            outliers.on("mouseover", function (x) {
 
                 const node = d3.select(this).node();
                 const rect = node.getBoundingClientRect();
 
                 tooltip.style("visibility", "visible")
                     .style("top", rect.top - 24 + "px")
-                    .style("left", rect.left + 24 + "px");
+                    .style("left", rect.left + 24 + "px")
+                    .text(self.config.outlierTooltipTextComputer(x));
 
                 d3.select(this)
                     .style("stroke", "black")

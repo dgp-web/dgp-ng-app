@@ -62,6 +62,7 @@ export interface BoxPlotConfig extends SharedChartConfig {
     readonly cardinalScaleOffset: number;
     readonly jitterWidth: number;
     readonly showOutlierTooltips: boolean;
+    readonly outlierTooltipTextComputer: BoxOutlierTooltipTextComputer;
 }
 
 export interface BoxPlotScales {
@@ -98,3 +99,5 @@ export interface BoxOutlier extends BoxOutlierId {
 export interface BoxPlotSelection {
     readonly outliers?: ReadonlyArray<BoxOutlier>;
 }
+
+export type BoxOutlierTooltipTextComputer = <TOutlier extends BoxOutlier = BoxOutlier>(x: TOutlier) => string;

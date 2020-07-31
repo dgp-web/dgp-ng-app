@@ -1,4 +1,6 @@
-import { BoxPlotConfig } from "./models";
+import { BoxOutlierTooltipTextComputer, BoxPlotConfig } from "./models";
+
+export const defaultBoxOutlierTooltipTextComputer: BoxOutlierTooltipTextComputer = x => x.boxGroupId + "_" + x.boxId + ": " + x.value.toPrecision(3);
 
 export const defaultBoxPlotConfig: BoxPlotConfig = {
     margin: {
@@ -11,5 +13,6 @@ export const defaultBoxPlotConfig: BoxPlotConfig = {
     subGroupPadding: 0.05,
     cardinalScaleOffset: 0.05,
     jitterWidth: 50,
-    showOutlierTooltips: true
+    showOutlierTooltips: true,
+    outlierTooltipTextComputer: defaultBoxOutlierTooltipTextComputer
 };

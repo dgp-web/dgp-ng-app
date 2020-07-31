@@ -1,7 +1,16 @@
 import * as d3 from "d3";
 import { createGuid, notNullOrUndefined } from "dgp-ng-app";
 import * as _ from "lodash";
-import { Box, BoxGroup, BoxOutlier, BoxPlotScales, BoxValues, BrushCoordinates, Limits } from "./models";
+import {
+    Box,
+    BoxGroup,
+    BoxOutlier,
+    BoxOutlierTooltipTextComputer,
+    BoxPlotScales,
+    BoxValues,
+    BrushCoordinates,
+    Limits
+} from "./models";
 import { defaultBoxPlotConfig } from "./constants";
 import * as seedrandom from "seedrandom";
 
