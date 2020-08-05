@@ -1,14 +1,19 @@
 import { Inject, Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Action, select, Store } from "@ngrx/store";
-import { bufferTime, distinctUntilChanged, distinctUntilKeyChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
+import { bufferTime, distinctUntilChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
 import { BroadcastState, getOwnBroadcastRoleSelector } from "./store";
-import { interval, of } from "rxjs";
+import { from, interval, of } from "rxjs";
 import { isNullOrUndefined } from "util";
 import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat.function";
 import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
-    leaderActionTypePrefix, peonActionTypePrefix, requestInitialData, setBroadcastChannelDataId, setOwnBroadcastRole
+    leaderActionTypePrefix,
+    openUrlAsPeon,
+    peonActionTypePrefix,
+    requestInitialData,
+    setBroadcastChannelDataId,
+    setOwnBroadcastRole
 } from "./actions";
 import { trimIncomingBroadcastAction } from "./functions/trim-incoming-broadcast-action.function";
 import { shouldBroadcastParticipantChangeRole } from "./functions/should-broadcast-participant-change-role.function";
@@ -18,7 +23,16 @@ import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "./functions/should-u
 import { BroadcastChannelService } from "./services/broadcast-channel.service";
 import { filterActionToPrefixWithLeaderPredicate } from "./functions/filter-action-to-prefix-with-leader.predicate";
 import { prefixAction } from "./functions/prefix-action.function";
-import { BROADCAST_CONFIG, BroadcastAction, BroadcastConfig, BroadcastHeartbeat, BroadcastParticipant, BroadcastRole } from "./models";
+import {
+    BROADCAST_CONFIG,
+    BroadcastAction,
+    BroadcastConfig,
+    BroadcastHeartbeat,
+    BroadCastInitialStateRules,
+    BroadcastParticipant,
+    BroadcastRole,
+    SendInitialStateSignature
+} from "./models";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;
@@ -47,7 +61,7 @@ export class BroadcastEffects {
     @Effect({
         dispatch: false
     })
-    cacheDataId$ = this.actions$.pipe(
+    readonly cacheDataId$ = this.actions$.pipe(
         ofType(setBroadcastChannelDataId),
         tap(action => {
             this.selectedDataId = action.payload;
@@ -57,7 +71,7 @@ export class BroadcastEffects {
     @Effect({
         dispatch: false
     })
-    cacheOwnBroadcastRole$ = this.store.pipe(
+    readonly cacheOwnBroadcastRole$ = this.store.pipe(
         select(getOwnBroadcastRoleSelector)
     )
         .pipe(
@@ -69,7 +83,7 @@ export class BroadcastEffects {
     @Effect({
         dispatch: false
     })
-    broadcastHeartbeat$ = this.heartbeat$.pipe(
+    readonly broadcastHeartbeat$ = this.heartbeat$.pipe(
         tap(() => {
 
             const heartbeat: BroadcastHeartbeat = createBroadcastHeartbeat({
@@ -82,7 +96,7 @@ export class BroadcastEffects {
     );
 
     @Effect()
-    observeBroadcastedHeartbeats$ = this.channelService
+    readonly observeBroadcastedHeartbeats$ = this.channelService
         .getHeartbeat$()
         .pipe(
             bufferTime(this.config.incomingHeartbeatBufferInterval),
@@ -104,6 +118,14 @@ export class BroadcastEffects {
                 });
 
                 if (shouldChangeRoleResult.shouldChangeRole) {
+
+                    // TODO: Experimental feature for trimming startAsPeon=true
+                    /* if (this.ownBroadcastRole === BroadcastRole.Peon) {
+                         if (window.location.href.includes("startAsPeon=true")) {
+                             window.location.href = window.location.href.replace("startAsPeon=true", "");
+                         }
+                     }*/
+
                     return setOwnBroadcastRole({broadcastRole: shouldChangeRoleResult.newBroadcastRole});
                 } else {
                     return null;
@@ -116,7 +138,7 @@ export class BroadcastEffects {
     @Effect({
         dispatch: false
     })
-    displayBroadcastRoleInBrowserTabTitle$ = this.actions$.pipe(
+    readonly displayBroadcastRoleInBrowserTabTitle$ = this.actions$.pipe(
         ofType(setOwnBroadcastRole),
         filter(() => !isNullOrUndefined(this.config.updateBrowserTabTitleConfig)),
         tap(action => {
@@ -136,7 +158,7 @@ export class BroadcastEffects {
     @Effect({
         dispatch: false
     })
-    broadcastPeonAction$ = this.actions$.pipe(
+    readonly broadcastPeonAction$ = this.actions$.pipe(
         filter((action: Action) => action.type.startsWith(peonActionTypePrefix)),
         tap((action: Action) => {
 
@@ -150,7 +172,7 @@ export class BroadcastEffects {
     );
 
     @Effect()
-    createLeaderAction$ = this.store.pipe(
+    readonly createLeaderAction$ = this.store.pipe(
         select(getOwnBroadcastRoleSelector),
         switchMap((broadcastRole: BroadcastRole) => {
 
@@ -174,7 +196,7 @@ export class BroadcastEffects {
     @Effect({
         dispatch: false
     })
-    broadcastLeaderAction$ = this.actions$.pipe(
+    readonly broadcastLeaderAction$ = this.actions$.pipe(
         filter((action: Action) => action.type.startsWith(leaderActionTypePrefix)),
         tap((action: Action) => {
 
@@ -191,7 +213,7 @@ export class BroadcastEffects {
 
 
     @Effect()
-    observeBroadcastedActions$ = this.channelService
+    readonly observeBroadcastedActions$ = this.channelService
         .getAction$()
         .pipe(
             filter((action: BroadcastAction) => {
@@ -215,10 +237,27 @@ export class BroadcastEffects {
             && this.config.sendInitialState !== null
             && this.config.sendInitialState !== undefined),
         switchMap(() => this.store.pipe(first())),
-        map(state => prefixAction({
-            action: this.config.sendInitialState(state as any),
-            prefix: leaderActionTypePrefix
-        }))
+        switchMap(state => {
+
+            if (Array.isArray(this.config.sendInitialState)) {
+
+                const actionFactories = this.config.sendInitialState as BroadCastInitialStateRules<any>;
+
+                return from(actionFactories.map(actionFactory => actionFactory(state as any)));
+
+            } else {
+
+                const actionFactory = this.config.sendInitialState as SendInitialStateSignature<any>;
+                return from([
+                    prefixAction({
+                        action: actionFactory(state as any),
+                        prefix: leaderActionTypePrefix
+                    })
+                ]);
+
+            }
+
+        })
     );
 
     @Effect()
@@ -233,6 +272,26 @@ export class BroadcastEffects {
                 prefix: peonActionTypePrefix
             }))
         );
+
+    @Effect({
+        dispatch: false
+    })
+    readonly openUrlAsPeon$ = this.actions$.pipe(
+        ofType(openUrlAsPeon),
+        switchMap(action => this.store.select(getOwnBroadcastRoleSelector).pipe(
+            first(),
+            tap(broadcastRole => {
+                window.open(action.url + "?startAsPeon=true");
+
+                if (broadcastRole !== BroadcastRole.Leader) {
+                    this.store.dispatch(setOwnBroadcastRole({
+                        broadcastRole: BroadcastRole.Leader
+                    }));
+                }
+
+            })
+        ))
+    );
 
     constructor(
         private readonly actions$: Actions,

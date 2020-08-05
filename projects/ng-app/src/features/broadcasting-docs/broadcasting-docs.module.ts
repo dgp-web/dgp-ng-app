@@ -11,6 +11,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { EffectsModule } from "@ngrx/effects";
 import { BroadcastDocsEffects } from "./effects";
+import { DgpSpacerModule } from "dgp-ng-app";
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { BroadcastDocsEffects } from "./effects";
         MatInputModule,
         MatButtonModule,
         MatIconModule,
-        FormsModule
+        FormsModule,
+        DgpSpacerModule
     ],
     declarations: [
         BroadcastingDocsPageComponent

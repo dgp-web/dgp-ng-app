@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { appEntityStore, AppState, User } from "../../../store";
 import { updateUser } from "../actions";
+import { openUrlAsPeon } from "../../../../../dgp-ng-app/src/broadcast/actions";
 
 @Component({
     selector: "dgp-broadcasting-docs-page",
@@ -10,6 +11,9 @@ import { updateUser } from "../actions";
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
             Empty state
+            <dgp-spacer></dgp-spacer>
+            <button mat-button
+                    (click)="openPeon()">Open as peon</button>
         </dgp-page-header>
 
         <dgp-docs-page>
@@ -58,8 +62,8 @@ import { updateUser } from "../actions";
                 <!-- The "oldest" instance is the leader -->
                 <!-- Nothing else has happened; now you can react to that -->
                 <!-- making everything readonly -->
-                
-                
+
+
             </dgp-docs-page-content>
 
         </dgp-docs-page>
@@ -118,6 +122,12 @@ export class AppModule {}
             user: {
                 ...user, ...changes
             }
+        }));
+    }
+
+    openPeon() {
+        this.store.dispatch(openUrlAsPeon({
+            url: "http://localhost:4200"
         }));
     }
 }

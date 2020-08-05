@@ -33,3 +33,7 @@ export const leaderActionTypePrefix = "[Leader] ";
 export const peonActionTypePrefix = "[Peon] ";
 export const compositeActionTypePrefix = "[Composite] ";
 export const trackRequestActionTypePrefix = "[Request] ";
+
+export const openUrlAsPeon = createAction("[BroadcastChannel] OpenUrlAsPeon", props<{
+    readonly url: string;
+}>());
