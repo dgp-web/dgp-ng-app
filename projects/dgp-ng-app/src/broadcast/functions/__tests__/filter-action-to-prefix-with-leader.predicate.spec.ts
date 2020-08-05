@@ -1,5 +1,6 @@
 import {filterActionToPrefixWithLeaderPredicate} from "../filter-action-to-prefix-with-leader.predicate";
 import { compositeActionTypePrefix, trackRequestActionTypePrefix } from "../../actions";
+import { authenticationActionTypePrefix } from "../../../authentication/actions";
 
 describe("filterActionToPrefixWithLeaderPredicate", () => {
 
@@ -14,6 +15,12 @@ describe("filterActionToPrefixWithLeaderPredicate", () => {
         expect(
             filterActionToPrefixWithLeaderPredicate({
                 type: trackRequestActionTypePrefix
+            })
+        ).toBeTruthy();
+
+        expect(
+            filterActionToPrefixWithLeaderPredicate({
+                type: authenticationActionTypePrefix
             })
         ).toBeTruthy();
 

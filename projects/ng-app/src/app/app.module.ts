@@ -8,6 +8,7 @@ import { AppEntities, appEntityStore, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
 import {
+    authenticateUser, authenticationStoreFeature,
     defaultBroadcastConfig,
     DgpBroadcastStoreModule,
     DgpNgApp,
@@ -28,11 +29,12 @@ import { CommonModule } from "@angular/common";
             actionTypesToPrefixWithPeon: [
                 "[DocsApp]"
             ],
-            sendInitialState: state => appEntityStore.actions.composeEntityActions({
+            sendInitialState: [state => appEntityStore.actions.composeEntityActions({
                 set: {
                     user: state.user.entities
                 }
-            })
+            }),
+            state => authenticateUser({ user: state[authenticationStoreFeature].user })]
         }),
 
         RouterModule.forRoot([{
