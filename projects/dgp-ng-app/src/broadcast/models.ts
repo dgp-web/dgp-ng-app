@@ -32,9 +32,19 @@ export interface MessageEventLike {
     readonly data: any;
 }
 
+/**
+ * @deprecated use BroadcastInitialEntityStoreContentRule instead
+ */
 export type SendInitialStateSignature<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = (
     state: EntityStateMap<TEntityTypeMap>
 ) => ComposedEntityActions<TEntityTypeMap, TStoreFeature>;
+
+export type BroadcastInitialStateActionRule<TAppState> = (state: TAppState) => Action;
+export type BroadcastInitialEntityStoreContentRule<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = SendInitialStateSignature<TEntityTypeMap, TStoreFeature>;
+
+export type BroadcastInitialStateRule<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = BroadcastInitialStateActionRule<TEntityTypeMap> | BroadcastInitialEntityStoreContentRule<TEntityTypeMap, TStoreFeature>;
+
+export type BroadCastInitialStateRules<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = ReadonlyArray<BroadcastInitialStateRule<TEntityTypeMap, TStoreFeature>>;
 
 export interface BroadcastRoleDisplayConfig {
     readonly leaderBrowserTabTitleSuffix: string;
@@ -82,12 +92,12 @@ export interface BroadcastConfig<TEntityTypeMap extends EntityTypeMap = { [key: 
      */
     readonly updateBrowserTabTitleConfig?: BroadcastRoleDisplayConfig;
 
-    readonly sendInitialState?: SendInitialStateSignature<TEntityTypeMap, TStoreFeature>;
+    readonly sendInitialState?: SendInitialStateSignature<TEntityTypeMap, TStoreFeature> | BroadCastInitialStateRules<TEntityTypeMap, TStoreFeature>;
 }
 
 export const defaultBroadcastConfig: BroadcastConfig = {
     heartbeartBroadcastInterval: 1000,
-    incomingHeartbeatBufferInterval: 3000,
+    incomingHeartbeatBufferInterval: 10000,
     heartbeatBroadcastChannelId,
     actionBroadcastChannelId,
     actionTypesToPrefixWithPeon: [],
