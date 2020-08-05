@@ -21,8 +21,8 @@ function showTooltip(payload: {
     const rect = node.getBoundingClientRect();
 
     payload.tooltipD3Element.style("visibility", "visible")
-        .style("top", rect.top - 24 + "px")
-        .style("left", rect.left + 24 + "px")
+        .style("top", rect.top - 12 + "px")
+        .style("left", rect.left + 12 + "px")
         .text(payload.text);
 }
 
