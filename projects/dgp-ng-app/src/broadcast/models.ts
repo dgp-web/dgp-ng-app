@@ -97,7 +97,7 @@ export interface BroadcastConfig<TEntityTypeMap extends EntityTypeMap = { [key: 
 
 export const defaultBroadcastConfig: BroadcastConfig = {
     heartbeartBroadcastInterval: 1000,
-    incomingHeartbeatBufferInterval: 3000,
+    incomingHeartbeatBufferInterval: 10000,
     heartbeatBroadcastChannelId,
     actionBroadcastChannelId,
     actionTypesToPrefixWithPeon: [],

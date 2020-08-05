@@ -9,6 +9,7 @@ import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat
 import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
     leaderActionTypePrefix,
+    openUrlAsPeon,
     peonActionTypePrefix,
     requestInitialData,
     setBroadcastChannelDataId,
@@ -117,6 +118,14 @@ export class BroadcastEffects {
                 });
 
                 if (shouldChangeRoleResult.shouldChangeRole) {
+
+                    // TODO: Experimental feature for trimming startAsPeon=true
+                    /* if (this.ownBroadcastRole === BroadcastRole.Peon) {
+                         if (window.location.href.includes("startAsPeon=true")) {
+                             window.location.href = window.location.href.replace("startAsPeon=true", "");
+                         }
+                     }*/
+
                     return setOwnBroadcastRole({broadcastRole: shouldChangeRoleResult.newBroadcastRole});
                 } else {
                     return null;
@@ -263,6 +272,26 @@ export class BroadcastEffects {
                 prefix: peonActionTypePrefix
             }))
         );
+
+    @Effect({
+        dispatch: false
+    })
+    readonly openUrlAsPeon$ = this.actions$.pipe(
+        ofType(openUrlAsPeon),
+        switchMap(action => this.store.select(getOwnBroadcastRoleSelector).pipe(
+            first(),
+            tap(broadcastRole => {
+                window.open(action.url + "?startAsPeon=true");
+
+                if (broadcastRole !== BroadcastRole.Leader) {
+                    this.store.dispatch(setOwnBroadcastRole({
+                        broadcastRole: BroadcastRole.Leader
+                    }));
+                }
+
+            })
+        ))
+    );
 
     constructor(
         private readonly actions$: Actions,

@@ -9,7 +9,7 @@ import { RouterModule } from "@angular/router";
 import * as features from "../features";
 import {
     authenticateUser, authenticationStoreFeature,
-    defaultBroadcastConfig,
+    defaultBroadcastConfig, DgpAuthenticationModule,
     DgpBroadcastStoreModule,
     DgpNgApp,
     DgpNgAppModule,
@@ -17,6 +17,8 @@ import {
 } from "dgp-ng-app";
 import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-docs.module";
 import { CommonModule } from "@angular/common";
+import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
     imports: [
@@ -35,6 +37,13 @@ import { CommonModule } from "@angular/common";
                 }
             }),
             state => authenticateUser({ user: state[authenticationStoreFeature].user })]
+        }),
+
+        StoreDevtoolsModule.instrument(),
+
+        DgpAuthenticationModule.forRoot({
+            authenticationApiClientProvider,
+            initializationServiceProvider
         }),
 
         RouterModule.forRoot([{
