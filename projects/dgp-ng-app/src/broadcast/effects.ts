@@ -8,6 +8,7 @@ import { isNullOrUndefined } from "util";
 import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat.function";
 import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
+    compositeActionTypePrefix,
     leaderActionTypePrefix,
     openUrlAsPeon,
     peonActionTypePrefix,
@@ -33,6 +34,7 @@ import {
     BroadcastRole,
     SendInitialStateSignature
 } from "./models";
+import { CompositeEntityAction } from "entity-store";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;
@@ -176,9 +178,31 @@ export class BroadcastEffects {
         select(getOwnBroadcastRoleSelector),
         switchMap((broadcastRole: BroadcastRole) => {
 
+            // TODO: Extract
+            function tryTrimSelectionFromCompositeEntityAction(action: Action): any {
+
+                if (action.type.startsWith(compositeActionTypePrefix)) {
+
+                    const typedAction = action as CompositeEntityAction<any, any>;
+
+                    return {
+                        ...typedAction,
+                        payload: {
+                            ...typedAction.payload,
+                            select: null
+                        }
+                    } as CompositeEntityAction<any, any>;
+
+                } else {
+                    return action;
+                }
+
+            }
+
             if (broadcastRole === BroadcastRole.Leader) {
                 return this.actions$.pipe(
-                    filter(filterActionToPrefixWithLeaderPredicate)
+                    filter(filterActionToPrefixWithLeaderPredicate),
+                    map(tryTrimSelectionFromCompositeEntityAction)
                 );
             } else {
                 return of(null);
