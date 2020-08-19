@@ -64,7 +64,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.data) {
+        if (changes.model || changes.config) {
             this.scheduleDrawChartAction();
         }
     }
