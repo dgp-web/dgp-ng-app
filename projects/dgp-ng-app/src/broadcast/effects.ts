@@ -189,7 +189,7 @@ export class BroadcastEffects {
                         ...typedAction,
                         payload: {
                             ...typedAction.payload,
-                            select: null
+                            select: []
                         }
                     } as CompositeEntityAction<any, any>;
 
