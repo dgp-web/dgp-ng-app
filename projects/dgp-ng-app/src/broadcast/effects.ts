@@ -185,13 +185,17 @@ export class BroadcastEffects {
 
                     const typedAction = action as CompositeEntityAction<any, any>;
 
-                    return {
-                        ...typedAction,
-                        payload: {
-                            ...typedAction.payload,
-                            select: []
-                        }
-                    } as CompositeEntityAction<any, any>;
+                    /**
+                     * Synchronize everything but the selection
+                     * which the client has to manage itself
+                     */
+                    return new CompositeEntityAction({
+                        add: typedAction.payload.add,
+                        clear: typedAction.payload.clear,
+                        remove: typedAction.payload.remove,
+                        set: typedAction.payload.set,
+                        update: typedAction.payload.update,
+                    });
 
                 } else {
                     return action;
