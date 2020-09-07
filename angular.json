@@ -310,6 +310,22 @@
             "sourceRoot": "projects/dgp-labs/src",
             "prefix": "app",
             "architect": {
+                "dgp-test": {
+                    "builder": "dgp-ng-app-builder:test",
+                    "options": {
+                        "projectName": "dgp-labs",
+                        "assets": [
+                            "projects/dgp-labs/src/favicon.ico",
+                            "projects/dgp-labs/src/assets"
+                        ],
+                        "scripts": [
+                            "node_modules/event-source-polyfill/src/eventsource.min.js"
+                        ],
+                        "styles": [
+                            "projects/dgp-labs/src/styles.scss"
+                        ]
+                    }
+                },
                 "dgp-serve": {
                     "builder": "dgp-ng-app-builder:serve",
                     "options": {
