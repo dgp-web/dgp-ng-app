@@ -8,7 +8,8 @@ import { AppEntities, appEntityStore, AppState } from "../store";
 import { RouterModule } from "@angular/router";
 import * as features from "../features";
 import {
-    defaultBroadcastConfig,
+    authenticateUser, authenticationStoreFeature,
+    defaultBroadcastConfig, DgpAuthenticationModule,
     DgpBroadcastStoreModule,
     DgpNgApp,
     DgpNgAppModule,
@@ -16,6 +17,8 @@ import {
 } from "dgp-ng-app";
 import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-docs.module";
 import { CommonModule } from "@angular/common";
+import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
     imports: [
@@ -28,11 +31,19 @@ import { CommonModule } from "@angular/common";
             actionTypesToPrefixWithPeon: [
                 "[DocsApp]"
             ],
-            sendInitialState: state => appEntityStore.actions.composeEntityActions({
+            sendInitialState: [state => appEntityStore.actions.composeEntityActions({
                 set: {
                     user: state.user.entities
                 }
-            })
+            }),
+            state => authenticateUser({ user: state[authenticationStoreFeature].user })]
+        }),
+
+        StoreDevtoolsModule.instrument(),
+
+        DgpAuthenticationModule.forRoot({
+            authenticationApiClientProvider,
+            initializationServiceProvider
         }),
 
         RouterModule.forRoot([{
