@@ -15,7 +15,7 @@ module.exports = function(config) {
         basePath: "",
         frameworks: ["jasmine"],
         files: [
-            // config.rootDirectory + "/vendorTest.js",
+            config.rootDirectory + "/vendorTest.js",
             testsMatcher
         ],
         plugins: [

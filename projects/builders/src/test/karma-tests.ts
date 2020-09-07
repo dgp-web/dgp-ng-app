@@ -23,13 +23,12 @@ export function createTestsMatcher(projectPath) {
         browser.platformBrowserDynamicTesting()
     );
 
-    const testContext = requireContext(projectPath + "/src/", true, /\.spec\.ts$/);
+    const testContext = requireContext(projectPath + "/src", true, /\.spec\.ts$/);
 
     function importAll(r) {
         return r.keys().map(r);
     }
-
-
+    
     const modules = importAll(testContext);
 
 }
