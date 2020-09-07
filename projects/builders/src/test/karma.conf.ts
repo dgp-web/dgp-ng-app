@@ -1,15 +1,16 @@
 process.env.CHROME_BIN = require("puppeteer").executablePath();
 
 import { createTestsMatcher } from "./karma-tests";
+const path = require("path");
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function(config) {
+module.exports = function (config) {
 
     const projectPath = config.projectPath;
     const distPath = config.distPath;
     const tsconfigFile = config.tsconfigFile;
-    const testMatcher  = createTestsMatcher(projectPath) as any;
+    const testMatcher = path.join(projectPath, "/src/test.ts");
 
     config.set({
         basePath: "",
