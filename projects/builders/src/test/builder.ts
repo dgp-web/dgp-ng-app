@@ -167,9 +167,19 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
             "node_modules/dgp-ng-app-builder/src/test/karma.conf.js"
         );
 
+        const projectPath = path.join(
+            process.cwd(),
+            `projects/${options.projectName}`
+        );
+
+        const distPath = path.join(
+            process.cwd(),
+            `dist/${options.projectName}`
+        );
+
         // TODO: Take HTML file and copy it to dist and add
 
-        const command = `karma start ${karmaConfigPath} --projectPath projects/${options.projectName} --distPath dist/${options.projectName}  --tsconfigFile tsconfig.spec.json`;
+        const command = `karma start ${karmaConfigPath} --projectPath ${projectPath} --distPath ${distPath}  --tsconfigFile tsconfig.spec.json`;
 
         const child = childProcess.exec(command, err => {
             if (err !== null && err !== undefined) {
