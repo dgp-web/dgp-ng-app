@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { SplitPanelLabsPageComponent } from "./split-panel-labs-page.component";
-import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
 
 describe(SplitPanelLabsPageComponent.name, () => {
 
@@ -17,10 +18,11 @@ describe(SplitPanelLabsPageComponent.name, () => {
             ],
             imports: [
                 DgpPageHeaderModule,
-                DgpSpacerModule,
+                DgpThemeSwitcherModule.forRoot(),
                 DgpSplitPanelModule,
                 DgpHamburgerMenuToggleModule,
-                StoreModule.forRoot({})
+                StoreModule.forRoot({}),
+                EffectsModule.forRoot([])
             ]
         });
         await testBed.compileComponents();

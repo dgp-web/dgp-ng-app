@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { DockingLayoutLabsPageComponent } from "./docking-layout-labs-page.component";
-import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
@@ -21,6 +21,7 @@ describe(DockingLayoutLabsPageComponent.name, () => {
                 DgpSpacerModule,
                 DgpDockingLayoutModule,
                 DgpHamburgerMenuToggleModule,
+                DgpThemeSwitcherModule.forRoot(),
                 StoreModule.forRoot({}),
                 EffectsModule.forRoot([])
             ]
