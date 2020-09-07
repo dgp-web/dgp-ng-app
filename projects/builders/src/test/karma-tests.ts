@@ -1,7 +1,6 @@
 Error.stackTraceLimit = Infinity;
 
-require("core-js/es6");
-require("core-js/es7/reflect");
+require("core-js");
 
 require("zone.js/dist/zone");
 require("zone.js/dist/long-stack-trace-zone");
@@ -13,6 +12,7 @@ require("zone.js/dist/fake-async-test");
 
 require("rxjs");
 
+const requireContext = require("require-context");
 const testing = require("@angular/core/testing");
 const browser = require("@angular/platform-browser-dynamic/testing");
 
@@ -22,15 +22,14 @@ export function createTestsMatcher(projectPath) {
         browser.BrowserDynamicTestingModule,
         browser.platformBrowserDynamicTesting()
     );
-    // TODO: Replace this source crap
-    const testContext = (require as any).context(projectPath + "/src", true, /\.spec\.ts$/);
 
+    const testContext = requireContext(projectPath + "/src/", true, /\.spec\.ts$/);
 
-    function requireAll(requireContext) {
-        return requireContext.keys().map(requireContext);
+    function importAll(r) {
+        return r.keys().map(r);
     }
 
 
-    const modules = requireAll(testContext);
+    const modules = importAll(testContext);
 
 }

@@ -105,6 +105,7 @@
         "puppeteer": "^4.0.0",
         "html-loader": "^1.1.0",
         "raw-loader": "^4.0.1",
+        "require-context": "^1.1.0",
         "sass": "^1.26.5",
         "ts-node": "~7.0.0",
         "tslint": "~5.15.0",
