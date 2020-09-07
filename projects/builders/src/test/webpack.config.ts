@@ -12,8 +12,8 @@ export interface WebpackConfig {
 module.exports = (env: WebpackConfig) => {
 
     const config = {
-        rootDirectory: path.join(process.cwd(), env.projectPath),
-        distDirectory: path.join(process.cwd(), env.distPath)
+        rootDirectory: env.projectPath,
+        distDirectory: env.distPath
     };
 
     const tsconfigFile = path.join(config.rootDirectory, env.tsconfigFile);
@@ -24,17 +24,6 @@ module.exports = (env: WebpackConfig) => {
         devtool: false,
         watch: true,
 
-        devServer: {
-            contentBase: config.distDirectory,
-            hot: true,
-            historyApiFallback: {
-                disableDotRule: true
-            },
-            writeToDisk: true
-        },
-        entry: {
-            main: path.join(config.rootDirectory + "/src/main.ts")
-        },
         module: {
             rules: [{
                 test: /\.ts$/,

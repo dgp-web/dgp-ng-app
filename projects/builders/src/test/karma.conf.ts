@@ -9,14 +9,14 @@ module.exports = function(config) {
     const projectPath = config.projectPath;
     const distPath = config.distPath;
     const tsconfigFile = config.tsconfigFile;
-    const testsMatcher = createTestsMatcher(projectPath) as any;
+    const testMatcher  = createTestsMatcher(projectPath) as any;
 
     config.set({
         basePath: "",
         frameworks: ["jasmine"],
         files: [
-            config.rootDirectory + "/vendorTest.js",
-            testsMatcher
+            config.distPath + "/vendorTest.js",
+            testMatcher
         ],
         plugins: [
             require("karma-spec-reporter"),
@@ -25,7 +25,7 @@ module.exports = function(config) {
             require("karma-chrome-launcher")
         ],
         preprocessors: {
-            [testsMatcher]: ["webpack"]
+            [testMatcher]: ["webpack"]
         },
         client: {
             clearContext: false, // leave Jasmine Spec Runner output visible in browser

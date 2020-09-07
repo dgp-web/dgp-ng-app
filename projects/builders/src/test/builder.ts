@@ -173,7 +173,7 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
         );
 
         const distPath = path.join(
-            process.cwd(),
+             process.cwd(),
             `dist/${options.projectName}`
         );
 
