@@ -3,7 +3,7 @@ import { setIsDarkModeActive, toggleDarkMode } from "./actions";
 import { ThemeSwitcherState } from "./models";
 
 export const initialThemeSwitcherState: ThemeSwitcherState = {
-    useDarkMode: false
+    useDarkMode: true
 };
 
 export const themeSwitcherReducer = createReducer(initialThemeSwitcherState,
