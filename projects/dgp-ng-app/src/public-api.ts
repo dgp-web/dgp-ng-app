@@ -129,7 +129,9 @@ export { TileComponent } from "./tile/tile.component";
 export { DgpTileModule } from "./tile/tile.module";
 
 // utils
+export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
 export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
+export { DgpEffectsBase } from "./utils/effects-base";
 export { filterEmpty } from "./utils/filter-empty.function";
 export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.function";
 export { getHashCode } from "./utils/get-hash-code.function";
