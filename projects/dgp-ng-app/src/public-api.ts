@@ -129,6 +129,10 @@ export { TileComponent } from "./tile/tile.component";
 export { DgpTileModule } from "./tile/tile.module";
 
 // utils
+export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
+export { filterEmpty } from "./utils/filter-empty.function";
+export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.function";
+export { getHashCode } from "./utils/get-hash-code.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
