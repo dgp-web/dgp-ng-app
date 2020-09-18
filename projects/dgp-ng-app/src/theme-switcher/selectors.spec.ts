@@ -30,7 +30,7 @@ describe("theme-switcher selectors", () => {
             .toPromise();
 
         expect(isDarkModeActive)
-            .toBeFalsy();
+            .toBeTruthy();
 
     });
 
