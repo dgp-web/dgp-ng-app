@@ -130,16 +130,21 @@ export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
+export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
 export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
 export { DgpEffectsBase } from "./utils/effects-base";
 export { filterEmpty } from "./utils/filter-empty.function";
 export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.function";
+export { flattenMatrix } from "./utils/flatten-matrix.function";
 export { getHashCode } from "./utils/get-hash-code.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
+export { Matrix } from "./utils/matrix.model";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 export { DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig } from "./utils/select-entity-via-route.resolver-base";
 export { nullOrUndefined, isNullOrUndefined, notNullOrUndefined } from "./utils/null-checking.functions";
+export { Point } from "./utils/point.model";
+export { resolveOverridableValue } from "./utils/resolve-overridable-value.function";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
