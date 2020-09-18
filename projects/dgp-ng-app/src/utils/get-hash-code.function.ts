@@ -1,4 +1,4 @@
-import {isNullOrUndefined} from "dgp-ng-app";
+import {isNullOrUndefined} from "./null-checking.functions";
 
 /**
  * Source: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
