@@ -6,7 +6,7 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
         <a [routerLink]="route"
            class="container">
             <mat-card matRipple
-                      class="card">
+                      class="tile-card">
                 <mat-card-content class="description">
                     <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
                     <div class="label">
@@ -35,7 +35,7 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
             margin: 8px;
         }
 
-        .card {
+        .tile-card {
             flex-grow: 1;
         }
 
