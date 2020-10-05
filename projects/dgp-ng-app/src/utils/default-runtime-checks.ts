@@ -5,6 +5,5 @@ export const defaultRuntimeChecks: RuntimeChecks = {
     strictStateImmutability: false,
     strictActionWithinNgZone: false,
     strictActionSerializability: false,
-    strictActionImmutability: false,
-    strictActionTypeUniqueness: false
+    strictActionImmutability: false
 };
