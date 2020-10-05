@@ -32,19 +32,22 @@ export const confirmButtonConfig: RemovalDialogButtonConfig = {
             <ng-content></ng-content>
         </mat-dialog-content>
 
-        <button [mat-dialog-close]="cancelButtonConfig.returnValue"
-                [color]="cancelButtonConfig.color"
-                mat-raised-button>
-            <mat-icon>{{cancelButtonConfig.matIconName}}</mat-icon>
-            {{ cancelButtonConfig.label }}
-        </button>
+        <mat-dialog-actions>
+            <button [mat-dialog-close]="cancelButtonConfig.returnValue"
+                    [color]="cancelButtonConfig.color"
+                    mat-raised-button>
+                <mat-icon>{{cancelButtonConfig.matIconName}}</mat-icon>
+                {{ cancelButtonConfig.label }}
+            </button>
 
-        <button [mat-dialog-close]="confirmButtonConfig.returnValue"
-                mat-raised-button
-                [color]="confirmButtonConfig.color">
-            <mat-icon>{{confirmButtonConfig.matIconName}}</mat-icon>
-            {{confirmButtonConfig.label}}
-        </button>
+            <button [mat-dialog-close]="confirmButtonConfig.returnValue"
+                    mat-raised-button
+                    [color]="confirmButtonConfig.color">
+                <mat-icon>{{confirmButtonConfig.matIconName}}</mat-icon>
+                {{confirmButtonConfig.label}}
+            </button>
+        </mat-dialog-actions>
+
     `,
     styles: [`
         :host {
