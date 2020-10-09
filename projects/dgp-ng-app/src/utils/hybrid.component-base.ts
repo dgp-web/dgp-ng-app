@@ -2,6 +2,8 @@ import { Directive } from "@angular/core";
 import { DgpModelEditorComponentBase } from "./model-editor.component-base";
 import { Store } from "@ngrx/store";
 import { Action, Selector } from "entity-store";
+import { notNullOrUndefined } from "./null-checking.functions";
+import { of } from "rxjs";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -18,8 +20,8 @@ export abstract class HybridComponentBase<TModel, TState, TData> extends DgpMode
     readonly select = <TV>(x: Selector<TState, TV>) => this.store.select<TV>(x);
 
     // tslint:disable-next-line:member-ordering
-    readonly data$ = this.select(this.getData());
+    readonly data$ = notNullOrUndefined(this.getData) ? this.select(this.getData()) : of(null);
 
-    abstract getData(): Selector<TState, TData>;
+    abstract getData?(): Selector<TState, TData>;
 
 }
