@@ -151,6 +151,7 @@ export { TileComponent } from "./tile/tile.component";
 export { DgpTileModule } from "./tile/tile.module";
 
 // utils
+export { AttributeMetadata } from "./utils/attribute-metadata";
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
 export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
 export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
@@ -159,6 +160,7 @@ export { filterEmpty } from "./utils/filter-empty.function";
 export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.function";
 export { flattenMatrix } from "./utils/flatten-matrix.function";
 export { getHashCode } from "./utils/get-hash-code.function";
+export { ModelMetadata } from "./utils/model-metadata";
 export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { Matrix } from "./utils/matrix.model";
