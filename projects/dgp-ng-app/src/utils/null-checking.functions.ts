@@ -1,6 +1,12 @@
-export function isNullOrUndefined(value: any): boolean {
-    return value === null || value === undefined;
+export function isNullOrUndefined(value: any, ...additionalValues: any): boolean {
+    return value === null
+        || value === undefined
+        || additionalValues.some(x => x === null || x === undefined);
 }
 
 export const nullOrUndefined = isNullOrUndefined;
-export const notNullOrUndefined = x => !nullOrUndefined(x);
+
+export function notNullOrUndefined(value: any, ...additionalValues: any): boolean {
+    return !isNullOrUndefined(value)
+        && !additionalValues.some(isNullOrUndefined);
+}

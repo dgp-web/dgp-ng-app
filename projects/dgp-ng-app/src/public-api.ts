@@ -151,6 +151,7 @@ export { TileComponent } from "./tile/tile.component";
 export { DgpTileModule } from "./tile/tile.module";
 
 // utils
+export { AppFeature } from "./utils/app-feature.model";
 export { AttributeMetadata } from "./utils/attribute-metadata";
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
 export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
@@ -171,6 +172,9 @@ export {
 export { nullOrUndefined, isNullOrUndefined, notNullOrUndefined } from "./utils/null-checking.functions";
 export { Point } from "./utils/point.model";
 export { resolveOverridableValue } from "./utils/resolve-overridable-value.function";
+export { DgpResolverBase } from "./utils/resolver-base";
+export { parseStringMatrixAsNumberMatrix } from "./utils/parse-string-matrix-as-number-matrix.function";
+export { Magnitude } from "./utils/magnitude.model";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
