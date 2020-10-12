@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { SharedChartConfig } from "../shared/models";
+import { KVS } from "entity-store";
 
 export interface Box {
     readonly boxId: string;
@@ -65,7 +66,7 @@ export interface BoxPlotConfig extends SharedChartConfig {
 
 export interface BoxPlotScales {
     readonly xAxis: d3.ScaleBand<string>;
-    readonly xAxisSubgroup: d3.ScaleBand<string>;
+    readonly xAxisSubgroupKVS: KVS<d3.ScaleBand<string>>;
     readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
 }
 

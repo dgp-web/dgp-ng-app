@@ -1,7 +1,0 @@
-describe("heatmap functions", () => {
-
-    xit(``, () => {
-
-    });
-
-});

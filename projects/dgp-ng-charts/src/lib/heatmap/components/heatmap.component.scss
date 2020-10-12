@@ -1,0 +1,59 @@
+:host {
+    display: flex;
+    flex-grow: 1;
+    font-size: smaller;
+    position: relative;
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.title {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: 16px;
+    word-break: break-all;
+}
+
+.inner-container {
+    display: flex;
+    flex-grow: 1;
+}
+
+.y-axis-label-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    max-width: 40px;
+}
+
+.y-axis-label {
+    transform: rotate(-90deg);
+    white-space: nowrap;
+}
+
+.d3-hook {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.x-axis-label {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.controls {
+    z-index: 100;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding: 4px !important;
+}

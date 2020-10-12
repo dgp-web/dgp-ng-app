@@ -1,38 +1,59 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import * as d3 from "d3";
-import { uniq } from "lodash";
-import { isBrushed } from "../../box-plot/functions";
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import * as _ from "lodash";
+import { defaultDgpHeatmapConfig } from "../constants";
+import { serializeDOMNode, svgString2ImageSrc } from "../functions";
+import { MatDialog } from "@angular/material/dialog";
+import { ExportChartDialogComponent } from "./export-chart-dialog.component";
+import { ExportChartConfig, HeatmapSelection, HeatmapTile, InternalExportChartConfig } from "../models";
+import { notNullOrUndefined } from "dgp-ng-app";
+import { heatmapHybridRenderer } from "../heatmap-d3-renderer.function";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { ChartSelectionMode } from "../../shared/models";
-import { defaultHeatmapConfig } from "../constants";
-import { HeatmapSelection, HeatmapTile } from "../models";
+
+declare var $;
 
 @Component({
     selector: "dgp-heatmap",
     template: `
-        <div class="chart"
-             #chartRef>
-            <div *ngIf="chartTitle"
-                 class="title">
-                {{ chartTitle }}
-            </div>
+        <dgp-chart-container>
+            <div class="chart"
+                 #chartRef>
+                <div *ngIf="chartTitle"
+                     class="title">
+                    {{ chartTitle }}
+                </div>
 
-            <div class="inner-container">
-                <div *ngIf="yAxisTitle"
-                     class="y-axis-label-container">
-                    <div class="y-axis-label">
-                        {{ yAxisTitle }}
+                <div class="inner-container">
+                    <div *ngIf="yAxisTitle"
+                         class="y-axis-label-container">
+                        <div class="y-axis-label">
+                            {{ yAxisTitle }}
+                        </div>
+                    </div>
+                    <div #chartElRef
+                         class="d3-hook"></div>
+                    <div class="right-legend">
+                        <ng-content select="[right-legend]"></ng-content>
                     </div>
                 </div>
-                <div #chartElRef
-                     class="d3-hook"></div>
+
+                <div *ngIf="xAxisTitle"
+                     class="x-axis-label">
+                    {{ xAxisTitle }}
+                </div>
             </div>
 
-            <div *ngIf="xAxisTitle"
-                 class="x-axis-label">
-                {{ xAxisTitle }}
-            </div>
-        </div>
+            <ng-container chart-actions>
+
+                <button mat-icon-button
+                        (click)="downloadImage()"
+                        matTooltip="Download image">
+                    <mat-icon>image</mat-icon>
+                </button>
+
+            </ng-container>
+
+        </dgp-chart-container>
     `,
     styles: [`
         :host {
@@ -77,6 +98,7 @@ import { HeatmapSelection, HeatmapTile } from "../models";
         .d3-hook {
             flex-grow: 1;
             height: 100%;
+            position: relative;
         }
 
         .x-axis-label {
@@ -85,84 +107,91 @@ import { HeatmapSelection, HeatmapTile } from "../models";
             align-items: center;
             justify-content: center;
         }
+
+        .right-legend {
+        }
+
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> {
 
-    config = defaultHeatmapConfig;
-
     @Input()
-    selectionMode: ChartSelectionMode = "None";
-
+    exportConfig: ExportChartConfig;
+    @Input()
+    config = defaultDgpHeatmapConfig;
     @Output()
     readonly selectionChange = new EventEmitter<HeatmapSelection>();
+    svgNode: Node;
 
-    protected drawD3Chart(payload): void {
+    private selectionValue: HeatmapSelection = {};
 
-        // Labels of row and columns
-        const rowValues = uniq(this.model.map(x => x.x.toString()))
-            .sort();
+    constructor(
+        readonly elRef: ElementRef,
+        private readonly matDialog: MatDialog
+    ) {
+        super(elRef);
+    }
 
-        const columnValues = uniq(this.model.map(x => x.y.toString()))
-            .sort();
+    @Input()
+    get selection(): HeatmapSelection {
+        return this.selectionValue;
+    }
 
-        // Build X scales and axis:
-        const xAxis = d3.scaleBand()
-            .range([0, payload.containerWidth])
-            .domain(rowValues)
-            .padding(0.01);
+    set selection(value: HeatmapSelection) {
 
-        payload.svg.append("g")
-            .attr("transform", "translate(0," + payload.containerHeight + ")")
-            .call(d3.axisBottom(xAxis));
-
-        // Build X scales and axis:
-        const yAxis = d3.scaleBand()
-            .range([payload.containerHeight, 0])
-            .domain(columnValues)
-            .padding(0.01);
-
-        payload.svg.append("g")
-            .call(d3.axisLeft(yAxis)
-                .tickValues([])
-                .tickSize(0));
-
-        const colorScale = d3.scaleLinear()
-            .range(["#309000", "#3000f0"] as any)
-            .domain([1, 100]);
-
-        const tileRefs = payload.svg.selectAll()
-            .data(this.model as Array<HeatmapTile>, x => x.x.toString() + x.y.toString())
-            .enter()
-            .append("rect")
-            .attr("x", x => xAxis(x.x.toString()))
-            .attr("y", x => yAxis(x.y.toString()))
-            .attr("width", xAxis.bandwidth())
-            .attr("height", yAxis.bandwidth())
-            .style("fill", x => colorScale(x.value));
-
-        if (this.selectionMode === "Brush") {
-
-            payload.svg.call(d3.brush()
-                .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
-                .on("start brush", () => {
-                    const extent = d3.event.selection;
-
-                    const tiles = tileRefs.filter(x => isBrushed(
-                        extent,
-                        xAxis(x.x.toString()),
-                        yAxis(x.y.toString())
-                    ))
-                        .data();
-
-                    this.selectionChange.emit({
-                        tiles
-                    });
-                })
-            );
+        if (_.isEqual(value, this.selectionValue)) {
+            return;
         }
 
+        this.selectionValue = value;
+        this.selectionChange.emit(value);
+    }
+
+    async downloadImage() {
+        const svgString = serializeDOMNode(this.svgNode);
+        const canvas = $(this.elRef.nativeElement).find("canvas")[0];
+        const canvasDataUrl = canvas.toDataURL();
+        const svgImageSrc = svgString2ImageSrc(svgString);
+
+        const legendRoot = $(this.elRef.nativeElement).find(".right-legend").children()[0];
+        let serializedLegend: string;
+        if (notNullOrUndefined(legendRoot)) {
+            serializedLegend = new XMLSerializer().serializeToString(legendRoot);
+        }
+
+        this.matDialog.open(ExportChartDialogComponent, {
+            data: {
+                serializedChartImageUrl: svgImageSrc,
+                serializedCanvasDataUrl: canvasDataUrl,
+                serializedLegend,
+
+                chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
+                xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,
+                yAxisTitle: this.exportConfig?.yAxisTitle ? this.exportConfig?.yAxisTitle : this.yAxisTitle
+            } as InternalExportChartConfig
+        });
+
+    }
+
+    updateSelectionMode(selectionMode: ChartSelectionMode) {
+        this.selectionMode = selectionMode;
+
+        this.scheduleDrawChartAction();
+    }
+
+    protected drawD3Chart(payload): void {
+        this.svgNode = payload.svg.node().parentNode;
+
+        heatmapHybridRenderer({
+            drawD3ChartInfo: payload,
+            model: this.model,
+            selection: this.selection,
+            config: this.config,
+            nativeElement: this.chartElRef.nativeElement,
+            selectionMode: this.selectionMode,
+            updateSelection: selection => this.selection = selection
+        });
     }
 
 }
