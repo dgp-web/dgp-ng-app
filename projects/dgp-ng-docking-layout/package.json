@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-docking-layout",
-    "version": "9.6.8",
+    "version": "9.6.9",
     "license": "MIT",
     "description": "Docking layout and split panels for angular apps",
     "private": false,
