@@ -122,13 +122,21 @@ export function createBoxPlotScales(payload: {
         .range([0, barAreaWidth])
         .padding(0.2);
 
+    const xAxisSubgroupKVS = payload.boxGroups.reduce((previousValue, currentValue) => {
+
+        previousValue[currentValue.boxGroupId] = d3.scaleBand() // TODO: We need to create sub groups based on crap
+            .domain(currentValue.boxes.map(x => x.boxId))
+            .range([0, xAxis.bandwidth()])
+            .padding(0.05);
+
+        return previousValue;
+
+    }, {});
+
     return {
         xAxis,
         yAxis,
-        xAxisSubgroup: d3.scaleBand()
-            .domain(boxIds)
-            .range([0, xAxis.bandwidth()])
-            .padding(0.05)
+        xAxisSubgroupKVS
     };
 
 }
@@ -139,16 +147,16 @@ export function drawBoxPlot(payload: {
     readonly d3Scales: BoxPlotScales;
 }, config = defaultBoxPlotConfig) {
 
-    const xSubgroup = payload.d3Scales.xAxisSubgroup;
+    const xSubgroupKVS = payload.d3Scales.xAxisSubgroupKVS;
     const yAxis = payload.d3Scales.yAxis;
     const d3OnGroupDataEnter = payload.d3OnGroupDataEnter;
 
     d3OnGroupDataEnter.append("line")
         .attr("x1", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() / 2;
         })
         .attr("x2", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() / 2;
         })
         .attr("y1", (d) => {
             return yAxis(d.quantiles.min);
@@ -161,10 +169,10 @@ export function drawBoxPlot(payload: {
 
     d3OnGroupDataEnter.append("line")
         .attr("x1", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() / 2;
         })
         .attr("x2", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() / 2;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() / 2;
         })
         .attr("y1", (d) => {
             return yAxis(d.quantiles.upper);
@@ -176,7 +184,7 @@ export function drawBoxPlot(payload: {
         .style("stroke-width", 2);
 
     d3OnGroupDataEnter.append("rect")
-        .attr("x", d => xSubgroup(d.boxId))
+        .attr("x", d => xSubgroupKVS[d.boxGroupId](d.boxId))
         .attr("y", (d) => {
             return (yAxis(d.quantiles.upper));
         })
@@ -186,17 +194,17 @@ export function drawBoxPlot(payload: {
                 (yAxis(d.quantiles.lower) - yAxis(d.quantiles.upper))
             );
         })
-        .attr("width", xSubgroup.bandwidth())
+        .attr("width", d => xSubgroupKVS[d.boxGroupId].bandwidth())
         .attr("stroke", x => x.colorHex)
         .attr("fill", x => x.colorHex + "66")
         .style("stroke-width", 2);
 
     d3OnGroupDataEnter.append("line")
         .attr("x1", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.25;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() * 0.25;
         })
         .attr("x2", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.75;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() * 0.75;
         })
         .attr("y1", (d) => {
             return yAxis(d.quantiles.min);
@@ -209,10 +217,10 @@ export function drawBoxPlot(payload: {
 
     d3OnGroupDataEnter.append("line")
         .attr("x1", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.25;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() * 0.25;
         })
         .attr("x2", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth() * 0.75;
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth() * 0.75;
         })
         .attr("y1", (d) => {
             return yAxis(d.quantiles.max);
@@ -225,10 +233,10 @@ export function drawBoxPlot(payload: {
 
     d3OnGroupDataEnter.append("line")
         .attr("x1", (d: Box) => {
-            return xSubgroup(d.boxId);
+            return xSubgroupKVS[d.boxGroupId](d.boxId);
         })
         .attr("x2", (d: Box) => {
-            return xSubgroup(d.boxId) + xSubgroup.bandwidth();
+            return xSubgroupKVS[d.boxGroupId](d.boxId) + xSubgroupKVS[d.boxGroupId].bandwidth();
         })
         .attr("y1", (d) => {
             return yAxis(d.quantiles.median);
@@ -257,8 +265,8 @@ export function drawBoxPlotOutliers(payload: {
         )
         .enter()
         .append("circle")
-        .attr("cx", x => payload.d3Scales.xAxisSubgroup(x.boxId)
-            + payload.d3Scales.xAxisSubgroup.bandwidth() / 2
+        .attr("cx", x => payload.d3Scales.xAxisSubgroupKVS[x.boxGroupId](x.boxId)
+            + payload.d3Scales.xAxisSubgroupKVS[x.boxGroupId].bandwidth() / 2
             + getJitter(x.boxId + x.value, config)
         )
         .attr("cy", x => payload.d3Scales.yAxis(x.value))
@@ -282,8 +290,8 @@ export function getOutlierXPosition(
     config = defaultBoxPlotConfig
 ): number {
     return scales.xAxis(outlier.boxGroupId.toString())
-        + scales.xAxisSubgroup.bandwidth() / 2
-        + scales.xAxisSubgroup(outlier.boxId.toString())
+        + scales.xAxisSubgroupKVS[outlier.boxGroupId].bandwidth() / 2
+        + scales.xAxisSubgroupKVS[outlier.boxGroupId](outlier.boxId.toString())
         + getJitter(outlier.boxId + outlier.value, config);
 }
 

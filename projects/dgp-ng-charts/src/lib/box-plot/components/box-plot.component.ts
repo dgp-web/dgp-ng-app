@@ -1,10 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
 import * as d3 from "d3";
-import { ChartComponentBase } from "../../shared/chart.component-base";
-import { ChartSelectionMode } from "../../shared/models";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
+import { ChartComponentBase } from "../../shared/chart.component-base";
+import { ChartSelectionMode } from "../../shared/models";
+import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
+import { notNullOrUndefined } from "dgp-ng-app";
+import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
+import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
+import { MatDialog } from "@angular/material/dialog";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -12,29 +17,45 @@ import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 @Component({
     selector: "dgp-box-plot",
     template: `
-        <div class="chart"
-             #chartRef>
-            <div *ngIf="chartTitle"
-                 class="title">
-                {{ chartTitle }}
-            </div>
+        <dgp-chart-container>
+            <div class="chart"
+                 #chartRef>
+                <div *ngIf="chartTitle"
+                     class="title">
+                    {{ chartTitle }}
+                </div>
 
-            <div class="inner-container">
-                <div *ngIf="yAxisTitle"
-                     class="y-axis-label-container">
-                    <div class="y-axis-label">
-                        {{ yAxisTitle }}
+                <div class="inner-container">
+                    <div *ngIf="yAxisTitle"
+                         class="y-axis-label-container">
+                        <div class="y-axis-label">
+                            {{ yAxisTitle }}
+                        </div>
+                    </div>
+                    <div #chartElRef
+                         class="d3-hook"></div>
+                    <div class="right-legend">
+                        <ng-content select="[right-legend]"></ng-content>
                     </div>
                 </div>
-                <div #chartElRef
-                     class="d3-hook"></div>
+
+                <div *ngIf="xAxisTitle"
+                     class="x-axis-label">
+                    {{ xAxisTitle }}
+                </div>
             </div>
 
-            <div *ngIf="xAxisTitle"
-                 class="x-axis-label">
-                {{ xAxisTitle }}
-            </div>
-        </div>
+            <ng-container chart-actions>
+
+                <button mat-icon-button
+                        (click)="downloadImage()"
+                        matTooltip="Download image">
+                    <mat-icon>image</mat-icon>
+                </button>
+
+            </ng-container>
+
+        </dgp-chart-container>
     `,
     styles: [`
         :host {
@@ -87,10 +108,16 @@ import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
             align-items: center;
             justify-content: center;
         }
+
+        .right-legend {
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>, BoxPlotConfig> implements AfterViewInit {
+
+    @Input()
+    exportConfig: ExportChartConfig;
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
@@ -99,8 +126,17 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
     selectionMode: ChartSelectionMode = "None";
 
     config = defaultBoxPlotConfig;
+    svgNode: Node;
+
+    constructor(
+        readonly elRef: ElementRef,
+        private readonly matDialog: MatDialog
+    ) {
+        super(elRef);
+    }
 
     protected drawD3Chart(payload): void {
+        this.svgNode = payload.svg.node().parentNode;
 
         const d3Scales = createBoxPlotScales({
             containerHeight: payload.containerHeight,
@@ -170,4 +206,26 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
     }
 
+    async downloadImage() {
+        const svgString = serializeDOMNode(this.svgNode);
+        const legendRoot = $(this.elRef.nativeElement).find(".right-legend").children()[0];
+        let serializedLegend: string;
+        if (notNullOrUndefined(legendRoot)) {
+            serializedLegend = new XMLSerializer().serializeToString(legendRoot);
+        }
+
+        const svgImageSrc = svgString2ImageSrc(svgString);
+
+        this.matDialog.open(ExportChartDialogComponent, {
+            data: {
+                serializedChartImageUrl: svgImageSrc,
+                serializedLegend,
+
+                chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
+                xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,
+                yAxisTitle: this.exportConfig?.yAxisTitle ? this.exportConfig?.yAxisTitle : this.yAxisTitle
+            } as InternalExportChartConfig
+        });
+
+    }
 }

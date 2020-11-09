@@ -1,6 +1,6 @@
 {
     "name": "ng-starter",
-    "version": "9.6.7",
+    "version": "9.6.9",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -66,6 +66,7 @@
         "d3": "^5.16.0",
         "entity-store": "^1.5",
         "highlight.js": "^9.18.1",
+        "html2canvas": "^1.0.0-rc.7",
         "jquery": "^3.5.0",
         "lodash": "^4.17.15",
         "rxjs": "~6.5.4",

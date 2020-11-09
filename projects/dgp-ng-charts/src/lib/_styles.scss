@@ -13,3 +13,59 @@
 .tick {
     font-size: smaller;
 }
+
+
+dgp-heatmap-legend, .dgp-heatmap-legend {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+
+    .container {
+        display: flex;
+        flex-grow: 1;
+    }
+
+    .filled {
+        margin-left: 8px;
+        margin-right: 8px;
+        width: 16px;
+        min-width: 16px;
+        max-width: 16px;
+        flex-grow: 1;
+        background: linear-gradient(to bottom, #0066ff, #66ff66, #ff6600);
+    }
+
+    .labels {
+        display: flex;
+        flex-direction: column;
+        margin-right: 8px;
+    }
+}
+
+.dgp-high-value-item {
+
+    mat-icon {
+        background: #0066ff;
+        color: #0066ff !important;;
+    }
+
+}
+
+.dgp-typical-value-item {
+
+    mat-icon {
+        background: #66ff66;
+        color: #66ff66 !important;
+    }
+
+}
+
+.dgp-low-value-item {
+
+    mat-icon {
+        background: #ff6600;
+        color: #ff6600 !important;;
+    }
+
+}

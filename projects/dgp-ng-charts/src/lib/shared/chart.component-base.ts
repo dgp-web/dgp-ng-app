@@ -1,10 +1,27 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from "@angular/core";
-import { ResizeSensor } from "css-element-queries";
+import {
+    AfterViewInit,
+    Directive,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    ViewChild
+} from "@angular/core";
+import {ResizeSensor} from "css-element-queries";
 import * as d3 from "d3";
-import { notNullOrUndefined } from "dgp-ng-app";
-import { from, interval, Subscription, timer } from "rxjs";
-import { debounceTime, switchMap, tap } from "rxjs/operators";
-import { SharedChartConfig } from "./models";
+import {notNullOrUndefined} from "dgp-ng-app";
+import {from, interval, Subscription, timer} from "rxjs";
+import {debounceTime, switchMap, tap} from "rxjs/operators";
+import { ChartSelectionMode, SharedChartConfig } from "./models";
+
+
+export interface DrawD3ChartPayload {
+    readonly svg: d3.Selection<SVGElement, unknown, null, undefined>;
+    readonly containerWidth: number;
+    readonly containerHeight: number;
+}
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -12,6 +29,9 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
 
     @ViewChild("chartElRef", {static: false})
     chartElRef: ElementRef;
+
+    @Input()
+    selectionMode: ChartSelectionMode = "Brush";
 
     @Input()
     chartTitle: string;
@@ -64,17 +84,17 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config) {
+        if (changes.model || changes.config || changes.selectionMode  || changes.selection) {
             this.scheduleDrawChartAction();
         }
     }
 
     ngOnDestroy(): void {
         if (!this.resizeSubscription?.closed) {
-            this.resizeSubscription.unsubscribe();
+            this.resizeSubscription?.unsubscribe();
         }
         if (!this.checkBrokenResizeSensorSubscription?.closed) {
-            this.checkBrokenResizeSensorSubscription.unsubscribe();
+            this.checkBrokenResizeSensorSubscription?.unsubscribe();
         }
     }
 
@@ -86,11 +106,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
         this.drawChartActionScheduler.emit();
     }
 
-    protected abstract drawD3Chart(payload: {
-        readonly svg: d3.Selection<SVGElement, unknown, null, undefined>;
-        readonly containerWidth: number;
-        readonly containerHeight: number;
-    }): void;
+    protected abstract drawD3Chart(payload: DrawD3ChartPayload): void;
 
     private readonly onResize = () => this.scheduleDrawChartAction();
 
@@ -122,6 +138,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
                 .append("svg")
                 .attr("width", containerWidth)
                 .attr("height", containerHeight)
+                .style("position", "absolute")
                 .attr("class", "chart-svg")
                 .append("g")
                 .attr("transform",

@@ -18,6 +18,15 @@ export { BoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 
 /**
  * -----
+ * Chart container
+ * -----
+ */
+
+export { DgpChartContainerModule } from "./lib/chart-container/chart-container.module";
+export { ChartContainerComponent } from "./lib/chart-container/components/chart-container.component";
+
+/**
+ * -----
  * Heatmap
  * -----
  */
