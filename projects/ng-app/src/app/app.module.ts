@@ -19,6 +19,7 @@ import { FileUploadDocsModule } from "../features/file-upload-docs/file-upload-d
 import { CommonModule } from "@angular/common";
 import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { ThemeSwitcherDocsModule } from "../features";
 
 @NgModule({
     imports: [
@@ -76,6 +77,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
         features.SpacerDocsModule,
         features.StylingDocsModule,
         features.TableCellEditorDocsModule,
+        ThemeSwitcherDocsModule,
         CommonModule
     ],
     declarations: [
