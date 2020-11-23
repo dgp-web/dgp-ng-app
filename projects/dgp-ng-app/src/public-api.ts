@@ -175,6 +175,8 @@ export { resolveOverridableValue } from "./utils/resolve-overridable-value.funct
 export { DgpResolverBase } from "./utils/resolver-base";
 export { parseStringMatrixAsNumberMatrix } from "./utils/parse-string-matrix-as-number-matrix.function";
 export { Magnitude } from "./utils/magnitude.model";
+export { HttpSSEApiClient } from "./utils/http-sse.api-client";
+export { firstAsPromise } from "./utils/first-as-promise";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
