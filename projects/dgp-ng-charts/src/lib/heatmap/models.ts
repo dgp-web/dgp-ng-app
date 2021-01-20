@@ -54,6 +54,10 @@ export interface InternalExportChartConfig extends ExportChartConfig {
     readonly serializedLegend?: string;
 }
 
+/**
+ * Adjusts the selection, e.g. by rounding values
+ */
+export type HeatmapSelectionFitter = (payload: HeatmapSelection) => Promise<HeatmapSelection>;
 
 export interface HeatmapRendererPayload {
     readonly drawD3ChartInfo: DrawD3ChartPayload;
@@ -62,5 +66,6 @@ export interface HeatmapRendererPayload {
     readonly config: HeatmapConfig;
     readonly selectionMode: ChartSelectionMode;
     readonly selection: HeatmapSelection;
+    readonly selectionFitter?: HeatmapSelectionFitter;
     readonly updateSelection: (selection: HeatmapSelection) => void;
 }

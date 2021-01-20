@@ -1,13 +1,13 @@
-import { HeatmapRendererPayload, HeatmapTile } from "./models";
+import * as d3 from "d3";
+import { isNullOrUndefined, notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
-import * as d3 from "d3";
-import { d3TooltipService } from "./services/d3-tooltip.service";
-import { notNullOrUndefined, Point } from "dgp-ng-app";
-import { Subject } from "rxjs";
-import { debounceTime } from "rxjs/operators";
-import { BrushCoordinates } from "../box-plot/models";
+import { of, Subject } from "rxjs";
+import { debounceTime, map, switchMap } from "rxjs/operators";
 import { isBrushed } from "../box-plot/functions";
+import { BrushCoordinates } from "../box-plot/models";
+import { HeatmapRendererPayload, HeatmapSelection, HeatmapTile } from "./models";
+import { d3TooltipService } from "./services/d3-tooltip.service";
 
 
 export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
@@ -48,7 +48,8 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
     /**
      * Create canvas
      */
-    const canvasD3Selection = d3.select(payload.nativeElement).insert("canvas", ":first-child")
+    const canvasD3Selection = d3.select(payload.nativeElement)
+        .insert("canvas", ":first-child")
         .attr("width", xAxis.range()[1])
         .attr("height", yAxis.range()[1])
         .style("position", "absolute")
@@ -82,17 +83,27 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
     if (payload.selectionMode === "Brush") {
 
         const selectionPublisher = new Subject<BrushCoordinates>();
-        selectionPublisher
-            .pipe(debounceTime(250))
-            .subscribe(extent => {
-
-                const tiles = payload.model.filter(x => isBrushed(
+        selectionPublisher.pipe(
+            debounceTime(250),
+            map(extent => ({
+                tiles: payload.model.filter(x => isBrushed(
                     extent,
                     xAxis(x.x.toString()),
                     yAxis(x.y.toString())
-                ));
+                ))
+            } as HeatmapSelection)),
+            switchMap(selection => {
 
-                payload.updateSelection({tiles});
+                if (isNullOrUndefined(payload.selectionFitter)) {
+                    return of(selection);
+                }
+
+                return payload.selectionFitter(selection);
+
+            })
+        )
+            .subscribe(selection => {
+                payload.updateSelection(selection);
             });
 
 
@@ -197,14 +208,14 @@ export function heatMapD3Renderer(payload: HeatmapRendererPayload) {
             nativeElement: payload.nativeElement
         });
 
-        tileRefs.on("mouseover", function (x) {
+        tileRefs.on("mouseover", function(x) {
             d3TooltipService.showTooltip({
                 text: `(${x.y}, ${x.x}): ${x.value.toPrecision(3)}`,
                 referenceD3Element: d3.select(this),
                 tooltipD3Element: tooltip
             });
         })
-            .on("mouseleave", function (x) {
+            .on("mouseleave", function(x) {
                 d3TooltipService.hideTooltip({tooltipD3Element: tooltip});
             });
 
