@@ -36,6 +36,8 @@ export * from "./lib/heatmap/models";
 
 export { DgpHeatmapModule } from "./lib/heatmap/heatmap.module";
 export { HeatmapComponent } from "./lib/heatmap/components/heatmap.component";
+export { HeatmapLegendComponent } from "./lib/heatmap/components/heatmap-legend.component";
+export { ExportChartDialogComponent } from "./lib/heatmap/components/export-chart-dialog.component";
 
 /**
  * -----

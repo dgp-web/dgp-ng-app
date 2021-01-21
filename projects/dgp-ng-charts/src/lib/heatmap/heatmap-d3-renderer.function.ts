@@ -83,6 +83,13 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
     if (payload.selectionMode === "Brush") {
 
         const selectionPublisher = new Subject<BrushCoordinates>();
+
+        const brush = d3.brush()
+            .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
+            .on("start brush", () => {
+                selectionPublisher.next(d3.event.selection);
+            });
+
         selectionPublisher.pipe(
             debounceTime(250),
             map(extent => ({
@@ -92,13 +99,35 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                     yAxis(x.y.toString())
                 ))
             } as HeatmapSelection)),
-            switchMap(selection => {
+            map(selection => {
 
-                if (isNullOrUndefined(payload.selectionFitter)) {
-                    return of(selection);
-                }
+                const xValues = selection.tiles.map(x => x.x);
+                const yValues = selection.tiles.map(x => x.y);
 
-                return payload.selectionFitter(selection);
+                const left = _.min(xValues);
+                const right = _.max(xValues);
+
+                const top = _.min(yValues);
+                const bottom = _.max(yValues);
+
+                const upperLeftCorner: Point = {
+                    x: left,
+                    y: top
+                };
+                const lowerRightCorner: Point = {
+                    x: right,
+                    y: bottom
+                };
+
+                brush.extent([[
+                    xAxis(upperLeftCorner.x.toString()),
+                    yAxis(upperLeftCorner.y.toString())
+                ], [
+                    xAxis(lowerRightCorner.x.toString()),
+                    yAxis(lowerRightCorner.y.toString())
+                ]]);
+
+                return selection;
 
             })
         )
@@ -106,12 +135,6 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                 payload.updateSelection(selection);
             });
 
-
-        const brush = d3.brush()
-            .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
-            .on("start brush", () => {
-                selectionPublisher.next(d3.event.selection);
-            });
 
         payload.drawD3ChartInfo.svg.call(brush);
 
@@ -227,6 +250,7 @@ export function heatMapD3Renderer(payload: HeatmapRendererPayload) {
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
             .on("start brush", () => {
                 const extent = d3.event.selection;
+
 
                 const tiles = tileRefs.filter(x => isBrushed(
                     extent,
