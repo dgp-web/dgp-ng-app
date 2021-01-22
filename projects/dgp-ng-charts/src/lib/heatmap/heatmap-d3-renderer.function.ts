@@ -86,7 +86,7 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
         const brush = d3.brush()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
-            .on("start brush", () => {
+            .on("end", () => {
                 selectionPublisher.next(d3.event.selection);
             });
 
