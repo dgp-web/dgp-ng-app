@@ -99,7 +99,7 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                     yAxis(x.y.toString())
                 ))
             } as HeatmapSelection)),
-            map(selection => {
+            /*map(selection => {
 
                 const xValues = selection.tiles.map(x => x.x);
                 const yValues = selection.tiles.map(x => x.y);
@@ -129,7 +129,7 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
                 return selection;
 
-            })
+            })*/
         )
             .subscribe(selection => {
                 payload.updateSelection(selection);
