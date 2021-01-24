@@ -3,7 +3,6 @@ import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
-import { debounceTime } from "rxjs/operators";
 import { isBrushed } from "../box-plot/functions";
 import { BrushCoordinates } from "../box-plot/models";
 import { HeatmapRendererPayload, HeatmapSelection, HeatmapTile } from "./models";
@@ -143,11 +142,6 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
             });
 
-        selectionPublisher.pipe(debounceTime(250))
-            .subscribe(selection => {
-                payload.updateSelection(selection);
-            });
-
 
         payload.drawD3ChartInfo.svg.call(brush);
 
@@ -186,8 +180,11 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                 ]);
             }
 
-
         }
+
+        selectionPublisher.subscribe(selection => {
+            payload.updateSelection(selection);
+        });
 
     }
 
