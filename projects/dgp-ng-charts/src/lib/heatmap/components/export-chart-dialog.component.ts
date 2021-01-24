@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { InternalExportChartConfig } from "../models";
 import html2canvas from "html2canvas";
+import { InternalExportChartConfig } from "../models";
 
 @Component({
     selector: "dgp-export-chart-dialog",
@@ -26,7 +26,8 @@ import html2canvas from "html2canvas";
                     <img *ngIf="model.serializedCanvasDataUrl"
                          [src]="model.serializedCanvasDataUrl | safe:'url'"
                          class="canvas-img"/>
-                    <img [src]="model.serializedChartImageUrl | safe:'url'"
+                    <img *ngIf="model.serializedCanvasDataUrl"
+                         [src]="model.serializedChartImageUrl | safe:'url'"
                          class="svg-img"/>
                     <div class="right-legend"
                          *ngIf="model.serializedLegend">
@@ -127,7 +128,12 @@ export class ExportChartDialogComponent {
             backgroundColor: null // === transparent
         });
         const file = canvas.toDataURL();
-        window.open(file, "_blank");
+        const iframe = "<iframe width='100%' height='100%' style='margin: -8px;border: none;padding: 8px;' src='" + file + "'></iframe>";
+        const x = window.open();
+        x.document.open();
+        x.document.write(iframe);
+        x.document.close();
+
     }
 
 }
