@@ -1,9 +1,9 @@
 import * as d3 from "d3";
-import { isNullOrUndefined, notNullOrUndefined, Point } from "dgp-ng-app";
+import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
-import { of, Subject } from "rxjs";
-import { debounceTime, map, switchMap } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { debounceTime } from "rxjs/operators";
 import { isBrushed } from "../box-plot/functions";
 import { BrushCoordinates } from "../box-plot/models";
 import { HeatmapRendererPayload, HeatmapSelection, HeatmapTile } from "./models";
@@ -82,24 +82,21 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
     if (payload.selectionMode === "Brush") {
 
-        const selectionPublisher = new Subject<BrushCoordinates>();
+        const selectionPublisher = new Subject<HeatmapSelection>();
 
         const brush = d3.brush()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
-            .on("end", () => {
-                selectionPublisher.next(d3.event.selection);
-            });
+            .on("end", function(event) {
 
-        selectionPublisher.pipe(
-            debounceTime(250),
-            map(extent => ({
-                tiles: payload.model.filter(x => isBrushed(
-                    extent,
-                    xAxis(x.x.toString()),
-                    yAxis(x.y.toString())
-                ))
-            } as HeatmapSelection)),
-            /*map(selection => {
+                const extent = d3.event.selection;
+
+                let selection: HeatmapSelection = {
+                    tiles: payload.model.filter(x => isBrushed(
+                        extent,
+                        xAxis(x.x.toString()),
+                        yAxis(x.y.toString())
+                    ))
+                };
 
                 const xValues = selection.tiles.map(x => x.x);
                 const yValues = selection.tiles.map(x => x.y);
@@ -119,18 +116,34 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                     y: bottom
                 };
 
-                brush.extent([[
+                const newExtent = [[
                     xAxis(upperLeftCorner.x.toString()),
                     yAxis(upperLeftCorner.y.toString())
                 ], [
                     xAxis(lowerRightCorner.x.toString()),
                     yAxis(lowerRightCorner.y.toString())
-                ]]);
+                ]] as BrushCoordinates;
 
-                return selection;
+                if (_.isEqual(extent, newExtent)) {
 
-            })*/
-        )
+                    selection = {
+                        tiles: payload.model.filter(x => isBrushed(
+                            newExtent,
+                            xAxis(x.x.toString()),
+                            yAxis(x.y.toString())
+                        ))
+                    };
+
+                    selectionPublisher.next(selection);
+                } else {
+                    d3.select(this)
+                        .transition()
+                        .call(brush.move, newExtent);
+                }
+
+            });
+
+        selectionPublisher.pipe(debounceTime(250))
             .subscribe(selection => {
                 payload.updateSelection(selection);
             });
@@ -138,7 +151,7 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
         payload.drawD3ChartInfo.svg.call(brush);
 
-        if (payload.selection) {
+        if (payload.selection && payload.selection.tiles) {
 
             const xValues = payload.selection.tiles.map(x => x.x);
             const yValues = payload.selection.tiles.map(x => x.y);
