@@ -3,6 +3,7 @@ import { DockingLayoutLabsPageComponent } from "./containers/docking-layout-labs
 import { DgpDockingLayoutModule } from "dgp-ng-docking-layout";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
+import { DgpTileModule } from "../../../../../dgp-ng-app/src/tile/tile.module";
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { RouterModule } from "@angular/router";
             component: DockingLayoutLabsPageComponent
         }]),
         DgpPageHeaderModule,
-        DgpHamburgerMenuToggleModule
+        DgpHamburgerMenuToggleModule,
+        DgpTileModule
     ],
     declarations: [
         DockingLayoutLabsPageComponent

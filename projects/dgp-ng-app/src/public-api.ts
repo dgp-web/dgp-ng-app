@@ -11,6 +11,7 @@ export { AuthenticationGuard } from "./authentication/guards/authentication.guar
 export { AuthenticationState, authenticationStoreFeature } from "./authentication/models";
 export { getAuthenticatedUserSelector, getIsAuthenticatedSelector } from "./authentication/selectors";
 export * from "./authentication/services/authentication.service";
+export { authenticationReducer, initialAuthenticationState } from "./authentication/reducers";
 export { InitializationService, InitializationServiceProvider } from "./authentication/services/initialization.service";
 export { DgpAuthenticationModule, AuthenticationModuleSettings } from "./authentication/authentication.module";
 

@@ -17,6 +17,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                     <dgp-docking-layout-container label="Available items">
                         <ng-template>
                             <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+
+                            <dgp-tile label="Test"
+                                      externalLink="https://github.com/dgp-web/dgp-ng-app"></dgp-tile>
+
                         </ng-template>
                     </dgp-docking-layout-container>
                 </dgp-docking-layout-item>

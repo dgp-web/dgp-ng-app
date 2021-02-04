@@ -3,7 +3,28 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
 @Component({
     selector: "dgp-tile",
     template: `
-        <a [routerLink]="route"
+        <a *ngIf="route"
+           [routerLink]="route"
+           class="container">
+            <mat-card matRipple
+                      class="tile-card">
+                <mat-card-content class="description">
+                    <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
+                    <div class="label">
+                        {{ label }}
+                    </div>
+                    <mat-divider class="divider"></mat-divider>
+                    <div>
+                        {{ description }}
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+        </a>
+
+        <a *ngIf="externalLink"
+           [attr.href]="externalLink"
+           target="_blank"
            class="container">
             <mat-card matRipple
                       class="tile-card">
@@ -72,6 +93,9 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TileComponent {
+
+    @Input()
+    externalLink: string;
 
     @Input()
     route: string;

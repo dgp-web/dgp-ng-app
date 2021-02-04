@@ -5,6 +5,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatRippleModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
 import { MatDividerModule } from "@angular/material/divider";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { MatDividerModule } from "@angular/material/divider";
         MatCardModule,
         MatRippleModule,
         MatIconModule,
-        MatDividerModule
+        MatDividerModule,
+        CommonModule
     ],
     declarations: [
         TileComponent
