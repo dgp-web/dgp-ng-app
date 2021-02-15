@@ -20,6 +20,7 @@ import { CommonModule } from "@angular/common";
 import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { ThemeSwitcherDocsModule } from "../features";
+import { FileViewerDocsModule } from "../features/file-viewer-docs/file-viewer-docs.module";
 
 @NgModule({
     imports: [
@@ -78,7 +79,8 @@ import { ThemeSwitcherDocsModule } from "../features";
         features.StylingDocsModule,
         features.TableCellEditorDocsModule,
         ThemeSwitcherDocsModule,
-        CommonModule
+        CommonModule,
+        FileViewerDocsModule
     ],
     declarations: [
         AppComponent
