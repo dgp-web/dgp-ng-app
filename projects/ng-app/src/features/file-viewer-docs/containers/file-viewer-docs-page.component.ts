@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { pngFileItem } from "../constants/png-file-item.constant";
 
 @Component({
     selector: "dgp-file-viewer-docs-page",
@@ -17,14 +18,29 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                     Extendable file viewer for presenting documents.
                 </p>
 
+                <dgp-file-viewer [fileItem]="pngFileItem"
+                                 class="png-viewer"></dgp-file-viewer>
+
+                <!-- TODO: Add code sample for this -->
+
+                <!-- TODO: Add sample for jpeg and pdf, svg, and fallback -->
+
+                <!-- TODO: explain how to add additional files, such as tiff files -->
+
+
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
     styles: [`
-
-   `],
+        .png-viewer {
+            max-width: 120px;
+            align-self: center;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileViewerDocsPageComponent {
+
+    readonly pngFileItem = pngFileItem;
 
 }
