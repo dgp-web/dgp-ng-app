@@ -24,7 +24,12 @@ export const appFeatures: ReadonlyArray<AppFeature> = [{
     route: "/file-upload",
     matIconName: "attach_file",
     label: "File upload",
-    description: "Configurable placeholder for empty views."
+    description: "Overlay-based file-upload with integrated viewer."
+}, {
+    route: "/file-viewer",
+    matIconName: "file_present",
+    label: "File viewer",
+    description: "Extendable file viewer for presenting documents."
 }, {
     route: "/hamburger-shell",
     matIconName: "chrome_reader_mode",

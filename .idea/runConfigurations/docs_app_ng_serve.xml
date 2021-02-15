@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="build:dgp-ng-app" type="js.build_tools.npm">
+  <configuration default="false" name="docs-app:ng-serve" type="js.build_tools.npm" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="dgp-ng-app:build:prod" />
+      <script value="docs-app:ng-serve" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
