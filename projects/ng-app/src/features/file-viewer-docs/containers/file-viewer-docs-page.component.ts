@@ -27,7 +27,7 @@ import { txtFileItem } from "../constants/txt-file-item.constant";
 
                 <dgp-docs-section-title>2: Use dgp-file-viewer in your template.</dgp-docs-section-title>
 
-                <dgp-docs-code-block [code]="templateCode" 
+                <dgp-docs-code-block [code]="templateCode"
                                      language="html"></dgp-docs-code-block>
 
                 <dgp-file-viewer [fileItem]="pngFileItem"
@@ -63,8 +63,21 @@ import { txtFileItem } from "../constants/txt-file-item.constant";
                 <dgp-file-viewer [fileItem]="txtFileItem"
                                  class="txt-viewer"></dgp-file-viewer>
 
-                <!-- TODO: explain how to add additional files, such as tiff files -->
+                <dgp-docs-section-title>3: Adding custom viewers.</dgp-docs-section-title>
 
+                <p>
+                    Create a component and make it extend FileViewerComponentBase such as
+                    the following viewer for txt files.
+                </p>
+
+                <dgp-docs-code-block [code]="customViewerCode"></dgp-docs-code-block>
+
+                <p>
+                    Then add register the custom viewer with a file type in DgpFileViewerModule.forRoot()
+                    in your application root module.
+                </p>
+
+                <dgp-docs-code-block [code]="rootModuleCode"></dgp-docs-code-block>
 
             </dgp-docs-page-content>
         </dgp-docs-page>
@@ -117,5 +130,29 @@ export class FileViewerDocsPageComponent {
 export class FeatureModule {}`;
 
     readonly templateCode = `<dgp-file-viewer [fileItem]="pngFileItem"></dgp-file-viewer>`;
+
+    readonly customViewerCode = `import { FileViewerComponentBase } from "dgp-ng-app";
+
+// ...
+
+@Component({
+    selector: "dgp-txt-file-viewer",
+    template: "{{fileItem.url || safe:'url'}}"
+})
+export class TxtFileViewerComponent extends FileViewerComponentBase {}`;
+
+    readonly rootModuleCode = `import { DgpFileViewerModule } from "dgp-ng-app";
+
+// ...
+
+@NgModule({
+    imports: [
+        DgpFileViewerModule.forRoot({
+            txt: TxtFileViewerComponent
+        }),
+        // ...
+    ]
+})
+export class AppModule {}`;
 
 }
