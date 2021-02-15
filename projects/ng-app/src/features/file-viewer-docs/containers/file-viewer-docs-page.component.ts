@@ -73,8 +73,12 @@ import { txtFileItem } from "../constants/txt-file-item.constant";
                 <dgp-docs-code-block [code]="customViewerCode"></dgp-docs-code-block>
 
                 <p>
-                    Then add register the custom viewer with a file type in DgpFileViewerModule.forRoot()
-                    in your application root module.
+                    Then register the custom viewer with a file type in DgpFileViewerModule.forRoot()
+                    in your application root module or in a shared module.
+                </p>
+
+                <p>
+                    Do not forget to declare the registered component.
                 </p>
 
                 <dgp-docs-code-block [code]="rootModuleCode"></dgp-docs-code-block>
@@ -151,6 +155,9 @@ export class TxtFileViewerComponent extends FileViewerComponentBase {}`;
             txt: TxtFileViewerComponent
         }),
         // ...
+    ],
+    declarations: [
+        TxtFileViewerComponent
     ]
 })
 export class AppModule {}`;
