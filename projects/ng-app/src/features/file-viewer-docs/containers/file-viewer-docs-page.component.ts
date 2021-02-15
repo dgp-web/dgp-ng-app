@@ -21,6 +21,15 @@ import { txtFileItem } from "../constants/txt-file-item.constant";
                     Extendable file viewer for presenting documents.
                 </p>
 
+                <dgp-docs-section-title>1: Import DgpFileViewerModule in your feature module.</dgp-docs-section-title>
+
+                <dgp-docs-code-block [code]="featureModuleCode"></dgp-docs-code-block>
+
+                <dgp-docs-section-title>2: Use dgp-file-viewer in your template.</dgp-docs-section-title>
+
+                <dgp-docs-code-block [code]="templateCode" 
+                                     language="html"></dgp-docs-code-block>
+
                 <dgp-file-viewer [fileItem]="pngFileItem"
                                  class="png-viewer"></dgp-file-viewer>
 
@@ -94,5 +103,19 @@ export class FileViewerDocsPageComponent {
     creationDate: new Date(),
     url: "assets/github-logo.png"
 };`;
+
+    readonly featureModuleCode = `import { DgpFileViewerModule } from "dgp-ng-app";
+
+// ...
+
+@NgModule({
+    imports: [
+        DgpFileViewerModule,
+        // ...
+    ]
+})
+export class FeatureModule {}`;
+
+    readonly templateCode = `<dgp-file-viewer [fileItem]="pngFileItem"></dgp-file-viewer>`;
 
 }
