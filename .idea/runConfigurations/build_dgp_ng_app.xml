@@ -3,7 +3,7 @@
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="build:dgp-ng-app" />
+      <script value="dgp-ng-app:build:prod" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
