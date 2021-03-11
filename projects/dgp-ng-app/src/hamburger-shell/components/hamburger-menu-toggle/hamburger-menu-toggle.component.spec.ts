@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { HamburgerMenuToggleComponent } from "./hamburger-menu-toggle.component";
 import { DgpHamburgerMenuToggleModule } from "./hamburger-menu-toggle.module";
 import { StoreModule } from "@ngrx/store";
@@ -11,7 +11,7 @@ describe(HamburgerMenuToggleComponent.name, () => {
     let component: HamburgerMenuToggleComponent;
 
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

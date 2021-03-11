@@ -1,11 +1,13 @@
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { ItemContainerComponent } from "./item-container.component";
+import { Directive } from "@angular/core";
 
 /**
  * @param {[type]} layoutManager [description]
  * @param {[type]} config      [description]
  * @param {[type]} parent        [description]
  */
+@Directive()
 export class Component extends AbstractContentItemComponent {
     componentName: any;
     public container: any;

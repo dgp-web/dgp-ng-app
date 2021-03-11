@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { ChangeDetectionStrategy } from "@angular/core";
 import { Store, StoreModule } from "@ngrx/store";
 import { themeSwitcherReducer } from "../reducers";
@@ -15,7 +15,7 @@ describe(DarkModeToggleComponent.name, () => {
 
     let store: Store<ThemeSwitcherState>;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

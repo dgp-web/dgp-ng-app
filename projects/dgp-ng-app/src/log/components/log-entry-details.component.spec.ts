@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { LogEntryDetailsComponent } from "./log-entry-details.component";
 import { DgpLogModule } from "../log.module";
 import { StoreModule } from "@ngrx/store";
@@ -10,7 +10,7 @@ describe(LogEntryDetailsComponent.name, () => {
     let fixture: ComponentFixture<LogEntryDetailsComponent>;
     let component: LogEntryDetailsComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [

@@ -1,4 +1,4 @@
-import { async, TestBed } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 import { of, Observable, ReplaySubject } from "rxjs";
 import { first } from "rxjs/operators";
 import { Action, Store, StoreModule } from "@ngrx/store";
@@ -66,7 +66,7 @@ describe(BroadcastEffects.name, () => {
     let channelService: BroadcastChannelService;
     let store: Store<BroadcastState>;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

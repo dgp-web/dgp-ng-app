@@ -7,9 +7,9 @@ import { DgpNgChartsModule } from "dgp-ng-charts";
 @NgModule({
     imports: [
         RouterModule.forRoot([{
-            path: "charts",
-            component: ChartsLabsComponent
-        }]),
+        path: "charts",
+        component: ChartsLabsComponent
+    }], { relativeLinkResolution: 'legacy' }),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpNgChartsModule

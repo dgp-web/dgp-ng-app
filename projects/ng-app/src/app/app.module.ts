@@ -49,13 +49,13 @@ import { FileViewerDocsModule } from "../features/file-viewer-docs/file-viewer-d
         }),
 
         RouterModule.forRoot([{
-            path: "",
-            pathMatch: "full",
-            redirectTo: "/home"
-        }, {
-            path: "**",
-            redirectTo: "/home"
-        }]),
+        path: "",
+        pathMatch: "full",
+        redirectTo: "/home"
+    }, {
+        path: "**",
+        redirectTo: "/home"
+    }], { relativeLinkResolution: 'legacy' }),
 
         UiSharedModule,
 

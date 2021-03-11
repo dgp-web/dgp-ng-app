@@ -1,7 +1,9 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { Directive } from "@angular/core";
 
 
+@Directive()
 export class Root extends AbstractContentItemComponent {
     isRoot: boolean;
     type: any;

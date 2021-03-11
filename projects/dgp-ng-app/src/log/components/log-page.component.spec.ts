@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { ChangeDetectionStrategy } from "@angular/core";
 import { LogPageComponent } from "./log-page.component";
 import { DgpLogModule, LOG_STORE_REDUCER } from "../log.module";
@@ -14,7 +14,7 @@ describe(LogPageComponent.name, () => {
     let component: LogPageComponent;
 
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

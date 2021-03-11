@@ -1,5 +1,5 @@
 import { AuthenticationService, AuthenticationServiceImpl } from "./authentication.service";
-import { async, TestBed } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 import { Store } from "@ngrx/store";
 import { authenticateUser, registerAuthenticateError } from "../actions";
 import {
@@ -17,7 +17,7 @@ describe(AuthenticationService.name, () => {
 
     let authenticationService: AuthenticationService<TestUser>;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await configureAuthenticationTestingModule();
 

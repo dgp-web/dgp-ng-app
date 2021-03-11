@@ -3,7 +3,7 @@ import { hotReload } from "./hmr.actions";
 
 describe("hmrReducer should decorate a reducer that", () => {
 
-    const baseReducer = (state: "initialState") => {
+    const baseReducer = (state: "initialState", action: any) => {
         return state;
     };
 
@@ -27,7 +27,7 @@ describe("hmrReducer should decorate a reducer that", () => {
     it(`passes calls through to the baseReducer.`, () => {
 
         const action = {type: ""};
-        const state = "";
+        const state = "" as any;
 
         decoratedReducer(state, action);
 

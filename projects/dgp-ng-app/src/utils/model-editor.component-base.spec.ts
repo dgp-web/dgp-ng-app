@@ -1,10 +1,12 @@
 import { DgpModelEditorComponentBase } from "./model-editor.component-base";
+import { Directive } from "@angular/core";
 
 interface Model {
     readonly label: string;
     readonly description: string;
 }
 
+@Directive()
 class TestModelEditorComponent extends DgpModelEditorComponentBase<Model> {
 }
 
@@ -16,10 +18,10 @@ describe("DgpModelEditorComponentBase", () => {
         editor = new TestModelEditorComponent();
     });
 
-    it(`initial model should be undefined.`, () => {
+    it(`initial model should be null.`, () => {
 
         expect(editor.model)
-            .toBeUndefined();
+            .toBeNull();
 
     });
 

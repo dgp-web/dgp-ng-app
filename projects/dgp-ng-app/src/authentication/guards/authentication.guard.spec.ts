@@ -1,4 +1,4 @@
-import { async, TestBed } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 import { Store } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { RouterStateSnapshot } from "@angular/router";
@@ -11,7 +11,7 @@ describe("authentication selectors", () => {
     let store: Store<any>;
     let guard: AuthenticationGuard;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await configureAuthenticationTestingModule();
 

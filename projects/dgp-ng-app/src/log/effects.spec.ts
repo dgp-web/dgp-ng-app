@@ -1,6 +1,6 @@
 import { LogEffects } from "./effects";
 import { DgpLogModule } from "./log.module";
-import { TestBed, async } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 import { StoreModule } from "@ngrx/store";
 import { RouterTestingModule } from "@angular/router/testing";
 import { getEffectsMetadata, EffectsMetadata, EffectsModule } from "@ngrx/effects";
@@ -20,7 +20,7 @@ describe(LogEffects.name, () => {
     let actions: ReplaySubject<any>;
     let snackBar: MatSnackBar;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
