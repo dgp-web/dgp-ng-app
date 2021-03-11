@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { ListDetailsPageComponent } from "./list-details-page.component";
 import { DgpListDetailsPageModule } from "./list-details-page.module";
 import { StoreModule } from "@ngrx/store";
@@ -12,7 +12,7 @@ describe(ListDetailsPageComponent.name, () => {
     let component: ListDetailsPageComponent;
 
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

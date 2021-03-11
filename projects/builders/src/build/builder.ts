@@ -42,7 +42,7 @@ export function createStyleSheetSnippet(src: string) {
 
 async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
 
         const indexHTMLPath = path.join(
             process.cwd(),

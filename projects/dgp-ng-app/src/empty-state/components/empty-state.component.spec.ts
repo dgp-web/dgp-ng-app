@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { ChangeDetectionStrategy } from "@angular/core";
 import { EmptyStateComponent } from "./empty-state.component";
 import { DgpEmptyStateModule } from "../empty-state.module";
@@ -8,7 +8,7 @@ describe(EmptyStateComponent.name, () => {
     let fixture: ComponentFixture<EmptyStateComponent>;
     let component: EmptyStateComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

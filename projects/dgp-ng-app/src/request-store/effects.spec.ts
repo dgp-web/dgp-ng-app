@@ -1,4 +1,4 @@
-import { async, TestBed } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 import { EffectsMetadata, getEffectsMetadata } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { ReplaySubject } from "rxjs";
@@ -14,7 +14,7 @@ xdescribe(RequestEffects.name, () => {
     let metadata: EffectsMetadata<RequestEffects>;
     let actions: ReplaySubject<any>;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

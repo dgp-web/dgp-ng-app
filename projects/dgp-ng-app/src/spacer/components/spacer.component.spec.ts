@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { SpacerComponent } from "./spacer.component";
 
 describe(SpacerComponent.name, () => {
@@ -6,7 +6,7 @@ describe(SpacerComponent.name, () => {
     let fixture: ComponentFixture<SpacerComponent>;
     let component: SpacerComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             declarations: [

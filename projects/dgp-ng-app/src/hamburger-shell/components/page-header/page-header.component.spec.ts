@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { PageHeaderComponent } from "./page-header.component";
 import { DgpPageHeaderModule } from "./page-header.module";
 import { StoreModule } from "@ngrx/store";
@@ -10,7 +10,7 @@ describe(PageHeaderComponent.name, () => {
     let fixture: ComponentFixture<PageHeaderComponent>;
     let component: PageHeaderComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

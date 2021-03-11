@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { FileManagerComponent } from "./file-manager.component";
 import { DgpFileUploadModule } from "../file-upload.module";
 import { StoreModule } from "@ngrx/store";
@@ -11,7 +11,7 @@ describe(FileManagerComponent.name, () => {
     let fixture: ComponentFixture<FileManagerComponent>;
     let component: FileManagerComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [

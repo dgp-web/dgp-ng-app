@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { HamburgerMenuEntryComponent } from "./hamburger-menu-entry.component";
 import { DgpHamburgerMenuModule } from "./hamburger-menu.module";
 import { RouterTestingModule } from "@angular/router/testing";
@@ -8,7 +8,7 @@ describe(HamburgerMenuEntryComponent.name, () => {
     let fixture: ComponentFixture<HamburgerMenuEntryComponent>;
     let component: HamburgerMenuEntryComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [

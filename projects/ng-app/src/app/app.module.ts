@@ -20,6 +20,7 @@ import { CommonModule } from "@angular/common";
 import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { ThemeSwitcherDocsModule } from "../features";
+import { FileViewerDocsModule } from "../features/file-viewer-docs/file-viewer-docs.module";
 
 @NgModule({
     imports: [
@@ -48,13 +49,13 @@ import { ThemeSwitcherDocsModule } from "../features";
         }),
 
         RouterModule.forRoot([{
-            path: "",
-            pathMatch: "full",
-            redirectTo: "/home"
-        }, {
-            path: "**",
-            redirectTo: "/home"
-        }]),
+        path: "",
+        pathMatch: "full",
+        redirectTo: "/home"
+    }, {
+        path: "**",
+        redirectTo: "/home"
+    }], { relativeLinkResolution: 'legacy' }),
 
         UiSharedModule,
 
@@ -78,7 +79,8 @@ import { ThemeSwitcherDocsModule } from "../features";
         features.StylingDocsModule,
         features.TableCellEditorDocsModule,
         ThemeSwitcherDocsModule,
-        CommonModule
+        CommonModule,
+        FileViewerDocsModule
     ],
     declarations: [
         AppComponent

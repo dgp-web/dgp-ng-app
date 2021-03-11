@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DockingLayoutLabsPageComponent } from "./docking-layout-labs-page.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
@@ -10,7 +10,7 @@ describe(DockingLayoutLabsPageComponent.name, () => {
     let fixture: ComponentFixture<DockingLayoutLabsPageComponent>;
     let component: DockingLayoutLabsPageComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         const testBed = TestBed.configureTestingModule({
             declarations: [

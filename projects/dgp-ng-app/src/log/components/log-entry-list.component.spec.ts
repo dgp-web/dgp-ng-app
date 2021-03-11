@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { LogEntryListComponent } from "./log-entry-list.component";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Store, StoreModule } from "@ngrx/store";
@@ -16,7 +16,7 @@ describe(LogEntryListComponent.name, () => {
     let fixture: ComponentFixture<LogEntryListComponent>;
     let component: LogEntryListComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [
