@@ -1,10 +1,12 @@
 import { DgpModelEditorComponentBase } from "./model-editor.component-base";
+import { Directive } from "@angular/core";
 
 interface Model {
     readonly label: string;
     readonly description: string;
 }
 
+@Directive()
 class TestModelEditorComponent extends DgpModelEditorComponentBase<Model> {
 }
 
