@@ -18,10 +18,10 @@ describe("DgpModelEditorComponentBase", () => {
         editor = new TestModelEditorComponent();
     });
 
-    it(`initial model should be undefined.`, () => {
+    it(`initial model should be null.`, () => {
 
         expect(editor.model)
-            .toBeUndefined();
+            .toBeNull();
 
     });
 
