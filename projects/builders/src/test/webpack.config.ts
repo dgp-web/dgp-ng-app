@@ -35,7 +35,7 @@ module.exports = (env: WebpackConfig) => {
                         compilerOptions: {
                             emitDecoratorMetadata: true,
                             experimentalDecorators: true,
-                            target: "es5",
+                            target: "es2015",
                             sourceMap: false,
                             module: "commonjs",
                             moduleResolution: "node"
