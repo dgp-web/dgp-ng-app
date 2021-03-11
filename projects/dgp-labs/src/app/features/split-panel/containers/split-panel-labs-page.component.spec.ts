@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { SplitPanelLabsPageComponent } from "./split-panel-labs-page.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
@@ -10,7 +10,7 @@ describe(SplitPanelLabsPageComponent.name, () => {
     let fixture: ComponentFixture<SplitPanelLabsPageComponent>;
     let component: SplitPanelLabsPageComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         const testBed = TestBed.configureTestingModule({
             declarations: [

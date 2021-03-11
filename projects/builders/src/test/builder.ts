@@ -153,7 +153,7 @@ async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, con
         }
 
         fs.writeFileSync(destinationHTMLPath, updatedIndexHTML);
-        resolve();
+        resolve(null);
     });
 
 }

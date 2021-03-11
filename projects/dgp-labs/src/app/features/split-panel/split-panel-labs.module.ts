@@ -9,9 +9,9 @@ import { RouterModule } from "@angular/router";
         DgpSplitPanelModule,
         DgpThemeSwitcherModule,
         RouterModule.forRoot([{
-            path: "split-panel",
-            component: SplitPanelLabsPageComponent
-        }]),
+        path: "split-panel",
+        component: SplitPanelLabsPageComponent
+    }], { relativeLinkResolution: 'legacy' }),
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule
     ],

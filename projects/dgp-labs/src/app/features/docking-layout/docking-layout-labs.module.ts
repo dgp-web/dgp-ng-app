@@ -10,9 +10,9 @@ import { DgpTileModule } from "../../../../../dgp-ng-app/src/tile/tile.module";
         DgpDockingLayoutModule,
         DgpThemeSwitcherModule,
         RouterModule.forRoot([{
-            path: "docking-layout",
-            component: DockingLayoutLabsPageComponent
-        }]),
+        path: "docking-layout",
+        component: DockingLayoutLabsPageComponent
+    }], { relativeLinkResolution: 'legacy' }),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpTileModule

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { JpgViewerComponent } from "./jpg-viewer.component";
 import { DgpFileViewerModule } from "../file-viewer.module";
 
@@ -7,7 +7,7 @@ describe(JpgViewerComponent.name, () => {
     let fixture: ComponentFixture<JpgViewerComponent>;
     let component: JpgViewerComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [

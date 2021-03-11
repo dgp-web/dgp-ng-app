@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DgpRoutingOverlayModule } from "../routing-overlay.module";
 import { RoutingOverlayComponent } from "./routing-overlay.component";
 import { StoreModule } from "@ngrx/store";
@@ -10,7 +10,7 @@ describe(RoutingOverlayComponent.name, () => {
     let fixture: ComponentFixture<RoutingOverlayComponent>;
     let component: RoutingOverlayComponent;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         await TestBed.configureTestingModule({
             imports: [

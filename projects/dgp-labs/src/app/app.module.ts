@@ -88,13 +88,13 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule.forRoot([{
-            path: "",
-            pathMatch: "full",
-            redirectTo: "/docking-layout"
-        }, {
-            path: "**",
-            redirectTo: "/docking-layout"
-        }]),
+        path: "",
+        pathMatch: "full",
+        redirectTo: "/docking-layout"
+    }, {
+        path: "**",
+        redirectTo: "/docking-layout"
+    }], { relativeLinkResolution: 'legacy' }),
 
         StoreModule.forRoot(APP_REDUCER, {
             metaReducers: [hmrReducer]

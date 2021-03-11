@@ -1,4 +1,4 @@
-import { async, TestBed } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
 import { first } from "rxjs/operators";
 import { themeSwitcherReducer } from "./reducers";
@@ -9,7 +9,7 @@ describe("theme-switcher selectors", () => {
 
     let store: Store<any>;
 
-    beforeEach(async(async () => {
+    beforeEach(waitForAsync(async () => {
 
         TestBed.configureTestingModule({
             imports: [

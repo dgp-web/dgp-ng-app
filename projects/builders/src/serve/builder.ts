@@ -76,7 +76,7 @@ export function createStyleSheetSnippet(src: string) {
 
 async function copyAndModifyIndexHtmlToDist(options: DgpNgAppBuilderOptions, context: BuilderContext) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
 
         const indexHTMLPath = path.join(
             process.cwd(),
@@ -201,6 +201,6 @@ function dgpNgAppBuilder(options: DgpNgAppBuilderOptions, context: BuilderContex
         await createVendorBundle(options, context);
         await copyAndModifyIndexHtmlToDist(options, context);
         await runWebpack(options, context);
-        resolve();
+        resolve({ success: true });
     });
 }
