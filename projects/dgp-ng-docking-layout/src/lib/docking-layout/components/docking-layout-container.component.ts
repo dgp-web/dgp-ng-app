@@ -29,7 +29,7 @@ export class DockingLayoutContainerComponent {
             isClosable: this.closable,
             componentName: this.id,
             title: this.label,
-            id: createGuid(),
+            id: this.id,
             componentState: {
                 template: () => this.templateRef
             },

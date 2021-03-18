@@ -114,8 +114,9 @@ export class StackComponent extends AbstractContentItemComponent {
 
         if (notNullOrUndefined((this.config as StackConfiguration).publishSelectedItemChange$)) {
             this.subscription = (this.config as StackConfiguration).publishSelectedItemChange$.subscribe(change => {
-                console.log("On ");
-                this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
+                if (this.contentItems.find(x => x.config.id === change.id)) {
+                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
+                }
             });
         }
 

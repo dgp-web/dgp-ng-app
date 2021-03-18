@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { interval } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: "labs-docking-layout-labs-page",
@@ -29,8 +31,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          width="60">
 
                     <dgp-docking-layout-item type="stack"
-                                             selectedItemId="Secondary tab">
-                        <dgp-docking-layout-container label="Main tab">
+                                             [selectedItemId]="selectedItemId$ | async"
+                                             (selectedItemIdChange)="selectedItem($event)">
+                        <dgp-docking-layout-container label="Main tab"
+                                                      id="Main tab">
                             <ng-template>
                                 Main
                             </ng-template>
@@ -77,4 +81,17 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 })
 export class DockingLayoutLabsPageComponent {
 
+    readonly selectedItemId$ = interval(1000).pipe(
+        map(x => {
+            if (x % 2 === 0) {
+                return "Main tab";
+            } else {
+                return "Secondary tab";
+            }
+        })
+    );
+
+    selectedItem(itemId: string) {
+        console.log(itemId);
+    }
 }
