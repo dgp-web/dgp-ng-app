@@ -240,7 +240,7 @@ export class DockingLayoutService extends EventEmitter {
             return;
         }
 
-        if (this.selectedItem !== null) {
+        if (this.selectedItem !== null && this.selectedItem !== undefined) {
             this.selectedItem.deselect();
         }
 

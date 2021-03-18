@@ -4,9 +4,11 @@ import { DgpDockingLayoutModule } from "dgp-ng-docking-layout";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
 import { DgpTileModule } from "../../../../../dgp-ng-app/src/tile/tile.module";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
     imports: [
+        CommonModule,
         DgpDockingLayoutModule,
         DgpThemeSwitcherModule,
         RouterModule.forRoot([{
