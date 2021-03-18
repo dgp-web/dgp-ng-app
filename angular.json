@@ -86,12 +86,11 @@
                                 {
                                     "replace": "projects/ng-app/src/environments/environment.ts",
                                     "with": "projects/ng-app/src/environments/environment.prod.ts"
-                                },
-                                {
-                                    "replace": "projects/ng-app/src/index.html",
-                                    "with": "projects/ng-app/src/index.prod.html"
                                 }
                             ],
+                            "index": {
+                                "input": "projects/ng-app/src/index.prod.html"
+                            },
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
