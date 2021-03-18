@@ -23,7 +23,8 @@ import {
     ComponentConfiguration,
     ComponentRegistry,
     DockingLayoutService,
-    ItemConfiguration
+    ItemConfiguration,
+    StackConfiguration
 } from "../../custom-goldenlayout";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./docking-layout-item.component";
@@ -137,6 +138,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             .map(x => x.configuration);
 
         const components = this.getComponents(content);
+       // const stacks = this.getStacks(content);
         const uniqComponents = uniqBy(components, item => item.id);
 
         const config: any = {
@@ -172,6 +174,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         this.dockingLayoutService.createDockingLayout(
             config, this.elementRef.nativeElement
         );
+
 
         // TODO: Type container and state
         uniqComponents
@@ -233,6 +236,20 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
                 result.push(item as ComponentConfiguration);
             } else {
                 result = result.concat(this.getComponents((item as any).content));
+            }
+        });
+
+        return result;
+    }
+
+    private getStacks(content: ItemConfiguration[]): StackConfiguration[] {
+        let result: StackConfiguration[] = [];
+
+        content.forEach(item => {
+            if (item.type === "stack") {
+                result.push(item as StackConfiguration);
+            } else {
+                result = result.concat(this.getStacks((item as any)));
             }
         });
 

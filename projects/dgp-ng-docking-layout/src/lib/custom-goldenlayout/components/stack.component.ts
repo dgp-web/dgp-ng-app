@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ItemType } from "../types";
+import { ITEM_CONFIG, ItemConfiguration, ItemType, StackConfiguration } from "../types";
 import { LayoutManagerUtilities } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
+import { Subscription } from "rxjs";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-stack",
@@ -20,6 +22,8 @@ export class StackComponent extends AbstractContentItemComponent {
     header: HeaderComponent;
     _sided: any;
     _side: any;
+
+    subscription: Subscription;
 
     constructor(
         dockingLayoutService: DockingLayoutService,
@@ -66,6 +70,7 @@ export class StackComponent extends AbstractContentItemComponent {
         this.element.append(this.childElementContainer);
         this._setupHeaderPosition();
         this._$validateClosability();
+
     }
 
     setSize() {
@@ -104,9 +109,17 @@ export class StackComponent extends AbstractContentItemComponent {
             if (!initialItem) {
                 throw new Error("Configured activeItemIndex out of bounds");
             }
-
             this.setActiveContentItem(initialItem);
         }
+
+        if (notNullOrUndefined((this.config as StackConfiguration).publishSelectedItemChange$)) {
+            this.subscription = (this.config as StackConfiguration).publishSelectedItemChange$.subscribe(change => {
+                if (this.contentItems.find(x => x.config.id === change.id)) {
+                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
+                }
+            });
+        }
+
     }
 
     setActiveContentItem(contentItem) {
@@ -124,6 +137,10 @@ export class StackComponent extends AbstractContentItemComponent {
         this.emit("activeContentItemChanged", contentItem);
         this.layoutManager.emit("activeContentItemChanged", contentItem);
         this.emitBubblingEvent("stateChanged");
+
+        if ((this.config as StackConfiguration).onSelectedItemChange) {
+            (this.config as StackConfiguration).onSelectedItemChange(contentItem.config.id);
+        }
     }
 
     getActiveContentItem() {
@@ -185,6 +202,10 @@ export class StackComponent extends AbstractContentItemComponent {
     _$destroy() {
         super._$destroy();
         this.header._$destroy();
+
+        if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
+            this.subscription.unsubscribe();
+        }
     }
 
 
