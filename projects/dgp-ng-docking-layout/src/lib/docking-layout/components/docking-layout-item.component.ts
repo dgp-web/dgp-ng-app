@@ -1,12 +1,22 @@
-import { ChangeDetectionStrategy, Component, ContentChildren, Input, Output, QueryList, EventEmitter } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ContentChildren,
+    EventEmitter,
+    Input,
+    Output,
+    QueryList
+} from "@angular/core";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 import {
     ColumnConfiguration,
-    ItemConfiguration,
     RowConfiguration,
+    SelectedItemChange,
     StackConfiguration
 } from "../../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
+import { Subject } from "rxjs";
 
 @Component({
     selector: "dgp-docking-layout-item",
@@ -20,7 +30,7 @@ import { createGuid } from "dgp-ng-app";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DockingLayoutItemComponent {
+export class DockingLayoutItemComponent implements AfterViewInit {
 
     @ContentChildren(DockingLayoutItemComponent) items: QueryList<DockingLayoutItemComponent>;
     @ContentChildren(DockingLayoutContainerComponent) containers: QueryList<DockingLayoutContainerComponent>;
@@ -32,13 +42,43 @@ export class DockingLayoutItemComponent {
     @Input() height: number;
     @Input() selectedItemIndex = 0;
 
-    @Output()
-    readonly selectedItemIndexChange = new EventEmitter<number>();
+    private selectedItemIdValue: string;
+
+    @Input()
+    get selectedItemId(): string {
+        return this.selectedItemIdValue;
+    }
+
+    /**
+     * For setting changes from outside
+     */
+    set selectedItemId(value: string) {
+        if (value === this.selectedItemIdValue) return;
+
+        this.selectedItemIdValue = value;
+
+        if (this.configuration && (this.configuration as StackConfiguration).publishSelectedItemChange$) {
+            (this.configuration as StackConfiguration).publishSelectedItemChange$.next({id: value});
+        }
+    }
+
 
     @Output()
     readonly selectedItemIdChange = new EventEmitter<string>();
 
-    get configuration(): RowConfiguration | ColumnConfiguration | StackConfiguration {
+    configuration: RowConfiguration | ColumnConfiguration | StackConfiguration;
+
+    /**
+     * For setting this from within
+     */
+    setSelectedItemId(selectedItemIdValue: string) {
+        if (this.selectedItemIdValue === selectedItemIdValue) return;
+
+        this.selectedItemIdValue = selectedItemIdValue;
+        this.selectedItemIdChange.emit(selectedItemIdValue);
+    }
+
+    ngAfterViewInit(): void {
 
         const items = this.items.toArray()
             .filter(x => x !== this)
@@ -54,20 +94,20 @@ export class DockingLayoutItemComponent {
 
         if (this.type === "stack") {
 
-            return {
+            this.configuration = {
                 type: "stack",
                 id: this.id,
                 content,
                 activeItemIndex: this.selectedItemIndex,
-                selectedItemChange: (id, index) => {
-                    this.selectedItemIdChange.emit(id);
-                    this.selectedItemIndexChange.emit(index);
-                },
+                activeItemId: this.selectedItemId,
+                onSelectedItemChange: id => this.setSelectedItemId(id),
+                publishSelectedItemChange$: new Subject<SelectedItemChange>()
             };
+
 
         } else if (this.type === "row") {
 
-            return {
+            this.configuration = {
                 type: "row",
                 id: this.id,
                 content,
@@ -77,7 +117,7 @@ export class DockingLayoutItemComponent {
 
         } else {
 
-            return {
+            this.configuration = {
                 type: "column",
                 id: this.id,
                 content,
@@ -86,6 +126,8 @@ export class DockingLayoutItemComponent {
             };
 
         }
+
+
     }
 
 }

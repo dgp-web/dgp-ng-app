@@ -1,4 +1,5 @@
 import { InjectionToken, TemplateRef } from "@angular/core";
+import { Observer, Subject } from "rxjs";
 
 export type ItemType = "row" | "column" | "stack" | "component";
 
@@ -65,12 +66,18 @@ export interface ComponentConfiguration extends ItemConfiguration {
     selected?: () => void;
 }
 
+export interface SelectedItemChange {
+    readonly id: string;
+}
+
 export interface StackConfiguration extends ItemConfiguration {
     type: "stack";
     activeItemIndex: number;
+    activeItemId: string;
 
     content: ItemConfiguration[];
-    selectedItemChange?: (id: string, index: number) => void;
+    onSelectedItemChange?: (id: string) => void;
+    publishSelectedItemChange$?: Subject<SelectedItemChange>;
 }
 
 export interface RowConfiguration extends ItemConfiguration {

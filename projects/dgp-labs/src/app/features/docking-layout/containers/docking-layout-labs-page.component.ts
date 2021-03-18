@@ -29,13 +29,14 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          width="60">
 
                     <dgp-docking-layout-item type="stack"
-                                             selectedItemIndex="1">
+                                             selectedItemId="Secondary tab">
                         <dgp-docking-layout-container label="Main tab">
                             <ng-template>
                                 Main
                             </ng-template>
                         </dgp-docking-layout-container>
-                        <dgp-docking-layout-container label="Secondary tab">
+                        <dgp-docking-layout-container label="Secondary tab"
+                                                      id="Secondary tab">
                             <ng-template>
                                 Secondary
                             </ng-template>
