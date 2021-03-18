@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ContentChildren, Input, Output, QueryList, EventEmitter } from "@angular/core";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
-import { ColumnConfiguration, RowConfiguration, StackConfiguration } from "../../custom-goldenlayout/types";
+import {
+    ColumnConfiguration,
+    ItemConfiguration,
+    RowConfiguration,
+    StackConfiguration
+} from "../../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
 
 @Component({
@@ -22,9 +27,16 @@ export class DockingLayoutItemComponent {
 
     @Input() type: "row" | "column" | "stack";
 
+    @Input() id = createGuid();
     @Input() width: number;
     @Input() height: number;
     @Input() selectedItemIndex = 0;
+
+    @Output()
+    readonly selectedItemIndexChange = new EventEmitter<number>();
+
+    @Output()
+    readonly selectedItemIdChange = new EventEmitter<string>();
 
     get configuration(): RowConfiguration | ColumnConfiguration | StackConfiguration {
 
@@ -44,16 +56,20 @@ export class DockingLayoutItemComponent {
 
             return {
                 type: "stack",
-                id: createGuid(),
+                id: this.id,
                 content,
-                activeItemIndex: this.selectedItemIndex
+                activeItemIndex: this.selectedItemIndex,
+                selectedItemChange: (id, index) => {
+                    this.selectedItemIdChange.emit(id);
+                    this.selectedItemIndexChange.emit(index);
+                },
             };
 
         } else if (this.type === "row") {
 
             return {
                 type: "row",
-                id: createGuid(),
+                id: this.id,
                 content,
                 height: this.height,
                 width: this.width
@@ -63,7 +79,7 @@ export class DockingLayoutItemComponent {
 
             return {
                 type: "column",
-                id: createGuid(),
+                id: this.id,
                 content,
                 height: this.height,
                 width: this.width

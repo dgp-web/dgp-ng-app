@@ -62,6 +62,7 @@ export interface ComponentConfiguration extends ItemConfiguration {
 
     isClosable?: boolean;
     title?: string;
+    selected?: () => void;
 }
 
 export interface StackConfiguration extends ItemConfiguration {
@@ -69,6 +70,7 @@ export interface StackConfiguration extends ItemConfiguration {
     activeItemIndex: number;
 
     content: ItemConfiguration[];
+    selectedItemChange?: (id: string, index: number) => void;
 }
 
 export interface RowConfiguration extends ItemConfiguration {

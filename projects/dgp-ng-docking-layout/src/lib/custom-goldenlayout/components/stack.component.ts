@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ItemType } from "../types";
+import { ITEM_CONFIG, ItemConfiguration, ItemType, StackConfiguration } from "../types";
 import { LayoutManagerUtilities } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
@@ -124,6 +124,10 @@ export class StackComponent extends AbstractContentItemComponent {
         this.emit("activeContentItemChanged", contentItem);
         this.layoutManager.emit("activeContentItemChanged", contentItem);
         this.emitBubblingEvent("stateChanged");
+
+        if ((this.config as StackConfiguration).selectedItemChange) {
+            (this.config as StackConfiguration).selectedItemChange(contentItem.config.id, this.contentItems.indexOf(contentItem));
+        }
     }
 
     getActiveContentItem() {
