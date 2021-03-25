@@ -31,7 +31,7 @@ export { ChartContainerComponent } from "./lib/chart-container/components/chart-
  * -----
  */
 export * from "./lib/heatmap/constants";
-// export * from "./lib/heatmap/functions";
+export * from "./lib/heatmap/functions";
 export * from "./lib/heatmap/models";
 
 export { DgpHeatmapModule } from "./lib/heatmap/heatmap.module";
@@ -52,5 +52,6 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  * -----
  */
 export * from "./lib/shared/models";
+export * from "./lib/shared/chart.component-base";
 
 export { ChartComponentBase } from "./lib/shared/chart.component-base";
