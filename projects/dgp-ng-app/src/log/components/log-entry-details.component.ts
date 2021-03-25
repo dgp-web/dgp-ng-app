@@ -38,11 +38,11 @@ import { LogEntry, Severity } from "../models";
                 </h2>
                 <div class="content__body"
                      *ngIf="logEntry.content; else noContentTemplate">
-                    <ng-container *ngIf="!isApiError(); else apiError">
-                        {{ logEntry.content | json }}
+                    <ng-container *ngIf="isHtml(logEntry); else defaultApiErrorTemplate">
+                        <div [innerHTML]="logEntry.content | safe:'html'"></div>
                     </ng-container>
-                    <ng-template #apiError>
-                        <div [innerHTML]="logEntry.content.error | safe:'html'"></div>
+                    <ng-template #defaultApiErrorTemplate>
+                        {{ logEntry.content | json }}
                     </ng-template>
                 </div>
                 <ng-template #noContentTemplate>
@@ -130,11 +130,14 @@ export class LogEntryDetailsComponent {
     logEntry: LogEntry;
 
     isApiError(): boolean {
-        if (this.logEntry.content?.hasOwnProperty("status") && this.logEntry.content?.hasOwnProperty("error")) {
+        if (this.logEntry.content?.hasOwnProperty("status")) {
             return true;
         }
 
         return false;
     }
 
+    isHtml(logEntry: LogEntry) {
+        return typeof logEntry.content === "string" && logEntry.content?.startsWith("<html");
+    }
 }
