@@ -5,9 +5,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding } from "@an
     template: `
         <ng-content></ng-content>
 
-        <mat-card class="controls"
-                  [style.left.px]="getControlsLeft()"
-                  [style.top.px]="getControlsTop()">
+        <mat-card class="controls">
 
             <ng-content select="[chart-actions]"></ng-content>
 
@@ -26,31 +24,19 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding } from "@an
 
         .controls {
             z-index: 100;
-            position: fixed;
+            position: absolute !important;
+            top: 0;
+            left: 100%;
             display: none;
             flex-direction: column;
             padding: 4px !important;
         }
 
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    `]
 })
 export class ChartContainerComponent {
 
     @HostBinding("tabindex")
     readonly tabindex = 0;
-
-    constructor(
-        readonly elRef: ElementRef
-    ) {
-    }
-
-    getControlsLeft(): number {
-        return this.elRef.nativeElement.getBoundingClientRect().right - 4;
-    }
-
-    getControlsTop(): number {
-        return this.elRef.nativeElement.getBoundingClientRect().top;
-    }
 
 }
