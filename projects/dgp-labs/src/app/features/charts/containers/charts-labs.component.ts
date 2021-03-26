@@ -33,8 +33,9 @@ import { BoxGroup, BoxPlotSelection, BoxValues, computeBoxFromValues, HeatmapSel
         }
 
         dgp-line-chart, dgp-box-plot, dgp-heatmap {
-            height: 480px;
-            width: 640px;
+            height: 240px;
+            width: 400px;
+            flex-shrink: 0;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

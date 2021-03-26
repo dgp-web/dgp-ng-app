@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test:watch:dgp-ng-app" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="dgp-ng-app:build:watch" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="test:watch:dgp-ng-app" />
+      <script value="dgp-ng-app:build:watch" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
