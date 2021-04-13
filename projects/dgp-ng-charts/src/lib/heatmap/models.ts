@@ -43,6 +43,9 @@ export interface ExportChartConfig {
     readonly chartTitle?: string;
     readonly xAxisTitle?: string;
     readonly yAxisTitle?: string;
+
+    readonly rightLegend?: HTMLElement;
+    readonly bottomLegend?: HTMLElement;
 }
 
 export interface InternalExportChartConfig extends ExportChartConfig {
@@ -51,7 +54,8 @@ export interface InternalExportChartConfig extends ExportChartConfig {
     readonly yAxisTitle?: string;
     readonly serializedChartImageUrl: string;
     readonly serializedCanvasDataUrl?: string;
-    readonly serializedLegend?: string;
+    readonly serializedRightLegend?: string;
+    readonly serializedBottomLegend?: string;
 }
 
 /**

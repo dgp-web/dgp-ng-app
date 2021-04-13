@@ -219,7 +219,7 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
         this.matDialog.open(ExportChartDialogComponent, {
             data: {
                 serializedChartImageUrl: svgImageSrc,
-                serializedLegend,
+                serializedRightLegend: serializedLegend,
 
                 chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
                 xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,

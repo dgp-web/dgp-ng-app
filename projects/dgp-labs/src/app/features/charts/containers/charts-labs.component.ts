@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { BoxGroup, BoxPlotSelection, BoxValues, computeBoxFromValues, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
+import {
+    BoxGroup,
+    BoxPlotSelection,
+    BoxValues,
+    computeBoxFromValues,
+    HeatmapSelection,
+    HeatmapTile
+} from "dgp-ng-charts";
+import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -21,7 +29,14 @@ import { BoxGroup, BoxPlotSelection, BoxValues, computeBoxFromValues, HeatmapSel
                      yAxisTitle="y axis"
                      xAxisTitle="x axis"
                      selectionMode="Brush"
-                     (selectionChange)="selectTiles($event)"></dgp-heatmap>
+                     [exportConfig]="exportConfig"
+                     (selectionChange)="selectTiles($event)">
+
+            <ng-container right-legend>Right</ng-container>
+
+            <ng-container bottom-legend>Bottom</ng-container>
+
+        </dgp-heatmap>
     `,
     styles: [`
         :host {
@@ -78,6 +93,10 @@ export class ChartsLabsComponent {
     }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
+
+    exportConfig: ExportChartConfig = {
+        rightLegend: document.createElement("span")
+    };
 
     constructor() {
 
