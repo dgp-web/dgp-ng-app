@@ -11,6 +11,7 @@ import { DgpSpacerModule, SafePipeModule } from "dgp-ng-app";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { DgpChartContainerModule } from "../chart-container/chart-container.module";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { DgpChartContainerModule } from "../chart-container/chart-container.modu
         DgpSpacerModule,
         MatDialogModule,
         DgpChartContainerModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatSnackBarModule
     ],
     declarations: [
         HeatmapComponent,
