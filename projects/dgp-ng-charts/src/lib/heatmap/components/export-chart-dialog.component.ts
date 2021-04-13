@@ -34,7 +34,7 @@ import { scheduleRequest } from "dgp-ng-app";
                          [src]="model.serializedChartImageUrl | safe:'url'"
                          class="svg-img"/>
                     <div class="right-legend"
-                         *ngIf="model.serializedRightLegend">
+                         *ngIf="model.serializedRightLegend && includeLegend">
                         <div class="dgp-heatmap-legend"
                              [innerHTML]="model.serializedRightLegend | safe:'html'"></div>
                     </div>
@@ -45,7 +45,7 @@ import { scheduleRequest } from "dgp-ng-app";
                     {{ model.xAxisTitle }}
                 </div>
 
-                <div *ngIf="model.serializedBottomLegend"
+                <div *ngIf="model.serializedBottomLegend && includeLegend"
                      class="bottom-legend">
                     <div [innerHTML]="model.serializedBottomLegend | safe:'html'"></div>
                 </div>
@@ -53,17 +53,34 @@ import { scheduleRequest } from "dgp-ng-app";
 
         </mat-dialog-content>
 
-        <mat-dialog-actions>
-            <button mat-button
+        <mat-dialog-actions style="justify-content: center;">
+
+            <mat-button-toggle-group *ngIf="model.serializedRightLegend || model.serializedBottomLegend"
+                                     [(value)]="includeLegend">
+                <mat-button-toggle [value]="false"
+                                   aria-label="Hide legend"
+                                   matTooltip="Hide legend">
+                    <mat-icon>show_chart</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle [value]="true"
+                                   aria-label="Show legend"
+                                   matTooltip="Show legend">
+                    <mat-icon>legend_toggle</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+
+            <dgp-spacer></dgp-spacer>
+
+            <button mat-icon-button
+                    matTooltip="Copy to clipboard"
                     (click)="copyImageToClipboard()">
-                <mat-icon style="margin-right: 4px;">content_copy</mat-icon>
-                Copy to clipboard
+                <mat-icon>content_copy</mat-icon>
             </button>
 
-            <button mat-button
-                    (click)="openImageInNewTab()">
-                <mat-icon style="margin-right: 4px;">open_in_new</mat-icon>
-                Open in new tab
+            <button mat-icon-button
+                    (click)="openImageInNewTab()"
+                    matTooltip="Open in new tab">
+                <mat-icon>open_in_new</mat-icon>
             </button>
         </mat-dialog-actions>
     `,
@@ -129,6 +146,8 @@ import { scheduleRequest } from "dgp-ng-app";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportChartDialogComponent {
+
+    includeLegend = true;
 
     @ViewChild("chartRef") chartRef: ElementRef;
 

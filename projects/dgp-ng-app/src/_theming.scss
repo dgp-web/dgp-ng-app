@@ -22,6 +22,14 @@
     $primary: map-get($theme, primary);
     $accent: map-get($theme, accent);
 
+    .dgp-bg--primary {
+        background: mat-color($primary, 300) !important;
+    }
+
+    .dgp-bg--accent {
+        background: mat-color($accent, 300) !important;
+    }
+
     .dgp-list-item.--selected {
         border-left-color: mat-color($primary, 300);
         border-left-width: 4px;
