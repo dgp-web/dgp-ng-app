@@ -34,15 +34,20 @@ import { scheduleRequest } from "dgp-ng-app";
                          [src]="model.serializedChartImageUrl | safe:'url'"
                          class="svg-img"/>
                     <div class="right-legend"
-                         *ngIf="model.serializedLegend">
+                         *ngIf="model.serializedRightLegend">
                         <div class="dgp-heatmap-legend"
-                             [innerHTML]="model.serializedLegend | safe:'html'"></div>
+                             [innerHTML]="model.serializedRightLegend | safe:'html'"></div>
                     </div>
                 </div>
 
                 <div *ngIf="model.xAxisTitle"
                      class="x-axis-label">
                     {{ model.xAxisTitle }}
+                </div>
+
+                <div *ngIf="model.serializedBottomLegend"
+                     class="bottom-legend">
+                    <div [innerHTML]="model.serializedBottomLegend | safe:'html'"></div>
                 </div>
             </div>
 
