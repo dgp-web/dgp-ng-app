@@ -61,7 +61,7 @@ export class LogDocsPageComponent {
         private readonly store: Store<AppState>
     ) {
         this.store.dispatch(new LogErrorAction({title: "Hallo", error: "Welt"}));
-        this.store.dispatch(new LogErrorAction({title: "Hallo", error: this.apiError}));
+        this.store.dispatch(new LogErrorAction({title: "Hallo", error: this.apiError.error}));
     }
 
     readonly moduleCode = `

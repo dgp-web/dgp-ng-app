@@ -1,34 +1,15 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    OnDestroy
-} from "@angular/core";
-import { BehaviorSubject, from, interval, Subscription } from "rxjs";
-import { debounceTime, switchMap, tap } from "rxjs/operators";
-import { ResizeSensor } from "css-element-queries";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding } from "@angular/core";
 
 @Component({
     selector: "dgp-chart-container",
     template: `
-
         <ng-content></ng-content>
 
-        <mat-card *ngIf="areControlsVisible$ | async"
-                  class="controls"
-                  [style.left.px]="controlsLeft"
-                  [style.top.px]="controlsTop"
-                  (mouseover)="showControls()"
-                  (mouseout)="hideControls()">
+        <mat-card class="controls">
 
             <ng-content select="[chart-actions]"></ng-content>
 
         </mat-card>
-
     `,
     styles: [`
         :host {
@@ -37,91 +18,25 @@ import { notNullOrUndefined } from "dgp-ng-app";
             position: relative;
         }
 
+        :host:hover .controls, :host:focus-within .controls {
+            display: flex;
+        }
+
         .controls {
             z-index: 100;
-            position: fixed;
-            display: flex;
+            position: absolute !important;
+            top: 0;
+            left: 100%;
+            display: none;
             flex-direction: column;
             padding: 4px !important;
         }
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+
+    `]
 })
-export class ChartContainerComponent implements AfterViewInit, OnDestroy {
+export class ChartContainerComponent {
 
-    readonly areControlsVisibleScheduler$ = new BehaviorSubject<boolean>(false);
-    readonly areControlsVisible$ = this.areControlsVisibleScheduler$.pipe(debounceTime(250));
-
-    private resizeSensor: ResizeSensor;
-    private readonly resizeScheduler$ = new EventEmitter();
-    private resizeSubscription: Subscription;
-    private checkBrokenResizeSensorSubscription: Subscription;
-
-    controlsLeft: number;
-    controlsTop: number;
-
-    constructor(
-        readonly elRef: ElementRef
-    ) {
-
-        this.resizeSubscription = this.resizeScheduler$.pipe(
-            debounceTime(250),
-            switchMap(() => from(this.resize()))
-        )
-            .subscribe();
-
-    }
-
-    @HostListener("mouseover")
-    showControls() {
-        this.areControlsVisibleScheduler$.next(true);
-    }
-
-    @HostListener("mouseout")
-    hideControls() {
-        this.areControlsVisibleScheduler$.next(false);
-    }
-
-    onResize = () => this.resizeScheduler$.next();
-
-    resize() {
-        this.controlsLeft = this.elRef.nativeElement.getBoundingClientRect().right - 4;
-        this.controlsTop = this.elRef.nativeElement.getBoundingClientRect().top;
-
-        return Promise.resolve();
-    }
-
-    private initResizeSensor() {
-        if (notNullOrUndefined(this.resizeSensor) && notNullOrUndefined(this.onResize)) {
-            this.resizeSensor.detach(this.onResize);
-        }
-
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
-    }
-
-    ngAfterViewInit(): void {
-
-        this.checkBrokenResizeSensorSubscription = interval(1000)
-            .pipe(
-                tap(() => {
-                    try {
-                        this.resizeSensor?.reset();
-                    } catch (e) {
-                    }
-                })
-            )
-            .subscribe();
-
-        this.initResizeSensor();
-    }
-
-    ngOnDestroy(): void {
-        if (!this.resizeSubscription?.closed) {
-            this.resizeSubscription?.unsubscribe();
-        }
-        if (!this.checkBrokenResizeSensorSubscription?.closed) {
-            this.checkBrokenResizeSensorSubscription?.unsubscribe();
-        }
-    }
+    @HostBinding("tabindex")
+    readonly tabindex = 0;
 
 }
