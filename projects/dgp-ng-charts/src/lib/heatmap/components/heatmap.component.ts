@@ -41,6 +41,10 @@ declare var $;
                      class="x-axis-label">
                     {{ xAxisTitle }}
                 </div>
+
+                <div class="bottom-legend">
+                    <ng-content select="[bottom-legend]"></ng-content>
+                </div>
             </div>
 
             <ng-container chart-actions>
@@ -111,6 +115,10 @@ declare var $;
         .right-legend {
         }
 
+        .bottom-legend {
+
+        }
+
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -154,17 +162,28 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
         const canvasDataUrl = canvas.toDataURL();
         const svgImageSrc = svgString2ImageSrc(svgString);
 
-        const legendRoot = $(this.elRef.nativeElement).find(".right-legend").children()[0];
-        let serializedLegend: string;
-        if (notNullOrUndefined(legendRoot)) {
-            serializedLegend = new XMLSerializer().serializeToString(legendRoot);
+        const rightLegendRoot = this.exportConfig.rightLegend ?
+            this.exportConfig.rightLegend
+            : $(this.elRef.nativeElement).find(".right-legend")[0];
+        let serializedRightLegend: string;
+        if (notNullOrUndefined(rightLegendRoot)) {
+            serializedRightLegend = new XMLSerializer().serializeToString(rightLegendRoot);
+        }
+
+        const bottomLegendRoot = this.exportConfig.bottomLegend ?
+            this.exportConfig.bottomLegend
+            : $(this.elRef.nativeElement).find(".bottom-legend")[0];
+        let serializedBottomLegend: string;
+        if (notNullOrUndefined(bottomLegendRoot)) {
+            serializedBottomLegend = new XMLSerializer().serializeToString(bottomLegendRoot);
         }
 
         this.matDialog.open(ExportChartDialogComponent, {
             data: {
                 serializedChartImageUrl: svgImageSrc,
                 serializedCanvasDataUrl: canvasDataUrl,
-                serializedLegend,
+                serializedRightLegend,
+                serializedBottomLegend,
 
                 chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
                 xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,

@@ -2,6 +2,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } fro
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import html2canvas from "html2canvas";
 import { InternalExportChartConfig } from "../models";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { Store } from "@ngrx/store";
+import { scheduleRequest } from "dgp-ng-app";
+
 
 @Component({
     selector: "dgp-export-chart-dialog",
@@ -30,9 +34,9 @@ import { InternalExportChartConfig } from "../models";
                          [src]="model.serializedChartImageUrl | safe:'url'"
                          class="svg-img"/>
                     <div class="right-legend"
-                         *ngIf="model.serializedLegend">
+                         *ngIf="model.serializedRightLegend">
                         <div class="dgp-heatmap-legend"
-                             [innerHTML]="model.serializedLegend | safe:'html'"></div>
+                             [innerHTML]="model.serializedRightLegend | safe:'html'"></div>
                     </div>
                 </div>
 
@@ -40,14 +44,26 @@ import { InternalExportChartConfig } from "../models";
                      class="x-axis-label">
                     {{ model.xAxisTitle }}
                 </div>
+
+                <div *ngIf="model.serializedBottomLegend"
+                     class="bottom-legend">
+                    <div [innerHTML]="model.serializedBottomLegend | safe:'html'"></div>
+                </div>
             </div>
 
         </mat-dialog-content>
 
         <mat-dialog-actions>
             <button mat-button
-                    (click)="downloadImage()">
-                Download
+                    (click)="copyImageToClipboard()">
+                <mat-icon style="margin-right: 4px;">content_copy</mat-icon>
+                Copy to clipboard
+            </button>
+
+            <button mat-button
+                    (click)="openImageInNewTab()">
+                <mat-icon style="margin-right: 4px;">open_in_new</mat-icon>
+                Open in new tab
             </button>
         </mat-dialog-actions>
     `,
@@ -118,22 +134,59 @@ export class ExportChartDialogComponent {
 
     constructor(
         @Inject(MAT_DIALOG_DATA)
-        readonly model: InternalExportChartConfig
+        readonly model: InternalExportChartConfig,
+        private readonly matSnackBar: MatSnackBar,
+        private readonly store: Store<any>
     ) {
     }
 
-    async downloadImage() {
-        const canvas = await html2canvas(this.chartRef.nativeElement, {
-            ignoreElements: element => element.tagName.toLowerCase() === "dgp-heatmap",
-            backgroundColor: null // === transparent
+    async copyImage$() {
+
+        const imageUrl = await this.getImageDataUrl$();
+
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        document.body.appendChild(img);
+        const r = document.createRange();
+        r.setStartBefore(img);
+        r.setEndAfter(img);
+        r.selectNode(img);
+        const sel = window.getSelection();
+        sel.addRange(r);
+        document.execCommand("copy");
+        document.body.removeChild(img);
+
+        this.matSnackBar.open("Copied image to clipboard.", null, {
+            duration: 2000
         });
-        const file = canvas.toDataURL();
-        const iframe = "<iframe width='100%' height='100%' style='margin: -8px;border: none;padding: 8px;' src='" + file + "'></iframe>";
+    }
+
+    copyImageToClipboard() {
+
+        const action = scheduleRequest({
+            request$: this.copyImage$()
+        });
+
+        this.store.dispatch(action);
+
+    }
+
+    async openImageInNewTab() {
+        const imageUrl = await this.getImageDataUrl$();
+        const iframe = "<iframe width='100%' height='100%' style='margin: -8px;border: none;padding: 8px;' src='" + imageUrl + "'></iframe>";
         const x = window.open();
         x.document.open();
         x.document.write(iframe);
         x.document.close();
 
+    }
+
+    private async getImageDataUrl$() {
+        const imageCanvas = await html2canvas(this.chartRef.nativeElement, {
+            ignoreElements: element => element.tagName.toLowerCase() === "dgp-heatmap",
+            backgroundColor: null // === transparent
+        });
+        return imageCanvas.toDataURL();
     }
 
 }

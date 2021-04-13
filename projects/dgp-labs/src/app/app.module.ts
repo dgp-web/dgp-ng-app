@@ -4,7 +4,7 @@ import { AppComponent } from "./app.component";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import {
     AuthenticationApiClient,
-    AuthenticationApiClientProvider,
+    AuthenticationApiClientProvider, defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
     DgpHamburgerShellModule,
@@ -94,10 +94,11 @@ export const initializationServiceProvider: InitializationServiceProvider = {
     }, {
         path: "**",
         redirectTo: "/docking-layout"
-    }], { relativeLinkResolution: 'legacy' }),
+    }], { relativeLinkResolution: "legacy" }),
 
         StoreModule.forRoot(APP_REDUCER, {
-            metaReducers: [hmrReducer]
+            metaReducers: [hmrReducer],
+            runtimeChecks: defaultRuntimeChecks
         }),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument(),
