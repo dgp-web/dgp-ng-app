@@ -1,6 +1,7 @@
 export interface TableCellEditorSizes {
     readonly offsetTop: number;
     readonly offsetLeft: number;
+    readonly offsetRight: number;
     readonly availableSpace: {
         readonly left: number;
         readonly right: number;
