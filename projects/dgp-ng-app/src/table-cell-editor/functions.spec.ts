@@ -25,6 +25,7 @@ describe("table-cell-editor functions", () => {
         const expectedResult: TableCellEditorSizes = {
             offsetTop: 16 + 8,
             offsetLeft: 32,
+            offsetRight: undefined,
             availableSpace: {
                 left: 32,
                 right: 640 - 32,
@@ -45,6 +46,7 @@ describe("table-cell-editor functions", () => {
             tableCellEditorSizes: {
                 offsetTop: 16 + 8,
                 offsetLeft: 32,
+                offsetRight: 0,
                 availableSpace: {
                     left: 32,
                     right: 640 - 32,
