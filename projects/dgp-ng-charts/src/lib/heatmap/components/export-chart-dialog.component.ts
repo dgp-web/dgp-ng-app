@@ -171,6 +171,7 @@ export class ExportChartDialogComponent {
         r.setEndAfter(img);
         r.selectNode(img);
         const sel = window.getSelection();
+        sel.removeAllRanges();
         sel.addRange(r);
         document.execCommand("copy");
         document.body.removeChild(img);
