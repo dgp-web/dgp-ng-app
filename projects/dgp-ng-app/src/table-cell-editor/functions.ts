@@ -10,6 +10,7 @@ export function computeTableCellEditorSizes(payload: {
     return {
         offsetTop: (payload.tableCellBoundingRect.top + payload.triggerButtonElement.offsetHeight),
         offsetLeft: payload.tableCellBoundingRect.left,
+        offsetRight: payload.tableCellBoundingRect.right,
         availableSpace: {
             left: payload.tableCellBoundingRect.left,
             right: payload.window.innerWidth - (payload.tableCellBoundingRect.left),
@@ -37,7 +38,7 @@ export function getDialogPositionFromTableCellEditorSizes(payload: {
         && payload.tableCellEditorSizes.availableSpace.left >= payload.configureDialogWidth) {
         result = {
             ...result,
-            left: (payload.tableCellEditorSizes.availableSpace.right - payload.configureDialogWidth) + "px"
+            left: (payload.tableCellEditorSizes.offsetRight - payload.configureDialogWidth) + "px"
         };
     }
 

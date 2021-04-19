@@ -170,7 +170,9 @@ async function runWebpack(options: DgpNgAppBuilderOptions, context: BuilderConte
 
         const command = `webpack-dev-server --port=4200 --config ${webpackConfigPath} --env.projectPath projects/${options.projectName} --env.distPath dist/${options.projectName}  --env.tsconfigFile tsconfig.app.json`;
 
-        const child = childProcess.exec(command, err => {
+        const child = childProcess.exec(command, {
+            maxBuffer: 8192 * 1000 * 1000
+        }, err => {
             if (err !== null && err !== undefined) {
                 console.error(err);
             }
