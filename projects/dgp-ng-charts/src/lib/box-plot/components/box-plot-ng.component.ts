@@ -54,12 +54,7 @@ import { ChartSelectionMode } from "../../shared/models";
                      #chartContainer>
 
                     <svg *ngIf="boxPlotScales"
-                         class="chart-svg"
-                         dgpBoxPlotBrushSelector
-                         [scales]="boxPlotScales"
-                         [boxGroups]="model"
-                         [config]="config"
-                         (selectionChange)="selectionChange.emit($event)">
+                         class="chart-svg">
                         <g [attr.transform]="getContainerTransform()">
 
                             <g class="chart__x-axis"
@@ -70,7 +65,12 @@ import { ChartSelectionMode } from "../../shared/models";
                                dgpBoxPlotLeftAxis
                                [scales]="boxPlotScales"></g>
 
-                            <g class="measurement-result-root">
+                            <g class="measurement-result-root"
+                               dgpBoxPlotBrushSelector
+                               [scales]="boxPlotScales"
+                               [boxGroups]="model"
+                               [config]="config"
+                               (selectionChange)="selectionChange.emit($event)">
                                 <g *ngFor="let boxGroup of model"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
                                     <ng-container *ngFor="let box of boxGroup.boxes">
