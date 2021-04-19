@@ -18,57 +18,100 @@ import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales } from "../functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
+import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
+import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
+import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: "dgp-box-plot-ng",
     template: `
-        <svg class="chart-svg"
-             *ngIf="boxPlotScales"> <!-- TODO: Bind width to containerWidth -->
-            <g [attr.transform]="getContainerTransform()">
+        <dgp-chart-container>
+            <div class="chart"
+                 #chartRef>
+                <div *ngIf="chartTitle"
+                     class="title">
+                    {{ chartTitle }}
+                </div>
+                <div class="inner-container">
+                    <div *ngIf="yAxisTitle"
+                         class="y-axis-label-container">
+                        <div class="y-axis-label">
+                            {{ yAxisTitle }}
+                        </div>
+                    </div>
+                    <svg class="chart-svg"
+                         *ngIf="boxPlotScales"> <!-- TODO: Bind width to containerWidth -->
+                        <g [attr.transform]="getContainerTransform()">
 
-                <g class="chart__x-axis"
-                   dgpBoxPlotBottomAxis
-                   [scales]="boxPlotScales"></g>
+                            <g class="chart__x-axis"
+                               dgpBoxPlotBottomAxis
+                               [scales]="boxPlotScales"></g>
 
-                <g class="chart__y-axis"
-                   dgpBoxPlotLeftAxis
-                   [scales]="boxPlotScales"></g>
+                            <g class="chart__y-axis"
+                               dgpBoxPlotLeftAxis
+                               [scales]="boxPlotScales"></g>
 
-                <g class="measurement-result-root">
-                    <g *ngFor="let boxGroup of model">
-                        <ng-container *ngFor="let box of boxGroup.boxes">
-                            <line dgpBoxPlotWhisker
-                                  type="max"
-                                  [scales]="boxPlotScales"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <line dgpBoxPlotUpperAntenna
-                                  [scales]="boxPlotScales"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <rect dgpBoxPlotBox
-                                  [scales]="boxPlotScales"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></rect>
-                            <line dgpBoxPlotMedian
-                                  [scales]="boxPlotScales"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <line dgpBoxPlotLowerAntenna
-                                  [scales]="boxPlotScales"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <line dgpBoxPlotWhisker
-                                  type="min"
-                                  [scales]="boxPlotScales"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                        </ng-container>
-                    </g>
-                </g>
+                            <g class="measurement-result-root">
+                                <g *ngFor="let boxGroup of model">
+                                    <ng-container *ngFor="let box of boxGroup.boxes">
+                                        <line dgpBoxPlotWhisker
+                                              type="max"
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <line dgpBoxPlotUpperAntenna
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <rect dgpBoxPlotBox
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></rect>
+                                        <line dgpBoxPlotMedian
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <line dgpBoxPlotLowerAntenna
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <line dgpBoxPlotWhisker
+                                              type="min"
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                    </ng-container>
+                                </g>
+                            </g>
 
-            </g>
-        </svg>
+                        </g>
+                    </svg>
+                    <!--<div #chartElRef
+                         class="d3-hook"></div>-->
+                    <div class="right-legend">
+                        <ng-content select="[right-legend]"></ng-content>
+                    </div>
+                </div>
+
+                <div *ngIf="xAxisTitle"
+                     class="x-axis-label">
+                    {{ xAxisTitle }}
+                </div>
+
+            </div>
+
+            <ng-container chart-actions>
+
+                <button mat-icon-button
+                        (click)="downloadImage()"
+                        matTooltip="Download image">
+                    <mat-icon>image</mat-icon>
+                </button>
+
+            </ng-container>
+
+        </dgp-chart-container>
     `,
     styles: [`
         :host {
@@ -152,6 +195,15 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
     model: ReadonlyArray<BoxGroup>;
 
     @Input()
+    chartTitle: string;
+
+    @Input()
+    yAxisTitle: string;
+
+    @Input()
+    xAxisTitle: string;
+
+    @Input()
     config = defaultBoxPlotConfig;
 
     boxPlotScales: BoxPlotScales;
@@ -164,9 +216,14 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
     private checkBrokenResizeSensorSubscription: Subscription;
 
 
+    @Input()
+    exportConfig: ExportChartConfig;
+
+
     constructor(
         readonly elRef: ElementRef,
-        readonly cd: ChangeDetectorRef
+        readonly cd: ChangeDetectorRef,
+        private readonly matDialog: MatDialog
     ) {
 
         this.resizeSubscription = this.drawChartActionScheduler.pipe(
@@ -290,7 +347,28 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
         return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
     }
 
-    getBottomAxisTransform(): string {
-        return "translate(0," + this.boxPlotScales.yAxis.range()[1] + ")";
+    async downloadImage() {
+        const svgNode = $(this.elRef.nativeElement).find("svg")[0];
+        const svgString = serializeDOMNode(svgNode);
+        const legendRoot = $(this.elRef.nativeElement).find(".right-legend").children()[0];
+        let serializedLegend: string;
+        if (notNullOrUndefined(legendRoot)) {
+            serializedLegend = new XMLSerializer().serializeToString(legendRoot);
+        }
+
+        const svgImageSrc = svgString2ImageSrc(svgString);
+
+        this.matDialog.open(ExportChartDialogComponent, {
+            data: {
+                serializedChartImageUrl: svgImageSrc,
+                serializedRightLegend: serializedLegend,
+
+                chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
+                xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,
+                yAxisTitle: this.exportConfig?.yAxisTitle ? this.exportConfig?.yAxisTitle : this.yAxisTitle
+            } as InternalExportChartConfig
+        });
+
     }
+
 }
