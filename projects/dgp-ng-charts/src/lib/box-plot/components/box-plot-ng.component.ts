@@ -27,25 +27,26 @@ import { defaultBoxPlotConfig } from "../constants";
             <g [attr.transform]="getContainerTransform()">
 
                 <g class="chart__x-axis"
-                   dgpBoxPlotAxisBottom
-                   [scales]="boxPlotScales"> <!-- Add axis bottom -->
+                   dgpBoxPlotBottomAxis
+                   [scales]="boxPlotScales"></g>
 
-                </g>
-
-                <g class="chart__y-axis"> <!-- Add axis left -->
-
-                </g>
+                <g class="chart__y-axis"
+                   dgpBoxPlotLeftAxis
+                   [scales]="boxPlotScales"></g>
 
                 <g class="measurement-result-root">
                     <g *ngFor="let boxGroup of model">
-                        <rect *ngFor="let box of boxGroup.boxes">
-                            <line></line> <!-- Add directive for upper whisker -->
+                        <ng-container *ngFor="let box of boxGroup.boxes">
+                            <line dgpBoxPlotUpperWhisker
+                                  [scales]="boxPlotScales"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line> <!-- Add directive for upper whisker -->
                             <line></line> <!-- Add directive for upper stick -->
                             <rect></rect>
                             <line></line> <!-- Add directive for median -->
                             <line></line>  <!-- Add directive for lower stick -->
                             <line></line> <!-- Add directive for lower whisker -->
-                        </rect>
+                        </ng-container>
                     </g>
                 </g>
 
@@ -265,5 +266,9 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     getContainerTransform(): string {
         return "translate(" + this.config.margin.left + " " + this.config.margin.left + ")";
+    }
+
+    getBottomAxisTransform(): string {
+        return "translate(0," + this.boxPlotScales.yAxis.range()[1] + ")";
     }
 }

@@ -8,6 +8,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { DgpChartContainerModule } from "../chart-container/chart-container.module";
 import { BoxPlotNgComponent } from "./components/box-plot-ng.component";
 import { BoxPlotBottomAxisDirective } from "./directives/box-plot-bottom-axis.directive";
+import { BoxPlotLeftAxisDirective } from "./directives/box-plot-left-axis.directive";
+import { BoxPlotUpperWhiskerDirective } from "./directives/box-plot-upper-whisker.directive";
 
 @NgModule({
     imports: [
@@ -21,12 +23,16 @@ import { BoxPlotBottomAxisDirective } from "./directives/box-plot-bottom-axis.di
     declarations: [
         BoxPlotComponent,
         BoxPlotNgComponent,
-        BoxPlotBottomAxisDirective
+        BoxPlotBottomAxisDirective,
+        BoxPlotLeftAxisDirective,
+        BoxPlotUpperWhiskerDirective
     ],
     exports: [
         BoxPlotComponent,
         BoxPlotNgComponent,
-        BoxPlotBottomAxisDirective
+        BoxPlotBottomAxisDirective,
+        BoxPlotLeftAxisDirective,
+        BoxPlotUpperWhiskerDirective
     ]
 })
 export class DgpBoxPlotModule {

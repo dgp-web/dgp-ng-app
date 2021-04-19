@@ -17,6 +17,8 @@ export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { BoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 export { BoxPlotNgComponent } from "./lib/box-plot/components/box-plot-ng.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
+export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
+export { BoxPlotUpperWhiskerDirective } from "./lib/box-plot/directives/box-plot-upper-whisker.directive";
 
 /**
  * -----
