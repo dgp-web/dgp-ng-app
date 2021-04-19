@@ -37,15 +37,32 @@ import { defaultBoxPlotConfig } from "../constants";
                 <g class="measurement-result-root">
                     <g *ngFor="let boxGroup of model">
                         <ng-container *ngFor="let box of boxGroup.boxes">
-                            <line dgpBoxPlotUpperWhisker
+                            <line dgpBoxPlotWhisker
+                                  type="max"
                                   [scales]="boxPlotScales"
                                   [boxGroup]="boxGroup"
-                                  [box]="box"></line> <!-- Add directive for upper whisker -->
-                            <line></line> <!-- Add directive for upper stick -->
-                            <rect></rect>
-                            <line></line> <!-- Add directive for median -->
-                            <line></line>  <!-- Add directive for lower stick -->
-                            <line></line> <!-- Add directive for lower whisker -->
+                                  [box]="box"></line>
+                            <line dgpBoxPlotUpperAntenna
+                                  [scales]="boxPlotScales"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <rect dgpBoxPlotBox
+                                  [scales]="boxPlotScales"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></rect>
+                            <line dgpBoxPlotMedian
+                                  [scales]="boxPlotScales"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <line dgpBoxPlotLowerAntenna
+                                  [scales]="boxPlotScales"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <line dgpBoxPlotWhisker
+                                  type="min"
+                                  [scales]="boxPlotScales"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
                         </ng-container>
                     </g>
                 </g>
@@ -54,14 +71,17 @@ import { defaultBoxPlotConfig } from "../constants";
         </svg>
     `,
     styles: [`
-        svg {
-            position: absolute;
+        :host {
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
         }
 
-        .chart-svg {
+        svg {
+            position: absolute;
             overflow: visible;
-            width: 400px;
-            height: 320px;
+            width: 100%;
+            height: 100%;
         }
 
         .chart__y-axis {
@@ -222,10 +242,12 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
         await timer(0)
             .toPromise();
 
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+
         this.drawD3Chart({
             svg: null,
-            containerHeight: 320,
-            containerWidth: 400
+            containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
+            containerWidth: rect.width - this.config.margin.left - this.config.margin.right
         });
 
         /* d3.select(this.chartElRef.nativeElement)
@@ -265,7 +287,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     getContainerTransform(): string {
-        return "translate(" + this.config.margin.left + " " + this.config.margin.left + ")";
+        return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
     }
 
     getBottomAxisTransform(): string {

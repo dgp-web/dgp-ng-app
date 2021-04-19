@@ -18,7 +18,11 @@ export { BoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 export { BoxPlotNgComponent } from "./lib/box-plot/components/box-plot-ng.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
 export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
-export { BoxPlotUpperWhiskerDirective } from "./lib/box-plot/directives/box-plot-upper-whisker.directive";
+export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whisker.directive";
+export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
+export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";
+export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
+export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
 
 /**
  * -----

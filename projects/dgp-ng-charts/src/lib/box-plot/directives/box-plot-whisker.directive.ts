@@ -1,11 +1,14 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core"
-import { Box, BoxGroup, BoxPlotScales } from "../models";
+import { Box, BoxGroup, BoxPlotScales, BoxQuantiles } from "../models";
 
-@Directive({selector: "[dgpBoxPlotUpperWhisker]"})
-export class BoxPlotUpperWhiskerDirective implements OnChanges {
+@Directive({selector: "[dgpBoxPlotWhisker]"})
+export class BoxPlotWhiskerDirective implements OnChanges {
 
     @Input()
     box: Box;
+
+    @Input()
+    type: keyof BoxQuantiles;
 
     @Input()
     boxGroup: BoxGroup;
@@ -27,8 +30,8 @@ export class BoxPlotUpperWhiskerDirective implements OnChanges {
             const x2 = this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId](this.box.boxId)
                 + this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId].bandwidth() * 0.75;
 
-            const y1 = this.scales.yAxis(this.box.quantiles.max);
-            const y2 = this.scales.yAxis(this.box.quantiles.max);
+            const y1 = this.scales.yAxis(this.box.quantiles[this.type]);
+            const y2 = this.scales.yAxis(this.box.quantiles[this.type]);
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x1", x1.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "x2", x2.toString());
