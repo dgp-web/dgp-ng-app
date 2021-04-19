@@ -17,14 +17,16 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             Charts
         </dgp-page-header>
 
-        <dgp-box-plot [model]="boxGroups"
+       <!-- <dgp-box-plot [model]="boxGroups"
                       chartTitle="Chart title"
                       yAxisTitle="y axis"
                       xAxisTitle="x axis"
                       selectionMode="Brush"
-                      (selectionChange)="selectOutliers($event)"></dgp-box-plot>
+                      (selectionChange)="selectOutliers($event)"></dgp-box-plot>-->
 
-        <dgp-heatmap [model]="heatmapTiles"
+        <dgp-box-plot-ng [model]="boxGroups"></dgp-box-plot-ng>
+
+       <!-- <dgp-heatmap [model]="heatmapTiles"
                      chartTitle="Chart title"
                      yAxisTitle="y axis"
                      xAxisTitle="x axis"
@@ -36,7 +38,7 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
 
             <ng-container bottom-legend>Bottom</ng-container>
 
-        </dgp-heatmap>
+        </dgp-heatmap>-->
     `,
     styles: [`
         :host {

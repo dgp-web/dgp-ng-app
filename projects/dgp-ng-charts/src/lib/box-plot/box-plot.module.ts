@@ -7,6 +7,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatDialogModule } from "@angular/material/dialog";
 import { DgpChartContainerModule } from "../chart-container/chart-container.module";
 import { BoxPlotNgComponent } from "./components/box-plot-ng.component";
+import { BoxPlotBottomAxisDirective } from "./directives/box-plot-bottom-axis.directive";
 
 @NgModule({
     imports: [
@@ -19,11 +20,13 @@ import { BoxPlotNgComponent } from "./components/box-plot-ng.component";
     ],
     declarations: [
         BoxPlotComponent,
-        BoxPlotNgComponent
+        BoxPlotNgComponent,
+        BoxPlotBottomAxisDirective
     ],
     exports: [
         BoxPlotComponent,
-        BoxPlotNgComponent
+        BoxPlotNgComponent,
+        BoxPlotBottomAxisDirective
     ]
 })
 export class DgpBoxPlotModule {

@@ -1,6 +1,7 @@
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
@@ -9,7 +10,6 @@ import {
     OnDestroy,
     SimpleChanges
 } from "@angular/core";
-import { SharedChartConfig } from "../../shared/models";
 import { BoxGroup, BoxPlotScales } from "../models";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
 import { from, interval, Subscription, timer } from "rxjs";
@@ -17,18 +17,22 @@ import { ResizeSensor } from "css-element-queries";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales } from "../functions";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { defaultBoxPlotConfig } from "../constants";
 
 @Component({
-    selector: "dgp-box-plot-ng.component",
+    selector: "dgp-box-plot-ng",
     template: `
-        <svg class="chart-svg"> <!-- TODO: Bind width to containerWidth -->
+        <svg class="chart-svg"
+             *ngIf="boxPlotScales"> <!-- TODO: Bind width to containerWidth -->
             <g [attr.transform]="getContainerTransform()">
 
-                <g class="chart__x-axis">
+                <g class="chart__x-axis"
+                   dgpBoxPlotAxisBottom
+                   [scales]="boxPlotScales"> <!-- Add axis bottom -->
 
                 </g>
 
-                <g class="chart__y-axis">
+                <g class="chart__y-axis"> <!-- Add axis left -->
 
                 </g>
 
@@ -55,6 +59,8 @@ import { notNullOrUndefined } from "dgp-ng-app";
 
         .chart-svg {
             overflow: visible;
+            width: 400px;
+            height: 320px;
         }
 
         .chart__y-axis {
@@ -125,7 +131,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
     model: ReadonlyArray<BoxGroup>;
 
     @Input()
-    config: SharedChartConfig;
+    config = defaultBoxPlotConfig;
 
     boxPlotScales: BoxPlotScales;
 
@@ -138,7 +144,8 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
 
     constructor(
-        readonly elRef: ElementRef
+        readonly elRef: ElementRef,
+        readonly cd: ChangeDetectorRef
     ) {
 
         this.resizeSubscription = this.drawChartActionScheduler.pipe(
@@ -195,7 +202,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
             containerWidth: payload.containerWidth,
             boxGroups: this.model
         });
-
+        this.cd.markForCheck();
     }
 
     private readonly onResize = () => this.scheduleDrawChartAction();
@@ -213,6 +220,12 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
         this.resizeSensor.detach(this.onResize);
         await timer(0)
             .toPromise();
+
+        this.drawD3Chart({
+            svg: null,
+            containerHeight: 320,
+            containerWidth: 400
+        });
 
         /* d3.select(this.chartElRef.nativeElement)
              .html("");
