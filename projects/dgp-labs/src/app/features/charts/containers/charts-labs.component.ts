@@ -25,7 +25,8 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
                        (selectionChange)="selectOutliers($event)"></dgp-box-plot>-->
 
         <dgp-box-plot-ng [model]="boxGroups"
-                         chartTitle="Title via input">
+                         chartTitle="Title via input"
+                         style="width: 640px; max-height: 480px; margin: auto;">
 
             <ng-container chart-title>
                 Title via template slot

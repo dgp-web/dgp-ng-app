@@ -52,7 +52,7 @@ import { MatDialog } from "@angular/material/dialog";
                      #chartContainer>
 
                     <svg class="chart-svg"
-                         *ngIf="boxPlotScales"> <!-- TODO: Bind width to containerWidth -->
+                         *ngIf="boxPlotScales">
                         <g [attr.transform]="getContainerTransform()">
 
                             <g class="chart__x-axis"
@@ -122,7 +122,7 @@ import { MatDialog } from "@angular/material/dialog";
             flex-grow: 1;
         }
 
-        svg {
+        .chart-svg {
             position: absolute;
             overflow: visible;
             width: 100%;
