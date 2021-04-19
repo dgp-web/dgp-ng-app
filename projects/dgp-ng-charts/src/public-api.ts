@@ -15,6 +15,7 @@ export * from "./lib/box-plot/models";
 
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { BoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
+export { BoxPlotNgComponent } from "./lib/box-plot/components/box-plot-ng.component";
 
 /**
  * -----
