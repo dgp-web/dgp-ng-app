@@ -24,6 +24,7 @@ export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot
 export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
 export { ChartComponent } from "./lib/box-plot/components/chart.component";
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
+export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outlier.directive";
 
 /**
  * -----

@@ -15,6 +15,7 @@ import { BoxPlotLowerAntennaDirective } from "./directives/box-plot-lower-antenn
 import { BoxPlotBoxDirective } from "./directives/box-plot-box.directive";
 import { BoxPlotMedianDirective } from "./directives/box-plot-median.directive";
 import { ChartComponent } from "./components/chart.component";
+import { BoxPlotOutlierDirective } from "./directives/box-plot-outlier.directive";
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { ChartComponent } from "./components/chart.component";
         BoxPlotLowerAntennaDirective,
         BoxPlotBoxDirective,
         BoxPlotMedianDirective,
-        ChartComponent
+        ChartComponent,
+        BoxPlotOutlierDirective
     ],
     exports: [
         BoxPlotComponent,
@@ -47,7 +49,8 @@ import { ChartComponent } from "./components/chart.component";
         BoxPlotLowerAntennaDirective,
         BoxPlotBoxDirective,
         BoxPlotMedianDirective,
-        ChartComponent
+        ChartComponent,
+        BoxPlotOutlierDirective
     ]
 })
 export class DgpBoxPlotModule {
