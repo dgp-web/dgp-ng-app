@@ -8,10 +8,11 @@ import {
     Input,
     OnChanges,
     OnDestroy,
+    Output,
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { BoxGroup, BoxPlotScales } from "../models";
+import { BoxGroup, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
 import { from, interval, Subscription, timer } from "rxjs";
 import { ResizeSensor } from "css-element-queries";
@@ -23,6 +24,7 @@ import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
 import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
 import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
 import { MatDialog } from "@angular/material/dialog";
+import { ChartSelectionMode } from "../../shared/models";
 
 @Component({
     selector: "dgp-box-plot-ng",
@@ -51,8 +53,13 @@ import { MatDialog } from "@angular/material/dialog";
                 <div style="display: flex; flex-direction: column; flex-grow: 1; width: auto; height: auto;"
                      #chartContainer>
 
-                    <svg class="chart-svg"
-                         *ngIf="boxPlotScales">
+                    <svg *ngIf="boxPlotScales"
+                         class="chart-svg"
+                         dgpBoxPlotBrushSelector
+                         [scales]="boxPlotScales"
+                         [boxGroups]="model"
+                         [config]="config"
+                         (selectionChange)="selectionChange.emit($event)">
                         <g [attr.transform]="getContainerTransform()">
 
                             <g class="chart__x-axis"
@@ -169,6 +176,9 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     boxPlotScales: BoxPlotScales;
 
+    @Input()
+    selectionMode: ChartSelectionMode = "Brush";
+
     private resizeSensor: ResizeSensor;
     private readonly drawChartActionScheduler = new EventEmitter();
     private isInitialResize = true;
@@ -176,10 +186,11 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
     private resizeSubscription: Subscription;
     private checkBrokenResizeSensorSubscription: Subscription;
 
-
     @Input()
     exportConfig: ExportChartConfig;
 
+    @Output()
+    readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
     constructor(
         private readonly cd: ChangeDetectorRef,
@@ -239,6 +250,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
             containerWidth: payload.containerWidth,
             boxGroups: this.model
         });
+
         this.cd.markForCheck();
     }
 
@@ -267,37 +279,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
             containerWidth: rect.width - this.config.margin.left - this.config.margin.right
         });
 
-        /* d3.select(this.chartElRef.nativeElement)
-             .html("");
 
-         if (this.model && this.config) {
-
-             const containerWidth = parseInt(d3.select(this.chartElRef.nativeElement)
-                 .style("width"), 10);
-             const containerHeight = parseInt(d3.select(this.chartElRef.nativeElement)
-                 .style("height"), 10);
-
-             const svg = d3.select(this.chartElRef.nativeElement)
-                 .append("svg")
-                 .attr("width", containerWidth)
-                 .attr("height", containerHeight)
-                 .style("position", "absolute")
-                 .attr("class", "chart-svg")
-                 .append("g")
-                 .attr("transform",
-                     "translate(" + this.config.margin.left
-                     + ","
-                     + this.config.margin.top
-                     + ")"
-                 );
-
-             this.drawD3Chart({
-                 svg,
-                 containerHeight,
-                 containerWidth
-             });
-         }
- */
         this.isInitialResize = true;
         this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
 

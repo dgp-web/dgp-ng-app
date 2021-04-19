@@ -136,7 +136,12 @@ export function createBoxPlotScales(payload: {
     return {
         xAxis,
         yAxis,
-        xAxisSubgroupKVS
+        xAxisSubgroupKVS,
+        containerHeight: payload.containerHeight,
+        containerWidth: payload.containerWidth,
+        barAreaHeight,
+        barAreaWidth,
+        chartMargin: config.margin
     };
 
 }

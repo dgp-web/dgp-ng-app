@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    Output
+} from "@angular/core";
 import * as d3 from "d3";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
