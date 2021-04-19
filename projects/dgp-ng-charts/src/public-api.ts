@@ -22,6 +22,7 @@ export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whis
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
 export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";
 export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
+export { ChartComponent } from "./lib/box-plot/components/chart.component";
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
 
 /**

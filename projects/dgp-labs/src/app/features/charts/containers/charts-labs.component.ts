@@ -17,28 +17,47 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             Charts
         </dgp-page-header>
 
-       <!-- <dgp-box-plot [model]="boxGroups"
+        <!-- <dgp-box-plot [model]="boxGroups"
+                       chartTitle="Chart title"
+                       yAxisTitle="y axis"
+                       xAxisTitle="x axis"
+                       selectionMode="Brush"
+                       (selectionChange)="selectOutliers($event)"></dgp-box-plot>-->
+
+        <dgp-box-plot-ng [model]="boxGroups"
+                         chartTitle="Title via input">
+
+            <ng-container chart-title>
+                Title via template slot
+            </ng-container>
+
+            <ng-container y-axis-title>
+                Title for the y axis
+            </ng-container>
+
+            <ng-container x-axis-title>
+                Title for the x axis
+            </ng-container>
+
+            <ng-container right-legend>
+                Test
+            </ng-container>
+
+        </dgp-box-plot-ng>
+
+        <!-- <dgp-heatmap [model]="heatmapTiles"
                       chartTitle="Chart title"
                       yAxisTitle="y axis"
                       xAxisTitle="x axis"
                       selectionMode="Brush"
-                      (selectionChange)="selectOutliers($event)"></dgp-box-plot>-->
+                      [exportConfig]="exportConfig"
+                      (selectionChange)="selectTiles($event)">
 
-        <dgp-box-plot-ng [model]="boxGroups"></dgp-box-plot-ng>
+             <ng-container right-legend>Right</ng-container>
 
-       <!-- <dgp-heatmap [model]="heatmapTiles"
-                     chartTitle="Chart title"
-                     yAxisTitle="y axis"
-                     xAxisTitle="x axis"
-                     selectionMode="Brush"
-                     [exportConfig]="exportConfig"
-                     (selectionChange)="selectTiles($event)">
+             <ng-container bottom-legend>Bottom</ng-container>
 
-            <ng-container right-legend>Right</ng-container>
-
-            <ng-container bottom-legend>Bottom</ng-container>
-
-        </dgp-heatmap>-->
+         </dgp-heatmap>-->
     `,
     styles: [`
         :host {
