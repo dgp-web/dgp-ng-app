@@ -8,7 +8,8 @@ import {
     Input,
     OnChanges,
     OnDestroy,
-    SimpleChanges
+    SimpleChanges,
+    ViewChild
 } from "@angular/core";
 import { BoxGroup, BoxPlotScales } from "../models";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
@@ -16,7 +17,7 @@ import { from, interval, Subscription, timer } from "rxjs";
 import { ResizeSensor } from "css-element-queries";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales } from "../functions";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
 import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
 import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
@@ -27,19 +28,29 @@ import { MatDialog } from "@angular/material/dialog";
     selector: "dgp-box-plot-ng",
     template: `
         <dgp-chart-container>
-            <div class="chart"
-                 #chartRef>
-                <div *ngIf="chartTitle"
-                     class="title">
-                    {{ chartTitle }}
-                </div>
-                <div class="inner-container">
-                    <div *ngIf="yAxisTitle"
-                         class="y-axis-label-container">
-                        <div class="y-axis-label">
-                            {{ yAxisTitle }}
-                        </div>
-                    </div>
+            <dgp-chart [yAxisTitle]="yAxisTitle"
+                       [xAxisTitle]="xAxisTitle"
+                       [chartTitle]="chartTitle">
+
+                <ng-container chart-title>
+                    <ng-content select="[chart-title]"></ng-content>
+                </ng-container>
+
+                <ng-container x-axis-title>
+                    <ng-content select="[x-axis-title]"></ng-content>
+                </ng-container>
+
+                <ng-container y-axis-title>
+                    <ng-content select="[y-axis-title]"></ng-content>
+                </ng-container>
+
+                <ng-container right-legend>
+                    <ng-content select="[right-legend]"></ng-content>
+                </ng-container>
+
+                <div style="display: flex; flex-direction: column; flex-grow: 1; width: auto; height: auto;"
+                     #chartContainer>
+
                     <svg class="chart-svg"
                          *ngIf="boxPlotScales"> <!-- TODO: Bind width to containerWidth -->
                         <g [attr.transform]="getContainerTransform()">
@@ -87,19 +98,10 @@ import { MatDialog } from "@angular/material/dialog";
 
                         </g>
                     </svg>
-                    <!--<div #chartElRef
-                         class="d3-hook"></div>-->
-                    <div class="right-legend">
-                        <ng-content select="[right-legend]"></ng-content>
-                    </div>
+
                 </div>
 
-                <div *ngIf="xAxisTitle"
-                     class="x-axis-label">
-                    {{ xAxisTitle }}
-                </div>
-
-            </div>
+            </dgp-chart>
 
             <ng-container chart-actions>
 
@@ -134,62 +136,12 @@ import { MatDialog } from "@angular/material/dialog";
         .chart__x-axis {
             font-size: 16px;
         }
-
-        .tick {
-            font-size: smaller;
-        }
-
-        .chart {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex-grow: 1;
-        }
-
-        .title {
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            margin: 16px;
-            word-break: break-all;
-        }
-
-        .inner-container {
-            display: flex;
-            flex-grow: 1;
-        }
-
-        .y-axis-label-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 40px;
-            max-width: 40px;
-        }
-
-        .y-axis-label {
-            transform: rotate(-90deg);
-            white-space: nowrap;
-        }
-
-        .d3-hook {
-            flex-grow: 1;
-            height: 100%;
-        }
-
-        .x-axis-label {
-            min-height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .right-legend {
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
+
+    @ViewChild("chartContainer") elRef: ElementRef;
 
     @Input()
     model: ReadonlyArray<BoxGroup>;
@@ -221,8 +173,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
 
     constructor(
-        readonly elRef: ElementRef,
-        readonly cd: ChangeDetectorRef,
+        private readonly cd: ChangeDetectorRef,
         private readonly matDialog: MatDialog
     ) {
 
@@ -244,8 +195,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
                     } catch (e) {
                     }
                 })
-            )
-            .subscribe();
+            ).subscribe();
 
         this.initResizeSensor();
     }
@@ -295,9 +245,10 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     private async drawChart(): Promise<void> {
 
+        if (isNullOrUndefined(this.elRef.nativeElement)) return;
+
         this.resizeSensor.detach(this.onResize);
-        await timer(0)
-            .toPromise();
+        await timer(0).toPromise();
 
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
