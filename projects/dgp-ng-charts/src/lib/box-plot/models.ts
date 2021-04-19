@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { SharedChartConfig } from "../shared/models";
+import { ChartMargin, SharedChartConfig } from "../shared/models";
 import { KVS } from "entity-store";
 
 export interface Box {
@@ -65,6 +65,11 @@ export interface BoxPlotConfig extends SharedChartConfig {
 }
 
 export interface BoxPlotScales {
+    readonly containerWidth: number;
+    readonly containerHeight: number;
+    readonly barAreaWidth: number;
+    readonly barAreaHeight: number;
+    readonly chartMargin: ChartMargin;
     readonly xAxis: d3.ScaleBand<string>;
     readonly xAxisSubgroupKVS: KVS<d3.ScaleBand<string>>;
     readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
