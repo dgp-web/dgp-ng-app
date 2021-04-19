@@ -47,10 +47,14 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
 
             const svg = this.elementRef.nativeElement;
 
+            const scale = this.elementRef.nativeElement.getBoundingClientRect();
+
+            console.log(scale);
+
             d3.select(svg).call(d3.brush()
                 .extent([
-                    [this.scales.chartMargin.left, this.scales.chartMargin.top],
-                    [this.scales.containerWidth, this.scales.containerHeight]
+                    [0, 0],
+                    [400, 300]  // TODO
                 ])
                 .on("start brush", () => {
                     const extent = d3.event.selection;
