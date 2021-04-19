@@ -93,6 +93,14 @@ import { MatDialog } from "@angular/material/dialog";
                                               [scales]="boxPlotScales"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
+
+                                        <circle *ngFor="let value of box.outliers"
+                                                r="3"
+                                                dgpBoxPlotOutlier
+                                                [scales]="boxPlotScales"
+                                                [boxGroup]="boxGroup"
+                                                [box]="box"
+                                                [value]="value"></circle>
                                     </ng-container>
                                 </g>
                             </g>
