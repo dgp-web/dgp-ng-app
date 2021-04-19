@@ -64,7 +64,8 @@ import { MatDialog } from "@angular/material/dialog";
                                [scales]="boxPlotScales"></g>
 
                             <g class="measurement-result-root">
-                                <g *ngFor="let boxGroup of model">
+                                <g *ngFor="let boxGroup of model"
+                                   [attr.transform]="getResultRootTransform(boxGroup)">
                                     <ng-container *ngFor="let box of boxGroup.boxes">
                                         <line dgpBoxPlotWhisker
                                               type="max"
@@ -296,6 +297,10 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     getContainerTransform(): string {
         return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
+    }
+
+    getResultRootTransform(boxGroup: BoxGroup) {
+        return "translate(" + this.boxPlotScales.xAxis(boxGroup.boxGroupId) + ")";
     }
 
     async downloadImage() {

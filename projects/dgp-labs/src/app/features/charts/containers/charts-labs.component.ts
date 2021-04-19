@@ -112,6 +112,39 @@ export class ChartsLabsComponent {
             colorHex: "#309000"
         }],
         label: "First group"
+    }, {
+        value: "second",
+        boxGroupId: "second",
+        boxes: [{
+            boxId: "second01",
+            boxGroupId: "second",
+            quantiles: {
+                min: 1,
+                lower: 2.25,
+                median: 5.5,
+                upper: 6.75,
+                max: 10
+            },
+            outliers: [
+                17, 18
+            ],
+            colorHex: "#3000f0"
+        }, {
+            boxId: "second02",
+            boxGroupId: "second",
+            quantiles: {
+                min: 2,
+                lower: 3.25,
+                median: 5,
+                upper: 6,
+                max: 9
+            },
+            outliers: [
+                -2, -1, 14
+            ],
+            colorHex: "#309000"
+        }],
+        label: "Second group"
     }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
