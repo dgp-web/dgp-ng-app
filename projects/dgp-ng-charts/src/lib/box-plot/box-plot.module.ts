@@ -17,6 +17,7 @@ import { BoxPlotMedianDirective } from "./directives/box-plot-median.directive";
 import { ChartComponent } from "./components/chart.component";
 import { BoxPlotOutlierDirective } from "./directives/box-plot-outlier.directive";
 import { BoxPlotBrushSelectorDirective } from "./directives/box-plot-brush-selector.directive";
+import { BoxPlotOutlierTooltipDirective } from "./directives/box-plot-outlier-tooltip.directive";
 
 @NgModule({
     imports: [
@@ -39,7 +40,8 @@ import { BoxPlotBrushSelectorDirective } from "./directives/box-plot-brush-selec
         BoxPlotMedianDirective,
         ChartComponent,
         BoxPlotOutlierDirective,
-        BoxPlotBrushSelectorDirective
+        BoxPlotBrushSelectorDirective,
+        BoxPlotOutlierTooltipDirective
     ],
     exports: [
         BoxPlotComponent,
@@ -53,7 +55,8 @@ import { BoxPlotBrushSelectorDirective } from "./directives/box-plot-brush-selec
         BoxPlotMedianDirective,
         ChartComponent,
         BoxPlotOutlierDirective,
-        BoxPlotBrushSelectorDirective
+        BoxPlotBrushSelectorDirective,
+        BoxPlotOutlierTooltipDirective
     ]
 })
 export class DgpBoxPlotModule {
