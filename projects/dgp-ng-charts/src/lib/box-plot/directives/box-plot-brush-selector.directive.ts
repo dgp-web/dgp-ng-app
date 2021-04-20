@@ -3,6 +3,7 @@ import { BoxGroup, BoxOutlier, BoxPlotScales, BoxPlotSelection } from "../models
 import * as d3 from "d3";
 import { getOutlierXPosition, isBrushed } from "../functions";
 import { defaultBoxPlotConfig } from "../constants";
+import { ChartSelectionMode } from "../../shared/models";
 
 function getOutliers(payload: ReadonlyArray<BoxGroup>) {
     const outliers = new Array<BoxOutlier>();
@@ -34,6 +35,9 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
     @Input()
     config = defaultBoxPlotConfig;
 
+    @Input()
+    selectionMode: ChartSelectionMode = "None";
+
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
@@ -44,7 +48,9 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        if (changes.scales || changes.box || changes.boxGroup) {
+        if (changes.scales || changes.box || changes.boxGroup || changes.selectionMode) {
+
+            if (this.selectionMode !== "Brush") return;
 
             const svg = this.elementRef.nativeElement;
 

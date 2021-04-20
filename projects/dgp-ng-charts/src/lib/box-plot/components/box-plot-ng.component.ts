@@ -12,7 +12,7 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { BoxGroup, BoxPlotScales, BoxPlotSelection } from "../models";
+import { Box, BoxGroup, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
 import { from, interval, Subscription, timer } from "rxjs";
 import { ResizeSensor } from "css-element-queries";
@@ -70,6 +70,7 @@ import { ChartSelectionMode } from "../../shared/models";
                                [scales]="boxPlotScales"
                                [boxGroups]="model"
                                [config]="config"
+                               [selectionMode]="selectionMode"
                                (selectionChange)="selectionChange.emit($event)">
                                 <g *ngFor="let boxGroup of model"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
@@ -103,11 +104,26 @@ import { ChartSelectionMode } from "../../shared/models";
 
                                         <circle *ngFor="let value of box.outliers"
                                                 r="3"
+                                                tabindex="0"
                                                 dgpBoxPlotOutlier
                                                 [scales]="boxPlotScales"
                                                 [boxGroup]="boxGroup"
                                                 [box]="box"
-                                                [value]="value"></circle>
+                                                [value]="value"
+                                                (focus)="highlightOutlier(box, value)"
+                                                (mouseenter)="highlightOutlier(box, value)"
+                                                (blur)="unhighlightOutlier(box, value)"
+                                                (mouseleave)="unhighlightOutlier(box, value)"></circle>
+                                        <text *ngFor="let value of box.outliers"
+                                              class="tooltip hidden"
+                                              [class.visible]="outlierKey === box.boxGroupId + '.' + box.boxId + '.' + value"
+                                              dgpBoxPlotOutlierTooltip
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"
+                                              [value]="value">
+                                            {{ value }}
+                                        </text>
                                     </ng-container>
                                 </g>
                             </g>
@@ -152,6 +168,19 @@ import { ChartSelectionMode } from "../../shared/models";
         .chart__x-axis {
             font-size: 16px;
         }
+
+        .tooltip {
+            position: fixed;
+            fill: white;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .visible {
+            visibility: visible !important;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -177,7 +206,7 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
     boxPlotScales: BoxPlotScales;
 
     @Input()
-    selectionMode: ChartSelectionMode = "Brush";
+    selectionMode: ChartSelectionMode = "None";
 
     private resizeSensor: ResizeSensor;
     private readonly drawChartActionScheduler = new EventEmitter();
@@ -185,6 +214,8 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     private resizeSubscription: Subscription;
     private checkBrokenResizeSensorSubscription: Subscription;
+
+    outlierKey: string;
 
     @Input()
     exportConfig: ExportChartConfig;
@@ -317,4 +348,12 @@ export class BoxPlotNgComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     }
 
+    highlightOutlier(box: Box, value: number) {
+        console.log("Test");
+        this.outlierKey = box.boxGroupId + "." + box.boxId + "." + value;
+    }
+
+    unhighlightOutlier(box: Box, value: number) {
+        this.outlierKey = null;
+    }
 }
