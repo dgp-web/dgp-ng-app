@@ -39,6 +39,8 @@ export class BoxPlotOutlierDirective implements OnChanges {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "r", "3");
             this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex);
+
+            this.renderer.setAttribute(this.elementRef.nativeElement, "tabindex", "0");
         }
 
     }

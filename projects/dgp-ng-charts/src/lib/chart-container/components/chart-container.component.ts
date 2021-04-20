@@ -6,9 +6,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding } from "@an
         <ng-content></ng-content>
 
         <mat-card class="controls">
-
             <ng-content select="[chart-actions]"></ng-content>
-
         </mat-card>
     `,
     styles: [`
@@ -26,7 +24,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding } from "@an
             z-index: 100;
             position: absolute !important;
             top: 0;
-            left: 100%;
+            right: 0;
             display: none;
             flex-direction: column;
             padding: 4px !important;

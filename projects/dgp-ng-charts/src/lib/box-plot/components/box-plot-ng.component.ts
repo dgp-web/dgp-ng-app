@@ -50,7 +50,7 @@ import { ChartSelectionMode } from "../../shared/models";
                     <ng-content select="[right-legend]"></ng-content>
                 </ng-container>
 
-                <div style="display: flex; flex-direction: column; flex-grow: 1; width: auto; height: auto;"
+                <div class="plot-container"
                      #chartContainer>
 
                     <svg *ngIf="boxPlotScales"
@@ -104,7 +104,6 @@ import { ChartSelectionMode } from "../../shared/models";
 
                                         <circle *ngFor="let value of box.outliers"
                                                 r="3"
-                                                tabindex="0"
                                                 dgpBoxPlotOutlier
                                                 [scales]="boxPlotScales"
                                                 [boxGroup]="boxGroup"
@@ -138,10 +137,18 @@ import { ChartSelectionMode } from "../../shared/models";
             <ng-container chart-actions>
 
                 <button mat-icon-button
-                        (click)="downloadImage()"
-                        matTooltip="Download image">
-                    <mat-icon>image</mat-icon>
+                        matTooltip="Actions"
+                        [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
+
+                <mat-menu #menu>
+                    <button mat-menu-item
+                            (click)="downloadImage()">
+                        <mat-icon>image</mat-icon>
+                        Download as image
+                    </button>
+                </mat-menu>
 
             </ng-container>
 
@@ -180,6 +187,14 @@ import { ChartSelectionMode } from "../../shared/models";
 
         .visible {
             visibility: visible !important;
+        }
+
+        .plot-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: auto;
+            height: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
