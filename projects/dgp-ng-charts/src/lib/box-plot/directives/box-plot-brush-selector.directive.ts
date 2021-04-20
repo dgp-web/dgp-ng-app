@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from "@angular/core";
+import { Directive, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
 import { BoxGroup, BoxOutlier, BoxPlotScales, BoxPlotSelection } from "../models";
 import * as d3 from "d3";
 import { getOutlierXPosition, isBrushed } from "../functions";
@@ -37,8 +37,9 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
-    constructor(private readonly elementRef: ElementRef,
-                private readonly renderer: Renderer2) {
+    constructor(
+        private readonly elementRef: ElementRef
+    ) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -47,14 +48,10 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
 
             const svg = this.elementRef.nativeElement;
 
-            const scale = this.elementRef.nativeElement.getBoundingClientRect();
-
-            console.log(scale);
-
             d3.select(svg).call(d3.brush()
                 .extent([
                     [0, 0],
-                    [400, 300]  // TODO
+                    [this.scales.barAreaWidth, this.scales.barAreaHeight]
                 ])
                 .on("start brush", () => {
                     const extent = d3.event.selection;
@@ -64,8 +61,6 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
                         getOutlierXPosition(x, this.scales, this.config),
                         this.scales.yAxis(x.value)
                     ));
-
-                    console.log(filteredOutliers);
 
                     this.selectionChange.emit({
                         outliers: filteredOutliers
