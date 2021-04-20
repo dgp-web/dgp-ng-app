@@ -18,6 +18,7 @@ import { ChartComponent } from "./components/chart.component";
 import { BoxPlotOutlierDirective } from "./directives/box-plot-outlier.directive";
 import { BoxPlotBrushSelectorDirective } from "./directives/box-plot-brush-selector.directive";
 import { BoxPlotOutlierTooltipDirective } from "./directives/box-plot-outlier-tooltip.directive";
+import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { BoxPlotOutlierTooltipDirective } from "./directives/box-plot-outlier-to
         MatButtonModule,
         MatTooltipModule,
         MatIconModule,
-        MatDialogModule
+        MatDialogModule,
+        MatMenuModule
     ],
     declarations: [
         BoxPlotComponent,
