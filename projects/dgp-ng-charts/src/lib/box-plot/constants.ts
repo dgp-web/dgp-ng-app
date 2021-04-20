@@ -3,7 +3,7 @@ import { BoxPlotConfig } from "./models";
 export const defaultBoxPlotConfig: BoxPlotConfig = {
     margin: {
         top: 10,
-        right: 30,
+        right: 0,
         left: 50,
         bottom: 20
     },

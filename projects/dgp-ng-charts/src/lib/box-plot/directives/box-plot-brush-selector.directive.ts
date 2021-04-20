@@ -56,15 +56,13 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
                 .on("start brush", () => {
                     const extent = d3.event.selection;
 
-                    const filteredOutliers = getOutliers(this.boxGroups).filter(x => isBrushed(
+                    const outliers = getOutliers(this.boxGroups).filter(x => isBrushed(
                         extent,
                         getOutlierXPosition(x, this.scales, this.config),
                         this.scales.yAxis(x.value)
                     ));
 
-                    this.selectionChange.emit({
-                        outliers: filteredOutliers
-                    });
+                    this.selectionChange.emit({outliers});
                 })
             );
         }
