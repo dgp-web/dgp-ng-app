@@ -1,6 +1,6 @@
 {
     "name": "ng-starter",
-    "version": "11.2.5",
+    "version": "11.3.0",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -9,6 +9,9 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
+        "dgp-data-modeling:build": "ng build --prod dgp-data-modeling",
+        "dgp-data-modeling:serve": "ng build --watch dgp-data-modeling",
+        "dgp-data-modeling:publish": "npm publish dist/dgp-data-modeling",
         "dgp-ng-charts:build:prod": "ng build --prod dgp-ng-charts",
         "postdgp-ng-charts:build:prod": "cpx projects/dgp-ng-charts/src/lib/_styles.scss dist/dgp-ng-charts",
         "dgp-ng-charts:build:watch": "ng build --watch dgp-ng-charts",
