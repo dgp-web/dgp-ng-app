@@ -179,6 +179,7 @@ export { Magnitude } from "./utils/magnitude.model";
 export { HttpSSEApiClient } from "./utils/http-sse.api-client";
 export { firstAsPromise } from "./utils/first-as-promise";
 export { DgpViewComponentBase } from "./utils/view.component-base";
+export { DgpView } from "./utils/view";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
