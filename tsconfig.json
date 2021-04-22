@@ -19,6 +19,10 @@
       "dom"
     ],
     "paths": {
+      "dgp-data-modeling": [
+        "dist/dgp-data-modeling/dgp-data-modeling",
+        "dist/dgp-data-modeling"
+      ],
       "dgp-ng-app": [
         "dist/dgp-ng-app"
       ],
