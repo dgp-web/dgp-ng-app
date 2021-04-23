@@ -21,11 +21,6 @@ export class DgpActionContextDirective extends DgpContainer implements OnDestroy
         }));
     }
 
-    @HostListener("blur")
-    blur() {
-        this.dispatch(deselectActionContext({}));
-    }
-
     ngOnDestroy(): void {
         this.dispatch(deselectActionContext({
             selectedActionContextKey: this.actionContextKey
