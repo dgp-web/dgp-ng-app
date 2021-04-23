@@ -2,6 +2,10 @@
  * Public API Surface of dgp-ng-app
  */
 
+// action context
+export { DgpActionContextModule } from "./action-context/action-context.module";
+export { DgpActionContextDirective } from "./action-context/directives/action-context.directive";
+
 // authentication
 export { authenticateUser } from "./authentication/actions";
 export {
