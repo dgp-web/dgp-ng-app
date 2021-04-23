@@ -2,6 +2,19 @@
  * Public API Surface of dgp-ng-app
  */
 
+// action context
+export { DgpActionContextModule } from "./action-context/action-context.module";
+export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
+export { selectActionContext } from "./action-context/actions/select-action-context.action";
+export { actionContextStoreFeature } from "./action-context/constants/action-context-store-feature.constant";
+export { DgpActionContextDirective } from "./action-context/directives/action-context.directive";
+export { ActionContextState } from "./action-context/models/action-context-state.model";
+export { ActionContextStoreFeature } from "./action-context/models/action-context-store-feature.model";
+export { actionContextReducer } from "./action-context/reducers/action-context.reducer";
+export { actionContextFeatureSelector } from "./action-context/selectors/action-context-feature.selector";
+export { isActionContextSelectedSelector } from "./action-context/selectors/is-action-context-selected.selector";
+export { getSelectedActionContextKey } from "./action-context/selectors/get-selected-action-context-key.selector";
+
 // authentication
 export { authenticateUser } from "./authentication/actions";
 export {
