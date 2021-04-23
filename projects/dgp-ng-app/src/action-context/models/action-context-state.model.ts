@@ -1,3 +1,3 @@
 export interface ActionContextState {
-    readonly selectedContextKey?: string;
+    readonly selectedActionContextKey?: string;
 }

@@ -1,3 +1,5 @@
-import { createAction } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
 
-export const deselectActionContext = createAction("[DgpActionContext] Deselect");
+export const deselectActionContext = createAction("[DgpActionContext] Deselect", props<{
+    readonly selectedActionContextKey?: string;
+}>());
