@@ -1,9 +1,19 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { DgpActionContextModule, DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpSpacerModule } from "dgp-ng-app";
+import {
+    DgpActionContextModule,
+    DgpHamburgerMenuToggleModule,
+    DgpPageHeaderContextActionsModule,
+    DgpPageHeaderModule,
+    DgpSpacerModule,
+    DgpTileModule
+} from "dgp-ng-app";
 import { DgpNgChartsModule } from "dgp-ng-charts";
 import { ActionContextLabsPageComponent } from "./containers/action-context-labs-page.component";
 import { CommonModule } from "@angular/common";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
     imports: [
@@ -16,7 +26,12 @@ import { CommonModule } from "@angular/common";
         DgpHamburgerMenuToggleModule,
         DgpNgChartsModule,
         DgpActionContextModule,
-        DgpSpacerModule
+        DgpSpacerModule,
+        DgpTileModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        DgpPageHeaderContextActionsModule
     ],
     declarations: [
         ActionContextLabsPageComponent
@@ -24,3 +39,5 @@ import { CommonModule } from "@angular/common";
 })
 export class ActionContextLabsModule {
 }
+
+console.log();

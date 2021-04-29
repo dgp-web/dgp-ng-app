@@ -92,6 +92,13 @@
         overflow: auto;
     }
 
+    .dgp-action-context.--selected {
+        outline: 1px dashed mat-color($accent, 300);
+    }
+
+    .dgp-bg--accent {
+        background: mat-color($accent, 100) !important;
+    }
 
 }
 

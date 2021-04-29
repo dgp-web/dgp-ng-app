@@ -1,3 +1,5 @@
+import { ActionContext } from "./action-context.model";
+
 export interface ActionContextState {
-    readonly selectedActionContextKey?: string;
+    readonly selectedActionContext?: ActionContext;
 }

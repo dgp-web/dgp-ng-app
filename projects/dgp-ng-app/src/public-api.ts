@@ -7,13 +7,20 @@ export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
 export { selectActionContext } from "./action-context/actions/select-action-context.action";
 export { actionContextStoreFeature } from "./action-context/constants/action-context-store-feature.constant";
+export { emptyActionContext } from "./action-context/constants/empty-action-context.constant";
+export { emptyActionContextState } from "./action-context/constants/empty-action-context-state.constant";
 export { DgpActionContextDirective } from "./action-context/directives/action-context.directive";
 export { ActionContextState } from "./action-context/models/action-context-state.model";
 export { ActionContextStoreFeature } from "./action-context/models/action-context-store-feature.model";
 export { actionContextReducer } from "./action-context/reducers/action-context.reducer";
 export { actionContextFeatureSelector } from "./action-context/selectors/action-context-feature.selector";
-export { isActionContextSelectedSelector } from "./action-context/selectors/is-action-context-selected.selector";
+export { isAnyActionContextSelected } from "./action-context/selectors/is-any-action-context-selected.selector";
+export { isActionContextSelected } from "./action-context/selectors/is-action-context-selected.selector";
+export { getSelectedActionContext } from "./action-context/selectors/get-selected-action-context.selector";
 export { getSelectedActionContextKey } from "./action-context/selectors/get-selected-action-context-key.selector";
+export { getSelectedActionContextLabel } from "./action-context/selectors/get-selected-action-context-label.selector";
+export { getSelectedActionContextType } from "./action-context/selectors/get-selected-action-context-type.selector";
+export { getSelectedActionContextValue } from "./action-context/selectors/get-selected-action-context-value.selector";
 
 // authentication
 export { authenticateUser } from "./authentication/actions";
@@ -45,6 +52,12 @@ export {
     DgpConfirmDialogComponent, RemovalDialogButtonConfig, cancelButtonConfig, confirmButtonConfig
 } from "./confirm-dialog/containers/confirm-dialog.component";
 export { DgpConfirmDialogModule } from "./confirm-dialog/confirm-dialog.module";
+
+// page-header-context-actions
+export {
+    DgpPageHeaderContextActionsComponent
+} from "./context-action-slot/containers/page-header-context-actions.component";
+export { DgpPageHeaderContextActionsModule } from "./context-action-slot/page-header-context-actions.module";
 
 // empty-state
 export { EmptyStateComponent } from "./empty-state/components/empty-state.component";

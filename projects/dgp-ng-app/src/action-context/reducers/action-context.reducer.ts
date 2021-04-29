@@ -3,26 +3,23 @@ import { ActionContextState } from "../models/action-context-state.model";
 import { selectActionContext } from "../actions/select-action-context.action";
 import { deselectActionContext } from "../actions/deselect-action-context.action";
 import { isNullOrUndefined } from "../../utils/null-checking.functions";
+import { emptyActionContextState } from "../constants/empty-action-context-state.constant";
 
 export const actionContextReducer = createReducer<ActionContextState>(
-    {selectedActionContextKey: null},
+    emptyActionContextState,
     on(selectActionContext, (state, action) => {
         return {
-            selectedActionContextKey: action.selectedActionContextKey
+            selectedActionContext: action.actionContext,
         };
     }),
     on(deselectActionContext, (state, action) => {
 
         if (isNullOrUndefined(action.selectedActionContextKey)) {
-            return {
-                selectedActionContextKey: null
-            };
+            return emptyActionContextState;
         } else {
 
-            if (action.selectedActionContextKey === state.selectedActionContextKey) {
-                return {
-                    selectedActionContextKey: null
-                };
+            if (action.selectedActionContextKey === state.selectedActionContext.key) {
+                return emptyActionContextState;
             } else {
                 return state;
             }

@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
-import { actionContextFeatureSelector } from "./action-context-feature.selector";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
+import { getSelectedActionContextKey } from "./get-selected-action-context-key.selector";
 
-export const isActionContextSelected = createSelector(
-    actionContextFeatureSelector, x => notNullOrUndefined(x.selectedActionContextKey)
+export const isAnyActionContextSelected = createSelector(
+    getSelectedActionContextKey, x => notNullOrUndefined(x)
 );
