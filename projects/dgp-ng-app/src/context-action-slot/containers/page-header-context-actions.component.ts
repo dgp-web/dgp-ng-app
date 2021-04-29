@@ -17,7 +17,7 @@ import { getSelectedActionContextLabel } from "../../action-context/selectors/ge
             <mat-toolbar *ngIf="currentActionContextLabel$ | async as label"
                          color="accent"
                          class="dgp-bg--accent"
-                         style="flex-grow: 0; position: absolute; left: 0; right: 0; height: auto; font-size: small;">
+                         style="flex-grow: 0; position: absolute; left: 0; right: 0; height: auto; font-size: small; z-index: 1;">
                 {{ label }}
             </mat-toolbar>
         </div>
