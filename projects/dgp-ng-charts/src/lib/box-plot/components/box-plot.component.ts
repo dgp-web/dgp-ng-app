@@ -1,15 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as d3 from "d3";
 import { defaultBoxPlotConfig } from "../constants";
 import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
 import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { ChartSelectionMode } from "../../shared/models";
-import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
-import { notNullOrUndefined } from "dgp-ng-app";
-import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
-import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
-import { MatDialog } from "@angular/material/dialog";
+import { ExportChartConfig } from "../../heatmap/models";
 
 // TODO: Extract logic for coloring
 // TODO: Extract logic for logarithmic y-axis scale
@@ -17,45 +13,34 @@ import { MatDialog } from "@angular/material/dialog";
 @Component({
     selector: "dgp-box-plot",
     template: `
-        <dgp-chart-container>
-            <div class="chart"
-                 #chartRef>
-                <div *ngIf="chartTitle"
-                     class="title">
-                    {{ chartTitle }}
-                </div>
 
-                <div class="inner-container">
-                    <div *ngIf="yAxisTitle"
-                         class="y-axis-label-container">
-                        <div class="y-axis-label">
-                            {{ yAxisTitle }}
-                        </div>
-                    </div>
-                    <div #chartElRef
-                         class="d3-hook"></div>
-                    <div class="right-legend">
-                        <ng-content select="[right-legend]"></ng-content>
+        <div class="chart"
+             #chartRef>
+            <div *ngIf="chartTitle"
+                 class="title">
+                {{ chartTitle }}
+            </div>
+
+            <div class="inner-container">
+                <div *ngIf="yAxisTitle"
+                     class="y-axis-label-container">
+                    <div class="y-axis-label">
+                        {{ yAxisTitle }}
                     </div>
                 </div>
-
-                <div *ngIf="xAxisTitle"
-                     class="x-axis-label">
-                    {{ xAxisTitle }}
+                <div #chartElRef
+                     class="d3-hook"></div>
+                <div class="right-legend">
+                    <ng-content select="[right-legend]"></ng-content>
                 </div>
             </div>
 
-            <ng-container chart-actions>
+            <div *ngIf="xAxisTitle"
+                 class="x-axis-label">
+                {{ xAxisTitle }}
+            </div>
+        </div>
 
-                <button mat-icon-button
-                        (click)="downloadImage()"
-                        matTooltip="Download image">
-                    <mat-icon>image</mat-icon>
-                </button>
-
-            </ng-container>
-
-        </dgp-chart-container>
     `,
     styles: [`
         :host {
@@ -128,13 +113,6 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
     config = defaultBoxPlotConfig;
     svgNode: Node;
 
-    constructor(
-        readonly elRef: ElementRef,
-        private readonly matDialog: MatDialog
-    ) {
-        super(elRef);
-    }
-
     protected drawD3Chart(payload): void {
         this.svgNode = payload.svg.node().parentNode;
 
@@ -206,26 +184,4 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
 
     }
 
-    async downloadImage() {
-        const svgString = serializeDOMNode(this.svgNode);
-        const legendRoot = $(this.elRef.nativeElement).find(".right-legend").children()[0];
-        let serializedLegend: string;
-        if (notNullOrUndefined(legendRoot)) {
-            serializedLegend = new XMLSerializer().serializeToString(legendRoot);
-        }
-
-        const svgImageSrc = svgString2ImageSrc(svgString);
-
-        this.matDialog.open(ExportChartDialogComponent, {
-            data: {
-                serializedChartImageUrl: svgImageSrc,
-                serializedRightLegend: serializedLegend,
-
-                chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
-                xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,
-                yAxisTitle: this.exportConfig?.yAxisTitle ? this.exportConfig?.yAxisTitle : this.yAxisTitle
-            } as InternalExportChartConfig
-        });
-
-    }
 }

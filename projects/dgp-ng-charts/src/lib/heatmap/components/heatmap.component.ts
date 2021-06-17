@@ -1,63 +1,44 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as _ from "lodash";
 import { defaultDgpHeatmapConfig } from "../constants";
-import { serializeDOMNode, svgString2ImageSrc } from "../functions";
-import { MatDialog } from "@angular/material/dialog";
-import { ExportChartDialogComponent } from "./export-chart-dialog.component";
-import { ExportChartConfig, HeatmapSelection, HeatmapTile, InternalExportChartConfig } from "../models";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { ExportChartConfig, HeatmapSelection, HeatmapTile } from "../models";
 import { heatmapHybridRenderer } from "../heatmap-d3-renderer.function";
 import { ChartComponentBase } from "../../shared/chart.component-base";
-import { ChartSelectionMode } from "../../shared/models";
-
-declare var $;
 
 @Component({
     selector: "dgp-heatmap",
     template: `
-        <dgp-chart-container>
-            <div class="chart"
-                 #chartRef>
-                <div *ngIf="chartTitle"
-                     class="title">
-                    {{ chartTitle }}
-                </div>
+        <div class="chart"
+             #chartRef>
+            <div *ngIf="chartTitle"
+                 class="title">
+                {{ chartTitle }}
+            </div>
 
-                <div class="inner-container">
-                    <div *ngIf="yAxisTitle"
-                         class="y-axis-label-container">
-                        <div class="y-axis-label">
-                            {{ yAxisTitle }}
-                        </div>
-                    </div>
-                    <div #chartElRef
-                         class="d3-hook"></div>
-                    <div class="right-legend">
-                        <ng-content select="[right-legend]"></ng-content>
+            <div class="inner-container">
+                <div *ngIf="yAxisTitle"
+                     class="y-axis-label-container">
+                    <div class="y-axis-label">
+                        {{ yAxisTitle }}
                     </div>
                 </div>
-
-                <div *ngIf="xAxisTitle"
-                     class="x-axis-label">
-                    {{ xAxisTitle }}
-                </div>
-
-                <div class="bottom-legend">
-                    <ng-content select="[bottom-legend]"></ng-content>
+                <div #chartElRef
+                     class="d3-hook"></div>
+                <div class="right-legend">
+                    <ng-content select="[right-legend]"></ng-content>
                 </div>
             </div>
 
-            <ng-container chart-actions>
+            <div *ngIf="xAxisTitle"
+                 class="x-axis-label">
+                {{ xAxisTitle }}
+            </div>
 
-                <button mat-icon-button
-                        (click)="downloadImage()"
-                        matTooltip="Download image">
-                    <mat-icon>image</mat-icon>
-                </button>
+            <div class="bottom-legend">
+                <ng-content select="[bottom-legend]"></ng-content>
+            </div>
+        </div>
 
-            </ng-container>
-
-        </dgp-chart-container>
     `,
     styles: [`
         :host {
@@ -134,13 +115,6 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
     private selectionValue: HeatmapSelection = {};
 
-    constructor(
-        readonly elRef: ElementRef,
-        private readonly matDialog: MatDialog
-    ) {
-        super(elRef);
-    }
-
     @Input()
     get selection(): HeatmapSelection {
         return this.selectionValue;
@@ -154,49 +128,6 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
         this.selectionValue = value;
         this.selectionChange.emit(value);
-    }
-
-    async downloadImage() {
-        const svgString = serializeDOMNode(this.svgNode);
-        const canvas = $(this.elRef.nativeElement).find("canvas")[0];
-        const canvasDataUrl = canvas.toDataURL();
-        const svgImageSrc = svgString2ImageSrc(svgString);
-
-        const rightLegendRoot = this.exportConfig.rightLegend ?
-            this.exportConfig.rightLegend
-            : $(this.elRef.nativeElement).find(".right-legend")[0];
-        let serializedRightLegend: string;
-        if (notNullOrUndefined(rightLegendRoot)) {
-            serializedRightLegend = new XMLSerializer().serializeToString(rightLegendRoot);
-        }
-
-        const bottomLegendRoot = this.exportConfig.bottomLegend ?
-            this.exportConfig.bottomLegend
-            : $(this.elRef.nativeElement).find(".bottom-legend")[0];
-        let serializedBottomLegend: string;
-        if (notNullOrUndefined(bottomLegendRoot)) {
-            serializedBottomLegend = new XMLSerializer().serializeToString(bottomLegendRoot);
-        }
-
-        this.matDialog.open(ExportChartDialogComponent, {
-            data: {
-                serializedChartImageUrl: svgImageSrc,
-                serializedCanvasDataUrl: canvasDataUrl,
-                serializedRightLegend,
-                serializedBottomLegend,
-
-                chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
-                xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,
-                yAxisTitle: this.exportConfig?.yAxisTitle ? this.exportConfig?.yAxisTitle : this.yAxisTitle
-            } as InternalExportChartConfig
-        });
-
-    }
-
-    updateSelectionMode(selectionMode: ChartSelectionMode) {
-        this.selectionMode = selectionMode;
-
-        this.scheduleDrawChartAction();
     }
 
     protected drawD3Chart(payload): void {
