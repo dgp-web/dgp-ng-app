@@ -20,7 +20,7 @@ export interface FileItemListModel {
                    [routerLink]="[]"
                    routerLinkActive="dgp-list-item --selected"
                    [queryParams]="{ fileItemId: model.fileItemKVS[fileItemId].fileItemId }"
-                   queryParamsHandling="preserve"
+                   queryParamsHandling="merge"
                    [matTooltip]="model.fileItemKVS[fileItemId].fileName"
                    matTooltipShowDelay="500"
                    (keydown.delete)="removeFileItem(model.fileItemKVS[fileItemId])">
