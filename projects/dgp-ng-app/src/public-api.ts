@@ -3,6 +3,8 @@
  */
 
 // action context
+import {negateMap} from "./utils/negate-map.function";
+
 export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
 export { selectActionContext } from "./action-context/actions/select-action-context.action";
@@ -189,6 +191,8 @@ export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.f
 export { flattenMatrix } from "./utils/flatten-matrix.function";
 export { getHashCode } from "./utils/get-hash-code.function";
 export { ModelMetadata } from "./utils/model-metadata";
+export { negate } from "./utils/negate.function";
+export { negateMap } from "./utils/negate-map.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { Matrix } from "./utils/matrix.model";
@@ -204,6 +208,7 @@ export { parseStringMatrixAsNumberMatrix } from "./utils/parse-string-matrix-as-
 export { Magnitude } from "./utils/magnitude.model";
 export { HttpSSEApiClient } from "./utils/http-sse.api-client";
 export { firstAsPromise } from "./utils/first-as-promise";
+export { there } from "./utils/there.function";
 export { DgpViewComponentBase } from "./utils/view.component-base";
 export { DgpView } from "./utils/view";
 
