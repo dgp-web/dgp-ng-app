@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { interval } from "rxjs";
 import { map } from "rxjs/operators";
+import { AttributeMetadata } from "data-modeling";
 
 @Component({
     selector: "labs-docking-layout-labs-page",
@@ -36,7 +37,12 @@ import { map } from "rxjs/operators";
                         <dgp-docking-layout-container label="Main tab"
                                                       id="Main tab">
                             <ng-template>
-                                Main
+                                <dgp-inspector>
+                                    <dgp-inspector-section>
+                                        <dgp-inspector-metadata-item
+                                            [metadata]="metadata"></dgp-inspector-metadata-item>
+                                    </dgp-inspector-section>
+                                </dgp-inspector>
                             </ng-template>
                         </dgp-docking-layout-container>
                         <dgp-docking-layout-container label="Secondary tab"
@@ -80,6 +86,12 @@ import { map } from "rxjs/operators";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DockingLayoutLabsPageComponent {
+
+    readonly metadata: AttributeMetadata<string> = {
+        label: "Label",
+        icon: "info",
+        description: `This is a description that is displayed below the item.`
+    };
 
     readonly selectedItemId$ = interval(1000).pipe(
         map(x => {

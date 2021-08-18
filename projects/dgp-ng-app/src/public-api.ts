@@ -127,6 +127,7 @@ export { DgpNgApp } from "./hmr/hmr-app";
 
 // inspector
 export { InspectorComponent } from "./inspector/components/inspector.component";
+export { InspectorMetadataItemComponent } from "./inspector/components/inspector-metadata-item.component";
 export { InspectorItemComponent } from "./inspector/components/inspector-item.component";
 export { InspectorSectionComponent } from "./inspector/components/inspector-section.component";
 export { DgpInspectorModule } from "./inspector/inspector.module";

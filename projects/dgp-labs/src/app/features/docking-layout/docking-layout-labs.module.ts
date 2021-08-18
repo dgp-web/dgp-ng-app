@@ -5,6 +5,7 @@ import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpThemeSwitcherModu
 import { RouterModule } from "@angular/router";
 import { DgpTileModule } from "../../../../../dgp-ng-app/src/tile/tile.module";
 import { CommonModule } from "@angular/common";
+import { DgpInspectorModule } from "../../../../../dgp-ng-app/src/inspector/inspector.module";
 
 @NgModule({
     imports: [
@@ -12,12 +13,13 @@ import { CommonModule } from "@angular/common";
         DgpDockingLayoutModule,
         DgpThemeSwitcherModule,
         RouterModule.forRoot([{
-        path: "docking-layout",
-        component: DockingLayoutLabsPageComponent
-    }], { relativeLinkResolution: 'legacy' }),
+            path: "docking-layout",
+            component: DockingLayoutLabsPageComponent
+        }], {relativeLinkResolution: 'legacy'}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
-        DgpTileModule
+        DgpTileModule,
+        DgpInspectorModule
     ],
     declarations: [
         DockingLayoutLabsPageComponent
