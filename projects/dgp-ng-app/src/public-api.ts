@@ -3,7 +3,7 @@
  */
 
 // action context
-import {negateMap} from "./utils/negate-map.function";
+import { negateMap } from "./utils/negate-map.function";
 
 export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
@@ -137,6 +137,10 @@ export { LogEntry, Severity } from "./log/models";
 export { LogState, logStoreFeature } from "./log/models";
 export { DgpLogModule } from "./log/log.module";
 
+// negate
+export { DgpNegatePipe } from "./negate/negate.pipe";
+export { DgpNegatePipeModule } from "./negate/negate-pipe.module";
+
 // request-store
 export { requestStoreFeature } from "./request-store/models";
 export { RequestState } from "./request-store/models";
@@ -147,6 +151,10 @@ export {
     hasPendingRequestsSelector, hasPendingRequests, requestStateSelector
 } from "./request-store/selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
+
+// resize-sensor
+export { DgpResizeSensorDirective } from "./resize-sensor/directives/resize-sensor.directive";
+export { DgpResizeSensorModule } from "./resize-sensor/resize-sensor.module";
 
 // routing-overlay
 export { showLoadingSpinner } from "./routing-overlay/actions";

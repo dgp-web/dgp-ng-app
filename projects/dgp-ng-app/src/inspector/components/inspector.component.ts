@@ -1,15 +1,17 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 @Component({
     selector: "dgp-inspector",
     template: `
-        <ng-content></ng-content>
+        <mat-list>
+            <ng-content></ng-content>
+        </mat-list>
     `,
     styles: [`
         :host {
             padding: 8px;
         }
-   `],
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectorComponent {

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { interval } from "rxjs";
 import { map } from "rxjs/operators";
+import { AttributeMetadata } from "data-modeling";
 
 @Component({
     selector: "labs-docking-layout-labs-page",
@@ -36,7 +37,12 @@ import { map } from "rxjs/operators";
                         <dgp-docking-layout-container label="Main tab"
                                                       id="Main tab">
                             <ng-template>
-                                Main
+                                <dgp-inspector>
+                                    <dgp-inspector-item [metadata]="metadata"></dgp-inspector-item>
+                                    <dgp-inspector-item label="Direct label"
+                                                        matIconName="warn"
+                                                        description="Everything can be!"></dgp-inspector-item>
+                                </dgp-inspector>
                             </ng-template>
                         </dgp-docking-layout-container>
                         <dgp-docking-layout-container label="Secondary tab"
@@ -53,7 +59,7 @@ import { map } from "rxjs/operators";
                                          width="20">
                     <dgp-docking-layout-container label="Details">
                         <ng-template>
-                            Some content
+                           test
                         </ng-template>
                     </dgp-docking-layout-container>
 
@@ -76,10 +82,17 @@ import { map } from "rxjs/operators";
             height: 100%;
             overflow: auto;
         }
+
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DockingLayoutLabsPageComponent {
+
+    readonly metadata: AttributeMetadata<string> = {
+        label: "Label",
+        icon: "info",
+        description: `This is a description that is displayed below the item.`
+    };
 
     readonly selectedItemId$ = interval(1000).pipe(
         map(x => {
