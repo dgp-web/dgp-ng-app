@@ -39,6 +39,9 @@ import { AttributeMetadata } from "data-modeling";
                             <ng-template>
                                 <dgp-inspector>
                                     <dgp-inspector-item [metadata]="metadata"></dgp-inspector-item>
+                                    <dgp-inspector-item label="Direct label"
+                                                        matIconName="warn"
+                                                        description="Everything can be!"></dgp-inspector-item>
                                 </dgp-inspector>
                             </ng-template>
                         </dgp-docking-layout-container>
