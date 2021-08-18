@@ -125,8 +125,11 @@
 }
 
 
+
 dgp-inspector-item {
-    .mat-list-item-content {
-        flex-grow: 1;
+    mat-list-item {
+        .mat-list-item-content {
+            flex-grow: 1 !important;
+        }
     }
 }
