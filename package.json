@@ -67,6 +67,7 @@
         "core-js": "^3.6.5",
         "css-element-queries": "^1.2.3",
         "d3": "^5.16.0",
+        "data-modeling": "^2.0.4",
         "entity-store": "^1.5",
         "highlight.js": "^9.18.1",
         "html2canvas": "^1.0.0-rc.7",

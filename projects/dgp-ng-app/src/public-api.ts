@@ -211,6 +211,8 @@ export { firstAsPromise } from "./utils/first-as-promise";
 export { there } from "./utils/there.function";
 export { DgpViewComponentBase } from "./utils/view.component-base";
 export { DgpView } from "./utils/view";
+export { resolveAsMany } from "./utils/resolve-as-many.function";
+export { getDefaultValue } from "./utils/get-default-value.function";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
