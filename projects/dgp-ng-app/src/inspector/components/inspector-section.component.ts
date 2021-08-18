@@ -3,15 +3,14 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 @Component({
     selector: "dgp-inspector-section",
     template: `
-        <mat-list>
-            <h3 class="label-item"
-                mat-subheader>
-                {{ label }}
-                <dgp-spacer></dgp-spacer>
-                <mat-icon>{{matIconName}}</mat-icon>
-            </h3>
-            <ng-content></ng-content>
-        </mat-list>`,
+        <h3 class="label-item"
+            mat-subheader>
+            {{ label }}
+            <dgp-spacer></dgp-spacer>
+            <mat-icon>{{matIconName}}</mat-icon>
+        </h3>
+        <ng-content></ng-content>
+    `,
     styles: [`
         .label-item {
             border-bottom-width: 1px;
