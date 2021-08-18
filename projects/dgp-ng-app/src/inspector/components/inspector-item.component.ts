@@ -1,19 +1,20 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { AttributeMetadata } from "data-modeling";
 
 @Component({
     selector: "dgp-inspector-item",
     template: `
         <mat-list-item>
-            <mat-icon>{{matIconName}}</mat-icon>
+            <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
             <div class="label">
-                {{ label }}
+                {{ label || metadata?.label }}
             </div>
             <dgp-spacer></dgp-spacer>
             <ng-content></ng-content>
         </mat-list-item>
 
-        <p *ngIf="description"
-           class="description">{{description}}</p>
+        <p *ngIf="description || metadata?.description"
+           class="description">{{description || metadata?.description}}</p>
     `,
     styles: [`
 
@@ -43,6 +44,9 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectorItemComponent {
+
+    @Input()
+    metadata: AttributeMetadata<any>;
 
     @Input()
     label: string;

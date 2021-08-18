@@ -3,7 +3,7 @@
  */
 
 // action context
-import {negateMap} from "./utils/negate-map.function";
+import { negateMap } from "./utils/negate-map.function";
 
 export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
@@ -127,7 +127,6 @@ export { DgpNgApp } from "./hmr/hmr-app";
 
 // inspector
 export { InspectorComponent } from "./inspector/components/inspector.component";
-export { InspectorMetadataItemComponent } from "./inspector/components/inspector-metadata-item.component";
 export { InspectorItemComponent } from "./inspector/components/inspector-item.component";
 export { InspectorSectionComponent } from "./inspector/components/inspector-section.component";
 export { DgpInspectorModule } from "./inspector/inspector.module";

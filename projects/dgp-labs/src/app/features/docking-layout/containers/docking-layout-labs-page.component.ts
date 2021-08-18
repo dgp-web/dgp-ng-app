@@ -38,8 +38,7 @@ import { AttributeMetadata } from "data-modeling";
                                                       id="Main tab">
                             <ng-template>
                                 <dgp-inspector>
-                                    <dgp-inspector-metadata-item
-                                        [metadata]="metadata"></dgp-inspector-metadata-item>
+                                    <dgp-inspector-item [metadata]="metadata"></dgp-inspector-item>
                                 </dgp-inspector>
                             </ng-template>
                         </dgp-docking-layout-container>
