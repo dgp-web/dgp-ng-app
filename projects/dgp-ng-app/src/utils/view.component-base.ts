@@ -1,21 +1,20 @@
-import { Directive, Input } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { isEqual } from "lodash";
-import { Immutable } from "dgp-data-modeling";
+import {Directive, Input} from "@angular/core";
+import {BehaviorSubject} from "rxjs";
+import {isEqual} from "lodash";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export abstract class DgpViewComponentBase<TModel> {
 
-    protected modelValue: Immutable<TModel> = null;
-    readonly model$ = new BehaviorSubject<Immutable<TModel>>(this.modelValue);
+    protected modelValue: TModel = null;
+    readonly model$ = new BehaviorSubject<TModel>(this.modelValue);
 
     @Input()
-    get model(): Immutable<TModel> {
+    get model(): TModel {
         return this.modelValue;
     }
 
-    set model(value: Immutable<TModel>) {
+    set model(value: TModel) {
 
         if (isEqual(value, this.modelValue)) return;
 

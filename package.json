@@ -1,6 +1,6 @@
 {
     "name": "ng-starter",
-    "version": "11.8.1",
+    "version": "11.9.0",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -51,6 +51,7 @@
     "dependencies": {
         "@angular/animations": "~11.2.5",
         "@angular/cdk": "~11.2.4",
+        "@angular/cdk-experimental": "~11.2.4",
         "@angular/common": "~11.2.5",
         "@angular/compiler": "~11.2.5",
         "@angular/core": "~11.2.5",
@@ -67,6 +68,7 @@
         "core-js": "^3.6.5",
         "css-element-queries": "^1.2.3",
         "d3": "^5.16.0",
+        "data-modeling": "^2.0.4",
         "entity-store": "^1.5",
         "highlight.js": "^9.18.1",
         "html2canvas": "^1.0.0-rc.7",

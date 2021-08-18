@@ -3,6 +3,8 @@
  */
 
 // action context
+import { negateMap } from "./utils/negate-map.function";
+
 export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
 export { selectActionContext } from "./action-context/actions/select-action-context.action";
@@ -135,6 +137,10 @@ export { LogEntry, Severity } from "./log/models";
 export { LogState, logStoreFeature } from "./log/models";
 export { DgpLogModule } from "./log/log.module";
 
+// negate
+export { DgpNegatePipe } from "./negate/negate.pipe";
+export { DgpNegatePipeModule } from "./negate/negate-pipe.module";
+
 // request-store
 export { requestStoreFeature } from "./request-store/models";
 export { RequestState } from "./request-store/models";
@@ -145,6 +151,10 @@ export {
     hasPendingRequestsSelector, hasPendingRequests, requestStateSelector
 } from "./request-store/selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
+
+// resize-sensor
+export { DgpResizeSensorDirective } from "./resize-sensor/directives/resize-sensor.directive";
+export { DgpResizeSensorModule } from "./resize-sensor/resize-sensor.module";
 
 // routing-overlay
 export { showLoadingSpinner } from "./routing-overlay/actions";
@@ -189,6 +199,8 @@ export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.f
 export { flattenMatrix } from "./utils/flatten-matrix.function";
 export { getHashCode } from "./utils/get-hash-code.function";
 export { ModelMetadata } from "./utils/model-metadata";
+export { negate } from "./utils/negate.function";
+export { negateMap } from "./utils/negate-map.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { HybridComponentBase } from "./utils/hybrid.component-base";
 export { Matrix } from "./utils/matrix.model";
@@ -204,8 +216,13 @@ export { parseStringMatrixAsNumberMatrix } from "./utils/parse-string-matrix-as-
 export { Magnitude } from "./utils/magnitude.model";
 export { HttpSSEApiClient } from "./utils/http-sse.api-client";
 export { firstAsPromise } from "./utils/first-as-promise";
+export { there } from "./utils/there.function";
 export { DgpViewComponentBase } from "./utils/view.component-base";
 export { DgpView } from "./utils/view";
+export { resolveAsMany } from "./utils/resolve-as-many.function";
+export { getDefaultValue } from "./utils/get-default-value.function";
+export { byUnique } from "./utils/by-unique.function";
+export { matrixToMany } from "./utils/matrix-to-many.constant";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
