@@ -9,6 +9,9 @@ import { BehaviorSubject } from "rxjs";
 // tslint:disable-next-line:directive-class-suffix
 export abstract class DgpModelEditorComponentBase<TModel> {
 
+    @Input()
+    disabled: boolean;
+
     protected modelValue: TModel = null;
     readonly model$ = new BehaviorSubject<TModel>(this.modelValue);
 
