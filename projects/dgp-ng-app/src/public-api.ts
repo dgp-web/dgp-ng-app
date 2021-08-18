@@ -148,6 +148,10 @@ export {
 } from "./request-store/selectors";
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
+// resize-sensor
+export { DgpResizeSensorDirective } from "./resize-sensor/directives/resize-sensor.directive";
+export { DgpResizeSensorModule } from "./resize-sensor/resize-sensor.module";
+
 // routing-overlay
 export { showLoadingSpinner } from "./routing-overlay/actions";
 export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.module";
