@@ -6,6 +6,8 @@ import { RouterModule } from "@angular/router";
 import { DgpTileModule } from "../../../../../dgp-ng-app/src/tile/tile.module";
 import { CommonModule } from "@angular/common";
 import { DgpInspectorModule } from "../../../../../dgp-ng-app/src/inspector/inspector.module";
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { ScrollingModule as ExperimentalScrollingModule } from "@angular/cdk-experimental/scrolling";
 
 @NgModule({
     imports: [
@@ -19,7 +21,9 @@ import { DgpInspectorModule } from "../../../../../dgp-ng-app/src/inspector/insp
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpTileModule,
-        DgpInspectorModule
+        DgpInspectorModule,
+        ScrollingModule,
+        ExperimentalScrollingModule
     ],
     declarations: [
         DockingLayoutLabsPageComponent

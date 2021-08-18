@@ -59,7 +59,7 @@ import { AttributeMetadata } from "data-modeling";
                                          width="20">
                     <dgp-docking-layout-container label="Details">
                         <ng-template>
-                            Some content
+                           test
                         </ng-template>
                     </dgp-docking-layout-container>
 
@@ -82,6 +82,7 @@ import { AttributeMetadata } from "data-modeling";
             height: 100%;
             overflow: auto;
         }
+
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

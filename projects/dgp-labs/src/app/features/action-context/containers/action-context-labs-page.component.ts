@@ -36,6 +36,20 @@ import { ActionContextState, DgpContainer, getSelectedActionContext } from "dgp-
                   matIconName="edit"></dgp-tile>
 
         {{ selectedActionContext$ | async | json }}
+
+        <div style="display: flex;
+flex-direction: column;
+width: 100%;
+height: 100%;">
+            <cdk-virtual-scroll-viewport autosize
+                                         dgpResizeSensor
+                                         class="dgp-dynamic-virtual-scroll-viewport --with-flex-wrap-panel ">
+                <div *cdkVirtualFor="let item of items"
+                     class="item">&nbsp;
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+
     `,
     styles: [`
         :host {
@@ -51,11 +65,20 @@ import { ActionContextState, DgpContainer, getSelectedActionContext } from "dgp-
             width: 240px;
             height: 240px;
         }
+
+
+        .item {
+            width: 240px;
+            height: 240px;
+            border: 1px solid cyan;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionContextLabsPageComponent extends DgpContainer<ActionContextState> {
     readonly selectedActionContext$ = this.select(getSelectedActionContext);
+
+    items = new Array(100000);
 
     actionContextValue = {
         label: "An object used as context",

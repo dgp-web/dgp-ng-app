@@ -108,3 +108,17 @@
     max-width: 100% !important;
     max-height: 100% !important;
 }
+
+
+.dgp-dynamic-virtual-scroll-viewport {
+    height: 100%;
+    display: flex;
+    flex-grow: 1;
+}
+
+.--with-flex-wrap-panel {
+    .cdk-virtual-scroll-content-wrapper {
+        display: flex !important;
+        flex-wrap: wrap;
+    }
+}
