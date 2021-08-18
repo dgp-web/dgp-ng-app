@@ -214,6 +214,7 @@ export { DgpView } from "./utils/view";
 export { resolveAsMany } from "./utils/resolve-as-many.function";
 export { getDefaultValue } from "./utils/get-default-value.function";
 export { byUnique } from "./utils/by-unique.function";
+export { matrixToMany } from "./utils/matrix-to-many.constant";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
