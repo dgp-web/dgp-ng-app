@@ -137,6 +137,10 @@ export { LogEntry, Severity } from "./log/models";
 export { LogState, logStoreFeature } from "./log/models";
 export { DgpLogModule } from "./log/log.module";
 
+// negate
+export { DgpNegatePipe } from "./negate/negate.pipe";
+export { DgpNegatePipeModule } from "./negate/negate-pipe.module";
+
 // request-store
 export { requestStoreFeature } from "./request-store/models";
 export { RequestState } from "./request-store/models";
