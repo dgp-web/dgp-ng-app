@@ -123,3 +123,10 @@
         flex-wrap: wrap;
     }
 }
+
+
+dgp-inspector-item {
+    .mat-list-item-content {
+        flex-grow: 1;
+    }
+}
