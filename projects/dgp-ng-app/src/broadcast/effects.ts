@@ -4,7 +4,6 @@ import { Action, select, Store } from "@ngrx/store";
 import { bufferTime, distinctUntilChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
 import { BroadcastState, getOwnBroadcastRoleSelector } from "./store";
 import { from, interval, of } from "rxjs";
-import { isNullOrUndefined } from "util";
 import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat.function";
 import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
@@ -35,6 +34,7 @@ import {
     SendInitialStateSignature
 } from "./models";
 import { CompositeEntityAction } from "entity-store";
+import { isNullOrUndefined } from "../utils/null-checking.functions";
 
 export function getBroadcastHeartbeatsForInterval(payload: {
     heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;

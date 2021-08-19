@@ -1,5 +1,5 @@
-import { isNullOrUndefined } from "util";
 import * as _ from "lodash";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions";
 import { BroadcastAction, BroadcastRole } from "../models";
 

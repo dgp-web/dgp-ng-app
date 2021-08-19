@@ -1,5 +1,5 @@
-import { isNullOrUndefined } from "util";
 import { BroadcastChannelLike } from "../models";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 
 export class BroadcastChannelLocalStorageFallbackService implements BroadcastChannelLike {
 
@@ -8,8 +8,12 @@ export class BroadcastChannelLocalStorageFallbackService implements BroadcastCha
 
     addEventListener(type, listener, options?: boolean | AddEventListenerOptions): void {
         window.addEventListener("storage", (ev: StorageEvent) => {
-            if (ev.key !== this.channelId) { return; }
-            if (isNullOrUndefined(ev.newValue)) { return; }
+            if (ev.key !== this.channelId) {
+                return;
+            }
+            if (isNullOrUndefined(ev.newValue)) {
+                return;
+            }
 
             const message = JSON.parse(ev.newValue);
             listener({

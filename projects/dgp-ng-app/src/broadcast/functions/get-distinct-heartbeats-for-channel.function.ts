@@ -1,5 +1,5 @@
-import {isNullOrUndefined} from "util";
 import * as _ from "lodash";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 import { BroadcastHeartbeat } from "../models";
 
 export interface GetDistinctHeartbeatsForChannelPayload {
@@ -19,12 +19,16 @@ export function getDistinctHeartbeatsForChannel(
     payload: GetDistinctHeartbeatsForChannelPayload
 ): BroadcastHeartbeat[] {
 
-    if (isNullOrUndefined(payload.channelDataId)) { return []; }
+    if (isNullOrUndefined(payload.channelDataId)) {
+        return [];
+    }
 
     const distinctHearbeats = _.uniqBy(payload.heartbeats, (x) => x.participantId);
 
     return distinctHearbeats.filter(x => {
-        if (isNullOrUndefined(x.dataId)) { return false; }
+        if (isNullOrUndefined(x.dataId)) {
+            return false;
+        }
 
         return _.isEqual(x.dataId, payload.channelDataId);
     });

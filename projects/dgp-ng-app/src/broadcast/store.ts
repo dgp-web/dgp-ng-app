@@ -1,5 +1,5 @@
 import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from "../utils/null-checking.functions";
 import { setOwnBroadcastRole } from "./actions";
 import { BroadcastRole } from "./models";
 

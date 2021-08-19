@@ -1,4 +1,3 @@
-import { isDate } from "util";
 import { BroadcastHeartbeat, MessageEventLike } from "../models";
 
 /**
@@ -13,7 +12,7 @@ export function getBroadcastHeartbeatFromMessageEvent(messageEvent: MessageEvent
     return {
         dataId: messageEvent.data.dataId,
         participantId: messageEvent.data.participantId,
-        participantCreationDate: isDate(messageEvent.data.participantCreationDate) ?
+        participantCreationDate: messageEvent.data.participantCreationDate instanceof Date ?
             messageEvent.data.participantCreationDate : new Date(messageEvent.data.participantCreationDate as string)
     };
 }

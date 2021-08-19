@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
-import { isNullOrUndefined } from "util";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
-import { timer, of } from "rxjs";
+import { of, timer } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { showLoadingSpinner } from "./actions";
 import { RoutingOverlayComponent } from "./components/routing-overlay.component";
+import { isNullOrUndefined } from "../utils/null-checking.functions";
 
 @Injectable()
 export class RoutingOverlayEffects {
@@ -17,12 +17,12 @@ export class RoutingOverlayEffects {
     readonly observeRouteEvents$ = this.router.events.pipe(
         map(event => {
             if (event instanceof ActivationStart) {
-                return showLoadingSpinner({ showSpinner: true });
+                return showLoadingSpinner({showSpinner: true});
             }
             if (event instanceof NavigationEnd
                 || event instanceof NavigationCancel
                 || event instanceof NavigationError) {
-                return showLoadingSpinner({ showSpinner: false });
+                return showLoadingSpinner({showSpinner: false});
             }
             return null;
 
