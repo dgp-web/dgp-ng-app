@@ -1,4 +1,3 @@
-import * as HardSourceWebpackPlugin from "hard-source-webpack-plugin";
 import * as path from "path";
 import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
@@ -38,7 +37,7 @@ module.exports = (env: WebpackConfig) => {
         module: {
             rules: [{
                 test: /\.ts$/,
-                loaders: [{
+                use: [{
                     loader: "ts-loader",
                     options: {
                         transpileOnly: true,
@@ -49,36 +48,28 @@ module.exports = (env: WebpackConfig) => {
                             target: "es2015",
                             sourceMap: false
                         }
-                    }
-                }, {
-                    loader: "angular2-template-loader"
-                }]
+                    },
+                }, "angular2-template-loader"]
             }, {
                 test: /\.html$/,
-                loaders: [{
-                    loader: "raw-loader",
-                    options: {
-                        esModule: false,
-                    }
-                }]
+                loader: "raw-loader",
+                options: {
+                    esModule: false,
+                }
             }, {
                 test: /\.css/,
-                loaders: [{
-                    loader: "raw-loader",
-                    options: {
-                        esModule: false,
-                    }
-                }]
+                loader: "raw-loader",
+                options: {
+                    esModule: false,
+                }
             }, {
                 test: /\.scss$/,
-                loaders: [{
+                use: [{
                     loader: "raw-loader",
                     options: {
                         esModule: false,
-                    }
-                }, {
-                    loader: "sass-loader"
-                }]
+                    },
+                }, "sass-loader"]
             }, {
                 // https://github.com/angular/universal-starter/pull/593/files
                 // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
@@ -114,11 +105,11 @@ module.exports = (env: WebpackConfig) => {
             }),
 
             new webpack.DllReferencePlugin({
-                context: ".",
+                // context: ".",
                 manifest: require(path.join(config.distDirectory, "vendor-manifest.json"))
             }),
 
-            new HardSourceWebpackPlugin()
+            // new HardSourceWebpackPlugin()
 
         ]
     };
