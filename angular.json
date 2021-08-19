@@ -68,7 +68,6 @@
                         "main": "projects/ng-app/src/main.ts",
                         "polyfills": "projects/ng-app/src/polyfills.ts",
                         "tsConfig": "projects/ng-app/tsconfig.app.json",
-                        "aot": true,
                         "progress": false,
                         "assets": [
                             "projects/ng-app/src/favicon.ico",
@@ -78,7 +77,13 @@
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/ng-app/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -111,7 +116,8 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
@@ -352,7 +358,6 @@
                         "main": "projects/dgp-labs/src/main.ts",
                         "polyfills": "projects/dgp-labs/src/polyfills.ts",
                         "tsConfig": "projects/dgp-labs/tsconfig.app.json",
-                        "aot": true,
                         "progress": false,
                         "assets": [
                             "projects/dgp-labs/src/favicon.ico",
@@ -363,7 +368,13 @@
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js"
-                        ]
+                        ],
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -393,7 +404,8 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
