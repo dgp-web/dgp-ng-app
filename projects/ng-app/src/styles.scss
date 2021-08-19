@@ -1,14 +1,15 @@
+@use '~@angular/material' as mat;
 @import '~@angular/material/theming';
 @import '../../dgp-ng-app/src/theming';
 @import '../../dgp-ng-docs/src/lib/styles';
 
-@include mat-core();
+@include mat.core();
 
-$app-primary: mat-palette($mat-light-green, 800, 900);
-$app-accent: mat-palette($mat-green, A200, A100, A400);
+$app-primary: mat.define-palette(mat.$light-green-palette, 800, 900);
+$app-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);
 
 .dgp-bg--primary {
-    background: mat-color($app-primary) !important;
+    background: mat.get-color-from-palette($app-primary) !important;
 }
