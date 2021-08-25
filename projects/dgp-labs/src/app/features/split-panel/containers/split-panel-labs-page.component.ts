@@ -1,5 +1,16 @@
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { createGuid } from "dgp-ng-app";
+
+export interface SampleItem {
+    readonly sampleItemId: string;
+    readonly label: string;
+}
+
+export interface DragItem<TPayload> {
+    readonly index: number;
+    readonly payload: TPayload;
+}
 
 @Component({
     selector: "labs-split-panel-labs-page",
@@ -37,15 +48,16 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          cdkDropList
                                          cdkDropListOrientation="horizontal"
                                          class="item"
-                                         [cdkDropListData]="{item:item,index:i}"
+                                         [id]="item.sampleItemId"
+                                         [cdkDropListData]="{payload:item,index:i}"
                                          (cdkDropListDropped)="drop($event)">
                                         <div cdkDrag
                                              class="item-content">
                                             <div class="drag-placeholder" *cdkDragPlaceholder></div>
                                             <div class="drag-preview" *cdkDragPreview>
-                                                {{ item.title }}
+                                                {{ item.label }}
                                             </div>
-                                            {{ item.title }}
+                                            {{ item.label }}
                                         </div>
                                     </div>
                                 </div>
@@ -60,15 +72,16 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          cdkDropList
                                          cdkDropListOrientation="horizontal"
                                          class="item"
-                                         [cdkDropListData]="{item:item,index:i}"
+                                         [id]="item.sampleItemId"
+                                         [cdkDropListData]="{payload:item,index:i}"
                                          (cdkDropListDropped)="drop($event)">
                                         <div cdkDrag
                                              class="item-content">
                                             <div class="drag-placeholder" *cdkDragPlaceholder></div>
                                             <div class="drag-preview" *cdkDragPreview>
-                                                {{ item.title }}
+                                                {{ item.label }}
                                             </div>
-                                            {{ item.title }}
+                                            {{ item.label }}
                                         </div>
                                     </div>
                                 </div>
@@ -153,23 +166,24 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 })
 export class SplitPanelLabsPageComponent {
 
-    itemsFromList01 = [
-        {title: "A"},
-        {title: "B"},
-        {title: "C"},
-        {title: "D"},
+    itemsFromList01: Array<SampleItem> = [
+        {sampleItemId: createGuid(), label: "A"},
+        {sampleItemId: createGuid(), label: "B"},
+        {sampleItemId: createGuid(), label: "C"},
+        {sampleItemId: createGuid(), label: "D"},
     ];
 
     itemsFromList02 = [
-        {title: "E"},
-        {title: "F"},
-        {title: "G"},
-        {title: "H"},
+        {sampleItemId: createGuid(), label: "E"},
+        {sampleItemId: createGuid(), label: "F"},
+        {sampleItemId: createGuid(), label: "G"},
+        {sampleItemId: createGuid(), label: "H"},
     ];
 
-    drop(event: CdkDragDrop<{ item: { title: string; }; index: number; }>) {
-        this.itemsFromList01[event.previousContainer.data.index] = event.container.data.item;
-        this.itemsFromList01[event.container.data.index] = event.previousContainer.data.item;
+    drop(event: CdkDragDrop<DragItem<SampleItem>>) {
+        console.log(event);
+        this.itemsFromList01[event.previousContainer.data.index] = event.container.data.payload;
+        this.itemsFromList01[event.container.data.index] = event.previousContainer.data.payload;
         /* if (event.previousContainer === event.container) {
              moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
          } else {
