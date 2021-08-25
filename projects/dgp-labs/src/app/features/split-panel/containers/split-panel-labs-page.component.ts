@@ -31,13 +31,16 @@ export interface DragItem<TPayload> {
 
             <dgp-split-panel-content size="30">
                 <ng-template>
+
                     <div class="dgp-drop-list"
                          cdkDropListGroup>
                         <div *ngFor="let item of itemsFromList01; let index = index"
                              class="dgp-drag"
                              cdkDropList
                              cdkDropListOrientation="horizontal"
+                             [id]="item.sampleItemId"
                              [cdkDropListData]="index"
+                             [cdkDropListConnectedTo]="items02"
                              (cdkDropListDropped)="onDrop($event)">
                             <mat-card cdkDrag
                                       class="dgp-drag-content">
@@ -55,7 +58,22 @@ export interface DragItem<TPayload> {
                     <dgp-split-panel orientation="vertical">
                         <dgp-split-panel-content size="50">
                             <ng-template>
-
+                                <div class="dgp-drop-list"
+                                     cdkDropListGroup>
+                                    <div *ngFor="let item of itemsFromList02; let index = index"
+                                         class="dgp-drag"
+                                         cdkDropList
+                                         cdkDropListOrientation="horizontal"
+                                         [id]="item.sampleItemId"
+                                         [cdkDropListData]="index"
+                                         [cdkDropListConnectedTo]="items01"
+                                         (cdkDropListDropped)="onDrop($event)">
+                                        <mat-card cdkDrag
+                                                  class="dgp-drag-content">
+                                            <mat-card-title>{{ item.label }}</mat-card-title>
+                                        </mat-card>
+                                    </div>
+                                </div>
                             </ng-template>
                         </dgp-split-panel-content>
 
