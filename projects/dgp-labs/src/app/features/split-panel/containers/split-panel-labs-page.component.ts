@@ -31,16 +31,16 @@ export interface DragItem<TPayload> {
 
             <dgp-split-panel-content size="30">
                 <ng-template>
-                    <div style="display: flex; flex-wrap: wrap;"
+                    <div class="dgp-drop-list"
                          cdkDropListGroup>
                         <div *ngFor="let item of itemsFromList01; let index = index"
-                             style="flex-grow: 1; width: 100px; height: 100px; max-width: 100px; max-height: 100px; flex-shrink: 0; display: flex;"
+                             class="dgp-drag"
                              cdkDropList
                              cdkDropListOrientation="horizontal"
                              [cdkDropListData]="index"
-                             (cdkDropListDropped)="drop0r1z3($event)">
+                             (cdkDropListDropped)="onDrop($event)">
                             <mat-card cdkDrag
-                                      style="width: 100px; height: 100px; justify-content: center; flex-shrink: 0; align-items: center; cursor: pointer;">
+                                      class="dgp-drag-content">
                                 <mat-card-title>{{ item.label }}</mat-card-title>
                             </mat-card>
                         </div>
@@ -55,83 +55,12 @@ export interface DragItem<TPayload> {
                     <dgp-split-panel orientation="vertical">
                         <dgp-split-panel-content size="50">
                             <ng-template>
-                                <!-- <div class="list-01"
-                                      cdkDropListGroup>
-                                     <div *ngFor="let item of itemsFromList01; let i=index;"
-                                          cdkDropList
-                                          cdkDropListOrientation="horizontal"
-                                          class="item"
-                                          [id]="item.sampleItemId"
-                                          [cdkDropListConnectedTo]="['target']"
-                                          [cdkDropListData]="{payload:item,index:i}"
-                                          (cdkDropListDropped)="dropOnList01($event)">
-                                         <div cdkDrag
-                                              class="item-content">
-                                             <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                                             <div class="drag-preview" *cdkDragPreview>
-                                                 {{ item.label }}
-                                             </div>
-                                             {{ item.label }}
-                                         </div>
-                                     </div>
-                                 </div>-->
+
                             </ng-template>
                         </dgp-split-panel-content>
 
                         <dgp-split-panel-content size="50">
                             <ng-template>
-                                <div class="panel-content">
-
-                                    <!--<div class="drop-zone"
-                                         cdkDropList
-                                         id="target"
-                                         [cdkDropListConnectedTo]="items01"
-                                         [cdkDropListData]="doneItems"
-                                         (cdkDropListDropped)="dropOnList03($event)">
-                                        <div cdkDrag
-                                             [cdkDragDisabled]="true"
-                                             class="item-content">
-                                            &nbsp;
-                                            <div class="drag-placeholder" *cdkDragPlaceholder>Test placeholder</div>
-                                        </div>
-                                    </div>-->
-
-                                    <!--  <div class="list-02"
-                                           cdkDropListGroup>
-                                          <ng-container *ngFor="let item of itemsFromList02; let i=index;">
-
-                                              <div cdkDropList
-                                                   cdkDropListOrientation="horizontal"
-                                                   class="item"
-                                                   [id]="item.sampleItemId"
-                                                   [cdkDropListData]="{payload:item,index:i}"
-                                                   (cdkDropListDropped)="dropOnList02($event)">
-                                                  <div cdkDrag
-                                                       class="item-content">
-                                                      <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                                                      <div class="drag-preview" *cdkDragPreview>
-                                                          {{ item.label }}
-                                                      </div>
-                                                      {{ item.label }}
-                                                  </div>
-                                              </div>
-
-                                              <div cdkDropList
-                                                   cdkDropListOrientation="horizontal"
-                                                   class="item-ghost"
-                                                   [id]="item.sampleItemId"
-                                                   [cdkDropListData]="{payload:item,index:i}"
-                                                   (cdkDropListDropped)="dropOnList02Placeholder($event)">
-                                                  <div cdkDrag
-                                                       class="item-content-ghost">
-                                                      <div class="drag-placeholder" *cdkDragPlaceholder></div>
-
-                                                  </div>
-                                              </div>
-
-                                          </ng-container>
-                                      </div>-->
-                                </div>
                             </ng-template>
                         </dgp-split-panel-content>
                     </dgp-split-panel>
@@ -155,6 +84,30 @@ export interface DragItem<TPayload> {
             flex-grow: 1;
             overflow: auto;
             position: relative;
+        }
+
+        .dgp-drop-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .dgp-drag {
+            flex-grow: 1;
+            width: 100px;
+            height: 100px;
+            max-width: 100px;
+            max-height: 100px;
+            flex-shrink: 0;
+            display: flex;
+        }
+
+        .dgp-drag-content {
+            width: 100px;
+            height: 100px;
+            justify-content: center;
+            flex-shrink: 0;
+            align-items: center;
+            cursor: pointer;
         }
 
     `],
@@ -183,7 +136,7 @@ export class SplitPanelLabsPageComponent {
 
     items02 = this.itemsFromList02.map(x => x.sampleItemId);
 
-    drop0r1z3(event: CdkDragDrop<number>): void {
+    onDrop(event: CdkDragDrop<number>): void {
         moveItemInArray(
             this.itemsFromList01,
             event.previousContainer.data,
