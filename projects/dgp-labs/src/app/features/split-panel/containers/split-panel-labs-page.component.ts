@@ -1,4 +1,4 @@
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { CdkDragDrop, transferArrayItem } from "@angular/cdk/drag-drop";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 export interface SampleItem {
@@ -8,7 +8,7 @@ export interface SampleItem {
 
 export interface DragItem<TPayload> {
     readonly index: number;
-    readonly payload: TPayload;
+    readonly item: TPayload;
 }
 
 @Component({
@@ -34,12 +34,12 @@ export interface DragItem<TPayload> {
 
                     <div class="dgp-drop-list"
                          cdkDropListGroup>
-                        <div *ngFor="let item of itemsFromList01; let index = index"
+                        <div *ngFor="let item of itemsFromList01; let i = index"
                              class="dgp-drag"
                              cdkDropList
                              cdkDropListOrientation="horizontal"
                              [id]="item.sampleItemId"
-                             [cdkDropListData]="index"
+                             [cdkDropListData]="{item: item, index: i}"
                              [cdkDropListConnectedTo]="items02"
                              (cdkDropListDropped)="onDrop($event)">
                             <mat-card cdkDrag
@@ -60,12 +60,12 @@ export interface DragItem<TPayload> {
                             <ng-template>
                                 <div class="dgp-drop-list"
                                      cdkDropListGroup>
-                                    <div *ngFor="let item of itemsFromList02; let index = index"
+                                    <div *ngFor="let item of itemsFromList02; let i = index"
                                          class="dgp-drag"
                                          cdkDropList
                                          cdkDropListOrientation="horizontal"
                                          [id]="item.sampleItemId"
-                                         [cdkDropListData]="index"
+                                         [cdkDropListData]="{item: item, index: i}"
                                          [cdkDropListConnectedTo]="items01"
                                          (cdkDropListDropped)="onDrop($event)">
                                         <mat-card cdkDrag
@@ -154,12 +154,24 @@ export class SplitPanelLabsPageComponent {
 
     items02 = this.itemsFromList02.map(x => x.sampleItemId);
 
-    onDrop(event: CdkDragDrop<number>): void {
-        moveItemInArray(
-            this.itemsFromList01,
-            event.previousContainer.data,
-            event.container.data
+    onDrop(event: CdkDragDrop<DragItem<SampleItem>>): void {
+
+        const sourceIndex = this.itemsFromList01.includes(event.previousContainer.data.item)
+            ? this.itemsFromList01.indexOf(event.previousContainer.data.item)
+            : this.itemsFromList02.indexOf(event.previousContainer.data.item);
+
+        const sourceArray = this.itemsFromList01.includes(event.previousContainer.data.item)
+            ? this.itemsFromList01
+            : this.itemsFromList02;
+
+        const targetArray = this.itemsFromList01.includes(event.container.data.item)
+            ? this.itemsFromList01
+            : this.itemsFromList02;
+
+        transferArrayItem(
+            sourceArray, targetArray, event.previousContainer.data.index, event.container.data.index
         );
+
     }
 
 }
