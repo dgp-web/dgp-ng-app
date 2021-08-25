@@ -9,6 +9,7 @@ export interface SampleItem {
 export interface DragItem<TPayload> {
     readonly index: number;
     readonly item: TPayload;
+    readonly position?: "before" | "after";
 }
 
 @Component({
@@ -60,19 +61,22 @@ export interface DragItem<TPayload> {
                             <ng-template>
                                 <div class="dgp-drop-list"
                                      cdkDropListGroup>
-                                    <div *ngFor="let item of itemsFromList02; let i = index"
-                                         class="dgp-drag"
-                                         cdkDropList
-                                         cdkDropListOrientation="horizontal"
-                                         [id]="item.sampleItemId"
-                                         [cdkDropListData]="{item: item, index: i}"
-                                         [cdkDropListConnectedTo]="items01"
-                                         (cdkDropListDropped)="onDrop($event)">
-                                        <mat-card cdkDrag
-                                                  class="dgp-drag-content">
-                                            <mat-card-title>{{ item.label }}</mat-card-title>
-                                        </mat-card>
-                                    </div>
+                                    <ng-container *ngFor="let item of itemsFromList02; let i = index">
+
+                                        <div class="dgp-drag"
+                                             cdkDropList
+                                             cdkDropListOrientation="horizontal"
+                                             [id]="item.sampleItemId"
+                                             [cdkDropListData]="{item: item, index: i}"
+                                             [cdkDropListConnectedTo]="items01"
+                                             (cdkDropListDropped)="onDrop($event)">
+                                            <mat-card cdkDrag
+                                                      class="dgp-drag-content">
+                                                <div *cdkDragPlaceholder></div>
+                                                <mat-card-title>{{ item.label }}</mat-card-title>
+                                            </mat-card>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </ng-template>
                         </dgp-split-panel-content>
@@ -150,27 +154,27 @@ export class SplitPanelLabsPageComponent {
         {sampleItemId: "H", label: "H"},
     ];
 
-    doneItems = [];
-
     items02 = this.itemsFromList02.map(x => x.sampleItemId);
 
     onDrop(event: CdkDragDrop<DragItem<SampleItem>>): void {
 
-        const sourceIndex = this.itemsFromList01.includes(event.previousContainer.data.item)
-            ? this.itemsFromList01.indexOf(event.previousContainer.data.item)
-            : this.itemsFromList02.indexOf(event.previousContainer.data.item);
+        const collections = [this.itemsFromList01, this.itemsFromList02];
 
-        const sourceArray = this.itemsFromList01.includes(event.previousContainer.data.item)
-            ? this.itemsFromList01
-            : this.itemsFromList02;
-
-        const targetArray = this.itemsFromList01.includes(event.container.data.item)
-            ? this.itemsFromList01
-            : this.itemsFromList02;
+        /**
+         * Determine the groups
+         */
+        const sourceArray = collections.find(x => x.includes(event.previousContainer.data.item));
+        const targetArray = collections.find(x => x.includes(event.container.data.item));
 
         transferArrayItem(
             sourceArray, targetArray, event.previousContainer.data.index, event.container.data.index
         );
+
+        /**
+         * Recalculate keys
+         */
+        this.items01 = this.itemsFromList01.map(x => x.sampleItemId);
+        this.items02 = this.itemsFromList02.map(x => x.sampleItemId);
 
     }
 
