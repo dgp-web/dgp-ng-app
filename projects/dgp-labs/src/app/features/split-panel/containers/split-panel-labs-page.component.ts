@@ -1,4 +1,4 @@
-import { CdkDragDrop } from "@angular/cdk/drag-drop";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 export interface SampleItem {
@@ -31,7 +31,21 @@ export interface DragItem<TPayload> {
 
             <dgp-split-panel-content size="30">
                 <ng-template>
-                    B
+                    <div style="display: flex; flex-wrap: wrap;"
+                         cdkDropListGroup>
+                        <div *ngFor="let item of itemsFromList01; let index = index"
+                             style="flex-grow: 1; width: 100px; height: 100px; max-width: 100px; max-height: 100px; flex-shrink: 0; display: flex;"
+                             cdkDropList
+                             cdkDropListOrientation="horizontal"
+                             [cdkDropListData]="index"
+                             (cdkDropListDropped)="drop0r1z3($event)">
+                            <mat-card cdkDrag
+                                      style="width: 100px; height: 100px; justify-content: center; flex-shrink: 0; align-items: center; cursor: pointer;">
+                                <mat-card-title>{{ item.label }}</mat-card-title>
+                            </mat-card>
+                        </div>
+                    </div>
+
                 </ng-template>
             </dgp-split-panel-content>
 
@@ -41,50 +55,82 @@ export interface DragItem<TPayload> {
                     <dgp-split-panel orientation="vertical">
                         <dgp-split-panel-content size="50">
                             <ng-template>
-                                <div class="list-01"
-                                     cdkDropListGroup>
-                                    <div *ngFor="let item of itemsFromList01; let i=index;"
-                                         cdkDropList
-                                         cdkDropListOrientation="horizontal"
-                                         class="item"
-                                         [id]="item.sampleItemId"
-                                         [cdkDropListData]="{payload:item,index:i}"
-                                         [cdkDropListConnectedTo]="items02"
-                                         (cdkDropListDropped)="dropOnList01($event)">
-                                        <div cdkDrag
-                                             class="item-content">
-                                            <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                                            <div class="drag-preview" *cdkDragPreview>
-                                                {{ item.label }}
-                                            </div>
-                                            {{ item.label }}
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- <div class="list-01"
+                                      cdkDropListGroup>
+                                     <div *ngFor="let item of itemsFromList01; let i=index;"
+                                          cdkDropList
+                                          cdkDropListOrientation="horizontal"
+                                          class="item"
+                                          [id]="item.sampleItemId"
+                                          [cdkDropListConnectedTo]="['target']"
+                                          [cdkDropListData]="{payload:item,index:i}"
+                                          (cdkDropListDropped)="dropOnList01($event)">
+                                         <div cdkDrag
+                                              class="item-content">
+                                             <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                                             <div class="drag-preview" *cdkDragPreview>
+                                                 {{ item.label }}
+                                             </div>
+                                             {{ item.label }}
+                                         </div>
+                                     </div>
+                                 </div>-->
                             </ng-template>
                         </dgp-split-panel-content>
 
                         <dgp-split-panel-content size="50">
                             <ng-template>
-                                <div class="list-02"
-                                     cdkDropListGroup>
-                                    <div *ngFor="let item of itemsFromList02; let i=index;"
+                                <div class="panel-content">
+
+                                    <!--<div class="drop-zone"
                                          cdkDropList
-                                         cdkDropListOrientation="horizontal"
-                                         class="item"
-                                         [id]="item.sampleItemId"
-                                         [cdkDropListData]="{payload:item,index:i}"
+                                         id="target"
                                          [cdkDropListConnectedTo]="items01"
-                                         (cdkDropListDropped)="dropOnList02($event)">
+                                         [cdkDropListData]="doneItems"
+                                         (cdkDropListDropped)="dropOnList03($event)">
                                         <div cdkDrag
+                                             [cdkDragDisabled]="true"
                                              class="item-content">
-                                            <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                                            <div class="drag-preview" *cdkDragPreview>
-                                                {{ item.label }}
-                                            </div>
-                                            {{ item.label }}
+                                            &nbsp;
+                                            <div class="drag-placeholder" *cdkDragPlaceholder>Test placeholder</div>
                                         </div>
-                                    </div>
+                                    </div>-->
+
+                                    <!--  <div class="list-02"
+                                           cdkDropListGroup>
+                                          <ng-container *ngFor="let item of itemsFromList02; let i=index;">
+
+                                              <div cdkDropList
+                                                   cdkDropListOrientation="horizontal"
+                                                   class="item"
+                                                   [id]="item.sampleItemId"
+                                                   [cdkDropListData]="{payload:item,index:i}"
+                                                   (cdkDropListDropped)="dropOnList02($event)">
+                                                  <div cdkDrag
+                                                       class="item-content">
+                                                      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                                                      <div class="drag-preview" *cdkDragPreview>
+                                                          {{ item.label }}
+                                                      </div>
+                                                      {{ item.label }}
+                                                  </div>
+                                              </div>
+
+                                              <div cdkDropList
+                                                   cdkDropListOrientation="horizontal"
+                                                   class="item-ghost"
+                                                   [id]="item.sampleItemId"
+                                                   [cdkDropListData]="{payload:item,index:i}"
+                                                   (cdkDropListDropped)="dropOnList02Placeholder($event)">
+                                                  <div cdkDrag
+                                                       class="item-content-ghost">
+                                                      <div class="drag-placeholder" *cdkDragPlaceholder></div>
+
+                                                  </div>
+                                              </div>
+
+                                          </ng-container>
+                                      </div>-->
                                 </div>
                             </ng-template>
                         </dgp-split-panel-content>
@@ -108,64 +154,14 @@ export interface DragItem<TPayload> {
             flex-direction: column;
             flex-grow: 1;
             overflow: auto;
-        }
-
-        .item {
-            width: 100px;
-            height: 100px;
-            margin: 8px;
-            border: 1px solid gray;
-            cursor: move;
             position: relative;
-            overflow: hidden;
-        }
-
-        .item-content {
-            border: 1px solid gray;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .drag-preview {
-            border: 1px solid gray;
-            display: block;
-            width: 100px;
-            height: 100px;
-            overflow: hidden;
-            color: white;
-            background: gray;
-        }
-
-        .drag-placeholder {
-            background: lightgray;
-            border: dashed 2px darkslategrey;
-            opacity: 0.5;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-        }
-
-        .list-01 {
-            display: flex;
-            flex-wrap: wrap;
-            overflow: auto;
-        }
-
-        .list-02 {
-            display: flex;
-            flex-wrap: wrap;
-            overflow: auto;
         }
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitPanelLabsPageComponent {
+
 
     itemsFromList01: Array<SampleItem> = [
         {sampleItemId: "A", label: "A"},
@@ -183,31 +179,16 @@ export class SplitPanelLabsPageComponent {
         {sampleItemId: "H", label: "H"},
     ];
 
+    doneItems = [];
+
     items02 = this.itemsFromList02.map(x => x.sampleItemId);
 
-    dropOnList01(event: CdkDragDrop<DragItem<SampleItem>>) {
-        this.itemsFromList01[event.previousContainer.data.index] = event.container.data.payload;
-        this.itemsFromList01[event.container.data.index] = event.previousContainer.data.payload;
-        /* if (event.previousContainer === event.container) {
-             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-         } else {
-             transferArrayItem(event.previousContainer.data,
-                 event.container.data,
-                 event.previousIndex,
-                 event.currentIndex);
-         }*/
+    drop0r1z3(event: CdkDragDrop<number>): void {
+        moveItemInArray(
+            this.itemsFromList01,
+            event.previousContainer.data,
+            event.container.data
+        );
     }
 
-    dropOnList02(event: CdkDragDrop<DragItem<SampleItem>>) {
-        this.itemsFromList02[event.previousContainer.data.index] = event.container.data.payload;
-        this.itemsFromList02[event.container.data.index] = event.previousContainer.data.payload;
-        /* if (event.previousContainer === event.container) {
-             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-         } else {
-             transferArrayItem(event.previousContainer.data,
-                 event.container.data,
-                 event.previousIndex,
-                 event.currentIndex);
-         }*/
-    }
 }

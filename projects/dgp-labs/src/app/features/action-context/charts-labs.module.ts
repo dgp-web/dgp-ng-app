@@ -46,5 +46,3 @@ import { DgpResizeSensorModule } from "../../../../../dgp-ng-app/src/resize-sens
 })
 export class ActionContextLabsModule {
 }
-
-console.log();

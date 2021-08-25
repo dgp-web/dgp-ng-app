@@ -5,6 +5,7 @@ import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
     imports: [
@@ -17,7 +18,9 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
         }], {relativeLinkResolution: 'legacy'}),
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
-        DragDropModule
+        DragDropModule,
+        MatCardModule,
+        DgpSplitPanelModule
     ],
     declarations: [
         SplitPanelLabsPageComponent
