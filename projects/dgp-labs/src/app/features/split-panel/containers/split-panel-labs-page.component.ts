@@ -40,8 +40,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          [cdkDropListData]="{item:item,index:i}"
                                          (cdkDropListDropped)="drop($event)">
                                         <div cdkDrag
-                                            class="item-content">
-                                            <div class="item-content drag-placeholder" *cdkDragPlaceholder>Test</div>
+                                             class="item-content">
+                                            <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                                            <div class="drag-preview" *cdkDragPreview>
+                                                {{ item.title }}
+                                            </div>
                                             {{ item.title }}
                                         </div>
                                     </div>
@@ -61,7 +64,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          (cdkDropListDropped)="drop($event)">
                                         <div cdkDrag
                                              class="item-content">
-                                            <div class="item-content drag-placeholder" *cdkDragPlaceholder>Test</div>
+                                            <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                                            <div class="drag-preview" *cdkDragPreview>
+                                                {{ item.title }}
+                                            </div>
                                             {{ item.title }}
                                         </div>
                                     </div>
@@ -96,34 +102,50 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             margin: 8px;
             border: 1px solid gray;
             cursor: move;
-            position:relative;
+            position: relative;
             overflow: hidden;
         }
 
         .item-content {
+            border: 1px solid gray;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             height: 100%;
+            overflow: hidden;
+        }
+
+        .drag-preview {
+            border: 1px solid gray;
+            display: block;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            color: white;
+            background: gray;
+        }
+
+        .drag-placeholder {
+            background: lightgray;
+            border: dashed 2px darkslategrey;
+            opacity: 0.5;
+            width: 100%;
+            height: 100%;
+            position: absolute;
         }
 
         .list-01 {
             display: flex;
             flex-wrap: wrap;
             overflow: auto;
-            height: 100%;
         }
 
         .list-02 {
             display: flex;
             flex-wrap: wrap;
             overflow: auto;
-            height: 100%;
-        }
-
-        .drag-placeholder {
-            background: #ccc;
-            border: dotted 3px #999;
-            min-height: 60px;
-            transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
         }
 
     `],
