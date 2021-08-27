@@ -69,7 +69,7 @@ export class BroadcastChannelServiceImpl extends BroadcastChannelService {
         return fromEventPattern(
             this.addBroadcastListenerForHeartbeat
         ).pipe(
-            map(getBroadcastHeartbeatFromMessageEvent)
+            map(x => getBroadcastHeartbeatFromMessageEvent(x as any, this.config.canBeLeader))
         );
     }
 
