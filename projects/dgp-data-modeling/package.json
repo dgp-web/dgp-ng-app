@@ -1,6 +1,6 @@
 {
   "name": "dgp-data-modeling",
-  "version": "11.9.2",
+  "version": "11.9.3",
   "peerDependencies": {
     "@angular/common": "^11.3.0",
     "@angular/core": "^11.3.0"
