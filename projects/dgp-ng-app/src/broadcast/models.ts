@@ -42,7 +42,9 @@ export type SendInitialStateSignature<TEntityTypeMap extends EntityTypeMap, TSto
 export type BroadcastInitialStateActionRule<TAppState> = (state: TAppState) => Action;
 export type BroadcastInitialEntityStoreContentRule<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = SendInitialStateSignature<TEntityTypeMap, TStoreFeature>;
 
-export type BroadcastInitialStateRule<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = BroadcastInitialStateActionRule<TEntityTypeMap> | BroadcastInitialEntityStoreContentRule<TEntityTypeMap, TStoreFeature>;
+export type BroadcastInitialStateRule<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> =
+    BroadcastInitialStateActionRule<TEntityTypeMap>
+    | BroadcastInitialEntityStoreContentRule<TEntityTypeMap, TStoreFeature>;
 
 export type BroadCastInitialStateRules<TEntityTypeMap extends EntityTypeMap, TStoreFeature = string> = ReadonlyArray<BroadcastInitialStateRule<TEntityTypeMap, TStoreFeature>>;
 
@@ -93,6 +95,8 @@ export interface BroadcastConfig<TEntityTypeMap extends EntityTypeMap = { [key: 
     readonly updateBrowserTabTitleConfig?: BroadcastRoleDisplayConfig;
 
     readonly sendInitialState?: SendInitialStateSignature<TEntityTypeMap, TStoreFeature> | BroadCastInitialStateRules<TEntityTypeMap, TStoreFeature>;
+
+    readonly syncSelection?: boolean;
 }
 
 export const defaultBroadcastConfig: BroadcastConfig = {

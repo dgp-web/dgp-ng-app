@@ -178,6 +178,8 @@ export class BroadcastEffects {
         select(getOwnBroadcastRoleSelector),
         switchMap((broadcastRole: BroadcastRole) => {
 
+            const config = this.config;
+
             // TODO: Extract
             function tryTrimSelectionFromCompositeEntityAction(action: Action): any {
 
@@ -185,17 +187,33 @@ export class BroadcastEffects {
 
                     const typedAction = action as CompositeEntityAction<any, any>;
 
-                    /**
-                     * Synchronize everything but the selection
-                     * which the client has to manage itself
-                     */
-                    return new CompositeEntityAction({
-                        add: typedAction.payload.add,
-                        clear: typedAction.payload.clear,
-                        remove: typedAction.payload.remove,
-                        set: typedAction.payload.set,
-                        update: typedAction.payload.update,
-                    });
+                    if (config.syncSelection) {
+                        /**
+                         * Synchronize everything but the selection
+                         * which the client has to manage itself
+                         */
+                        return new CompositeEntityAction({
+                            add: typedAction.payload.add,
+                            clear: typedAction.payload.clear,
+                            remove: typedAction.payload.remove,
+                            set: typedAction.payload.set,
+                            update: typedAction.payload.update,
+                            select: typedAction.payload.select
+                        });
+                    } else {
+                        /**
+                         * Synchronize everything but the selection
+                         * which the client has to manage itself
+                         */
+                        return new CompositeEntityAction({
+                            add: typedAction.payload.add,
+                            clear: typedAction.payload.clear,
+                            remove: typedAction.payload.remove,
+                            set: typedAction.payload.set,
+                            update: typedAction.payload.update
+                        });
+                    }
+
 
                 } else {
                     return action;
