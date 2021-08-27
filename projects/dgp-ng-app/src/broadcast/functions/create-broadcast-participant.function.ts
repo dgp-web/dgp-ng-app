@@ -1,9 +1,10 @@
 import { createGuid } from "./create-guid.function";
 import { BroadcastParticipant } from "../models";
 
-export function createBroadcastParticipant(): BroadcastParticipant {
+export function createBroadcastParticipant(canBeLeader: boolean): BroadcastParticipant {
     return {
         participantId: createGuid(),
-        participantCreationDate: new Date()
+        participantCreationDate: new Date(),
+        canBeLeader
     };
 }

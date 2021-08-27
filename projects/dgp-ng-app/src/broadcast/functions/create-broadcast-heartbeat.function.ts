@@ -1,4 +1,3 @@
-
 import { BroadcastHeartbeat, BroadcastParticipant } from "../models";
 
 export interface CreateBroadcastHeartbeatPayload {

@@ -9,6 +9,7 @@ export interface BroadcastParticipant {
      */
     readonly participantId: string;
     readonly participantCreationDate: Date;
+    readonly canBeLeader: boolean;
 }
 
 export interface DataBroadcastChannel extends BroadcastParticipant {
@@ -97,6 +98,16 @@ export interface BroadcastConfig<TEntityTypeMap extends EntityTypeMap = { [key: 
     readonly sendInitialState?: SendInitialStateSignature<TEntityTypeMap, TStoreFeature> | BroadCastInitialStateRules<TEntityTypeMap, TStoreFeature>;
 
     readonly syncSelection?: boolean;
+
+    /**
+     * Indicates whether this window can be a leader
+     * or is intended to support the main application.
+     *
+     * This can be used for scenarios where there is
+     * a main application and sub-apps that have no process
+     * control of their own.
+     */
+    readonly canBeLeader: boolean;
 }
 
 export const defaultBroadcastConfig: BroadcastConfig = {
@@ -105,7 +116,8 @@ export const defaultBroadcastConfig: BroadcastConfig = {
     heartbeatBroadcastChannelId,
     actionBroadcastChannelId,
     actionTypesToPrefixWithPeon: [],
-    updateBrowserTabTitleConfig: defaultBroadcastRoleDisplayConfig
+    updateBrowserTabTitleConfig: defaultBroadcastRoleDisplayConfig,
+    canBeLeader: true
 };
 export const BROADCAST_CONFIG = new InjectionToken<Readonly<BroadcastConfig>>(
     "DEFAULT_BROADCAST_CONFIG"

@@ -53,7 +53,7 @@ export function getBroadcastHeartbeatsForInterval(payload: {
 @Injectable()
 export class BroadcastEffects {
 
-    participant: BroadcastParticipant = createBroadcastParticipant();
+    participant: BroadcastParticipant = createBroadcastParticipant(this.config.canBeLeader);
 
     selectedDataId: any;
     ownBroadcastRole: BroadcastRole;
