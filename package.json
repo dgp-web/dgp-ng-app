@@ -42,7 +42,7 @@
         "dgp-labs:build:prod": "ng build --prod dgp-labs",
         "dgp-labs:dgp-serve": "ng run dgp-labs:dgp-serve",
         "dgp-labs:dgp-test": "ng run dgp-labs:dgp-test",
-        "dgp-labs:ng-serve": "ng serve --hmr --hmrWarning=false dgp-labs",
+        "dgp-labs:ng-serve": "ng serve dgp-labs",
         "dgp-labs:publish": "firebase use dgp-labs && firebase deploy --only hosting:dgp-labs",
         "dgp-labs:test": "ng test dgp-labs",
         "dgp-labs:test:prod": "ng test dgp-labs --single-run"
