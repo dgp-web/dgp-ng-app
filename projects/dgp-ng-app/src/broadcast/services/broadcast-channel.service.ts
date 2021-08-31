@@ -1,9 +1,16 @@
-import {Observable, fromEventPattern} from "rxjs";
-import {ClassProvider, Inject, Injectable} from "@angular/core";
-import {map} from "rxjs/operators";
-import {BroadcastChannelLocalStorageFallbackService} from "./broadcast-channel-local-storage-fallback.service";
+import { fromEventPattern, Observable } from "rxjs";
+import { ClassProvider, Inject, Injectable } from "@angular/core";
+import { map } from "rxjs/operators";
+import { BroadcastChannelLocalStorageFallbackService } from "./broadcast-channel-local-storage-fallback.service";
 import { getBroadcastHeartbeatFromMessageEvent } from "../functions/get-broadcast-heartbeat-from-message-event.function";
-import { BROADCAST_CONFIG, BroadcastAction, BroadcastChannelLike, BroadcastConfig, BroadcastHeartbeat, MessageEventLike } from "../models";
+import {
+    BroadcastAction,
+    BroadcastChannelLike,
+    BroadcastConfig,
+    BroadcastHeartbeat,
+    MessageEventLike
+} from "../models";
+import { BROADCAST_CONFIG } from "../constants";
 
 export abstract class BroadcastChannelService {
 
@@ -69,7 +76,7 @@ export class BroadcastChannelServiceImpl extends BroadcastChannelService {
         return fromEventPattern(
             this.addBroadcastListenerForHeartbeat
         ).pipe(
-            map(getBroadcastHeartbeatFromMessageEvent)
+            map(x => getBroadcastHeartbeatFromMessageEvent(x as any, this.config.canBeLeader))
         );
     }
 

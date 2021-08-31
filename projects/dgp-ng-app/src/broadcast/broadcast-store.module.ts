@@ -8,7 +8,8 @@ import { broadcastChannelServiceProvider } from "./services/broadcast-channel.se
 import { BroadcastEffects } from "./effects";
 import { NoPeonGuard } from "./guards/no-peon.guard";
 import { EntityTypeMap } from "entity-store";
-import { BROADCAST_CONFIG, BroadcastConfig, defaultBroadcastConfig } from "./models";
+import { BroadcastConfig } from "./models";
+import { BROADCAST_CONFIG, defaultBroadcastConfig } from "./constants";
 
 export const BROADCAST_REDUCER = new InjectionToken<ActionReducerMap<BroadcastState>>("BroadcastStoreReducer");
 

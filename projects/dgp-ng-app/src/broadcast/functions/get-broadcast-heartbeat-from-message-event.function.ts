@@ -6,14 +6,14 @@ import { BroadcastHeartbeat, MessageEventLike } from "../models";
  *
  * This is needed to ensure that the objects resulting from broadcast channels
  * and local storage look the same
- *
- * @param messageEvent
  */
-export function getBroadcastHeartbeatFromMessageEvent(messageEvent: MessageEventLike): BroadcastHeartbeat {
+export function getBroadcastHeartbeatFromMessageEvent(messageEvent: MessageEventLike, canBeLeader: boolean): BroadcastHeartbeat {
     return {
         dataId: messageEvent.data.dataId,
         participantId: messageEvent.data.participantId,
-        participantCreationDate: isDate(messageEvent.data.participantCreationDate) ?
-            messageEvent.data.participantCreationDate : new Date(messageEvent.data.participantCreationDate as string)
+        canBeLeader,
+        participantCreationDate: isDate(messageEvent.data.participantCreationDate)
+            ? messageEvent.data.participantCreationDate
+            : new Date(messageEvent.data.participantCreationDate as string)
     };
 }

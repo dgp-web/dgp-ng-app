@@ -1,6 +1,6 @@
 {
     "name": "ng-starter",
-    "version": "11.9.3",
+    "version": "11.9.5",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -37,7 +37,7 @@
         "docs-app:dgp-serve": "ng run ng-app:dgp-serve",
         "docs-app:dgp-build": "ng run ng-app:dgp-build",
         "docs-app:dgp-test": "ng run ng-app:dgp-test",
-        "docs-app:ng-serve": "ng serve --hmr --hmrWarning=false ng-app",
+        "docs-app:ng-serve": "ng serve ng-app",
         "docs-app:publish": "firebase use dgp-ng-app && firebase deploy --only hosting:dgp-ng-app",
         "dgp-labs:build:prod": "ng build --prod dgp-labs",
         "dgp-labs:dgp-serve": "ng run dgp-labs:dgp-serve",

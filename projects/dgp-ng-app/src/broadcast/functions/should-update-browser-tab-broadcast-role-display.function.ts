@@ -1,5 +1,6 @@
-import { isNullOrUndefined } from "util";
-import { BroadcastRole, BroadcastRoleDisplayConfig, defaultBroadcastRoleDisplayConfig } from "../models";
+import { BroadcastRole, BroadcastRoleDisplayConfig } from "../models";
+import { defaultBroadcastRoleDisplayConfig } from "../constants";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 
 export interface ShouldUpdateBrowserTabBroadcastRoleDisplayPayload {
     readonly currentBrowserTabTitle: Readonly<string>;

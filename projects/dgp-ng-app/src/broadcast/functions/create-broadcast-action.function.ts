@@ -16,6 +16,7 @@ export function createBroadcastAction(
         participantId: payload.participant.participantId,
         participantCreationDate: payload.participant.participantCreationDate,
         dataId: payload.dataId,
+        canBeLeader: payload.participant.canBeLeader
     } as Partial<BroadcastAction>) as BroadcastAction;
 
 }
