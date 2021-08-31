@@ -1,5 +1,5 @@
 import { TestBed, waitForAsync } from "@angular/core/testing";
-import { of, Observable, ReplaySubject } from "rxjs";
+import { Observable, of, ReplaySubject } from "rxjs";
 import { first } from "rxjs/operators";
 import { Action, Store, StoreModule } from "@ngrx/store";
 import { EffectsMetadata, getEffectsMetadata } from "@ngrx/effects";
@@ -16,13 +16,10 @@ import {
     SetOwnBroadcastRoleAction,
     setOwnBroadcastRoleActionType
 } from "./actions";
-import {
-    defaultShouldUpdateBrowserTabBroadcastRoleDisplayConfig
-} from "./functions/should-update-browser-tab-broadcast-role-display.function";
-import { FilterIncomingBroadcastActionPayload } from "./functions/filter-incoming-broadcast-action.function";
 import { BroadcastChannelService } from "./services/broadcast-channel.service";
-import { BROADCAST_CONFIG, BroadcastAction, BroadcastHeartbeat, BroadcastRole, defaultBroadcastConfig } from "./models";
+import { BroadcastAction, BroadcastHeartbeat, BroadcastRole } from "./models";
 import { BROADCAST_REDUCER } from "./broadcast-store.module";
+import { BROADCAST_CONFIG, defaultBroadcastConfig } from "./constants";
 
 describe(BroadcastEffects.name, () => {
 
@@ -94,7 +91,7 @@ describe(BroadcastEffects.name, () => {
         effects = TestBed.inject(BroadcastEffects);
         metadata = getEffectsMetadata(effects);
         effects.selectedDataId = BroadcastFunctionsTestData.dataId01;
-        effects.participant = BroadcastFunctionsTestData.participant01;
+        (effects as any).participant = BroadcastFunctionsTestData.participant01;
         channelService = TestBed.inject(BroadcastChannelService);
         store = TestBed.inject(Store);
 
@@ -114,7 +111,7 @@ describe(BroadcastEffects.name, () => {
     });
 
     it(`should register observeBroadcastedHeartbeats$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedHeartbeats$)
+        expect(metadata.observeBroadcastHeartbeats$)
             .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
@@ -129,7 +126,7 @@ describe(BroadcastEffects.name, () => {
     });
 
     it(`should register observeBroadcastedActions$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedActions$)
+        expect(metadata.observeBroadcastActions$)
             .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
