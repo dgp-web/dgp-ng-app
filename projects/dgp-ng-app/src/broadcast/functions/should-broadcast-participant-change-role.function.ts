@@ -69,4 +69,5 @@ export function shouldBroadcastParticipantChangeRole(
         if (payload.currentBroadcastRole !== BroadcastRole.Peon) return shouldSwitchToPeon;
         else return shouldDoNothing;
     }
+
 }

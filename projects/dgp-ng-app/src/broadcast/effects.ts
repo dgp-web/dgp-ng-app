@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { bufferTime, distinctUntilChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
 import { BroadcastState, getOwnBroadcastRoleSelector } from "./store";
-import { interval } from "rxjs";
+import { from, interval } from "rxjs";
 import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat.function";
 import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
@@ -27,10 +27,10 @@ import { BROADCAST_CONFIG } from "./constants";
 import { filterNotNullOrUndefined } from "../utils/filter-not-null-or-undefined.function";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
 import { DgpContainer } from "../utils/container.component-base";
-import { firstAsPromise } from "../utils/first-as-promise";
 import { tryTrimSelectionFromCompositeEntityAction } from "./functions/try-trim-selection-from-composite-entity-action.function";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
 import { getBroadcastHeartbeatsForInterval } from "./functions/get-broadcast-heartbeats-for-interval.function";
+import { ofNull } from "../utils/of-null.function";
 
 
 @Injectable()
@@ -99,7 +99,7 @@ export class BroadcastEffects extends DgpContainer<BroadcastState> {
             window.document.title = result.updatedBrowserTabTitle;
 
         })
-    ));
+    ), withoutDispatch);
 
     readonly broadcastPeonAction$ = createEffect(() => this.actions$.pipe(
         filter(action => action.type.startsWith(peonActionTypePrefix)),
@@ -111,15 +111,6 @@ export class BroadcastEffects extends DgpContainer<BroadcastState> {
         tap(actionMessage => this.channelService.postAction(actionMessage))
     ), withoutDispatch);
 
-    readonly createLeaderAction$ = createEffect(() => this.select(getOwnBroadcastRoleSelector).pipe(
-        filter(broadcastRole => broadcastRole === BroadcastRole.Leader),
-        switchMap(() => this.actions$.pipe(
-            filter(filterActionToPrefixWithLeaderPredicate),
-            map(x => tryTrimSelectionFromCompositeEntityAction(x, this.config))
-        )),
-        map(action => ({...action, type: leaderActionTypePrefix + action.type}))
-    ));
-
     readonly broadcastLeaderAction$ = createEffect(() => this.actions$.pipe(
         filter(action => action.type.startsWith(leaderActionTypePrefix)),
         map(action => createBroadcastAction({
@@ -129,36 +120,51 @@ export class BroadcastEffects extends DgpContainer<BroadcastState> {
         })),
         tap(actionMessage => this.channelService.postAction(actionMessage))
     ), withoutDispatch);
-    
+
+    readonly createLeaderAction$ = createEffect(() => this.select(getOwnBroadcastRoleSelector).pipe(
+        switchMap(broadcastRole => {
+
+            if (broadcastRole === BroadcastRole.Leader) {
+                return this.actions$.pipe(
+                    filter(filterActionToPrefixWithLeaderPredicate),
+                    map(x => tryTrimSelectionFromCompositeEntityAction(x, this.config))
+                );
+            } else return ofNull();
+
+        }),
+        filterNotNullOrUndefined(),
+        map(action => prefixAction({prefix: leaderActionTypePrefix, action}))
+    ));
+
     readonly observeBroadcastActions$ = createEffect(() => this.channelService.getAction$().pipe(
         filter(action => filterIncomingBroadcastAction({
             action,
             dataId: this.selectedDataId,
             ownBroadcastRole: this.ownBroadcastRole
         })),
-        map(trimIncomingBroadcastAction)
+        map(x => trimIncomingBroadcastAction(x))
     ));
 
     // noinspection JSUnusedGlobalSymbols
     readonly sendInitialData$ = createEffect(() => this.actions$.pipe(
         ofType(requestInitialData),
-        switchMap(() => firstAsPromise(this.select(getOwnBroadcastRoleSelector))),
+        switchMap(() => this.select(getOwnBroadcastRoleSelector).pipe(first())),
         filter(role => role === BroadcastRole.Leader && notNullOrUndefined(this.config.sendInitialState)),
-        switchMap(() => firstAsPromise(this.store)),
+        switchMap(() => this.store.pipe(first())),
         switchMap(state => {
 
             if (Array.isArray(this.config.sendInitialState)) {
                 const actionFactories = this.config.sendInitialState as BroadCastInitialStateRules<any>;
-                return actionFactories.map(actionFactory => actionFactory(state as any));
+                return from(actionFactories.map(actionFactory => actionFactory(state as any)));
             } else {
                 // noinspection JSDeprecatedSymbols
                 const actionFactory = this.config.sendInitialState as SendInitialStateSignature<any>;
-                return [
+                return from([
                     prefixAction({
                         action: actionFactory(state as any),
                         prefix: leaderActionTypePrefix
                     })
-                ];
+                ]);
             }
 
         })

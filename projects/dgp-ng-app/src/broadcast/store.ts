@@ -22,9 +22,7 @@ export const broadcastReducer = createReducer<BroadcastState>(
 
 export const getOwnBroadcastRoleSelector = createSelector(
     broadcastStoreFeatureSelector, x => {
-        if (isNullOrUndefined(x)) {
-            return null;
-        }
+        if (isNullOrUndefined(x)) return null;
 
         return x.ownRole;
     }
