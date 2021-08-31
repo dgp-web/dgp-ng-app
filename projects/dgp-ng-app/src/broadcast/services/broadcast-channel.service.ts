@@ -10,7 +10,7 @@ import {
     BroadcastHeartbeat,
     MessageEventLike
 } from "../models";
-import { BROADCAST_CONFIG } from "../constants";
+import { BROADCAST_CONFIG } from "../constants/broadcast-config-injection-token.constant";
 
 export abstract class BroadcastChannelService {
 

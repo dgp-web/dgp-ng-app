@@ -1,5 +1,5 @@
 import { BroadcastRole, BroadcastRoleDisplayConfig } from "../models";
-import { defaultBroadcastRoleDisplayConfig } from "../constants";
+import { defaultBroadcastRoleDisplayConfig } from "../constants/default-broadcast-role-display-config.constant";
 import { isNullOrUndefined } from "../../utils/null-checking.functions";
 
 export interface ShouldUpdateBrowserTabBroadcastRoleDisplayPayload {

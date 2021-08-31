@@ -6,7 +6,7 @@ import { prefixAction } from "./functions/prefix-action.function";
 import { peonActionTypePrefix } from "./actions";
 import { shouldPrefixAction } from "./functions/should-prefix-action.function";
 import { BroadcastConfig, BroadcastRole } from "./models";
-import { BROADCAST_CONFIG } from "./constants";
+import { BROADCAST_CONFIG } from "./constants/broadcast-config-injection-token.constant";
 
 @Injectable()
 export class BroadcastStoreDecorator<T> extends Store<T> {

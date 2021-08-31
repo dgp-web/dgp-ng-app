@@ -23,7 +23,7 @@ import { BroadcastChannelService } from "./services/broadcast-channel.service";
 import { filterActionToPrefixWithLeaderPredicate } from "./functions/filter-action-to-prefix-with-leader.predicate";
 import { prefixAction } from "./functions/prefix-action.function";
 import { BroadcastConfig, BroadCastInitialStateRules, BroadcastRole, SendInitialStateSignature } from "./models";
-import { BROADCAST_CONFIG } from "./constants";
+import { BROADCAST_CONFIG } from "./constants/broadcast-config-injection-token.constant";
 import { filterNotNullOrUndefined } from "../utils/filter-not-null-or-undefined.function";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
 import { DgpContainer } from "../utils/container.component-base";

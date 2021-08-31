@@ -43,7 +43,13 @@ export {
 } from "./broadcast/actions";
 export { NoPeonGuard } from "./broadcast/guards/no-peon.guard";
 export { createGuid } from "./broadcast/functions/create-guid.function";
-export * from "./broadcast/constants";
+export { BROADCAST_CONFIG } from "./broadcast/constants/broadcast-config-injection-token.constant";
+export {
+    defaultBroadcastRoleDisplayConfig
+} from "./broadcast/constants/default-broadcast-role-display-config.constant";
+export { defaultBroadcastConfig } from "./broadcast/constants/default-broadcast-config.model";
+export { heartbeatBroadcastChannelId } from "./broadcast/constants/heartbeat-broadcast-channel-id.constant";
+export { actionBroadcastChannelId } from "./broadcast/constants/action-broadcast-channel-id.constant";
 export * from "./broadcast/models";
 export {
     BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector
