@@ -1,13 +1,12 @@
 import { Inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Action, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { bufferTime, distinctUntilChanged, filter, first, map, switchMap, tap } from "rxjs/operators";
 import { BroadcastState, getOwnBroadcastRoleSelector } from "./store";
-import { from, interval, of } from "rxjs";
+import { interval } from "rxjs";
 import { createBroadcastHeartbeat } from "./functions/create-broadcast-heartbeat.function";
 import { createBroadcastParticipant } from "./functions/create-broadcast-participant.function";
 import {
-    compositeActionTypePrefix,
     leaderActionTypePrefix,
     openUrlAsPeon,
     peonActionTypePrefix,
@@ -23,76 +22,15 @@ import { shouldUpdateBrowserTabBroadcastRoleDisplay } from "./functions/should-u
 import { BroadcastChannelService } from "./services/broadcast-channel.service";
 import { filterActionToPrefixWithLeaderPredicate } from "./functions/filter-action-to-prefix-with-leader.predicate";
 import { prefixAction } from "./functions/prefix-action.function";
-import {
-    BroadcastConfig,
-    BroadcastHeartbeat,
-    BroadCastInitialStateRules,
-    BroadcastParticipant,
-    BroadcastRole,
-    SendInitialStateSignature
-} from "./models";
-import { CompositeEntityAction } from "entity-store";
+import { BroadcastConfig, BroadCastInitialStateRules, BroadcastRole, SendInitialStateSignature } from "./models";
 import { BROADCAST_CONFIG } from "./constants";
 import { filterNotNullOrUndefined } from "../utils/filter-not-null-or-undefined.function";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
 import { DgpContainer } from "../utils/container.component-base";
 import { firstAsPromise } from "../utils/first-as-promise";
-import { ofNull } from "../utils/of-null.function";
-
-
-export function tryTrimSelectionFromCompositeEntityAction(action: Action,
-                                                          config: BroadcastConfig): any {
-
-    if (action.type.startsWith(compositeActionTypePrefix)) {
-
-        const typedAction = action as CompositeEntityAction<any, any>;
-
-        if (config.syncSelection) {
-            /**
-             * Synchronize everything but the selection
-             * which the client has to manage itself
-             */
-            return new CompositeEntityAction({
-                add: typedAction.payload.add,
-                clear: typedAction.payload.clear,
-                remove: typedAction.payload.remove,
-                set: typedAction.payload.set,
-                update: typedAction.payload.update,
-                select: typedAction.payload.select
-            });
-        } else {
-            /**
-             * Synchronize everything but the selection
-             * which the client has to manage itself
-             */
-            return new CompositeEntityAction({
-                add: typedAction.payload.add,
-                clear: typedAction.payload.clear,
-                remove: typedAction.payload.remove,
-                set: typedAction.payload.set,
-                update: typedAction.payload.update
-            });
-        }
-
-
-    } else {
-        return action;
-    }
-
-}
-
-export function getBroadcastHeartbeatsForInterval(payload: {
-    heartbeatsFromOtherParticipants: ReadonlyArray<BroadcastHeartbeat>;
-    participant: BroadcastParticipant;
-    dataId: any;
-}): BroadcastHeartbeat[] {
-
-    return payload.heartbeatsFromOtherParticipants.concat([
-        createBroadcastHeartbeat({
-            participant: payload.participant,
-            dataId: payload.dataId
-        })]);
-}
+import { tryTrimSelectionFromCompositeEntityAction } from "./functions/try-trim-selection-from-composite-entity-action.function";
+import { withoutDispatch } from "../utils/without-dispatch.constant";
+import { getBroadcastHeartbeatsForInterval } from "./functions/get-broadcast-heartbeats-for-interval.function";
 
 
 @Injectable()
@@ -105,58 +43,46 @@ export class BroadcastEffects extends DgpContainer<BroadcastState> {
 
     ownBroadcastRole: BroadcastRole;
 
+    // noinspection JSUnusedGlobalSymbols
     readonly cacheDataId$ = createEffect(() => this.actions$.pipe(
         ofType(setBroadcastChannelDataId),
-        tap(action => {
-            this.selectedDataId = action.payload;
-        })
-    ), {dispatch: false});
+        tap(action => this.selectedDataId = action.payload)
+    ), withoutDispatch);
 
-    readonly cacheOwnBroadcastRole$ = createEffect(() => this.select(getOwnBroadcastRoleSelector)
-        .pipe(
-            tap(ownBroadcastRole => {
-                this.ownBroadcastRole = ownBroadcastRole;
-            })
-        ), {dispatch: false});
+    // noinspection JSUnusedGlobalSymbols
+    readonly cacheOwnBroadcastRole$ = createEffect(() => this.select(getOwnBroadcastRoleSelector).pipe(
+        tap(ownBroadcastRole => this.ownBroadcastRole = ownBroadcastRole)
+    ), withoutDispatch);
 
     readonly broadcastHeartbeat$ = createEffect(() => this.heartbeat$.pipe(
-        tap(() => {
+        map(() => createBroadcastHeartbeat({
+            participant: this.participant, dataId: this.selectedDataId
+        })),
+        tap(heartbeat => this.channelService.postHeartbeat(heartbeat))
+    ), withoutDispatch);
 
-            const heartbeat = createBroadcastHeartbeat({
-                participant: this.participant,
-                dataId: this.selectedDataId
+    readonly observeBroadcastHeartbeats$ = createEffect(() => this.channelService.getHeartbeat$().pipe(
+        bufferTime(this.config.incomingHeartbeatBufferInterval),
+        map(heartbeatsFromOtherParticipants => getBroadcastHeartbeatsForInterval({
+            heartbeatsFromOtherParticipants,
+            participant: this.participant,
+            dataId: this.selectedDataId
+        })),
+        map(heartbeats => {
+
+            const shouldChangeRoleResult = shouldBroadcastParticipantChangeRole({
+                currentBroadcastRole: this.ownBroadcastRole,
+                heartbeats,
+                participantId: this.participant.participantId
             });
+            const broadcastRole = shouldChangeRoleResult.newBroadcastRole;
 
-            this.channelService.postHeartbeat(heartbeat);
-        })
-    ), {dispatch: false});
+            if (shouldChangeRoleResult.shouldChangeRole) return setOwnBroadcastRole({broadcastRole});
+            else return null;
 
-    readonly observeBroadcastedHeartbeats$ = createEffect(() => this.channelService
-        .getHeartbeat$()
-        .pipe(
-            bufferTime(this.config.incomingHeartbeatBufferInterval),
-            map(heartbeatsFromOtherParticipants => getBroadcastHeartbeatsForInterval({
-                heartbeatsFromOtherParticipants,
-                participant: this.participant,
-                dataId: this.selectedDataId
-            })),
-            map(heartbeats => {
-
-                const shouldChangeRoleResult = shouldBroadcastParticipantChangeRole({
-                    currentBroadcastRole: this.ownBroadcastRole,
-                    heartbeats,
-                    participantId: this.participant.participantId
-                });
-
-                if (shouldChangeRoleResult.shouldChangeRole) {
-                    return setOwnBroadcastRole({broadcastRole: shouldChangeRoleResult.newBroadcastRole});
-                } else {
-                    return null;
-                }
-
-            }),
-            filterNotNullOrUndefined()
-        ));
+        }),
+        filterNotNullOrUndefined()
+    ));
 
     readonly displayBroadcastRoleInBrowserTabTitle$ = createEffect(() => this.actions$.pipe(
         ofType(setOwnBroadcastRole),
@@ -177,125 +103,89 @@ export class BroadcastEffects extends DgpContainer<BroadcastState> {
 
     readonly broadcastPeonAction$ = createEffect(() => this.actions$.pipe(
         filter(action => action.type.startsWith(peonActionTypePrefix)),
-        tap(action => {
-
-            const actionMessage = createBroadcastAction({
-                participant: this.participant,
-                dataId: this.selectedDataId,
-                action
-            });
-            this.channelService.postAction(actionMessage);
-        })
-    ), {dispatch: false});
+        map(action => createBroadcastAction({
+            participant: this.participant,
+            dataId: this.selectedDataId,
+            action
+        })),
+        tap(actionMessage => this.channelService.postAction(actionMessage))
+    ), withoutDispatch);
 
     readonly createLeaderAction$ = createEffect(() => this.select(getOwnBroadcastRoleSelector).pipe(
-        switchMap(broadcastRole => {
-
-            if (broadcastRole !== BroadcastRole.Leader) return ofNull();
-
-            return this.actions$.pipe(
-                filter(filterActionToPrefixWithLeaderPredicate),
-                map(x => tryTrimSelectionFromCompositeEntityAction(x, this.config))
-            );
-
-        }),
-        filterNotNullOrUndefined(),
-        map(action => ({
-            ...action,
-            type: leaderActionTypePrefix + action.type
-        }))
+        filter(broadcastRole => broadcastRole === BroadcastRole.Leader),
+        switchMap(() => this.actions$.pipe(
+            filter(filterActionToPrefixWithLeaderPredicate),
+            map(x => tryTrimSelectionFromCompositeEntityAction(x, this.config))
+        )),
+        map(action => ({...action, type: leaderActionTypePrefix + action.type}))
     ));
 
     readonly broadcastLeaderAction$ = createEffect(() => this.actions$.pipe(
         filter(action => action.type.startsWith(leaderActionTypePrefix)),
-        tap(action => {
+        map(action => createBroadcastAction({
+            participant: this.participant,
+            dataId: this.selectedDataId,
+            action
+        })),
+        tap(actionMessage => this.channelService.postAction(actionMessage))
+    ), withoutDispatch);
+    
+    readonly observeBroadcastActions$ = createEffect(() => this.channelService.getAction$().pipe(
+        filter(action => filterIncomingBroadcastAction({
+            action,
+            dataId: this.selectedDataId,
+            ownBroadcastRole: this.ownBroadcastRole
+        })),
+        map(trimIncomingBroadcastAction)
+    ));
 
-            const actionMessage = createBroadcastAction({
-                participant: this.participant,
-                dataId: this.selectedDataId,
-                action
-            });
-
-            this.channelService.postAction(actionMessage);
-
-        })
-    ), {dispatch: false});
-
-
-    readonly observeBroadcastActions$ = createEffect(() => this.channelService
-        .getAction$()
-        .pipe(
-            filter(action => {
-
-                return filterIncomingBroadcastAction({
-                    action,
-                    dataId: this.selectedDataId,
-                    ownBroadcastRole: this.ownBroadcastRole
-                });
-
-            }),
-            map(x => trimIncomingBroadcastAction(x))
-        ));
-
+    // noinspection JSUnusedGlobalSymbols
     readonly sendInitialData$ = createEffect(() => this.actions$.pipe(
         ofType(requestInitialData),
         switchMap(() => firstAsPromise(this.select(getOwnBroadcastRoleSelector))),
-        filter(role => role === BroadcastRole.Leader
-            && this.config.sendInitialState !== null
-            && this.config.sendInitialState !== undefined),
+        filter(role => role === BroadcastRole.Leader && notNullOrUndefined(this.config.sendInitialState)),
         switchMap(() => firstAsPromise(this.store)),
         switchMap(state => {
 
             if (Array.isArray(this.config.sendInitialState)) {
-
                 const actionFactories = this.config.sendInitialState as BroadCastInitialStateRules<any>;
-
-                return from(actionFactories.map(actionFactory => actionFactory(state as any)));
-
+                return actionFactories.map(actionFactory => actionFactory(state as any));
             } else {
-
                 // noinspection JSDeprecatedSymbols
                 const actionFactory = this.config.sendInitialState as SendInitialStateSignature<any>;
-                return from([
+                return [
                     prefixAction({
                         action: actionFactory(state as any),
                         prefix: leaderActionTypePrefix
                     })
-                ]);
-
+                ];
             }
 
         })
     ));
 
-    readonly requestInitialData$ = createEffect(() => this.select(getOwnBroadcastRoleSelector)
-        .pipe(
-            distinctUntilChanged(),
-            filter(role => role === BroadcastRole.Peon
-                && this.config.sendInitialState !== null
-                && this.config.sendInitialState !== undefined),
-            map(() => prefixAction({
-                action: requestInitialData,
-                prefix: peonActionTypePrefix
-            }))
-        ));
+    // noinspection JSUnusedGlobalSymbols
+    readonly requestInitialData$ = createEffect(() => this.select(getOwnBroadcastRoleSelector).pipe(
+        distinctUntilChanged(),
+        filter(role => role === BroadcastRole.Peon && notNullOrUndefined(this.config.sendInitialState)),
+        map(() => prefixAction({
+            action: requestInitialData,
+            prefix: peonActionTypePrefix
+        }))
+    ));
 
+    // noinspection JSUnusedGlobalSymbols
     readonly openUrlAsPeon$ = createEffect(() => this.actions$.pipe(
         ofType(openUrlAsPeon),
         switchMap(action => this.select(getOwnBroadcastRoleSelector).pipe(
             first(),
             tap(broadcastRole => {
                 window.open(action.url + "?startAsPeon=true");
-
-                if (broadcastRole !== BroadcastRole.Leader) {
-                    this.dispatch(setOwnBroadcastRole({
-                        broadcastRole: BroadcastRole.Leader
-                    }));
-                }
-
+                if (broadcastRole !== BroadcastRole.Leader) return;
+                this.dispatch(setOwnBroadcastRole({broadcastRole: BroadcastRole.Leader}));
             })
         ))
-    ), {dispatch: false});
+    ), withoutDispatch);
 
     constructor(
         private readonly actions$: Actions,

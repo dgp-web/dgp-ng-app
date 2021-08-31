@@ -114,7 +114,7 @@ describe(BroadcastEffects.name, () => {
     });
 
     it(`should register observeBroadcastedHeartbeats$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedHeartbeats$)
+        expect(metadata.observeBroadcastHeartbeats$)
             .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 

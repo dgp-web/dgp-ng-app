@@ -5,7 +5,8 @@ import { Subscription } from "rxjs";
 import { prefixAction } from "./functions/prefix-action.function";
 import { peonActionTypePrefix } from "./actions";
 import { shouldPrefixAction } from "./functions/should-prefix-action.function";
-import { BROADCAST_CONFIG, BroadcastConfig, BroadcastRole } from "./models";
+import { BroadcastConfig, BroadcastRole } from "./models";
+import { BROADCAST_CONFIG } from "./constants";
 
 @Injectable()
 export class BroadcastStoreDecorator<T> extends Store<T> {
