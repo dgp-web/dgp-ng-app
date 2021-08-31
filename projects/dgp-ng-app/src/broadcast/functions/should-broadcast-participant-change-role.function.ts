@@ -1,6 +1,6 @@
-import {isNullOrUndefined} from "util";
-import {getDistinctHeartbeatsForChannel} from "./get-distinct-heartbeats-for-channel.function";
-import {getHeartbeatFromOldestParticipant} from "./get-heartbeat-form-oldest-participant.function";
+import { isNullOrUndefined } from "util";
+import { getDistinctHeartbeatsForChannel } from "./get-distinct-heartbeats-for-channel.function";
+import { getHeartbeatFromOldestParticipant } from "./get-heartbeat-form-oldest-participant.function";
 import { BroadcastHeartbeat, BroadcastParticipant, BroadcastRole } from "../models";
 
 export interface ShouldBroadcastParticipantChangeRolePayload {
@@ -52,7 +52,18 @@ export function shouldBroadcastParticipantChangeRole(
         }
     }
 
-    const elderSender: BroadcastParticipant = getHeartbeatFromOldestParticipant(distinctHeartbeatsForOwnChannel);
+    const elderSender: BroadcastParticipant = getHeartbeatFromOldestParticipant(distinctHeartbeatsForOwnChannel.filter(x => x.canBeLeader));
+
+    if (!elderSender) {
+        if (payload.currentBroadcastRole !== BroadcastRole.None) {
+            return {
+                newBroadcastRole: BroadcastRole.None,
+                shouldChangeRole: true
+            };
+        } else {
+            return result;
+        }
+    }
 
     if (elderSender.participantId === payload.participantId) {
 

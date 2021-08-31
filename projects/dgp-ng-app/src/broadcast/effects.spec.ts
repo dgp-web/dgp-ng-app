@@ -156,7 +156,8 @@ describe(BroadcastEffects.name, () => {
             type: leaderAction.type,
             participantId: effects.participant.participantId,
             participantCreationDate: effects.participant.participantCreationDate,
-            dataId: effects.selectedDataId
+            dataId: effects.selectedDataId,
+            canBeLeader: true
         };
 
         expect(channelService.postAction)
@@ -177,7 +178,8 @@ describe(BroadcastEffects.name, () => {
             type: peonAction.type,
             participantId: effects.participant.participantId,
             participantCreationDate: effects.participant.participantCreationDate,
-            dataId: effects.selectedDataId
+            dataId: effects.selectedDataId,
+            canBeLeader: true
         };
 
         expect(channelService.postAction)

@@ -1,4 +1,3 @@
-
 import { BroadcastHeartbeat, BroadcastParticipant } from "../models";
 
 export interface CreateBroadcastHeartbeatPayload {
@@ -13,5 +12,6 @@ export function createBroadcastHeartbeat(
         participantId: payload.participant.participantId,
         participantCreationDate: payload.participant.participantCreationDate,
         dataId: payload.dataId,
+        canBeLeader: payload.participant.canBeLeader
     };
 }

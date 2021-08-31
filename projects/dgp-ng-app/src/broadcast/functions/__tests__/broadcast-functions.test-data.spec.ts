@@ -11,9 +11,9 @@ export interface DataVersion {
 
 export class BroadcastFunctionsTestData {
 
-    static readonly participant01: BroadcastParticipant = createBroadcastParticipant();
-    static readonly participant02: BroadcastParticipant = createBroadcastParticipant();
-    static readonly participant03: BroadcastParticipant = createBroadcastParticipant();
+    static readonly participant01: BroadcastParticipant = createBroadcastParticipant(true);
+    static readonly participant02: BroadcastParticipant = createBroadcastParticipant(true);
+    static readonly participant03: BroadcastParticipant = createBroadcastParticipant(true);
 
     static readonly dataId01: DataVersion = {
         dataId: createGuid(),

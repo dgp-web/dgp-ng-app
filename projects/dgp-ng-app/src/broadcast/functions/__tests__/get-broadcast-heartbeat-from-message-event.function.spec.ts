@@ -10,13 +10,15 @@ describe("getBroadcastHeartbeatFromMessageEvent", () => {
         const heartbeatFromLocalStorage: BroadcastHeartbeat = {
             participantId: BroadcastFunctionsTestData.participant01.participantId,
             participantCreationDate: BroadcastFunctionsTestData.participant01.participantCreationDate.toString() as any,
-            dataId: BroadcastFunctionsTestData.dataId01
+            dataId: BroadcastFunctionsTestData.dataId01,
+            canBeLeader: true
         };
 
         const heartbeatFroBroadcastChannel: BroadcastHeartbeat = {
             participantId: BroadcastFunctionsTestData.participant01.participantId,
             participantCreationDate: BroadcastFunctionsTestData.participant01.participantCreationDate,
-            dataId: BroadcastFunctionsTestData.dataId01
+            dataId: BroadcastFunctionsTestData.dataId01,
+            canBeLeader: true
         };
 
         const messageEventFromLocalStorage: MessageEventLike = {
@@ -27,8 +29,8 @@ describe("getBroadcastHeartbeatFromMessageEvent", () => {
             data: heartbeatFroBroadcastChannel
         };
 
-        const parsedHeartbeat01 = getBroadcastHeartbeatFromMessageEvent(messageEventFromLocalStorage);
-        const parsedHeartbeat02 = getBroadcastHeartbeatFromMessageEvent(messageEventFromBroadcastChannel);
+        const parsedHeartbeat01 = getBroadcastHeartbeatFromMessageEvent(messageEventFromLocalStorage, true);
+        const parsedHeartbeat02 = getBroadcastHeartbeatFromMessageEvent(messageEventFromBroadcastChannel, true);
 
         expect(parsedHeartbeat01.participantCreationDate.toString())
             .toEqual(parsedHeartbeat02.participantCreationDate.toString());

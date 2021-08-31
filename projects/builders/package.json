@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app-builder",
-    "version": "11.9.3",
+    "version": "11.9.5",
     "description": "Power-build large apps blazing fast in dev mode",
     "main": "src/builder.js",
     "builders": "builders.json",
