@@ -43,6 +43,7 @@ export {
 } from "./broadcast/actions";
 export { NoPeonGuard } from "./broadcast/guards/no-peon.guard";
 export { createGuid } from "./broadcast/functions/create-guid.function";
+export * from "./broadcast/constants";
 export * from "./broadcast/models";
 export {
     BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector
@@ -223,6 +224,7 @@ export { resolveAsMany } from "./utils/resolve-as-many.function";
 export { getDefaultValue } from "./utils/get-default-value.function";
 export { byUnique } from "./utils/by-unique.function";
 export { matrixToMany } from "./utils/matrix-to-many.constant";
+export { ofNull } from "./utils/of-null.function";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";

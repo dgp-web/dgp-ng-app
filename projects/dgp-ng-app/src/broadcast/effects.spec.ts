@@ -129,7 +129,7 @@ describe(BroadcastEffects.name, () => {
     });
 
     it(`should register observeBroadcastedActions$ that dispatches an action`, () => {
-        expect(metadata.observeBroadcastedActions$)
+        expect(metadata.observeBroadcastActions$)
             .toEqual({dispatch: true, useEffectsErrorHandler: true});
     });
 
