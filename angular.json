@@ -537,6 +537,46 @@
                     }
                 }
             }
+        },
+        "dgp-ng-drag-and-drop": {
+            "projectType": "library",
+            "root": "projects/dgp-ng-drag-and-drop",
+            "sourceRoot": "projects/dgp-ng-drag-and-drop/src",
+            "prefix": "lib",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "tsConfig": "projects/dgp-ng-drag-and-drop/tsconfig.lib.json",
+                        "project": "projects/dgp-ng-drag-and-drop/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/dgp-ng-drag-and-drop/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/dgp-ng-drag-and-drop/src/test.ts",
+                        "tsConfig": "projects/dgp-ng-drag-and-drop/tsconfig.spec.json",
+                        "karmaConfig": "projects/dgp-ng-drag-and-drop/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/dgp-ng-drag-and-drop/tsconfig.lib.json",
+                            "projects/dgp-ng-drag-and-drop/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
         }
     },
     "defaultProject": "ng-app"

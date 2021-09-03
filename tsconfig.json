@@ -42,6 +42,10 @@
       "dgp-ng-charts": [
         "dist/dgp-ng-charts/dgp-ng-charts",
         "dist/dgp-ng-charts"
+      ],
+      "dgp-ng-drag-and-drop": [
+        "dist/dgp-ng-drag-and-drop/dgp-ng-drag-and-drop",
+        "dist/dgp-ng-drag-and-drop"
       ]
     }
   },
