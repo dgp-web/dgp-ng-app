@@ -36,17 +36,12 @@ export class DgpDraggableDirective extends DgpView<any> implements AfterViewInit
     }
 
     readonly dragStartHandler = (e: DragEvent) => {
-
         e.dataTransfer.setData("text/plain", JSON.stringify(this.model));
-
-
     };
-
 
     ngAfterViewInit(): void {
         this.elementRef.nativeElement.addEventListener("dragstart", this.dragStartHandler);
     }
-
 
 }
 

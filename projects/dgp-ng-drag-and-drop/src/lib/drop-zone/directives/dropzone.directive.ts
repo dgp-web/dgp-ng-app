@@ -13,13 +13,11 @@ export class DgpDropzoneDirective implements AfterViewInit {
     ) {
     }
 
-
     readonly dragOver = (e) => {
         e.preventDefault();
-
     };
 
-    readonly drop = (e) => {
+    readonly drop = (e: DragEvent) => {
         e.stopPropagation();
         e.preventDefault();
 
