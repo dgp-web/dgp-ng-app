@@ -19,7 +19,8 @@ import {
 import { BroadcastChannelService } from "./services/broadcast-channel.service";
 import { BroadcastAction, BroadcastHeartbeat, BroadcastRole } from "./models";
 import { BROADCAST_REDUCER } from "./broadcast-store.module";
-import { BROADCAST_CONFIG, defaultBroadcastConfig } from "./constants";
+import { BROADCAST_CONFIG } from "./constants/broadcast-config-injection-token.constant";
+import { defaultBroadcastConfig } from "./constants/default-broadcast-config.model";
 
 describe(BroadcastEffects.name, () => {
 

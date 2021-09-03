@@ -9,7 +9,8 @@ import { BroadcastEffects } from "./effects";
 import { NoPeonGuard } from "./guards/no-peon.guard";
 import { EntityTypeMap } from "entity-store";
 import { BroadcastConfig } from "./models";
-import { BROADCAST_CONFIG, defaultBroadcastConfig } from "./constants";
+import { BROADCAST_CONFIG } from "./constants/broadcast-config-injection-token.constant";
+import { defaultBroadcastConfig } from "./constants/default-broadcast-config.model";
 
 export const BROADCAST_REDUCER = new InjectionToken<ActionReducerMap<BroadcastState>>("BroadcastStoreReducer");
 
