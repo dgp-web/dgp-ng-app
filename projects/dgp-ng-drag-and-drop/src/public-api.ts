@@ -15,4 +15,4 @@ export * from "./lib/draggable/draggable.module";
 /**
  * DropZone
  */
-export * from "./lib/drop-zone/drop-zone.module";
+export * from "./lib/drop-zone/dropzone.module";

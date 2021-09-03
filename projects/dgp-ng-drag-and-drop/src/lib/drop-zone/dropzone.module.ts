@@ -10,5 +10,5 @@ import { directives } from "./directives/directives";
         ...directives
     ]
 })
-export class DgpDropZoneModule {
+export class DgpDropzoneModule {
 }

@@ -30,7 +30,9 @@ export interface SampleItem {
                         <div *ngFor="let item of items01"
                              class="item"
                              dgpDraggable
-                             [model]="item">
+                             [model]="item"
+                             dgpDropzone
+                             (modelDropped)="onModelDropped($event)">
                             {{ item.label }}
                         </div>
                     </div>
@@ -49,7 +51,9 @@ export interface SampleItem {
                                     <div *ngFor="let item of items02"
                                          class="item"
                                          dgpDraggable
-                                         [model]="item">
+                                         [model]="item"
+                                         dgpDropzone
+                                         (modelDropped)="onModelDropped($event)">
                                         {{ item.label }}
                                     </div>
                                 </div>
@@ -113,4 +117,7 @@ export class SplitPanelLabsPageComponent {
         {sampleItemId: "H", label: "H"},
     ];
 
+    onModelDropped(item: SampleItem) {
+        console.log(item);
+    }
 }
