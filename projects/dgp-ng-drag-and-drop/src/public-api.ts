@@ -2,6 +2,17 @@
  * Public API Surface of dgp-ng-drag-and-drop
  */
 
-export * from "./lib/dgp-ng-drag-and-drop.service";
-export * from "./lib/dgp-ng-drag-and-drop.component";
-export * from "./lib/dgp-ng-drag-and-drop.module";
+/**
+ * Data
+ */
+export * from "./lib/data/drag-and-drop.module";
+
+/**
+ * Draggable
+ */
+export * from "./lib/draggable/draggable.module";
+
+/**
+ * DropZone
+ */
+export * from "./lib/drop-zone/drop-zone.module";
