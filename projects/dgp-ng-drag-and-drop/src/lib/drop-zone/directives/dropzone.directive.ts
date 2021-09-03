@@ -19,31 +19,18 @@ export class DgpDropzoneDirective implements AfterViewInit {
 
     };
 
-    readonly dropHandler = (e) => {
-        console.log("dropHandler");
-        e.preventDefault();
-    };
-
     readonly drop = (e) => {
-        console.log("Test");
-
-        //  console.log("Drop");
-        // Stops some browsers from redirecting.
         e.stopPropagation();
-        // prevent default action (open as link for some elements)
         e.preventDefault();
-        // move dragged elem to the selected drop target
 
-        const data = e.dataTransfer.getData("text/plain");
+        const stringifiedData = e.dataTransfer.getData("text/plain");
+        const data = JSON.parse(stringifiedData);
 
-        console.log(data);
-
+        this.modelDropped.emit(data);
     };
 
 
     ngAfterViewInit(): void {
-        this.elementRef.nativeElement.addEventListener("drop", this.dropHandler);
-        // this.elementRef.nativeElement.addEventListener("dragend", this.dragEndHandler);
         this.elementRef.nativeElement.addEventListener("dragover", this.dragOver);
         this.elementRef.nativeElement.addEventListener("drop", this.drop);
     }
