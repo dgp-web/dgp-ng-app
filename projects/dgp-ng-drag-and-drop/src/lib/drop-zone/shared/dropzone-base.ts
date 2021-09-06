@@ -17,7 +17,7 @@ import { WithDragContext } from "../../models";
 import { ModelDragInfo } from "../../models/model-drag-info.model";
 import { DgpDragAndDropService } from "../../data/services/drag-and-drop.service";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { switchMap, tap } from "rxjs/operators";
+import { shareReplay, switchMap, tap } from "rxjs/operators";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -29,7 +29,13 @@ export class DgpDropzoneBase<TModel> implements OnInit, OnChanges, AfterViewInit
     @HostBinding("class.dgp-show-drop-indicator")
     showDropIndicator = false;
 
-    private readonly dragContext$ = new BehaviorSubject<string>(null);
+    protected readonly dragContext$ = new BehaviorSubject<string>(null);
+
+    readonly isModelDragged$ = this.dragContext$.pipe(
+        switchMap(dragContext => this.dragAndDropService.isModelDragged$({dragContext})),
+        tap(isModelDragged => this.toggleDropIndicator(isModelDragged)),
+        shareReplay(1)
+    );
 
     @Input()
     dragContext: string;
@@ -47,10 +53,7 @@ export class DgpDropzoneBase<TModel> implements OnInit, OnChanges, AfterViewInit
     }
 
     ngOnInit(): void {
-        this.subscription = this.dragContext$.pipe(
-            switchMap(dragContext => this.dragAndDropService.isModelDragged$({dragContext})),
-            tap(isModelDragged => this.toggleDropIndicator(isModelDragged))
-        ).subscribe();
+        this.subscription = this.isModelDragged$.subscribe();
     }
 
     ngAfterViewInit(): void {

@@ -60,7 +60,9 @@ export interface SampleItem {
                                     </div>
                                     <dgp-dropzone dragContext="default"
                                                   (modelDropped)="onModelDropped($event)">
-                                        Drop here!
+                                        <ng-container dgp-drop-indicator>
+                                            Drop me here!!!
+                                        </ng-container>
                                     </dgp-dropzone>
                                 </div>
 
