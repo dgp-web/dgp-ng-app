@@ -22,6 +22,11 @@ export * from "./lib/drop-zone/directives/dropzone.directive";
 export * from "./lib/drop-zone/shared/dropzone-base";
 
 /**
+ * Functions
+ */
+export * from "./lib/functions/move-model-in-list.function";
+
+/**
  * Models
  */
 export * from "./lib/models";

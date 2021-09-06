@@ -3,9 +3,21 @@
 }
 
 .dgp-drag-over {
-    background: #00000055;
+    background: #00000055 !important;
 }
 
 .dgp-show-drop-indicator {
-    background: #00000055;
+    background: #00000033;
+}
+
+.dark-theme {
+
+    .dgp-drag-over {
+        background: #ffffff55 !important;
+    }
+
+    .dgp-show-drop-indicator {
+        background: #ffffff33;
+    }
+
 }
