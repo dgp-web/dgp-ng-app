@@ -1,7 +1,10 @@
 import { NgModule } from "@angular/core";
+import { DgpDragAndDropService } from "./services/drag-and-drop.service";
 
 @NgModule({
-    imports: [],
+    providers: [
+        DgpDragAndDropService
+    ]
 })
 export class DgpDragAndDropModule {
 }
