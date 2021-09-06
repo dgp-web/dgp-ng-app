@@ -58,6 +58,10 @@ export interface SampleItem {
                                          (modelDropped)="onModelDropped($event)">
                                         {{ item.label }}
                                     </div>
+                                    <dgp-dropzone dragContext="default"
+                                                  (modelDropped)="onModelDropped($event)">
+                                        Drop here!
+                                    </dgp-dropzone>
                                 </div>
 
                             </ng-template>
