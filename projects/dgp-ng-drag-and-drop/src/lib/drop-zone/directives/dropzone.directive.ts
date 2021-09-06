@@ -37,48 +37,62 @@ export class DgpDropzoneDirective<TModel> implements AfterViewInit, Mutable<With
     ) {
     }
 
-    readonly onDragEnter = (e) => {
+    readonly onDragOver = (e: DragEvent) => {
         e.preventDefault();
+    };
 
-        const stringifiedData = e.dataTransfer.getData("text/plain");
-        const data = JSON.parse(stringifiedData) as ModelDragInfo<any>;
+    readonly onDragEnter = (e: DragEvent) => {
+        const model = this.parseDragEvent(e);
+        if (!model) return;
 
-        if (data?.dragContext !== this.dragContext) return;
-
-        this.dragover = true;
-        this.cd.markForCheck();
+        this.activateDragOverEffect();
     };
 
     readonly onDragLeave = (e) => {
-        e.preventDefault();
+        const model = this.parseDragEvent(e);
+        if (!model) return;
 
-        const stringifiedData = e.dataTransfer.getData("text/plain");
-        const data = JSON.parse(stringifiedData) as ModelDragInfo<any>;
-
-        if (data?.dragContext !== this.dragContext) return;
-
-        this.dragover = false;
-        this.cd.markForCheck();
+        this.deactivateDragOverEffect();
     };
 
     readonly drop = (e: DragEvent) => {
         e.stopPropagation();
-        e.preventDefault();
 
-        const stringifiedData = e.dataTransfer.getData("text/plain");
-        const data = JSON.parse(stringifiedData) as ModelDragInfo<any>;
+        const model = this.parseDragEvent(e);
+        if (!model) return;
 
-        if (data.dragContext !== this.dragContext) return;
-
-        const model = data.model;
         this.modelDropped.emit(model);
+        this.deactivateDragOverEffect();
     };
 
 
     ngAfterViewInit(): void {
         this.elementRef.nativeElement.addEventListener("dragenter", this.onDragEnter);
         this.elementRef.nativeElement.addEventListener("dragleave", this.onDragLeave);
+        this.elementRef.nativeElement.addEventListener("dragover", this.onDragOver);
         this.elementRef.nativeElement.addEventListener("drop", this.drop);
+    }
+
+    private parseDragEvent(e: DragEvent): TModel {
+        e.preventDefault();
+
+        const stringifiedData = e.dataTransfer.getData("text/plain");
+        const data = JSON.parse(stringifiedData) as ModelDragInfo<TModel>;
+
+        if (data?.dragContext !== this.dragContext) return null;
+
+        return data.model;
+
+    }
+
+    private activateDragOverEffect() {
+        this.dragover = true;
+        this.cd.markForCheck();
+    }
+
+    private deactivateDragOverEffect() {
+        this.dragover = false;
+        this.cd.markForCheck();
     }
 
 }
