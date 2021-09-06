@@ -30,6 +30,7 @@ export interface SampleItem {
                         <div *ngFor="let item of items01"
                              class="item"
                              dgpDraggable
+                             dragContext="default"
                              [model]="item"
                              dgpDropzone
                              (modelDropped)="onModelDropped($event)">
@@ -51,6 +52,7 @@ export interface SampleItem {
                                     <div *ngFor="let item of items02"
                                          class="item"
                                          dgpDraggable
+                                         dragContext="default"
                                          [model]="item"
                                          dgpDropzone
                                          (modelDropped)="onModelDropped($event)">

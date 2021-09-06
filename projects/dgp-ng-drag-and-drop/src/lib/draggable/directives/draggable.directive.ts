@@ -9,10 +9,16 @@ import {
     Renderer2,
     SimpleChanges
 } from "@angular/core";
+import { Mutable } from "data-modeling";
 import { DgpView } from "dgp-ng-app";
+import { WithDragContext } from "../../models";
+import { ModelDragInfo } from "../../models/model-drag-info.model";
 
 @Directive({selector: "[dgpDraggable]"})
-export class DgpDraggableDirective extends DgpView<any> implements AfterViewInit, OnChanges {
+export class DgpDraggableDirective<TModel> extends DgpView<TModel> implements AfterViewInit, OnChanges, Mutable<WithDragContext> {
+
+    @Input()
+    dragContext: string;
 
     @HostBinding("draggable")
     draggable = true;
@@ -35,7 +41,8 @@ export class DgpDraggableDirective extends DgpView<any> implements AfterViewInit
     }
 
     readonly dragStartHandler = (e: DragEvent) => {
-        e.dataTransfer.setData("text/plain", JSON.stringify(this.model));
+        const modelDragInfo: ModelDragInfo<TModel> = {model: this.model, dragContext: this.dragContext};
+        e.dataTransfer.setData("text/plain", JSON.stringify(modelDragInfo));
     };
 
     ngAfterViewInit(): void {
