@@ -26,4 +26,8 @@ export class DgpDragAndDropService {
         );
     }
 
+    isContextDragged(payload: WithDragContext): boolean {
+        return this.modelDragInfo$.value?.dragContext === payload.dragContext;
+    }
+
 }

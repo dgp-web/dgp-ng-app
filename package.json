@@ -1,6 +1,6 @@
 {
     "name": "ng-starter",
-    "version": "11.11.1",
+    "version": "11.11.2",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",

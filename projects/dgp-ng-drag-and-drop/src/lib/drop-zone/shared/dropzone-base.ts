@@ -89,8 +89,7 @@ export class DgpDropzoneBase<TModel> implements OnInit, OnChanges, AfterViewInit
     readonly onDragEnd = (e: DragEvent) => {
         e.preventDefault();
 
-        const modelDragInfo = this.parseDragEvent(e);
-        if (!modelDragInfo) return;
+        if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
 
         this.dragAndDropService.registerDragEnd();
     };
@@ -98,17 +97,27 @@ export class DgpDropzoneBase<TModel> implements OnInit, OnChanges, AfterViewInit
     readonly onDragEnter = (e: DragEvent) => {
         e.preventDefault();
 
-        const modelDragInfo = this.parseDragEvent(e);
-        if (!modelDragInfo) return;
+        if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
 
         this.activateDragOverEffect();
     };
 
-    readonly onDragLeave = (e) => {
+    readonly onDragLeave = (e: DragEvent) => {
         e.preventDefault();
 
-        const modelDragInfo = this.parseDragEvent(e);
-        if (!modelDragInfo) return;
+        if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
+
+        const htmlElement = this.elementRef.nativeElement as HTMLElement;
+
+        const targetIsSelf = htmlElement === e.target;
+        const relatedTargetIsChildNodeOfSelf = htmlElement.contains(e.relatedTarget as Node);
+
+        if (targetIsSelf && relatedTargetIsChildNodeOfSelf) return;
+
+        const targetIsChildNodeOfSelf = htmlElement.contains(e.target as Node);
+        const relatedTargetIsSelf = htmlElement === e.relatedTarget;
+
+        if (targetIsChildNodeOfSelf && relatedTargetIsSelf) return;
 
         this.deactivateDragOverEffect();
     };
@@ -127,6 +136,7 @@ export class DgpDropzoneBase<TModel> implements OnInit, OnChanges, AfterViewInit
 
     private parseDragEvent(e: DragEvent): ModelDragInfo<TModel> {
         const stringifiedData = e.dataTransfer.getData("text/plain");
+        if (!stringifiedData) return null;
         const modelDragInfo = JSON.parse(stringifiedData) as ModelDragInfo<TModel>;
 
         if (modelDragInfo?.dragContext !== this.dragContext) return null;
