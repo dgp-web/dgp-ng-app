@@ -15,7 +15,6 @@ import { DgpView } from "dgp-ng-app";
 export class DgpDraggableDirective extends DgpView<any> implements AfterViewInit, OnChanges {
 
     @HostBinding("draggable")
-    @HostBinding("class.--draggable") // TODO: Looks redundant
     draggable = true;
 
     @Input()
