@@ -12,7 +12,6 @@ export { DgpNgChartsModule } from "./lib/dgp-ng-charts.module";
 export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export * from "./lib/box-plot/models";
-
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
@@ -21,11 +20,19 @@ export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whis
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
 export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";
 export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
-export { DgpChartComponent } from "./lib/box-plot/components/chart.component";
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
 export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outlier.directive";
 export { BoxPlotBrushSelectorDirective } from "./lib/box-plot/directives/box-plot-brush-selector.directive";
 export { BoxPlotOutlierTooltipDirective } from "./lib/box-plot/directives/box-plot-outlier-tooltip.directive";
+
+/**
+ * -----
+ * Chart
+ * -----
+ */
+
+export { DgpChartModule } from "./lib/chart/chart.module";
+export { DgpChartComponent } from "./lib/chart/components/chart.component";
 
 /**
  * -----

@@ -8,11 +8,13 @@ import { DgpChartContainerModule } from "../chart-container/chart-container.modu
 import { MatMenuModule } from "@angular/material/menu";
 import { components } from "./components/components";
 import { directives } from "./directives/directives";
+import { DgpChartModule } from "../chart/chart.module";
 
 @NgModule({
     imports: [
         CommonModule,
         DgpChartContainerModule,
+        DgpChartModule,
         MatButtonModule,
         MatTooltipModule,
         MatIconModule,
