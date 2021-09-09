@@ -99,20 +99,20 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                           [boxGroup]="boxGroup"
                                           [box]="box"></line>
 
-                                    <circle *ngFor="let value of box.outliers"
+                                    <circle *ngFor="let value of box.outliers; let i = index;"
                                             r="3"
                                             dgpBoxPlotOutlier
                                             [scales]="boxPlotScales"
                                             [boxGroup]="boxGroup"
                                             [box]="box"
                                             [value]="value"
-                                            (focus)="highlightOutlier(box, value)"
-                                            (mouseenter)="highlightOutlier(box, value)"
-                                            (blur)="unhighlightOutlier(box, value)"
-                                            (mouseleave)="unhighlightOutlier(box, value)"></circle>
-                                    <text *ngFor="let value of box.outliers"
-                                          class="tooltip hidden"
-                                          [class.visible]="outlierKey === box.boxGroupId + '.' + box.boxId + '.' + value"
+                                            (focus)="highlightOutlier(box, i)"
+                                            (mouseenter)="highlightOutlier(box, i)"
+                                            (blur)="unhighlightOutlier(box, i)"
+                                            (mouseleave)="unhighlightOutlier(box, i)"></circle>
+                                    <text *ngFor="let value of box.outliers let i = index;"
+                                          class="tooltip --hidden"
+                                          [class.--visible]="outlierKey === box.boxGroupId + '.' + box.boxId + '.' + i"
                                           dgpBoxPlotOutlierTooltip
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
@@ -136,42 +136,6 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
             display: flex;
             justify-content: center;
             flex-grow: 1;
-        }
-
-        .chart-svg {
-            position: absolute;
-            overflow: visible;
-            width: 100%;
-            height: 100%;
-        }
-
-        .chart__y-axis {
-            font-size: 16px;
-        }
-
-        .chart__x-axis {
-            font-size: 16px;
-        }
-
-        .tooltip {
-            position: fixed;
-            fill: white;
-        }
-
-        .hidden {
-            visibility: hidden;
-        }
-
-        .visible {
-            visibility: visible !important;
-        }
-
-        .plot-container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            width: auto;
-            height: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -216,7 +180,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.model || changes.config || changes.selectionMode || changes.selection) {
-            this.scheduleDrawChartAction();
+            this.drawChartActionScheduler.emit();
         }
     }
 
@@ -224,10 +188,6 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         if (!this.drawChartSubscription?.closed) {
             this.drawChartSubscription?.unsubscribe();
         }
-    }
-
-    scheduleDrawChartAction(): void {
-        this.drawChartActionScheduler.emit();
     }
 
     drawD3Chart(payload: DrawD3ChartPayload): void {
@@ -264,6 +224,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     }
 
     highlightOutlier(box: Box, value: number) {
+
         this.outlierKey = box.boxGroupId + "." + box.boxId + "." + value;
     }
 

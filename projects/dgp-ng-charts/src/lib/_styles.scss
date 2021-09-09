@@ -72,3 +72,24 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
     }
 
 }
+
+.--hidden {
+    visibility: hidden;
+}
+
+.--visible {
+    visibility: visible !important;
+}
+
+.tooltip {
+    position: fixed;
+    fill: white;
+}
+
+.plot-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+}
