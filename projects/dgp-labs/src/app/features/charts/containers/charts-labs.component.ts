@@ -17,13 +17,6 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             Charts
         </dgp-page-header>
 
-        <!-- <dgp-box-plot [model]="boxGroups"
-                       chartTitle="Chart title"
-                       yAxisTitle="y axis"
-                       xAxisTitle="x axis"
-                       selectionMode="Brush"
-                       (selectionChange)="selectOutliers($event)"></dgp-box-plot>-->
-
         <dgp-box-plot [model]="boxGroups"
                       chartTitle="Title via input"
                       style="width: 640px; max-height: 480px; margin: auto;">
@@ -41,7 +34,7 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             </ng-container>
 
             <ng-container right-legend>
-                Test
+                Right legend
             </ng-container>
 
         </dgp-box-plot>

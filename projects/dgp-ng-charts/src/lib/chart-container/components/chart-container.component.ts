@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding } from "@angular/core";
+import { Component, HostBinding } from "@angular/core";
 
 @Component({
     selector: "dgp-chart-container",
