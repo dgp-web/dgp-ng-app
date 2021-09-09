@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { Mutable } from "data-modeling";
+import { Chart } from "../../shared/models";
 
 @Component({
     selector: "dgp-chart",
@@ -90,7 +92,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DgpChartComponent {
+export class DgpChartComponent implements Mutable<Chart> {
 
     @Input()
     chartTitle: string;
