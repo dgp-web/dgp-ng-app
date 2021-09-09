@@ -33,6 +33,7 @@ export { BoxPlotOutlierTooltipDirective } from "./lib/box-plot/directives/box-pl
 
 export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
+export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
 
 /**
  * -----

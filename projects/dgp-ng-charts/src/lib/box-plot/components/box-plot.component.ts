@@ -12,7 +12,7 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { Box, BoxGroup, BoxPlotScales, BoxPlotSelection } from "../models";
+import { Box, BoxGroup, BoxPlotConfig, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, switchMap, tap } from "rxjs/operators";
 import { from, interval, Subscription, timer } from "rxjs";
 import { ResizeSensor } from "css-element-queries";
@@ -24,7 +24,12 @@ import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
 import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
 import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
 import { MatDialog } from "@angular/material/dialog";
-import { ChartSelectionMode } from "../../shared/models";
+import { Chart, ChartSelectionMode } from "../../shared/models";
+
+export interface BoxPlot extends Chart {
+    readonly model: ReadonlyArray<BoxGroup>;
+    readonly config: BoxPlotConfig;
+}
 
 @Component({
     selector: "dgp-box-plot",
@@ -199,12 +204,12 @@ import { ChartSelectionMode } from "../../shared/models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpBoxPlotComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild("chartContainer") elRef: ElementRef;
 
     @Input()
-    model: ReadonlyArray<BoxGroup>;
+    model: Array<BoxGroup>;
 
     @Input()
     chartTitle: string;
