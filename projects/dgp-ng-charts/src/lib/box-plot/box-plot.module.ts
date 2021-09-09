@@ -9,6 +9,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { components } from "./components/components";
 import { directives } from "./directives/directives";
 import { DgpChartModule } from "../chart/chart.module";
+import { DgpResizeSensorModule } from "dgp-ng-app";
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { DgpChartModule } from "../chart/chart.module";
         MatTooltipModule,
         MatIconModule,
         MatDialogModule,
-        MatMenuModule
+        MatMenuModule,
+        DgpResizeSensorModule
     ],
     declarations: [
         ...components,

@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { ChartMargin, SharedChartConfig } from "../shared/models";
+import { Chart, ChartMargin, SharedChartConfig } from "../shared/models";
 import { KVS } from "entity-store";
 
 export interface Box {
@@ -102,4 +102,9 @@ export interface BoxOutlier extends BoxOutlierId {
 
 export interface BoxPlotSelection {
     readonly outliers?: ReadonlyArray<BoxOutlier>;
+}
+
+
+export interface BoxPlot extends Chart {
+    readonly model: ReadonlyArray<BoxGroup>;
 }

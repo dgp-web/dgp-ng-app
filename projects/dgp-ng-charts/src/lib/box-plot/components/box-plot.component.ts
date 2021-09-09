@@ -1,5 +1,4 @@
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -12,10 +11,9 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { Box, BoxGroup, BoxPlotConfig, BoxPlotScales, BoxPlotSelection } from "../models";
-import { debounceTime, switchMap, tap } from "rxjs/operators";
-import { from, interval, Subscription, timer } from "rxjs";
-import { ResizeSensor } from "css-element-queries";
+import { Box, BoxGroup, BoxPlot, BoxPlotScales, BoxPlotSelection } from "../models";
+import { debounceTime, tap } from "rxjs/operators";
+import { Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales } from "../functions";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
@@ -24,17 +22,14 @@ import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
 import { ExportChartDialogComponent } from "../../heatmap/components/export-chart-dialog.component";
 import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
 import { MatDialog } from "@angular/material/dialog";
-import { Chart, ChartSelectionMode } from "../../shared/models";
-
-export interface BoxPlot extends Chart {
-    readonly model: ReadonlyArray<BoxGroup>;
-    readonly config: BoxPlotConfig;
-}
+import { ChartSelectionMode } from "../../shared/models";
+import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 
 @Component({
     selector: "dgp-box-plot",
     template: `
-        <dgp-chart-container>
+        <dgp-chart-container dgpResizeSensor
+                             (sizeChanged)="drawChart()">
             <dgp-chart [yAxisTitle]="yAxisTitle"
                        [xAxisTitle]="xAxisTitle"
                        [chartTitle]="chartTitle">
@@ -204,36 +199,24 @@ export interface BoxPlot extends Chart {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, OnDestroy {
+export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
 
     @ViewChild("chartContainer") elRef: ElementRef;
 
     @Input()
-    model: Array<BoxGroup>;
-
-    @Input()
-    chartTitle: string;
-
-    @Input()
-    yAxisTitle: string;
-
-    @Input()
-    xAxisTitle: string;
+    model: ReadonlyArray<BoxGroup>;
 
     @Input()
     config = defaultBoxPlotConfig;
 
-    boxPlotScales: BoxPlotScales;
-
     @Input()
     selectionMode: ChartSelectionMode = "None";
 
-    private resizeSensor: ResizeSensor;
-    private readonly drawChartActionScheduler = new EventEmitter();
-    private isInitialResize = true;
+    boxPlotScales: BoxPlotScales;
 
-    private resizeSubscription: Subscription;
-    private checkBrokenResizeSensorSubscription: Subscription;
+    private readonly drawChartActionScheduler = new EventEmitter();
+
+    private drawChartSubscription: Subscription;
 
     outlierKey: string;
 
@@ -247,28 +230,12 @@ export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, O
         private readonly cd: ChangeDetectorRef,
         private readonly matDialog: MatDialog
     ) {
+        super();
 
-        this.resizeSubscription = this.drawChartActionScheduler.pipe(
+        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
             debounceTime(250),
-            switchMap(() => from(this.drawChart()))
-        )
-            .subscribe();
-
-    }
-
-    ngAfterViewInit(): void {
-
-        this.checkBrokenResizeSensorSubscription = interval(1000)
-            .pipe(
-                tap(() => {
-                    try {
-                        this.resizeSensor?.reset();
-                    } catch (e) {
-                    }
-                })
-            ).subscribe();
-
-        this.initResizeSensor();
+            tap(() => this.drawChart())
+        ).subscribe();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -278,23 +245,16 @@ export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, O
     }
 
     ngOnDestroy(): void {
-        if (!this.resizeSubscription?.closed) {
-            this.resizeSubscription?.unsubscribe();
-        }
-        if (!this.checkBrokenResizeSensorSubscription?.closed) {
-            this.checkBrokenResizeSensorSubscription?.unsubscribe();
+        if (!this.drawChartSubscription?.closed) {
+            this.drawChartSubscription?.unsubscribe();
         }
     }
 
-    protected scheduleDrawChartAction(): void {
-        if (this.isInitialResize) {
-            this.isInitialResize = false;
-            return;
-        }
+    scheduleDrawChartAction(): void {
         this.drawChartActionScheduler.emit();
     }
 
-    protected drawD3Chart(payload: DrawD3ChartPayload): void {
+    drawD3Chart(payload: DrawD3ChartPayload): void {
 
         this.boxPlotScales = createBoxPlotScales({
             containerHeight: payload.containerHeight,
@@ -305,22 +265,9 @@ export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, O
         this.cd.markForCheck();
     }
 
-    private readonly onResize = () => this.scheduleDrawChartAction();
-
-    private initResizeSensor() {
-        if (notNullOrUndefined(this.resizeSensor) && notNullOrUndefined(this.onResize)) {
-            this.resizeSensor.detach(this.onResize);
-        }
-
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
-    }
-
-    private async drawChart(): Promise<void> {
+    drawChart() {
 
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
-
-        this.resizeSensor.detach(this.onResize);
-        await timer(0).toPromise();
 
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
@@ -329,10 +276,6 @@ export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, O
             containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
             containerWidth: rect.width - this.config.margin.left - this.config.margin.right
         });
-
-
-        this.isInitialResize = true;
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
 
     }
 
@@ -369,7 +312,6 @@ export class DgpBoxPlotComponent implements BoxPlot, AfterViewInit, OnChanges, O
     }
 
     highlightOutlier(box: Box, value: number) {
-        console.log("Test");
         this.outlierKey = box.boxGroupId + "." + box.boxId + "." + value;
     }
 
