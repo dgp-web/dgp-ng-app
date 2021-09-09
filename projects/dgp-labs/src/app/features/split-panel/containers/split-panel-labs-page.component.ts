@@ -103,6 +103,8 @@ export interface SampleItem {
             width: 100px;
             height: 100px;
             border: 1px solid mediumpurple;
+            text-align: center;
+            vertical-align: middle;
         }
 
     `],
