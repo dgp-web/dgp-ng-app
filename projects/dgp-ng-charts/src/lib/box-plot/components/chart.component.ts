@@ -90,7 +90,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChartComponent {
+export class DgpChartComponent {
 
     @Input()
     chartTitle: string;

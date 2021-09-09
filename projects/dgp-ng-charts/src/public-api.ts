@@ -14,15 +14,14 @@ export * from "./lib/box-plot/functions";
 export * from "./lib/box-plot/models";
 
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
-export { BoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
-export { BoxPlotNgComponent } from "./lib/box-plot/components/box-plot-ng.component";
+export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
 export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
 export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whisker.directive";
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
 export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";
 export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
-export { ChartComponent } from "./lib/box-plot/components/chart.component";
+export { DgpChartComponent } from "./lib/box-plot/components/chart.component";
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
 export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outlier.directive";
 export { BoxPlotBrushSelectorDirective } from "./lib/box-plot/directives/box-plot-brush-selector.directive";

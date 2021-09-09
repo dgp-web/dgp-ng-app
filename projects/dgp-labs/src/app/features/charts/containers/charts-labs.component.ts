@@ -24,9 +24,9 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
                        selectionMode="Brush"
                        (selectionChange)="selectOutliers($event)"></dgp-box-plot>-->
 
-        <dgp-box-plot-ng [model]="boxGroups"
-                         chartTitle="Title via input"
-                         style="width: 640px; max-height: 480px; margin: auto;">
+        <dgp-box-plot [model]="boxGroups"
+                      chartTitle="Title via input"
+                      style="width: 640px; max-height: 480px; margin: auto;">
 
             <ng-container chart-title>
                 Title via template slot
@@ -44,7 +44,7 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
                 Test
             </ng-container>
 
-        </dgp-box-plot-ng>
+        </dgp-box-plot>
 
         <!-- <dgp-heatmap [model]="heatmapTiles"
                       chartTitle="Chart title"
