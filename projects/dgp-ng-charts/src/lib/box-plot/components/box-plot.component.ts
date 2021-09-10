@@ -95,6 +95,32 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="white"></rect>
                         </pattern>
 
+                        <!-- Masks -->
+
+                        <mask id="vertical-lines-mask">
+
+                        </mask>
+
+                        <mask id="lines-from-left-top-to-right-bottom-mask">
+
+                        </mask>
+
+                        <mask id="horizontal-lines-mask">
+
+                        </mask>
+
+                        <mask id="lines-from-left-bottom-to-right-top-mask">
+
+                        </mask>
+
+                        <mask id="grid-mask">
+
+                        </mask>
+
+                        <mask id="diagonal-grid-mask">
+
+                        </mask>
+
                         <mask id="checkerboard-mask">
                             <rect x="0"
                                   y="0"

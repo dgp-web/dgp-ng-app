@@ -41,12 +41,15 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
                     case FillPattern.All:
                         break;
                     case FillPattern.VerticalLines:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#vertical-lines-mask)");
                         break;
                     case FillPattern.LinesFromLeftTopToRightBottom:
                         break;
                     case FillPattern.HorizontalLines:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#horizontal-lines-mask)");
                         break;
                     case FillPattern.LinesFromLeftBottomToRightTop:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#lines-from-left-bottom-to-right-top-mask)");
                         break;
                     case FillPattern.Grid:
                         break;
