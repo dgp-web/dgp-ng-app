@@ -44,6 +44,7 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
                         this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#vertical-lines-mask)");
                         break;
                     case FillPattern.LinesFromLeftTopToRightBottom:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#lines-from-left-top-to-right-bottom-mask)");
                         break;
                     case FillPattern.HorizontalLines:
                         this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#horizontal-lines-mask)");
@@ -52,8 +53,10 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
                         this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#lines-from-left-bottom-to-right-top-mask)");
                         break;
                     case FillPattern.Grid:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#grid-mask)");
                         break;
                     case FillPattern.DiagonalGrid:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#diagonal-grid-mask)");
                         break;
                     case FillPattern.Checkerboard:
                         this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#checkerboard-mask)");
