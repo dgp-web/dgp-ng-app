@@ -15,7 +15,7 @@ import { Box, BoxGroup, BoxPlot, BoxPlotScales, BoxPlotSelection } from "../mode
 import { debounceTime, tap } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
-import { createBoxPlotScales } from "../functions";
+import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
@@ -112,7 +112,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                             (mouseleave)="unhighlightOutlier(box, i)"></circle>
                                     <text *ngFor="let value of box.outliers let i = index;"
                                           class="tooltip --hidden"
-                                          [class.--visible]="outlierKey === box.boxGroupId + '.' + box.boxId + '.' + i"
+                                          [class.--visible]="outlierKey === getBoxOutlierKey(box, i)"
                                           dgpBoxPlotOutlierTooltip
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
@@ -223,9 +223,14 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         return "translate(" + this.boxPlotScales.xAxis(boxGroup.boxGroupId) + ")";
     }
 
-    highlightOutlier(box: Box, outlierIndex: number) {
+    getBoxOutlierKey(box: Box, outlierIndex: number) {
+        return getBoxOutlierSurrogateKey({
+            boxId: box.boxId, boxGroupId: box.boxGroupId, outlierIndex
+        });
+    }
 
-        this.outlierKey = box.boxGroupId + "." + box.boxId + "." + outlierIndex;
+    highlightOutlier(box: Box, outlierIndex: number) {
+        this.outlierKey = this.getBoxOutlierKey(box, outlierIndex);
     }
 
     unhighlightOutlier(box: Box, value: number) {
