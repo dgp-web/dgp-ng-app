@@ -136,7 +136,7 @@ export class ChartsLabsComponent {
                 -2, -1, 14
             ],
             colorHex: "#309000",
-            fillPattern: FillPattern.Checkerboard
+            fillPattern: FillPattern.DiagonalCheckerboard
         }],
         label: "Second group"
     }];

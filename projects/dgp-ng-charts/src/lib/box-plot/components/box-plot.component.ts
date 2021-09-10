@@ -74,6 +74,26 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="white"></rect>
                         </pattern>
 
+                        <pattern id="diagonal-checkerboard-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="16"
+                                 height="16"
+                                 patternUnits="userSpaceOnUse"
+                                 patternTransform="rotate(45)">
+                            <rect class="checker"
+                                  x="0"
+                                  width="8"
+                                  height="8"
+                                  y="0"
+                                  fill="white"></rect>
+                            <rect class="checker"
+                                  x="8"
+                                  width="8"
+                                  height="8"
+                                  y="8"
+                                  fill="white"></rect>
+                        </pattern>
 
                         <mask id="checkerboard-mask">
                             <rect x="0"
@@ -81,6 +101,14 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   width="100%"
                                   height="100%"
                                   fill="url(#checkerboard-pattern)"/>
+                        </mask>
+
+                        <mask id="diagonal-checkerboard-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#diagonal-checkerboard-pattern)"/>
                         </mask>
 
                     </defs>

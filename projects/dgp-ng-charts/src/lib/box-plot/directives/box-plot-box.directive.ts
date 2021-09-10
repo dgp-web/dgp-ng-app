@@ -59,6 +59,7 @@ export class BoxPlotBoxDirective implements OnChanges {
                         this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#checkerboard-mask)");
                         break;
                     case FillPattern.DiagonalCheckerboard:
+                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#diagonal-checkerboard-mask)");
                         break;
                 }
 
