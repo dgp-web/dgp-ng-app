@@ -54,51 +54,127 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                      class="chart-svg">
 
                     <defs>
+                        <pattern id="vertical-lines-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="15"
+                                 height="15"
+                                 patternUnits="userSpaceOnUse">
+                            <line y1="0"
+                                  y2="15"
+                                  x1="0"
+                                  x2="0"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="0"
+                                  y2="15"
+                                  x1="5"
+                                  x2="5"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="0"
+                                  y2="15"
+                                  x1="10"
+                                  x2="10"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="0"
+                                  y2="15"
+                                  x1="15"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                        </pattern>
+
+                        <pattern id="horizontal-lines-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="15"
+                                 height="15"
+                                 patternUnits="userSpaceOnUse">
+                            <line y1="0"
+                                  y2="0"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="5"
+                                  y2="5"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="10"
+                                  y2="10"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="15"
+                                  y2="15"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                        </pattern>
+
                         <pattern id="checkerboard-pattern"
                                  x="0"
                                  y="0"
-                                 width="16"
-                                 height="16"
+                                 width="15"
+                                 height="15"
                                  patternUnits="userSpaceOnUse">
                             <rect class="checker"
                                   x="0"
-                                  width="8"
-                                  height="8"
+                                  width="7"
+                                  height="7"
                                   y="0"
                                   fill="white"></rect>
                             <rect class="checker"
-                                  x="8"
-                                  width="8"
-                                  height="8"
-                                  y="8"
+                                  x="7"
+                                  width="7"
+                                  height="7"
+                                  y="7"
                                   fill="white"></rect>
                         </pattern>
 
                         <pattern id="diagonal-checkerboard-pattern"
                                  x="0"
                                  y="0"
-                                 width="16"
-                                 height="16"
+                                 width="15"
+                                 height="15"
                                  patternUnits="userSpaceOnUse"
                                  patternTransform="rotate(45)">
                             <rect class="checker"
                                   x="0"
-                                  width="8"
-                                  height="8"
+                                  width="7"
+                                  height="7"
                                   y="0"
                                   fill="white"></rect>
                             <rect class="checker"
-                                  x="8"
-                                  width="8"
-                                  height="8"
-                                  y="8"
+                                  x="7"
+                                  width="7"
+                                  height="7"
+                                  y="7"
                                   fill="white"></rect>
                         </pattern>
 
                         <!-- Masks -->
 
                         <mask id="vertical-lines-mask">
-
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#vertical-lines-pattern)"/>
                         </mask>
 
                         <mask id="lines-from-left-top-to-right-bottom-mask">
@@ -106,7 +182,11 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         </mask>
 
                         <mask id="horizontal-lines-mask">
-
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#horizontal-lines-pattern)"/>
                         </mask>
 
                         <mask id="lines-from-left-bottom-to-right-top-mask">
