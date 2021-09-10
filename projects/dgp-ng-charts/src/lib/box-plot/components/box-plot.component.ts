@@ -223,9 +223,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         return "translate(" + this.boxPlotScales.xAxis(boxGroup.boxGroupId) + ")";
     }
 
-    highlightOutlier(box: Box, value: number) {
+    highlightOutlier(box: Box, outlierIndex: number) {
 
-        this.outlierKey = box.boxGroupId + "." + box.boxId + "." + value;
+        this.outlierKey = box.boxGroupId + "." + box.boxId + "." + outlierIndex;
     }
 
     unhighlightOutlier(box: Box, value: number) {
