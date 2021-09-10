@@ -4,6 +4,7 @@ import {
     BoxPlotSelection,
     BoxValues,
     computeBoxFromValues,
+    FillPattern,
     HeatmapSelection,
     HeatmapTile
 } from "dgp-ng-charts";
@@ -17,9 +18,7 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             Charts
         </dgp-page-header>
 
-        <dgp-box-plot [model]="boxGroups"
-                      chartTitle="Title via input"
-                      style="width: 640px; max-height: 480px; margin: auto;">
+        <dgp-box-plot [model]="boxGroups">
 
             <ng-container chart-title>
                 Title via template slot
@@ -63,9 +62,9 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
         }
 
         dgp-line-chart, dgp-box-plot, dgp-heatmap {
-            height: 240px;
-            width: 400px;
-            flex-shrink: 0;
+            width: 640px;
+            max-height: 480px;
+            margin: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -121,7 +120,8 @@ export class ChartsLabsComponent {
             outliers: [
                 17, 18
             ],
-            colorHex: "#3000f0"
+            colorHex: "#3000f0",
+            fillPattern: FillPattern.Checkerboard
         }, {
             boxId: "second02",
             boxGroupId: "second",
@@ -135,7 +135,8 @@ export class ChartsLabsComponent {
             outliers: [
                 -2, -1, 14
             ],
-            colorHex: "#309000"
+            colorHex: "#309000",
+            fillPattern: FillPattern.Checkerboard
         }],
         label: "Second group"
     }];
@@ -174,28 +175,8 @@ export class ChartsLabsComponent {
 
     private computeBoxes(heatmapTiles: ReadonlyArray<HeatmapTile>) {
 
-        /*value: "first",
-            boxGroupId: "first",
-            boxes: [{
-            boxId: "first01",
-            boxGroupId: "first",
-            quantiles: {
-                min: 1,
-                lower: 2.25,
-                median: 5.5,
-                upper: 6.75,
-                max: 10
-            },
-            outliers: [
-                17, 18
-            ],
-            colorHex: "#3000f0"
-        }
-        */
-
         const values: BoxValues = {
-            boxValuesId: "test",
-            originalValues: heatmapTiles.map(x => x.value)
+            boxValuesId: "test", originalValues: heatmapTiles.map(x => x.value)
         };
 
         const box = computeBoxFromValues({
@@ -204,8 +185,6 @@ export class ChartsLabsComponent {
             boxGroupId: "first",
             colorHex: "#3000f0"
         });
-
-        console.log(box);
 
         this.boxGroups = [{
             value: "first",

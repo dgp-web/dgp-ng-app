@@ -54,7 +54,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                      class="chart-svg">
 
                     <defs>
-                        <pattern id="pattern-checkerboard"
+                        <pattern id="checkerboard-pattern"
                                  x="0"
                                  y="0"
                                  width="16"
@@ -80,7 +80,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   y="0"
                                   width="100%"
                                   height="100%"
-                                  fill="url(#pattern-checkerboard)"/>
+                                  fill="url(#checkerboard-pattern)"/>
                         </mask>
 
                     </defs>
@@ -117,8 +117,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                     <rect dgpBoxPlotBox
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
-                                          [box]="box"
-                                          mask="url(#checkerboard-mask)"></rect>
+                                          [box]="box"></rect>
                                     <line dgpBoxPlotMedian
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
@@ -144,6 +143,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                             (mouseenter)="highlightOutlier(box, i)"
                                             (blur)="unhighlightOutlier(box, i)"
                                             (mouseleave)="unhighlightOutlier(box, i)"></circle>
+
                                     <text *ngFor="let value of box.outliers let i = index;"
                                           class="tooltip --hidden"
                                           [class.--visible]="outlierKey === getBoxOutlierKey(box, i)"
