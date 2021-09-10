@@ -139,6 +139,76 @@ export class ChartsLabsComponent {
             fillPattern: FillPattern.DiagonalCheckerboard
         }],
         label: "Second group"
+    }, {
+        value: "third",
+        boxGroupId: "third",
+        boxes: [{
+            boxId: "third01",
+            boxGroupId: "third",
+            quantiles: {
+                min: 1,
+                lower: 2.25,
+                median: 5.5,
+                upper: 6.75,
+                max: 10
+            },
+            outliers: [
+                17, 18
+            ],
+            colorHex: "#3000f0",
+            fillPattern: FillPattern.Grid
+        }, {
+            boxId: "third02",
+            boxGroupId: "third",
+            quantiles: {
+                min: 2,
+                lower: 3.25,
+                median: 5,
+                upper: 6,
+                max: 9
+            },
+            outliers: [
+                -2, -1, 14
+            ],
+            colorHex: "#309000",
+            fillPattern: FillPattern.DiagonalGrid
+        }],
+        label: "Third group"
+    }, {
+        value: "fourth",
+        boxGroupId: "fourth",
+        boxes: [{
+            boxId: "fourth01",
+            boxGroupId: "fourth",
+            quantiles: {
+                min: 1,
+                lower: 2.25,
+                median: 5.5,
+                upper: 6.75,
+                max: 10
+            },
+            outliers: [
+                17, 18
+            ],
+            colorHex: "#3000f0",
+            fillPattern: FillPattern.HorizontalLines
+        }, {
+            boxId: "fourth02",
+            boxGroupId: "fourth",
+            quantiles: {
+                min: 2,
+                lower: 3.25,
+                median: 5,
+                upper: 6,
+                max: 9
+            },
+            outliers: [
+                -2, -1, 14
+            ],
+            colorHex: "#309000",
+            fillPattern: FillPattern.VerticalLines
+        }],
+        label: "Fourth group"
     }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
