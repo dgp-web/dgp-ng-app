@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
-import { Box, BoxGroup, BoxPlotScales, FillPattern } from "../models";
+import { Box, BoxGroup, BoxPlotScales } from "../models";
 
 @Directive({selector: "[dgpBoxPlotBox]"})
 export class BoxPlotBoxDirective implements OnChanges {
@@ -36,34 +36,7 @@ export class BoxPlotBoxDirective implements OnChanges {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.box.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "2");
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex + "66");
-
-            if (this.box.fillPattern) {
-
-                switch (this.box.fillPattern) {
-                    case FillPattern.All:
-                        break;
-                    case FillPattern.VerticalLines:
-                        break;
-                    case FillPattern.LinesFromLeftTopToRightBottom:
-                        break;
-                    case FillPattern.HorizontalLines:
-                        break;
-                    case FillPattern.LinesFromLeftBottomToRightTop:
-                        break;
-                    case FillPattern.Grid:
-                        break;
-                    case FillPattern.DiagonalGrid:
-                        break;
-                    case FillPattern.Checkerboard:
-                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#checkerboard-mask)");
-                        break;
-                    case FillPattern.DiagonalCheckerboard:
-                        this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#diagonal-checkerboard-mask)");
-                        break;
-                }
-
-            }
+            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex + "00");
 
         }
 

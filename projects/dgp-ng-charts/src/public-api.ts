@@ -16,6 +16,7 @@ export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
 export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
+export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";
 export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whisker.directive";
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
 export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";

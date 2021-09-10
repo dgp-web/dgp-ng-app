@@ -142,6 +142,10 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
                                           [box]="box"></line>
+                                    <rect dgpBoxPlotBoxFillPattern
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></rect>
                                     <rect dgpBoxPlotBox
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"

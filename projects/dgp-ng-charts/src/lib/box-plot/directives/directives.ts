@@ -8,10 +8,12 @@ import { BoxPlotOutlierDirective } from "./box-plot-outlier.directive";
 import { BoxPlotOutlierTooltipDirective } from "./box-plot-outlier-tooltip.directive";
 import { BoxPlotUpperAntennaDirective } from "./box-plot-upper-antenna.directive";
 import { BoxPlotWhiskerDirective } from "./box-plot-whisker.directive";
+import { BoxPlotBoxFillPatternDirective } from "./box-plot-box-fill-pattern.directive";
 
 export const directives = [
     BoxPlotBottomAxisDirective,
     BoxPlotBoxDirective,
+    BoxPlotBoxFillPatternDirective,
     BoxPlotBrushSelectorDirective,
     BoxPlotLeftAxisDirective,
     BoxPlotLowerAntennaDirective,
