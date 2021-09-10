@@ -10,8 +10,9 @@ export { DgpNgChartsModule } from "./lib/dgp-ng-charts.module";
  * -----
  */
 export * from "./lib/box-plot/constants";
+export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
-export * from "./lib/box-plot/models";
+export * from "./lib/models";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
