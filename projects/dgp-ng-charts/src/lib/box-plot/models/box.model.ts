@@ -1,5 +1,4 @@
 import { BoxQuantiles } from "./box-quantiles.model";
-import { FillPattern } from "../../models";
 
 export interface Box {
     readonly boxId: string;
@@ -19,5 +18,5 @@ export interface Box {
 
     readonly colorHex: string;
 
-    readonly fillPattern: FillPattern;
+    // readonly fillPattern: FillPattern;
 }

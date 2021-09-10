@@ -52,6 +52,39 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 
                 <svg *ngIf="boxPlotScales"
                      class="chart-svg">
+
+                    <defs>
+                        <pattern id="pattern-checkerboard"
+                                 x="0"
+                                 y="0"
+                                 width="16"
+                                 height="16"
+                                 patternUnits="userSpaceOnUse">
+                            <rect class="checker"
+                                  x="0"
+                                  width="8"
+                                  height="8"
+                                  y="0"
+                                  fill="white"></rect>
+                            <rect class="checker"
+                                  x="8"
+                                  width="8"
+                                  height="8"
+                                  y="8"
+                                  fill="white"></rect>
+                        </pattern>
+
+
+                        <mask id="checkerboard-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#pattern-checkerboard)"/>
+                        </mask>
+
+                    </defs>
+
                     <g [attr.transform]="getContainerTransform()">
 
                         <g class="chart__x-axis"
@@ -84,7 +117,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                     <rect dgpBoxPlotBox
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
-                                          [box]="box"></rect>
+                                          [box]="box"
+                                          mask="url(#checkerboard-mask)"></rect>
                                     <line dgpBoxPlotMedian
                                           [scales]="boxPlotScales"
                                           [boxGroup]="boxGroup"
