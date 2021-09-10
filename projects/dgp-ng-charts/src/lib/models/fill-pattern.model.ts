@@ -1,11 +1,11 @@
 export enum FillPattern {
-    All,
-    VerticalLines,
-    LinesFromLeftTopToRightBottom,
-    HorizontalLines,
-    LinesFromLeftBottomToRightTop,
-    Grid,
-    DiagonalGrid,
-    Checkers,
-    DiagonalCheckers
+    All = "All",
+    VerticalLines = "VerticalLines",
+    LinesFromLeftTopToRightBottom = "LinesFromLeftTopToRightBottom",
+    HorizontalLines = "HorizontalLines",
+    LinesFromLeftBottomToRightTop = "LinesFromLeftBottomToRightTop",
+    Grid = "Grid",
+    DiagonalGrid = "DiagonalGrid",
+    Checkerboard = "Checkerboard",
+    DiagonalCheckerboard = "DiagonalCheckerboard"
 }
