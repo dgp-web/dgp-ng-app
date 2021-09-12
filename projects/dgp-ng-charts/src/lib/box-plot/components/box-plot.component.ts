@@ -126,6 +126,42 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="white"></line>
                         </pattern>
 
+                        <pattern id="lines-from-left-top-to-right-bottom-mask"
+                                 x="0"
+                                 y="0"
+                                 width="15"
+                                 height="15"
+                                 patternUnits="userSpaceOnUse">
+                            <line y1="0"
+                                  y2="0"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="5"
+                                  y2="5"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="10"
+                                  y2="10"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                            <line y1="15"
+                                  y2="15"
+                                  x1="0"
+                                  x2="15"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  fill="white"></line>
+                        </pattern>
+
                         <pattern id="checkerboard-pattern"
                                  x="0"
                                  y="0"

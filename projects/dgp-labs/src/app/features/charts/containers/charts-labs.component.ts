@@ -209,6 +209,41 @@ export class ChartsLabsComponent {
             fillPattern: FillPattern.VerticalLines
         }],
         label: "Fourth group"
+    }, {
+        value: "fifth",
+        boxGroupId: "fifth",
+        boxes: [{
+            boxId: "fifth01",
+            boxGroupId: "fifth",
+            quantiles: {
+                min: 1,
+                lower: 2.25,
+                median: 5.5,
+                upper: 6.75,
+                max: 10
+            },
+            outliers: [
+                17, 18
+            ],
+            colorHex: "#3000f0",
+            fillPattern: FillPattern.LinesFromLeftTopToRightBottom
+        }, {
+            boxId: "fifth02",
+            boxGroupId: "fifth",
+            quantiles: {
+                min: 2,
+                lower: 3.25,
+                median: 5,
+                upper: 6,
+                max: 9
+            },
+            outliers: [
+                -2, -1, 14
+            ],
+            colorHex: "#309000",
+            fillPattern: FillPattern.LinesFromLeftBottomToRightTop
+        }],
+        label: "Fifth group"
     }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
