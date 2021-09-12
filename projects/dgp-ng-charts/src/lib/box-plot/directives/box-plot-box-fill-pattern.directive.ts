@@ -37,6 +37,8 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
 
             if (this.box.fillPattern) {
 
+                // TODO: Extract assocication between masks and URL values
+
                 switch (this.box.fillPattern) {
                     case FillPattern.All:
                         break;

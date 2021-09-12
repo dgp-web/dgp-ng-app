@@ -194,7 +194,16 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         </mask>
 
                         <mask id="grid-mask">
-
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#horizontal-lines-pattern)"/>
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#vertical-lines-pattern)"/>
                         </mask>
 
                         <mask id="diagonal-grid-mask">
