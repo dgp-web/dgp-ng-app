@@ -103,7 +103,7 @@ export class ChartsLabsComponent {
             ],
             colorHex: "#309000"
         }],
-        label: "First group"
+        label: "Default"
     }, {
         value: "second",
         boxGroupId: "second",
@@ -138,7 +138,7 @@ export class ChartsLabsComponent {
             colorHex: "#309000",
             fillPattern: FillPattern.DiagonalCheckerboard
         }],
-        label: "Second group"
+        label: "Checkerboard"
     }, {
         value: "third",
         boxGroupId: "third",
@@ -173,7 +173,7 @@ export class ChartsLabsComponent {
             colorHex: "#309000",
             fillPattern: FillPattern.DiagonalGrid
         }],
-        label: "Third group"
+        label: "Grid"
     }, {
         value: "fourth",
         boxGroupId: "fourth",
@@ -208,7 +208,7 @@ export class ChartsLabsComponent {
             colorHex: "#309000",
             fillPattern: FillPattern.VerticalLines
         }],
-        label: "Fourth group"
+        label: "Straight lines"
     }, {
         value: "fifth",
         boxGroupId: "fifth",
@@ -243,7 +243,7 @@ export class ChartsLabsComponent {
             colorHex: "#309000",
             fillPattern: FillPattern.LinesFromLeftBottomToRightTop
         }],
-        label: "Fifth group"
+        label: "Diagonal lines"
     }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
