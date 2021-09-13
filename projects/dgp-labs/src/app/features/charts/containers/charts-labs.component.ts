@@ -18,6 +18,9 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             Charts
         </dgp-page-header>
 
+        <dgp-fill-pattern-select [model]="fillPattern"
+                                 (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+
         <dgp-box-plot [model]="boxGroups">
 
             <ng-container chart-title>
@@ -70,6 +73,8 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartsLabsComponent {
+
+    fillPattern = FillPattern.All;
 
     boxGroups: ReadonlyArray<BoxGroup> = [{
         value: "first",
@@ -268,6 +273,9 @@ export class ChartsLabsComponent {
 
         this.heatmapTiles = heatmapTiles;
 
+    }
+
+    updateFillPattern(fillPattern: FillPattern) {
     }
 
     selectOutliers($event: BoxPlotSelection) {
