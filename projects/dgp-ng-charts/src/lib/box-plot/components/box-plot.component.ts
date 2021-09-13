@@ -65,7 +65,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   width="1"
                                   height="4"
                                   stroke="white"
-                                  stroke-width="2"/>
+                                  stroke-width="1"/>
                         </pattern>
 
                         <pattern id="horizontal-lines-pattern"
@@ -79,7 +79,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   width="4"
                                   height="1"
                                   stroke="white"
-                                  stroke-width="2"/>
+                                  stroke-width="1"/>
                         </pattern>
 
                         <pattern id="lines-from-left-top-to-right-bottom-pattern"
@@ -94,7 +94,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   width="1"
                                   height="4"
                                   stroke="white"
-                                  stroke-width="2"/>
+                                  stroke-width="1"/>
                         </pattern>
 
                         <pattern id="lines-from-left-bottom-to-right-top-pattern"
@@ -109,7 +109,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   width="1"
                                   height="4"
                                   stroke="white"
-                                  stroke-width="2"/>
+                                  stroke-width="1"/>
                         </pattern>
 
 
@@ -119,14 +119,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                  width="15"
                                  height="15"
                                  patternUnits="userSpaceOnUse">
-                            <rect class="checker"
-                                  x="0"
+                            <rect x="0"
                                   width="7"
                                   height="7"
                                   y="0"
                                   fill="white"></rect>
-                            <rect class="checker"
-                                  x="7"
+                            <rect x="7"
                                   width="7"
                                   height="7"
                                   y="7"
@@ -140,14 +138,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                  height="15"
                                  patternUnits="userSpaceOnUse"
                                  patternTransform="rotate(45)">
-                            <rect class="checker"
-                                  x="0"
+                            <rect x="0"
                                   width="7"
                                   height="7"
                                   y="0"
                                   fill="white"></rect>
-                            <rect class="checker"
-                                  x="7"
+                            <rect x="7"
                                   width="7"
                                   height="7"
                                   y="7"
@@ -206,6 +202,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   y="0"
                                   width="100%"
                                   height="100%"
+                                  stroke-width="1"
                                   fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
                             <rect x="0"
                                   y="0"
