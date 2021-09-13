@@ -10,6 +10,8 @@ import {
 import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
 
+// TODO: Check exporting charts
+
 @Component({
     selector: "dgp-charts-labs",
     template: `
