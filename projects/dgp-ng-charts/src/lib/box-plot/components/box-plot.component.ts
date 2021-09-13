@@ -57,23 +57,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
                         <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
                         <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-
-                        <pattern id="lines-from-left-bottom-to-right-top-pattern"
-                                 x="0"
-                                 y="0"
-                                 width="4"
-                                 height="4"
-                                 patternUnits="userSpaceOnUse"
-                                 patternTransform="rotate(45 0 0)">
-                            <rect x="0"
-                                  y="0"
-                                  width="1"
-                                  height="4"
-                                  stroke="white"
-                                  stroke-width="1"/>
-                        </pattern>
-
-
+                        <dgp-lines-from-left-bottom-to-right-top></dgp-lines-from-left-bottom-to-right-top>
+                        
                         <pattern id="checkerboard-pattern"
                                  x="0"
                                  y="0"
