@@ -57,44 +57,9 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
                         <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
                         <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-                        <dgp-lines-from-left-bottom-to-right-top></dgp-lines-from-left-bottom-to-right-top>
-                        
-                        <pattern id="checkerboard-pattern"
-                                 x="0"
-                                 y="0"
-                                 width="15"
-                                 height="15"
-                                 patternUnits="userSpaceOnUse">
-                            <rect x="0"
-                                  width="7"
-                                  height="7"
-                                  y="0"
-                                  fill="white"></rect>
-                            <rect x="7"
-                                  width="7"
-                                  height="7"
-                                  y="7"
-                                  fill="white"></rect>
-                        </pattern>
-
-                        <pattern id="diagonal-checkerboard-pattern"
-                                 x="0"
-                                 y="0"
-                                 width="15"
-                                 height="15"
-                                 patternUnits="userSpaceOnUse"
-                                 patternTransform="rotate(45)">
-                            <rect x="0"
-                                  width="7"
-                                  height="7"
-                                  y="0"
-                                  fill="white"></rect>
-                            <rect x="7"
-                                  width="7"
-                                  height="7"
-                                  y="7"
-                                  fill="white"></rect>
-                        </pattern>
+                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
+                        <dgp-checkerboard-pattern></dgp-checkerboard-pattern>
+                        <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
 
                         <!-- Masks -->
 

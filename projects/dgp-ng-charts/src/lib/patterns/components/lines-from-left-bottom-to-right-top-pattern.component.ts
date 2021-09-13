@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 
 @Component({
-    selector: "dgp-lines-from-left-bottom-to-right-top",
+    selector: "dgp-lines-from-left-bottom-to-right-top-pattern",
     template: `
         <svg:pattern id="lines-from-left-bottom-to-right-top-pattern"
                      x="0"
@@ -19,6 +19,6 @@ import { Component } from "@angular/core";
         </svg:pattern>
     `
 })
-export class DgpLinesFromLeftBottomToRightTopComponent {
+export class DgpLinesFromLeftBottomToRightTopPatternComponent {
 
 }
