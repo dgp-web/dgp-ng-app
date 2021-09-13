@@ -110,15 +110,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         </mask>
 
                         <dgp-checkerboard-mask></dgp-checkerboard-mask>
-
-                        <mask id="diagonal-checkerboard-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#diagonal-checkerboard-pattern)"/>
-                        </mask>
-
+                        <dgp-diagonal-checkerboard-mask></dgp-diagonal-checkerboard-mask>
                     </defs>
 
                     <g [attr.transform]="getContainerTransform()">
