@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpView } from "dgp-ng-app";
 import { FillPattern } from "../models";
+import { getMaskIdForFillPattern } from "../functions/get-mask-id-for-fill-pattern.function";
 
 @Component({
     selector: "dgp-fill-pattern-icon",
@@ -84,41 +85,9 @@ export class DgpFillPatternIconComponent extends DgpView<FillPattern> {
     readonly fillPatternEnum = FillPattern;
 
     getMaskForFillPattern() {
-        let maskId: string = null;
-
-        switch (this.model) {
-            case FillPattern.All:
-                break;
-            case FillPattern.VerticalLines:
-                maskId = "vertical-lines-mask";
-                break;
-            case FillPattern.LinesFromLeftTopToRightBottom:
-                maskId = "lines-from-left-top-to-right-bottom-mask";
-                break;
-            case FillPattern.HorizontalLines:
-                maskId = "horizontal-lines-mask";
-                break;
-            case FillPattern.LinesFromLeftBottomToRightTop:
-                maskId = "lines-from-left-bottom-to-right-top-mask";
-                break;
-            case FillPattern.Grid:
-                maskId = "grid-mask";
-                break;
-            case FillPattern.DiagonalGrid:
-                maskId = "diagonal-grid-mask";
-                break;
-            case FillPattern.Checkerboard:
-                maskId = "checkerboard-mask";
-                break;
-            case FillPattern.DiagonalCheckerboard:
-                maskId = "diagonal-checkerboard-mask";
-                break;
-        }
-
+        const maskId: string = getMaskIdForFillPattern(this.model);
         if (!maskId) return "";
-
         return "url(#" + maskId + ")";
     }
-
-
+    
 }
