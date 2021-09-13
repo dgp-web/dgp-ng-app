@@ -1,17 +1,17 @@
 import { Component } from "@angular/core";
 
 @Component({
-    selector: "dgp-horizontal-lines-mask",
+    selector: "dgp-checkerboard-mask",
     template: `
-        <svg:mask id="horizontal-lines-mask">
+        <svg:mask id="checkerboard-mask">
             <svg:rect x="0"
                       y="0"
                       width="100%"
                       height="100%"
-                      fill="url(#horizontal-lines-pattern)"/>
+                      fill="url(#checkerboard-pattern)"/>
         </svg:mask>
     `
 })
-export class DgpHorizontalLinesMaskComponent {
+export class DgpCheckerboardMaskComponent {
 
 }

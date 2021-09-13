@@ -66,6 +66,14 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
                         <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
 
+                        <mask id="lines-from-left-top-to-right-bottom-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
+                        </mask>
+
                         <mask id="lines-from-left-bottom-to-right-top-mask">
                             <rect x="0"
                                   y="0"
@@ -101,13 +109,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
                         </mask>
 
-                        <mask id="checkerboard-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#checkerboard-pattern)"/>
-                        </mask>
+                        <dgp-checkerboard-mask></dgp-checkerboard-mask>
 
                         <mask id="diagonal-checkerboard-mask">
                             <rect x="0"

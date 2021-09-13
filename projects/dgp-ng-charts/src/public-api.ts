@@ -72,6 +72,7 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  * -----
  */
 export { DgpSVGMasksModule } from "./lib/masks/svg-masks.module";
+export { DgpCheckerboardMaskComponent } from "./lib/masks/components/checkerboard-mask.component";
 export { DgpHorizontalLinesMaskComponent } from "./lib/masks/components/horizontal-lines-mask.component";
 export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-lines-mask.component";
 
