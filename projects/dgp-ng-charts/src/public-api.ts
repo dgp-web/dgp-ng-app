@@ -67,7 +67,18 @@ export { ExportChartDialogComponent } from "./lib/heatmap/components/export-char
 export { LineChartComponent } from "./lib/line-chart/line-chart.component";
 
 /**
+ * -----
+ * Masks
+ * -----
+ */
+export { DgpSVGMasksModule } from "./lib/masks/svg-masks.module";
+export { DgpHorizontalLinesMaskComponent } from "./lib/masks/components/horizontal-lines-mask.component";
+export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-lines-mask.component";
+
+/**
+ * -----
  * Patterns
+ * -----
  */
 export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
 export { DgpCheckerboardPatternComponent } from "./lib/patterns/components/checkerboard-pattern.component";

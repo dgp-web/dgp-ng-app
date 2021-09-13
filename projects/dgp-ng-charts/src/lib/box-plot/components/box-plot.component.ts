@@ -55,7 +55,6 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 
                     <defs>
                         <!-- Pattern -->
-
                         <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
                         <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
                         <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
@@ -64,30 +63,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
 
                         <!-- Masks -->
-
-                        <mask id="vertical-lines-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#vertical-lines-pattern)"/>
-                        </mask>
-
-                        <mask id="lines-from-left-top-to-right-bottom-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
-                        </mask>
-
-                        <mask id="horizontal-lines-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#horizontal-lines-pattern)"/>
-                        </mask>
+                        <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
+                        <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
 
                         <mask id="lines-from-left-bottom-to-right-top-mask">
                             <rect x="0"
