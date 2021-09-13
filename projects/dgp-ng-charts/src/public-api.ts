@@ -67,6 +67,11 @@ export { ExportChartDialogComponent } from "./lib/heatmap/components/export-char
 export { LineChartComponent } from "./lib/line-chart/line-chart.component";
 
 /**
+ * Patterns
+ */
+export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
+
+/**
  * -----
  * Shared
  * -----
