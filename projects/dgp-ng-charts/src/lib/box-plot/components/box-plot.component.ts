@@ -60,13 +60,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                  width="4"
                                  height="4"
                                  patternUnits="userSpaceOnUse">
-                            <line x1="0"
-                                  y1="0"
-                                  x2="0"
-                                  y2="4"
+                            <rect x="0"
+                                  y="0"
+                                  width="1"
+                                  height="4"
                                   stroke="white"
-                                  stroke-width="2"
-                                  fill="white"/>
+                                  stroke-width="2"/>
                         </pattern>
 
                         <pattern id="horizontal-lines-pattern"
@@ -75,13 +74,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                  width="4"
                                  height="4"
                                  patternUnits="userSpaceOnUse">
-                            <line x1="0"
-                                  y1="0"
-                                  x2="4"
-                                  y2="0"
+                            <rect x="0"
+                                  y="0"
+                                  width="4"
+                                  height="1"
                                   stroke="white"
-                                  stroke-width="2"
-                                  fill="white"/>
+                                  stroke-width="2"/>
                         </pattern>
 
                         <pattern id="lines-from-left-top-to-right-bottom-pattern"
@@ -91,15 +89,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                  height="4"
                                  patternUnits="userSpaceOnUse"
                                  patternTransform="rotate(135 0 0)">
-
-                            <line x1="0"
-                                  y1="0"
-                                  x2="0"
-                                  y2="4"
+                            <rect x="0"
+                                  y="0"
+                                  width="1"
+                                  height="4"
                                   stroke="white"
-                                  stroke-width="2"
-                                  fill="white"/>
-
+                                  stroke-width="2"/>
                         </pattern>
 
                         <pattern id="lines-from-left-bottom-to-right-top-pattern"
@@ -109,15 +104,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                  height="4"
                                  patternUnits="userSpaceOnUse"
                                  patternTransform="rotate(45 0 0)">
-
-                            <line x1="0"
-                                  y1="0"
-                                  x2="0"
-                                  y2="4"
+                            <rect x="0"
+                                  y="0"
+                                  width="1"
+                                  height="4"
                                   stroke="white"
-                                  stroke-width="2"
-                                  fill="white"/>
-
+                                  stroke-width="2"/>
                         </pattern>
 
 
