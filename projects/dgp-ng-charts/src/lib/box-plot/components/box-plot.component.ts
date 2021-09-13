@@ -54,19 +54,20 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                      class="chart-svg">
 
                     <defs>
-                        <pattern id="vertical-lines-pattern"
-                                 x="0"
-                                 y="0"
-                                 width="4"
-                                 height="4"
-                                 patternUnits="userSpaceOnUse">
-                            <rect x="0"
+                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
+                        <!-- <pattern id="vertical-lines-pattern"
+                                  x="0"
                                   y="0"
-                                  width="1"
+                                  width="4"
                                   height="4"
-                                  stroke="white"
-                                  stroke-width="1"/>
-                        </pattern>
+                                  patternUnits="userSpaceOnUse">
+                             <rect x="0"
+                                   y="0"
+                                   width="1"
+                                   height="4"
+                                   stroke="white"
+                                   stroke-width="1"/>
+                         </pattern>-->
 
                         <pattern id="horizontal-lines-pattern"
                                  x="0"

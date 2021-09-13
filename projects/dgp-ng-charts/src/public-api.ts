@@ -70,6 +70,7 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  * Patterns
  */
 export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
+export { DgpVerticalLinesPatternComponent } from "./lib/patterns/components/vertical-lines-pattern.component";
 
 /**
  * -----

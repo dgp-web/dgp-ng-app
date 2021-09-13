@@ -10,6 +10,7 @@ import { components } from "./components/components";
 import { directives } from "./directives/directives";
 import { DgpChartModule } from "../chart/chart.module";
 import { DgpResizeSensorModule } from "dgp-ng-app";
+import { DgpSVGPatternsModule } from "../patterns/svg-patterns.module";
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { DgpResizeSensorModule } from "dgp-ng-app";
         MatIconModule,
         MatDialogModule,
         MatMenuModule,
-        DgpResizeSensorModule
+        DgpResizeSensorModule,
+        DgpSVGPatternsModule
     ],
     declarations: [
         ...components,
