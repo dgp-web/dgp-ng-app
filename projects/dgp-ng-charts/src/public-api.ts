@@ -77,6 +77,12 @@ export { DgpDiagonalCheckerboardMaskComponent } from "./lib/masks/components/dia
 export { DgpDiagonalGridMaskComponent } from "./lib/masks/components/diagonal-grid-mask.component";
 export { DgpGridMaskComponent } from "./lib/masks/components/grid-mask.component";
 export { DgpHorizontalLinesMaskComponent } from "./lib/masks/components/horizontal-lines-mask.component";
+export {
+    DgpLinesFromLeftBottomToRightTopMaskComponent
+} from "./lib/masks/components/lines-from-left-bottom-to-right-top-mask.component";
+export {
+    DgpLinesFromLeftTopToRightBottomMaskComponent
+} from "./lib/masks/components/lines-from-left-top-to-right-bottom-mask.component";
 export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-lines-mask.component";
 
 /**

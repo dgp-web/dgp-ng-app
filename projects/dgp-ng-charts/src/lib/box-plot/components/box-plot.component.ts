@@ -65,23 +65,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <!-- Masks -->
                         <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
                         <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
-
-                        <mask id="lines-from-left-top-to-right-bottom-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
-                        </mask>
-
-                        <mask id="lines-from-left-bottom-to-right-top-mask">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
-                        </mask>
-
+                        <dgp-lines-from-left-top-to-right-bottom-mask></dgp-lines-from-left-top-to-right-bottom-mask>
+                        <dgp-lines-from-left-bottom-to-right-top-mask></dgp-lines-from-left-bottom-to-right-top-mask>
                         <dgp-grid-mask></dgp-grid-mask>
                         <dgp-diagonal-grid-mask></dgp-diagonal-grid-mask>
                         <dgp-checkerboard-mask></dgp-checkerboard-mask>
