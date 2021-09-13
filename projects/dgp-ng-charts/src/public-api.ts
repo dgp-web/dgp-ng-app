@@ -14,6 +14,7 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
+export { DgpFillPatternIconComponent } from "./lib/box-plot/components/fill-pattern-icon.component";
 export { DgpFillPatternSelectComponent } from "./lib/box-plot/components/fill-pattern-select.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
 export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";

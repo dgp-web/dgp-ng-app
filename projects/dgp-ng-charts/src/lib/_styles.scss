@@ -93,3 +93,20 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
     width: auto;
     height: auto;
 }
+
+
+dgp-fill-pattern-icon {
+    rect {
+        fill: black;
+        stroke: black;
+    }
+}
+
+.dark-theme {
+    dgp-fill-pattern-icon {
+        rect {
+            fill: white;
+            stroke: white;
+        }
+    }
+}

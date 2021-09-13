@@ -14,43 +14,35 @@ import * as _ from "lodash";
                     All
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.HorizontalLines">
-                    <svg style="width: 24px;height: 24px; margin-right: 8px;">
-                        <defs>
-                            <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
-                            <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
-                        </defs>
-                        <g>
-                            <rect x="0"
-                                  y="0"
-                                  width="24px"
-                                  height="24px"
-                                  mask="url(#horizontal-lines-mask)"
-                                  fill="black"
-                                  stroke="black"
-                                  stroke-width="2"></rect>
-                        </g>
-                    </svg>
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.HorizontalLines"></dgp-fill-pattern-icon>
                     Horizontal lines
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.VerticalLines">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.VerticalLines"></dgp-fill-pattern-icon>
                     Vertical lines
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.Grid">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.Grid"></dgp-fill-pattern-icon>
                     Grid
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.DiagonalGrid">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.DiagonalGrid"></dgp-fill-pattern-icon>
                     Diagonal grid
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.LinesFromLeftTopToRightBottom">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.LinesFromLeftTopToRightBottom"></dgp-fill-pattern-icon>
                     Lines from left top to right bottom
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.LinesFromLeftBottomToRightTop">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.LinesFromLeftBottomToRightTop"></dgp-fill-pattern-icon>
                     Lines from left bottom to right top
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.Checkerboard">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.Checkerboard"></dgp-fill-pattern-icon>
                     Checkerboard
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.DiagonalCheckerboard">
+                    <dgp-fill-pattern-icon [model]="fillPatternEnum.DiagonalCheckerboard"></dgp-fill-pattern-icon>
                     Diagonal checkerboard
                 </mat-option>
             </mat-select>
