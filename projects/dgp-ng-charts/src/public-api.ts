@@ -71,6 +71,7 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  */
 export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
 export { DgpVerticalLinesPatternComponent } from "./lib/patterns/components/vertical-lines-pattern.component";
+export { DgpHorizontalLinesPatternComponent } from "./lib/patterns/components/horizontal-lines-pattern.component";
 
 /**
  * -----
