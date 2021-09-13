@@ -54,6 +54,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                      class="chart-svg">
 
                     <defs>
+                        <!-- Pattern -->
+
                         <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
                         <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
                         <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
