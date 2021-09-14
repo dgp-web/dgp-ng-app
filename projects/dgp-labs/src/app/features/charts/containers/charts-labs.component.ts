@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
-    BoxGroup,
     BoxPlotSelection,
     BoxValues,
     computeBoxFromValues,
+    FillPattern,
     HeatmapSelection,
     HeatmapTile
 } from "dgp-ng-charts";
 import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
+import { testBoxGroups } from "../constants/test-box-groups.constant";
+
+// TODO: Check exporting charts
 
 @Component({
     selector: "dgp-charts-labs",
@@ -17,26 +20,42 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
             Charts
         </dgp-page-header>
 
-        <dgp-box-plot [model]="boxGroups"
+        <dgp-fill-pattern-select [model]="fillPattern"
+                                 (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+
+        <dgp-box-plot [model]="boxGroups">
+
+            <ng-container chart-title>
+                Title via template slot
+            </ng-container>
+
+            <ng-container y-axis-title>
+                Title for the y axis
+            </ng-container>
+
+            <ng-container x-axis-title>
+                Title for the x axis
+            </ng-container>
+
+            <ng-container right-legend>
+                Right legend
+            </ng-container>
+
+        </dgp-box-plot>
+
+        <!-- <dgp-heatmap [model]="heatmapTiles"
                       chartTitle="Chart title"
                       yAxisTitle="y axis"
                       xAxisTitle="x axis"
                       selectionMode="Brush"
-                      (selectionChange)="selectOutliers($event)"></dgp-box-plot>
+                      [exportConfig]="exportConfig"
+                      (selectionChange)="selectTiles($event)">
 
-        <dgp-heatmap [model]="heatmapTiles"
-                     chartTitle="Chart title"
-                     yAxisTitle="y axis"
-                     xAxisTitle="x axis"
-                     selectionMode="Brush"
-                     [exportConfig]="exportConfig"
-                     (selectionChange)="selectTiles($event)">
+             <ng-container right-legend>Right</ng-container>
 
-            <ng-container right-legend>Right</ng-container>
+             <ng-container bottom-legend>Bottom</ng-container>
 
-            <ng-container bottom-legend>Bottom</ng-container>
-
-        </dgp-heatmap>
+         </dgp-heatmap>-->
     `,
     styles: [`
         :host {
@@ -48,49 +67,18 @@ import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatm
         }
 
         dgp-line-chart, dgp-box-plot, dgp-heatmap {
-            height: 240px;
-            width: 400px;
-            flex-shrink: 0;
+            width: 640px;
+            max-height: 480px;
+            margin: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartsLabsComponent {
 
-    boxGroups: ReadonlyArray<BoxGroup> = [{
-        value: "first",
-        boxGroupId: "first",
-        boxes: [{
-            boxId: "first01",
-            boxGroupId: "first",
-            quantiles: {
-                min: 1,
-                lower: 2.25,
-                median: 5.5,
-                upper: 6.75,
-                max: 10
-            },
-            outliers: [
-                17, 18
-            ],
-            colorHex: "#3000f0"
-        }, {
-            boxId: "first02",
-            boxGroupId: "first",
-            quantiles: {
-                min: 2,
-                lower: 3.25,
-                median: 5,
-                upper: 6,
-                max: 9
-            },
-            outliers: [
-                -2, -1, 14
-            ],
-            colorHex: "#309000"
-        }],
-        label: "First group"
-    }];
+    fillPattern = FillPattern.All;
+
+    boxGroups = testBoxGroups;
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
 
@@ -116,6 +104,9 @@ export class ChartsLabsComponent {
 
     }
 
+    updateFillPattern(fillPattern: FillPattern) {
+    }
+
     selectOutliers($event: BoxPlotSelection) {
         console.log($event);
     }
@@ -126,28 +117,8 @@ export class ChartsLabsComponent {
 
     private computeBoxes(heatmapTiles: ReadonlyArray<HeatmapTile>) {
 
-        /*value: "first",
-            boxGroupId: "first",
-            boxes: [{
-            boxId: "first01",
-            boxGroupId: "first",
-            quantiles: {
-                min: 1,
-                lower: 2.25,
-                median: 5.5,
-                upper: 6.75,
-                max: 10
-            },
-            outliers: [
-                17, 18
-            ],
-            colorHex: "#3000f0"
-        }
-        */
-
         const values: BoxValues = {
-            boxValuesId: "test",
-            originalValues: heatmapTiles.map(x => x.value)
+            boxValuesId: "test", originalValues: heatmapTiles.map(x => x.value)
         };
 
         const box = computeBoxFromValues({
@@ -156,8 +127,6 @@ export class ChartsLabsComponent {
             boxGroupId: "first",
             colorHex: "#3000f0"
         });
-
-        console.log(box);
 
         this.boxGroups = [{
             value: "first",
