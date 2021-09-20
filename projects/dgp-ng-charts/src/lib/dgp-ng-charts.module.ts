@@ -11,7 +11,7 @@ import { LineChartComponent } from "./line-chart/line-chart.component";
         DgpHeatmapModule
     ],
     declarations: [
-        LineChartComponent
+        LineChartComponent,
     ],
     exports: [
         LineChartComponent,

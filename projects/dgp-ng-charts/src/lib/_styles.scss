@@ -1,5 +1,8 @@
 .chart-svg {
+    position: absolute;
     overflow: visible;
+    width: 100%;
+    height: 100%;
 }
 
 .chart__y-axis {
@@ -68,4 +71,42 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
         color: #ff6600 !important;;
     }
 
+}
+
+.--hidden {
+    visibility: hidden;
+}
+
+.--visible {
+    visibility: visible !important;
+}
+
+.tooltip {
+    position: fixed;
+    fill: white;
+}
+
+.plot-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+}
+
+
+dgp-fill-pattern-icon {
+    rect {
+        fill: black;
+        stroke: black;
+    }
+}
+
+.dark-theme {
+    dgp-fill-pattern-icon {
+        rect {
+            fill: white;
+            stroke: white;
+        }
+    }
 }

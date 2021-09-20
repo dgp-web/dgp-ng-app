@@ -1,105 +1,191 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import * as d3 from "d3";
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from "@angular/core";
+import { Box, BoxGroup, BoxPlot, BoxPlotScales, BoxPlotSelection } from "../models";
+import { debounceTime, tap } from "rxjs/operators";
+import { Subscription } from "rxjs";
+import { DrawD3ChartPayload } from "../../shared/chart.component-base";
+import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
+import { isNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
-import { createBoxPlotScales, drawBoxPlot, drawBoxPlotOutliers, getOutlierXPosition, isBrushed } from "../functions";
-import { Box, BoxGroup, BoxPlotConfig, BoxPlotSelection } from "../models";
-import { ChartComponentBase } from "../../shared/chart.component-base";
-import { ChartSelectionMode } from "../../shared/models";
 import { ExportChartConfig } from "../../heatmap/models";
-
-// TODO: Extract logic for coloring
-// TODO: Extract logic for logarithmic y-axis scale
+import { ChartSelectionMode } from "../../shared/models";
+import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 
 @Component({
     selector: "dgp-box-plot",
     template: `
+        <dgp-chart dgpResizeSensor
+                   (sizeChanged)="drawChart()"
+                   [yAxisTitle]="yAxisTitle"
+                   [xAxisTitle]="xAxisTitle"
+                   [chartTitle]="chartTitle">
 
-        <div class="chart"
-             #chartRef>
-            <div *ngIf="chartTitle"
-                 class="title">
-                {{ chartTitle }}
+            <ng-container chart-title>
+                <ng-content select="[chart-title]"></ng-content>
+            </ng-container>
+
+            <ng-container x-axis-title>
+                <ng-content select="[x-axis-title]"></ng-content>
+            </ng-container>
+
+            <ng-container y-axis-title>
+                <ng-content select="[y-axis-title]"></ng-content>
+            </ng-container>
+
+            <ng-container right-legend>
+                <ng-content select="[right-legend]"></ng-content>
+            </ng-container>
+
+            <div class="plot-container"
+                 #chartContainer>
+
+                <svg *ngIf="boxPlotScales"
+                     class="chart-svg">
+
+                    <defs>
+                        <!-- Pattern -->
+                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
+                        <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
+                        <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
+                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
+                        <dgp-checkerboard-pattern></dgp-checkerboard-pattern>
+                        <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
+
+                        <!-- Masks -->
+                        <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
+                        <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
+                        <dgp-lines-from-left-top-to-right-bottom-mask></dgp-lines-from-left-top-to-right-bottom-mask>
+                        <dgp-lines-from-left-bottom-to-right-top-mask></dgp-lines-from-left-bottom-to-right-top-mask>
+                        <dgp-grid-mask></dgp-grid-mask>
+                        <dgp-diagonal-grid-mask></dgp-diagonal-grid-mask>
+                        <dgp-checkerboard-mask></dgp-checkerboard-mask>
+                        <dgp-diagonal-checkerboard-mask></dgp-diagonal-checkerboard-mask>
+                    </defs>
+
+                    <g [attr.transform]="getContainerTransform()">
+
+                        <g class="chart__x-axis"
+                           dgpBoxPlotBottomAxis
+                           [scales]="boxPlotScales"></g>
+
+                        <g class="chart__y-axis"
+                           dgpBoxPlotLeftAxis
+                           [scales]="boxPlotScales"></g>
+
+                        <g class="measurement-result-root"
+                           dgpBoxPlotBrushSelector
+                           [scales]="boxPlotScales"
+                           [boxGroups]="model"
+                           [config]="config"
+                           [selectionMode]="selectionMode"
+                           (selectionChange)="selectionChange.emit($event)">
+                            <g *ngFor="let boxGroup of model"
+                               [attr.transform]="getResultRootTransform(boxGroup)">
+                                <ng-container *ngFor="let box of boxGroup.boxes">
+                                    <line dgpBoxPlotWhisker
+                                          type="max"
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></line>
+                                    <line dgpBoxPlotUpperAntenna
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></line>
+                                    <rect dgpBoxPlotBoxFillPattern
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></rect>
+                                    <rect dgpBoxPlotBox
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></rect>
+                                    <line dgpBoxPlotMedian
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></line>
+                                    <line dgpBoxPlotLowerAntenna
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></line>
+                                    <line dgpBoxPlotWhisker
+                                          type="min"
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"></line>
+
+                                    <circle *ngFor="let value of box.outliers; let i = index;"
+                                            r="3"
+                                            dgpBoxPlotOutlier
+                                            [scales]="boxPlotScales"
+                                            [boxGroup]="boxGroup"
+                                            [box]="box"
+                                            [value]="value"
+                                            (focus)="highlightOutlier(box, i)"
+                                            (mouseenter)="highlightOutlier(box, i)"
+                                            (blur)="unhighlightOutlier(box, i)"
+                                            (mouseleave)="unhighlightOutlier(box, i)"></circle>
+
+                                    <text *ngFor="let value of box.outliers let i = index;"
+                                          class="tooltip --hidden"
+                                          [class.--visible]="outlierKey === getBoxOutlierKey(box, i)"
+                                          dgpBoxPlotOutlierTooltip
+                                          [scales]="boxPlotScales"
+                                          [boxGroup]="boxGroup"
+                                          [box]="box"
+                                          [value]="value">
+                                        {{ value }}
+                                    </text>
+                                </ng-container>
+                            </g>
+                        </g>
+
+                    </g>
+                </svg>
+
             </div>
 
-            <div class="inner-container">
-                <div *ngIf="yAxisTitle"
-                     class="y-axis-label-container">
-                    <div class="y-axis-label">
-                        {{ yAxisTitle }}
-                    </div>
-                </div>
-                <div #chartElRef
-                     class="d3-hook"></div>
-                <div class="right-legend">
-                    <ng-content select="[right-legend]"></ng-content>
-                </div>
-            </div>
-
-            <div *ngIf="xAxisTitle"
-                 class="x-axis-label">
-                {{ xAxisTitle }}
-            </div>
-        </div>
-
+        </dgp-chart>
     `,
     styles: [`
         :host {
             display: flex;
-            flex-grow: 1;
-            font-size: smaller;
-        }
-
-        .chart {
-            display: flex;
-            flex-direction: column;
             justify-content: center;
             flex-grow: 1;
-        }
-
-        .title {
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            margin: 16px;
-            word-break: break-all;
-        }
-
-        .inner-container {
-            display: flex;
-            flex-grow: 1;
-        }
-
-        .y-axis-label-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 40px;
-            max-width: 40px;
-        }
-
-        .y-axis-label {
-            transform: rotate(-90deg);
-            white-space: nowrap;
-        }
-
-        .d3-hook {
-            flex-grow: 1;
-            height: 100%;
-        }
-
-        .x-axis-label {
-            min-height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .right-legend {
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>, BoxPlotConfig> implements AfterViewInit {
+export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
+
+    @ViewChild("chartContainer") elRef: ElementRef;
+
+    @Input()
+    model: ReadonlyArray<BoxGroup>;
+
+    @Input()
+    config = defaultBoxPlotConfig;
+
+    @Input()
+    selectionMode: ChartSelectionMode = "None";
+
+    boxPlotScales: BoxPlotScales;
+
+    private readonly drawChartActionScheduler = new EventEmitter();
+
+    private drawChartSubscription: Subscription;
+
+    outlierKey: string;
 
     @Input()
     exportConfig: ExportChartConfig;
@@ -107,81 +193,73 @@ export class BoxPlotComponent extends ChartComponentBase<ReadonlyArray<BoxGroup>
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
-    @Input()
-    selectionMode: ChartSelectionMode = "None";
+    constructor(
+        private readonly cd: ChangeDetectorRef
+    ) {
+        super();
 
-    config = defaultBoxPlotConfig;
-    svgNode: Node;
+        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
+            debounceTime(250),
+            tap(() => this.drawChart())
+        ).subscribe();
+    }
 
-    protected drawD3Chart(payload): void {
-        this.svgNode = payload.svg.node().parentNode;
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
+            this.drawChartActionScheduler.emit();
+        }
+    }
 
-        const d3Scales = createBoxPlotScales({
+    ngOnDestroy(): void {
+        if (!this.drawChartSubscription?.closed) {
+            this.drawChartSubscription?.unsubscribe();
+        }
+    }
+
+    drawD3Chart(payload: DrawD3ChartPayload): void {
+
+        this.boxPlotScales = createBoxPlotScales({
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
             boxGroups: this.model
         });
 
-        payload.svg.append("g")
-            .attr("class", "chart__x-axis")
-            .attr("transform", "translate(0," + d3Scales.yAxis.range()[1] + ")")
-            .call(d3.axisBottom(d3Scales.xAxis));
+        this.cd.markForCheck();
+    }
 
-        payload.svg.append("g")
-            .attr("class", "chart__y-axis")
-            .call(d3.axisLeft(d3Scales.yAxis));
+    drawChart() {
 
-        const onDataEnter = payload.svg.append("g")
-            .attr("class", "measurement-result-root")
-            .selectAll("g")
-            .data(this.model as Array<BoxGroup>)
-            .enter()
-            .append("g")
-            .attr("transform", x => "translate(" + d3Scales.xAxis(x.boxGroupId.toString()) + ",0)")
-            .selectAll("rect")
-            .data(x => x.boxes as Array<Box>)
-            .enter();
+        if (isNullOrUndefined(this.elRef.nativeElement)) return;
 
-        drawBoxPlot({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
-        const outliers = drawBoxPlotOutliers({d3OnGroupDataEnter: onDataEnter, d3Scales}, this.config);
-
-        // TODO: Add tooltip on mouseover
-
-        // showTooltip
-        /* outliers.on("mouseover", function(x) {
-
-             d3.select(this)
-                 .style("stroke", "black")
-                 .style("opacity", 1);
-         })
-             .on("mouseleave", function(x) {
-
-                 d3.select(this)
-                     .style("stroke", "none")
-                     .style("opacity", 0.8);
-             });*/
-
-        if (this.selectionMode === "Brush") {
-
-            payload.svg.call(d3.brush()
-                .extent([[0, 0], [payload.containerWidth, payload.containerHeight]])
-                .on("start brush", () => {
-                    const extent = d3.event.selection;
-
-                    const filteredOutliers = outliers.filter(x => isBrushed(
-                        extent, getOutlierXPosition(x, d3Scales, this.config),
-                        d3Scales.yAxis(x.value)
-                    ))
-                        .data();
-
-                    this.selectionChange.emit({
-                        outliers: filteredOutliers
-                    });
-                })
-            );
-        }
+        this.drawD3Chart({
+            svg: null,
+            containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
+            containerWidth: rect.width - this.config.margin.left - this.config.margin.right
+        });
 
     }
 
+    getContainerTransform(): string {
+        return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
+    }
+
+    getResultRootTransform(boxGroup: BoxGroup) {
+        return "translate(" + this.boxPlotScales.xAxis(boxGroup.boxGroupId) + ")";
+    }
+
+    getBoxOutlierKey(box: Box, outlierIndex: number) {
+        return getBoxOutlierSurrogateKey({
+            boxId: box.boxId, boxGroupId: box.boxGroupId, outlierIndex
+        });
+    }
+
+    highlightOutlier(box: Box, outlierIndex: number) {
+        this.outlierKey = this.getBoxOutlierKey(box, outlierIndex);
+    }
+
+    unhighlightOutlier(box: Box, value: number) {
+        this.outlierKey = null;
+    }
 }
