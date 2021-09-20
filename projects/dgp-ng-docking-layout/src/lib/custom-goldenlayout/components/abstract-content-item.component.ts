@@ -13,7 +13,7 @@ import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "
 // tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractContentItemComponent extends EventEmitter {
 
-    _side: any;
+    _side: any; 
     _sided: any;
     _header: any;
     // _setupHeaderPosition: any;
