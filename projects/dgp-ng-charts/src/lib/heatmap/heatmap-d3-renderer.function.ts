@@ -5,8 +5,7 @@ import { uniq } from "lodash";
 import { Subject } from "rxjs";
 import { isBrushed } from "../box-plot/functions";
 import { BrushCoordinates } from "../box-plot/models";
-import { HeatmapRendererPayload, HeatmapSelection, HeatmapTile } from "./models";
-import { d3TooltipService } from "./services/d3-tooltip.service";
+import { HeatmapRendererPayload, HeatmapSelection } from "./models";
 
 
 export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
@@ -85,16 +84,16 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
         const brush = d3.brush()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
-            .on("end", function(event) {
+            .on("end", function (event) {
 
                 const extent = d3.event.selection;
 
                 let selection: HeatmapSelection = {
-                    tiles: payload.model.filter(x => isBrushed(
+                    tiles: extent ? payload.model.filter(x => isBrushed(
                         extent,
                         xAxis(x.x.toString()),
                         yAxis(x.y.toString())
-                    ))
+                    )) : []
                 };
 
                 const xValues = selection.tiles.map(x => x.x);
@@ -126,11 +125,11 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                 if (_.isEqual(extent, newExtent)) {
 
                     selection = {
-                        tiles: payload.model.filter(x => isBrushed(
+                        tiles: newExtent ? payload.model.filter(x => isBrushed(
                             newExtent,
                             xAxis(x.x.toString()),
                             yAxis(x.y.toString())
-                        ))
+                        )) : []
                     };
 
                     selectionPublisher.next(selection);
@@ -188,124 +187,4 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
     }
 
-}
-
-
-export function heatMapD3Renderer(payload: HeatmapRendererPayload) {
-
-    // Labels of row and columns
-    const columnValues = _.sortBy(uniq(payload.model.map(x => x.x)));
-
-    const rowValues = _.sortBy(uniq(payload.model.map(x => x.y)));
-
-    // Build X scales and axis:
-    const xAxis = d3.scaleBand()
-        .range([0, payload.drawD3ChartInfo.containerWidth])
-        .domain(columnValues as any)
-        .padding(0.01);
-
-    payload.drawD3ChartInfo.svg.append("g")
-        .attr("transform", "translate(0," + payload.drawD3ChartInfo.containerHeight + ")")
-        .call(d3.axisBottom(xAxis)
-            .tickValues([])
-            .tickSize(0));
-
-    // Build X scales and axis:
-    const yAxis = d3.scaleBand()
-        .range([0, payload.drawD3ChartInfo.containerHeight])
-        .domain(rowValues as any)
-        .padding(0.01);
-
-    payload.drawD3ChartInfo.svg.append("g")
-        .call(d3.axisLeft(yAxis)
-            .tickValues([])
-            .tickSize(0));
-
-    const colorScale = d3.scaleLinear()
-        .range(payload.config.colorRange as any)
-        .domain(payload.config.domainComputer(payload.model, payload.config.domainOverrides) as any);
-
-    const tileRefs = payload.drawD3ChartInfo.svg.selectAll()
-        .data(payload.model as Array<HeatmapTile>, x => x.x.toString() + x.y.toString())
-        .enter()
-        .append("rect")
-        .attr("x", x => xAxis(x.x.toString()))
-        .attr("y", x => yAxis(x.y.toString()))
-        .attr("width", xAxis.bandwidth())
-        .attr("height", yAxis.bandwidth())
-        .style("fill", x => colorScale(x.value));
-
-    if (payload.selectionMode === "None") {
-
-        const tooltip = d3TooltipService.createTooltip({
-            nativeElement: payload.nativeElement
-        });
-
-        tileRefs.on("mouseover", function(x) {
-            d3TooltipService.showTooltip({
-                text: `(${x.y}, ${x.x}): ${x.value.toPrecision(3)}`,
-                referenceD3Element: d3.select(this),
-                tooltipD3Element: tooltip
-            });
-        })
-            .on("mouseleave", function(x) {
-                d3TooltipService.hideTooltip({tooltipD3Element: tooltip});
-            });
-
-    }
-
-    if (payload.selectionMode === "Brush") {
-
-        const brush = d3.brush()
-            .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
-            .on("start brush", () => {
-                const extent = d3.event.selection;
-
-
-                const tiles = tileRefs.filter(x => isBrushed(
-                    extent,
-                    xAxis(x.x.toString()),
-                    yAxis(x.y.toString())
-                ))
-                    .data();
-
-                payload.updateSelection({tiles});
-            });
-
-        payload.drawD3ChartInfo.svg.call(brush);
-
-        if (payload.selection) {
-
-            const xValues = payload.selection.tiles.map(x => x.x);
-            const yValues = payload.selection.tiles.map(x => x.y);
-
-            const left = _.min(xValues);
-            const right = _.max(xValues);
-
-            const top = _.min(yValues);
-            const bottom = _.max(yValues);
-
-            const upperLeftCorner: Point = {
-                x: left,
-                y: top
-            };
-            const lowerRightCorner: Point = {
-                x: right,
-                y: bottom
-            };
-
-            payload.drawD3ChartInfo.svg.call(brush.move, [
-                [
-                    xAxis(upperLeftCorner.x.toString()),
-                    yAxis(upperLeftCorner.y.toString())
-                ],
-                [
-                    xAxis(lowerRightCorner.x.toString()),
-                    yAxis(lowerRightCorner.y.toString())
-                ],
-            ]);
-
-        }
-
-    }
 }
