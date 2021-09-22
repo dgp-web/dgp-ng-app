@@ -3,16 +3,18 @@ import { RouterModule } from "@angular/router";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { ChartsLabsComponent } from "./containers/charts-labs.component";
 import { DgpNgChartsModule } from "dgp-ng-charts";
+import { DocsModule } from "dgp-ng-docs";
 
 @NgModule({
     imports: [
         RouterModule.forRoot([{
-        path: "charts",
-        component: ChartsLabsComponent
-    }], { relativeLinkResolution: 'legacy' }),
+            path: "charts",
+            component: ChartsLabsComponent
+        }], {relativeLinkResolution: 'legacy'}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
-        DgpNgChartsModule
+        DgpNgChartsModule,
+        DocsModule
     ],
     declarations: [
         ChartsLabsComponent
