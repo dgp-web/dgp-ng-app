@@ -46,13 +46,6 @@ import { DgpChartComponentBase } from "./chart.component-base";
             flex-grow: 1;
         }
 
-        svg {
-            position: absolute;
-            overflow: visible;
-            width: 100%;
-            height: 100%;
-        }
-
         .chart {
             display: flex;
             flex-direction: column;

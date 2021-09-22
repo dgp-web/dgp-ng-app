@@ -10,7 +10,7 @@ import { DocsModule } from "dgp-ng-docs";
         RouterModule.forRoot([{
             path: "charts",
             component: ChartsLabsComponent
-        }], {relativeLinkResolution: 'legacy'}),
+        }], {relativeLinkResolution: "legacy"}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpNgChartsModule,

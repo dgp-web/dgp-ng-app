@@ -26,8 +26,8 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
                     Box plot
                 </dgp-docs-section-title>
 
-                <dgp-fill-pattern-select [model]="fillPattern"
-                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+                <!--<dgp-fill-pattern-select [model]="fillPattern"
+                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>-->
 
                 <dgp-box-plot [model]="boxGroups">
 

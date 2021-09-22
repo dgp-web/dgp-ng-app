@@ -25,9 +25,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 @Component({
     selector: "dgp-box-plot",
     template: `
-        <dgp-chart dgpResizeSensor
-                   (sizeChanged)="drawChart()"
-                   [yAxisTitle]="yAxisTitle"
+        <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle">
 
@@ -203,11 +201,11 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   height="100%"
                                   stroke-width="1"
                                   fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
-                            <svg:rect x="0"
-                                      y="0"
-                                      width="100%"
-                                      height="100%"
-                                      fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
                         </mask>
 
                         <mask id="diagonal-grid-mask">
