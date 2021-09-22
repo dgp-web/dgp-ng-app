@@ -10,8 +10,6 @@ import {
 import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
 
-// TODO: Check exporting charts
-
 @Component({
     selector: "dgp-charts-labs",
     template: `
@@ -20,42 +18,59 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
             Charts
         </dgp-page-header>
 
-        <dgp-fill-pattern-select [model]="fillPattern"
-                                 (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+        <dgp-docs-page>
 
-        <dgp-box-plot [model]="boxGroups">
+            <dgp-docs-page-content>
 
-            <ng-container chart-title>
-                Title via template slot
-            </ng-container>
+                <dgp-docs-section-title>
+                    Box plot
+                </dgp-docs-section-title>
 
-            <ng-container y-axis-title>
-                Title for the y axis
-            </ng-container>
+                <dgp-fill-pattern-select [model]="fillPattern"
+                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
 
-            <ng-container x-axis-title>
-                Title for the x axis
-            </ng-container>
+                <dgp-box-plot [model]="boxGroups">
 
-            <ng-container right-legend>
-                Right legend
-            </ng-container>
+                    <ng-container chart-title>
+                        Title via template slot
+                    </ng-container>
 
-        </dgp-box-plot>
+                    <ng-container y-axis-title>
+                        Title for the y axis
+                    </ng-container>
 
-        <!-- <dgp-heatmap [model]="heatmapTiles"
-                      chartTitle="Chart title"
-                      yAxisTitle="y axis"
-                      xAxisTitle="x axis"
-                      selectionMode="Brush"
-                      [exportConfig]="exportConfig"
-                      (selectionChange)="selectTiles($event)">
+                    <ng-container x-axis-title>
+                        Title for the x axis
+                    </ng-container>
 
-             <ng-container right-legend>Right</ng-container>
+                    <ng-container right-legend>
+                        Right legend
+                    </ng-container>
 
-             <ng-container bottom-legend>Bottom</ng-container>
+                </dgp-box-plot>
 
-         </dgp-heatmap>-->
+                <dgp-docs-section-title>
+                    Heat map
+                </dgp-docs-section-title>
+
+                <dgp-heatmap [model]="heatmapTiles"
+                             chartTitle="Chart title"
+                             yAxisTitle="y axis"
+                             xAxisTitle="x axis"
+                             selectionMode="Brush"
+                             [exportConfig]="exportConfig"
+                             (selectionChange)="selectTiles($event)">
+
+                    <ng-container right-legend>Right</ng-container>
+
+                    <ng-container bottom-legend>Bottom</ng-container>
+
+                </dgp-heatmap>
+
+
+            </dgp-docs-page-content>
+
+        </dgp-docs-page>
     `,
     styles: [`
         :host {
@@ -112,7 +127,7 @@ export class ChartsLabsComponent {
     }
 
     selectTiles(heatmapTiles: HeatmapSelection) {
-        this.computeBoxes(heatmapTiles.tiles);
+        // this.computeBoxes(heatmapTiles.tiles);
     }
 
     private computeBoxes(heatmapTiles: ReadonlyArray<HeatmapTile>) {

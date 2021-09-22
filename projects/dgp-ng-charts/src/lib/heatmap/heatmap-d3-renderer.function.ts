@@ -114,31 +114,35 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
                     y: bottom
                 };
 
-                const newExtent = [[
-                    xAxis(upperLeftCorner.x.toString()),
-                    yAxis(upperLeftCorner.y.toString())
-                ], [
-                    xAxis(lowerRightCorner.x.toString()),
-                    yAxis(lowerRightCorner.y.toString())
-                ]] as BrushCoordinates;
+                if (notNullOrUndefined(upperLeftCorner.x)
+                    && notNullOrUndefined(upperLeftCorner.y)) {
 
-                if (_.isEqual(extent, newExtent)) {
+                    const newExtent = [[
+                        xAxis(upperLeftCorner.x.toString()),
+                        yAxis(upperLeftCorner.y.toString())
+                    ], [
+                        xAxis(lowerRightCorner.x.toString()),
+                        yAxis(lowerRightCorner.y.toString())
+                    ]] as BrushCoordinates;
 
-                    selection = {
-                        tiles: newExtent ? payload.model.filter(x => isBrushed(
-                            newExtent,
-                            xAxis(x.x.toString()),
-                            yAxis(x.y.toString())
-                        )) : []
-                    };
+                    if (_.isEqual(extent, newExtent)) {
 
-                    selectionPublisher.next(selection);
-                } else {
-                    d3.select(this)
-                        .transition()
-                        .call(brush.move, newExtent);
+                        selection = {
+                            tiles: newExtent ? payload.model.filter(x => isBrushed(
+                                newExtent,
+                                xAxis(x.x.toString()),
+                                yAxis(x.y.toString())
+                            )) : []
+                        };
+
+                        selectionPublisher.next(selection);
+                    } else {
+                        d3.select(this)
+                            .transition()
+                            .call(brush.move, newExtent);
+                    }
+
                 }
-
             });
 
 
