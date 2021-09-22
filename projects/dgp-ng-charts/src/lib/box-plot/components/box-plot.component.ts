@@ -48,8 +48,12 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
             <div class="plot-container"
                  #chartContainer>
 
-                <svg *ngIf="boxPlotScales"
-                     class="chart-svg">
+                <svg #svgRoot
+                     dgpResizeSensor
+                     (sizeChanged)="drawChart()"
+                     *ngIf="boxPlotScales"
+                     class="chart-svg"
+                     [attr.viewBox]="getViewBox()">
 
                     <defs>
                         <!-- Pattern -->
@@ -149,7 +153,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         </pattern>
 
                         <!-- Masks -->
-                        <mask id="vertical-lines-mask">
+                        <mask id="vertical-lines-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -157,7 +162,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#vertical-lines-pattern)"/>
                         </mask>
 
-                        <mask id="horizontal-lines-mask">
+                        <mask id="horizontal-lines-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -165,7 +171,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#horizontal-lines-pattern)"/>
                         </mask>
 
-                        <mask id="lines-from-left-top-to-right-bottom-mask">
+                        <mask id="lines-from-left-top-to-right-bottom-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -173,7 +180,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
                         </mask>
 
-                        <mask id="lines-from-left-bottom-to-right-top-mask">
+                        <mask id="lines-from-left-bottom-to-right-top-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -181,7 +189,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
                         </mask>
 
-                        <mask id="grid-mask">
+                        <mask id="grid-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -194,7 +203,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#vertical-lines-pattern)"/>
                         </mask>
 
-                        <mask id="diagonal-grid-mask">
+                        <mask id="diagonal-grid-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -208,7 +218,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
                         </mask>
 
-                        <mask id="diagonal-grid-mask">
+                        <mask id="diagonal-grid-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -222,7 +233,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
                         </mask>
 
-                        <mask id="checkerboard-mask">
+                        <mask id="checkerboard-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -230,7 +242,8 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#checkerboard-pattern)"/>
                         </mask>
 
-                        <mask id="diagonal-checkerboard-mask">
+                        <mask id="diagonal-checkerboard-mask"
+                              maskUnits="objectBoundingBox">
                             <rect x="0"
                                   y="0"
                                   width="100%"
@@ -427,5 +440,16 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     unhighlightOutlier(box: Box, value: number) {
         this.outlierKey = null;
+    }
+
+    getViewBox() {
+
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+
+        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
+        const width = rect.width - this.config.margin.left - this.config.margin.right;
+
+        return "0 0 " + width + " " + height;
+
     }
 }
