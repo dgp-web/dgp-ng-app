@@ -55,22 +55,190 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 
                     <defs>
                         <!-- Pattern -->
-                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
-                        <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
-                        <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
-                        <dgp-checkerboard-pattern></dgp-checkerboard-pattern>
-                        <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
+                        <pattern id="vertical-lines-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="4"
+                                 height="4"
+                                 patternUnits="userSpaceOnUse">
+                            <rect x="0"
+                                  y="0"
+                                  width="1"
+                                  height="4"
+                                  stroke="white"
+                                  stroke-width="1"/>
+                        </pattern>
+
+                        <pattern id="horizontal-lines-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="4"
+                                 height="4"
+                                 patternUnits="userSpaceOnUse">
+                            <rect x="0"
+                                  y="0"
+                                  width="4"
+                                  height="1"
+                                  stroke="white"
+                                  stroke-width="1"/>
+                        </pattern>
+
+                        <pattern id="lines-from-left-top-to-right-bottom-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="4"
+                                 height="4"
+                                 patternUnits="userSpaceOnUse"
+                                 patternTransform="rotate(135 0 0)">
+                            <rect x="0"
+                                  y="0"
+                                  width="1"
+                                  height="4"
+                                  stroke="white"
+                                  stroke-width="1"/>
+                        </pattern>
+
+                        <pattern id="lines-from-left-bottom-to-right-top-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="4"
+                                 height="4"
+                                 patternUnits="userSpaceOnUse"
+                                 patternTransform="rotate(45 0 0)">
+                            <rect x="0"
+                                  y="0"
+                                  width="1"
+                                  height="4"
+                                  stroke="white"
+                                  stroke-width="1"/>
+                        </pattern>
+
+                        <pattern id="checkerboard-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="15"
+                                 height="15"
+                                 patternUnits="userSpaceOnUse">
+                            <rect x="0"
+                                  width="7"
+                                  height="7"
+                                  y="0"
+                                  fill="white"/>
+                            <rect x="7"
+                                  width="7"
+                                  height="7"
+                                  y="7"
+                                  fill="white"/>
+                        </pattern>
+
+                        <pattern id="diagonal-checkerboard-pattern"
+                                 x="0"
+                                 y="0"
+                                 width="15"
+                                 height="15"
+                                 patternUnits="userSpaceOnUse"
+                                 patternTransform="rotate(45)">
+                            <rect x="0"
+                                  width="7"
+                                  height="7"
+                                  y="0"
+                                  fill="white"/>
+                            <rect x="7"
+                                  width="7"
+                                  height="7"
+                                  y="7"
+                                  fill="white"/>
+                        </pattern>
 
                         <!-- Masks -->
-                        <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
-                        <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
-                        <dgp-lines-from-left-top-to-right-bottom-mask></dgp-lines-from-left-top-to-right-bottom-mask>
-                        <dgp-lines-from-left-bottom-to-right-top-mask></dgp-lines-from-left-bottom-to-right-top-mask>
-                        <dgp-grid-mask></dgp-grid-mask>
-                        <dgp-diagonal-grid-mask></dgp-diagonal-grid-mask>
-                        <dgp-checkerboard-mask></dgp-checkerboard-mask>
-                        <dgp-diagonal-checkerboard-mask></dgp-diagonal-checkerboard-mask>
+                        <mask id="vertical-lines-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#vertical-lines-pattern)"/>
+                        </mask>
+
+                        <mask id="horizontal-lines-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#horizontal-lines-pattern)"/>
+                        </mask>
+
+                        <mask id="lines-from-left-top-to-right-bottom-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
+                        </mask>
+
+                        <mask id="lines-from-left-bottom-to-right-top-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
+                        </mask>
+
+                        <mask id="grid-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#horizontal-lines-pattern)"/>
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#vertical-lines-pattern)"/>
+                        </mask>
+
+                        <mask id="diagonal-grid-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  stroke-width="1"
+                                  fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
+                            <svg:rect x="0"
+                                      y="0"
+                                      width="100%"
+                                      height="100%"
+                                      fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
+                        </mask>
+
+                        <mask id="diagonal-grid-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  stroke-width="1"
+                                  fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
+                        </mask>
+
+                        <mask id="checkerboard-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#checkerboard-pattern)"/>
+                        </mask>
+
+                        <mask id="diagonal-checkerboard-mask">
+                            <rect x="0"
+                                  y="0"
+                                  width="100%"
+                                  height="100%"
+                                  fill="url(#diagonal-checkerboard-pattern)"/>
+                        </mask>
                     </defs>
 
                     <g [attr.transform]="getContainerTransform()">
