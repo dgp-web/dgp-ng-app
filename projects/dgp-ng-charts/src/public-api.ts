@@ -93,6 +93,8 @@ export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-l
  * -----
  */
 export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
+export * from "./lib/patterns/constants";
+export * from "./lib/patterns/models";
 export { DgpCheckerboardPatternComponent } from "./lib/patterns/components/checkerboard-pattern.component";
 export {
     DgpDiagonalCheckerboardPatternComponent
