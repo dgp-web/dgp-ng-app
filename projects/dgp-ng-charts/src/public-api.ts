@@ -105,6 +105,7 @@ export {
 } from "./lib/patterns/components/lines-from-left-top-to-right-bottom-pattern.component";
 export { DgpVerticalLinesPatternComponent } from "./lib/patterns/components/vertical-lines-pattern.component";
 export { DgpHorizontalLinesPatternComponent } from "./lib/patterns/components/horizontal-lines-pattern.component";
+export { SVGPatternBaseDirective } from "./lib/patterns/directives/svg-pattern-base.directive";
 export { VerticalLinesPatternDirective } from "./lib/patterns/directives/vertical-lines-pattern.directive";
 
 /**

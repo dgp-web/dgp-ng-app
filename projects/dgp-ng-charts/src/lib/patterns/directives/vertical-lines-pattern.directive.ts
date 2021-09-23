@@ -1,20 +1,14 @@
-import { AfterViewInit, Directive, ElementRef, Renderer2 } from "@angular/core";
+import { Directive } from "@angular/core";
+import { SVGPatternBaseDirective } from "./svg-pattern-base.directive";
 
 @Directive({selector: "[dgpVerticalLinesPattern]"})
-export class VerticalLinesPatternDirective implements AfterViewInit {
+export class VerticalLinesPatternDirective extends SVGPatternBaseDirective {
 
-    constructor(private readonly elementRef: ElementRef<SVGPatternElement>,
-                private readonly renderer: Renderer2) {
-    }
+    render(): void {
 
-    ngAfterViewInit(): void {
-
-        this.renderer.setAttribute(this.elementRef.nativeElement, "x", "0");
-        this.renderer.setAttribute(this.elementRef.nativeElement, "y", "0");
         this.renderer.setAttribute(this.elementRef.nativeElement, "width", "4");
         this.renderer.setAttribute(this.elementRef.nativeElement, "height", "4");
 
-        this.renderer.setAttribute(this.elementRef.nativeElement, "patternUnits", "userSpaceOnUse");
         this.renderer.setAttribute(this.elementRef.nativeElement, "id", "vertical-lines-pattern");
 
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect") as SVGRectElement;
