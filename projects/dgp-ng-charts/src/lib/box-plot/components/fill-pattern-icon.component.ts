@@ -11,45 +11,45 @@ import { getMaskIdForFillPattern } from "../functions/get-mask-id-for-fill-patte
                 <ng-container [ngSwitch]="model">
 
                     <ng-container *ngSwitchCase="fillPatternEnum.HorizontalLines">
-                        <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
-                        <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
+                        <pattern dgpHorizontalLinesPattern></pattern>
+                        <mask dgpHorizontalLinesMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.VerticalLines">
-                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
-                        <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
+                        <pattern dgpVerticalLinesPattern></pattern>
+                        <mask dgpHorizontalLinesMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.LinesFromLeftTopToRightBottom">
-                        <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-                        <dgp-lines-from-left-top-to-right-bottom-mask></dgp-lines-from-left-top-to-right-bottom-mask>
+                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
+                        <mask dgpLinesFromLeftTopToRightBottomMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.LinesFromLeftBottomToRightTop">
-                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
-                        <dgp-lines-from-left-bottom-to-right-top-mask></dgp-lines-from-left-bottom-to-right-top-mask>
+                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
+                        <mask dgpLinesFromLeftBottomToRightTopMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.Grid">
-                        <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
-                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
-                        <dgp-grid-mask></dgp-grid-mask>
+                        <pattern dgpHorizontalLinesPattern></pattern>
+                        <pattern dgpVerticalLinesPattern></pattern>
+                        <mask dgpGridMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.DiagonalCheckerboard">
-                        <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
-                        <dgp-diagonal-grid-mask></dgp-diagonal-grid-mask>
+                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
+                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
+                        <mask dgpDiagonalGridMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.Checkerboard">
-                        <dgp-checkerboard-pattern></dgp-checkerboard-pattern>
-                        <dgp-checkerboard-mask></dgp-checkerboard-mask>
+                        <pattern dgpCheckerboardPattern></pattern>
+                        <mask dgpCheckerboardMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.DiagonalCheckerboard">
-                        <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
-                        <dgp-diagonal-checkerboard-mask></dgp-diagonal-checkerboard-mask>
+                        <pattern dgpDiagonalCheckerboardPattern></pattern>
+                        <mask dgpDiagonalCheckerboardMask></mask>
                     </ng-container>
 
                 </ng-container>
@@ -89,5 +89,5 @@ export class DgpFillPatternIconComponent extends DgpView<FillPattern> {
         if (!maskId) return "";
         return "url(#" + maskId + ")";
     }
-    
+
 }
