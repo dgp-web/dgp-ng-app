@@ -51,6 +51,7 @@ export { ChartContainerComponent } from "./lib/chart-container/components/chart-
  * Fill pattern
  * -----
  */
+export * from "./lib/fill-pattern-icon/constants";
 export * from "./lib/fill-pattern-icon/functions";
 export * from "./lib/fill-pattern-icon/models";
 

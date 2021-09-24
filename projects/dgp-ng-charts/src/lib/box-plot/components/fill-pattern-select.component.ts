@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import * as _ from "lodash";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FillPattern } from "../../fill-pattern-icon/models";
+import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { fillPatternMap, fillPatterns } from "../../fill-pattern-icon/constants";
 
 @Component({
     selector: "dgp-fill-pattern-select",
@@ -13,39 +13,11 @@ import { FillPattern } from "../../fill-pattern-icon/models";
                 <mat-option [value]="fillPatternEnum.All">
                     All
                 </mat-option>
-                <mat-option [value]="fillPatternEnum.HorizontalLines">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.HorizontalLines"></dgp-fill-pattern-icon>
-                    Horizontal lines
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.VerticalLines">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.VerticalLines"></dgp-fill-pattern-icon>
-                    Vertical lines
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.Grid">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.Grid"></dgp-fill-pattern-icon>
-                    Grid
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.DiagonalGrid">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.DiagonalGrid"></dgp-fill-pattern-icon>
-                    Diagonal grid
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.LinesFromLeftTopToRightBottom">
-                    <dgp-fill-pattern-icon
-                        [model]="fillPatternEnum.LinesFromLeftTopToRightBottom"></dgp-fill-pattern-icon>
-                    Lines from left top to right bottom
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.LinesFromLeftBottomToRightTop">
-                    <dgp-fill-pattern-icon
-                        [model]="fillPatternEnum.LinesFromLeftBottomToRightTop"></dgp-fill-pattern-icon>
-                    Lines from left bottom to right top
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.Checkerboard">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.Checkerboard"></dgp-fill-pattern-icon>
-                    Checkerboard
-                </mat-option>
-                <mat-option [value]="fillPatternEnum.DiagonalCheckerboard">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.DiagonalCheckerboard"></dgp-fill-pattern-icon>
-                    Diagonal checkerboard
+
+                <mat-option *ngFor="let fillPattern of fillPatterns"
+                            [value]="fillPattern">
+                    <dgp-fill-pattern-icon [model]="fillPattern"></dgp-fill-pattern-icon>
+                    {{fillPatternMap.get(fillPattern).label}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -62,36 +34,10 @@ import { FillPattern } from "../../fill-pattern-icon/models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DgpFillPatternSelectComponent {
+export class DgpFillPatternSelectComponent extends DgpModelEditorComponentBase<FillPattern> {
+
+    readonly fillPatternMap = fillPatternMap;
     readonly fillPatternEnum = FillPattern;
-    @Input()
-    disabled: boolean;
-
-
-    protected modelValue: FillPattern = null;
-    readonly model$ = new BehaviorSubject<FillPattern>(this.modelValue);
-
-    @Input()
-    get model(): FillPattern {
-        return this.modelValue;
-    }
-
-    set model(value: FillPattern) {
-
-        if (_.isEqual(value, this.modelValue)) {
-            return;
-        }
-
-        this.modelValue = value;
-        this.model$.next(value);
-    }
-
-    @Output()
-    readonly modelChange = new EventEmitter<FillPattern>();
-
-    setModel(value: FillPattern) {
-        this.model = value;
-        this.modelChange.emit(this.model);
-    }
+    readonly fillPatterns = fillPatterns;
 
 }

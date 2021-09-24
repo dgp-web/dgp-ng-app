@@ -64,6 +64,7 @@ import { DgpChartComponentBase } from "./chart.component-base";
         .inner-container {
             display: flex;
             flex-grow: 1;
+            height: 100%;
         }
 
         .y-axis-label-container {
