@@ -65,15 +65,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <pattern dgpDiagonalCheckerboardPattern></pattern>
 
                         <!-- Masks -->
-                        <mask id="vertical-lines-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#vertical-lines-pattern)"/>
-                        </mask>
-
+                        <mask dgpVerticalLinesMask></mask>
                         <mask dgpHorizontalLinesMask></mask>
 
                         <mask id="lines-from-left-top-to-right-bottom-mask"

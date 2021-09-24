@@ -17,6 +17,19 @@ export abstract class SVGMaskBaseDirective implements AfterViewInit {
         this.render();
     }
 
-    abstract render(): void;
+    render(): void {
+        this.model.svgPatternIds.forEach(patternId => {
+
+            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect") as SVGRectElement;
+
+            this.renderer.setAttribute(rect, "x", "0");
+            this.renderer.setAttribute(rect, "y", "0");
+            this.renderer.setAttribute(rect, "width", "100%");
+            this.renderer.setAttribute(rect, "height", "100%");
+            this.renderer.setAttribute(rect, "fill", "url(#" + patternId + ")");
+
+            this.elementRef.nativeElement.appendChild(rect);
+        });
+    }
 
 }
