@@ -74,14 +74,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   fill="url(#vertical-lines-pattern)"/>
                         </mask>
 
-                        <mask id="horizontal-lines-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#horizontal-lines-pattern)"/>
-                        </mask>
+                        <mask dgpHorizontalLinesMask></mask>
 
                         <mask id="lines-from-left-top-to-right-bottom-mask"
                               maskUnits="objectBoundingBox">

@@ -89,6 +89,9 @@ export {
     DgpLinesFromLeftTopToRightBottomMaskComponent
 } from "./lib/masks/components/lines-from-left-top-to-right-bottom-mask.component";
 export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-lines-mask.component";
+// Components
+export { SVGMaskBaseDirective } from "./lib/masks/directives/svg-mask-base.directive";
+export { HorizontalLinesMaskDirective } from "./lib/masks/directives/horizontal-lines-mask.directive";
 
 /**
  * -----
