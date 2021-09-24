@@ -1,32 +1,12 @@
-import { EventEmitter, Input, Output, Directive } from "@angular/core";
-import * as _ from "lodash";
-import { BehaviorSubject } from "rxjs";
+import { Directive, EventEmitter, Output } from "@angular/core";
+import { DgpViewComponentBase } from "./view.component-base";
 
 /**
  * Base class for classes for manipulating a model
  */
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class DgpModelEditorComponentBase<TModel> {
-
-    @Input()
-    disabled: boolean;
-
-    protected modelValue: TModel = null;
-    readonly model$ = new BehaviorSubject<TModel>(this.modelValue);
-
-    @Input()
-    get model(): TModel {
-        return this.modelValue;
-    }
-
-    set model(value: TModel) {
-
-        if (_.isEqual(value, this.modelValue)) { return; }
-
-        this.modelValue = value;
-        this.model$.next(value);
-    }
+export abstract class DgpModelEditorComponentBase<TModel> extends DgpViewComponentBase<TModel> {
 
     @Output()
     readonly modelChange = new EventEmitter<TModel>();
