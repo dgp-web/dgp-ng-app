@@ -59,22 +59,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <!-- Pattern -->
                         <pattern dgpHorizontalLinesPattern></pattern>
                         <pattern dgpVerticalLinesPattern></pattern>
-
-
-                        <pattern id="lines-from-left-top-to-right-bottom-pattern"
-                                 x="0"
-                                 y="0"
-                                 width="4"
-                                 height="4"
-                                 patternUnits="userSpaceOnUse"
-                                 patternTransform="rotate(135 0 0)">
-                            <rect x="0"
-                                  y="0"
-                                  width="1"
-                                  height="4"
-                                  stroke="white"
-                                  stroke-width="1"/>
-                        </pattern>
+                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
 
                         <pattern id="lines-from-left-bottom-to-right-top-pattern"
                                  x="0"
