@@ -9,6 +9,7 @@ import {
 } from "dgp-ng-charts";
 import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
+import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -28,6 +29,9 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 
                 <dgp-fill-pattern-select [model]="fillPattern"
                                          (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+
+                <dgp-shape-select [model]="shape"
+                                  (modelChange)="updateShape($event)"></dgp-shape-select>
 
                 <dgp-box-plot [model]="boxGroups">
 
@@ -95,6 +99,7 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 export class ChartsLabsComponent {
 
     fillPattern = FillPattern.All;
+    shape = Shape.Circle;
 
     boxGroups = testBoxGroups;
 
@@ -152,6 +157,10 @@ export class ChartsLabsComponent {
             label: "First group",
             boxes: [box]
         }];
+
+    }
+
+    updateShape(shape: Shape) {
 
     }
 }

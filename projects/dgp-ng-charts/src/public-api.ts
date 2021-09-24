@@ -135,6 +135,15 @@ export { VerticalLinesPatternDirective } from "./lib/patterns/directives/vertica
 
 /**
  * -----
+ * Shape select
+ * -----
+ */
+
+export { DgpShapeSelectModule } from "./lib/shape-select/shape-select.module";
+export { DgpShapeSelectComponent } from "./lib/shape-select/components/shape-select.component";
+
+/**
+ * -----
  * Shared
  * -----
  */
