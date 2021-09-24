@@ -69,53 +69,10 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <mask dgpHorizontalLinesMask></mask>
                         <mask dgpLinesFromLeftTopToRightBottomMask></mask>
                         <mask dgpLinesFromLeftBottomToRightTopMask></mask>
-
-                        <mask id="grid-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#horizontal-lines-pattern)"/>
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#vertical-lines-pattern)"/>
-                        </mask>
-
-                        <mask id="diagonal-grid-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  stroke-width="1"
-                                  fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
-                        </mask>
-
-                        <mask id="checkerboard-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#checkerboard-pattern)"/>
-                        </mask>
-
-                        <mask id="diagonal-checkerboard-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#diagonal-checkerboard-pattern)"/>
-                        </mask>
+                        <mask dgpGridMask></mask>
+                        <mask dgpDiagonalGridMask></mask>
+                        <mask dgpCheckerboardMask></mask>
+                        <mask dgpDiagonalCheckerboardMask></mask>
                     </defs>
 
                     <g [attr.transform]="getContainerTransform()">

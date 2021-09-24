@@ -91,6 +91,10 @@ export {
 export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-lines-mask.component";
 // Components
 export { SVGMaskBaseDirective } from "./lib/masks/directives/svg-mask-base.directive";
+export { CheckerboardMaskDirective } from "./lib/masks/directives/checkerboard-mask.directive";
+export { DiagonalCheckerboardMaskDirective } from "./lib/masks/directives/diagonal-checkerboard-mask.directive";
+export { DiagonalGridMaskDirective } from "./lib/masks/directives/diagonal-grid-mask.directive";
+export { GridMaskDirective } from "./lib/masks/directives/grid-mask.directive";
 export { HorizontalLinesMaskDirective } from "./lib/masks/directives/horizontal-lines-mask.directive";
 export {
     LinesFromLeftBottomToRightTopMaskDirective
