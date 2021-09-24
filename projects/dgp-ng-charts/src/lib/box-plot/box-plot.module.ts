@@ -15,6 +15,7 @@ import { DgpSVGMasksModule } from "../masks/svg-masks.module";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { FormsModule } from "@angular/forms";
+import { DgpFillPatternIconModule } from "../fill-pattern-icon/fill-pattern-icon.module";
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { FormsModule } from "@angular/forms";
         DgpSVGMasksModule,
         MatFormFieldModule,
         MatSelectModule,
-        FormsModule
+        FormsModule,
+        DgpFillPatternIconModule
     ],
     declarations: [
         ...components,

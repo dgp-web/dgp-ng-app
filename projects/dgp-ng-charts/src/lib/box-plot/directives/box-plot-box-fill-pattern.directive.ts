@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
-import { Box, BoxGroup, BoxPlotScales, FillPattern } from "../models";
+import { Box, BoxGroup, BoxPlotScales } from "../models";
+import { FillPattern } from "../../fill-pattern-icon/models";
 
 @Directive({selector: "[dgpBoxPlotBoxFillPattern]"})
 export class BoxPlotBoxFillPatternDirective implements OnChanges {

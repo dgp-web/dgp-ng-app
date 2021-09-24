@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { FillPattern } from "../models";
 import { BehaviorSubject } from "rxjs";
 import * as _ from "lodash";
+import { FillPattern } from "../../fill-pattern-icon/models";
 
 @Component({
     selector: "dgp-fill-pattern-select",
@@ -30,11 +30,13 @@ import * as _ from "lodash";
                     Diagonal grid
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.LinesFromLeftTopToRightBottom">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.LinesFromLeftTopToRightBottom"></dgp-fill-pattern-icon>
+                    <dgp-fill-pattern-icon
+                        [model]="fillPatternEnum.LinesFromLeftTopToRightBottom"></dgp-fill-pattern-icon>
                     Lines from left top to right bottom
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.LinesFromLeftBottomToRightTop">
-                    <dgp-fill-pattern-icon [model]="fillPatternEnum.LinesFromLeftBottomToRightTop"></dgp-fill-pattern-icon>
+                    <dgp-fill-pattern-icon
+                        [model]="fillPatternEnum.LinesFromLeftBottomToRightTop"></dgp-fill-pattern-icon>
                     Lines from left bottom to right top
                 </mat-option>
                 <mat-option [value]="fillPatternEnum.Checkerboard">

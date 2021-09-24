@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpView } from "dgp-ng-app";
 import { FillPattern } from "../models";
-import { getMaskIdForFillPattern } from "../functions/get-mask-id-for-fill-pattern.function";
+import { getMaskIdForFillPattern } from "../functions";
 
 @Component({
     selector: "dgp-fill-pattern-icon",
