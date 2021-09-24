@@ -14,7 +14,7 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
-export { DgpFillPatternSelectComponent } from "./lib/box-plot/components/fill-pattern-select.component";
+export { DgpFillPatternSelectComponent } from "./lib/fill-pattern-select/components/fill-pattern-select.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
 export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
 export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";
@@ -48,7 +48,7 @@ export { ChartContainerComponent } from "./lib/chart-container/components/chart-
 
 /**
  * -----
- * Fill pattern
+ * Fill-pattern icon
  * -----
  */
 export * from "./lib/fill-pattern-icon/constants";
@@ -57,6 +57,15 @@ export * from "./lib/fill-pattern-icon/models";
 
 export { DgpFillPatternIconModule } from "./lib/fill-pattern-icon/fill-pattern-icon.module";
 export { DgpFillPatternIconComponent } from "./lib/fill-pattern-icon/components/fill-pattern-icon.component";
+
+/**
+ * -----
+ * Fill-pattern select
+ * -----
+ */
+
+export { DgpFillPatternSelectModule } from "./lib/fill-pattern-select/fill-pattern-select.module";
+export { DgpFillPatternSelectComponent } from "./lib/fill-pattern-select/components/fill-pattern-select.component";
 
 /**
  * -----
