@@ -1,12 +1,15 @@
 import { NgModule } from "@angular/core";
 import { components } from "./components/components";
+import { directives } from "./directives/directives";
 
 @NgModule({
     declarations: [
-        ...components
+        ...components,
+        ...directives
     ],
     exports: [
-        ...components
+        ...components,
+        ...directives
     ]
 })
 export class DgpSVGMasksModule {

@@ -74,6 +74,9 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  * -----
  */
 export { DgpSVGMasksModule } from "./lib/masks/svg-masks.module";
+export * from "./lib/masks/constants";
+export * from "./lib/masks/models";
+// Components
 export { DgpCheckerboardMaskComponent } from "./lib/masks/components/checkerboard-mask.component";
 export { DgpDiagonalCheckerboardMaskComponent } from "./lib/masks/components/diagonal-checkerboard-mask.component";
 export { DgpDiagonalGridMaskComponent } from "./lib/masks/components/diagonal-grid-mask.component";
@@ -95,6 +98,7 @@ export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-l
 export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
 export * from "./lib/patterns/constants";
 export * from "./lib/patterns/models";
+// Components
 export { DgpCheckerboardPatternComponent } from "./lib/patterns/components/checkerboard-pattern.component";
 export {
     DgpDiagonalCheckerboardPatternComponent

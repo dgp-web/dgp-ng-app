@@ -56,7 +56,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                      [attr.viewBox]="getViewBox()">
 
                     <defs>
-                        <!-- Pattern -->
+                        <!-- Patterns -->
                         <pattern dgpHorizontalLinesPattern></pattern>
                         <pattern dgpVerticalLinesPattern></pattern>
                         <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
@@ -113,21 +113,6 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                                   width="100%"
                                   height="100%"
                                   fill="url(#vertical-lines-pattern)"/>
-                        </mask>
-
-                        <mask id="diagonal-grid-mask"
-                              maskUnits="objectBoundingBox">
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  stroke-width="1"
-                                  fill="url(#lines-from-left-bottom-to-right-top-pattern)"/>
-                            <rect x="0"
-                                  y="0"
-                                  width="100%"
-                                  height="100%"
-                                  fill="url(#lines-from-left-top-to-right-bottom-pattern)"/>
                         </mask>
 
                         <mask id="diagonal-grid-mask"
