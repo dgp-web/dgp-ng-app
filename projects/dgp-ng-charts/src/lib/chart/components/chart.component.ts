@@ -6,13 +6,19 @@ import { DgpChartComponentBase } from "./chart.component-base";
     template: `
         <div class="chart"
              #chartRef>
-            <div class="title">
+
+            <div class="title"
+                 #chartTitleRef
+                 [class.hidden]="chartTitleRef.innerText.length < 3">
                 <ng-content select="[chart-title]"></ng-content>
                 {{ chartTitle }}
             </div>
+
             <div class="inner-container">
-                <div class="y-axis-label-container">
-                    <div class="y-axis-label">
+                <div class="y-axis-label-container"
+                     [class.hidden]="yAxisLabelRef.innerText.length < 3">
+                    <div class="y-axis-label"
+                         #yAxisLabelRef>
                         <ng-content select="[y-axis-title]"></ng-content>
                         {{ yAxisTitle }}
                     </div>
@@ -25,25 +31,19 @@ import { DgpChartComponentBase } from "./chart.component-base";
                 </div>
             </div>
 
-            <div class="x-axis-label">
+            <div class="x-axis-label"
+                 #xAxisLabelRef
+                 [class.hidden]="xAxisLabelRef.innerText.length === 0">
                 <ng-content select="[x-axis-title]"></ng-content>
                 {{ xAxisTitle }}
             </div>
         </div>
-
     `,
     styles: [`
         :host {
             display: flex;
             justify-content: center;
             flex-grow: 1;
-        }
-
-        svg {
-            position: absolute;
-            overflow: visible;
-            width: 100%;
-            height: 100%;
         }
 
         .chart {
@@ -64,6 +64,7 @@ import { DgpChartComponentBase } from "./chart.component-base";
         .inner-container {
             display: flex;
             flex-grow: 1;
+            height: 100%;
         }
 
         .y-axis-label-container {
@@ -87,6 +88,13 @@ import { DgpChartComponentBase } from "./chart.component-base";
         }
 
         .right-legend {
+        }
+
+        .hidden {
+            min-height: 0 !important;;
+            min-width: 0 !important;
+            max-width: 0 !important;;
+            display: none !important;;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush

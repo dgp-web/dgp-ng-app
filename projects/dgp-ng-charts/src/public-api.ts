@@ -14,8 +14,6 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
-export { DgpFillPatternIconComponent } from "./lib/box-plot/components/fill-pattern-icon.component";
-export { DgpFillPatternSelectComponent } from "./lib/box-plot/components/fill-pattern-select.component";
 export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
 export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
 export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";
@@ -49,6 +47,27 @@ export { ChartContainerComponent } from "./lib/chart-container/components/chart-
 
 /**
  * -----
+ * Fill-pattern icon
+ * -----
+ */
+export * from "./lib/fill-pattern-icon/constants";
+export * from "./lib/fill-pattern-icon/functions";
+export * from "./lib/fill-pattern-icon/models";
+
+export { DgpFillPatternIconModule } from "./lib/fill-pattern-icon/fill-pattern-icon.module";
+export { DgpFillPatternIconComponent } from "./lib/fill-pattern-icon/components/fill-pattern-icon.component";
+
+/**
+ * -----
+ * Fill-pattern select
+ * -----
+ */
+
+export { DgpFillPatternSelectModule } from "./lib/fill-pattern-select/fill-pattern-select.module";
+export { DgpFillPatternSelectComponent } from "./lib/fill-pattern-select/components/fill-pattern-select.component";
+
+/**
+ * -----
  * Heatmap
  * -----
  */
@@ -74,18 +93,22 @@ export { LineChartComponent } from "./lib/line-chart/line-chart.component";
  * -----
  */
 export { DgpSVGMasksModule } from "./lib/masks/svg-masks.module";
-export { DgpCheckerboardMaskComponent } from "./lib/masks/components/checkerboard-mask.component";
-export { DgpDiagonalCheckerboardMaskComponent } from "./lib/masks/components/diagonal-checkerboard-mask.component";
-export { DgpDiagonalGridMaskComponent } from "./lib/masks/components/diagonal-grid-mask.component";
-export { DgpGridMaskComponent } from "./lib/masks/components/grid-mask.component";
-export { DgpHorizontalLinesMaskComponent } from "./lib/masks/components/horizontal-lines-mask.component";
+export * from "./lib/masks/constants";
+export * from "./lib/masks/models";
+// Directives
+export { SVGMaskBaseDirective } from "./lib/masks/directives/svg-mask-base.directive";
+export { CheckerboardMaskDirective } from "./lib/masks/directives/checkerboard-mask.directive";
+export { DiagonalCheckerboardMaskDirective } from "./lib/masks/directives/diagonal-checkerboard-mask.directive";
+export { DiagonalGridMaskDirective } from "./lib/masks/directives/diagonal-grid-mask.directive";
+export { GridMaskDirective } from "./lib/masks/directives/grid-mask.directive";
+export { HorizontalLinesMaskDirective } from "./lib/masks/directives/horizontal-lines-mask.directive";
 export {
-    DgpLinesFromLeftBottomToRightTopMaskComponent
-} from "./lib/masks/components/lines-from-left-bottom-to-right-top-mask.component";
+    LinesFromLeftBottomToRightTopMaskDirective
+} from "./lib/masks/directives/lines-from-left-bottom-to-right-top-mask.directive";
 export {
-    DgpLinesFromLeftTopToRightBottomMaskComponent
-} from "./lib/masks/components/lines-from-left-top-to-right-bottom-mask.component";
-export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-lines-mask.component";
+    LinesFromLeftTopToRightBottomMaskDirective
+} from "./lib/masks/directives/lines-from-left-top-to-right-bottom-mask.directive";
+export { VerticalLinesMaskDirective } from "./lib/masks/directives/vertical-lines-mask.directive";
 
 /**
  * -----
@@ -93,18 +116,22 @@ export { DgpVerticalLinesMaskComponent } from "./lib/masks/components/vertical-l
  * -----
  */
 export { DgpSVGPatternsModule } from "./lib/patterns/svg-patterns.module";
-export { DgpCheckerboardPatternComponent } from "./lib/patterns/components/checkerboard-pattern.component";
+export * from "./lib/patterns/constants";
+export * from "./lib/patterns/models";
+// Directives
+export { SVGPatternBaseDirective } from "./lib/patterns/directives/svg-pattern-base.directive";
+export { CheckerboardPatternDirective } from "./lib/patterns/directives/checkerboard-pattern.directive";
 export {
-    DgpDiagonalCheckerboardPatternComponent
-} from "./lib/patterns/components/diagonal-checkerboard-pattern.component";
+    DiagonalCheckerboardPatternDirective
+} from "./lib/patterns/directives/diagonal-checkerboard-pattern.directive";
+export { HorizontalLinesPatternDirective } from "./lib/patterns/directives/horizontal-lines-pattern.directive";
 export {
-    DgpLinesFromLeftBottomToRightTopPatternComponent
-} from "./lib/patterns/components/lines-from-left-bottom-to-right-top-pattern.component";
+    LinesFromLeftBottomToRightTopPatternDirective
+} from "./lib/patterns/directives/lines-from-left-bottom-to-right-bottom-top.directive";
 export {
-    DgpLinesFromLeftTopToRightBottomComponent
-} from "./lib/patterns/components/lines-from-left-top-to-right-bottom-pattern.component";
-export { DgpVerticalLinesPatternComponent } from "./lib/patterns/components/vertical-lines-pattern.component";
-export { DgpHorizontalLinesPatternComponent } from "./lib/patterns/components/horizontal-lines-pattern.component";
+    LinesFromLeftTopToRightBottomPatternDirective
+} from "./lib/patterns/directives/lines-from-left-top-to-right-bottom-pattern.directive";
+export { VerticalLinesPatternDirective } from "./lib/patterns/directives/vertical-lines-pattern.directive";
 
 /**
  * -----

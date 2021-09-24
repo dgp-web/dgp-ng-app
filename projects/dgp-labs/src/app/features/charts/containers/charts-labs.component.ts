@@ -49,6 +49,8 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 
                 </dgp-box-plot>
 
+                <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
+
                 <dgp-docs-section-title>
                     Heat map
                 </dgp-docs-section-title>
@@ -84,6 +86,7 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
         dgp-line-chart, dgp-box-plot, dgp-heatmap {
             width: 640px;
             max-height: 480px;
+            min-height: 400px;
             margin: auto;
         }
     `],

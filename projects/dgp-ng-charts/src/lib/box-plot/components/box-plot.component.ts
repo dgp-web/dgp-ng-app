@@ -25,9 +25,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 @Component({
     selector: "dgp-box-plot",
     template: `
-        <dgp-chart dgpResizeSensor
-                   (sizeChanged)="drawChart()"
-                   [yAxisTitle]="yAxisTitle"
+        <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle">
 
@@ -50,27 +48,31 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
             <div class="plot-container"
                  #chartContainer>
 
-                <svg *ngIf="boxPlotScales"
-                     class="chart-svg">
+                <svg #svgRoot
+                     dgpResizeSensor
+                     (sizeChanged)="drawChart()"
+                     *ngIf="boxPlotScales"
+                     class="chart-svg"
+                     [attr.viewBox]="getViewBox()">
 
                     <defs>
-                        <!-- Pattern -->
-                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
-                        <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
-                        <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
-                        <dgp-checkerboard-pattern></dgp-checkerboard-pattern>
-                        <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
+                        <!-- Patterns -->
+                        <pattern dgpHorizontalLinesPattern></pattern>
+                        <pattern dgpVerticalLinesPattern></pattern>
+                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
+                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
+                        <pattern dgpCheckerboardPattern></pattern>
+                        <pattern dgpDiagonalCheckerboardPattern></pattern>
 
                         <!-- Masks -->
-                        <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
-                        <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
-                        <dgp-lines-from-left-top-to-right-bottom-mask></dgp-lines-from-left-top-to-right-bottom-mask>
-                        <dgp-lines-from-left-bottom-to-right-top-mask></dgp-lines-from-left-bottom-to-right-top-mask>
-                        <dgp-grid-mask></dgp-grid-mask>
-                        <dgp-diagonal-grid-mask></dgp-diagonal-grid-mask>
-                        <dgp-checkerboard-mask></dgp-checkerboard-mask>
-                        <dgp-diagonal-checkerboard-mask></dgp-diagonal-checkerboard-mask>
+                        <mask dgpVerticalLinesMask></mask>
+                        <mask dgpHorizontalLinesMask></mask>
+                        <mask dgpLinesFromLeftTopToRightBottomMask></mask>
+                        <mask dgpLinesFromLeftBottomToRightTopMask></mask>
+                        <mask dgpGridMask></mask>
+                        <mask dgpDiagonalGridMask></mask>
+                        <mask dgpCheckerboardMask></mask>
+                        <mask dgpDiagonalCheckerboardMask></mask>
                     </defs>
 
                     <g [attr.transform]="getContainerTransform()">
@@ -261,5 +263,16 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     unhighlightOutlier(box: Box, value: number) {
         this.outlierKey = null;
+    }
+
+    getViewBox() {
+
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+
+        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
+        const width = rect.width - this.config.margin.left - this.config.margin.right;
+
+        return "0 0 " + width + " " + height;
+
     }
 }
