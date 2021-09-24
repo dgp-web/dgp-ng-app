@@ -16,7 +16,7 @@ export abstract class DgpModelEditorComponentBase<TModel> extends DgpViewCompone
         this.modelChange.emit(this.model);
     }
 
-    updateModel(value: Partial<TModel>) {
+    updateModel(value: Partial<TModel> | TModel) {
 
         if ((value !== null && typeof value === "object") || (this.model !== null && typeof this.model === "object")) {
             this.model = {
