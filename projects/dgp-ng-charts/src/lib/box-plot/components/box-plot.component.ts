@@ -61,24 +61,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                         <pattern dgpVerticalLinesPattern></pattern>
                         <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
                         <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
-
-                        <pattern id="checkerboard-pattern"
-                                 x="0"
-                                 y="0"
-                                 width="15"
-                                 height="15"
-                                 patternUnits="userSpaceOnUse">
-                            <rect x="0"
-                                  width="7"
-                                  height="7"
-                                  y="0"
-                                  fill="white"/>
-                            <rect x="7"
-                                  width="7"
-                                  height="7"
-                                  y="7"
-                                  fill="white"/>
-                        </pattern>
+                        <pattern dgpCheckerboardPattern></pattern>
 
                         <pattern id="diagonal-checkerboard-pattern"
                                  x="0"
