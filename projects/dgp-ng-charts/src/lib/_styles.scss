@@ -110,3 +110,20 @@ dgp-fill-pattern-icon {
         }
     }
 }
+
+
+dgp-svg-symbol {
+    circle, rect, polygon {
+        fill: black;
+        stroke: black;
+    }
+}
+
+.dark-theme {
+    dgp-svg-symbol {
+        circle, rect, polygon {
+            fill: white;
+            stroke: white;
+        }
+    }
+}

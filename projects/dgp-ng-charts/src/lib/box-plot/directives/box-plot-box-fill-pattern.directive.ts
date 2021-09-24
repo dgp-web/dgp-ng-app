@@ -34,13 +34,16 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
             this.renderer.setAttribute(this.elementRef.nativeElement, "y", y.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "width", width.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "height", height.toString());
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex + "66");
+
+            let alpha = "66";
 
             if (this.box.fillPattern) {
                 const maskId = getMaskIdForFillPattern(this.box.fillPattern);
                 this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#" + maskId + ")");
+                alpha = "ff";
             }
 
+            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex + alpha);
         }
 
     }
