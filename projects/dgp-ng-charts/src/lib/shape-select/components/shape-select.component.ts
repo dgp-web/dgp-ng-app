@@ -27,6 +27,10 @@ import { Shape, shapes } from "../../symbols/models";
         mat-form-field {
             width: 100%;
         }
+
+        dgp-svg-symbol {
+            margin-right: 8px;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
