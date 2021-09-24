@@ -6,6 +6,17 @@ export { DgpNgChartsModule } from "./lib/dgp-ng-charts.module";
 
 /**
  * -----
+ * Bar chart
+ * -----
+ */
+export * from "./lib/bar-chart/models";
+export * from "./lib/bar-chart/constants";
+export { DgpBarChartModule } from "./lib/bar-chart/bar-chart.module";
+export { DgpBarChartComponent } from "./lib/bar-chart/components/bar-chart.component";
+export { DgpExportChartDialogComponent } from "./lib/bar-chart/components/export-chart-dialog.component";
+
+/**
+ * -----
  * Box plot
  * -----
  */
