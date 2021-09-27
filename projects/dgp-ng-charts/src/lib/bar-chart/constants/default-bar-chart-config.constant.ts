@@ -9,4 +9,5 @@ export const defaultBarChartConfig: BarChartConfig = {
     },
     groupPadding: 0.2,
     subGroupPadding: 0.05,
+    cardinalScaleOffset: 0.05
 };

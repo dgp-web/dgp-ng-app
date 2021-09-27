@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as d3 from "d3";
 import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
-import { getYAxisLimitsWithOffset } from "../../box-plot/functions";
+import { getYAxisLimitsWithOffset } from "./get-y-axis-limits-with-offset.function";
 
 export function createBarChartScales(payload: {
     readonly barGroups: ReadonlyArray<BarGroup>;
@@ -25,28 +25,6 @@ export function createBarChartScales(payload: {
     const yMin = _.min(valuesForExtremumComputation);
     const yMax = _.max(valuesForExtremumComputation);
 
-    // Compute reference margin left
-    /*  const referenceYDomainLabelLength = _.max(
-          [yAxisLimits.min, yAxisLimits.max].map(x => {
-              return d3.format("~r")(x).length;
-          })
-      );*/
-
-    /* const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
-
-     const marginLeft = payload.config.margin.left >= estimatedNeededMaxYTickWidthPx
-         ? payload.config.margin.left
-         : estimatedNeededMaxYTickWidthPx;
-
-     const barAreaWidth = payload.containerWidth
-         - marginLeft
-         - payload.dummyConfig.margin.right;
-
-     const barAreaHeight = payload.containerHeight
-         - payload.dummyConfig.margin.top
-         - payload.dummyConfig.margin.bottom;
- */
-
     const barAreaWidth = payload.containerWidth
         - defaultBarChartConfig.margin.left
         - defaultBarChartConfig.margin.right;
@@ -57,10 +35,10 @@ export function createBarChartScales(payload: {
 
     const yAxisDomain = getYAxisLimitsWithOffset({
         limitsFromValues: {
-            min: yMin,
+            min: 0,
             max: yMax
         }
-    }, config as any); // TODO
+    }, config);
 
     const yAxis = d3.scaleLinear()
         .domain([yAxisDomain.max, yAxisDomain.min])

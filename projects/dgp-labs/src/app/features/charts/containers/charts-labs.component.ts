@@ -120,7 +120,7 @@ export const testBarGroups: ReadonlyArray<BarGroup> = [{
             overflow: auto;
         }
 
-        dgp-line-chart, dgp-box-plot, dgp-heatmap {
+        dgp-line-chart, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
             width: 640px;
             max-height: 480px;
             min-height: 400px;
