@@ -19,7 +19,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
                     <ng-container *ngSwitchCase="fillPatternEnum.VerticalLines">
                         <pattern dgpVerticalLinesPattern></pattern>
-                        <mask dgpHorizontalLinesMask></mask>
+                        <mask dgpVerticalLinesMask></mask>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="fillPatternEnum.LinesFromLeftTopToRightBottom">
@@ -38,7 +38,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                         <mask dgpGridMask></mask>
                     </ng-container>
 
-                    <ng-container *ngSwitchCase="fillPatternEnum.DiagonalCheckerboard">
+                    <ng-container *ngSwitchCase="fillPatternEnum.DiagonalGrid">
                         <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
                         <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
                         <mask dgpDiagonalGridMask></mask>
