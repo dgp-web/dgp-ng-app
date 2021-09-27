@@ -10,6 +10,37 @@ import {
 import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
 import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
+import { BarGroup } from "../../../../../../dgp-ng-charts/src/lib/bar-chart/models";
+
+export const testBarGroups: ReadonlyArray<BarGroup> = [{
+    barGroupKey: "01",
+    label: "Group 01",
+    bars: [{
+        barKey: "01",
+        label: "Bar 01",
+        value: 7,
+        colorHex: "#ffff00"
+    }, {
+        barKey: "02",
+        label: "Bar 02",
+        value: 3,
+        colorHex: "#00ffff"
+    }]
+}, {
+    barGroupKey: "02",
+    label: "Group 02",
+    bars: [{
+        barKey: "03",
+        label: "Bar 03",
+        value: 5,
+        colorHex: "#ffff00"
+    }, {
+        barKey: "04",
+        label: "Bar 04",
+        value: 9,
+        colorHex: "#00ffff"
+    }]
+}];
 
 @Component({
     selector: "dgp-charts-labs",
@@ -54,6 +85,8 @@ import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
                 </dgp-box-plot>
 
                 <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
+
+                <dgp-bar-chart [model]="barGroups"></dgp-bar-chart>
 
                 <dgp-docs-section-title>
                     Heat map
@@ -102,6 +135,7 @@ export class ChartsLabsComponent {
     shape = Shape.Circle;
 
     boxGroups = testBoxGroups;
+    barGroups = testBarGroups;
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
 

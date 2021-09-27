@@ -69,6 +69,13 @@ import { createBarChartScales } from "../functions/create-bar-chart-scales.funct
                            dgpBarChartLeftAxis
                            [scales]="barChartScales"></g>
 
+                        <g *ngFor="let barGroup of model"
+                           [attr.transform]="getResultRootTransform(barGroup)">
+                            <ng-container *ngFor="let bar of barGroup.bars">
+
+                            </ng-container>
+                        </g>
+
                     </g>
 
                 </svg>
@@ -108,8 +115,8 @@ import { createBarChartScales } from "../functions/create-bar-chart-scales.funct
     styles: [`
         :host {
             display: flex;
+            justify-content: center;
             flex-grow: 1;
-            font-size: smaller;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -135,7 +142,6 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
-
 
     constructor(
         private readonly cd: ChangeDetectorRef
@@ -301,6 +307,11 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     getContainerTransform(): string {
         return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
+    }
+
+
+    getResultRootTransform(barGroup: BarGroup) {
+        return "translate(" + this.barChartScales.xAxis(barGroup.barGroupKey) + ")";
     }
 
     getViewBox() {

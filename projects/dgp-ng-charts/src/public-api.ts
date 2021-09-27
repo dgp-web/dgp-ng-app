@@ -14,6 +14,8 @@ export * from "./lib/bar-chart/constants";
 export { DgpBarChartModule } from "./lib/bar-chart/bar-chart.module";
 export { DgpBarChartComponent } from "./lib/bar-chart/components/bar-chart.component";
 export { DgpExportChartDialogComponent } from "./lib/bar-chart/components/export-chart-dialog.component";
+export { BarChartBottomAxisDirective } from "./lib/bar-chart/directives/bar-chart-bottom-axis.directive";
+export { BarChartLeftAxisDirective } from "./lib/bar-chart/directives/bar-chart-left-axis.directive";
 
 /**
  * -----
