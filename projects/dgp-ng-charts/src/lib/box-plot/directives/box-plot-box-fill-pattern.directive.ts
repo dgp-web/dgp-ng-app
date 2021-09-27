@@ -1,6 +1,7 @@
-import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
+import { Directive, ElementRef, Inject, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { getMaskIdForFillPattern } from "../../fill-pattern-icon/functions";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Directive({selector: "[dgpBoxPlotBoxFillPattern]"})
 export class BoxPlotBoxFillPatternDirective implements OnChanges {
@@ -15,7 +16,9 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
     scales: BoxPlotScales;
 
     constructor(private readonly elementRef: ElementRef,
-                private readonly renderer: Renderer2) {
+                private readonly renderer: Renderer2,
+                @Inject(ID_PREFIX)
+                protected readonly idPrefix: string) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -39,8 +42,8 @@ export class BoxPlotBoxFillPatternDirective implements OnChanges {
 
             if (this.box.fillPattern) {
                 const maskId = getMaskIdForFillPattern(this.box.fillPattern);
-                this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#" + maskId + ")");
-                alpha = "ff";
+                this.renderer.setAttribute(this.elementRef.nativeElement, "mask", "url(#" + this.idPrefix + "." + maskId + ")");
+                alpha = "99";
             }
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex + alpha);

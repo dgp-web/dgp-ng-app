@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { DgpView } from "dgp-ng-app";
 import { FillPattern } from "../models";
 import { getMaskIdForFillPattern } from "../functions";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-fill-pattern-icon",
@@ -57,6 +59,7 @@ import { getMaskIdForFillPattern } from "../functions";
             <rect x="0"
                   y="0"
                   [attr.mask]="getMaskForFillPattern()"
+                  fill="gray"
                   stroke-width="2"/>
 
         </svg>
@@ -80,14 +83,24 @@ import { getMaskIdForFillPattern } from "../functions";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class DgpFillPatternIconComponent extends DgpView<FillPattern> {
     readonly fillPatternEnum = FillPattern;
 
+    constructor(
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
+    ) {
+        super();
+    }
+
     getMaskForFillPattern() {
         const maskId: string = getMaskIdForFillPattern(this.model);
         if (!maskId) return "";
-        return "url(#" + maskId + ")";
+        return "url(#" + this.idPrefix + "." + maskId + ")";
     }
 
 }

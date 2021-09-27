@@ -33,7 +33,7 @@ export class BarChartBarDirective implements OnChanges {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.bar.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "2");
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.bar.colorHex + "66");
+            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.bar.colorHex + "00");
 
         }
 

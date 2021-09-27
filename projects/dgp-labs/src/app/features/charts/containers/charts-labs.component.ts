@@ -33,7 +33,6 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
 
                 <dgp-shape-select [model]="shape"
                                   (modelChange)="updateShape($event)"></dgp-shape-select>
-
                 <dgp-box-plot [model]="boxGroups">
 
                     <ng-container chart-title>
