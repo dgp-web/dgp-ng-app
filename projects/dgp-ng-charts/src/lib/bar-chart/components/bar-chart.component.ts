@@ -10,7 +10,7 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { isNullOrUndefined } from "dgp-ng-app";
+import { createGuid, isNullOrUndefined } from "dgp-ng-app";
 import { BarChart, BarChartScales, BarGroup, BarGroups } from "../models";
 import { defaultBarChartConfig } from "../constants/default-bar-chart-config.constant";
 import { ExportChartConfig } from "../../heatmap/models";
@@ -19,6 +19,63 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
+import { FillPatternsAndMasks, SVGMask } from "../../masks/models";
+import {
+    checkerboardPattern,
+    diagonalCheckerboardPattern,
+    horizontalLinesPattern,
+    linesFromLeftBottomToRightTopPattern,
+    linesFromLeftTopToRightBottomPattern,
+    verticalLinesPattern
+} from "../../patterns/constants";
+import { SVGPattern } from "../../patterns/models";
+
+export function prefigureSVGPatternId(payload: {
+    readonly svgPattern: SVGPattern;
+    readonly prefix: string;
+}): SVGPattern {
+    return {
+        ...payload.svgPattern,
+        svgPatternId: payload.svgPattern.svgPatternId + "." + payload.prefix
+    };
+}
+
+export function prefigureSVGMaskId(payload: {
+    readonly svgMask: SVGMask;
+    readonly prefix: string;
+}): SVGMask {
+    return {
+        ...payload.svgMask,
+        svgMaskId: payload.svgMask.svgMaskId + "." + payload.prefix
+    };
+}
+
+export function createFillPatternsAndMasks(): FillPatternsAndMasks {
+    const prefix = createGuid();
+    return {
+        patterns: {
+            horizontalLines: prefigureSVGPatternId({
+                svgPattern: horizontalLinesPattern, prefix
+            }),
+            verticalLines: prefigureSVGPatternId({
+                svgPattern: verticalLinesPattern, prefix
+            }),
+            checkerboard: prefigureSVGPatternId({
+                svgPattern: checkerboardPattern, prefix
+            }),
+            diagonalCheckerboard: prefigureSVGPatternId({
+                svgPattern: diagonalCheckerboardPattern, prefix
+            }),
+            linesFromLeftBottomToRightTop: prefigureSVGPatternId({
+                svgPattern: linesFromLeftBottomToRightTopPattern, prefix
+            }),
+            linesFromLeftTopToRightBottom: prefigureSVGPatternId({
+                svgPattern: linesFromLeftTopToRightBottomPattern, prefix
+            })
+        },
+        masks: null
+    };
+}
 
 @Component({
     selector: "dgp-bar-chart",
