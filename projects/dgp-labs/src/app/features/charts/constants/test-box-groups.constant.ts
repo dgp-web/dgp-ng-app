@@ -67,7 +67,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             -2, -1, 14
         ],
         colorHex: "#309000",
-        fillPattern: FillPattern.DiagonalCheckerboard
+        fillPattern: FillPattern.DiagonalCheckerboard,
+        outlierShape: Shape.Rhombus
     }],
     label: "Checkerboard"
 }, {

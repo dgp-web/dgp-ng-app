@@ -152,6 +152,18 @@ import { Shape } from "../../symbols/models";
                                                   (blur)="unhighlightOutlier(box, i)"
                                                   (mouseleave)="unhighlightOutlier(box, i)"></rect>
 
+                                            <polygon *ngSwitchCase="shapeEnum.Rhombus"
+                                                     dgpBoxPlotOutlier
+                                                     dgpRhombus
+                                                     [scales]="boxPlotScales"
+                                                     [boxGroup]="boxGroup"
+                                                     [box]="box"
+                                                     [value]="value"
+                                                     (focus)="highlightOutlier(box, i)"
+                                                     (mouseenter)="highlightOutlier(box, i)"
+                                                     (blur)="unhighlightOutlier(box, i)"
+                                                     (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
                                             <circle *ngSwitchDefault
                                                     dgpBoxPlotOutlier
                                                     [scales]="boxPlotScales"

@@ -82,7 +82,7 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 
 .tooltip {
     position: fixed;
-    fill: white;
+    fill: black;
 }
 
 .plot-container {
@@ -108,5 +108,10 @@ dgp-svg-symbol {
             fill: white;
             stroke: white;
         }
+    }
+
+    .tooltip {
+        position: fixed;
+        fill: white;
     }
 }
