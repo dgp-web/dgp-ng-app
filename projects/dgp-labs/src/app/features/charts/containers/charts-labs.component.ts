@@ -89,7 +89,7 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
             overflow: auto;
         }
 
-        dgp-line-chart, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
+        dgp-connected-scatter-plot, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
             width: 640px;
             max-height: 480px;
             min-height: 400px;

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DgpNgChartsModule } from "../dgp-ng-charts.module";
-import { LineChartComponent } from "./line-chart.component";
+import { DgpConnectedScatterPlotComponent } from "./line-chart.component";
 
-describe(LineChartComponent.name, () => {
+describe(DgpConnectedScatterPlotComponent.name, () => {
 
-    let fixture: ComponentFixture<LineChartComponent>;
-    let component: LineChartComponent;
+    let fixture: ComponentFixture<DgpConnectedScatterPlotComponent>;
+    let component: DgpConnectedScatterPlotComponent;
 
     beforeEach(waitForAsync(async () => {
 
@@ -16,7 +16,7 @@ describe(LineChartComponent.name, () => {
         });
         await testBed.compileComponents();
 
-        fixture = testBed.createComponent(LineChartComponent);
+        fixture = testBed.createComponent(DgpConnectedScatterPlotComponent);
         component = fixture.componentInstance;
 
     }));

@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { DgpBoxPlotModule } from "./box-plot/box-plot.module";
 import { DgpHeatmapModule } from "./heatmap/heatmap.module";
-import { LineChartComponent } from "./line-chart/line-chart.component";
+import { DgpConnectedScatterPlotComponent } from "./line-chart/line-chart.component";
 
 @NgModule({
     imports: [
@@ -11,10 +11,10 @@ import { LineChartComponent } from "./line-chart/line-chart.component";
         DgpHeatmapModule
     ],
     declarations: [
-        LineChartComponent,
+        DgpConnectedScatterPlotComponent,
     ],
     exports: [
-        LineChartComponent,
+        DgpConnectedScatterPlotComponent,
         DgpBoxPlotModule,
         DgpHeatmapModule
     ]

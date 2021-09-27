@@ -1,16 +1,30 @@
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
-    ElementRef,
-    ViewChild,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
     ViewEncapsulation
 } from "@angular/core";
-import { ChartComponentBase } from "../shared/chart.component-base";
-import * as d3 from "d3";
+import { DgpChartComponentBase } from "../chart/components/chart.component-base";
+import { Chart } from "../shared/models";
+import { Subscription } from "rxjs";
+import { debounceTime, tap } from "rxjs/operators";
+import { DrawD3ChartPayload } from "../shared/chart.component-base";
+import { createBarChartScales } from "../bar-chart/functions/create-bar-chart-scales.function";
+
+export interface ConnectedScatterSeriesGroup {
+}
+
+export interface ConnectedScatterPlot extends Chart {
+    readonly model: ReadonlyArray<ConnectedScatterSeriesGroup>;
+}
 
 @Component({
-    selector: "dgp-line-chart",
+    selector: "dgp-connected-scatter-plot",
     template: `
         <div class="chart"
              #chartRef>
@@ -38,20 +52,20 @@ import * as d3 from "d3";
 
     `,
     styles: [`
-        dgp-line-chart {
+        dgp-connected-scatter-plot {
             display: flex;
             flex-grow: 1;
             font-size: smaller;
         }
 
-        dgp-line-chart .chart {
+        dgp-connected-scatter-plot .chart {
             display: flex;
             flex-direction: column;
             justify-content: center;
             flex-grow: 1;
         }
 
-        dgp-line-chart .chart__title {
+        dgp-connected-scatter-plot .chart__title {
             justify-content: center;
             align-items: center;
             display: flex;
@@ -60,20 +74,20 @@ import * as d3 from "d3";
         }
 
 
-        dgp-line-chart .chart__y-axis {
+        dgp-connected-scatter-plot .chart__y-axis {
             font-size: 16px;
         }
 
-        dgp-line-chart .chart__x-axis {
+        dgp-connected-scatter-plot .chart__x-axis {
             font-size: 16px;
         }
 
-        dgp-line-chart .chart__inner-container {
+        dgp-connected-scatter-plot .chart__inner-container {
             display: flex;
             flex-grow: 1;
         }
 
-        dgp-line-chart .chart_y-axis-label-container {
+        dgp-connected-scatter-plot .chart_y-axis-label-container {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -81,28 +95,28 @@ import * as d3 from "d3";
             max-width: 40px;
         }
 
-        dgp-line-chart .chart__y-axis-label {
+        dgp-connected-scatter-plot .chart__y-axis-label {
             transform: rotate(-90deg);
             white-space: nowrap;
         }
 
-        dgp-line-chart .chart__d3-hook {
+        dgp-connected-scatter-plot .chart__d3-hook {
             flex-grow: 1;
             height: 100%;
         }
 
-        dgp-line-chart .chart__x-axis-label {
+        dgp-connected-scatter-plot .chart__x-axis-label {
             min-height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        dgp-line-chart .chart-svg {
+        dgp-connected-scatter-plot .chart-svg {
             overflow: visible;
         }
 
-        dgp-line-chart .tick {
+        dgp-connected-scatter-plot .tick {
             font-size: smaller;
         }
 
@@ -110,47 +124,53 @@ import * as d3 from "d3";
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class LineChartComponent extends ChartComponentBase<any, any> implements AfterViewInit {
+export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase implements ConnectedScatterPlot, OnChanges, OnDestroy {
 
-    @ViewChild("chartElRef", {static: false})
-    chartElRef: ElementRef;
+    @Input()
+    model: readonly ConnectedScatterSeriesGroup[];
 
-    protected drawD3Chart(payload): void {
+    private readonly drawChartActionScheduler = new EventEmitter();
 
-        const xAxisScale = d3.scaleLinear().domain([0, 100]).range([0, 400]);
-        const yAxisScale = d3.scaleLinear().domain([0, 100]).range([0, 400]);
+    private drawChartSubscription: Subscription;
 
-        payload.svg.append("g")
-            .attr("class", "chart__x-axis")
-            .attr("transform", "translate(0," + yAxisScale.range()[1] + ")")
-            .call(d3.axisBottom(xAxisScale));
+    connectedScatterScales: any; // TODO
 
-        payload.svg.append("g")
-            .attr("class", "chart__y-axis")
-            .call(d3.axisLeft(yAxisScale));
+    constructor(
+        private readonly cd: ChangeDetectorRef
+    ) {
+        super();
 
-        /*   svg.append("g")
-               .attr("class", "chart__x-axis")
-               .attr("transform", "translate(0," + payload.d3Scales.yAxis.range()[0] + ")")
-               .call(d3.axisBottom(payload.d3Scales.xAxis)
-                   .tickValues(xAxisTicks as any)
-                   .tickFormat(formatReadoutTick)
-               );*/
-        /*
+        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
+            debounceTime(250),
+            tap(() => this.drawChart())
+        ).subscribe();
+    }
 
-                svg.append("g")
-                    .attr("class", "chart__y-axis")
-                    .call(d3.axisLeft(payload.d3Scales.yAxis)
-                        .ticks(yAxisTickCount)
-                        .tickFormat(domainValue => {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
+            this.drawChartActionScheduler.emit();
+        }
+    }
 
-                            const formattedValue = d3.format("~r")(domainValue);
-                            return formattedValue;
+    ngOnDestroy(): void {
+        if (!this.drawChartSubscription?.closed) {
+            this.drawChartSubscription?.unsubscribe();
+        }
+    }
 
-                        })
-                    );
-        */
+    protected drawD3Chart(payload: DrawD3ChartPayload): void {
 
+        this.connectedScatterScales = createBarChartScales({
+            containerHeight: payload.containerHeight,
+            containerWidth: payload.containerWidth,
+            connectedScatterSeriesGroups: this.model
+        });
+
+        this.cd.markForCheck();
+
+    }
+
+    drawChart() {
     }
 
 }

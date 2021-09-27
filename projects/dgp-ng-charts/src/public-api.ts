@@ -100,7 +100,7 @@ export { ExportChartDialogComponent } from "./lib/heatmap/components/export-char
  * Line chart
  * -----
  */
-export { LineChartComponent } from "./lib/line-chart/line-chart.component";
+export { DgpConnectedScatterPlotComponent } from "./lib/line-chart/line-chart.component";
 
 /**
  * -----
