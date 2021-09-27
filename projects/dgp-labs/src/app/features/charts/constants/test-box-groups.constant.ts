@@ -1,4 +1,4 @@
-import { BoxGroup, FillPattern } from "dgp-ng-charts";
+import { BoxGroup, FillPattern, Shape } from "dgp-ng-charts";
 
 export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
     value: "first",
@@ -30,7 +30,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
         outliers: [
             -2, -1, 14
         ],
-        colorHex: "#309000"
+        colorHex: "#309000",
+        outlierShape: Shape.Circle
     }],
     label: "Default"
 }, {
@@ -50,7 +51,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             17, 18
         ],
         colorHex: "#3000f0",
-        fillPattern: FillPattern.Checkerboard
+        fillPattern: FillPattern.Checkerboard,
+        outlierShape: Shape.Rectangle
     }, {
         boxId: "second02",
         boxGroupId: "second",

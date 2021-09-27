@@ -1,5 +1,6 @@
 import { BoxQuantiles } from "./box-quantiles.model";
 import { FillPattern } from "../../fill-pattern-icon/models/fill-pattern.model";
+import { Shape } from "../../symbols/models";
 
 export interface Box {
     readonly boxId: string;
@@ -20,4 +21,9 @@ export interface Box {
     readonly colorHex: string;
 
     readonly fillPattern?: FillPattern;
+
+    /**
+     * default value: "Circle"
+     */
+    readonly outlierShape?: Shape;
 }

@@ -22,6 +22,7 @@ import { ExportChartConfig } from "../../heatmap/models";
 import { ChartSelectionMode } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import { Shape } from "../../symbols/models";
 
 @Component({
     selector: "dgp-box-plot",
@@ -126,17 +127,45 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
                                           [boxGroup]="boxGroup"
                                           [box]="box"></line>
 
-                                    <circle *ngFor="let value of box.outliers; let i = index;"
-                                            r="3"
-                                            dgpBoxPlotOutlier
-                                            [scales]="boxPlotScales"
-                                            [boxGroup]="boxGroup"
-                                            [box]="box"
-                                            [value]="value"
-                                            (focus)="highlightOutlier(box, i)"
-                                            (mouseenter)="highlightOutlier(box, i)"
-                                            (blur)="unhighlightOutlier(box, i)"
-                                            (mouseleave)="unhighlightOutlier(box, i)"></circle>
+                                    <ng-container *ngFor="let value of box.outliers; let i = index;">
+                                        <ng-container [ngSwitch]="box.outlierShape">
+
+                                            <circle *ngSwitchCase="shapeEnum.Circle"
+                                                    dgpBoxPlotOutlier
+                                                    [scales]="boxPlotScales"
+                                                    [boxGroup]="boxGroup"
+                                                    [box]="box"
+                                                    [value]="value"
+                                                    (focus)="highlightOutlier(box, i)"
+                                                    (mouseenter)="highlightOutlier(box, i)"
+                                                    (blur)="unhighlightOutlier(box, i)"
+                                                    (mouseleave)="unhighlightOutlier(box, i)"></circle>
+
+                                            <rect *ngSwitchCase="shapeEnum.Rectangle"
+                                                  dgpBoxPlotOutlier
+                                                  [scales]="boxPlotScales"
+                                                  [boxGroup]="boxGroup"
+                                                  [box]="box"
+                                                  [value]="value"
+                                                  (focus)="highlightOutlier(box, i)"
+                                                  (mouseenter)="highlightOutlier(box, i)"
+                                                  (blur)="unhighlightOutlier(box, i)"
+                                                  (mouseleave)="unhighlightOutlier(box, i)"></rect>
+
+                                            <circle *ngSwitchDefault
+                                                    dgpBoxPlotOutlier
+                                                    [scales]="boxPlotScales"
+                                                    [boxGroup]="boxGroup"
+                                                    [box]="box"
+                                                    [value]="value"
+                                                    (focus)="highlightOutlier(box, i)"
+                                                    (mouseenter)="highlightOutlier(box, i)"
+                                                    (blur)="unhighlightOutlier(box, i)"
+                                                    (mouseleave)="unhighlightOutlier(box, i)"></circle>
+
+                                        </ng-container>
+                                    </ng-container>
+
 
                                     <text *ngFor="let value of box.outliers let i = index;"
                                           class="tooltip --hidden"
@@ -197,6 +226,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
+
+    readonly shapeEnum = Shape;
 
     constructor(
         private readonly cd: ChangeDetectorRef
