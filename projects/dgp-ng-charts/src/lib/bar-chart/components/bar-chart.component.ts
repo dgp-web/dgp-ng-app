@@ -53,6 +53,26 @@ import { createBarChartScales } from "../functions/create-bar-chart-scales.funct
                      *ngIf="barChartScales"
                      [attr.viewBox]="getViewBox()">
 
+                    <defs>
+                        <!-- Patterns -->
+                        <pattern dgpHorizontalLinesPattern></pattern>
+                        <pattern dgpVerticalLinesPattern></pattern>
+                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
+                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
+                        <pattern dgpCheckerboardPattern></pattern>
+                        <pattern dgpDiagonalCheckerboardPattern></pattern>
+
+                        <!-- Masks -->
+                        <mask dgpVerticalLinesMask></mask>
+                        <mask dgpHorizontalLinesMask></mask>
+                        <mask dgpLinesFromLeftTopToRightBottomMask></mask>
+                        <mask dgpLinesFromLeftBottomToRightTopMask></mask>
+                        <mask dgpGridMask></mask>
+                        <mask dgpDiagonalGridMask></mask>
+                        <mask dgpCheckerboardMask></mask>
+                        <mask dgpDiagonalCheckerboardMask></mask>
+                    </defs>
+
                     <g [attr.transform]="getContainerTransform()">
 
                         <g class="chart__x-axis"
@@ -66,6 +86,10 @@ import { createBarChartScales } from "../functions/create-bar-chart-scales.funct
                         <g *ngFor="let barGroup of model"
                            [attr.transform]="getResultRootTransform(barGroup)">
                             <ng-container *ngFor="let bar of barGroup.bars">
+                                <rect dgpBarChartBarFillPattern
+                                      [scales]="barChartScales"
+                                      [barGroup]="barGroup"
+                                      [bar]="bar"></rect>
                                 <rect dgpBarChartBar
                                       [scales]="barChartScales"
                                       [barGroup]="barGroup"
