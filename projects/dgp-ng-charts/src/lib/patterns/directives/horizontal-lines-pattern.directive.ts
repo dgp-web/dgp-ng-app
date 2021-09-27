@@ -1,4 +1,4 @@
-import { Directive } from "@angular/core";
+import { Directive, InjectionToken } from "@angular/core";
 import { SVGPatternBaseDirective } from "./svg-pattern-base.directive";
 import { horizontalLinesPattern } from "../constants";
 

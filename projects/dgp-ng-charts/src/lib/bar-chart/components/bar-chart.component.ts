@@ -29,6 +29,7 @@ import {
     verticalLinesPattern
 } from "../../patterns/constants";
 import { SVGPattern } from "../../patterns/models";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
 export function prefigureSVGPatternId(payload: {
     readonly svgPattern: SVGPattern;
@@ -169,7 +170,10 @@ export function createFillPatternsAndMasks(): FillPatternsAndMasks {
             flex-grow: 1;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart, OnChanges, OnDestroy {
 
