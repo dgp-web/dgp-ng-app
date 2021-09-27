@@ -3,13 +3,14 @@ import {
     BoxPlotSelection,
     BoxValues,
     computeBoxFromValues,
+    ExportChartConfig,
     FillPattern,
     HeatmapSelection,
-    HeatmapTile
+    HeatmapTile,
+    Shape
 } from "dgp-ng-charts";
-import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
-import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
+import { testBarGroups } from "../constants/test-bar-groups.constant";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -32,7 +33,6 @@ import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
 
                 <dgp-shape-select [model]="shape"
                                   (modelChange)="updateShape($event)"></dgp-shape-select>
-
                 <dgp-box-plot [model]="boxGroups">
 
                     <ng-container chart-title>
@@ -54,6 +54,8 @@ import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
                 </dgp-box-plot>
 
                 <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
+
+                <dgp-bar-chart [model]="barGroups"></dgp-bar-chart>
 
                 <dgp-docs-section-title>
                     Heat map
@@ -87,7 +89,7 @@ import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
             overflow: auto;
         }
 
-        dgp-line-chart, dgp-box-plot, dgp-heatmap {
+        dgp-line-chart, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
             width: 640px;
             max-height: 480px;
             min-height: 400px;
@@ -102,6 +104,7 @@ export class ChartsLabsComponent {
     shape = Shape.Circle;
 
     boxGroups = testBoxGroups;
+    barGroups = testBarGroups;
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
 

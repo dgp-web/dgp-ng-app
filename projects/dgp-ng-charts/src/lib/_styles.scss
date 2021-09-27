@@ -95,23 +95,6 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 }
 
 
-dgp-fill-pattern-icon {
-    rect {
-        fill: black;
-        stroke: black;
-    }
-}
-
-.dark-theme {
-    dgp-fill-pattern-icon {
-        rect {
-            fill: white;
-            stroke: white;
-        }
-    }
-}
-
-
 dgp-svg-symbol {
     circle, rect, polygon {
         fill: black;

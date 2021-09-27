@@ -2,10 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { ChartsLabsComponent } from "./containers/charts-labs.component";
-import { DgpNgChartsModule } from "dgp-ng-charts";
+import { DgpBarChartModule, DgpFillPatternSelectModule, DgpNgChartsModule, DgpShapeSelectModule } from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
-import { DgpFillPatternSelectModule } from "../../../../../dgp-ng-charts/src/lib/fill-pattern-select/fill-pattern-select.module";
-import { DgpShapeSelectModule } from "../../../../../dgp-ng-charts/src/lib/shape-select/shape-select.module";
 
 @NgModule({
     imports: [
@@ -18,7 +16,8 @@ import { DgpShapeSelectModule } from "../../../../../dgp-ng-charts/src/lib/shape
         DgpNgChartsModule,
         DocsModule,
         DgpFillPatternSelectModule,
-        DgpShapeSelectModule
+        DgpShapeSelectModule,
+        DgpBarChartModule
     ],
     declarations: [
         ChartsLabsComponent

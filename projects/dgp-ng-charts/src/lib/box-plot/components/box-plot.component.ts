@@ -21,6 +21,7 @@ import { defaultBoxPlotConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
 import { ChartSelectionMode } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
 @Component({
     selector: "dgp-box-plot",
@@ -85,8 +86,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                            dgpBoxPlotLeftAxis
                            [scales]="boxPlotScales"></g>
 
-                        <g class="measurement-result-root"
-                           dgpBoxPlotBrushSelector
+                        <g dgpBoxPlotBrushSelector
                            [scales]="boxPlotScales"
                            [boxGroups]="model"
                            [config]="config"
@@ -167,6 +167,9 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
 

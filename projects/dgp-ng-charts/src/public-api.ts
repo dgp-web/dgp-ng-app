@@ -6,6 +6,21 @@ export { DgpNgChartsModule } from "./lib/dgp-ng-charts.module";
 
 /**
  * -----
+ * Bar chart
+ * -----
+ */
+export * from "./lib/bar-chart/models";
+export * from "./lib/bar-chart/constants";
+export { DgpBarChartModule } from "./lib/bar-chart/bar-chart.module";
+export { DgpBarChartComponent } from "./lib/bar-chart/components/bar-chart.component";
+export { DgpExportChartDialogComponent } from "./lib/bar-chart/components/export-chart-dialog.component";
+export { BarChartBarDirective } from "./lib/bar-chart/directives/bar-chart-bar.directive";
+export { BarChartBarFillPatternDirective } from "./lib/bar-chart/directives/bar-chart-bar-fill-pattern.directive";
+export { BarChartBottomAxisDirective } from "./lib/bar-chart/directives/bar-chart-bottom-axis.directive";
+export { BarChartLeftAxisDirective } from "./lib/bar-chart/directives/bar-chart-left-axis.directive";
+
+/**
+ * -----
  * Box plot
  * -----
  */
@@ -149,6 +164,9 @@ export { DgpShapeSelectComponent } from "./lib/shape-select/components/shape-sel
  */
 export * from "./lib/shared/models";
 export * from "./lib/shared/chart.component-base";
+export { createIdPrefix } from "./lib/shared/create-id-prefix.function";
+export { ID_PREFIX } from "./lib/shared/id-prefix-injection-token.constant";
+export { idPrefixProvider } from "./lib/shared/id-prefix-provider.constant";
 
 export { ChartComponentBase } from "./lib/shared/chart.component-base";
 
