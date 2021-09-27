@@ -85,8 +85,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
                            dgpBoxPlotLeftAxis
                            [scales]="boxPlotScales"></g>
 
-                        <g class="measurement-result-root"
-                           dgpBoxPlotBrushSelector
+                        <g dgpBoxPlotBrushSelector
                            [scales]="boxPlotScales"
                            [boxGroups]="model"
                            [config]="config"

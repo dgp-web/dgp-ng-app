@@ -1,0 +1,96 @@
+import * as _ from "lodash";
+import * as d3 from "d3";
+import { BarChartScales, BarGroup } from "../models";
+import { defaultBarChartConfig } from "../constants";
+import { getYAxisLimitsWithOffset } from "../../box-plot/functions";
+
+export function createBarChartScales(payload: {
+    readonly barGroups: ReadonlyArray<BarGroup>;
+    readonly containerWidth: number;
+    readonly containerHeight: number;
+}, config = defaultBarChartConfig): BarChartScales {
+
+    const barGroupKeys = payload.barGroups.map(x => x.barGroupKey);
+    const barIds = _.flatten(payload.barGroups.map(x => x.bars.map(y => y.barKey)));
+
+    const valuesForExtremumComputation = payload.barGroups.reduce((previousValue, currentValue) => {
+
+        currentValue.bars.forEach(bar => {
+            previousValue.push(bar.value);
+        });
+
+        return previousValue;
+    }, new Array<number>());
+
+    const yMin = _.min(valuesForExtremumComputation);
+    const yMax = _.max(valuesForExtremumComputation);
+
+    // Compute reference margin left
+    /*  const referenceYDomainLabelLength = _.max(
+          [yAxisLimits.min, yAxisLimits.max].map(x => {
+              return d3.format("~r")(x).length;
+          })
+      );*/
+
+    /* const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
+
+     const marginLeft = payload.config.margin.left >= estimatedNeededMaxYTickWidthPx
+         ? payload.config.margin.left
+         : estimatedNeededMaxYTickWidthPx;
+
+     const barAreaWidth = payload.containerWidth
+         - marginLeft
+         - payload.dummyConfig.margin.right;
+
+     const barAreaHeight = payload.containerHeight
+         - payload.dummyConfig.margin.top
+         - payload.dummyConfig.margin.bottom;
+ */
+
+    const barAreaWidth = payload.containerWidth
+        - defaultBarChartConfig.margin.left
+        - defaultBarChartConfig.margin.right;
+
+    const barAreaHeight = payload.containerHeight
+        - defaultBarChartConfig.margin.top
+        - defaultBarChartConfig.margin.bottom;
+
+    const yAxisDomain = getYAxisLimitsWithOffset({
+        limitsFromValues: {
+            min: yMin,
+            max: yMax
+        }
+    }, config as any); // TODO
+
+    const yAxis = d3.scaleLinear()
+        .domain([yAxisDomain.max, yAxisDomain.min])
+        .range([0, barAreaHeight]);
+
+    const xAxis = d3.scaleBand()
+        .domain(barGroupKeys)
+        .range([0, barAreaWidth])
+        .padding(0.2);
+
+    const xAxisSubgroupKVS = payload.barGroups.reduce((previousValue, currentValue) => {
+
+        previousValue[currentValue.barGroupKey] = d3.scaleBand() // TODO: We need to create sub groups based on crap
+            .domain(currentValue.bars.map(x => x.barKey))
+            .range([0, xAxis.bandwidth()])
+            .padding(0.05);
+
+        return previousValue;
+
+    }, {});
+
+    return {
+        xAxis,
+        yAxis,
+        xAxisSubgroupKVS,
+        containerHeight: payload.containerHeight,
+        containerWidth: payload.containerWidth,
+        barAreaHeight,
+        barAreaWidth,
+        chartMargin: config.margin
+    };
+
+}

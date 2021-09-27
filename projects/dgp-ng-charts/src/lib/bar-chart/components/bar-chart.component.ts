@@ -1,50 +1,109 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input } from "@angular/core";
-
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { firstAsPromise, isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { Bar, BarChartConfig, BarGroup, BarGroups } from "../models";
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    ViewChild
+} from "@angular/core";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+import { Bar, BarChart, BarChartScales, BarGroup, BarGroups } from "../models";
 import { defaultBarChartConfig } from "../constants/default-bar-chart-config.constant";
 import * as d3 from "d3";
 import * as _ from "lodash";
 import { getBarChartYAxisMax } from "../functions/get-y-axis-max.function";
-import { DgpExportChartDialogComponent } from "./export-chart-dialog.component";
-import { ExportChartConfig, InternalExportChartConfig } from "../../heatmap/models";
-import { serializeDOMNode, svgString2ImageSrc } from "../../heatmap/functions";
-import { ChartComponentBase, DrawD3ChartPayload } from "../../shared/chart.component-base";
+import { ExportChartConfig } from "../../heatmap/models";
+import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { getSmartTicks } from "../functions/get-smart-ticks.function";
 import { axisTickFormattingService } from "../functions/axis-tick-formatting.service";
 import { d3ChartConstructionService } from "../functions/d3-chart-construction.service";
+import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
+import { Subscription } from "rxjs";
+import { debounceTime, tap } from "rxjs/operators";
+import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 
 @Component({
     selector: "dgp-bar-chart",
     template: `
-        <div class="chart"
-             #chartRef>
-            <div *ngIf="chartTitle"
-                 class="title">
-                {{ chartTitle }}
+
+        <dgp-chart [yAxisTitle]="yAxisTitle"
+                   [xAxisTitle]="xAxisTitle"
+                   [chartTitle]="chartTitle">
+
+            <ng-container chart-title>
+                <ng-content select="[chart-title]"></ng-content>
+            </ng-container>
+
+            <ng-container x-axis-title>
+                <ng-content select="[x-axis-title]"></ng-content>
+            </ng-container>
+
+            <ng-container y-axis-title>
+                <ng-content select="[y-axis-title]"></ng-content>
+            </ng-container>
+
+            <ng-container right-legend>
+                <ng-content select="[right-legend]"></ng-content>
+            </ng-container>
+
+            <div class="plot-container"
+                 #chartContainer>
+
+                <svg #svgRoot
+                     dgpResizeSensor
+                     (sizeChanged)="drawChart()"
+                     *ngIf="barChartScales"
+                     [attr.viewBox]="getViewBox()">
+
+                    <g [attr.transform]="getContainerTransform()">
+
+                        <g class="chart__x-axis"
+                           dgpBarChartBottomAxis
+                           [scales]="barChartScales"></g>
+
+                        <g class="chart__y-axis"
+                           dgpBarChartLeftAxis
+                           [scales]="barChartScales"></g>
+
+                    </g>
+
+                </svg>
+
             </div>
 
-            <div class="inner-container">
-                <div *ngIf="yAxisTitle"
-                     class="y-axis-label-container">
-                    <div class="y-axis-label">
-                        {{ yAxisTitle }}
-                    </div>
-                </div>
-                <div #chartElRef
-                     class="d3-hook"></div>
-                <div class="right-legend">
-                    <ng-content select="[right-legend]"></ng-content>
-                </div>
-            </div>
+            <!--
+                        <div class="chart"
+                             #chartRef>
+                            <div *ngIf="chartTitle"
+                                 class="title">
+                                {{ chartTitle }}
+                            </div>
 
-            <div *ngIf="xAxisTitle"
-                 class="x-axis-label">
-                {{ xAxisTitle }}
-            </div>
-        </div>
+                            <div class="inner-container">
+                                <div *ngIf="yAxisTitle"
+                                     class="y-axis-label-container">
+                                    <div class="y-axis-label">
+                                        {{ yAxisTitle }}
+                                    </div>
+                                </div>
+                                <div #chartElRef
+                                     class="d3-hook"></div>
+                                <div class="right-legend">
+                                    <ng-content select="[right-legend]"></ng-content>
+                                </div>
+                            </div>
 
+                            <div *ngIf="xAxisTitle"
+                                 class="x-axis-label">
+                                {{ xAxisTitle }}
+                            </div>
+                        </div>-->
+
+        </dgp-chart>
     `,
     styles: [`
         :host {
@@ -52,58 +111,15 @@ import { d3ChartConstructionService } from "../functions/d3-chart-construction.s
             flex-grow: 1;
             font-size: smaller;
         }
-
-        .chart {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex-grow: 1;
-        }
-
-        .title {
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            margin: 16px;
-            word-break: break-all;
-        }
-
-        .inner-container {
-            display: flex;
-            flex-grow: 1;
-        }
-
-        .y-axis-label-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 40px;
-            max-width: 40px;
-        }
-
-        .y-axis-label {
-            transform: rotate(-90deg);
-            white-space: nowrap;
-        }
-
-        .d3-hook {
-            flex-grow: 1;
-            height: 100%;
-        }
-
-        .x-axis-label {
-            min-height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .right-legend {
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DgpBarChartComponent extends ChartComponentBase<BarGroups, BarChartConfig> {
+export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart, OnChanges, OnDestroy {
+
+    @ViewChild("chartContainer") elRef: ElementRef;
+
+    @Input()
+    model: BarGroups;
 
     @Input()
     barSortIndex: ReadonlyArray<string>;
@@ -111,58 +127,66 @@ export class DgpBarChartComponent extends ChartComponentBase<BarGroups, BarChart
     @Input()
     exportConfig: ExportChartConfig;
 
+    @Input()
     config = defaultBarChartConfig;
 
-    svgNode: Node;
+    barChartScales: BarChartScales;
+
+    private readonly drawChartActionScheduler = new EventEmitter();
+
+    private drawChartSubscription: Subscription;
+
 
     constructor(
-        readonly elRef: ElementRef,
-        private readonly matDialog: MatDialog
+        private readonly cd: ChangeDetectorRef
     ) {
-        super(elRef);
+        super();
+
+        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
+            debounceTime(250),
+            tap(() => this.drawChart())
+        ).subscribe();
     }
 
-    downloadImage(): MatDialogRef<DgpExportChartDialogComponent> {
-        const svgString = serializeDOMNode(this.svgNode);
-        // @ts-ignore
-        const legendRoot = $(this.elRef.nativeElement).find(".right-legend").children()[0];
-        let serializedLegend: string;
-        if (notNullOrUndefined(legendRoot)) {
-            serializedLegend = new XMLSerializer().serializeToString(legendRoot);
-        }
+    drawChart() {
 
-        const svgImageSrc = svgString2ImageSrc(svgString);
+        if (isNullOrUndefined(this.elRef.nativeElement)) return;
 
-        return this.matDialog.open(DgpExportChartDialogComponent, {
-            data: {
-                serializedChartImageUrl: svgImageSrc,
-                serializedLegend,
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
-                chartTitle: this.exportConfig?.chartTitle ? this.exportConfig?.chartTitle : this.chartTitle,
-                xAxisTitle: this.exportConfig?.xAxisTitle ? this.exportConfig?.xAxisTitle : this.xAxisTitle,
-                yAxisTitle: this.exportConfig?.yAxisTitle ? this.exportConfig?.yAxisTitle : this.yAxisTitle
-            } as InternalExportChartConfig,
-            // disableClose: true
+        this.drawD3Chart({
+            svg: null,
+            containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
+            containerWidth: rect.width - this.config.margin.left - this.config.margin.right
         });
 
     }
 
-    async copyToClipboard() {
-        const ref = this.downloadImage();
-        await firstAsPromise(ref.afterOpened());
-        await ref.componentInstance.copyImageToClipboard();
-        ref.close();
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
+            this.drawChartActionScheduler.emit();
+        }
     }
 
-    async openInNewTab() {
-        const ref = this.downloadImage();
-        await firstAsPromise(ref.afterOpened());
-        await ref.componentInstance.openImageInNewTab();
-        ref.close();
+    ngOnDestroy(): void {
+        if (!this.drawChartSubscription?.closed) {
+            this.drawChartSubscription?.unsubscribe();
+        }
     }
+
 
     protected drawD3Chart(payload: DrawD3ChartPayload): void {
-        this.svgNode = payload.svg.node().parentNode;
+
+        this.barChartScales = createBarChartScales({
+            containerHeight: payload.containerHeight,
+            containerWidth: payload.containerWidth,
+            barGroups: this.model
+        });
+
+        this.cd.markForCheck();
+
+        const svgNode = payload.svg.node().parentNode;
         const svg = payload.svg;
         const containerWidth = payload.containerWidth;
         const containerHeight = payload.containerHeight;
@@ -271,6 +295,20 @@ export class DgpBarChartComponent extends ChartComponentBase<BarGroups, BarChart
                     })
                     .text((d: FailureChartMeasurementSequenceResult) => d.failuresLabel);*/
 
+        this.cd.markForCheck();
+
     }
 
+    getContainerTransform(): string {
+        return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
+    }
+
+    getViewBox() {
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+
+        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
+        const width = rect.width - this.config.margin.left - this.config.margin.right;
+
+        return "0 0 " + width + " " + height;
+    }
 }
