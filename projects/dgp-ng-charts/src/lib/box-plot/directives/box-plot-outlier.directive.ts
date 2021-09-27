@@ -49,23 +49,17 @@ export class BoxPlotOutlierDirective implements OnChanges {
                     this.renderer.setAttribute(this.elementRef.nativeElement, "height", "6px");
                     break;
                 case Shape.Rhombus:
+                case Shape.Triangle:
+                case Shape.TriangleDown:
+                case Shape.TriangleLeft:
+                case Shape.TriangleRight:
+                case Shape.Star:
                     this.renderer.setStyle(this.elementRef.nativeElement, "transform",
-                        "translate(" + x + "px, " + y + "px)"
+                        "translate(" + (x - 3) + "px, " + (y - 3) + "px)"
                     );
                     this.renderer.setAttribute(this.elementRef.nativeElement, "width", "6px");
                     this.renderer.setAttribute(this.elementRef.nativeElement, "height", "6px");
                     break;
-                case Shape.Triangle:
-                    break;
-                case Shape.TriangleDown:
-                    break;
-                case Shape.TriangleLeft:
-                    break;
-                case Shape.TriangleRight:
-                    break;
-                case Shape.Star:
-                    break;
-
             }
 
 

@@ -164,6 +164,66 @@ import { Shape } from "../../symbols/models";
                                                      (blur)="unhighlightOutlier(box, i)"
                                                      (mouseleave)="unhighlightOutlier(box, i)"></polygon>
 
+                                            <polygon *ngSwitchCase="shapeEnum.Star"
+                                                     dgpBoxPlotOutlier
+                                                     dgpStar
+                                                     [scales]="boxPlotScales"
+                                                     [boxGroup]="boxGroup"
+                                                     [box]="box"
+                                                     [value]="value"
+                                                     (focus)="highlightOutlier(box, i)"
+                                                     (mouseenter)="highlightOutlier(box, i)"
+                                                     (blur)="unhighlightOutlier(box, i)"
+                                                     (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                            <polygon *ngSwitchCase="shapeEnum.Triangle"
+                                                     dgpBoxPlotOutlier
+                                                     dgpTriangle
+                                                     [scales]="boxPlotScales"
+                                                     [boxGroup]="boxGroup"
+                                                     [box]="box"
+                                                     [value]="value"
+                                                     (focus)="highlightOutlier(box, i)"
+                                                     (mouseenter)="highlightOutlier(box, i)"
+                                                     (blur)="unhighlightOutlier(box, i)"
+                                                     (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                            <polygon *ngSwitchCase="shapeEnum.TriangleDown"
+                                                     dgpBoxPlotOutlier
+                                                     dgpTriangleDown
+                                                     [scales]="boxPlotScales"
+                                                     [boxGroup]="boxGroup"
+                                                     [box]="box"
+                                                     [value]="value"
+                                                     (focus)="highlightOutlier(box, i)"
+                                                     (mouseenter)="highlightOutlier(box, i)"
+                                                     (blur)="unhighlightOutlier(box, i)"
+                                                     (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                            <polygon *ngSwitchCase="shapeEnum.TriangleRight"
+                                                     dgpBoxPlotOutlier
+                                                     dgpTriangleRight
+                                                     [scales]="boxPlotScales"
+                                                     [boxGroup]="boxGroup"
+                                                     [box]="box"
+                                                     [value]="value"
+                                                     (focus)="highlightOutlier(box, i)"
+                                                     (mouseenter)="highlightOutlier(box, i)"
+                                                     (blur)="unhighlightOutlier(box, i)"
+                                                     (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                            <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
+                                                     dgpBoxPlotOutlier
+                                                     dgpTriangleLeft
+                                                     [scales]="boxPlotScales"
+                                                     [boxGroup]="boxGroup"
+                                                     [box]="box"
+                                                     [value]="value"
+                                                     (focus)="highlightOutlier(box, i)"
+                                                     (mouseenter)="highlightOutlier(box, i)"
+                                                     (blur)="unhighlightOutlier(box, i)"
+                                                     (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
                                             <circle *ngSwitchDefault
                                                     dgpBoxPlotOutlier
                                                     [scales]="boxPlotScales"

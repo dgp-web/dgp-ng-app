@@ -88,7 +88,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             17, 18
         ],
         colorHex: "#3000f0",
-        fillPattern: FillPattern.Grid
+        fillPattern: FillPattern.Grid,
+        outlierShape: Shape.Star
     }, {
         boxId: "third02",
         boxGroupId: "third",
@@ -103,7 +104,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             -2, -1, 14
         ],
         colorHex: "#309000",
-        fillPattern: FillPattern.DiagonalGrid
+        fillPattern: FillPattern.DiagonalGrid,
+        outlierShape: Shape.Triangle
     }],
     label: "Grid"
 }, {
@@ -123,7 +125,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             17, 18
         ],
         colorHex: "#3000f0",
-        fillPattern: FillPattern.HorizontalLines
+        fillPattern: FillPattern.HorizontalLines,
+        outlierShape: Shape.TriangleDown
     }, {
         boxId: "fourth02",
         boxGroupId: "fourth",
@@ -138,7 +141,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             -2, -1, 14
         ],
         colorHex: "#309000",
-        fillPattern: FillPattern.VerticalLines
+        fillPattern: FillPattern.VerticalLines,
+        outlierShape: Shape.TriangleLeft
     }],
     label: "Straight lines"
 }, {
@@ -158,7 +162,8 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
             17, 18
         ],
         colorHex: "#3000f0",
-        fillPattern: FillPattern.LinesFromLeftTopToRightBottom
+        fillPattern: FillPattern.LinesFromLeftTopToRightBottom,
+        outlierShape: Shape.TriangleRight
     }, {
         boxId: "fifth02",
         boxGroupId: "fifth",
