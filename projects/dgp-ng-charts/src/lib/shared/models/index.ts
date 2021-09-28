@@ -1,3 +1,4 @@
+export * from "./axis-scales.model";
 export * from "./chart.model";
 export * from "./chart-margin.model";
 export * from "./chart-selection-mode.model";

@@ -14,8 +14,6 @@ export { DgpBarChartComponent } from "./lib/bar-chart/components/bar-chart.compo
 export { DgpExportChartDialogComponent } from "./lib/bar-chart/components/export-chart-dialog.component";
 export { BarChartBarDirective } from "./lib/bar-chart/directives/bar-chart-bar.directive";
 export { BarChartBarFillPatternDirective } from "./lib/bar-chart/directives/bar-chart-bar-fill-pattern.directive";
-export { BarChartBottomAxisDirective } from "./lib/bar-chart/directives/bar-chart-bottom-axis.directive";
-export { BarChartLeftAxisDirective } from "./lib/bar-chart/directives/bar-chart-left-axis.directive";
 
 /**
  * -----
@@ -27,8 +25,6 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
-export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
-export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
 export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";
 export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whisker.directive";
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
@@ -48,6 +44,8 @@ export { BoxPlotOutlierTooltipDirective } from "./lib/box-plot/directives/box-pl
 export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
 export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
+export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
+export { DgpChartLeftAxisDirective } from "./lib/chart/directives/chart-left-axis.directive";
 
 /**
  * -----

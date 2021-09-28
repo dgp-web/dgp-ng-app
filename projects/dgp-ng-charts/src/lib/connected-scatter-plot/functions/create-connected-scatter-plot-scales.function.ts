@@ -11,14 +11,15 @@ export function createConnectedScatterPlotScales(payload: {
     readonly containerHeight: number;
 }, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
 
-    const valuesForYExtremumComputation = new Array<number>();
     const valuesForXExtremumComputation = new Array<number>();
+    const valuesForYExtremumComputation = new Array<number>();
 
     payload.connectedScatterGroups.forEach((currentValue) => {
-        currentValue.series.forEach(bar => {
-
-            // TODO: Collect values for x and
-
+        currentValue.series.forEach(series => {
+            series.dots.forEach(dot => {
+                valuesForXExtremumComputation.push(dot.x);
+                valuesForYExtremumComputation.push(dot.y);
+            });
         });
     });
 

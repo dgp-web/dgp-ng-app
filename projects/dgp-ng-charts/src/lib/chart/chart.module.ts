@@ -1,16 +1,19 @@
 import { NgModule } from "@angular/core";
 import { components } from "./components/components";
 import { CommonModule } from "@angular/common";
+import { directives } from "./directives/directives";
 
 @NgModule({
     imports: [
         CommonModule
     ],
     declarations: [
-        ...components
+        ...components,
+        ...directives
     ],
     exports: [
-        ...components
+        ...components,
+        ...directives
     ]
 })
 export class DgpChartModule {

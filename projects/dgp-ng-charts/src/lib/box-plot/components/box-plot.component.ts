@@ -80,11 +80,11 @@ import { Shape } from "../../symbols/models";
                     <g [attr.transform]="getContainerTransform()">
 
                         <g class="chart__x-axis"
-                           dgpBoxPlotBottomAxis
+                           dgpChartBottomAxis
                            [scales]="boxPlotScales"></g>
 
                         <g class="chart__y-axis"
-                           dgpBoxPlotLeftAxis
+                           dgpChartLeftAxis
                            [scales]="boxPlotScales"></g>
 
                         <g dgpBoxPlotBrushSelector
