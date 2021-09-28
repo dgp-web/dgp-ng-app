@@ -1,10 +1,10 @@
 import { defaultBarChartConfig } from "../constants";
-import { Limits } from "../../box-plot/models";
+import { Limits } from "../../shared/models";
 
 /**
  * Applies offset to limits
  */
-export function getYAxisLimitsWithOffset(payload: {
+export function getBarChartYAxisLimitsWithOffset(payload: {
     readonly limitsFromValues: Limits;
 }, config = defaultBarChartConfig): Limits {
 

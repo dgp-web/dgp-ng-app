@@ -77,11 +77,11 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
                     <g [attr.transform]="getContainerTransform()">
 
                         <g class="chart__x-axis"
-                           dgpBarChartBottomAxis
+                           dgpChartBottomAxis
                            [scales]="barChartScales"></g>
 
                         <g class="chart__y-axis"
-                           dgpBarChartLeftAxis
+                           dgpChartLeftAxis
                            [scales]="barChartScales"></g>
 
                         <g *ngFor="let barGroup of model"

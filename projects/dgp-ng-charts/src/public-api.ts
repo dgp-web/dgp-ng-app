@@ -2,8 +2,6 @@
  * Public API Surface of dgp-ng-charts
  */
 
-export { DgpNgChartsModule } from "./lib/dgp-ng-charts.module";
-
 /**
  * -----
  * Bar chart
@@ -16,8 +14,6 @@ export { DgpBarChartComponent } from "./lib/bar-chart/components/bar-chart.compo
 export { DgpExportChartDialogComponent } from "./lib/bar-chart/components/export-chart-dialog.component";
 export { BarChartBarDirective } from "./lib/bar-chart/directives/bar-chart-bar.directive";
 export { BarChartBarFillPatternDirective } from "./lib/bar-chart/directives/bar-chart-bar-fill-pattern.directive";
-export { BarChartBottomAxisDirective } from "./lib/bar-chart/directives/bar-chart-bottom-axis.directive";
-export { BarChartLeftAxisDirective } from "./lib/bar-chart/directives/bar-chart-left-axis.directive";
 
 /**
  * -----
@@ -29,8 +25,6 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
-export { BoxPlotBottomAxisDirective } from "./lib/box-plot/directives/box-plot-bottom-axis.directive";
-export { BoxPlotLeftAxisDirective } from "./lib/box-plot/directives/box-plot-left-axis.directive";
 export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";
 export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whisker.directive";
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
@@ -50,15 +44,32 @@ export { BoxPlotOutlierTooltipDirective } from "./lib/box-plot/directives/box-pl
 export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
 export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
+export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
+export { DgpChartLeftAxisDirective } from "./lib/chart/directives/chart-left-axis.directive";
 
 /**
  * -----
  * Chart container
  * -----
  */
-
 export { DgpChartContainerModule } from "./lib/chart-container/chart-container.module";
 export { ChartContainerComponent } from "./lib/chart-container/components/chart-container.component";
+
+/**
+ * -----
+ * Connected scatter plot
+ * -----
+ */
+export * from "./lib/connected-scatter-plot/constants";
+export * from "./lib/connected-scatter-plot/functions";
+export * from "./lib/connected-scatter-plot/models";
+
+export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/connected-scatter-plot.module";
+export { DgpConnectedScatterPlotComponent } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
+// Directives
+export { DgpScatterPlotDotDirective } from "./lib/connected-scatter-plot/directives/scatter-plot-dot.directive";
+export { DgpScatterPlotDotTooltipDirective } from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
+export { DgpLineChartLineDirective } from "./lib/connected-scatter-plot/directives/line-chart-line.directive";
 
 /**
  * -----
@@ -94,13 +105,6 @@ export { DgpHeatmapModule } from "./lib/heatmap/heatmap.module";
 export { HeatmapComponent } from "./lib/heatmap/components/heatmap.component";
 export { HeatmapLegendComponent } from "./lib/heatmap/components/heatmap-legend.component";
 export { ExportChartDialogComponent } from "./lib/heatmap/components/export-chart-dialog.component";
-
-/**
- * -----
- * Line chart
- * -----
- */
-export { LineChartComponent } from "./lib/line-chart/line-chart.component";
 
 /**
  * -----

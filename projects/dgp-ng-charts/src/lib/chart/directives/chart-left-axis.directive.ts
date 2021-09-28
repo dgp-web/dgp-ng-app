@@ -1,13 +1,13 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from "@angular/core";
 
 import * as d3 from "d3";
-import { BarChartScales } from "../models";
+import { AxisScales } from "../../shared/models";
 
-@Directive({selector: "[dgpBarChartLeftAxis]"})
-export class BarChartLeftAxisDirective implements OnChanges {
+@Directive({selector: "[dgpChartLeftAxis]"})
+export class DgpChartLeftAxisDirective implements OnChanges {
 
     @Input()
-    scales: BarChartScales;
+    scales: AxisScales;
 
     constructor(private readonly elementRef: ElementRef) {
     }

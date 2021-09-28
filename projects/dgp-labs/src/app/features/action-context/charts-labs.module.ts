@@ -8,7 +8,6 @@ import {
     DgpSpacerModule,
     DgpTileModule
 } from "dgp-ng-app";
-import { DgpNgChartsModule } from "dgp-ng-charts";
 import { ActionContextLabsPageComponent } from "./containers/action-context-labs-page.component";
 import { CommonModule } from "@angular/common";
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -27,7 +26,6 @@ import { DgpResizeSensorModule } from "../../../../../dgp-ng-app/src/resize-sens
         }], {relativeLinkResolution: "legacy"}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
-        DgpNgChartsModule,
         DgpActionContextModule,
         DgpSpacerModule,
         DgpTileModule,

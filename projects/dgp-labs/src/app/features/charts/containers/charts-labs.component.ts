@@ -11,6 +11,7 @@ import {
 } from "dgp-ng-charts";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
 import { testBarGroups } from "../constants/test-bar-groups.constant";
+import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -25,14 +26,15 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
             <dgp-docs-page-content>
 
                 <dgp-docs-section-title>
+                    Connected scatterplot
+                </dgp-docs-section-title>
+
+                <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
+
+                <dgp-docs-section-title>
                     Box plot
                 </dgp-docs-section-title>
 
-                <dgp-fill-pattern-select [model]="fillPattern"
-                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
-
-                <dgp-shape-select [model]="shape"
-                                  (modelChange)="updateShape($event)"></dgp-shape-select>
                 <dgp-box-plot [model]="boxGroups">
 
                     <ng-container chart-title>
@@ -55,6 +57,10 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
 
                 <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
 
+                <dgp-docs-section-title>
+                    Bar chart
+                </dgp-docs-section-title>
+
                 <dgp-bar-chart [model]="barGroups"></dgp-bar-chart>
 
                 <dgp-docs-section-title>
@@ -75,6 +81,16 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
 
                 </dgp-heatmap>
 
+                <dgp-docs-section-title>
+                    Form elements
+                </dgp-docs-section-title>
+
+                <dgp-fill-pattern-select [model]="fillPattern"
+                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+
+                <dgp-shape-select [model]="shape"
+                                  (modelChange)="updateShape($event)"></dgp-shape-select>
+
 
             </dgp-docs-page-content>
 
@@ -89,7 +105,7 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
             overflow: auto;
         }
 
-        dgp-line-chart, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
+        dgp-connected-scatter-plot, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
             width: 640px;
             max-height: 480px;
             min-height: 400px;
@@ -105,6 +121,7 @@ export class ChartsLabsComponent {
 
     boxGroups = testBoxGroups;
     barGroups = testBarGroups;
+    connectedScatterGroups = testConnectedScatterGroups;
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
 

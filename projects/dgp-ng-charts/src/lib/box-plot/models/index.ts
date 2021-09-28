@@ -10,4 +10,3 @@ export * from "./box-plot-selection.model";
 export * from "./box-quantiles.model";
 export * from "./box-values.model";
 export * from "./brush-coordinates.model";
-export * from "./limits.model";

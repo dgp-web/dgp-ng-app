@@ -1,12 +1,12 @@
 import { Limits } from "../models";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultWithCardinalScaleOffset } from "../constants";
 
 /**
  * Applies offset to limits
  */
 export function getYAxisLimitsWithOffset(payload: {
     readonly limitsFromValues: Limits;
-}, config = defaultBoxPlotConfig): Limits {
+}, config = defaultWithCardinalScaleOffset): Limits {
 
     const distance = Math.abs(payload.limitsFromValues.max - payload.limitsFromValues.min);
 
