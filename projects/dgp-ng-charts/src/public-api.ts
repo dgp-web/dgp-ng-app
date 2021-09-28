@@ -2,8 +2,6 @@
  * Public API Surface of dgp-ng-charts
  */
 
-export { DgpNgChartsModule } from "./lib/dgp-ng-charts.module";
-
 /**
  * -----
  * Bar chart
@@ -56,9 +54,20 @@ export { DgpChartComponentBase } from "./lib/chart/components/chart.component-ba
  * Chart container
  * -----
  */
-
 export { DgpChartContainerModule } from "./lib/chart-container/chart-container.module";
 export { ChartContainerComponent } from "./lib/chart-container/components/chart-container.component";
+
+/**
+ * -----
+ * Connected scatter plot
+ * -----
+ */
+export * from "./lib/connected-scatter-plot/constants";
+export * from "./lib/connected-scatter-plot/functions";
+export * from "./lib/connected-scatter-plot/models";
+
+export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/connected-scatter-plot.module";
+export { DgpConnectedScatterPlotComponent } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
 
 /**
  * -----
@@ -94,13 +103,6 @@ export { DgpHeatmapModule } from "./lib/heatmap/heatmap.module";
 export { HeatmapComponent } from "./lib/heatmap/components/heatmap.component";
 export { HeatmapLegendComponent } from "./lib/heatmap/components/heatmap-legend.component";
 export { ExportChartDialogComponent } from "./lib/heatmap/components/export-chart-dialog.component";
-
-/**
- * -----
- * Line chart
- * -----
- */
-export { DgpConnectedScatterPlotComponent } from "./lib/line-chart/line-chart.component";
 
 /**
  * -----
