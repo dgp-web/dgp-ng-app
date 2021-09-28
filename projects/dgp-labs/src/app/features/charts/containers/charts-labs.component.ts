@@ -132,7 +132,12 @@ export class ChartsLabsComponent {
     boxGroups = testBoxGroups;
     boxPlotControlLines: ReadonlyArray<BoxPlotControlLine> = [{
         boxPlotControlLineId: "01",
-        value: 1.9,
+        value: 0.1,
+        colorHex: "#338800",
+        label: "Test limit"
+    }, {
+        boxPlotControlLineId: "02",
+        value: 15.1,
         colorHex: "#338800",
         label: "Test limit"
     }];
