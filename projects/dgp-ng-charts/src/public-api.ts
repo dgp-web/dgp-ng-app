@@ -45,6 +45,7 @@ export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
 export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
 export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
+export { DgpChartDataAreaClipPathDirective } from "./lib/chart/directives/chart-data-area-clip-path.directive";
 export { DgpChartLeftAxisDirective } from "./lib/chart/directives/chart-left-axis.directive";
 
 /**
