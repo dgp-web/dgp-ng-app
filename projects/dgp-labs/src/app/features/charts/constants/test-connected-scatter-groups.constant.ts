@@ -33,7 +33,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 6, y: 4},
             {x: 7, y: 3},
         ],
-        colorHex: "#ffff00",
+        colorHex: "#000000",
         shape: Shape.Rectangle
     }, {
         connectedScatterSeriesId: "series04",
