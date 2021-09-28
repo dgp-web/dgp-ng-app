@@ -32,7 +32,10 @@ import { testConnectedScatterGroups } from "../constants/test-connected-scatter-
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
 
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"
-                                            xAxisMin="1"></dgp-connected-scatter-plot>
+                                            xAxisMin="1"
+                                            xAxisMax="6"
+                                            yAxisMin="2"
+                                            yAxisMax="9"></dgp-connected-scatter-plot>
 
                 <dgp-docs-section-title>
                     Box plot

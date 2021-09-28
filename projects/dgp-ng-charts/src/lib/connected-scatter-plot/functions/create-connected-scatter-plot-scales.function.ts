@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import { ConnectedScatterGroup } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
-import { getYAxisLimitsWithOffset } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { getYAxisLimitsWithOffset } from "../../shared/functions";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
@@ -63,6 +63,7 @@ export function createConnectedScatterPlotScales(payload: {
             max: yMax
         }
     }, config);
+
 
     const yAxis = d3.scaleLinear()
         .domain([yAxisDomain.max, yAxisDomain.min])

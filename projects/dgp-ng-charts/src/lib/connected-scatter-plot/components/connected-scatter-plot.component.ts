@@ -4,6 +4,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    Inject,
     Input,
     OnChanges,
     OnDestroy,
@@ -18,8 +19,10 @@ import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterSeries, Do
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { defaultConnectedScatterPlotConfig } from "../constants";
-import { isNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { Shape } from "../../symbols/models";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -54,6 +57,11 @@ import { Shape } from "../../symbols/models";
                      class="chart-svg"
                      [attr.viewBox]="getViewBox()">
 
+                    <defs>
+                        <clipPath dgpChartDataAreaClipPath
+                                  [scales]="connectedScatterPlotScales"></clipPath>
+                    </defs>
+
                     <g [attr.transform]="getContainerTransform()">
 
                         <g class="chart__x-axis"
@@ -64,7 +72,7 @@ import { Shape } from "../../symbols/models";
                            dgpChartLeftAxis
                            [scales]="connectedScatterPlotScales"></g>
 
-                        <g>
+                        <g [attr.clip-path]="getClipPath()">
                             <g *ngFor="let group of model">
                                 <ng-container *ngFor="let series of group.series">
                                     <ng-container *ngFor="let dot of series.dots">
@@ -214,7 +222,10 @@ import { Shape } from "../../symbols/models";
             flex-grow: 1;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase implements ConnectedScatterPlot, OnChanges, OnDestroy {
 
@@ -249,7 +260,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     selectedDotKey: string = null;
 
     constructor(
-        private readonly cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef,
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
     ) {
         super();
 
@@ -277,10 +290,10 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
             connectedScatterGroups: this.model,
-            xAxisMin: this.xAxisMin,
-            xAxisMax: this.xAxisMax,
-            yAxisMin: this.yAxisMin,
-            yAxisMax: this.yAxisMax
+            xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
+            xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
+            yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
+            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
         });
 
         this.cd.markForCheck();
@@ -333,4 +346,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             + "." + dot.x + "." + dot.y;
     }
 
+    getClipPath(): string {
+        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    }
 }
