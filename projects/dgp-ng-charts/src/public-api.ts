@@ -66,6 +66,8 @@ export * from "./lib/connected-scatter-plot/models";
 
 export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/connected-scatter-plot.module";
 export { DgpConnectedScatterPlotComponent } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
+// Directives
+export { DgpScatterPlotDotDirective } from "./lib/connected-scatter-plot/directives/scatter-plot-dot.directive";
 
 /**
  * -----

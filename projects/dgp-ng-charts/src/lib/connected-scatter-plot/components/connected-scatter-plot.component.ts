@@ -63,6 +63,22 @@ import { isNullOrUndefined } from "dgp-ng-app";
                            dgpChartLeftAxis
                            [scales]="connectedScatterPlotScales"></g>
 
+                        <g>
+                            <g *ngFor="let group of model">
+                                <ng-container *ngFor="let series of group.series">
+                                    <ng-container *ngFor="let dot of series.dots">
+
+                                        <circle dgpScatterPlotDot
+                                                [dot]="dot"
+                                                [series]="series"
+                                                [group]="group"
+                                                [scales]="connectedScatterPlotScales"></circle>
+
+                                    </ng-container>
+                                </ng-container>
+                            </g>
+                        </g>
+
                     </g>
 
                 </svg>

@@ -9,7 +9,8 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 3, y: 7},
             {x: 4, y: 5},
             {x: 9, y: 4},
-        ]
+        ],
+        colorHex: "#00ff00"
     }, {
         connectedScatterSeriesId: "series02",
         dots: [
@@ -17,7 +18,8 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 3, y: 7},
             {x: 5, y: 9},
             {x: 6, y: 1},
-        ]
+        ],
+        colorHex: "#00ffff"
     }]
 }, {
     connectedScatterGroupId: "group02",
@@ -28,7 +30,8 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 4, y: 2},
             {x: 6, y: 4},
             {x: 7, y: 3},
-        ]
+        ],
+        colorHex: "#ffff00"
     }, {
         connectedScatterSeriesId: "series04",
         dots: [
@@ -36,6 +39,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 2, y: 1},
             {x: 3, y: 7},
             {x: 8, y: 8},
-        ]
+        ],
+        colorHex: "#ff00ff"
     }]
 }];
