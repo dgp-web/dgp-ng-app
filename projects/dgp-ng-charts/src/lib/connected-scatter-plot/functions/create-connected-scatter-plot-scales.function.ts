@@ -4,9 +4,14 @@ import { ConnectedScatterGroup } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { getYAxisLimitsWithOffset } from "../../shared/functions";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
+    readonly xAxisMin?: number;
+    readonly xAxisMax?: number;
+    readonly yAxisMin?: number;
+    readonly yAxisMax?: number;
     readonly containerWidth: number;
     readonly containerHeight: number;
 }, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
@@ -23,11 +28,26 @@ export function createConnectedScatterPlotScales(payload: {
         });
     });
 
-    const xMin = _.min(valuesForXExtremumComputation);
-    const xMax = _.max(valuesForXExtremumComputation);
+    let xMin = _.min(valuesForXExtremumComputation);
+    let xMax = _.max(valuesForXExtremumComputation);
 
-    const yMin = _.min(valuesForYExtremumComputation);
-    const yMax = _.max(valuesForYExtremumComputation);
+    if (notNullOrUndefined(payload.xAxisMin)) {
+        xMin = payload.xAxisMin;
+    }
+    if (notNullOrUndefined(payload.xAxisMax)) {
+        xMax = payload.xAxisMax;
+    }
+
+
+    let yMin = _.min(valuesForYExtremumComputation);
+    let yMax = _.max(valuesForYExtremumComputation);
+
+    if (notNullOrUndefined(payload.yAxisMin)) {
+         yMin = payload.yAxisMin;
+    }
+    if (notNullOrUndefined(payload.yAxisMax)) {
+        yMax = payload.yAxisMax;
+    }
 
     const barAreaWidth = payload.containerWidth
         - config.margin.left

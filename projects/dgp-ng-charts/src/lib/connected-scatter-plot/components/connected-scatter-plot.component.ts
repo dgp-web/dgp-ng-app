@@ -228,6 +228,18 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     @Input()
     config = defaultConnectedScatterPlotConfig;
 
+    @Input()
+    xAxisMin?: number;
+
+    @Input()
+    xAxisMax?: number;
+
+    @Input()
+    yAxisMin?: number;
+
+    @Input()
+    yAxisMax?: number;
+
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -264,7 +276,11 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
         this.connectedScatterPlotScales = createConnectedScatterPlotScales({
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
-            connectedScatterGroups: this.model
+            connectedScatterGroups: this.model,
+            xAxisMin: this.xAxisMin,
+            xAxisMax: this.xAxisMax,
+            yAxisMin: this.yAxisMin,
+            yAxisMax: this.yAxisMax
         });
 
         this.cd.markForCheck();
