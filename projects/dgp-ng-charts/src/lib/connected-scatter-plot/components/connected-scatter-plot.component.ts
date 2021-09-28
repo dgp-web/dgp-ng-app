@@ -17,7 +17,7 @@ import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { ConnectedScatterGroup, ConnectedScatterPlot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
-import { defaultConnectedScatterPlotConfig } from "../constants/default-connected-scatter-plot-config.constant";
+import { defaultConnectedScatterPlotConfig } from "../constants";
 import { isNullOrUndefined } from "dgp-ng-app";
 
 @Component({

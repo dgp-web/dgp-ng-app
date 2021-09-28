@@ -1,5 +1,5 @@
 import { defaultBarChartConfig } from "../constants";
-import { Limits } from "../../box-plot/models";
+import { Limits } from "../../shared/models";
 
 /**
  * Applies offset to limits
