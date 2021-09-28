@@ -43,17 +43,17 @@ export function createConnectedScatterPlotScales(payload: {
     let yMax = _.max(valuesForYExtremumComputation);
 
     if (notNullOrUndefined(payload.yAxisMin)) {
-         yMin = payload.yAxisMin;
+        yMin = payload.yAxisMin;
     }
     if (notNullOrUndefined(payload.yAxisMax)) {
         yMax = payload.yAxisMax;
     }
 
-    const barAreaWidth = payload.containerWidth
+    const dataAreaWidth = payload.containerWidth
         - config.margin.left
         - config.margin.right;
 
-    const barAreaHeight = payload.containerHeight
+    const dataAreaHeight = payload.containerHeight
         - config.margin.top
         - config.margin.bottom;
 
@@ -66,19 +66,19 @@ export function createConnectedScatterPlotScales(payload: {
 
     const yAxis = d3.scaleLinear()
         .domain([yAxisDomain.max, yAxisDomain.min])
-        .range([0, barAreaHeight]);
+        .range([0, dataAreaHeight]);
 
     const xAxis = d3.scaleLinear()
         .domain([xMin, xMax]) // TODO
-        .range([0, barAreaWidth]);
+        .range([0, dataAreaWidth]);
 
     return {
         xAxis,
         yAxis,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,
-        barAreaHeight,
-        barAreaWidth,
+        dataAreaHeight,
+        dataAreaWidth,
         chartMargin: config.margin
     };
 
