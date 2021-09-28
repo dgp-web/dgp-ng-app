@@ -61,7 +61,9 @@ import { testConnectedScatterGroups } from "../constants/test-connected-scatter-
 
                 </dgp-box-plot>
 
-                <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
+                <dgp-box-plot [model]="boxGroups"
+                              yAxisMin="3"
+                              yAxisMax="17"></dgp-box-plot>
 
                 <dgp-docs-section-title>
                     Bar chart

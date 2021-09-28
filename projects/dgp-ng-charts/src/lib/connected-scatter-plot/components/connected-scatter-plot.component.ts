@@ -293,7 +293,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
-            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
+            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined
         });
 
         this.cd.markForCheck();

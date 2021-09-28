@@ -4,6 +4,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    Inject,
     Input,
     OnChanges,
     OnDestroy,
@@ -16,13 +17,14 @@ import { debounceTime, tap } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
-import { isNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
 import { ChartSelectionMode } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../symbols/models";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-box-plot",
@@ -75,6 +77,10 @@ import { Shape } from "../../symbols/models";
                         <mask dgpDiagonalGridMask></mask>
                         <mask dgpCheckerboardMask></mask>
                         <mask dgpDiagonalCheckerboardMask></mask>
+
+                        <!-- Other -->
+                        <clipPath dgpChartDataAreaClipPath
+                                  [scales]="boxPlotScales"></clipPath>
                     </defs>
 
                     <g [attr.transform]="getContainerTransform()">
@@ -92,7 +98,8 @@ import { Shape } from "../../symbols/models";
                            [boxGroups]="model"
                            [config]="config"
                            [selectionMode]="selectionMode"
-                           (selectionChange)="selectionChange.emit($event)">
+                           (selectionChange)="selectionChange.emit($event)"
+                           [attr.clip-path]="getClipPath()">
                             <g *ngFor="let boxGroup of model"
                                [attr.transform]="getResultRootTransform(boxGroup)">
                                 <ng-container *ngFor="let box of boxGroup.boxes">
@@ -287,6 +294,12 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     boxPlotScales: BoxPlotScales;
 
+    @Input()
+    yAxisMin?: number;
+
+    @Input()
+    yAxisMax?: number;
+
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -302,7 +315,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     readonly shapeEnum = Shape;
 
     constructor(
-        private readonly cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef,
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
     ) {
         super();
 
@@ -329,7 +344,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         this.boxPlotScales = createBoxPlotScales({
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
-            boxGroups: this.model
+            boxGroups: this.model,
+            yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
+            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined
         });
 
         this.cd.markForCheck();
@@ -381,4 +398,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         return "0 0 " + width + " " + height;
 
     }
+
+    getClipPath(): string {
+        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    }
+
 }

@@ -3,9 +3,12 @@ import { defaultBoxPlotConfig } from "../constants";
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { getYAxisLimitsWithOffset } from "../../shared/functions/get-y-axis-limits-with-offset.function";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
+    readonly yAxisMin?: number;
+    readonly yAxisMax?: number;
     readonly containerWidth: number;
     readonly containerHeight: number;
 }, config = defaultBoxPlotConfig): BoxPlotScales {
@@ -30,8 +33,16 @@ export function createBoxPlotScales(payload: {
         return previousValue;
     }, new Array<number>());
 
-    const yMin = _.min(valuesForExtremumComputation);
-    const yMax = _.max(valuesForExtremumComputation);
+    let yMin = _.min(valuesForExtremumComputation);
+    let yMax = _.max(valuesForExtremumComputation);
+
+    if (notNullOrUndefined(payload.yAxisMin)) {
+        yMin = payload.yAxisMin;
+    }
+    if (notNullOrUndefined(payload.yAxisMax)) {
+        yMax = payload.yAxisMax;
+    }
+
 
     // Compute reference margin left
     /*  const referenceYDomainLabelLength = _.max(
@@ -96,8 +107,8 @@ export function createBoxPlotScales(payload: {
         xAxisSubgroupKVS,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,
-        barAreaHeight,
-        barAreaWidth,
+        dataAreaHeight: barAreaHeight,
+        dataAreaWidth: barAreaWidth,
         chartMargin: config.margin
     };
 
