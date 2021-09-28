@@ -33,6 +33,7 @@ export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.dire
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
 export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outlier.directive";
 export { BoxPlotBrushSelectorDirective } from "./lib/box-plot/directives/box-plot-brush-selector.directive";
+export { BoxPlotControlLineDirective } from "./lib/box-plot/directives/box-plot-control-line.directive";
 export { BoxPlotOutlierTooltipDirective } from "./lib/box-plot/directives/box-plot-outlier-tooltip.directive";
 
 /**
@@ -66,10 +67,14 @@ export * from "./lib/connected-scatter-plot/functions";
 export * from "./lib/connected-scatter-plot/models";
 
 export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/connected-scatter-plot.module";
-export { DgpConnectedScatterPlotComponent } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
+export {
+    DgpConnectedScatterPlotComponent
+} from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
 // Directives
 export { DgpScatterPlotDotDirective } from "./lib/connected-scatter-plot/directives/scatter-plot-dot.directive";
-export { DgpScatterPlotDotTooltipDirective } from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
+export {
+    DgpScatterPlotDotTooltipDirective
+} from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
 export { DgpLineChartLineDirective } from "./lib/connected-scatter-plot/directives/line-chart-line.directive";
 
 /**

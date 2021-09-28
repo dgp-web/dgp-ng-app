@@ -12,6 +12,7 @@ import {
 import { testBoxGroups } from "../constants/test-box-groups.constant";
 import { testBarGroups } from "../constants/test-bar-groups.constant";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
+import { BoxPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/box-plot/models";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -41,7 +42,8 @@ import { testConnectedScatterGroups } from "../constants/test-connected-scatter-
                     Box plot
                 </dgp-docs-section-title>
 
-                <dgp-box-plot [model]="boxGroups">
+                <dgp-box-plot [model]="boxGroups"
+                              [controlLines]="boxPlotControlLines">
 
                     <ng-container chart-title>
                         Title via template slot
@@ -128,6 +130,12 @@ export class ChartsLabsComponent {
     shape = Shape.Circle;
 
     boxGroups = testBoxGroups;
+    boxPlotControlLines: ReadonlyArray<BoxPlotControlLine> = [{
+        boxPlotControlLineId: "01",
+        value: 1.9,
+        colorHex: "#338800",
+        label: "Test limit"
+    }];
     barGroups = testBarGroups;
     connectedScatterGroups = testConnectedScatterGroups;
 
