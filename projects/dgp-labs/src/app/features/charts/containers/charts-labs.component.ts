@@ -13,6 +13,7 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 import { testBarGroups } from "../constants/test-bar-groups.constant";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { BoxPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/box-plot/models";
+import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -33,6 +34,7 @@ import { BoxPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/box-
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
 
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"
+                                            [controlLines]="connectedScatterPlotControlLines"
                                             xAxisMin="1"
                                             xAxisMax="6"
                                             yAxisMin="2"
@@ -143,6 +145,17 @@ export class ChartsLabsComponent {
     }];
     barGroups = testBarGroups;
     connectedScatterGroups = testConnectedScatterGroups;
+    connectedScatterPlotControlLines: ReadonlyArray<ConnectedScatterPlotControlLine> = [{
+        connectedScatterPlotControlLineId: "01",
+        value: 0.1,
+        colorHex: "#338800",
+        label: "Test limit"
+    }, {
+        connectedScatterPlotControlLineId: "02",
+        value: 15.1,
+        colorHex: "#338800",
+        label: "Test limit"
+    }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
 

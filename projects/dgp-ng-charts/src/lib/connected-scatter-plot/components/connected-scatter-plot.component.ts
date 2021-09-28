@@ -15,7 +15,13 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterSeries, Dot } from "../models";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlot,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterSeries,
+    Dot
+} from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { defaultConnectedScatterPlotConfig } from "../constants";
@@ -235,6 +241,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     @Input()
     model: readonly ConnectedScatterGroup[];
+
+    @Input()
+    controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
 
     @Input()
     config = defaultConnectedScatterPlotConfig;
