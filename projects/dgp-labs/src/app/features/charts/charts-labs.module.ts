@@ -2,7 +2,14 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { ChartsLabsComponent } from "./containers/charts-labs.component";
-import { DgpBarChartModule, DgpFillPatternSelectModule, DgpNgChartsModule, DgpShapeSelectModule } from "dgp-ng-charts";
+import {
+    DgpBarChartModule,
+    DgpBoxPlotModule,
+    DgpFillPatternSelectModule,
+    DgpHeatmapModule,
+    DgpShapeSelectModule,
+    DgpConnectedScatterPlotModule
+} from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
 
 @NgModule({
@@ -13,11 +20,13 @@ import { DocsModule } from "dgp-ng-docs";
         }], {relativeLinkResolution: "legacy"}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
-        DgpNgChartsModule,
         DocsModule,
         DgpFillPatternSelectModule,
         DgpShapeSelectModule,
-        DgpBarChartModule
+        DgpBarChartModule,
+        DgpBoxPlotModule,
+        DgpHeatmapModule,
+        DgpConnectedScatterPlotModule
     ],
     declarations: [
         ChartsLabsComponent

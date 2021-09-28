@@ -42,8 +42,7 @@ import { isNullOrUndefined } from "dgp-ng-app";
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
-
-
+            
         </dgp-chart>
     `,
     styles: [`
