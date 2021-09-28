@@ -1,6 +1,8 @@
 import { BoxPlotConfig } from "./models";
+import { defaultWithCardinalScaleOffset } from "../shared/constants";
 
 export const defaultBoxPlotConfig: BoxPlotConfig = {
+    ...defaultWithCardinalScaleOffset,
     margin: {
         top: 10,
         right: 0,
@@ -9,6 +11,5 @@ export const defaultBoxPlotConfig: BoxPlotConfig = {
     },
     groupPadding: 0.2,
     subGroupPadding: 0.05,
-    cardinalScaleOffset: 0.05,
     jitterWidth: 50
 };

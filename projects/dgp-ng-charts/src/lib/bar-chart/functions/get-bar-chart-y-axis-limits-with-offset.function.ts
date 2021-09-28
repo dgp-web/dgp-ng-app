@@ -4,7 +4,7 @@ import { Limits } from "../../box-plot/models";
 /**
  * Applies offset to limits
  */
-export function getYAxisLimitsWithOffset(payload: {
+export function getBarChartYAxisLimitsWithOffset(payload: {
     readonly limitsFromValues: Limits;
 }, config = defaultBarChartConfig): Limits {
 

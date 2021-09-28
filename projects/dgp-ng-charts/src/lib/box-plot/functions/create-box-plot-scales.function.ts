@@ -2,7 +2,7 @@ import { BoxGroup, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants";
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { getYAxisLimitsWithOffset } from "./get-y-axis-limits-with-offset.function";
+import { getYAxisLimitsWithOffset } from "../../shared/functions/get-y-axis-limits-with-offset.function";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;

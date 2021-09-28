@@ -1,10 +1,9 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { BarChartScales, ConnectedScatterGroup } from "../models";
-import { defaultBarChartConfig } from "../constants";
-import { getYAxisLimitsWithOffset } from "./get-y-axis-limits-with-offset.function";
+import { ConnectedScatterGroup } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
+import { getYAxisLimitsWithOffset } from "../../shared/functions";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
@@ -12,32 +11,34 @@ export function createConnectedScatterPlotScales(payload: {
     readonly containerHeight: number;
 }, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
 
-    const barGroupKeys = payload.barGroups.map(x => x.barGroupKey);
-    const barIds = _.flatten(payload.barGroups.map(x => x.bars.map(y => y.barKey)));
+    const valuesForYExtremumComputation = new Array<number>();
+    const valuesForXExtremumComputation = new Array<number>();
 
-    const valuesForExtremumComputation = payload.barGroups.reduce((previousValue, currentValue) => {
+    payload.connectedScatterGroups.forEach((currentValue) => {
+        currentValue.series.forEach(bar => {
 
-        currentValue.bars.forEach(bar => {
-            previousValue.push(bar.value);
+            // TODO: Collect values for x and
+
         });
+    });
 
-        return previousValue;
-    }, new Array<number>());
+    const xMin = _.min(valuesForXExtremumComputation);
+    const xMax = _.max(valuesForXExtremumComputation);
 
-    const yMin = _.min(valuesForExtremumComputation);
-    const yMax = _.max(valuesForExtremumComputation);
+    const yMin = _.min(valuesForYExtremumComputation);
+    const yMax = _.max(valuesForYExtremumComputation);
 
     const barAreaWidth = payload.containerWidth
-        - defaultBarChartConfig.margin.left
-        - defaultBarChartConfig.margin.right;
+        - config.margin.left
+        - config.margin.right;
 
     const barAreaHeight = payload.containerHeight
-        - defaultBarChartConfig.margin.top
-        - defaultBarChartConfig.margin.bottom;
+        - config.margin.top
+        - config.margin.bottom;
 
     const yAxisDomain = getYAxisLimitsWithOffset({
         limitsFromValues: {
-            min: 0,
+            min: yMin,
             max: yMax
         }
     }, config);
@@ -46,26 +47,13 @@ export function createConnectedScatterPlotScales(payload: {
         .domain([yAxisDomain.max, yAxisDomain.min])
         .range([0, barAreaHeight]);
 
-    const xAxis = d3.scaleBand()
-        .domain(barGroupKeys)
-        .range([0, barAreaWidth])
-        .padding(0.2);
-
-    const xAxisSubgroupKVS = payload.barGroups.reduce((previousValue, currentValue) => {
-
-        previousValue[currentValue.barGroupKey] = d3.scaleBand() // TODO: We need to create sub groups based on crap
-            .domain(currentValue.bars.map(x => x.barKey))
-            .range([0, xAxis.bandwidth()])
-            .padding(0.05);
-
-        return previousValue;
-
-    }, {});
+    const xAxis = d3.scaleLinear()
+        .domain([xMin, xMax]) // TODO
+        .range([0, barAreaWidth]);
 
     return {
         xAxis,
         yAxis,
-        xAxisSubgroupKVS,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,
         barAreaHeight,

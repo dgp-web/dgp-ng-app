@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as d3 from "d3";
 import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
-import { getYAxisLimitsWithOffset } from "./get-y-axis-limits-with-offset.function";
+import { getBarChartYAxisLimitsWithOffset } from "./get-bar-chart-y-axis-limits-with-offset.function";
 
 export function createBarChartScales(payload: {
     readonly barGroups: ReadonlyArray<BarGroup>;
@@ -33,7 +33,7 @@ export function createBarChartScales(payload: {
         - defaultBarChartConfig.margin.top
         - defaultBarChartConfig.margin.bottom;
 
-    const yAxisDomain = getYAxisLimitsWithOffset({
+    const yAxisDomain = getBarChartYAxisLimitsWithOffset({
         limitsFromValues: {
             min: 0,
             max: yMax
