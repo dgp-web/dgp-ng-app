@@ -23,7 +23,7 @@ export class DgpScatterPlotDotDirective implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        if (changes.dot || changes.series || changes.group) {
+        if (changes.dot || changes.series || changes.group || changes.scales) {
 
             const x = this.scales.xAxis(this.dot.x);
             const y = this.scales.yAxis(this.dot.y);

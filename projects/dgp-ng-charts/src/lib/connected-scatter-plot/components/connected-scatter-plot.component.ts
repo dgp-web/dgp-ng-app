@@ -75,6 +75,12 @@ import { isNullOrUndefined } from "dgp-ng-app";
                                                 [scales]="connectedScatterPlotScales"></circle>
 
                                     </ng-container>
+
+                                    <path dgpLineChartLine
+                                          [series]="series"
+                                          [group]="group"
+                                          [scales]="connectedScatterPlotScales"></path>
+
                                 </ng-container>
                             </g>
                         </g>
