@@ -31,6 +31,12 @@ import { testConnectedScatterGroups } from "../constants/test-connected-scatter-
 
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
 
+                <dgp-connected-scatter-plot [model]="connectedScatterGroups"
+                                            xAxisMin="1"
+                                            xAxisMax="6"
+                                            yAxisMin="2"
+                                            yAxisMax="9"></dgp-connected-scatter-plot>
+
                 <dgp-docs-section-title>
                     Box plot
                 </dgp-docs-section-title>
@@ -55,7 +61,9 @@ import { testConnectedScatterGroups } from "../constants/test-connected-scatter-
 
                 </dgp-box-plot>
 
-                <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
+                <dgp-box-plot [model]="boxGroups"
+                              yAxisMin="3"
+                              yAxisMax="17"></dgp-box-plot>
 
                 <dgp-docs-section-title>
                     Bar chart

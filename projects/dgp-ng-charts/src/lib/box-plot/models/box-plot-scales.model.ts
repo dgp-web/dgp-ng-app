@@ -5,8 +5,8 @@ import { KVS } from "entity-store";
 export interface BoxPlotScales {
     readonly containerWidth: number;
     readonly containerHeight: number;
-    readonly barAreaWidth: number;
-    readonly barAreaHeight: number;
+    readonly dataAreaWidth: number;
+    readonly dataAreaHeight: number;
     readonly chartMargin: ChartMargin;
     readonly xAxis: d3.ScaleBand<string>;
     readonly xAxisSubgroupKVS: KVS<d3.ScaleBand<string>>;
