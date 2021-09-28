@@ -42,7 +42,33 @@ import { isNullOrUndefined } from "dgp-ng-app";
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
-            
+
+            <div class="plot-container"
+                 #chartContainer>
+
+                <svg #svgRoot
+                     dgpResizeSensor
+                     (sizeChanged)="drawChart()"
+                     *ngIf="connectedScatterPlotScales"
+                     class="chart-svg"
+                     [attr.viewBox]="getViewBox()">
+
+                    <g [attr.transform]="getContainerTransform()">
+
+                        <g class="chart__x-axis"
+                           dgpChartBottomAxis
+                           [scales]="connectedScatterPlotScales"></g>
+
+                        <g class="chart__y-axis"
+                           dgpChartLeftAxis
+                           [scales]="connectedScatterPlotScales"></g>
+
+                    </g>
+
+                </svg>
+
+            </div>
+
         </dgp-chart>
     `,
     styles: [`
