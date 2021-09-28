@@ -14,7 +14,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
-import { ConnectedScatterGroup, ConnectedScatterPlot } from "../models";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { defaultConnectedScatterPlotConfig } from "../constants";
@@ -72,7 +72,21 @@ import { isNullOrUndefined } from "dgp-ng-app";
                                                 [dot]="dot"
                                                 [series]="series"
                                                 [group]="group"
-                                                [scales]="connectedScatterPlotScales"></circle>
+                                                [scales]="connectedScatterPlotScales"
+                                                (focus)="highlightDot(group, series, dot)"
+                                                (mouseenter)="highlightDot(group, series, dot)"
+                                                (blur)="unhighlightDot(group, series, dot)"
+                                                (mouseleave)="unhighlightDot(group, series, dot)"></circle>
+
+                                        <text class="tooltip --hidden"
+                                              [class.--visible]="isDotHighlighted(group, series, dot)"
+                                              dgpScatterPlotDotTooltip
+                                              [scales]="connectedScatterPlotScales"
+                                              [dot]="dot"
+                                              [series]="series"
+                                              [group]="group">
+                                            ({{ dot.x }} ; {{ dot.y }})
+                                        </text>
 
                                     </ng-container>
 
@@ -117,6 +131,8 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     private drawChartSubscription: Subscription;
 
     connectedScatterPlotScales: ConnectedScatterPlotScales;
+
+    selectedDotKey: string = null;
 
     constructor(
         private readonly cd: ChangeDetectorRef
@@ -172,7 +188,6 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     }
 
-
     getViewBox() {
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
@@ -180,6 +195,24 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
         const width = rect.width - this.config.margin.left - this.config.margin.right;
 
         return "0 0 " + width + " " + height;
+    }
+
+    highlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
+        this.selectedDotKey = this.getDotKey(group, series, dot);
+    }
+
+    unhighlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
+        this.selectedDotKey = null;
+    }
+
+    isDotHighlighted(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
+        return this.selectedDotKey === this.getDotKey(group, series, dot);
+    }
+
+    private getDotKey(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot): string {
+        return group.connectedScatterGroupId
+            + "." + series.connectedScatterSeriesId
+            + "." + dot.x + "." + dot.y;
     }
 
 }

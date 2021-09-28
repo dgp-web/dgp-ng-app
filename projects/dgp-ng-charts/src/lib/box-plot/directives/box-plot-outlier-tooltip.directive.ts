@@ -37,9 +37,6 @@ export class BoxPlotOutlierTooltipDirective implements OnChanges {
             this.renderer.setAttribute(this.elementRef.nativeElement, "x", x.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "y", y.toString());
 
-            this.renderer.setAttribute(this.elementRef.nativeElement, "r", "3");
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex);
-
         }
 
     }
