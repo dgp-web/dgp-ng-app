@@ -14,6 +14,8 @@ import { testBarGroups } from "../constants/test-bar-groups.constant";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { BoxPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/box-plot/models";
 import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
+import { ScaleType } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
+import { testLogBoxGroups } from "../constants/test-log-box-groups.constant";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -31,7 +33,7 @@ import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts
                     Connected scatterplot
                 </dgp-docs-section-title>
 
-                <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
+              <!--  <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
 
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"
                                             [controlLines]="connectedScatterPlotControlLines"
@@ -39,10 +41,11 @@ import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts
                                             xAxisMax="6"
                                             yAxisMin="2"
                                             yAxisMax="9"></dgp-connected-scatter-plot>
-
+-->
                 <dgp-docs-section-title>
                     Box plot
                 </dgp-docs-section-title>
+<!--
 
                 <dgp-box-plot [model]="boxGroups"
                               [controlLines]="boxPlotControlLines">
@@ -66,18 +69,26 @@ import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts
                 </dgp-box-plot>
 
                 <dgp-box-plot [model]="boxGroups"
+                              [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
                               yAxisMin="3"
                               yAxisMax="17"></dgp-box-plot>
+-->
+
+                <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
+                              [model]="logBoxGroups"></dgp-box-plot>
 
                 <dgp-docs-section-title>
                     Bar chart
                 </dgp-docs-section-title>
+<!--
 
                 <dgp-bar-chart [model]="barGroups"></dgp-bar-chart>
+-->
 
                 <dgp-docs-section-title>
                     Heat map
                 </dgp-docs-section-title>
+<!--
 
                 <dgp-heatmap [model]="heatmapTiles"
                              chartTitle="Chart title"
@@ -92,6 +103,7 @@ import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts
                     <ng-container bottom-legend>Bottom</ng-container>
 
                 </dgp-heatmap>
+-->
 
                 <dgp-docs-section-title>
                     Form elements
@@ -128,10 +140,12 @@ import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts
 })
 export class ChartsLabsComponent {
 
+    readonly axisScaleTypeEnum = ScaleType;
     fillPattern = FillPattern.All;
     shape = Shape.Circle;
 
     boxGroups = testBoxGroups;
+    logBoxGroups = testLogBoxGroups;
     boxPlotControlLines: ReadonlyArray<BoxPlotControlLine> = [{
         boxPlotControlLineId: "01",
         value: 0.1,

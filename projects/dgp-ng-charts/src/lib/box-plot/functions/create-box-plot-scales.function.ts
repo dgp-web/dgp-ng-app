@@ -2,14 +2,17 @@ import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants";
 import * as _ from "lodash";
 import * as d3 from "d3";
+import { ScaleLinear, ScaleLogarithmic } from "d3";
 import { getYAxisLimitsWithOffset } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { ScaleType } from "../../shared/models";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
+    readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
 }, config = defaultBoxPlotConfig): BoxPlotScales {
@@ -88,9 +91,21 @@ export function createBoxPlotScales(payload: {
         }
     }, config);
 
-    const yAxis = d3.scaleLinear()
-        .domain([yAxisDomain.max, yAxisDomain.min])
-        .range([0, barAreaHeight]);
+    let yAxis: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
+
+    switch (payload.yAxisScaleType) {
+        default:
+        case ScaleType.Linear:
+            yAxis = d3.scaleLinear()
+                .domain([yAxisDomain.max, yAxisDomain.min])
+                .range([0, barAreaHeight]);
+            break;
+        case ScaleType.Logarithmic:
+            yAxis = d3.scaleLog()
+                .domain([(yMax >= 0 ? yMax : 0.001), (yMin >= 0 ? yMin : 0.001)])
+                .range([0, barAreaHeight]);
+            break;
+    }
 
     const xAxis = d3.scaleBand()
         .domain(boxGroupKeys)

@@ -20,7 +20,7 @@ import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
-import { ChartSelectionMode } from "../../shared/models";
+import { ChartSelectionMode, ScaleType } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../symbols/models";
@@ -309,6 +309,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     @Input()
     yAxisMax?: number;
 
+    @Input()
+    yAxisScaleType?: ScaleType;
+
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -355,7 +358,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             containerWidth: payload.containerWidth,
             boxGroups: this.model,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
-            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined
+            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
+            yAxisScaleType: this.yAxisScaleType
         });
 
         this.cd.markForCheck();
