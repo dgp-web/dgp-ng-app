@@ -65,7 +65,7 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
                     const outliers = getOutliers(this.boxGroups).filter(x => isBrushed(
                         extent,
                         getOutlierXPosition(x, this.scales, this.config),
-                        this.scales.yAxis(x.value)
+                        this.scales.yAxisScale(x.value)
                     ));
 
                     this.selectionChange.emit({outliers});

@@ -7,7 +7,7 @@ export function getOutlierXPosition(
     scales: BoxPlotScales,
     config = defaultBoxPlotConfig
 ): number {
-    return scales.xAxis(outlier.boxGroupId.toString())
+    return scales.xAxisScale(outlier.boxGroupId.toString())
         + scales.xAxisSubgroupKVS[outlier.boxGroupId].bandwidth() / 2
         + scales.xAxisSubgroupKVS[outlier.boxGroupId](outlier.boxId.toString())
         + getJitter(outlier.boxId + outlier.value, config);

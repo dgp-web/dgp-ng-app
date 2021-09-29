@@ -26,8 +26,8 @@ export class DgpScatterPlotDotDirective implements OnChanges {
 
         if (changes.dot || changes.series || changes.group || changes.scales) {
 
-            const x = this.scales.xAxis(this.dot.x);
-            const y = this.scales.yAxis(this.dot.y);
+            const x = this.scales.xAxisScale(this.dot.x);
+            const y = this.scales.yAxisScale(this.dot.y);
 
             switch (this.series.shape) {
                 default:

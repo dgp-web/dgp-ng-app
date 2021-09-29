@@ -1,5 +1,6 @@
 import { AxisScale } from "d3-axis";
 import { ChartMargin } from "./chart-margin.model";
+import { Axis } from "d3";
 
 export interface AxisScales {
     readonly containerWidth: number;
@@ -12,6 +13,8 @@ export interface AxisScales {
     readonly dataAreaWidth: number;
     readonly dataAreaHeight: number;
     readonly chartMargin: ChartMargin;
-    readonly xAxis: AxisScale<any>;
-    readonly yAxis: AxisScale<any>;
+    readonly xAxisScale: AxisScale<any>;
+    readonly xAxis: Axis<any>;
+    readonly yAxisScale: AxisScale<any>;
+    readonly yAxis: Axis<any>;
 }

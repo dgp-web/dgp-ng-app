@@ -18,8 +18,8 @@ export class BoxPlotControlLineDirective implements OnChanges {
 
         if (changes.scales || changes.boxPlotControlLine) {
 
-            const y = this.scales.yAxis(this.boxPlotControlLine.value);
-            const xAxisRange = this.scales.xAxis.range();
+            const y = this.scales.yAxisScale(this.boxPlotControlLine.value);
+            const xAxisRange = this.scales.xAxisScale.range();
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x1", xAxisRange[0].toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "x2", xAxisRange[1].toString());

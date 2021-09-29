@@ -388,7 +388,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     }
 
     getResultRootTransform(boxGroup: BoxGroup) {
-        return "translate(" + this.boxPlotScales.xAxis(boxGroup.boxGroupId) + ")";
+        return "translate(" + this.boxPlotScales.xAxisScale(boxGroup.boxGroupId) + ")";
     }
 
     getBoxOutlierKey(box: Box, outlierIndex: number) {

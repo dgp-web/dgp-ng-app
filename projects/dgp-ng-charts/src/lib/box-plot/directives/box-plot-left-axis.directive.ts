@@ -14,7 +14,7 @@ export class BoxPlotLeftAxisDirective implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
 
         if (changes.scales) {
-            d3.select(this.elementRef.nativeElement).call(d3.axisLeft(this.scales.yAxis));
+            d3.select(this.elementRef.nativeElement).call(d3.axisLeft(this.scales.yAxisScale));
         }
 
     }

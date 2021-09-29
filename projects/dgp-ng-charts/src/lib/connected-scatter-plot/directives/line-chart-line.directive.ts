@@ -28,9 +28,9 @@ export class DgpLineChartLineDirective implements OnChanges {
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "1.5");
 
             const createLine = line<Dot>().x(dot => {
-                return this.scales.xAxis(dot.x);
+                return this.scales.xAxisScale(dot.x);
             }).y(dot => {
-                return this.scales.yAxis(dot.y);
+                return this.scales.yAxisScale(dot.y);
             });
 
             const d = createLine(this.series.dots as Array<Dot>);

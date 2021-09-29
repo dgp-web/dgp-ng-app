@@ -26,8 +26,8 @@ export class BoxPlotLowerAntennaDirective implements OnChanges {
 
             const x2 = x1;
 
-            const y1 = this.scales.yAxis(this.box.quantiles.upper);
-            const y2 = this.scales.yAxis(this.box.quantiles.max);
+            const y1 = this.scales.yAxisScale(this.box.quantiles.upper);
+            const y2 = this.scales.yAxisScale(this.box.quantiles.max);
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x1", x1.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "x2", x2.toString());
