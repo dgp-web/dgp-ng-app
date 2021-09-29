@@ -8,4 +8,6 @@ export interface BoxPlot extends Chart {
      * Optional lines that indicate limits in which values should lie
      */
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
+    readonly yAxisMin?: number;
+    readonly yAxisMax?: number;
 }
