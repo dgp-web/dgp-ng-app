@@ -1,12 +1,13 @@
-import { BoxGroup, BoxPlotScales } from "../models";
+import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants";
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { getYAxisLimitsWithOffset } from "../../shared/functions/get-y-axis-limits-with-offset.function";
+import { getYAxisLimitsWithOffset } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
+    readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
     readonly containerWidth: number;
@@ -32,6 +33,12 @@ export function createBoxPlotScales(payload: {
 
         return previousValue;
     }, new Array<number>());
+
+    if (notNullOrUndefined(payload.controlLines)) {
+        payload.controlLines.forEach(controlLine => {
+            valuesForExtremumComputation.push(controlLine.value);
+        });
+    }
 
     let yMin = _.min(valuesForExtremumComputation);
     let yMax = _.max(valuesForExtremumComputation);

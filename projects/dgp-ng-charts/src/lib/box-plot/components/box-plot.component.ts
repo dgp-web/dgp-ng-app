@@ -12,7 +12,7 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { Box, BoxGroup, BoxPlot, BoxPlotScales, BoxPlotSelection } from "../models";
+import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, tap } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
@@ -258,6 +258,12 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                     </text>
                                 </ng-container>
                             </g>
+
+                            <line *ngFor="let controlLine of controlLines"
+                                  dgpBoxPlotControlLine
+                                  [scales]="boxPlotScales"
+                                  [boxPlotControlLine]="controlLine"></line>
+
                         </g>
 
                     </g>
@@ -285,6 +291,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     @Input()
     model: ReadonlyArray<BoxGroup>;
+
+    @Input()
+    controlLines?: ReadonlyArray<BoxPlotControlLine>;
 
     @Input()
     config = defaultBoxPlotConfig;

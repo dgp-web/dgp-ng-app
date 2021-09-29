@@ -5,6 +5,7 @@ export * from "./box-outlier.model";
 export * from "./box-outlier-id.model";
 export * from "./box-plot.model";
 export * from "./box-plot-config.model";
+export * from "./box-plot-control-line.model";
 export * from "./box-plot-scales.model";
 export * from "./box-plot-selection.model";
 export * from "./box-quantiles.model";
