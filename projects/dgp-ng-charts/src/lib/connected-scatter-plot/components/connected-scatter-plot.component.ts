@@ -211,6 +211,12 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
                                 </ng-container>
                             </g>
+
+                            <line *ngFor="let controlLine of controlLines"
+                                  dgpConnectedScatterPlotControlLine
+                                  [scales]="connectedScatterPlotScales"
+                                  [connectedScatterPlotControlLine]="controlLine"></line>
+
                         </g>
 
                     </g>

@@ -147,12 +147,12 @@ export class ChartsLabsComponent {
     connectedScatterGroups = testConnectedScatterGroups;
     connectedScatterPlotControlLines: ReadonlyArray<ConnectedScatterPlotControlLine> = [{
         connectedScatterPlotControlLineId: "01",
-        value: 0.1,
+        value: 2.5,
         colorHex: "#338800",
         label: "Test limit"
     }, {
         connectedScatterPlotControlLineId: "02",
-        value: 15.1,
+        value: 8.3,
         colorHex: "#338800",
         label: "Test limit"
     }];

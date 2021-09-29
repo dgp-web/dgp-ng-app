@@ -71,6 +71,9 @@ export {
     DgpConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
 // Directives
+export {
+    DgpConnectedScatterPlotControlLineDirective
+} from "./lib/connected-scatter-plot/directives/connected-scatter-plot-control-line.directive";
 export { DgpScatterPlotDotDirective } from "./lib/connected-scatter-plot/directives/scatter-plot-dot.directive";
 export {
     DgpScatterPlotDotTooltipDirective
