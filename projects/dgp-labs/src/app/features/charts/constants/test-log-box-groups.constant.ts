@@ -9,12 +9,12 @@ export const testLogBoxGroups: ReadonlyArray<BoxGroup> = [{
         quantiles: {
             min: 0.1,
             lower: 1,
-            median: 10,
-            upper: 100,
-            max: 1000
+            median: 70,
+            upper: 600,
+            max: 5000
         },
         outliers: [
-            0.001, 0.01, 10000, 100000
+            0.002, 0.03, 40000, 200000
         ],
         colorHex: "#3000f0"
     }, {

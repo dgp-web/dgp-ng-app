@@ -42,6 +42,49 @@ export function getYAxisTickDomainValues(getYAxisTickPayload: {
 
 }
 
+
+export const superscript = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+
+export function formatPower(power: number): string {
+
+    return (power + "").split("")
+        .map(x => superscript[x])
+        .join("");
+}
+
+export function formatLogTick(value: number): string {
+
+    if (value > Math.pow(10, 3)) {
+        let power = Math.log(value) / Math.LN10;
+        power = Math.round(power);
+        return 10 + formatPower(power);
+    } else {
+        return value.toString();
+    }
+
+}
+
+// TODO: Check if this is logarithmic
+export function formatValueTick(value: number): string {
+    //return value.toPrecision(3);
+    return d3.format("~r")(value);
+}
+
+export const logTickValues = [
+    Math.pow(10, -3),
+    Math.pow(10, -2),
+    Math.pow(10, -1),
+    Math.pow(10, 0),
+    Math.pow(10, 1),
+    Math.pow(10, 2),
+    Math.pow(10, 3),
+    Math.pow(10, 4),
+    Math.pow(10, 5),
+    Math.pow(10, 7),
+    Math.pow(10, 8),
+    Math.pow(10, 9),
+];
+
 @Directive({selector: "[dgpChartLeftAxis]"})
 export class DgpChartLeftAxisDirective implements OnChanges {
 
@@ -53,21 +96,8 @@ export class DgpChartLeftAxisDirective implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        function formatValueTick(value: number): string {
-            //return value.toPrecision(3);
-            return d3.format("~r")(value);
-        }
 
         if (changes.scales) {
-            var superscript = "⁰¹²³⁴⁵⁶⁷⁸⁹",
-                formatPower = function (d) {
-                    return (d + "").split("").map(function (c) {
-                        return superscript[c];
-                    }).join("");
-                },
-                formatTick = function (d) {
-                    return 10 + formatPower(Math.round(Math.log(d) / Math.LN10));
-                };
 
             const yAxisTickCount = estimateContinuousYAxisTickCount({
                 containerHeight: this.scales.containerHeight
@@ -82,29 +112,9 @@ export class DgpChartLeftAxisDirective implements OnChanges {
                 isLogarithmic: false // TODO
             });
 
-            /* const axis = d3.axisLeft(this.scales.yAxis)
-                 .tickValues(tickValues as any)
-                 .tickFormat(x => formatValueTick(x));
-             d3.select(this.elementRef.nativeElement).call(axis);*/
-
-
-            console.log(this.scales.yAxis.domain());
             const axis = d3.axisLeft(this.scales.yAxis)
-                .tickValues([
-                    Math.pow(10, -3),
-                    Math.pow(10, -2),
-                    Math.pow(10, -1),
-                    Math.pow(10, 0),
-                    Math.pow(10, 1),
-                    Math.pow(10, 2),
-                    Math.pow(10, 3),
-                    Math.pow(10, 4),
-                    Math.pow(10, 5),
-                    Math.pow(10, 7),
-                    Math.pow(10, 8),
-                    Math.pow(10, 9),
-                ])
-                .tickFormat(formatValueTick);
+                .tickValues(logTickValues)
+                .tickFormat(formatLogTick);
             d3.select(this.elementRef.nativeElement).call(axis);
         }
 
