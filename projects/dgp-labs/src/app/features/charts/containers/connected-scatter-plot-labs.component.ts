@@ -37,7 +37,30 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             </dgp-split-panel-content>
             <dgp-split-panel-content [size]="20">
                 <ng-template>
-                    Test
+
+                    <dgp-inspector>
+                        <dgp-inspector-section label="General">
+                            <dgp-inspector-item label="Chart title">
+
+                            </dgp-inspector-item>
+                        </dgp-inspector-section>
+
+                        <dgp-inspector-section label="x axis"
+                                               matIconName="border_bottom">
+                            <dgp-inspector-item label="Title">
+
+                            </dgp-inspector-item>
+                        </dgp-inspector-section>
+
+                        <dgp-inspector-section label="y axis"
+                                               matIconName="border_left">
+                            <dgp-inspector-item label="Title">
+
+                            </dgp-inspector-item>
+                        </dgp-inspector-section>
+
+                    </dgp-inspector>
+
                 </ng-template>
             </dgp-split-panel-content>
 

@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpInspectorModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { ChartsLabsComponent } from "./containers/charts-labs.component";
 import {
     DgpBarChartModule,
@@ -45,7 +45,8 @@ import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
         DgpBoxPlotModule,
         DgpHeatmapModule,
         DgpConnectedScatterPlotModule,
-        DgpSplitPanelModule
+        DgpSplitPanelModule,
+        DgpInspectorModule
     ],
     declarations: [
         ...containers
