@@ -1,6 +1,6 @@
-import { ChartMargin } from "../../shared/models";
+import {ChartMargin} from "../../shared/models";
 import * as d3 from "d3";
-import { KVS } from "entity-store";
+import {KVS} from "entity-store";
 
 export interface BarChartScales {
     readonly containerWidth: number;
@@ -8,7 +8,9 @@ export interface BarChartScales {
     readonly barAreaWidth: number;
     readonly barAreaHeight: number;
     readonly chartMargin: ChartMargin;
-    readonly xAxis: d3.ScaleBand<string>;
+    readonly xAxisScale: d3.ScaleBand<string>;
+    readonly xAxis: d3.Axis<any>;
     readonly xAxisSubgroupKVS: KVS<d3.ScaleBand<string>>;
-    readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
+    readonly yAxisScale: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
+    readonly yAxis: d3.Axis<any>;
 }
