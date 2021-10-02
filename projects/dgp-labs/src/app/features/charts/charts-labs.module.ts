@@ -5,12 +5,13 @@ import { ChartsLabsComponent } from "./containers/charts-labs.component";
 import {
     DgpBarChartModule,
     DgpBoxPlotModule,
+    DgpConnectedScatterPlotModule,
     DgpFillPatternSelectModule,
     DgpHeatmapModule,
-    DgpShapeSelectModule,
-    DgpConnectedScatterPlotModule
+    DgpShapeSelectModule
 } from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
+import { containers } from "./containers/containers";
 
 @NgModule({
     imports: [
@@ -29,7 +30,7 @@ import { DocsModule } from "dgp-ng-docs";
         DgpConnectedScatterPlotModule
     ],
     declarations: [
-        ChartsLabsComponent
+        ...containers
     ]
 })
 export class ChartsLabsModule {
