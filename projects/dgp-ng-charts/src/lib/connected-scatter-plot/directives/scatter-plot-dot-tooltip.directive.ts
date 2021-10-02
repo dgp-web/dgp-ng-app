@@ -25,8 +25,8 @@ export class DgpScatterPlotDotTooltipDirective implements OnChanges {
 
         if (changes.dot || changes.series || changes.group || changes.scales) {
 
-            const x = this.scales.xAxis(this.dot.x) + 8;
-            const y = this.scales.yAxis(this.dot.y) + 4;
+            const x = this.scales.xAxisScale(this.dot.x) + 8;
+            const y = this.scales.yAxisScale(this.dot.y) + 4;
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x", x.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "y", y.toString());

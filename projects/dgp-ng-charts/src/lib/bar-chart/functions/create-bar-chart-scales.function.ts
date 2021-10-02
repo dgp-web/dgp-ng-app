@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { BarChartScales, BarGroup } from "../models";
-import { defaultBarChartConfig } from "../constants";
-import { getBarChartYAxisLimitsWithOffset } from "./get-bar-chart-y-axis-limits-with-offset.function";
+import {BarChartScales, BarGroup} from "../models";
+import {defaultBarChartConfig} from "../constants";
+import {getBarChartYAxisLimitsWithOffset} from "./get-bar-chart-y-axis-limits-with-offset.function";
 
 export function createBarChartScales(payload: {
     readonly barGroups: ReadonlyArray<BarGroup>;
@@ -40,11 +40,11 @@ export function createBarChartScales(payload: {
         }
     }, config);
 
-    const yAxis = d3.scaleLinear()
+    const yAxisScale = d3.scaleLinear()
         .domain([yAxisDomain.max, yAxisDomain.min])
         .range([0, barAreaHeight]);
 
-    const xAxis = d3.scaleBand()
+    const xAxisScale = d3.scaleBand()
         .domain(barGroupKeys)
         .range([0, barAreaWidth])
         .padding(0.2);
@@ -53,16 +53,21 @@ export function createBarChartScales(payload: {
 
         previousValue[currentValue.barGroupKey] = d3.scaleBand() // TODO: We need to create sub groups based on crap
             .domain(currentValue.bars.map(x => x.barKey))
-            .range([0, xAxis.bandwidth()])
+            .range([0, xAxisScale.bandwidth()])
             .padding(0.05);
 
         return previousValue;
 
     }, {});
 
+    const xAxis = d3.axisBottom(xAxisScale);
+    const yAxis = d3.axisLeft(yAxisScale);
+
     return {
         xAxis,
         yAxis,
+        xAxisScale,
+        yAxisScale,
         xAxisSubgroupKVS,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,

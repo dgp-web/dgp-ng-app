@@ -22,8 +22,8 @@ export class BarChartBarDirective implements OnChanges {
         if (changes.scales || changes.bar || changes.barGroup) {
 
             const x = this.scales.xAxisSubgroupKVS[this.barGroup.barGroupKey](this.bar.barKey);
-            const y = this.scales.yAxis(this.bar.value);
-            const height = Math.abs(y - this.scales.yAxis(0));
+            const y = this.scales.yAxisScale(this.bar.value);
+            const height = Math.abs(y - this.scales.yAxisScale(0));
             const width = this.scales.xAxisSubgroupKVS[this.barGroup.barGroupKey].bandwidth();
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x", x.toString());

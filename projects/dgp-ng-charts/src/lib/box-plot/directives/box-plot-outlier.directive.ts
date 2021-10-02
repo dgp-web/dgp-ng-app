@@ -33,7 +33,7 @@ export class BoxPlotOutlierDirective implements OnChanges {
                 + this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId].bandwidth() / 2
                 + getJitter(this.box.boxId + this.value, this.config);
 
-            const y = this.scales.yAxis(this.value);
+            const y = this.scales.yAxisScale(this.value);
 
             switch (this.box.outlierShape) {
                 default:

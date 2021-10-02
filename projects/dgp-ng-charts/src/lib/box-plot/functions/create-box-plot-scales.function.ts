@@ -2,14 +2,18 @@ import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants";
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { getYAxisLimitsWithOffset } from "../../shared/functions";
+import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";
+import { formatLogTick, getYAxisLimitsWithOffset } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { ScaleType } from "../../shared/models";
+import { logTickValues } from "../../shared/constants";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
+    readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
 }, config = defaultBoxPlotConfig): BoxPlotScales {
@@ -88,11 +92,23 @@ export function createBoxPlotScales(payload: {
         }
     }, config);
 
-    const yAxis = d3.scaleLinear()
-        .domain([yAxisDomain.max, yAxisDomain.min])
-        .range([0, barAreaHeight]);
+    let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
 
-    const xAxis = d3.scaleBand()
+    switch (payload.yAxisScaleType) {
+        default:
+        case ScaleType.Linear:
+            yAxisScale = d3.scaleLinear()
+                .domain([yAxisDomain.max, yAxisDomain.min])
+                .range([0, barAreaHeight]);
+            break;
+        case ScaleType.Logarithmic:
+            yAxisScale = d3.scaleLog()
+                .domain([(yMax >= 0 ? yMax : 0.001), (yMin >= 0 ? yMin : 0.001)])
+                .range([0, barAreaHeight]);
+            break;
+    }
+
+    const xAxisScale = d3.scaleBand()
         .domain(boxGroupKeys)
         .range([0, barAreaWidth])
         .padding(0.2);
@@ -101,16 +117,32 @@ export function createBoxPlotScales(payload: {
 
         previousValue[currentValue.boxGroupId] = d3.scaleBand() // TODO: We need to create sub groups based on crap
             .domain(currentValue.boxes.map(x => x.boxId))
-            .range([0, xAxis.bandwidth()])
+            .range([0, xAxisScale.bandwidth()])
             .padding(0.05);
 
         return previousValue;
 
     }, {});
 
+    const xAxis = d3.axisBottom(xAxisScale);
+    let yAxis: Axis<any>;
+    switch (payload.yAxisScaleType) {
+        default:
+        case ScaleType.Linear:
+            yAxis = d3.axisLeft(yAxisScale);
+            break;
+        case ScaleType.Logarithmic:
+            yAxis = d3.axisLeft(yAxisScale)
+                .tickValues(logTickValues)
+                .tickFormat(formatLogTick);
+            break;
+    }
+
     return {
         xAxis,
         yAxis,
+        xAxisScale,
+        yAxisScale,
         xAxisSubgroupKVS,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,

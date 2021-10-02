@@ -10,16 +10,16 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { isNullOrUndefined } from "dgp-ng-app";
-import { BarChart, BarChartScales, BarGroup, BarGroups } from "../models";
-import { defaultBarChartConfig } from "../constants/default-bar-chart-config.constant";
-import { ExportChartConfig } from "../../heatmap/models";
-import { DrawD3ChartPayload } from "../../shared/chart.component-base";
-import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
-import { Subscription } from "rxjs";
-import { debounceTime, tap } from "rxjs/operators";
-import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
-import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import {isNullOrUndefined} from "dgp-ng-app";
+import {BarChart, BarChartScales, BarGroup, BarGroups} from "../models";
+import {defaultBarChartConfig} from "../constants/default-bar-chart-config.constant";
+import {ExportChartConfig} from "../../heatmap/models";
+import {DrawD3ChartPayload} from "../../shared/chart.component-base";
+import {DgpChartComponentBase} from "../../chart/components/chart.component-base";
+import {Subscription} from "rxjs";
+import {debounceTime, tap} from "rxjs/operators";
+import {createBarChartScales} from "../functions/create-bar-chart-scales.function";
+import {idPrefixProvider} from "../../shared/id-prefix-provider.constant";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -197,7 +197,7 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
 
     getResultRootTransform(barGroup: BarGroup) {
-        return "translate(" + this.barChartScales.xAxis(barGroup.barGroupKey) + ")";
+        return "translate(" + this.barChartScales.xAxisScale(barGroup.barGroupKey) + ")";
     }
 
     getViewBox() {

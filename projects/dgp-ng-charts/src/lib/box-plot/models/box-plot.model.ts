@@ -1,8 +1,8 @@
-import { Chart } from "../../shared/models";
+import { CardinalYAxis, Chart } from "../../shared/models";
 import { BoxGroup } from "./box-group.model";
 import { BoxPlotControlLine } from "./box-plot-control-line.model";
 
-export interface BoxPlot extends Chart {
+export interface BoxPlot extends Chart, CardinalYAxis {
     readonly model: ReadonlyArray<BoxGroup>;
     /**
      * Optional lines that indicate limits in which values should lie
