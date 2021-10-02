@@ -33,7 +33,7 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                     <h3 mat-subheader>Charts</h3>
 
                     <dgp-hamburger-menu-entry label="Charts"
-                                              route="/charts"
+                                              route="/charts/overview"
                                               matIconName="pie_chart"></dgp-hamburger-menu-entry>
 
                     <dgp-hamburger-menu-entry label="Bar chart"

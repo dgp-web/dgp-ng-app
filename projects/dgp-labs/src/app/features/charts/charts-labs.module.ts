@@ -12,12 +12,28 @@ import {
 } from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
 import { containers } from "./containers/containers";
+import { BarChartLabsComponent } from "./containers/bar-chart-labs.component";
+import { BoxPlotLabsComponent } from "./containers/box-plot-labs.component";
+import { ConnectedScatterPlotLabsComponent } from "./containers/connected-scatter-plot-labs.component";
+import { HeatmapLabsComponent } from "./containers/heatmap-labs.component";
 
 @NgModule({
     imports: [
         RouterModule.forRoot([{
-            path: "charts",
+            path: "charts/overview",
             component: ChartsLabsComponent
+        }, {
+            path: "charts/bar-chart",
+            component: BarChartLabsComponent
+        }, {
+            path: "charts/box-plot",
+            component: BoxPlotLabsComponent
+        }, {
+            path: "charts/connected-scatter-plot",
+            component: ConnectedScatterPlotLabsComponent
+        }, {
+            path: "charts/heatmap",
+            component: HeatmapLabsComponent
         }], {relativeLinkResolution: "legacy"}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
