@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 @Component({
     selector: "dgp-box-plot-labs",
-    template: ``,
+    template: `
+        <dgp-page-header>
+            <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+            Box plot
+        </dgp-page-header>
+    `,
     styles: [`
         :host {
             display: flex;

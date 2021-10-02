@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 @Component({
     selector: "dgp-bar-chart-labs",
-    template: ``,
+    template: `
+        <dgp-page-header>
+            <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+            Bar chart
+        </dgp-page-header>
+    `,
     styles: [`
         :host {
             display: flex;
