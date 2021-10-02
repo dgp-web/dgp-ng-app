@@ -12,32 +12,36 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
     template: `
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            Charts
+            Connected scatter plot
         </dgp-page-header>
 
-        <dgp-docs-page>
+        <dgp-split-panel orientation="horizontal">
 
-            <dgp-docs-page-content>
+            <dgp-split-panel-content [size]="80">
+                <ng-template>
+                    <dgp-connected-scatter-plot [model]="model.model"
+                                                [chartTitle]="model.chartTitle"
+                                                [xAxisTitle]="model.xAxisTitle"
+                                                [xAxisMin]="model.xAxisMin"
+                                                [xAxisMin]="model.xAxisMin"
+                                                [xAxisMax]="model.xAxisMax"
+                                                [yAxisTitle]="model.yAxisTitle"
+                                                [yAxisScaleType]="model.yAxisScaleType"
+                                                [yAxisMin]="model.yAxisMin"
+                                                [yAxisMax]="model.yAxisMax"
+                                                [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
 
-                <dgp-docs-chapter-title>
-                    Connected scatter plot
-                </dgp-docs-chapter-title>
 
+                </ng-template>
 
-                <dgp-connected-scatter-plot [model]="model.model"
-                                            [chartTitle]="model.chartTitle"
-                                            [xAxisTitle]="model.xAxisTitle"
-                                            [xAxisMin]="model.xAxisMin"
-                                            [xAxisMin]="model.xAxisMin"
-                                            [xAxisMax]="model.xAxisMax"
-                                            [yAxisTitle]="model.yAxisTitle"
-                                            [yAxisScaleType]="model.yAxisScaleType"
-                                            [yAxisMin]="model.yAxisMin"
-                                            [yAxisMax]="model.yAxisMax"
-                                            [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
+            </dgp-split-panel-content>
+            <dgp-split-panel-content [size]="20">
+                <ng-template>
+                    Test
+                </ng-template>
+            </dgp-split-panel-content>
 
-            </dgp-docs-page-content>
-        </dgp-docs-page>
+        </dgp-split-panel>
 
     `,
     styles: [`
@@ -51,7 +55,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
         dgp-connected-scatter-plot {
             width: 100%;
-            max-height: 320px;
+            max-height: 100%;
         }
 
     `],

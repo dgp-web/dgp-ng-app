@@ -16,6 +16,7 @@ import { BarChartLabsComponent } from "./containers/bar-chart-labs.component";
 import { BoxPlotLabsComponent } from "./containers/box-plot-labs.component";
 import { ConnectedScatterPlotLabsComponent } from "./containers/connected-scatter-plot-labs.component";
 import { HeatmapLabsComponent } from "./containers/heatmap-labs.component";
+import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
 
 @NgModule({
     imports: [
@@ -43,7 +44,8 @@ import { HeatmapLabsComponent } from "./containers/heatmap-labs.component";
         DgpBarChartModule,
         DgpBoxPlotModule,
         DgpHeatmapModule,
-        DgpConnectedScatterPlotModule
+        DgpConnectedScatterPlotModule,
+        DgpSplitPanelModule
     ],
     declarations: [
         ...containers

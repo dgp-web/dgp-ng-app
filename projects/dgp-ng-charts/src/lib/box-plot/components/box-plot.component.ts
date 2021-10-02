@@ -33,7 +33,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
                    dgpResizeSensor
-                   (sizeChanged)="drawChart()">>
+                   (sizeChanged)="drawChart()">
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
