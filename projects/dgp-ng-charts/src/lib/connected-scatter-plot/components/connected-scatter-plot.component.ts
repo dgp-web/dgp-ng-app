@@ -15,13 +15,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
-import {
-    ConnectedScatterGroup,
-    ConnectedScatterPlot,
-    ConnectedScatterPlotControlLine,
-    ConnectedScatterSeries,
-    Dot
-} from "../models";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { defaultConnectedScatterPlotConfig } from "../constants";
@@ -36,7 +30,9 @@ import { ScaleType } from "../../shared/models";
     template: `
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle">
+                   [chartTitle]="chartTitle"
+                   dgpResizeSensor
+                   (sizeChanged)="drawChart()">
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
@@ -58,8 +54,6 @@ import { ScaleType } from "../../shared/models";
                  #chartContainer>
 
                 <svg #svgRoot
-                     dgpResizeSensor
-                     (sizeChanged)="drawChart()"
                      *ngIf="connectedScatterPlotScales"
                      class="chart-svg"
                      [attr.viewBox]="getViewBox()">

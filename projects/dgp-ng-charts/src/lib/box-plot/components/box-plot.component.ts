@@ -31,7 +31,9 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
     template: `
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle">
+                   [chartTitle]="chartTitle"
+                   dgpResizeSensor
+                   (sizeChanged)="drawChart()">>
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
@@ -53,8 +55,6 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                  #chartContainer>
 
                 <svg #svgRoot
-                     dgpResizeSensor
-                     (sizeChanged)="drawChart()"
                      *ngIf="boxPlotScales"
                      class="chart-svg"
                      [attr.viewBox]="getViewBox()">
