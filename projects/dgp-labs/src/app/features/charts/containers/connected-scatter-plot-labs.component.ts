@@ -164,7 +164,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             <dgp-inspector-item matIconName="horizontal_rule"
                                                 label="Selected line">
                                 <mat-form-field>
-                                    <mat-select [ngModel]="selectedControlLineId$ | async"
+                                    <mat-select [disabled]="disabled"
+                                                [ngModel]="selectedControlLineId$ | async"
                                                 (ngModelChange)="selectControlLine($event)">
                                         <mat-option *ngFor="let controlLine of model.controlLines"
                                                     [value]="controlLine.connectedScatterPlotControlLineId">
@@ -180,6 +181,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     <mat-form-field>
                                         <input matInput
                                                [ngModel]="selectedControlLine.label"
+                                               [disabled]="disabled"
                                                (ngModelChange)="updateSelectedControlLineLabel($event)">
                                     </mat-form-field>
                                 </dgp-inspector-item>
@@ -190,9 +192,22 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                         <input matInput
                                                type="number"
                                                [ngModel]="selectedControlLine.value"
+                                               [disabled]="disabled"
                                                (ngModelChange)="updateSelectedControlLineValue($event)">
                                     </mat-form-field>
                                 </dgp-inspector-item>
+
+                                <dgp-inspector-item matIconName="palette"
+                                                    label="Color">
+                                    <mat-form-field>
+                                        <input matInput
+                                               type="color"
+                                               [ngModel]="selectedControlLine.colorHex"
+                                               [disabled]="disabled"
+                                               (ngModelChange)="updateSelectedControlLineColorHex($event)">
+                                    </mat-form-field>
+                                </dgp-inspector-item>
+
                             </ng-container>
 
                         </dgp-inspector-section>
