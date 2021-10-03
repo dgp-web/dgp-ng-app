@@ -99,6 +99,12 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             max-height: 100%;
         }
 
+        mat-form-field {
+            width: 100%;
+            max-width: 240px;
+            margin-left: 32px;
+        }
+
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
