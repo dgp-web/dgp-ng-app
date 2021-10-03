@@ -49,6 +49,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 matIconName="label">
                                 <mat-form-field>
                                     <textarea matInput
+                                              [disabled]="disabled"
                                               [ngModel]="model.chartTitle"
                                               (ngModelChange)="updateChartTitle($event)"></textarea>
                                 </mat-form-field>
@@ -62,6 +63,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 matIconName="label">
                                 <mat-form-field>
                                     <textarea matInput
+                                              [disabled]="disabled"
                                               [ngModel]="model.xAxisTitle"
                                               (ngModelChange)="updateXAxisTitle($event)"></textarea>
                                 </mat-form-field>
@@ -72,6 +74,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 <mat-form-field>
                                     <input matInput
                                            type="number"
+                                           [disabled]="disabled"
                                            [ngModel]="model.xAxisMax"
                                            (ngModelChange)="setXAxisMax($event)">
                                 </mat-form-field>
@@ -82,6 +85,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 <mat-form-field>
                                     <input matInput
                                            type="number"
+                                           [disabled]="disabled"
                                            [ngModel]="model.xAxisMin"
                                            (ngModelChange)="setXAxisMin($event)">
                                 </mat-form-field>
@@ -95,6 +99,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 matIconName="label">
                                 <mat-form-field>
                                     <textarea matInput
+                                              [disabled]="disabled"
                                               [ngModel]="model.yAxisTitle"
                                               (ngModelChange)="updateYAxisTitle($event)"></textarea>
                                 </mat-form-field>
@@ -104,7 +109,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             <dgp-inspector-item label="Scale"
                                                 matIconName="linear">
                                 <mat-form-field>
-                                    <mat-select [ngModel]="model.yAxisScaleType"
+                                    <mat-select [disabled]="disabled"
+                                                [ngModel]="model.yAxisScaleType"
                                                 (ngModelChange)="updateYAxisScaleType($event)">
                                         <mat-option [value]="scaleTypeEnum.Linear">
                                             Linear
@@ -121,6 +127,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 <mat-form-field>
                                     <input matInput
                                            type="number"
+                                           [disabled]="disabled"
                                            [ngModel]="model.yAxisMax"
                                            (ngModelChange)="setYAxisMax($event)">
                                 </mat-form-field>
@@ -131,12 +138,18 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 <mat-form-field>
                                     <input matInput
                                            type="number"
+                                           [disabled]="disabled"
                                            [ngModel]="model.yAxisMin"
                                            (ngModelChange)="setYAxisMin($event)">
                                 </mat-form-field>
                             </dgp-inspector-item>
 
 
+                        </dgp-inspector-section>
+
+                        <dgp-inspector-section label="Control lines"
+                                               matIconName="vertical_distribute">
+                            
                         </dgp-inspector-section>
 
                     </dgp-inspector>
