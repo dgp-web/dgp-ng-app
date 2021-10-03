@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import {
-    ConnectedScatterPlot,
-    ConnectedScatterPlotControlLine
-} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
-import { ScaleType } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
+import { ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -37,7 +33,6 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                     <dgp-connected-scatter-plot [model]="model.model"
                                                 [chartTitle]="model.chartTitle"
                                                 [xAxisTitle]="model.xAxisTitle"
-                                                [xAxisMin]="model.xAxisMin"
                                                 [xAxisMin]="model.xAxisMin"
                                                 [xAxisMax]="model.xAxisMax"
                                                 [yAxisTitle]="model.yAxisTitle"
@@ -158,6 +153,25 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                         </dgp-inspector-section>
 
+                        <dgp-inspector-section matIconName="storage"
+                                               label="Data groups">
+
+                            <dgp-inspector-item matIconName="stacked_line_chart"
+                                                label="Group">
+                                <mat-form-field>
+                                    <mat-select [ngModel]="selectedDataGroupId$ | async"
+                                                (ngModelChange)="selectDataGroupId($event)"
+                                                [disabled]="disabled">
+                                        <mat-option *ngFor="let group of model.model; let i = index"
+                                                    [value]="group.connectedScatterGroupId">
+                                            Group: {{i + 1}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
+                        </dgp-inspector-section>
+
                         <dgp-inspector-section label="Control lines"
                                                matIconName="vertical_distribute">
 
@@ -174,6 +188,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     </mat-select>
                                 </mat-form-field>
                             </dgp-inspector-item>
+
 
                             <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
                                 <dgp-inspector-item matIconName="label"
@@ -255,6 +270,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
             return this.model.controlLines.find(x => x.connectedScatterPlotControlLineId === controlLineId);
         })
     );
+    readonly selectedDataGroupId$ = new BehaviorSubject<string>(null);
 
     updateChartTitle(chartTitle: string) {
         this.updateModel({chartTitle});
@@ -316,5 +332,9 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateSelectedControlLineColorHex(colorHex: string) {
         this.updateSelectedControlLine({colorHex});
+    }
+
+    selectDataGroupId(connectedScatterGroupId: string) {
+        this.selectedDataGroupId$.next(connectedScatterGroupId);
     }
 }

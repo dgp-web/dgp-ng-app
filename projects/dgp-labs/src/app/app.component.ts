@@ -42,7 +42,7 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
                     <dgp-hamburger-menu-entry label="Box plot"
                                               route="/charts/box-plot"
-                                              matIconName="info"></dgp-hamburger-menu-entry>
+                                              matIconName="candlestick_chart"></dgp-hamburger-menu-entry>
 
                     <dgp-hamburger-menu-entry label="Connected scatter-plot"
                                               route="/charts/connected-scatter-plot"
