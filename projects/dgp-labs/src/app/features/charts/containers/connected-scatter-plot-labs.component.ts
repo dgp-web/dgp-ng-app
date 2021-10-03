@@ -55,6 +55,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                         <dgp-inspector-section label="x axis"
                                                matIconName="border_bottom">
+
                             <dgp-inspector-item label="Title"
                                                 matIconName="label">
                                 <mat-form-field>
@@ -63,6 +64,27 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                               (ngModelChange)="updateXAxisTitle($event)"></textarea>
                                 </mat-form-field>
                             </dgp-inspector-item>
+
+                            <dgp-inspector-item label="Max"
+                                                matIconName="maximize">
+                                <mat-form-field>
+                                    <input matInput
+                                           type="number"
+                                           [ngModel]="model.xAxisMax"
+                                           (ngModelChange)="setXAxisMax($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
+                            <dgp-inspector-item label="Min"
+                                                matIconName="minimize">
+                                <mat-form-field>
+                                    <input matInput
+                                           type="number"
+                                           [ngModel]="model.xAxisMin"
+                                           (ngModelChange)="setXAxisMin($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="y axis"
@@ -75,6 +97,29 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                               (ngModelChange)="updateYAxisTitle($event)"></textarea>
                                 </mat-form-field>
                             </dgp-inspector-item>
+
+
+                            <dgp-inspector-item label="Max"
+                                                matIconName="maximize">
+                                <mat-form-field>
+                                    <input matInput
+                                           type="number"
+                                           [ngModel]="model.yAxisMax"
+                                           (ngModelChange)="setYAxisMax($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
+                            <dgp-inspector-item label="Min"
+                                                matIconName="minimize">
+                                <mat-form-field>
+                                    <input matInput
+                                           type="number"
+                                           [ngModel]="model.yAxisMin"
+                                           (ngModelChange)="setYAxisMin($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
+
                         </dgp-inspector-section>
 
                     </dgp-inspector>
@@ -124,4 +169,21 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     updateYAxisTitle(yAxisTitle: string) {
         this.updateModel({yAxisTitle});
     }
+
+    setXAxisMin(xAxisMin: number) {
+        this.updateModel({xAxisMin});
+    }
+
+    setXAxisMax(xAxisMax: number) {
+        this.updateModel({xAxisMax});
+    }
+
+    setYAxisMin(yAxisMin: number) {
+        this.updateModel({yAxisMin});
+    }
+
+    setYAxisMax(yAxisMax: number) {
+        this.updateModel({yAxisMax});
+    }
+
 }

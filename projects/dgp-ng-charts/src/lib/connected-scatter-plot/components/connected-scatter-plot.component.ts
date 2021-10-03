@@ -289,7 +289,18 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
+        if (
+            changes.model
+            || changes.config
+            || changes.selectionMode
+            || changes.selection
+            || changes.xAxisMin
+            || changes.xAxisMax
+            || changes.yAxisMin
+            || changes.yAxisMax
+            || changes.yAxisScaleType
+            || changes.controlLines
+        ) {
             this.drawChartActionScheduler.emit();
         }
     }
