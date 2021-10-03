@@ -4,7 +4,10 @@ import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
 
 export const testConnectScatterPlot: ConnectedScatterPlot = {
-    model: testConnectedScatterGroups
+    model: testConnectedScatterGroups,
+    xAxisTitle: "x-axis title",
+    yAxisTitle: "y-axis title",
+    chartTitle: "Chart title",
 };
 
 @Component({
