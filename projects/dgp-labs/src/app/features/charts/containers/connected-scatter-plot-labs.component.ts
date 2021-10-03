@@ -280,6 +280,15 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateSelectedControlLine(payload: Partial<ConnectedScatterPlotControlLine>) {
 
+        const selectedId = this.selectedControlLineId$.value;
+
+        this.updateModel({
+            controlLines: this.model.controlLines.map(x => {
+                if (x.connectedScatterPlotControlLineId !== selectedId) return x;
+                return {...x, ...payload};
+            })
+        });
+
     }
 
     updateSelectedControlLineLabel(label: string) {
