@@ -320,6 +320,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
             connectedScatterGroups: this.model,
+            controlLines: this.controlLines,
             yAxisScaleType: this.yAxisScaleType,
             xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
