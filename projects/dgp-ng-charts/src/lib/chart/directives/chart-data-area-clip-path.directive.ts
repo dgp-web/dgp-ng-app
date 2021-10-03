@@ -8,7 +8,7 @@ export class DgpChartDataAreaClipPathDirective implements OnChanges {
     @Input()
     scales: AxisScales;
 
-    constructor(private readonly elementRef: ElementRef,
+    constructor(private readonly elementRef: ElementRef<SVGClipPathElement>,
                 private readonly renderer: Renderer2,
                 @Inject(ID_PREFIX)
                 protected readonly idPrefix: string) {
@@ -26,6 +26,7 @@ export class DgpChartDataAreaClipPathDirective implements OnChanges {
             this.renderer.setAttribute(rect, "width", this.scales.dataAreaWidth.toString());
             this.renderer.setAttribute(rect, "height", this.scales.dataAreaHeight.toString());
 
+            this.elementRef.nativeElement.innerHTML = "";
             this.elementRef.nativeElement.appendChild(rect);
         }
 

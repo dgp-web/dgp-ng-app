@@ -15,13 +15,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
-import {
-    ConnectedScatterGroup,
-    ConnectedScatterPlot,
-    ConnectedScatterPlotControlLine,
-    ConnectedScatterSeries,
-    Dot
-} from "../models";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { defaultConnectedScatterPlotConfig } from "../constants";
@@ -36,7 +30,9 @@ import { ScaleType } from "../../shared/models";
     template: `
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle">
+                   [chartTitle]="chartTitle"
+                   dgpResizeSensor
+                   (sizeChanged)="drawChart()">
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
@@ -58,8 +54,6 @@ import { ScaleType } from "../../shared/models";
                  #chartContainer>
 
                 <svg #svgRoot
-                     dgpResizeSensor
-                     (sizeChanged)="drawChart()"
                      *ngIf="connectedScatterPlotScales"
                      class="chart-svg"
                      [attr.viewBox]="getViewBox()">
@@ -236,6 +230,7 @@ import { ScaleType } from "../../shared/models";
             display: flex;
             justify-content: center;
             flex-grow: 1;
+            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -248,6 +243,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     readonly shapeEnum = Shape;
 
     @ViewChild("chartContainer") elRef: ElementRef;
+    @ViewChild("svgRoot") svgRoot: ElementRef<SVGElement>;
 
     @Input()
     model: readonly ConnectedScatterGroup[];
@@ -295,7 +291,18 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
+        if (
+            changes.model
+            || changes.config
+            || changes.selectionMode
+            || changes.selection
+            || changes.xAxisMin
+            || changes.xAxisMax
+            || changes.yAxisMin
+            || changes.yAxisMax
+            || changes.yAxisScaleType
+            || changes.controlLines
+        ) {
             this.drawChartActionScheduler.emit();
         }
     }
@@ -308,10 +315,12 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     protected drawD3Chart(payload: DrawD3ChartPayload): void {
 
+
         this.connectedScatterPlotScales = createConnectedScatterPlotScales({
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
             connectedScatterGroups: this.model,
+            controlLines: this.controlLines,
             yAxisScaleType: this.yAxisScaleType,
             xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,

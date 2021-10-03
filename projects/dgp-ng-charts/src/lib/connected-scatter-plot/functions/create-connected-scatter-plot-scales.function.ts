@@ -1,16 +1,17 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";
-import { ConnectedScatterGroup } from "../models";
+import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { formatLogTick, getYAxisLimitsWithOffset } from "../../shared/functions";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
+    readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
     readonly xAxisMin?: number;
     readonly xAxisMax?: number;
     readonly yAxisMin?: number;
@@ -31,6 +32,13 @@ export function createConnectedScatterPlotScales(payload: {
             });
         });
     });
+
+    if (notNullOrUndefined(payload.controlLines)) {
+        payload.controlLines.forEach(controlLine => {
+            if (isNullOrUndefined(controlLine)) return;
+            valuesForYExtremumComputation.push(controlLine.value);
+        });
+    }
 
     let xMin = _.min(valuesForXExtremumComputation);
     let xMax = _.max(valuesForXExtremumComputation);

@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { ChartsLabsModule } from "./features/charts/charts-labs.module";
 import { ActionContextLabsModule } from "./features/action-context/charts-labs.module";
+import { MatListModule } from "@angular/material/list";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -89,13 +90,13 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule.forRoot([{
-        path: "",
-        pathMatch: "full",
-        redirectTo: "/docking-layout"
-    }, {
-        path: "**",
-        redirectTo: "/docking-layout"
-    }], { relativeLinkResolution: "legacy" }),
+            path: "",
+            pathMatch: "full",
+            redirectTo: "/docking-layout"
+        }, {
+            path: "**",
+            redirectTo: "/docking-layout"
+        }], {relativeLinkResolution: "legacy"}),
 
         StoreModule.forRoot(APP_REDUCER, {
             metaReducers: [hmrReducer],
@@ -120,7 +121,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         DockingLayoutLabsModule,
         ChartsLabsModule,
         ActionContextLabsModule,
-        DgpHamburgerMenuModule
+        DgpHamburgerMenuModule,
+        MatListModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

@@ -1,22 +1,45 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpInspectorModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { ChartsLabsComponent } from "./containers/charts-labs.component";
 import {
     DgpBarChartModule,
     DgpBoxPlotModule,
+    DgpConnectedScatterPlotModule,
     DgpFillPatternSelectModule,
     DgpHeatmapModule,
-    DgpShapeSelectModule,
-    DgpConnectedScatterPlotModule
+    DgpShapeSelectModule
 } from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
+import { containers } from "./containers/containers";
+import { BarChartLabsComponent } from "./containers/bar-chart-labs.component";
+import { BoxPlotLabsComponent } from "./containers/box-plot-labs.component";
+import { ConnectedScatterPlotLabsComponent } from "./containers/connected-scatter-plot-labs.component";
+import { HeatmapLabsComponent } from "./containers/heatmap-labs.component";
+import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { FormsModule } from "@angular/forms";
+import { MatSelectModule } from "@angular/material/select";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
     imports: [
         RouterModule.forRoot([{
-            path: "charts",
+            path: "charts/overview",
             component: ChartsLabsComponent
+        }, {
+            path: "charts/bar-chart",
+            component: BarChartLabsComponent
+        }, {
+            path: "charts/box-plot",
+            component: BoxPlotLabsComponent
+        }, {
+            path: "charts/connected-scatter-plot",
+            component: ConnectedScatterPlotLabsComponent
+        }, {
+            path: "charts/heatmap",
+            component: HeatmapLabsComponent
         }], {relativeLinkResolution: "legacy"}),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
@@ -26,10 +49,17 @@ import { DocsModule } from "dgp-ng-docs";
         DgpBarChartModule,
         DgpBoxPlotModule,
         DgpHeatmapModule,
-        DgpConnectedScatterPlotModule
+        DgpConnectedScatterPlotModule,
+        DgpSplitPanelModule,
+        DgpInspectorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatSelectModule,
+        CommonModule
     ],
     declarations: [
-        ChartsLabsComponent
+        ...containers
     ]
 })
 export class ChartsLabsModule {

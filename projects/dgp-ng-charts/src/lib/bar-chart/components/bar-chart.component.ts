@@ -10,24 +10,25 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import {isNullOrUndefined} from "dgp-ng-app";
-import {BarChart, BarChartScales, BarGroup, BarGroups} from "../models";
-import {defaultBarChartConfig} from "../constants/default-bar-chart-config.constant";
-import {ExportChartConfig} from "../../heatmap/models";
-import {DrawD3ChartPayload} from "../../shared/chart.component-base";
-import {DgpChartComponentBase} from "../../chart/components/chart.component-base";
-import {Subscription} from "rxjs";
-import {debounceTime, tap} from "rxjs/operators";
-import {createBarChartScales} from "../functions/create-bar-chart-scales.function";
-import {idPrefixProvider} from "../../shared/id-prefix-provider.constant";
+import { isNullOrUndefined } from "dgp-ng-app";
+import { BarChart, BarChartScales, BarGroup, BarGroups } from "../models";
+import { defaultBarChartConfig } from "../constants/default-bar-chart-config.constant";
+import { ExportChartConfig } from "../../heatmap/models";
+import { DrawD3ChartPayload } from "../../shared/chart.component-base";
+import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
+import { Subscription } from "rxjs";
+import { debounceTime, tap } from "rxjs/operators";
+import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
 @Component({
     selector: "dgp-bar-chart",
     template: `
-
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle">
+                   [chartTitle]="chartTitle"
+                   dgpResizeSensor
+                   (sizeChanged)="drawChart()">
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
@@ -49,8 +50,6 @@ import {idPrefixProvider} from "../../shared/id-prefix-provider.constant";
                  #chartContainer>
 
                 <svg #svgRoot
-                     dgpResizeSensor
-                     (sizeChanged)="drawChart()"
                      *ngIf="barChartScales"
                      [attr.viewBox]="getViewBox()">
 
