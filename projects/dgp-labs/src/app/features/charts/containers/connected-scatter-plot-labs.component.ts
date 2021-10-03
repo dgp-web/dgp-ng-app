@@ -1,14 +1,25 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { ConnectedScatterPlot } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
+import {
+    ConnectedScatterPlot,
+    ConnectedScatterPlotControlLine
+} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
 import { ScaleType } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
+import { BehaviorSubject } from "rxjs";
+import { map } from "rxjs/operators";
 
 export const testConnectScatterPlot: ConnectedScatterPlot = {
     model: testConnectedScatterGroups,
     xAxisTitle: "x-axis title",
     yAxisTitle: "y-axis title",
     chartTitle: "Chart title",
+    controlLines: [{
+        label: "Upper limit",
+        colorHex: "#666666",
+        connectedScatterPlotControlLineId: "upperLimit",
+        value: 10
+    }]
 };
 
 @Component({
@@ -107,7 +118,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
 
                             <dgp-inspector-item label="Scale"
-                                                matIconName="linear">
+                                                matIconName="linear_scale">
                                 <mat-form-field>
                                     <mat-select [disabled]="disabled"
                                                 [ngModel]="model.yAxisScaleType"
@@ -149,7 +160,41 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                         <dgp-inspector-section label="Control lines"
                                                matIconName="vertical_distribute">
-                            
+
+                            <dgp-inspector-item matIconName="horizontal_rule"
+                                                label="Selected line">
+                                <mat-form-field>
+                                    <mat-select [ngModel]="selectedControlLineId$ | async"
+                                                (ngModelChange)="selectControlLine($event)">
+                                        <mat-option *ngFor="let controlLine of model.controlLines"
+                                                    [value]="controlLine.connectedScatterPlotControlLineId">
+                                            {{controlLine.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
+                            <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
+                                <dgp-inspector-item matIconName="label"
+                                                    label="Label">
+                                    <mat-form-field>
+                                        <input matInput
+                                               [ngModel]="selectedControlLine.label"
+                                               (ngModelChange)="updateSelectedControlLineLabel($event)">
+                                    </mat-form-field>
+                                </dgp-inspector-item>
+
+                                <dgp-inspector-item matIconName="pin"
+                                                    label="Value">
+                                    <mat-form-field>
+                                        <input matInput
+                                               type="number"
+                                               [ngModel]="selectedControlLine.value"
+                                               (ngModelChange)="updateSelectedControlLineValue($event)">
+                                    </mat-form-field>
+                                </dgp-inspector-item>
+                            </ng-container>
+
                         </dgp-inspector-section>
 
                     </dgp-inspector>
@@ -187,6 +232,14 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     readonly scaleTypeEnum = ScaleType;
     protected modelValue = testConnectScatterPlot;
+    readonly selectedControlLineId$ = new BehaviorSubject<string>(null);
+    readonly selectedControlLine$ = this.selectedControlLineId$.pipe(
+        map(controlLineId => {
+            if (!controlLineId || !this.model || !this.model.controlLines) return null;
+
+            return this.model.controlLines.find(x => x.connectedScatterPlotControlLineId === controlLineId);
+        })
+    );
 
     updateChartTitle(chartTitle: string) {
         this.updateModel({chartTitle});
@@ -219,5 +272,25 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateYAxisScaleType(yAxisScaleType: ScaleType) {
         this.updateModel({yAxisScaleType});
+    }
+
+    selectControlLine(controlLineId: string) {
+        this.selectedControlLineId$.next(controlLineId);
+    }
+
+    updateSelectedControlLine(payload: Partial<ConnectedScatterPlotControlLine>) {
+
+    }
+
+    updateSelectedControlLineLabel(label: string) {
+        this.updateSelectedControlLine({label});
+    }
+
+    updateSelectedControlLineValue(value: number) {
+        this.updateSelectedControlLine({value});
+    }
+
+    updateSelectedControlLineColorHex(colorHex: string) {
+        this.updateSelectedControlLine({colorHex});
     }
 }
