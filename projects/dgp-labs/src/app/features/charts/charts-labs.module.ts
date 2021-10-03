@@ -17,6 +17,9 @@ import { BoxPlotLabsComponent } from "./containers/box-plot-labs.component";
 import { ConnectedScatterPlotLabsComponent } from "./containers/connected-scatter-plot-labs.component";
 import { HeatmapLabsComponent } from "./containers/heatmap-labs.component";
 import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -46,7 +49,10 @@ import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
         DgpHeatmapModule,
         DgpConnectedScatterPlotModule,
         DgpSplitPanelModule,
-        DgpInspectorModule
+        DgpInspectorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule
     ],
     declarations: [
         ...containers

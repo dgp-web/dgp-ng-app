@@ -40,22 +40,37 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                     <dgp-inspector>
                         <dgp-inspector-section label="General">
-                            <dgp-inspector-item label="Chart title">
-
+                            <dgp-inspector-item label="Chart title"
+                                                matIconName="label">
+                                <mat-form-field>
+                                    <textarea matInput
+                                              [ngModel]="model.chartTitle"
+                                              (ngModelChange)="updateChartTitle($event)"></textarea>
+                                </mat-form-field>
                             </dgp-inspector-item>
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="x axis"
                                                matIconName="border_bottom">
-                            <dgp-inspector-item label="Title">
-
+                            <dgp-inspector-item label="Title"
+                                                matIconName="label">
+                                <mat-form-field>
+                                    <textarea matInput
+                                              [ngModel]="model.xAxisTitle"
+                                              (ngModelChange)="updateXAxisTitle($event)"></textarea>
+                                </mat-form-field>
                             </dgp-inspector-item>
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="y axis"
                                                matIconName="border_left">
-                            <dgp-inspector-item label="Title">
-
+                            <dgp-inspector-item label="Title"
+                                                matIconName="label">
+                                <mat-form-field>
+                                    <textarea matInput
+                                              [ngModel]="model.yAxisTitle"
+                                              (ngModelChange)="updateYAxisTitle($event)"></textarea>
+                                </mat-form-field>
                             </dgp-inspector-item>
                         </dgp-inspector-section>
 
@@ -88,4 +103,16 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     protected modelValue = testConnectScatterPlot;
 
+    updateChartTitle(chartTitle: string) {
+        this.updateModel({chartTitle});
+    }
+
+    updateXAxisTitle(xAxisTitle: string) {
+        this.updateModel({xAxisTitle});
+    }
+
+
+    updateYAxisTitle(yAxisTitle: string) {
+        this.updateModel({yAxisTitle});
+    }
 }
