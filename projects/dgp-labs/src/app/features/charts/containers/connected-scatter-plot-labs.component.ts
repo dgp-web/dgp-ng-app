@@ -140,8 +140,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         }
 
         dgp-connected-scatter-plot {
-            width: 640px;
-            max-height: 480px;
+           /* width: 640px;
+            max-height: 480px;*/
         }
 
         mat-form-field {

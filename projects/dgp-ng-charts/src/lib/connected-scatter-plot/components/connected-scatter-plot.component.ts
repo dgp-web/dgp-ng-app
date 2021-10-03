@@ -230,6 +230,7 @@ import { ScaleType } from "../../shared/models";
             display: flex;
             justify-content: center;
             flex-grow: 1;
+            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -242,6 +243,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     readonly shapeEnum = Shape;
 
     @ViewChild("chartContainer") elRef: ElementRef;
+    @ViewChild("svgRoot") svgRoot: ElementRef<SVGElement>;
 
     @Input()
     model: readonly ConnectedScatterGroup[];
@@ -312,6 +314,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     }
 
     protected drawD3Chart(payload: DrawD3ChartPayload): void {
+
 
         this.connectedScatterPlotScales = createConnectedScatterPlotScales({
             containerHeight: payload.containerHeight,

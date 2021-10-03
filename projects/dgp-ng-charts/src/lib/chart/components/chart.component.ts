@@ -15,7 +15,8 @@ import { notNullOrUndefined } from "dgp-ng-app";
                 {{ chartTitle }}
             </div>
 
-            <div class="inner-container">
+            <div class="inner-container"
+                 [style.maxHeight.px]="geMaxHeight(chartRef, chartTitleRef, xAxisLabelRef)">
                 <div class="y-axis-label-container"
                      [class.hidden]="yAxisLabelRef.innerText.length < 3">
                     <div class="y-axis-label"
@@ -45,6 +46,7 @@ import { notNullOrUndefined } from "dgp-ng-app";
             display: flex;
             justify-content: center;
             flex-grow: 1;
+            height: 100%;
         }
 
         .chart {
@@ -92,14 +94,28 @@ import { notNullOrUndefined } from "dgp-ng-app";
         }
 
         .hidden {
-            min-height: 0 !important;;
+            min-height: 0 !important;
             min-width: 0 !important;
-            max-width: 0 !important;;
-            display: none !important;;
+            max-width: 0 !important;
+            display: none !important;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DgpChartComponent extends DgpChartComponentBase {
+
+    // TODO: This is not always working properly since the class .hidden can be computed before OR after this is set
+    geMaxHeight(chartRef: HTMLDivElement, chartTitleRef: HTMLDivElement, xAxisLabelRef: HTMLDivElement) {
+        let maxHeight = chartRef.getBoundingClientRect().height;
+
+        if (notNullOrUndefined(chartTitleRef)) {
+            maxHeight -= chartTitleRef.getBoundingClientRect().height;
+        }
+        if (notNullOrUndefined(xAxisLabelRef)) {
+            maxHeight -= xAxisLabelRef.getBoundingClientRect().height;
+        }
+
+        return maxHeight;
+    }
 
 }
