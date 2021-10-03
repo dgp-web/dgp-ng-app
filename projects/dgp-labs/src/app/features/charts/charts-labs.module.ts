@@ -20,6 +20,7 @@ import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
     imports: [
@@ -52,7 +53,8 @@ import { FormsModule } from "@angular/forms";
         DgpInspectorModule,
         MatFormFieldModule,
         MatInputModule,
-        FormsModule
+        FormsModule,
+        MatSelectModule
     ],
     declarations: [
         ...containers

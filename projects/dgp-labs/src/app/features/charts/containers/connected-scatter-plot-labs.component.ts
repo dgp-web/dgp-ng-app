@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
+import { ScaleType } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
 
 export const testConnectScatterPlot: ConnectedScatterPlot = {
     model: testConnectedScatterGroups,
@@ -42,7 +43,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                 <ng-template>
 
                     <dgp-inspector>
-                        <dgp-inspector-section label="General">
+                        <dgp-inspector-section label="General"
+                                               matIconName="info">
                             <dgp-inspector-item label="Chart title"
                                                 matIconName="label">
                                 <mat-form-field>
@@ -99,6 +101,21 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
 
+                            <dgp-inspector-item label="Scale"
+                                                matIconName="linear">
+                                <mat-form-field>
+                                    <mat-select [ngModel]="model.yAxisScaleType"
+                                                (ngModelChange)="updateYAxisScaleType($event)">
+                                        <mat-option [value]="scaleTypeEnum.Linear">
+                                            Linear
+                                        </mat-option>
+                                        <mat-option [value]="scaleTypeEnum.Logarithmic">
+                                            Logarithmic
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
                             <dgp-inspector-item label="Max"
                                                 matIconName="maximize">
                                 <mat-form-field>
@@ -140,8 +157,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         }
 
         dgp-connected-scatter-plot {
-           /* width: 640px;
-            max-height: 480px;*/
+            /* width: 640px;
+             max-height: 480px;*/
         }
 
         mat-form-field {
@@ -155,6 +172,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 })
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 
+    readonly scaleTypeEnum = ScaleType;
     protected modelValue = testConnectScatterPlot;
 
     updateChartTitle(chartTitle: string) {
@@ -186,4 +204,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         this.updateModel({yAxisMax});
     }
 
+    updateYAxisScaleType(yAxisScaleType: ScaleType) {
+        this.updateModel({yAxisScaleType});
+    }
 }
