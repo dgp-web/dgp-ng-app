@@ -170,6 +170,12 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </mat-form-field>
                             </dgp-inspector-item>
 
+                            <ng-container *ngIf="selectedDataGroup$ | async as selectedDataGroup">
+
+                                {{  selectedDataGroup.connectedScatterGroupId }}
+
+                            </ng-container>
+
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="Control lines"
@@ -271,6 +277,15 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         })
     );
     readonly selectedDataGroupId$ = new BehaviorSubject<string>(null);
+    readonly selectedDataGroup$ = this.selectedDataGroupId$.pipe(
+        map(dataGroupId => {
+
+            if (!dataGroupId || !this.model || !this.model.model) return null;
+
+            return this.model.model.find(x => x.connectedScatterGroupId === dataGroupId);
+
+        })
+    );
 
     updateChartTitle(chartTitle: string) {
         this.updateModel({chartTitle});

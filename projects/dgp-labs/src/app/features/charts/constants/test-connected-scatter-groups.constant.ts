@@ -3,6 +3,8 @@ import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
 
 export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = [{
     connectedScatterGroupId: "group01",
+    colorHex: "#00ff00",
+    shape: Shape.Circle,
     series: [{
         connectedScatterSeriesId: "series01",
         dots: [
@@ -10,8 +12,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 3, y: 7},
             {x: 4, y: 5},
             {x: 9, y: 4},
-        ],
-        colorHex: "#00ff00"
+        ]
     }, {
         connectedScatterSeriesId: "series02",
         dots: [
@@ -19,12 +20,12 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 3, y: 7},
             {x: 5, y: 9},
             {x: 6, y: 1},
-        ],
-        colorHex: "#00ffff",
-        shape: Shape.Circle
+        ]
     }]
 }, {
     connectedScatterGroupId: "group02",
+    colorHex: "#000000",
+    shape: Shape.Rectangle,
     series: [{
         connectedScatterSeriesId: "series03",
         dots: [
@@ -32,9 +33,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 4, y: 2},
             {x: 6, y: 4},
             {x: 7, y: 3},
-        ],
-        colorHex: "#000000",
-        shape: Shape.Rectangle
+        ]
     }, {
         connectedScatterSeriesId: "series04",
         dots: [
@@ -48,6 +47,8 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
     }]
 }, {
     connectedScatterGroupId: "group03",
+    colorHex: "#999900",
+    shape: Shape.Triangle,
     series: [{
         connectedScatterSeriesId: "series05",
         dots: [
@@ -55,9 +56,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 4.2, y: 5.2},
             {x: 6.23, y: 1.3},
             {x: 6.7, y: 4.5},
-        ],
-        colorHex: "#999900",
-        shape: Shape.Triangle
+        ]
     }, {
         connectedScatterSeriesId: "series06",
         dots: [
