@@ -179,7 +179,17 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                       (modelChange)="updateSelectedGroupShape($event)"></dgp-shape-select>
                                 </dgp-inspector-item>
 
-                                {{  selectedDataGroup.connectedScatterGroupId }}
+                                <dgp-inspector-item matIconName="palette"
+                                                    label="Color">
+                                    <mat-form-field>
+                                        <input matInput
+                                               type="color"
+                                               [ngModel]="selectedDataGroup.colorHex"
+                                               [disabled]="disabled"
+                                               (ngModelChange)="updateSelectedGroupColorHex($event)">
+                                    </mat-form-field>
+                                </dgp-inspector-item>
+
 
                             </ng-container>
 
@@ -374,5 +384,9 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateSelectedGroupShape(shape: Shape) {
         this.updateSelectedGroup({shape});
+    }
+
+    updateSelectedGroupColorHex(colorHex: any) {
+        this.updateSelectedGroup({colorHex});
     }
 }
