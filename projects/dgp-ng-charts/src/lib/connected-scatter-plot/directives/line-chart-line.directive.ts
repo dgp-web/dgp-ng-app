@@ -24,7 +24,7 @@ export class DgpLineChartLineDirective implements OnChanges {
         if ( changes.series || changes.group || changes.scales) {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "fill", "transparent");
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.series.colorHex);
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.series.colorHex || this.group.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "1.5");
 
             const createLine = line<Dot>().x(dot => {

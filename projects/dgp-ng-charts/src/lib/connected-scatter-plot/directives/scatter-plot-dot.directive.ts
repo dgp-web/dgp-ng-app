@@ -56,7 +56,7 @@ export class DgpScatterPlotDotDirective implements OnChanges {
                     break;
             }
 
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.series.colorHex);
+            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.series.colorHex || this.group.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "tabindex", "0");
         }
 
