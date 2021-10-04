@@ -22,10 +22,10 @@ export class BoxPlotBoxDirective implements OnChanges {
         if (changes.scales || changes.box || changes.boxGroup) {
 
             const x = this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId](this.box.boxId);
-            const y = this.scales.yAxis(this.box.quantiles.upper);
+            const y = this.scales.yAxisScale(this.box.quantiles.upper);
 
             const height = Math.abs(
-                (this.scales.yAxis(this.box.quantiles.lower) - this.scales.yAxis(this.box.quantiles.upper))
+                (this.scales.yAxisScale(this.box.quantiles.lower) - this.scales.yAxisScale(this.box.quantiles.upper))
             );
             const width = this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId].bandwidth();
 

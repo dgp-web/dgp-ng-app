@@ -32,13 +32,10 @@ export class BoxPlotOutlierTooltipDirective implements OnChanges {
                 + this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId].bandwidth() / 2
                 + getJitter(this.box.boxId + this.value, this.config) + 8;
 
-            const y = this.scales.yAxis(this.value) + 4;
+            const y = this.scales.yAxisScale(this.value) + 4;
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x", x.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "y", y.toString());
-
-            this.renderer.setAttribute(this.elementRef.nativeElement, "r", "3");
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.box.colorHex);
 
         }
 

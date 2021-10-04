@@ -18,10 +18,10 @@ export class BoxPlotBottomAxisDirective implements OnChanges {
             this.renderer.setAttribute(
                 this.elementRef.nativeElement,
                 "transform",
-                "translate(0," + this.scales.yAxis.range()[1] + ")"
+                "translate(0," + this.scales.yAxisScale.range()[1] + ")"
             );
-            this.elementRef.nativeElement.style.transform = "translate(0," + this.scales.yAxis.range()[1] + ")";
-            d3.select(this.elementRef.nativeElement).call(d3.axisBottom(this.scales.xAxis));
+            this.elementRef.nativeElement.style.transform = "translate(0," + this.scales.yAxisScale.range()[1] + ")";
+            d3.select(this.elementRef.nativeElement).call(d3.axisBottom(this.scales.xAxisScale));
         }
 
     }

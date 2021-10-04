@@ -5,10 +5,12 @@ import { KVS } from "entity-store";
 export interface BoxPlotScales {
     readonly containerWidth: number;
     readonly containerHeight: number;
-    readonly barAreaWidth: number;
-    readonly barAreaHeight: number;
+    readonly dataAreaWidth: number;
+    readonly dataAreaHeight: number;
     readonly chartMargin: ChartMargin;
-    readonly xAxis: d3.ScaleBand<string>;
+    readonly xAxisScale: d3.ScaleBand<string>;
+    readonly xAxis: d3.Axis<any>;
     readonly xAxisSubgroupKVS: KVS<d3.ScaleBand<string>>;
-    readonly yAxis: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
+    readonly yAxisScale: d3.ScaleLinear<number, number> | d3.ScaleLogarithmic<number, number>;
+    readonly yAxis: d3.Axis<any>;
 }

@@ -8,7 +8,7 @@ export function drawBoxPlot(payload: {
 }, config = defaultBoxPlotConfig) {
 
     const xSubgroupKVS = payload.d3Scales.xAxisSubgroupKVS;
-    const yAxis = payload.d3Scales.yAxis;
+    const yAxis = payload.d3Scales.yAxisScale;
     const d3OnGroupDataEnter = payload.d3OnGroupDataEnter;
 
     d3OnGroupDataEnter.append("line")

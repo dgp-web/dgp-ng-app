@@ -8,10 +8,16 @@ export const getIsAuthenticatedSelector = createSelector(
     authenticationFeatureSelector,
     x => x.success
 );
+
+export const isAuthenticated = getIsAuthenticatedSelector;
+
 export const getAuthenticatedUserSelector = createSelector(
     authenticationFeatureSelector,
     x => x.user
 );
+
+export const getAuthenticatedUser = getAuthenticatedUserSelector;
+
 export const getCachedInitialUrlSelector = createSelector(
     authenticationFeatureSelector,
     x => x.initialUrl
@@ -20,4 +26,8 @@ export const getCachedInitialUrlSelector = createSelector(
 export const hasCachedInitialUrlSelector = createSelector(
     getCachedInitialUrlSelector,
     x => !isNullOrUndefined(x)
+);
+
+export const isInitialized = createSelector(
+    authenticationFeatureSelector, x => x.isInitialized === true
 );

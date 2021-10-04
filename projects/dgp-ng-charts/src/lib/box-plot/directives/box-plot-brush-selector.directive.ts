@@ -57,7 +57,7 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
             d3.select(svg).call(d3.brush()
                 .extent([
                     [0, 0],
-                    [this.scales.barAreaWidth, this.scales.barAreaHeight]
+                    [this.scales.dataAreaWidth, this.scales.dataAreaHeight]
                 ])
                 .on("start brush", () => {
                     const extent = d3.event.selection;
@@ -65,7 +65,7 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
                     const outliers = getOutliers(this.boxGroups).filter(x => isBrushed(
                         extent,
                         getOutlierXPosition(x, this.scales, this.config),
-                        this.scales.yAxis(x.value)
+                        this.scales.yAxisScale(x.value)
                     ));
 
                     this.selectionChange.emit({outliers});

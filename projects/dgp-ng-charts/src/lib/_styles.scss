@@ -1,5 +1,4 @@
 .chart-svg {
-    position: absolute;
     overflow: visible;
     width: 100%;
     height: 100%;
@@ -83,7 +82,7 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 
 .tooltip {
     position: fixed;
-    fill: white;
+    fill: black;
 }
 
 .plot-container {
@@ -95,18 +94,23 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 }
 
 
-dgp-fill-pattern-icon {
-    rect {
+dgp-svg-symbol {
+    circle, rect, polygon {
         fill: black;
         stroke: black;
     }
 }
 
 .dark-theme {
-    dgp-fill-pattern-icon {
-        rect {
+    dgp-svg-symbol {
+        circle, rect, polygon {
             fill: white;
             stroke: white;
         }
+    }
+
+    .tooltip {
+        position: fixed;
+        fill: white;
     }
 }

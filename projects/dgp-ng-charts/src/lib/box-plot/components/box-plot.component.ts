@@ -4,6 +4,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    Inject,
     Input,
     OnChanges,
     OnDestroy,
@@ -11,25 +12,28 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { Box, BoxGroup, BoxPlot, BoxPlotScales, BoxPlotSelection } from "../models";
+import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, tap } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
-import { isNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
-import { ChartSelectionMode } from "../../shared/models";
+import { ChartSelectionMode, ScaleType } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import { Shape } from "../../symbols/models";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-box-plot",
     template: `
-        <dgp-chart dgpResizeSensor
-                   (sizeChanged)="drawChart()"
-                   [yAxisTitle]="yAxisTitle"
+        <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle">
+                   [chartTitle]="chartTitle"
+                   dgpResizeSensor
+                   (sizeChanged)="drawChart()">
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
@@ -50,103 +54,219 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
             <div class="plot-container"
                  #chartContainer>
 
-                <svg *ngIf="boxPlotScales"
-                     class="chart-svg">
+                <svg #svgRoot
+                     *ngIf="boxPlotScales"
+                     class="chart-svg"
+                     [attr.viewBox]="getViewBox()">
 
                     <defs>
-                        <!-- Pattern -->
-                        <dgp-vertical-lines-pattern></dgp-vertical-lines-pattern>
-                        <dgp-horizontal-lines-pattern></dgp-horizontal-lines-pattern>
-                        <dgp-lines-from-left-top-to-right-bottom-pattern></dgp-lines-from-left-top-to-right-bottom-pattern>
-                        <dgp-lines-from-left-bottom-to-right-top-pattern></dgp-lines-from-left-bottom-to-right-top-pattern>
-                        <dgp-checkerboard-pattern></dgp-checkerboard-pattern>
-                        <dgp-diagonal-checkerboard-pattern></dgp-diagonal-checkerboard-pattern>
+                        <!-- Patterns -->
+                        <pattern dgpHorizontalLinesPattern></pattern>
+                        <pattern dgpVerticalLinesPattern></pattern>
+                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
+                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
+                        <pattern dgpCheckerboardPattern></pattern>
+                        <pattern dgpDiagonalCheckerboardPattern></pattern>
 
                         <!-- Masks -->
-                        <dgp-vertical-lines-mask></dgp-vertical-lines-mask>
-                        <dgp-horizontal-lines-mask></dgp-horizontal-lines-mask>
-                        <dgp-lines-from-left-top-to-right-bottom-mask></dgp-lines-from-left-top-to-right-bottom-mask>
-                        <dgp-lines-from-left-bottom-to-right-top-mask></dgp-lines-from-left-bottom-to-right-top-mask>
-                        <dgp-grid-mask></dgp-grid-mask>
-                        <dgp-diagonal-grid-mask></dgp-diagonal-grid-mask>
-                        <dgp-checkerboard-mask></dgp-checkerboard-mask>
-                        <dgp-diagonal-checkerboard-mask></dgp-diagonal-checkerboard-mask>
+                        <mask dgpVerticalLinesMask></mask>
+                        <mask dgpHorizontalLinesMask></mask>
+                        <mask dgpLinesFromLeftTopToRightBottomMask></mask>
+                        <mask dgpLinesFromLeftBottomToRightTopMask></mask>
+                        <mask dgpGridMask></mask>
+                        <mask dgpDiagonalGridMask></mask>
+                        <mask dgpCheckerboardMask></mask>
+                        <mask dgpDiagonalCheckerboardMask></mask>
+
+                        <!-- Other -->
+                        <clipPath dgpChartDataAreaClipPath
+                                  [scales]="boxPlotScales"></clipPath>
+                        <clipPath dgpChartContainerAreaClipPath
+                                  [scales]="boxPlotScales"></clipPath>
                     </defs>
 
-                    <g [attr.transform]="getContainerTransform()">
+                    <g [attr.clip-path]="getContainerAreaClipPath()">
+                        <g [attr.transform]="getContainerTransform()">
 
-                        <g class="chart__x-axis"
-                           dgpBoxPlotBottomAxis
-                           [scales]="boxPlotScales"></g>
+                            <g class="chart__x-axis"
+                               dgpChartBottomAxis
+                               [scales]="boxPlotScales"></g>
 
-                        <g class="chart__y-axis"
-                           dgpBoxPlotLeftAxis
-                           [scales]="boxPlotScales"></g>
+                            <g class="chart__y-axis"
+                               dgpChartLeftAxis
+                               [scales]="boxPlotScales"></g>
 
-                        <g class="measurement-result-root"
-                           dgpBoxPlotBrushSelector
-                           [scales]="boxPlotScales"
-                           [boxGroups]="model"
-                           [config]="config"
-                           [selectionMode]="selectionMode"
-                           (selectionChange)="selectionChange.emit($event)">
-                            <g *ngFor="let boxGroup of model"
-                               [attr.transform]="getResultRootTransform(boxGroup)">
-                                <ng-container *ngFor="let box of boxGroup.boxes">
-                                    <line dgpBoxPlotWhisker
-                                          type="max"
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></line>
-                                    <line dgpBoxPlotUpperAntenna
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></line>
-                                    <rect dgpBoxPlotBoxFillPattern
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></rect>
-                                    <rect dgpBoxPlotBox
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></rect>
-                                    <line dgpBoxPlotMedian
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></line>
-                                    <line dgpBoxPlotLowerAntenna
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></line>
-                                    <line dgpBoxPlotWhisker
-                                          type="min"
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"></line>
+                            <g dgpBoxPlotBrushSelector
+                               [scales]="boxPlotScales"
+                               [boxGroups]="model"
+                               [config]="config"
+                               [selectionMode]="selectionMode"
+                               (selectionChange)="selectionChange.emit($event)"
+                               [attr.clip-path]="getDataAreaClipPath()">
+                                <g *ngFor="let boxGroup of model"
+                                   [attr.transform]="getResultRootTransform(boxGroup)">
+                                    <ng-container *ngFor="let box of boxGroup.boxes">
+                                        <line dgpBoxPlotWhisker
+                                              type="max"
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <line dgpBoxPlotUpperAntenna
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <rect dgpBoxPlotBoxFillPattern
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></rect>
+                                        <rect dgpBoxPlotBox
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></rect>
+                                        <line dgpBoxPlotMedian
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <line dgpBoxPlotLowerAntenna
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
+                                        <line dgpBoxPlotWhisker
+                                              type="min"
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"></line>
 
-                                    <circle *ngFor="let value of box.outliers; let i = index;"
-                                            r="3"
-                                            dgpBoxPlotOutlier
-                                            [scales]="boxPlotScales"
-                                            [boxGroup]="boxGroup"
-                                            [box]="box"
-                                            [value]="value"
-                                            (focus)="highlightOutlier(box, i)"
-                                            (mouseenter)="highlightOutlier(box, i)"
-                                            (blur)="unhighlightOutlier(box, i)"
-                                            (mouseleave)="unhighlightOutlier(box, i)"></circle>
+                                        <ng-container *ngFor="let value of box.outliers; let i = index;">
+                                            <ng-container [ngSwitch]="box.outlierShape">
 
-                                    <text *ngFor="let value of box.outliers let i = index;"
-                                          class="tooltip --hidden"
-                                          [class.--visible]="outlierKey === getBoxOutlierKey(box, i)"
-                                          dgpBoxPlotOutlierTooltip
-                                          [scales]="boxPlotScales"
-                                          [boxGroup]="boxGroup"
-                                          [box]="box"
-                                          [value]="value">
-                                        {{ value }}
-                                    </text>
-                                </ng-container>
+                                                <circle *ngSwitchCase="shapeEnum.Circle"
+                                                        dgpBoxPlotOutlier
+                                                        [scales]="boxPlotScales"
+                                                        [boxGroup]="boxGroup"
+                                                        [box]="box"
+                                                        [value]="value"
+                                                        (focus)="highlightOutlier(box, i)"
+                                                        (mouseenter)="highlightOutlier(box, i)"
+                                                        (blur)="unhighlightOutlier(box, i)"
+                                                        (mouseleave)="unhighlightOutlier(box, i)"></circle>
+
+                                                <rect *ngSwitchCase="shapeEnum.Rectangle"
+                                                      dgpBoxPlotOutlier
+                                                      [scales]="boxPlotScales"
+                                                      [boxGroup]="boxGroup"
+                                                      [box]="box"
+                                                      [value]="value"
+                                                      (focus)="highlightOutlier(box, i)"
+                                                      (mouseenter)="highlightOutlier(box, i)"
+                                                      (blur)="unhighlightOutlier(box, i)"
+                                                      (mouseleave)="unhighlightOutlier(box, i)"></rect>
+
+                                                <polygon *ngSwitchCase="shapeEnum.Rhombus"
+                                                         dgpBoxPlotOutlier
+                                                         dgpRhombus
+                                                         [scales]="boxPlotScales"
+                                                         [boxGroup]="boxGroup"
+                                                         [box]="box"
+                                                         [value]="value"
+                                                         (focus)="highlightOutlier(box, i)"
+                                                         (mouseenter)="highlightOutlier(box, i)"
+                                                         (blur)="unhighlightOutlier(box, i)"
+                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                                <polygon *ngSwitchCase="shapeEnum.Star"
+                                                         dgpBoxPlotOutlier
+                                                         dgpStar
+                                                         [scales]="boxPlotScales"
+                                                         [boxGroup]="boxGroup"
+                                                         [box]="box"
+                                                         [value]="value"
+                                                         (focus)="highlightOutlier(box, i)"
+                                                         (mouseenter)="highlightOutlier(box, i)"
+                                                         (blur)="unhighlightOutlier(box, i)"
+                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                                <polygon *ngSwitchCase="shapeEnum.Triangle"
+                                                         dgpBoxPlotOutlier
+                                                         dgpTriangle
+                                                         [scales]="boxPlotScales"
+                                                         [boxGroup]="boxGroup"
+                                                         [box]="box"
+                                                         [value]="value"
+                                                         (focus)="highlightOutlier(box, i)"
+                                                         (mouseenter)="highlightOutlier(box, i)"
+                                                         (blur)="unhighlightOutlier(box, i)"
+                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                                <polygon *ngSwitchCase="shapeEnum.TriangleDown"
+                                                         dgpBoxPlotOutlier
+                                                         dgpTriangleDown
+                                                         [scales]="boxPlotScales"
+                                                         [boxGroup]="boxGroup"
+                                                         [box]="box"
+                                                         [value]="value"
+                                                         (focus)="highlightOutlier(box, i)"
+                                                         (mouseenter)="highlightOutlier(box, i)"
+                                                         (blur)="unhighlightOutlier(box, i)"
+                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                                <polygon *ngSwitchCase="shapeEnum.TriangleRight"
+                                                         dgpBoxPlotOutlier
+                                                         dgpTriangleRight
+                                                         [scales]="boxPlotScales"
+                                                         [boxGroup]="boxGroup"
+                                                         [box]="box"
+                                                         [value]="value"
+                                                         (focus)="highlightOutlier(box, i)"
+                                                         (mouseenter)="highlightOutlier(box, i)"
+                                                         (blur)="unhighlightOutlier(box, i)"
+                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                                <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
+                                                         dgpBoxPlotOutlier
+                                                         dgpTriangleLeft
+                                                         [scales]="boxPlotScales"
+                                                         [boxGroup]="boxGroup"
+                                                         [box]="box"
+                                                         [value]="value"
+                                                         (focus)="highlightOutlier(box, i)"
+                                                         (mouseenter)="highlightOutlier(box, i)"
+                                                         (blur)="unhighlightOutlier(box, i)"
+                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+
+                                                <circle *ngSwitchDefault
+                                                        dgpBoxPlotOutlier
+                                                        [scales]="boxPlotScales"
+                                                        [boxGroup]="boxGroup"
+                                                        [box]="box"
+                                                        [value]="value"
+                                                        (focus)="highlightOutlier(box, i)"
+                                                        (mouseenter)="highlightOutlier(box, i)"
+                                                        (blur)="unhighlightOutlier(box, i)"
+                                                        (mouseleave)="unhighlightOutlier(box, i)"></circle>
+
+                                            </ng-container>
+                                        </ng-container>
+
+
+                                        <text *ngFor="let value of box.outliers let i = index;"
+                                              class="tooltip --hidden"
+                                              [class.--visible]="outlierKey === getBoxOutlierKey(box, i)"
+                                              dgpBoxPlotOutlierTooltip
+                                              [scales]="boxPlotScales"
+                                              [boxGroup]="boxGroup"
+                                              [box]="box"
+                                              [value]="value">
+                                            {{ value }}
+                                        </text>
+                                    </ng-container>
+                                </g>
+
+                                <line *ngFor="let controlLine of controlLines"
+                                      dgpBoxPlotControlLine
+                                      [scales]="boxPlotScales"
+                                      [boxPlotControlLine]="controlLine"></line>
+
                             </g>
                         </g>
 
@@ -165,6 +285,9 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
 
@@ -174,12 +297,24 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     model: ReadonlyArray<BoxGroup>;
 
     @Input()
+    controlLines?: ReadonlyArray<BoxPlotControlLine>;
+
+    @Input()
     config = defaultBoxPlotConfig;
 
     @Input()
     selectionMode: ChartSelectionMode = "None";
 
     boxPlotScales: BoxPlotScales;
+
+    @Input()
+    yAxisMin?: number;
+
+    @Input()
+    yAxisMax?: number;
+
+    @Input()
+    yAxisScaleType?: ScaleType;
 
     private readonly drawChartActionScheduler = new EventEmitter();
 
@@ -193,8 +328,12 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
+    readonly shapeEnum = Shape;
+
     constructor(
-        private readonly cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef,
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
     ) {
         super();
 
@@ -221,7 +360,10 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         this.boxPlotScales = createBoxPlotScales({
             containerHeight: payload.containerHeight,
             containerWidth: payload.containerWidth,
-            boxGroups: this.model
+            boxGroups: this.model,
+            yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
+            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
+            yAxisScaleType: this.yAxisScaleType
         });
 
         this.cd.markForCheck();
@@ -246,7 +388,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     }
 
     getResultRootTransform(boxGroup: BoxGroup) {
-        return "translate(" + this.boxPlotScales.xAxis(boxGroup.boxGroupId) + ")";
+        return "translate(" + this.boxPlotScales.xAxisScale(boxGroup.boxGroupId) + ")";
     }
 
     getBoxOutlierKey(box: Box, outlierIndex: number) {
@@ -262,4 +404,24 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     unhighlightOutlier(box: Box, value: number) {
         this.outlierKey = null;
     }
+
+    getViewBox() {
+
+        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+
+        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
+        const width = rect.width - this.config.margin.left - this.config.margin.right;
+
+        return "0 0 " + width + " " + height;
+
+    }
+
+    getDataAreaClipPath(): string {
+        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    }
+
+    getContainerAreaClipPath(): string {
+        return " url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
+    }
+
 }

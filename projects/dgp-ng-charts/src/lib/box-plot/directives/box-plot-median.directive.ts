@@ -26,8 +26,8 @@ export class BoxPlotMedianDirective implements OnChanges {
             const x2 = this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId](this.box.boxId)
                 + this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId].bandwidth();
 
-            const y1 = this.scales.yAxis(this.box.quantiles.median);
-            const y2 = this.scales.yAxis(this.box.quantiles.median);
+            const y1 = this.scales.yAxisScale(this.box.quantiles.median);
+            const y2 = this.scales.yAxisScale(this.box.quantiles.median);
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x1", x1.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "x2", x2.toString());

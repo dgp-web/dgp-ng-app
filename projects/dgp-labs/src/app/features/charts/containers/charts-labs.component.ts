@@ -3,12 +3,20 @@ import {
     BoxPlotSelection,
     BoxValues,
     computeBoxFromValues,
+    ExportChartConfig,
     FillPattern,
     HeatmapSelection,
-    HeatmapTile
+    HeatmapTile,
+    Shape
 } from "dgp-ng-charts";
-import { ExportChartConfig } from "../../../../../../dgp-ng-charts/src/lib/heatmap/models";
 import { testBoxGroups } from "../constants/test-box-groups.constant";
+import { testBarGroups } from "../constants/test-bar-groups.constant";
+import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
+import { BoxPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/box-plot/models";
+import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
+import { ScaleType } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
+import { testLogBoxGroups } from "../constants/test-log-box-groups.constant";
+import { testLogConnectedScatterGroups } from "../constants/test-log-connected-scatter-groups.constant";
 
 @Component({
     selector: "dgp-charts-labs",
@@ -23,13 +31,26 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
             <dgp-docs-page-content>
 
                 <dgp-docs-section-title>
+                    Connected scatterplot
+                </dgp-docs-section-title>
+
+                <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
+
+                <dgp-connected-scatter-plot [model]="logConnectedScatterGroups"
+                                            yAxisScaleType="Logarithmic"></dgp-connected-scatter-plot>
+
+                <dgp-connected-scatter-plot [model]="connectedScatterGroups"
+                                            [controlLines]="connectedScatterPlotControlLines"
+                                            xAxisMin="1"
+                                            xAxisMax="6"
+                                            yAxisMin="2"
+                                            yAxisMax="9"></dgp-connected-scatter-plot>
+                <dgp-docs-section-title>
                     Box plot
                 </dgp-docs-section-title>
 
-                <dgp-fill-pattern-select [model]="fillPattern"
-                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
-
-                <dgp-box-plot [model]="boxGroups">
+                <dgp-box-plot [model]="boxGroups"
+                              [controlLines]="boxPlotControlLines">
 
                     <ng-container chart-title>
                         Title via template slot
@@ -49,6 +70,20 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 
                 </dgp-box-plot>
 
+                <dgp-box-plot [model]="boxGroups"
+                              [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
+                              yAxisMin="3"
+                              yAxisMax="17"></dgp-box-plot>
+
+                <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
+                              [model]="logBoxGroups"></dgp-box-plot>
+
+                <dgp-docs-section-title>
+                    Bar chart
+                </dgp-docs-section-title>
+
+                <dgp-bar-chart [model]="barGroups"></dgp-bar-chart>
+
                 <dgp-docs-section-title>
                     Heat map
                 </dgp-docs-section-title>
@@ -67,6 +102,16 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 
                 </dgp-heatmap>
 
+                <dgp-docs-section-title>
+                    Form elements
+                </dgp-docs-section-title>
+
+                <dgp-fill-pattern-select [model]="fillPattern"
+                                         (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+
+                <dgp-shape-select [model]="shape"
+                                  (modelChange)="updateShape($event)"></dgp-shape-select>
+
 
             </dgp-docs-page-content>
 
@@ -81,9 +126,10 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
             overflow: auto;
         }
 
-        dgp-line-chart, dgp-box-plot, dgp-heatmap {
+        dgp-connected-scatter-plot, dgp-box-plot, dgp-heatmap, dgp-bar-chart {
             width: 640px;
             max-height: 480px;
+            min-height: 400px;
             margin: auto;
         }
     `],
@@ -91,9 +137,37 @@ import { testBoxGroups } from "../constants/test-box-groups.constant";
 })
 export class ChartsLabsComponent {
 
+    readonly axisScaleTypeEnum = ScaleType;
     fillPattern = FillPattern.All;
+    shape = Shape.Circle;
 
     boxGroups = testBoxGroups;
+    logBoxGroups = testLogBoxGroups;
+    boxPlotControlLines: ReadonlyArray<BoxPlotControlLine> = [{
+        boxPlotControlLineId: "01",
+        value: 0.1,
+        colorHex: "#338800",
+        label: "Test limit"
+    }, {
+        boxPlotControlLineId: "02",
+        value: 15.1,
+        colorHex: "#338800",
+        label: "Test limit"
+    }];
+    barGroups = testBarGroups;
+    connectedScatterGroups = testConnectedScatterGroups;
+    logConnectedScatterGroups = testLogConnectedScatterGroups;
+    connectedScatterPlotControlLines: ReadonlyArray<ConnectedScatterPlotControlLine> = [{
+        connectedScatterPlotControlLineId: "01",
+        value: 2.5,
+        colorHex: "#338800",
+        label: "Test limit"
+    }, {
+        connectedScatterPlotControlLineId: "02",
+        value: 8.3,
+        colorHex: "#338800",
+        label: "Test limit"
+    }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
 
@@ -149,6 +223,10 @@ export class ChartsLabsComponent {
             label: "First group",
             boxes: [box]
         }];
+
+    }
+
+    updateShape(shape: Shape) {
 
     }
 }

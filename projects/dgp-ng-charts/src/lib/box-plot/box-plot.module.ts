@@ -12,9 +12,7 @@ import { DgpChartModule } from "../chart/chart.module";
 import { DgpResizeSensorModule } from "dgp-ng-app";
 import { DgpSVGPatternsModule } from "../patterns/svg-patterns.module";
 import { DgpSVGMasksModule } from "../masks/svg-masks.module";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatSelectModule } from "@angular/material/select";
-import { FormsModule } from "@angular/forms";
+import { DgpSVGSymbolsModule } from "../symbols/svg-symbol.module";
 
 @NgModule({
     imports: [
@@ -29,9 +27,7 @@ import { FormsModule } from "@angular/forms";
         DgpResizeSensorModule,
         DgpSVGPatternsModule,
         DgpSVGMasksModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        FormsModule
+        DgpSVGSymbolsModule
     ],
     declarations: [
         ...components,

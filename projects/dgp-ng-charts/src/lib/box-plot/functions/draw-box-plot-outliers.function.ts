@@ -24,7 +24,7 @@ export function drawBoxPlotOutliers(payload: {
             + payload.d3Scales.xAxisSubgroupKVS[x.boxGroupId].bandwidth() / 2
             + getJitter(x.boxId + x.value, config)
         )
-        .attr("cy", x => payload.d3Scales.yAxis(x.value))
+        .attr("cy", x => payload.d3Scales.yAxisScale(x.value))
         .attr("r", 3)
         .style("fill", x => x.colorHex);
 

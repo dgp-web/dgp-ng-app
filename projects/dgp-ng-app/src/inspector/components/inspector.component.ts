@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     styles: [`
         :host {
             padding: 8px;
+            overflow: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

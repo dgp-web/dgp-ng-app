@@ -31,7 +31,9 @@ export {
 } from "./authentication/api-clients/authentication.api-client";
 export { AuthenticationGuard } from "./authentication/guards/authentication.guard";
 export { AuthenticationState, authenticationStoreFeature } from "./authentication/models";
-export { getAuthenticatedUserSelector, getIsAuthenticatedSelector } from "./authentication/selectors";
+export {
+    getAuthenticatedUserSelector, getIsAuthenticatedSelector, getAuthenticatedUser, isAuthenticated, isInitialized
+} from "./authentication/selectors";
 export * from "./authentication/services/authentication.service";
 export { authenticationReducer, initialAuthenticationState } from "./authentication/reducers";
 export { InitializationService, InitializationServiceProvider } from "./authentication/services/initialization.service";
