@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType } from "dgp-ng-charts";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -14,7 +14,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         label: "Upper limit",
         colorHex: "#666666",
         connectedScatterPlotControlLineId: "upperLimit",
-        value: 10
+        value: 7
     }]
 };
 
@@ -171,6 +171,13 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <ng-container *ngIf="selectedDataGroup$ | async as selectedDataGroup">
+
+                                <dgp-inspector-item label="Shape"
+                                                    matIconName="category">
+                                    <dgp-shape-select [model]="selectedDataGroup.shape"
+                                                      [disabled]="disabled"
+                                                      (modelChange)="updateSelectedGroupShape($event)"></dgp-shape-select>
+                                </dgp-inspector-item>
 
                                 {{  selectedDataGroup.connectedScatterGroupId }}
 
@@ -351,5 +358,21 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     selectDataGroupId(connectedScatterGroupId: string) {
         this.selectedDataGroupId$.next(connectedScatterGroupId);
+    }
+
+    updateSelectedGroup(payload: Partial<ConnectedScatterGroup>) {
+        const selectedId = this.selectedDataGroupId$.value;
+
+        this.updateModel({
+            model: this.model.model.map(x => {
+                if (x.connectedScatterGroupId !== selectedId) return x;
+                return {...x, ...payload};
+            })
+        });
+
+    }
+
+    updateSelectedGroupShape(shape: Shape) {
+        this.updateSelectedGroup({shape});
     }
 }

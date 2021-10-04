@@ -81,7 +81,7 @@ import { ScaleType } from "../../shared/models";
                                     <ng-container *ngFor="let series of group.series">
                                         <ng-container *ngFor="let dot of series.dots">
 
-                                            <ng-container [ngSwitch]="series.shape">
+                                            <ng-container [ngSwitch]="getShape(group, series)">
 
                                                 <circle *ngSwitchCase="shapeEnum.Circle"
                                                         dgpScatterPlotDot
@@ -387,4 +387,13 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     }
 
 
+    getShape(group: ConnectedScatterGroup, series: ConnectedScatterSeries): Shape {
+        if (notNullOrUndefined(series.shape)) {
+            return series.shape;
+        }
+        if (notNullOrUndefined(group.shape)) {
+            return group.shape;
+        }
+        return null;
+    }
 }

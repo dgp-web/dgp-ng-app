@@ -29,7 +29,7 @@ export class DgpScatterPlotDotDirective implements OnChanges {
             const x = this.scales.xAxisScale(this.dot.x);
             const y = this.scales.yAxisScale(this.dot.y);
 
-            switch (this.series.shape) {
+            switch (this.series.shape || this.group.shape) {
                 default:
                 case Shape.Circle:
                     this.renderer.setAttribute(this.elementRef.nativeElement, "cx", x.toString());
