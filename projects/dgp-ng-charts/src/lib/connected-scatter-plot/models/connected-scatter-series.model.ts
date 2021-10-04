@@ -1,12 +1,7 @@
 import { Dot } from "./dot.model";
-import { Shape } from "../../symbols/models";
+import { ConnectedScatterSeriesConfig } from "./connected-scatter-series-config.model";
 
-export interface ConnectedScatterSeries {
+export interface ConnectedScatterSeries extends ConnectedScatterSeriesConfig {
     readonly connectedScatterSeriesId: string;
     readonly dots: ReadonlyArray<Dot>;
-    readonly colorHex: string;
-    /**
-     * default value: "Circle"
-     */
-    readonly shape?: Shape;
 }
