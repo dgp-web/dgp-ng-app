@@ -2,7 +2,7 @@ import { empty, forkJoin, from } from "rxjs";
 import { catchError, defaultIfEmpty, switchMap, tap } from "rxjs/operators";
 import { ClassProvider, Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { authenticateUser, registerAuthenticateError } from "../actions";
+import { authenticateUser, initialize, registerAuthenticateError } from "../actions";
 import { AuthenticationApiClient } from "../api-clients/authentication.api-client";
 import { AuthenticationState, PostAuthenticationTask } from "../models";
 
@@ -30,7 +30,7 @@ export class AuthenticationServiceImpl<TUser> implements AuthenticationService<T
         )
             .pipe(
                 tap(user => {
-                    this.store.dispatch(authenticateUser({ user }));
+                    this.store.dispatch(authenticateUser({user}));
                 }),
                 switchMap(user => {
 
@@ -40,8 +40,9 @@ export class AuthenticationServiceImpl<TUser> implements AuthenticationService<T
 
                     return forkJoin(requests$);
                 }),
+                tap(() => this.store.dispatch(initialize())),
                 catchError((error: any) => {
-                    this.store.dispatch(registerAuthenticateError({ error }));
+                    this.store.dispatch(registerAuthenticateError({error}));
                     return empty();
                 }),
                 defaultIfEmpty(null)

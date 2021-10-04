@@ -11,6 +11,7 @@ export interface AuthenticationState {
     readonly error?: any;
     readonly user?: any;
     readonly initialUrl: string;
+    readonly isInitialized?: boolean;
 }
 
 export type PostAuthenticationTask<TUser> = (user: TUser) => Promise<void>;
