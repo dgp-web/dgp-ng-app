@@ -5,10 +5,6 @@ import { Action, Selector } from "entity-store";
 import { notNullOrUndefined } from "./null-checking.functions";
 import { of } from "rxjs";
 
-export function getNoopDataSelector<TState = any, TData = any>(): () => Selector<TState, TData> {
-    return () => ({}) as Selector<TState, TData>;
-}
-
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export abstract class HybridComponentBase<TModel, TState, TData> extends DgpModelEditorComponentBase<TModel> {
@@ -19,13 +15,11 @@ export abstract class HybridComponentBase<TModel, TState, TData> extends DgpMode
         super();
     }
 
-    readonly getData: () => Selector<TState, TData> = getNoopDataSelector();
-
-    readonly dispatch = (x: Action) => this.store.dispatch(x);
-
     readonly select = <TV>(x: Selector<TState, TV>) => this.store.select<TV>(x);
-
     // tslint:disable-next-line:member-ordering
     readonly data$ = notNullOrUndefined(this.getData) ? this.select(this.getData()) : of(null);
 
+    readonly dispatch = (x: Action) => this.store.dispatch(x);
+
+    abstract getData?(): Selector<TState, TData>;
 }
