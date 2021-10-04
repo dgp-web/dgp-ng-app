@@ -1,12 +1,13 @@
 import { createReducer, on } from "@ngrx/store";
 import { AuthenticationState } from "./models";
-import { authenticateUser, cacheInitialUrl, registerAuthenticateError } from "./actions";
+import { authenticateUser, cacheInitialUrl, initialize, registerAuthenticateError } from "./actions";
 
 export const initialAuthenticationState: AuthenticationState = {
     user: null,
     success: null,
     error: null,
-    initialUrl: null
+    initialUrl: null,
+    isInitialized: null
 };
 
 export const authenticationReducer = createReducer(
@@ -28,6 +29,11 @@ export const authenticationReducer = createReducer(
             ...state,
             error: action.error,
             success: false
+        };
+    }), on(initialize, (state, action) => {
+        return {
+            ...state,
+            isInitialized: true
         };
     })
 );

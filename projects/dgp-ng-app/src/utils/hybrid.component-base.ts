@@ -15,13 +15,11 @@ export abstract class HybridComponentBase<TModel, TState, TData> extends DgpMode
         super();
     }
 
-    readonly dispatch = (x: Action) => this.store.dispatch(x);
-
     readonly select = <TV>(x: Selector<TState, TV>) => this.store.select<TV>(x);
-
     // tslint:disable-next-line:member-ordering
     readonly data$ = notNullOrUndefined(this.getData) ? this.select(this.getData()) : of(null);
 
-    abstract getData?(): Selector<TState, TData>;
+    readonly dispatch = (x: Action) => this.store.dispatch(x);
 
+    abstract getData?(): Selector<TState, TData>;
 }
