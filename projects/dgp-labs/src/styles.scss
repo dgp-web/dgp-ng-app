@@ -12,3 +12,16 @@ $app-primary: mat-palette($mat-cyan, 800, 900);
 $app-accent: mat-palette($mat-orange, A200, A100, A400);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);
+
+.--dynamic-form-fields {
+    mat-form-field {
+        width: 100%;
+        max-width: 200px;
+        font-size: smaller;
+
+        .mat-form-field-infix {
+            max-width: 200px;
+            width: 100%;
+        }
+    }
+}
