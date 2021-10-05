@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Shape } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-shapes-and-pattern-labs",
@@ -17,7 +18,18 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                 </dgp-docs-chapter-title>
 
                 <div>
-                    <dgp-shape-select></dgp-shape-select>
+                    <dgp-shape-select [model]="shape"
+                                      (modelChange)="updateShape($event)"></dgp-shape-select>
+
+                    <dgp-svg-symbol [model]="shape"
+                                    [fillColor]="colorHex"></dgp-svg-symbol>
+
+                    <mat-form-field>
+                        <input matInput
+                               type="color"
+                               [ngModel]="colorHex"
+                               (ngModelChange)="updateColorHex($event)">
+                    </mat-form-field>
                 </div>
 
             </dgp-docs-page-content>
@@ -30,4 +42,16 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 })
 export class ShapesAndPatternLabsComponent {
 
+    readonly shapeEnum = Shape;
+    shape = Shape.Rhombus;
+
+    colorHex = "#ff6666";
+
+    updateShape(shape: Shape) {
+        this.shape = shape;
+    }
+
+    updateColorHex(colorHex: string) {
+        this.colorHex = colorHex;
+    }
 }
