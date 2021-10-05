@@ -5,7 +5,7 @@ import { ChartsLabsComponent } from "./containers/charts-labs.component";
 import {
     DgpBarChartModule,
     DgpBoxPlotModule,
-    DgpConnectedScatterPlotModule,
+    DgpConnectedScatterPlotModule, DgpFillPatternIconModule,
     DgpFillPatternSelectModule,
     DgpHeatmapModule,
     DgpShapeSelectModule
@@ -62,7 +62,8 @@ import { DgpSVGSymbolsModule } from "../../../../../dgp-ng-charts/src/lib/symbol
         FormsModule,
         MatSelectModule,
         CommonModule,
-        DgpSVGSymbolsModule
+        DgpSVGSymbolsModule,
+        DgpFillPatternIconModule
     ],
     declarations: [
         ...containers

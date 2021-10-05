@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, Input } from "@angular/core";
 import { DgpView } from "dgp-ng-app";
 import { FillPattern } from "../models";
 import { getMaskIdForFillPattern } from "../functions";
@@ -89,6 +89,9 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 })
 export class DgpFillPatternIconComponent extends DgpView<FillPattern> {
     readonly fillPatternEnum = FillPattern;
+
+    @Input()
+    colorHex: string;
 
     constructor(
         @Inject(ID_PREFIX)

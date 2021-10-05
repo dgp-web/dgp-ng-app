@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { Shape } from "dgp-ng-charts";
+import { FillPattern, Shape } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-shapes-and-pattern-labs",
@@ -21,8 +21,14 @@ import { Shape } from "dgp-ng-charts";
                     <dgp-shape-select [model]="shape"
                                       (modelChange)="updateShape($event)"></dgp-shape-select>
 
+                    <dgp-fill-pattern-select [model]="fillPattern"
+                                             (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+
                     <dgp-svg-symbol [model]="shape"
                                     [fillColor]="colorHex"></dgp-svg-symbol>
+
+                    <dgp-fill-pattern-icon [model]="fillPattern"
+                                           [colorHex]="colorHex"></dgp-fill-pattern-icon>
 
                     <mat-form-field>
                         <input matInput
@@ -30,6 +36,8 @@ import { Shape } from "dgp-ng-charts";
                                [ngModel]="colorHex"
                                (ngModelChange)="updateColorHex($event)">
                     </mat-form-field>
+
+
                 </div>
 
             </dgp-docs-page-content>
@@ -42,7 +50,10 @@ import { Shape } from "dgp-ng-charts";
 })
 export class ShapesAndPatternLabsComponent {
 
+    readonly fillPatternEnum = FillPattern;
     readonly shapeEnum = Shape;
+
+    fillPattern = FillPattern.LinesFromLeftBottomToRightTop;
     shape = Shape.Rhombus;
 
     colorHex = "#ff6666";
@@ -53,5 +64,9 @@ export class ShapesAndPatternLabsComponent {
 
     updateColorHex(colorHex: string) {
         this.colorHex = colorHex;
+    }
+
+    updateFillPattern(fillPattern: FillPattern) {
+        this.fillPattern = fillPattern;
     }
 }
