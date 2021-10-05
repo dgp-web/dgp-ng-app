@@ -5,7 +5,7 @@ import { ChartsLabsComponent } from "./containers/charts-labs.component";
 import {
     DgpBarChartModule,
     DgpBoxPlotModule,
-    DgpConnectedScatterPlotModule,
+    DgpConnectedScatterPlotModule, DgpFillPatternIconModule,
     DgpFillPatternSelectModule,
     DgpHeatmapModule,
     DgpShapeSelectModule
@@ -22,12 +22,17 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { CommonModule } from "@angular/common";
+import { ShapesAndPatternLabsComponent } from "./containers/shapes-and-pattern-labs.component";
+import { DgpSVGSymbolsModule } from "../../../../../dgp-ng-charts/src/lib/symbols/svg-symbol.module";
 
 @NgModule({
     imports: [
         RouterModule.forRoot([{
             path: "charts/overview",
             component: ChartsLabsComponent
+        }, {
+            path: "charts/shapes-and-patterns",
+            component: ShapesAndPatternLabsComponent
         }, {
             path: "charts/bar-chart",
             component: BarChartLabsComponent
@@ -56,7 +61,9 @@ import { CommonModule } from "@angular/common";
         MatInputModule,
         FormsModule,
         MatSelectModule,
-        CommonModule
+        CommonModule,
+        DgpSVGSymbolsModule,
+        DgpFillPatternIconModule
     ],
     declarations: [
         ...containers
