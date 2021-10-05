@@ -8,7 +8,8 @@ import { SymbolBaseComponent } from "./symbol.base-component";
              [style.width.px]="width"
              [style.height.px]="height">
             <polygon dgpTriangleDown
-                     [attr.fill]="fillColor"
+                     [style.fill]="fillColor"
+                     [style.stroke]="fillColor"
                      [width]="width"
                      [height]="height"/>
         </svg>

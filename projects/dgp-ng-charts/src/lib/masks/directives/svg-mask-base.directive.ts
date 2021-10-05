@@ -16,6 +16,7 @@ export abstract class SVGMaskBaseDirective implements AfterViewInit {
     ngAfterViewInit(): void {
         this.renderer.setAttribute(this.elementRef.nativeElement, "id", this.idPrefix + "." + this.model.svgMaskId);
         this.renderer.setAttribute(this.elementRef.nativeElement, "maskUnits", "objectBoundingBox");
+        this.elementRef.nativeElement.innerHTML = "";
 
         this.render();
     }
