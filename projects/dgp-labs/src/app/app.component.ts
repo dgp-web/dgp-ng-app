@@ -40,6 +40,10 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                                               route="/charts/bar-chart"
                                               matIconName="bar_chart"></dgp-hamburger-menu-entry>
 
+                    <dgp-hamburger-menu-entry label="Shapes and patterns"
+                                              route="/charts/shapes-and-patterns"
+                                              matIconName="category"></dgp-hamburger-menu-entry>
+
                     <dgp-hamburger-menu-entry label="Box plot"
                                               route="/charts/box-plot"
                                               matIconName="candlestick_chart"></dgp-hamburger-menu-entry>
