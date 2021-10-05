@@ -25,6 +25,15 @@ import { Shape } from "../models";
                                 [fillColor]="fillColor"></dgp-rhombus-symbol>
         </ng-container>
     `,
+    styles: [`
+        :host {
+            display: inline-flex;
+            width: 48px;
+            height: 48px;
+            justify-content: center;
+            align-items: center;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SVGSymbolComponent extends DgpView<Shape> {
