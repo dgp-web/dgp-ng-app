@@ -20,6 +20,7 @@ export abstract class SVGPatternBaseDirective implements AfterViewInit {
         this.renderer.setAttribute(this.elementRef.nativeElement, "y", "0");
         this.renderer.setAttribute(this.elementRef.nativeElement, "patternUnits", "userSpaceOnUse");
 
+        this.elementRef.nativeElement.innerHTML = "";
         this.render();
     }
 
