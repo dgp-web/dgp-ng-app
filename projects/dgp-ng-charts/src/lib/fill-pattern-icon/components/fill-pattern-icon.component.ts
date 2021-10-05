@@ -59,7 +59,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
             <rect x="0"
                   y="0"
                   [attr.mask]="getMaskForFillPattern()"
-                  fill="gray"
+                  [style.fill]="colorHex"
                   stroke-width="2"/>
 
         </svg>
@@ -91,7 +91,7 @@ export class DgpFillPatternIconComponent extends DgpView<FillPattern> {
     readonly fillPatternEnum = FillPattern;
 
     @Input()
-    colorHex: string;
+    colorHex = "#666666";
 
     constructor(
         @Inject(ID_PREFIX)
