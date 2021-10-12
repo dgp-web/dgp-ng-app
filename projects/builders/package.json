@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app-builder",
-    "version": "11.14.0",
+    "version": "11.15.0",
     "description": "Power-build large apps blazing fast in dev mode",
     "main": "src/builder.js",
     "builders": "builders.json",
@@ -25,11 +25,11 @@
         "karma-webpack": "^4"
     },
     "peerDependencies": {
-        "@angular/core": "^9",
-        "@angular/material": "^9",
-        "@ngrx/store": "^9",
-        "@ngrx/effects": "^9",
-        "dgp-ng-app": "^9",
+        "@angular/core": "^11",
+        "@angular/material": "^11",
+        "@ngrx/store": "^11",
+        "@ngrx/effects": "^11",
+        "dgp-ng-app": "^11",
         "entity-store": "^1.5",
         "lodash": "^4",
         "rxjs": "^6"
