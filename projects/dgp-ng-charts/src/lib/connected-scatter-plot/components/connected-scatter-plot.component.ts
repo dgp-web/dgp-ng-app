@@ -81,113 +81,115 @@ import { ScaleType } from "../../shared/models";
                                     <ng-container *ngFor="let series of group.series">
                                         <ng-container *ngFor="let dot of series.dots">
 
-                                            <ng-container [ngSwitch]="getShape(group, series)">
+                                            <ng-container *ngIf="showVertices(series)">
 
-                                                <circle *ngSwitchCase="shapeEnum.Circle"
-                                                        dgpScatterPlotDot
-                                                        [dot]="dot"
-                                                        [series]="series"
-                                                        [group]="group"
-                                                        [scales]="connectedScatterPlotScales"
-                                                        (focus)="highlightDot(group, series, dot)"
-                                                        (mouseenter)="highlightDot(group, series, dot)"
-                                                        (blur)="unhighlightDot(group, series, dot)"
-                                                        (mouseleave)="unhighlightDot(group, series, dot)"></circle>
+                                                <ng-container [ngSwitch]="getShape(group, series)">
 
-                                                <circle *ngSwitchDefault
-                                                        dgpScatterPlotDot
-                                                        [dot]="dot"
-                                                        [series]="series"
-                                                        [group]="group"
-                                                        [scales]="connectedScatterPlotScales"
-                                                        (focus)="highlightDot(group, series, dot)"
-                                                        (mouseenter)="highlightDot(group, series, dot)"
-                                                        (blur)="unhighlightDot(group, series, dot)"
-                                                        (mouseleave)="unhighlightDot(group, series, dot)"></circle>
+                                                    <circle *ngSwitchCase="shapeEnum.Circle"
+                                                            dgpScatterPlotDot
+                                                            [dot]="dot"
+                                                            [series]="series"
+                                                            [group]="group"
+                                                            [scales]="connectedScatterPlotScales"
+                                                            (focus)="highlightDot(group, series, dot)"
+                                                            (mouseenter)="highlightDot(group, series, dot)"
+                                                            (blur)="unhighlightDot(group, series, dot)"
+                                                            (mouseleave)="unhighlightDot(group, series, dot)"></circle>
 
-                                                <rect *ngSwitchCase="shapeEnum.Rectangle"
-                                                      dgpScatterPlotDot
-                                                      [dot]="dot"
-                                                      [series]="series"
-                                                      [group]="group"
-                                                      [scales]="connectedScatterPlotScales"
-                                                      (focus)="highlightDot(group, series, dot)"
-                                                      (mouseenter)="highlightDot(group, series, dot)"
-                                                      (blur)="unhighlightDot(group, series, dot)"
-                                                      (mouseleave)="unhighlightDot(group, series, dot)"></rect>
+                                                    <circle dgpScatterPlotDot
+                                                            [dot]="dot"
+                                                            [series]="series"
+                                                            [group]="group"
+                                                            [scales]="connectedScatterPlotScales"
+                                                            (focus)="highlightDot(group, series, dot)"
+                                                            (mouseenter)="highlightDot(group, series, dot)"
+                                                            (blur)="unhighlightDot(group, series, dot)"
+                                                            (mouseleave)="unhighlightDot(group, series, dot)"></circle>
 
-                                                <polygon *ngSwitchCase="shapeEnum.Rhombus"
-                                                         dgpScatterPlotDot
-                                                         dgpRhombus
-                                                         [dot]="dot"
-                                                         [series]="series"
-                                                         [group]="group"
-                                                         [scales]="connectedScatterPlotScales"
-                                                         (focus)="highlightDot(group, series, dot)"
-                                                         (mouseenter)="highlightDot(group, series, dot)"
-                                                         (blur)="unhighlightDot(group, series, dot)"
-                                                         (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+                                                    <rect *ngSwitchCase="shapeEnum.Rectangle"
+                                                          dgpScatterPlotDot
+                                                          [dot]="dot"
+                                                          [series]="series"
+                                                          [group]="group"
+                                                          [scales]="connectedScatterPlotScales"
+                                                          (focus)="highlightDot(group, series, dot)"
+                                                          (mouseenter)="highlightDot(group, series, dot)"
+                                                          (blur)="unhighlightDot(group, series, dot)"
+                                                          (mouseleave)="unhighlightDot(group, series, dot)"></rect>
 
-                                                <polygon *ngSwitchCase="shapeEnum.Star"
-                                                         dgpScatterPlotDot
-                                                         dgpStar
-                                                         [dot]="dot"
-                                                         [series]="series"
-                                                         [group]="group"
-                                                         [scales]="connectedScatterPlotScales"
-                                                         (focus)="highlightDot(group, series, dot)"
-                                                         (mouseenter)="highlightDot(group, series, dot)"
-                                                         (blur)="unhighlightDot(group, series, dot)"
-                                                         (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+                                                    <polygon *ngSwitchCase="shapeEnum.Rhombus"
+                                                             dgpScatterPlotDot
+                                                             dgpRhombus
+                                                             [dot]="dot"
+                                                             [series]="series"
+                                                             [group]="group"
+                                                             [scales]="connectedScatterPlotScales"
+                                                             (focus)="highlightDot(group, series, dot)"
+                                                             (mouseenter)="highlightDot(group, series, dot)"
+                                                             (blur)="unhighlightDot(group, series, dot)"
+                                                             (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
 
-                                                <polygon *ngSwitchCase="shapeEnum.Triangle"
-                                                         dgpScatterPlotDot
-                                                         dgpTriangle
-                                                         [dot]="dot"
-                                                         [series]="series"
-                                                         [group]="group"
-                                                         [scales]="connectedScatterPlotScales"
-                                                         (focus)="highlightDot(group, series, dot)"
-                                                         (mouseenter)="highlightDot(group, series, dot)"
-                                                         (blur)="unhighlightDot(group, series, dot)"
-                                                         (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+                                                    <polygon *ngSwitchCase="shapeEnum.Star"
+                                                             dgpScatterPlotDot
+                                                             dgpStar
+                                                             [dot]="dot"
+                                                             [series]="series"
+                                                             [group]="group"
+                                                             [scales]="connectedScatterPlotScales"
+                                                             (focus)="highlightDot(group, series, dot)"
+                                                             (mouseenter)="highlightDot(group, series, dot)"
+                                                             (blur)="unhighlightDot(group, series, dot)"
+                                                             (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
 
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleDown"
-                                                         dgpScatterPlotDot
-                                                         dgpTriangleDown
-                                                         [dot]="dot"
-                                                         [series]="series"
-                                                         [group]="group"
-                                                         [scales]="connectedScatterPlotScales"
-                                                         (focus)="highlightDot(group, series, dot)"
-                                                         (mouseenter)="highlightDot(group, series, dot)"
-                                                         (blur)="unhighlightDot(group, series, dot)"
-                                                         (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+                                                    <polygon *ngSwitchCase="shapeEnum.Triangle"
+                                                             dgpScatterPlotDot
+                                                             dgpTriangle
+                                                             [dot]="dot"
+                                                             [series]="series"
+                                                             [group]="group"
+                                                             [scales]="connectedScatterPlotScales"
+                                                             (focus)="highlightDot(group, series, dot)"
+                                                             (mouseenter)="highlightDot(group, series, dot)"
+                                                             (blur)="unhighlightDot(group, series, dot)"
+                                                             (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
 
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleRight"
-                                                         dgpScatterPlotDot
-                                                         dgpTriangleRight
-                                                         [dot]="dot"
-                                                         [series]="series"
-                                                         [group]="group"
-                                                         [scales]="connectedScatterPlotScales"
-                                                         (focus)="highlightDot(group, series, dot)"
-                                                         (mouseenter)="highlightDot(group, series, dot)"
-                                                         (blur)="unhighlightDot(group, series, dot)"
-                                                         (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+                                                    <polygon *ngSwitchCase="shapeEnum.TriangleDown"
+                                                             dgpScatterPlotDot
+                                                             dgpTriangleDown
+                                                             [dot]="dot"
+                                                             [series]="series"
+                                                             [group]="group"
+                                                             [scales]="connectedScatterPlotScales"
+                                                             (focus)="highlightDot(group, series, dot)"
+                                                             (mouseenter)="highlightDot(group, series, dot)"
+                                                             (blur)="unhighlightDot(group, series, dot)"
+                                                             (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
 
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
-                                                         dgpScatterPlotDot
-                                                         dgpTriangleLeft
-                                                         [dot]="dot"
-                                                         [series]="series"
-                                                         [group]="group"
-                                                         [scales]="connectedScatterPlotScales"
-                                                         (focus)="highlightDot(group, series, dot)"
-                                                         (mouseenter)="highlightDot(group, series, dot)"
-                                                         (blur)="unhighlightDot(group, series, dot)"
-                                                         (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+                                                    <polygon *ngSwitchCase="shapeEnum.TriangleRight"
+                                                             dgpScatterPlotDot
+                                                             dgpTriangleRight
+                                                             [dot]="dot"
+                                                             [series]="series"
+                                                             [group]="group"
+                                                             [scales]="connectedScatterPlotScales"
+                                                             (focus)="highlightDot(group, series, dot)"
+                                                             (mouseenter)="highlightDot(group, series, dot)"
+                                                             (blur)="unhighlightDot(group, series, dot)"
+                                                             (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
 
+                                                    <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
+                                                             dgpScatterPlotDot
+                                                             dgpTriangleLeft
+                                                             [dot]="dot"
+                                                             [series]="series"
+                                                             [group]="group"
+                                                             [scales]="connectedScatterPlotScales"
+                                                             (focus)="highlightDot(group, series, dot)"
+                                                             (mouseenter)="highlightDot(group, series, dot)"
+                                                             (blur)="unhighlightDot(group, series, dot)"
+                                                             (mouseleave)="unhighlightDot(group, series, dot)"></polygon>
+
+                                                </ng-container>
                                             </ng-container>
 
                                             <text class="tooltip --hidden"
@@ -202,7 +204,8 @@ import { ScaleType } from "../../shared/models";
 
                                         </ng-container>
 
-                                        <path dgpLineChartLine
+                                        <path *ngIf="showEdges(series)"
+                                              dgpLineChartLine
                                               [series]="series"
                                               [group]="group"
                                               [scales]="connectedScatterPlotScales"></path>
@@ -395,5 +398,15 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             return group.shape;
         }
         return null;
+    }
+
+    showEdges(series: ConnectedScatterSeries): boolean {
+        if (isNullOrUndefined(series.showEdges)) return true;
+        return series.showEdges;
+    }
+
+    showVertices(series: ConnectedScatterSeries): boolean {
+        if (isNullOrUndefined(series.showVertices)) return true;
+        return series.showVertices;
     }
 }

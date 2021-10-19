@@ -10,14 +10,14 @@ export interface ConnectedScatterSeriesConfig {
     /**
      * Whether the lines between the vertices should be displayed
      *
-     * default value: undefined == false
+     * default value: undefined == true
      */
-    readonly hideEdges?: boolean;
+    readonly showEdges?: boolean;
 
     /**
      * Whether the dots on the end of lines should be displayed
      *
      * default value: undefined == false
      */
-    readonly hideVertices?: boolean;
+    readonly showVertices?: boolean;
 }

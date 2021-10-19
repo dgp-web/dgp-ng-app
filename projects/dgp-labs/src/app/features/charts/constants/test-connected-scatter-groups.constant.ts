@@ -11,7 +11,8 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 3, y: 7},
             {x: 4, y: 5},
             {x: 9, y: 4},
-        ]
+        ],
+        showEdges: false
     }]
 }, {
     connectedScatterGroupId: "group02",
@@ -24,6 +25,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
             {x: 4, y: 2},
             {x: 6, y: 4},
             {x: 7, y: 3},
-        ]
+        ],
+        showVertices: false
     }]
 }];
