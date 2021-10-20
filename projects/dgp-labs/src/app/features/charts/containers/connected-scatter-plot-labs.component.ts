@@ -15,7 +15,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         colorHex: "#666666",
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7
-    }]
+    }],
+    xAxisTicks: 5
 };
 
 @Component({
@@ -35,6 +36,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [xAxisTitle]="model.xAxisTitle"
                                                 [xAxisMin]="model.xAxisMin"
                                                 [xAxisMax]="model.xAxisMax"
+                                                [xAxisTicks]="model.xAxisTicks"
                                                 [yAxisTitle]="model.yAxisTitle"
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"

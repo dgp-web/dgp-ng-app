@@ -264,6 +264,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     xAxisMax?: number;
 
     @Input()
+    xAxisTicks?: number;
+
+    @Input()
     yAxisMin?: number;
 
     @Input()
@@ -301,6 +304,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.selection
             || changes.xAxisMin
             || changes.xAxisMax
+            || changes.xAxisTicks
             || changes.yAxisMin
             || changes.yAxisMax
             || changes.yAxisScaleType
@@ -327,6 +331,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             yAxisScaleType: this.yAxisScaleType,
             xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
+            xAxisTicks: notNullOrUndefined(this.xAxisTicks) ? +this.xAxisTicks : undefined,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined
         });

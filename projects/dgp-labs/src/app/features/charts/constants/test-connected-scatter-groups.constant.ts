@@ -7,10 +7,11 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
     series: [{
         connectedScatterSeriesId: "series01",
         dots: [
-            {x: 1, y: 2},
-            {x: 3, y: 7},
-            {x: 4, y: 5},
-            {x: 9, y: 4},
+            {x: 10, y: 2},
+            {x: 123, y: 3},
+            {x: 413, y: 7},
+            {x: 685, y: 5},
+            {x: 1005, y: 4},
         ],
         showEdges: false
     }]
@@ -22,9 +23,9 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
         connectedScatterSeriesId: "series03",
         dots: [
             {x: -2, y: 5},
-            {x: 4, y: 2},
-            {x: 6, y: 4},
-            {x: 7, y: 3},
+            {x: 541, y: 2},
+            {x: 678, y: 4},
+            {x: 712, y: 3},
         ],
         showVertices: false
     }]

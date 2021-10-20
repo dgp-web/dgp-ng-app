@@ -14,6 +14,7 @@ export function createConnectedScatterPlotScales(payload: {
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
     readonly xAxisMin?: number;
     readonly xAxisMax?: number;
+    readonly xAxisTicks?: number;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
     readonly yAxisScaleType?: ScaleType;
@@ -97,7 +98,12 @@ export function createConnectedScatterPlotScales(payload: {
         .domain([xMin, xMax]) // TODO
         .range([0, dataAreaWidth]);
 
-    const xAxis = d3.axisBottom(xAxisScale);
+    let xAxis = d3.axisBottom(xAxisScale);
+    if (notNullOrUndefined(payload.xAxisTicks)) {
+        xAxis = xAxis.ticks(payload.xAxisTicks);
+    }
+
+
     let yAxis: Axis<any>;
     switch (payload.yAxisScaleType) {
         default:
