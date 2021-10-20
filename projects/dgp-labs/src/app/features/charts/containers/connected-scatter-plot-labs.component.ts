@@ -101,6 +101,17 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </mat-form-field>
                             </dgp-inspector-item>
 
+                            <dgp-inspector-item label="Ticks"
+                                                matIconName="pin">
+                                <mat-form-field class="ml-32px">
+                                    <input matInput
+                                           type="number"
+                                           [disabled]="disabled"
+                                           [ngModel]="model.xAxisTicks"
+                                           (ngModelChange)="setXAxisTicks($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="y axis"
@@ -394,5 +405,9 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateSelectedGroupColorHex(colorHex: any) {
         this.updateSelectedGroup({colorHex});
+    }
+
+    setXAxisTicks(xAxisTicks: any) {
+        this.updateModel({xAxisTicks});
     }
 }
