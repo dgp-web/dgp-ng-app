@@ -81,7 +81,7 @@ import { ScaleType } from "../../shared/models";
                                     <ng-container *ngFor="let series of group.series">
                                         <ng-container *ngFor="let dot of series.dots">
 
-                                            <ng-container *ngIf="showVertices(series)">
+                                            <ng-container *ngIf="showVertices(group, series)">
 
                                                 <ng-container [ngSwitch]="getShape(group, series)">
 
@@ -204,7 +204,7 @@ import { ScaleType } from "../../shared/models";
 
                                         </ng-container>
 
-                                        <path *ngIf="showEdges(series)"
+                                        <path *ngIf="showEdges(group, series)"
                                               dgpLineChartLine
                                               [series]="series"
                                               [group]="group"
@@ -410,13 +410,17 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
         return null;
     }
 
-    showEdges(series: ConnectedScatterSeries): boolean {
-        if (isNullOrUndefined(series.showEdges)) return true;
-        return series.showEdges;
+    showEdges(group: ConnectedScatterGroup, series: ConnectedScatterSeries): boolean {
+        let result = true;
+        if (notNullOrUndefined(group.showEdges)) result = group.showEdges;
+        if (notNullOrUndefined(series.showEdges)) result = series.showEdges;
+        return result;
     }
 
-    showVertices(series: ConnectedScatterSeries): boolean {
-        if (isNullOrUndefined(series.showVertices)) return true;
-        return series.showVertices;
+    showVertices(group: ConnectedScatterGroup, series: ConnectedScatterSeries): boolean {
+        let result = true;
+        if (notNullOrUndefined(group.showVertices)) result = group.showVertices;
+        if (notNullOrUndefined(series.showVertices)) result = series.showVertices;
+        return result;
     }
 }

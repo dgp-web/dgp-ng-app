@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
@@ -216,6 +216,21 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     </mat-form-field>
                                 </dgp-inspector-item>
 
+                                <dgp-inspector-item matIconName="scatter_plot"
+                                                    label="Show vertices">
+                                    <mat-slide-toggle class="ml-32px"
+                                                      [disabled]="disabled"
+                                                      [ngModel]="showVertices(selectedDataGroup)"
+                                                      (ngModelChange)="updateSelectedGroupShowVertices($event)"></mat-slide-toggle>
+                                </dgp-inspector-item>
+
+                                <dgp-inspector-item matIconName="show_chart"
+                                                    label="Show edges">
+                                    <mat-slide-toggle class="ml-32px"
+                                                      [disabled]="disabled"
+                                                      [ngModel]="showEdges(selectedDataGroup)"
+                                                      (ngModelChange)="updateSelectedGroupShowEdges($event)"></mat-slide-toggle>
+                                </dgp-inspector-item>
 
                             </ng-container>
 
@@ -423,5 +438,21 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     setYAxisTicks(yAxisTicks: number) {
         this.updateModel({yAxisTicks});
+    }
+
+    updateSelectedGroupShowVertices(showVertices: boolean) {
+        this.updateSelectedGroup({showVertices});
+    }
+
+    updateSelectedGroupShowEdges(showEdges: boolean) {
+        this.updateSelectedGroup({showEdges});
+    }
+
+    showVertices(selectedDataGroup: ConnectedScatterGroup) {
+        return isNullOrUndefined(selectedDataGroup.showVertices) || selectedDataGroup.showVertices;
+    }
+
+    showEdges(selectedDataGroup: ConnectedScatterGroup) {
+        return isNullOrUndefined(selectedDataGroup.showEdges) || selectedDataGroup.showEdges;
     }
 }
