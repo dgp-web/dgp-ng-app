@@ -424,5 +424,4 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     setYAxisTicks(yAxisTicks: number) {
         this.updateModel({yAxisTicks});
     }
-    
 }
