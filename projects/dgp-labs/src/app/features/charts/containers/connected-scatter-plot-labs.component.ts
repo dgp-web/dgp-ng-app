@@ -16,7 +16,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7
     }],
-    xAxisTicks: 5
+    xAxisTicks: 5,
+    yAxisTicks: 5
 };
 
 @Component({
@@ -41,6 +42,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"
                                                 [yAxisMax]="model.yAxisMax"
+                                                [yAxisTicks]="model.yAxisTicks"
                                                 [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
 
 

@@ -273,6 +273,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     yAxisMax?: number;
 
     @Input()
+    yAxisTicks?: number;
+
+    @Input()
     yAxisScaleType?: ScaleType;
 
     private readonly drawChartActionScheduler = new EventEmitter();
@@ -307,6 +310,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.xAxisTicks
             || changes.yAxisMin
             || changes.yAxisMax
+            || changes.yAxisTicks
             || changes.yAxisScaleType
             || changes.controlLines
         ) {
@@ -333,7 +337,8 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
             xAxisTicks: notNullOrUndefined(this.xAxisTicks) ? +this.xAxisTicks : undefined,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
-            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined
+            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
+            yAxisTicks: notNullOrUndefined(this.yAxisTicks) ? +this.yAxisTicks : undefined
         });
 
         this.cd.markForCheck();
