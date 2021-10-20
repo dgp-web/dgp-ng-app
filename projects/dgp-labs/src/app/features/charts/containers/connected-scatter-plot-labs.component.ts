@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
@@ -15,7 +15,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         colorHex: "#666666",
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7
-    }]
+    }],
+    xAxisTicks: 5,
+    yAxisTicks: 5
 };
 
 @Component({
@@ -35,10 +37,12 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [xAxisTitle]="model.xAxisTitle"
                                                 [xAxisMin]="model.xAxisMin"
                                                 [xAxisMax]="model.xAxisMax"
+                                                [xAxisTicks]="model.xAxisTicks"
                                                 [yAxisTitle]="model.yAxisTitle"
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"
                                                 [yAxisMax]="model.yAxisMax"
+                                                [yAxisTicks]="model.yAxisTicks"
                                                 [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
 
 
@@ -97,6 +101,17 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </mat-form-field>
                             </dgp-inspector-item>
 
+                            <dgp-inspector-item label="Ticks"
+                                                matIconName="pin">
+                                <mat-form-field class="ml-32px">
+                                    <input matInput
+                                           type="number"
+                                           [disabled]="disabled"
+                                           [ngModel]="model.xAxisTicks"
+                                           (ngModelChange)="setXAxisTicks($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="y axis"
@@ -150,6 +165,16 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </mat-form-field>
                             </dgp-inspector-item>
 
+                            <dgp-inspector-item label="Ticks"
+                                                matIconName="pin">
+                                <mat-form-field class="ml-32px">
+                                    <input matInput
+                                           type="number"
+                                           [disabled]="disabled"
+                                           [ngModel]="model.yAxisTicks"
+                                           (ngModelChange)="setYAxisTicks($event)">
+                                </mat-form-field>
+                            </dgp-inspector-item>
 
                         </dgp-inspector-section>
 
@@ -191,6 +216,21 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     </mat-form-field>
                                 </dgp-inspector-item>
 
+                                <dgp-inspector-item matIconName="scatter_plot"
+                                                    label="Show vertices">
+                                    <mat-slide-toggle class="ml-32px"
+                                                      [disabled]="disabled"
+                                                      [ngModel]="showVertices(selectedDataGroup)"
+                                                      (ngModelChange)="updateSelectedGroupShowVertices($event)"></mat-slide-toggle>
+                                </dgp-inspector-item>
+
+                                <dgp-inspector-item matIconName="show_chart"
+                                                    label="Show edges">
+                                    <mat-slide-toggle class="ml-32px"
+                                                      [disabled]="disabled"
+                                                      [ngModel]="showEdges(selectedDataGroup)"
+                                                      (ngModelChange)="updateSelectedGroupShowEdges($event)"></mat-slide-toggle>
+                                </dgp-inspector-item>
 
                             </ng-container>
 
@@ -390,5 +430,29 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateSelectedGroupColorHex(colorHex: any) {
         this.updateSelectedGroup({colorHex});
+    }
+
+    setXAxisTicks(xAxisTicks: number) {
+        this.updateModel({xAxisTicks});
+    }
+
+    setYAxisTicks(yAxisTicks: number) {
+        this.updateModel({yAxisTicks});
+    }
+
+    updateSelectedGroupShowVertices(showVertices: boolean) {
+        this.updateSelectedGroup({showVertices});
+    }
+
+    updateSelectedGroupShowEdges(showEdges: boolean) {
+        this.updateSelectedGroup({showEdges});
+    }
+
+    showVertices(selectedDataGroup: ConnectedScatterGroup) {
+        return isNullOrUndefined(selectedDataGroup.showVertices) || selectedDataGroup.showVertices;
+    }
+
+    showEdges(selectedDataGroup: ConnectedScatterGroup) {
+        return isNullOrUndefined(selectedDataGroup.showEdges) || selectedDataGroup.showEdges;
     }
 }
