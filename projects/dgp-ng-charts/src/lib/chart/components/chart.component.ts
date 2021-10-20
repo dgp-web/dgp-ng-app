@@ -5,55 +5,48 @@ import { notNullOrUndefined } from "dgp-ng-app";
 @Component({
     selector: "dgp-chart",
     template: `
-        <div class="chart"
-             #chartRef>
 
-            <div class="title"
-                 #chartTitleRef
-                 [class.hidden]="chartTitleRef.innerText.length < 3">
-                <ng-content select="[chart-title]"></ng-content>
-                {{ chartTitle }}
-            </div>
+        <!-- Note that dgpResizeSensor and its handler are needed here or else resizing is not working -->
+        <div class="title"
+             #chartTitleRef
+             [class.hidden]="chartTitleRef.innerText.length < 3"
+             dgpResizeSensor
+             (sizeChanged)="noop()">
+            <ng-content select="[chart-title]"></ng-content>
+            {{ chartTitle }}
+        </div>
 
-            <div class="inner-container"
-                 [style.maxHeight.px]="geMaxHeight(chartRef, chartTitleRef, xAxisLabelRef)">
-                <div class="y-axis-label-container"
-                     [class.hidden]="yAxisLabelRef.innerText.length < 3">
-                    <div class="y-axis-label"
-                         #yAxisLabelRef>
-                        <ng-content select="[y-axis-title]"></ng-content>
-                        {{ yAxisTitle }}
-                    </div>
-                </div>
-
-                <ng-content></ng-content>
-
-                <div class="right-legend">
-                    <ng-content select="[right-legend]"></ng-content>
+        <div class="inner-container">
+            <div class="y-axis-label-container"
+                 [class.hidden]="yAxisLabelRef.innerText.length < 3">
+                <div class="y-axis-label"
+                     #yAxisLabelRef>
+                    <ng-content select="[y-axis-title]"></ng-content>
+                    {{ yAxisTitle }}
                 </div>
             </div>
 
-            <div class="x-axis-label"
-                 #xAxisLabelRef
-                 [class.hidden]="xAxisLabelRef.innerText.length === 0">
-                <ng-content select="[x-axis-title]"></ng-content>
-                {{ xAxisTitle }}
+            <ng-content></ng-content>
+
+            <div class="right-legend">
+                <ng-content select="[right-legend]"></ng-content>
             </div>
+        </div>
+
+        <div class="x-axis-label"
+             #xAxisLabelRef
+             [class.hidden]="xAxisLabelRef.innerText.length < 3">
+            <ng-content select="[x-axis-title]"></ng-content>
+            {{ xAxisTitle }}
         </div>
     `,
     styles: [`
         :host {
             display: flex;
-            justify-content: center;
-            flex-grow: 1;
-            height: 100%;
-        }
-
-        .chart {
-            display: flex;
             flex-direction: column;
             justify-content: center;
             flex-grow: 1;
+            height: 100%;
         }
 
         .title {
@@ -67,7 +60,7 @@ import { notNullOrUndefined } from "dgp-ng-app";
         .inner-container {
             display: flex;
             flex-grow: 1;
-            height: 100%;
+            overflow: auto;
         }
 
         .y-axis-label-container {
@@ -104,7 +97,6 @@ import { notNullOrUndefined } from "dgp-ng-app";
 })
 export class DgpChartComponent extends DgpChartComponentBase {
 
-    // TODO: This is not always working properly since the class .hidden can be computed before OR after this is set
     geMaxHeight(chartRef: HTMLDivElement, chartTitleRef: HTMLDivElement, xAxisLabelRef: HTMLDivElement) {
         let maxHeight = chartRef.getBoundingClientRect().height;
 
@@ -116,6 +108,9 @@ export class DgpChartComponent extends DgpChartComponentBase {
         }
 
         return maxHeight;
+    }
+
+    noop() {
     }
 
 }

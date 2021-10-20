@@ -211,7 +211,7 @@ export { ModelMetadata } from "./utils/model-metadata";
 export { negate } from "./utils/negate.function";
 export { negateMap } from "./utils/negate-map.function";
 export { DgpContainer } from "./utils/container.component-base";
-export { HybridComponentBase } from "./utils/hybrid.component-base";
+export { DgpHybridComponentBase, HybridComponentBase } from "./utils/hybrid.component-base";
 export { Matrix } from "./utils/matrix.model";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
 export {

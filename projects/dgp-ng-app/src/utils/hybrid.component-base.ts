@@ -7,7 +7,7 @@ import { of } from "rxjs";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class HybridComponentBase<TModel, TState, TData> extends DgpModelEditorComponentBase<TModel> {
+export abstract class DgpHybridComponentBase<TModel, TState> extends DgpModelEditorComponentBase<TModel> {
 
     constructor(
         protected readonly store: Store<TState>
@@ -16,10 +16,22 @@ export abstract class HybridComponentBase<TModel, TState, TData> extends DgpMode
     }
 
     readonly select = <TV>(x: Selector<TState, TV>) => this.store.select<TV>(x);
-    // tslint:disable-next-line:member-ordering
-    readonly data$ = notNullOrUndefined(this.getData) ? this.select(this.getData()) : of(null);
 
     readonly dispatch = (x: Action) => this.store.dispatch(x);
 
+}
+
+
+/**
+ * @deprecated This should not be used anymore. See DgpHybridComponentBase instead
+ */
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
+export abstract class HybridComponentBase<TModel, TState, TData> extends DgpHybridComponentBase<TModel, TState> {
+
+    // tslint:disable-next-line:member-ordering
+    readonly data$ = notNullOrUndefined(this.getData) ? this.select(this.getData()) : of(null);
+
     abstract getData?(): Selector<TState, TData>;
 }
+

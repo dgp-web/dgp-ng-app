@@ -2,12 +2,13 @@ import { NgModule } from "@angular/core";
 import { components } from "./components/components";
 import { CommonModule } from "@angular/common";
 import { directives } from "./directives/directives";
-import { DgpResizeSensorModule } from "dgp-ng-app";
+import { DgpResizeSensorModule, DgpNegatePipeModule } from "dgp-ng-app";
 
 @NgModule({
     imports: [
         CommonModule,
-        DgpResizeSensorModule
+        DgpResizeSensorModule,
+        DgpNegatePipeModule
     ],
     declarations: [
         ...components,
