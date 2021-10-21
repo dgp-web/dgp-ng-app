@@ -6,9 +6,11 @@ import { TriangleRightDirective } from "./triangle-right.directive";
 import { TriangleLeftDirective } from "./triangle-left.directive";
 import { StarDirective } from "./star.directive";
 import { RhombusDirective } from "./rhombus.directive";
+import { CrossDirective } from "./cross.directive";
 
 export const directives = [
     CircleDirective,
+    CrossDirective,
     RectangleDirective,
     TriangleDirective,
     TriangleDownDirective,

@@ -7,9 +7,11 @@ import { TriangleLeftShapeComponent } from "./triangle-left-shape.component";
 import { StarShapeComponent } from "./star-shape.component";
 import { RhombusShapeComponent } from "./rhombus-shape.component";
 import { SVGShapeComponent } from "./svg-shape.component";
+import { CrossShapeComponent } from "./cross-shape.component";
 
 export const components = [
     CircleShapeComponent,
+    CrossShapeComponent,
     RectangleShapeComponent,
     RhombusShapeComponent,
     StarShapeComponent,

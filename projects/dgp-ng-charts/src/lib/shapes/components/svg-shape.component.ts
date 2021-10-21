@@ -12,6 +12,11 @@ import { FillPattern } from "../../fill-pattern-icon/models";
                               [fillPattern]="fillPattern"
                               [width]="getWidth()"
                               [height]="getHeight()"></dgp-circle-shape>
+            <dgp-cross-shape *ngSwitchCase="shapeEnum.Cross"
+                             [fillColor]="fillColor"
+                             [fillPattern]="fillPattern"
+                             [width]="getWidth()"
+                             [height]="getHeight()"></dgp-cross-shape>
             <dgp-rectangle-shape *ngSwitchCase="shapeEnum.Rectangle"
                                  [fillColor]="fillColor"
                                  [fillPattern]="fillPattern"
