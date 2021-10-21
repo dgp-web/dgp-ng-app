@@ -1,5 +1,6 @@
 export enum Shape {
     Circle = "Circle",
+    Cross = "Cross",
     Rectangle = "Rectangle",
     Rhombus = "Rhombus",
     Triangle = "Triangle",

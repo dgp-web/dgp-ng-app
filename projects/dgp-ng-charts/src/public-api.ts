@@ -194,6 +194,7 @@ export * from "./lib/shapes/models";
 export { DgpSVGSymbolsModule } from "./lib/shapes/svg-shape.module";
 // Components
 export { CircleShapeComponent } from "./lib/shapes/components/circle-shape.component";
+export { CrossShapeComponent } from "./lib/shapes/components/cross-shape.component";
 export { RectangleShapeComponent } from "./lib/shapes/components/rectangle-shape.component";
 export { RhombusShapeComponent } from "./lib/shapes/components/rhombus-shape.component";
 export { StarShapeComponent } from "./lib/shapes/components/star-shape.component";
@@ -206,6 +207,7 @@ export { TriangleShapeComponent } from "./lib/shapes/components/triangle-shape.c
 
 // Directives
 export { CircleDirective } from "./lib/shapes/directives/circle.directive";
+export { CrossDirective } from "./lib/shapes/directives/cross.directive";
 export { RectangleDirective } from "./lib/shapes/directives/rectangle.directive";
 export { RhombusDirective } from "./lib/shapes/directives/rhombus.directive";
 export { StarDirective } from "./lib/shapes/directives/star.directive";
