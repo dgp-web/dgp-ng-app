@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { shapeMap } from "../../shapes/constants";
 import { Shape, shapes } from "../../shapes/models";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
 @Component({
     selector: "dgp-shape-select",
@@ -33,6 +34,9 @@ import { Shape, shapes } from "../../shapes/models";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class DgpShapeSelectComponent extends DgpModelEditorComponentBase<Shape> {
 

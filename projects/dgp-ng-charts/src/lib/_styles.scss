@@ -95,20 +95,20 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 
 
 dgp-svg-shape {
-    circle, rect, polygon {
+   /* circle, rect, polygon {
         fill: black;
         stroke: black;
-    }
+    }*/
 }
 
 .dark-theme {
-    dgp-svg-shape {
+    /*dgp-svg-shape {
         circle, rect, polygon {
             fill: white;
             stroke: white;
         }
     }
-
+*/
     .tooltip {
         position: fixed;
         fill: white;
