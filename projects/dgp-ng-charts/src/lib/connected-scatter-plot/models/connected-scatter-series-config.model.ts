@@ -1,4 +1,4 @@
-import { Shape } from "../../symbols/models";
+import { Shape } from "../../shapes/models";
 
 export interface ConnectedScatterSeriesConfig {
     readonly colorHex?: string;

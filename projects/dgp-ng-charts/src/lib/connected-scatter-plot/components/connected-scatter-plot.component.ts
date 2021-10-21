@@ -20,7 +20,7 @@ import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { Shape } from "../../symbols/models";
+import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { ScaleType } from "../../shared/models";

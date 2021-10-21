@@ -23,7 +23,7 @@ import { ExportChartConfig } from "../../heatmap/models";
 import { ChartSelectionMode, ScaleType } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-import { Shape } from "../../symbols/models";
+import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({

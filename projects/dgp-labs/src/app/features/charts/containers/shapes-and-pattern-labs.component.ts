@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FillPattern, Shape } from "dgp-ng-charts";
+import { idPrefixProvider } from "../../../../../../dgp-ng-charts/src/lib/shared/id-prefix-provider.constant";
 
 @Component({
     selector: "dgp-shapes-and-pattern-labs",
@@ -24,8 +25,14 @@ import { FillPattern, Shape } from "dgp-ng-charts";
                     <dgp-fill-pattern-select [model]="fillPattern"
                                              (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
 
-                    <dgp-svg-symbol [model]="shape"
-                                    [fillColor]="colorHex"></dgp-svg-symbol>
+                    <dgp-svg-shape [model]="shape"
+                                   [fillColor]="colorHex"></dgp-svg-shape>
+
+                    <dgp-svg-shape [model]="shape"
+                                   [fillColor]="colorHex"
+                                   [fillPattern]="fillPattern"
+                                   [width]="64"
+                                   [height]="64"></dgp-svg-shape>
 
                     <dgp-fill-pattern-icon [model]="fillPattern"
                                            [colorHex]="colorHex"></dgp-fill-pattern-icon>
@@ -47,6 +54,9 @@ import { FillPattern, Shape } from "dgp-ng-charts";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class ShapesAndPatternLabsComponent {
 

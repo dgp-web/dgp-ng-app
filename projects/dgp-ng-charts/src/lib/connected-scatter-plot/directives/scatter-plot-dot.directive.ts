@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { ConnectedScatterGroup, ConnectedScatterSeries, Dot } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
-import { Shape } from "../../symbols/models";
+import { Shape } from "../../shapes/models";
 
 @Directive({selector: "[dgpScatterPlotDot]"})
 export class DgpScatterPlotDotDirective implements OnChanges {
