@@ -27,6 +27,11 @@ import { FillPattern, Shape } from "dgp-ng-charts";
                     <dgp-svg-shape [model]="shape"
                                    [fillColor]="colorHex"></dgp-svg-shape>
 
+                    <dgp-svg-shape [model]="shape"
+                                   [fillColor]="colorHex"
+                                   [width]="64"
+                                   [height]="64"></dgp-svg-shape>
+
                     <dgp-fill-pattern-icon [model]="fillPattern"
                                            [colorHex]="colorHex"></dgp-fill-pattern-icon>
 
