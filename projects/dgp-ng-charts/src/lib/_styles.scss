@@ -94,21 +94,21 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 }
 
 
-dgp-svg-symbol {
-    circle, rect, polygon {
+dgp-svg-shape {
+   /* circle, rect, polygon {
         fill: black;
         stroke: black;
-    }
+    }*/
 }
 
 .dark-theme {
-    dgp-svg-symbol {
+    /*dgp-svg-shape {
         circle, rect, polygon {
             fill: white;
             stroke: white;
         }
     }
-
+*/
     .tooltip {
         position: fixed;
         fill: white;

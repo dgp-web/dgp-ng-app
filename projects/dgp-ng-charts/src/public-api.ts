@@ -189,29 +189,32 @@ export { ChartComponentBase } from "./lib/shared/chart.component-base";
  * Symbols
  * -----
  */
-export * from "./lib/symbols/constants";
-export * from "./lib/symbols/models";
-export { DgpSVGSymbolsModule } from "./lib/symbols/svg-symbol.module";
+export * from "./lib/shapes/constants";
+export * from "./lib/shapes/models";
+export { DgpSVGSymbolsModule } from "./lib/shapes/svg-shape.module";
 // Components
-export { CircleSymbolComponent } from "./lib/symbols/components/circle-symbol.component";
-export { RectangleSymbolComponent } from "./lib/symbols/components/rectangle-symbol.component";
-export { RhombusSymbolComponent } from "./lib/symbols/components/rhombus-symbol.component";
-export { StarSymbolComponent } from "./lib/symbols/components/star-symbol.component";
-export { SVGSymbolComponent } from "./lib/symbols/components/svg-symbol.component";
-export { SymbolBaseComponent } from "./lib/symbols/components/symbol.base-component";
-export { TriangleDownSymbolComponent } from "./lib/symbols/components/triangle-down-symbol.component";
-export { TriangleLeftSymbolComponent } from "./lib/symbols/components/triangle-left-symbol.component";
-export { TriangleRightSymbolComponent } from "./lib/symbols/components/triangle-right-symbol.component";
-export { TriangleSymbolComponent } from "./lib/symbols/components/triangle-symbol.component";
+export { CircleShapeComponent } from "./lib/shapes/components/circle-shape.component";
+export { CrossShapeComponent } from "./lib/shapes/components/cross-shape.component";
+export { RectangleShapeComponent } from "./lib/shapes/components/rectangle-shape.component";
+export { RhombusShapeComponent } from "./lib/shapes/components/rhombus-shape.component";
+export { StarShapeComponent } from "./lib/shapes/components/star-shape.component";
+export { SVGShapeComponent } from "./lib/shapes/components/svg-shape.component";
+export { ShapeBaseComponent } from "./lib/shapes/components/shape.base-component";
+export { TriangleDownShapeComponent } from "./lib/shapes/components/triangle-down-shape.component";
+export { TriangleLeftShapeComponent } from "./lib/shapes/components/triangle-left-shape.component";
+export { TriangleRightShapeComponent } from "./lib/shapes/components/triangle-right-shape.component";
+export { TriangleShapeComponent } from "./lib/shapes/components/triangle-shape.component";
+
 // Directives
-export { CircleDirective } from "./lib/symbols/directives/circle.directive";
-export { RectangleDirective } from "./lib/symbols/directives/rectangle.directive";
-export { RhombusDirective } from "./lib/symbols/directives/rhombus.directive";
-export { StarDirective } from "./lib/symbols/directives/star.directive";
-export { SVGSymbolBaseDirective } from "./lib/symbols/directives/svg-symbol.base-directive";
-export { TriangleDirective } from "./lib/symbols/directives/triangle.directive";
-export { TriangleDownDirective } from "./lib/symbols/directives/triangle-down.directive";
-export { TriangleLeftDirective } from "./lib/symbols/directives/triangle-left.directive";
-export { TriangleRightDirective } from "./lib/symbols/directives/triangle-right.directive";
+export { CircleDirective } from "./lib/shapes/directives/circle.directive";
+export { CrossDirective } from "./lib/shapes/directives/cross.directive";
+export { RectangleDirective } from "./lib/shapes/directives/rectangle.directive";
+export { RhombusDirective } from "./lib/shapes/directives/rhombus.directive";
+export { StarDirective } from "./lib/shapes/directives/star.directive";
+export { SVGShapeBaseDirective } from "./lib/shapes/directives/svg-shape.base-directive";
+export { TriangleDirective } from "./lib/shapes/directives/triangle.directive";
+export { TriangleDownDirective } from "./lib/shapes/directives/triangle-down.directive";
+export { TriangleLeftDirective } from "./lib/shapes/directives/triangle-left.directive";
+export { TriangleRightDirective } from "./lib/shapes/directives/triangle-right.directive";
 
 

@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { shapeMap } from "../../symbols/constants";
-import { Shape, shapes } from "../../symbols/models";
+import { isDarkModeActive, DgpHybridComponentBase, ThemeSwitcherState } from "dgp-ng-app";
+import { shapeMap } from "../../shapes/constants";
+import { Shape, shapes } from "../../shapes/models";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: "dgp-shape-select",
@@ -12,7 +14,8 @@ import { Shape, shapes } from "../../symbols/models";
                         [disabled]="disabled">
                 <mat-option *ngFor="let shape of shapes"
                             [value]="shape">
-                    <dgp-svg-symbol [model]="shape"></dgp-svg-symbol>
+                    <dgp-svg-shape [model]="shape"
+                                   [fillColor]="fillColor$ | async"></dgp-svg-shape>
                     {{shapeMap.get(shape).label}}
                 </mat-option>
             </mat-select>
@@ -28,13 +31,22 @@ import { Shape, shapes } from "../../symbols/models";
             width: 100%;
         }
 
-        dgp-svg-symbol {
+        dgp-svg-shape {
             margin-right: 8px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
-export class DgpShapeSelectComponent extends DgpModelEditorComponentBase<Shape> {
+export class DgpShapeSelectComponent extends DgpHybridComponentBase<Shape, ThemeSwitcherState> {
+
+    readonly fillColor$ = this.select(isDarkModeActive).pipe(
+        map(active => {
+            return active ? "#fff" : "#000";
+        })
+    );
 
     readonly shapeMap = shapeMap;
     readonly shapes = shapes;

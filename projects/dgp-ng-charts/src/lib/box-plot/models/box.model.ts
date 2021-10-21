@@ -1,6 +1,6 @@
 import { BoxQuantiles } from "./box-quantiles.model";
 import { FillPattern } from "../../fill-pattern-icon/models/fill-pattern.model";
-import { Shape } from "../../symbols/models";
+import { Shape } from "../../shapes/models";
 
 export interface Box {
     readonly boxId: string;
