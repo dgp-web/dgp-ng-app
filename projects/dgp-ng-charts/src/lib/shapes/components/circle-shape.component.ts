@@ -7,6 +7,8 @@ import { ShapeBaseComponent } from "./shape.base-component";
         <svg xmlns="http://www.w3.org/2000/svg"
              [style.width.px]="width"
              [style.height.px]="height">
+
+
             <circle dgpCircle
                     [style.fill]="fillColor"
                     [style.stroke]="fillColor"

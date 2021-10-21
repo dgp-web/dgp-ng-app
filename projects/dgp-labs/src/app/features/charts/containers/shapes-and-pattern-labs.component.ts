@@ -18,29 +18,30 @@ import { FillPattern, Shape } from "dgp-ng-charts";
                 </dgp-docs-chapter-title>
 
                 <div>
-                    <dgp-shape-select [model]="shape"
-                                      (modelChange)="updateShape($event)"></dgp-shape-select>
+                    <!--   <dgp-shape-select [model]="shape"
+                                         (modelChange)="updateShape($event)"></dgp-shape-select>
 
-                    <dgp-fill-pattern-select [model]="fillPattern"
-                                             (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
+                       <dgp-fill-pattern-select [model]="fillPattern"
+                                                (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
 
-                    <dgp-svg-shape [model]="shape"
-                                   [fillColor]="colorHex"></dgp-svg-shape>
+                       <dgp-svg-shape [model]="shape"
+                                      [fillColor]="colorHex"></dgp-svg-shape>-->
 
                     <dgp-svg-shape [model]="shape"
                                    [fillColor]="colorHex"
+                                   [fillPattern]="fillPatternEnum.LinesFromLeftBottomToRightTop"
                                    [width]="64"
                                    [height]="64"></dgp-svg-shape>
 
-                    <dgp-fill-pattern-icon [model]="fillPattern"
-                                           [colorHex]="colorHex"></dgp-fill-pattern-icon>
+                    <!-- <dgp-fill-pattern-icon [model]="fillPattern"
+                                            [colorHex]="colorHex"></dgp-fill-pattern-icon>
 
-                    <mat-form-field>
-                        <input matInput
-                               type="color"
-                               [ngModel]="colorHex"
-                               (ngModelChange)="updateColorHex($event)">
-                    </mat-form-field>
+                     <mat-form-field>
+                         <input matInput
+                                type="color"
+                                [ngModel]="colorHex"
+                                (ngModelChange)="updateColorHex($event)">
+                     </mat-form-field>-->
 
 
                 </div>
