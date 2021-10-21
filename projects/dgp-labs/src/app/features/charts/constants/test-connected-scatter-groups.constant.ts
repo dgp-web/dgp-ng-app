@@ -3,7 +3,7 @@ import { ConnectedScatterGroup, Shape } from "dgp-ng-charts";
 export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = [{
     connectedScatterGroupId: "group01",
     colorHex: "#00ff00",
-    shape: Shape.Star,
+    shape: Shape.Cross,
     showEdges: false,
     series: [{
         connectedScatterSeriesId: "series01",
