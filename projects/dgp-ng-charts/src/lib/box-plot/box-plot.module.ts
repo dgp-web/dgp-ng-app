@@ -12,7 +12,7 @@ import { DgpChartModule } from "../chart/chart.module";
 import { DgpResizeSensorModule } from "dgp-ng-app";
 import { DgpSVGPatternsModule } from "../patterns/svg-patterns.module";
 import { DgpSVGMasksModule } from "../masks/svg-masks.module";
-import { DgpSVGSymbolsModule } from "../symbols/svg-symbol.module";
+import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
 
 @NgModule({
     imports: [

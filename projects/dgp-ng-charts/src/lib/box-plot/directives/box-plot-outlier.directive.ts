@@ -2,7 +2,7 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { getJitter } from "../functions";
 import { defaultBoxPlotConfig } from "../constants";
-import { Shape } from "../../symbols/models";
+import { Shape } from "../../shapes/models";
 
 @Directive({selector: "[dgpBoxPlotOutlier]"})
 export class BoxPlotOutlierDirective implements OnChanges {

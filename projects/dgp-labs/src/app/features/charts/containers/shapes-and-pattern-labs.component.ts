@@ -24,8 +24,8 @@ import { FillPattern, Shape } from "dgp-ng-charts";
                     <dgp-fill-pattern-select [model]="fillPattern"
                                              (modelChange)="updateFillPattern($event)"></dgp-fill-pattern-select>
 
-                    <dgp-svg-symbol [model]="shape"
-                                    [fillColor]="colorHex"></dgp-svg-symbol>
+                    <dgp-svg-shape [model]="shape"
+                                   [fillColor]="colorHex"></dgp-svg-shape>
 
                     <dgp-fill-pattern-icon [model]="fillPattern"
                                            [colorHex]="colorHex"></dgp-fill-pattern-icon>

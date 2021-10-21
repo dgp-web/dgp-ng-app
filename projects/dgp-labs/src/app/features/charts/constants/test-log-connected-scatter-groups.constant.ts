@@ -1,5 +1,5 @@
 import { ConnectedScatterGroup } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
-import { Shape } from "../../../../../../dgp-ng-charts/src/lib/symbols/models";
+import { Shape } from "../../../../../../dgp-ng-charts/src/lib/shapes/models";
 
 export const testLogConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = [{
     connectedScatterGroupId: "group01",

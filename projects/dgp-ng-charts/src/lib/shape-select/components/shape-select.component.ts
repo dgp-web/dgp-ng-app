@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { shapeMap } from "../../symbols/constants";
-import { Shape, shapes } from "../../symbols/models";
+import { shapeMap } from "../../shapes/constants";
+import { Shape, shapes } from "../../shapes/models";
 
 @Component({
     selector: "dgp-shape-select",
@@ -12,7 +12,7 @@ import { Shape, shapes } from "../../symbols/models";
                         [disabled]="disabled">
                 <mat-option *ngFor="let shape of shapes"
                             [value]="shape">
-                    <dgp-svg-symbol [model]="shape"></dgp-svg-symbol>
+                    <dgp-svg-shape [model]="shape"></dgp-svg-shape>
                     {{shapeMap.get(shape).label}}
                 </mat-option>
             </mat-select>
@@ -28,7 +28,7 @@ import { Shape, shapes } from "../../symbols/models";
             width: 100%;
         }
 
-        dgp-svg-symbol {
+        dgp-svg-shape {
             margin-right: 8px;
         }
     `],

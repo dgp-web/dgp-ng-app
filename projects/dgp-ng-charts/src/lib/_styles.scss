@@ -94,7 +94,7 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 }
 
 
-dgp-svg-symbol {
+dgp-svg-shape {
     circle, rect, polygon {
         fill: black;
         stroke: black;
@@ -102,7 +102,7 @@ dgp-svg-symbol {
 }
 
 .dark-theme {
-    dgp-svg-symbol {
+    dgp-svg-shape {
         circle, rect, polygon {
             fill: white;
             stroke: white;

@@ -23,7 +23,7 @@ import { FormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { CommonModule } from "@angular/common";
 import { ShapesAndPatternLabsComponent } from "./containers/shapes-and-pattern-labs.component";
-import { DgpSVGSymbolsModule } from "../../../../../dgp-ng-charts/src/lib/symbols/svg-symbol.module";
+import { DgpSVGSymbolsModule } from "../../../../../dgp-ng-charts/src/lib/shapes/svg-shape.module";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @NgModule({
