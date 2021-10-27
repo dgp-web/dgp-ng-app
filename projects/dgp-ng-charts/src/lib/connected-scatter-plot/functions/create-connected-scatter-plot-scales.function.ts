@@ -8,6 +8,7 @@ import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { formatLogTick, getYAxisLimitsWithOffset } from "../../shared/functions";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
+import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
@@ -102,6 +103,11 @@ export function createConnectedScatterPlotScales(payload: {
     let xAxis = d3.axisBottom(xAxisScale);
     if (notNullOrUndefined(payload.xAxisTicks)) {
         xAxis = xAxis.ticks(payload.xAxisTicks);
+    } else {
+        const xTickCount = axisTickFormattingService.estimateContinuousXAxisTickCount({
+            containerWidth: payload.containerWidth
+        });
+        xAxis = xAxis.ticks(xTickCount);
     }
 
 
@@ -109,10 +115,17 @@ export function createConnectedScatterPlotScales(payload: {
     switch (payload.yAxisScaleType) {
         default:
         case ScaleType.Linear:
+
+
             yAxis = d3.axisLeft(yAxisScale);
 
             if (notNullOrUndefined(payload.yAxisTicks)) {
                 yAxis = yAxis.ticks(payload.yAxisTicks);
+            } else {
+                const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
+                    containerHeight: payload.containerHeight
+                });
+                yAxis = yAxis.ticks(yTickCount);
             }
 
             break;

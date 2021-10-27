@@ -7,6 +7,7 @@ import { formatLogTick, getYAxisLimitsWithOffset } from "../../shared/functions"
 import { notNullOrUndefined } from "dgp-ng-app";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
+import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
@@ -124,12 +125,21 @@ export function createBoxPlotScales(payload: {
 
     }, {});
 
-    const xAxis = d3.axisBottom(xAxisScale);
+    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
+        currentXAxisValues: xAxisScale.domain(),
+        containerWidth: payload.containerWidth
+    });
+
+    const xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
+
     let yAxis: Axis<any>;
     switch (payload.yAxisScaleType) {
         default:
         case ScaleType.Linear:
-            yAxis = d3.axisLeft(yAxisScale);
+            const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
+                containerHeight: payload.containerHeight
+            });
+            yAxis = d3.axisLeft(yAxisScale).ticks(yTickCount);
             break;
         case ScaleType.Logarithmic:
             yAxis = d3.axisLeft(yAxisScale)

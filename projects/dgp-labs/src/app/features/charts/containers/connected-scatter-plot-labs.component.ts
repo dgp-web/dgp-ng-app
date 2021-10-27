@@ -16,8 +16,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7
     }],
-    xAxisTicks: 5,
-    yAxisTicks: 5
+    // xAxisTicks: 5,
+    // yAxisTicks: 5
 };
 
 @Component({
