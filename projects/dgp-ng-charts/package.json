@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-charts",
-    "version": "11.17.0",
+    "version": "11.17.1",
     "peerDependencies": {
         "@angular/common": "^11",
         "@angular/core": "^11",

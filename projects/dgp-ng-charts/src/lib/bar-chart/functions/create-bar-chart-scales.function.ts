@@ -1,8 +1,9 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
-import {BarChartScales, BarGroup} from "../models";
-import {defaultBarChartConfig} from "../constants";
-import {getBarChartYAxisLimitsWithOffset} from "./get-bar-chart-y-axis-limits-with-offset.function";
+import { BarChartScales, BarGroup } from "../models";
+import { defaultBarChartConfig } from "../constants";
+import { getBarChartYAxisLimitsWithOffset } from "./get-bar-chart-y-axis-limits-with-offset.function";
+import { axisTickFormattingService } from "./axis-tick-formatting.service";
 
 export function createBarChartScales(payload: {
     readonly barGroups: ReadonlyArray<BarGroup>;
@@ -60,7 +61,12 @@ export function createBarChartScales(payload: {
 
     }, {});
 
-    const xAxis = d3.axisBottom(xAxisScale);
+    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
+        currentXAxisValues: xAxisScale.domain(),
+        containerWidth: payload.containerWidth
+    });
+
+    const xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
     const yAxis = d3.axisLeft(yAxisScale);
 
     return {
