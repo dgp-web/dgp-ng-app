@@ -71,7 +71,7 @@ export function createBarChartScales(payload: {
 
     // TODO: Document this better
     const yTicks = getSmartTicks(yAxisDomain.max - yAxisDomain.min);
-    const yAxis = d3.axisLeft(yAxisScale).ticks(yTicks);
+    const yAxis = d3.axisLeft(yAxisScale).ticks(yTicks.count);
 
     return {
         xAxis,
