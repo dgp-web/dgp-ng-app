@@ -55,8 +55,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                  #chartContainer>
 
                 <svg #svgRoot
-                     *ngIf="boxPlotScales"
                      class="chart-svg"
+                     *ngIf="boxPlotScales"
                      [attr.viewBox]="getViewBox()">
 
                     <defs>
@@ -377,14 +377,14 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
         this.drawD3Chart({
             svg: null,
-            containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
-            containerWidth: rect.width - this.config.margin.left - this.config.margin.right
+            containerHeight: rect.height,
+            containerWidth: rect.width
         });
 
     }
 
     getContainerTransform(): string {
-        return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
+        return "translate(" + this.boxPlotScales.chartMargin.left + " " + this.boxPlotScales.chartMargin.top + ")";
     }
 
     getResultRootTransform(boxGroup: BoxGroup) {
@@ -406,14 +406,12 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     }
 
     getViewBox() {
-
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
-        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
-        const width = rect.width - this.config.margin.left - this.config.margin.right;
+        const height = rect.height;
+        const width = rect.width;
 
         return "0 0 " + width + " " + height;
-
     }
 
     getDataAreaClipPath(): string {

@@ -55,36 +55,31 @@ export function createBoxPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
+    let marginLeft = config.margin.left;
 
-    // Compute reference margin left
-    /*  const referenceYDomainLabelLength = _.max(
-          [yAxisLimits.min, yAxisLimits.max].map(x => {
-              return d3.format("~r")(x).length;
-          })
-      );*/
+    if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
 
-    /* const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
+        const referenceYDomainLabelLength = _.max(
+            [yMin, yMax].map(x => {
+                return x.toPrecision(3).length;
+                // return d3.format("~r")(x).length;
+            })
+        );
 
-     const marginLeft = payload.config.margin.left >= estimatedNeededMaxYTickWidthPx
-         ? payload.config.margin.left
-         : estimatedNeededMaxYTickWidthPx;
+        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
 
-     const barAreaWidth = payload.containerWidth
-         - marginLeft
-         - payload.dummyConfig.margin.right;
-
-     const barAreaHeight = payload.containerHeight
-         - payload.dummyConfig.margin.top
-         - payload.dummyConfig.margin.bottom;
- */
+        marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
+            ? config.margin.left
+            : estimatedNeededMaxYTickWidthPx;
+    }
 
     const barAreaWidth = payload.containerWidth
-        - defaultBoxPlotConfig.margin.left
-        - defaultBoxPlotConfig.margin.right;
+        - marginLeft
+        - config.margin.right;
 
     const barAreaHeight = payload.containerHeight
-        - defaultBoxPlotConfig.margin.top
-        - defaultBoxPlotConfig.margin.bottom;
+        - config.margin.top
+        - config.margin.bottom;
 
     const yAxisDomain = getYAxisLimitsWithOffset({
         limitsFromValues: {
@@ -139,7 +134,9 @@ export function createBoxPlotScales(payload: {
             const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
                 containerHeight: payload.containerHeight
             });
-            yAxis = d3.axisLeft(yAxisScale).ticks(yTickCount);
+            yAxis = d3.axisLeft(yAxisScale)
+                .ticks(yTickCount)
+                .tickFormat(x => x.valueOf().toPrecision(3));
             break;
         case ScaleType.Logarithmic:
             yAxis = d3.axisLeft(yAxisScale)
@@ -158,7 +155,10 @@ export function createBoxPlotScales(payload: {
         containerWidth: payload.containerWidth,
         dataAreaHeight: barAreaHeight,
         dataAreaWidth: barAreaWidth,
-        chartMargin: config.margin
+        chartMargin: {
+            ...config.margin,
+            left: marginLeft
+        }
     };
 
 }
