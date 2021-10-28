@@ -363,7 +363,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             boxGroups: this.model,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
-            yAxisScaleType: this.yAxisScaleType
+            yAxisScaleType: this.yAxisScaleType,
+            controlLines: this.controlLines
         });
 
         this.cd.markForCheck();
