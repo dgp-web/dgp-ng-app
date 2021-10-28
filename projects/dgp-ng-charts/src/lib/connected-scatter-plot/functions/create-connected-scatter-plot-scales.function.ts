@@ -16,6 +16,7 @@ export function createConnectedScatterPlotScales(payload: {
     readonly xAxisMin?: number;
     readonly xAxisMax?: number;
     readonly xAxisTicks?: number;
+    readonly xAxisTickFormat?: (x: string) => string;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
     readonly yAxisTicks?: number;
@@ -64,19 +65,19 @@ export function createConnectedScatterPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-    const yAxisDomain = getYAxisLimitsWithOffset({
+   /* const yAxisDomain = getYAxisLimitsWithOffset({
         limitsFromValues: {
             min: yMin,
             max: yMax
         }
     }, config);
-
+*/
     let marginLeft = config.margin.left;
 
     if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
 
         const referenceYDomainLabelLength = _.max(
-            [yAxisDomain.min, yAxisDomain.max].map(x => {
+            [yMin, yMax].map(x => {
                 return x.toPrecision(3).length;
                 // return d3.format("~r")(x).length;
             })
@@ -104,7 +105,7 @@ export function createConnectedScatterPlotScales(payload: {
         default:
         case ScaleType.Linear:
             yAxisScale = d3.scaleLinear()
-                .domain([yAxisDomain.max, yAxisDomain.min])
+                .domain([yMax, yMin])
                 .range([0, dataAreaHeight]);
             break;
         case ScaleType.Logarithmic:
@@ -128,6 +129,10 @@ export function createConnectedScatterPlotScales(payload: {
         });
         xAxis = xAxis
             .ticks(xTickCount);
+    }
+
+    if (notNullOrUndefined(payload.xAxisTickFormat)) {
+        xAxis = xAxis.tickFormat(payload.xAxisTickFormat as any);
     }
 
 

@@ -9,4 +9,5 @@ export interface ConnectedScatterPlot extends Chart, CardinalYAxis {
     readonly xAxisMin?: number;
     readonly xAxisMax?: number;
     readonly xAxisTicks?: number;
+    readonly xAxisTickFormat?: (x: string) => string;
 }

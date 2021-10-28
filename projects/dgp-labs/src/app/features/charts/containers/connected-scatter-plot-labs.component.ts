@@ -16,8 +16,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7
     }],
-    // xAxisTicks: 5,
-    // yAxisTicks: 5
+    xAxisTicks: 5,
+    yAxisTicks: 5,
+    xAxisTickFormat: x => x.toString() + "x"
 };
 
 @Component({
@@ -38,6 +39,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [xAxisMin]="model.xAxisMin"
                                                 [xAxisMax]="model.xAxisMax"
                                                 [xAxisTicks]="model.xAxisTicks"
+                                                [xAxisTickFormat]="model.xAxisTickFormat"
                                                 [yAxisTitle]="model.yAxisTitle"
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"

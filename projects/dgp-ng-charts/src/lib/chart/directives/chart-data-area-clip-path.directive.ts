@@ -21,10 +21,10 @@ export class DgpChartDataAreaClipPathDirective implements OnChanges {
 
             const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect") as SVGRectElement;
 
-            this.renderer.setAttribute(rect, "x", "0");
-            this.renderer.setAttribute(rect, "y", "0");
-            this.renderer.setAttribute(rect, "width", this.scales.dataAreaWidth.toString());
-            this.renderer.setAttribute(rect, "height", this.scales.dataAreaHeight.toString());
+            this.renderer.setAttribute(rect, "x", "-1");
+            this.renderer.setAttribute(rect, "y", "-4");
+            this.renderer.setAttribute(rect, "width", (this.scales.dataAreaWidth+5).toString());
+            this.renderer.setAttribute(rect, "height", (this.scales.dataAreaHeight+5).toString());
 
             this.elementRef.nativeElement.innerHTML = "";
             this.elementRef.nativeElement.appendChild(rect);

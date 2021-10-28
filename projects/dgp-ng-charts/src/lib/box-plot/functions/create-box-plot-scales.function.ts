@@ -3,7 +3,7 @@ import { defaultBoxPlotConfig } from "../constants";
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";
-import { formatLogTick, getYAxisLimitsWithOffset } from "../../shared/functions";
+import { formatLogTick } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
@@ -55,19 +55,19 @@ export function createBoxPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-    const yAxisDomain = getYAxisLimitsWithOffset({
-        limitsFromValues: {
-            min: yMin,
-            max: yMax
-        }
-    }, config);
+    /* const yAxisDomain = getYAxisLimitsWithOffset({
+         limitsFromValues: {
+             min: yMin,
+             max: yMax
+         }
+     }, config);*/
 
     let marginLeft = config.margin.left;
 
     if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
 
         const referenceYDomainLabelLength = _.max(
-            [yAxisDomain.min, yAxisDomain.max].map(x => {
+            [yMin, yMax].map(x => {
                 return x.toPrecision(3).length;
                 // return d3.format("~r")(x).length;
             })
@@ -94,7 +94,7 @@ export function createBoxPlotScales(payload: {
         default:
         case ScaleType.Linear:
             yAxisScale = d3.scaleLinear()
-                .domain([yAxisDomain.max, yAxisDomain.min])
+                .domain([yMax, yMin])
                 .range([0, barAreaHeight]);
             break;
         case ScaleType.Logarithmic:
