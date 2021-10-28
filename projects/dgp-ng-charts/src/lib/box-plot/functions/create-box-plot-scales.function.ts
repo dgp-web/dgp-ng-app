@@ -55,12 +55,19 @@ export function createBoxPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
+    const yAxisDomain = getYAxisLimitsWithOffset({
+        limitsFromValues: {
+            min: yMin,
+            max: yMax
+        }
+    }, config);
+
     let marginLeft = config.margin.left;
 
     if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
 
         const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => {
+            [yAxisDomain.min, yAxisDomain.max].map(x => {
                 return x.toPrecision(3).length;
                 // return d3.format("~r")(x).length;
             })
@@ -80,13 +87,6 @@ export function createBoxPlotScales(payload: {
     const barAreaHeight = payload.containerHeight
         - config.margin.top
         - config.margin.bottom;
-
-    const yAxisDomain = getYAxisLimitsWithOffset({
-        limitsFromValues: {
-            min: yMin,
-            max: yMax
-        }
-    }, config);
 
     let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
 
