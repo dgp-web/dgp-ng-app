@@ -50,6 +50,14 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                 </dgp-docs-section-title>
 
                 <dgp-box-plot [model]="boxGroups"
+                              [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
+                              yAxisMin="3"
+                              yAxisMax="17"></dgp-box-plot>
+
+                <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
+                              [model]="logBoxGroups"></dgp-box-plot>
+
+                <dgp-box-plot [model]="boxGroups"
                               [controlLines]="boxPlotControlLines">
 
                     <ng-container chart-title>
@@ -69,14 +77,6 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                     </ng-container>
 
                 </dgp-box-plot>
-
-                <dgp-box-plot [model]="boxGroups"
-                              [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
-                              yAxisMin="3"
-                              yAxisMax="17"></dgp-box-plot>
-
-                <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
-                              [model]="logBoxGroups"></dgp-box-plot>
 
                 <dgp-docs-section-title>
                     Bar chart

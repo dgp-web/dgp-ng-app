@@ -359,7 +359,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     }
 
     getContainerTransform(): string {
-        return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
+        return "translate(" + this.connectedScatterPlotScales.chartMargin.left + " " + this.connectedScatterPlotScales.chartMargin.top + ")";
     }
 
     drawChart() {
@@ -370,8 +370,8 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
         this.drawD3Chart({
             svg: null,
-            containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
-            containerWidth: rect.width - this.config.margin.left - this.config.margin.right
+            containerHeight: rect.height,
+            containerWidth: rect.width
         });
 
 
@@ -380,8 +380,8 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     getViewBox() {
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
 
-        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
-        const width = rect.width - this.config.margin.left - this.config.margin.right;
+        const height = rect.height;
+        const width = rect.width;
 
         return "0 0 " + width + " " + height;
     }

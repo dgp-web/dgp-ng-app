@@ -64,20 +64,38 @@ export function createConnectedScatterPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-    const dataAreaWidth = payload.containerWidth
-        - config.margin.left
-        - config.margin.right;
-
-    const dataAreaHeight = payload.containerHeight
-        - config.margin.top
-        - config.margin.bottom;
-
     const yAxisDomain = getYAxisLimitsWithOffset({
         limitsFromValues: {
             min: yMin,
             max: yMax
         }
     }, config);
+
+    let marginLeft = config.margin.left;
+
+    if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
+
+        const referenceYDomainLabelLength = _.max(
+            [yAxisDomain.min, yAxisDomain.max].map(x => {
+                return x.toPrecision(3).length;
+                // return d3.format("~r")(x).length;
+            })
+        );
+
+        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
+
+        marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
+            ? config.margin.left
+            : estimatedNeededMaxYTickWidthPx;
+    }
+
+    const dataAreaWidth = payload.containerWidth
+        - marginLeft
+        - config.margin.right;
+
+    const dataAreaHeight = payload.containerHeight
+        - config.margin.top
+        - config.margin.bottom;
 
 
     let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
@@ -102,12 +120,14 @@ export function createConnectedScatterPlotScales(payload: {
 
     let xAxis = d3.axisBottom(xAxisScale);
     if (notNullOrUndefined(payload.xAxisTicks)) {
-        xAxis = xAxis.ticks(payload.xAxisTicks);
+        xAxis = xAxis
+            .ticks(payload.xAxisTicks);
     } else {
         const xTickCount = axisTickFormattingService.estimateContinuousXAxisTickCount({
             containerWidth: payload.containerWidth
         });
-        xAxis = xAxis.ticks(xTickCount);
+        xAxis = xAxis
+            .ticks(xTickCount);
     }
 
 
@@ -120,12 +140,16 @@ export function createConnectedScatterPlotScales(payload: {
             yAxis = d3.axisLeft(yAxisScale);
 
             if (notNullOrUndefined(payload.yAxisTicks)) {
-                yAxis = yAxis.ticks(payload.yAxisTicks);
+                yAxis = yAxis
+                    .ticks(payload.yAxisTicks)
+                    .tickFormat(x => x.valueOf().toPrecision(3));
             } else {
                 const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
                     containerHeight: payload.containerHeight
                 });
-                yAxis = yAxis.ticks(yTickCount);
+                yAxis = yAxis
+                    .ticks(yTickCount)
+                    .tickFormat(x => x.valueOf().toPrecision(3));
             }
 
             break;
@@ -145,7 +169,10 @@ export function createConnectedScatterPlotScales(payload: {
         containerWidth: payload.containerWidth,
         dataAreaHeight,
         dataAreaWidth,
-        chartMargin: config.margin
+        chartMargin: {
+            ...config.margin,
+            left: marginLeft
+        }
     };
 
 }
