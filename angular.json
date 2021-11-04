@@ -353,6 +353,12 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "allowedCommonJsDependencies": [
+                            "css-element-queries",
+                            "entity-store",
+                            "highlight.js",
+                            "@angularclass/hmr"
+                        ],
                         "outputPath": "dist/dgp-labs",
                         "index": "projects/dgp-labs/src/index.html",
                         "main": "projects/dgp-labs/src/main.ts",
