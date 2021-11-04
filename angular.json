@@ -429,46 +429,6 @@
                 }
             }
         },
-        "dgp-data-modeling": {
-            "projectType": "library",
-            "root": "projects/dgp-data-modeling",
-            "sourceRoot": "projects/dgp-data-modeling/src",
-            "prefix": "lib",
-            "architect": {
-                "build": {
-                    "builder": "@angular-devkit/build-angular:ng-packagr",
-                    "options": {
-                        "tsConfig": "projects/dgp-data-modeling/tsconfig.lib.json",
-                        "project": "projects/dgp-data-modeling/ng-package.json"
-                    },
-                    "configurations": {
-                        "production": {
-                            "tsConfig": "projects/dgp-data-modeling/tsconfig.lib.prod.json"
-                        }
-                    }
-                },
-                "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
-                    "options": {
-                        "main": "projects/dgp-data-modeling/src/test.ts",
-                        "tsConfig": "projects/dgp-data-modeling/tsconfig.spec.json",
-                        "karmaConfig": "projects/dgp-data-modeling/karma.conf.js"
-                    }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-data-modeling/tsconfig.lib.json",
-                            "projects/dgp-data-modeling/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
-                }
-            }
-        },
         "dgp-ng-drag-and-drop": {
             "projectType": "library",
             "root": "projects/dgp-ng-drag-and-drop",

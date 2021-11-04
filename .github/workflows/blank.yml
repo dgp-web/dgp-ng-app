@@ -18,9 +18,6 @@ jobs:
     - name: Install npm packages
       run: npm ci --loglevel=error
 
-    - name: Build dgp-data-modeling
-      run: npm run dgp-data-modeling:build
-
     - name: Test dgp-ng-app
       run: npm run dgp-ng-app:test:prod
 
@@ -38,11 +35,6 @@ jobs:
 
     - name: Build dgp-ng-charts
       run: npm run dgp-ng-charts:build:prod
-
-    - name: Publish dgp-data-modeling to npm
-      run: npm run dgp-data-modeling:publish
-      env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
     - name: Publish dgp-ng-app to npm
       run: npm run dgp-ng-app:publish
@@ -66,11 +58,6 @@ jobs:
 
     - name: Publish dgp-ng-charts to npm
       run: npm run dgp-ng-charts:publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-    - name: Publish dgp-ng-app-builder to npm
-      run: npm run dgp-ng-app-builder:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
