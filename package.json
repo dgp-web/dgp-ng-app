@@ -1,6 +1,6 @@
 {
-  "name": "ng-starter",
-  "version": "11.17.5",
+  "name": "dgp-ng-app",
+  "version": "13.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -100,7 +100,7 @@
     "karma-webpack": "^4.0.2",
     "ng-packagr": "^13.0.0",
     "protractor": "~7.0.0",
-    "puppeteer": "^4.0.0",
+    "puppeteer": "^11.0.0",
     "sass": "^1.26.5",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.3",
