@@ -357,7 +357,8 @@
                             "css-element-queries",
                             "entity-store",
                             "highlight.js",
-                            "@angularclass/hmr"
+                            "@angularclass/hmr",
+                            "seedrandom"
                         ],
                         "outputPath": "dist/dgp-labs",
                         "index": "projects/dgp-labs/src/index.html",
