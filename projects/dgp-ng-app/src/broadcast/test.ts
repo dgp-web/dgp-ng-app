@@ -11,24 +11,25 @@ describe(BroadcastStoreDecorator.name, () => {
     beforeEach(() => {
 
         TestBed.configureTestingModule({
-            imports: [
-                StoreModule.forRoot({
-                    [broadcastStoreFeature]: {
-                        ownBroadcastRole: BroadcastRole.Peon
-                    } as any
-                }, {
-                    runtimeChecks: {
-                        strictActionImmutability: true,
-                        strictActionSerializability: true,
-                        strictStateImmutability: true,
-                        strictStateSerializability: true
-                    }
-                })
-            ],
-            providers: [
-                broadcastStoreProvider
-            ]
-        });
+    imports: [
+        StoreModule.forRoot({
+            [broadcastStoreFeature]: {
+                ownBroadcastRole: BroadcastRole.Peon
+            } as any
+        }, {
+            runtimeChecks: {
+                strictActionImmutability: true,
+                strictActionSerializability: true,
+                strictStateImmutability: true,
+                strictStateSerializability: true
+            }
+        })
+    ],
+    providers: [
+        broadcastStoreProvider
+    ],
+    teardown: { destroyAfterEach: false }
+});
 
         decoratedStore = TestBed.get(Store) as BroadcastStoreDecorator<any>;
 
