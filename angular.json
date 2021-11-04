@@ -63,6 +63,12 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "allowedCommonJsDependencies": [
+                            "css-element-queries",
+                            "entity-store",
+                            "highlight.js",
+                            "@angularclass/hmr"
+                        ],
                         "outputPath": "dist/ng-app",
                         "index": "projects/ng-app/src/index.html",
                         "main": "projects/ng-app/src/main.ts",
