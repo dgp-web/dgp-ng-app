@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { isNullOrUndefined } from "util";
 import { AuthenticationState, authenticationStoreFeature } from "./models";
+import { isNullOrUndefined } from "../utils/null-checking.functions";
 
 export const authenticationFeatureSelector = createFeatureSelector<AuthenticationState>(authenticationStoreFeature);
 

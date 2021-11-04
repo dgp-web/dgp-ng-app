@@ -1,5 +1,5 @@
-import { isNullOrUndefined } from "util";
 import { BroadcastChannelLike } from "../models";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 
 export class BroadcastChannelLocalStorageFallbackService implements BroadcastChannelLike {
 

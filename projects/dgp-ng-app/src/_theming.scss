@@ -1,4 +1,5 @@
-@import '~@angular/material/theming';
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
 
 @mixin dgp-normalize {
 
@@ -23,15 +24,15 @@
     $accent: map-get($theme, accent);
 
     .dgp-bg--primary {
-        background: mat-color($primary, 300) !important;
+        background: mat.get-color-from-palette($primary, 300) !important;
     }
 
     .dgp-bg--accent {
-        background: mat-color($accent, 300) !important;
+        background: mat.get-color-from-palette($accent, 300) !important;
     }
 
     .dgp-list-item.--selected {
-        border-left-color: mat-color($primary, 300);
+        border-left-color: mat.get-color-from-palette($primary, 300);
         border-left-width: 4px;
         border-left-style: solid;
     }
@@ -41,35 +42,35 @@
     }
 
     .dgp-list-item--selected {
-        border-left-color: mat-color($primary, 300);
+        border-left-color: mat.get-color-from-palette($primary, 300);
         border-left-width: 4px;
         border-left-style: solid;
         pointer-events: none;
 
         &:hover {
-            background-color: mat-color($accent, 300);
+            background-color: mat.get-color-from-palette($accent, 300);
         }
     }
 
 }
 
-@mixin dgp-ng-app-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+@mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
 
     @include dgp-normalize();
 
-    $app-theme: mat-light-theme($primary, $accent, $warn);
-    $app-dark-theme: mat-dark-theme($primary, $accent, $warn);
+    $app-theme: mat.define-light-theme($primary, $accent, $warn);
+    $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
 
-    @include angular-material-theme($app-theme);
+    @include mat.all-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
 
     .dark-theme {
-        @include angular-material-theme($app-dark-theme);
+        @include mat.all-component-themes($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
 
     .dgp-bg--primary {
-        background: mat-color($primary) !important;
+        background: mat.get-color-from-palette($primary) !important;
     }
 
     mat-dialog-actions {
@@ -93,11 +94,11 @@
     }
 
     .dgp-action-context.--selected {
-        outline: 1px dashed mat-color($accent, 300);
+        outline: 1px dashed mat.get-color-from-palette($accent, 300);
     }
 
     .dgp-bg--accent {
-        background: mat-color($accent, 100) !important;
+        background: mat.get-color-from-palette($accent, 100) !important;
     }
 
 }
