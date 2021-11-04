@@ -1,7 +1,7 @@
-import { isNullOrUndefined } from "util";
 import * as _ from "lodash";
 import { leaderActionTypePrefix, peonActionTypePrefix } from "../actions";
 import { BroadcastAction, BroadcastRole } from "../models";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 
 export interface FilterIncomingBroadcastActionPayload {
     readonly action: BroadcastAction;

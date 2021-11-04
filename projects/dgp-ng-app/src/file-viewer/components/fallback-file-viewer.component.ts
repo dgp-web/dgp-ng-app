@@ -59,7 +59,7 @@ export class FallbackFileViewerComponent extends FileViewerComponentBase impleme
 
     async downloadFileInTridentOrEdge() {
         const file = await getFileFromFileItem$(this.fileItem);
-        window.navigator.msSaveOrOpenBlob(file, file.name);
+        (window.navigator as any).msSaveOrOpenBlob(file, file.name);
     }
 
 }

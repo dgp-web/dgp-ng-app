@@ -1,5 +1,5 @@
-import { isDate } from "util";
 import { BroadcastHeartbeat, MessageEventLike } from "../models";
+import { isDate } from "lodash";
 
 /**
  * Parses heartbeats from message events

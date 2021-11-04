@@ -1,9 +1,9 @@
 {
     "name": "dgp-ng-charts",
-    "version": "11.17.5",
+    "version": "13.0.0",
     "peerDependencies": {
-        "@angular/common": "^11",
-        "@angular/core": "^11",
+        "@angular/common": "^13",
+        "@angular/core": "^13",
         "@types/d3": "^5",
         "css-element-queries": "^1",
         "d3": "^5",

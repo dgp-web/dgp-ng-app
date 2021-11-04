@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
-import { isNullOrUndefined } from "util";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
 import { timer, of } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { showLoadingSpinner } from "./actions";
 import { RoutingOverlayComponent } from "./components/routing-overlay.component";
+import { isNullOrUndefined } from "../utils/null-checking.functions";
 
 @Injectable()
 export class RoutingOverlayEffects {

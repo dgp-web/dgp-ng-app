@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActionReducer, Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
-import { isNullOrUndefined } from "util";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { ThemeSwitcherEffects } from "./effects";
 import { themeSwitcherReducer } from "./reducers";
@@ -16,6 +15,7 @@ import {
 } from "./models";
 import { setIsDarkModeActive } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { isNullOrUndefined } from "../utils/null-checking.functions";
 
 export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");
 

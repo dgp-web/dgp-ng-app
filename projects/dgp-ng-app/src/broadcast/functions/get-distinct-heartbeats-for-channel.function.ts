@@ -1,6 +1,6 @@
-import {isNullOrUndefined} from "util";
 import * as _ from "lodash";
 import { BroadcastHeartbeat } from "../models";
+import { isNullOrUndefined } from "../../utils/null-checking.functions";
 
 export interface GetDistinctHeartbeatsForChannelPayload {
     readonly channelDataId?: any;

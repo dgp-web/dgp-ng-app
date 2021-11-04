@@ -11,7 +11,7 @@ export class LayoutManagerUtilities {
      */
     animFrame(fn) {
         return window.setTimeout(() => (window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame ||
+        (window as any)?.webkitRequestAnimationFrame ||
             // tslint:disable-next-line:only-arrow-functions
             function (callback) {
                 window.setTimeout(callback, 1000 / 60);
