@@ -26,26 +26,27 @@ export class TestInitializationService implements InitializationService<TestUser
 
 export function configureAuthenticationTestingModule(): TestBedStatic {
     return TestBed.configureTestingModule({
-        imports: [
-            RouterTestingModule,
-            StoreModule.forRoot({}, {
-                runtimeChecks: {
-                    strictActionImmutability: true,
-                    strictActionSerializability: true,
-                    strictStateImmutability: true,
-                    strictStateSerializability: true
-                }
-            }),
-            DgpAuthenticationModule.forRoot({
-                authenticationApiClientProvider: {
-                    provide: AuthenticationApiClient,
-                    useClass: TestAuthenticationApiClient
-                },
-                initializationServiceProvider: {
-                    provide: InitializationService,
-                    useClass: TestInitializationService
-                }
-            })
-        ]
-    });
+    imports: [
+        RouterTestingModule,
+        StoreModule.forRoot({}, {
+            runtimeChecks: {
+                strictActionImmutability: true,
+                strictActionSerializability: true,
+                strictStateImmutability: true,
+                strictStateSerializability: true
+            }
+        }),
+        DgpAuthenticationModule.forRoot({
+            authenticationApiClientProvider: {
+                provide: AuthenticationApiClient,
+                useClass: TestAuthenticationApiClient
+            },
+            initializationServiceProvider: {
+                provide: InitializationService,
+                useClass: TestInitializationService
+            }
+        })
+    ],
+    teardown: { destroyAfterEach: false }
+});
 }

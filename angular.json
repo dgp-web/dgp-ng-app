@@ -109,19 +109,6 @@
                         "progress": false
                     }
                 },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/ng-app/tsconfig.app.json",
-                            "projects/ng-app/tsconfig.spec.json",
-                            "projects/ng-app/e2e/tsconfig.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
-                },
                 "e2e": {
                     "builder": "@angular-devkit/build-angular:protractor",
                     "options": {
@@ -162,18 +149,6 @@
                         "tsConfig": "projects/dgp-ng-app/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-app/karma.conf.js"
                     }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-ng-app/tsconfig.lib.json",
-                            "projects/dgp-ng-app/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
                 }
             }
         },
@@ -202,18 +177,6 @@
                         "tsConfig": "projects/dgp-ng-docs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-docs/karma.conf.js"
                     }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-ng-docs/tsconfig.lib.json",
-                            "projects/dgp-ng-docs/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
                 }
             }
         },
@@ -241,18 +204,6 @@
                         "main": "projects/dgp-ng-docking-layout/src/test.ts",
                         "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-docking-layout/karma.conf.js"
-                    }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-ng-docking-layout/tsconfig.lib.json",
-                            "projects/dgp-ng-docking-layout/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
                     }
                 }
             }
@@ -361,19 +312,6 @@
                         "progress": false
                     }
                 },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-labs/tsconfig.app.json",
-                            "projects/dgp-labs/tsconfig.spec.json",
-                            "projects/dgp-labs/e2e/tsconfig.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
-                },
                 "e2e": {
                     "builder": "@angular-devkit/build-angular:protractor",
                     "options": {
@@ -414,18 +352,6 @@
                         "karmaConfig": "projects/dgp-ng-charts/karma.conf.js",
                         "progress": false
                     }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-ng-charts/tsconfig.lib.json",
-                            "projects/dgp-ng-charts/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
                 }
             }
         },
@@ -453,18 +379,6 @@
                         "main": "projects/dgp-ng-drag-and-drop/src/test.ts",
                         "tsConfig": "projects/dgp-ng-drag-and-drop/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-drag-and-drop/karma.conf.js"
-                    }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "projects/dgp-ng-drag-and-drop/tsconfig.lib.json",
-                            "projects/dgp-ng-drag-and-drop/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
                     }
                 }
             }
