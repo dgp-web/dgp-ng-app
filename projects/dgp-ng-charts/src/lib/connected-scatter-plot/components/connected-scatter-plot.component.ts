@@ -444,7 +444,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         let result = "";
         if (notNullOrUndefined(series.label)) result += series.label + ": ";
-        result += "(" + dot.x + ", " + dot.y + ")";
+        result += "(" + dot.x.toPrecision(3) + ", " + dot.y.toPrecision(3) + ")";
         return result;
     }
 

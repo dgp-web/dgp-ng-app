@@ -428,7 +428,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             result += box.outlierLabels[outlierIndex] + ": ";
         }
 
-        result += box.outliers[outlierIndex];
+        result += box.outliers[outlierIndex].toPrecision(3);
 
         return result;
     }
