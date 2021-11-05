@@ -17,6 +17,7 @@ export interface Box {
     readonly quantiles: BoxQuantiles;
 
     readonly outliers?: ReadonlyArray<number>;
+    readonly outlierLabels?: ReadonlyArray<string>;
 
     readonly colorHex: string;
 

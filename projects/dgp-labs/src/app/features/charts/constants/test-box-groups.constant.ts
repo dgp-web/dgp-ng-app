@@ -30,6 +30,11 @@ export const testBoxGroups: ReadonlyArray<BoxGroup> = [{
         outliers: [
             -2, -1, 14
         ],
+        outlierLabels: [
+            "Test 01",
+            "Test 02",
+            "Test 03"
+        ],
         colorHex: "#309000",
         outlierShape: Shape.Circle
     }],

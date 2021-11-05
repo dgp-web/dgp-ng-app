@@ -146,7 +146,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                         [boxGroup]="boxGroup"
                                                         [box]="box"
                                                         [value]="value"
-                                                        [matTooltip]="value"
+                                                        [matTooltip]="getOutlierTooltip(box, i)"
                                                         (focus)="highlightOutlier(box, i)"
                                                         (mouseenter)="highlightOutlier(box, i)"
                                                         (blur)="unhighlightOutlier(box, i)"
@@ -158,7 +158,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                       [boxGroup]="boxGroup"
                                                       [box]="box"
                                                       [value]="value"
-                                                      [matTooltip]="value"
+                                                      [matTooltip]="getOutlierTooltip(box, i)"
                                                       (focus)="highlightOutlier(box, i)"
                                                       (mouseenter)="highlightOutlier(box, i)"
                                                       (blur)="unhighlightOutlier(box, i)"
@@ -171,7 +171,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
-                                                         [matTooltip]="value"
+                                                         [matTooltip]="getOutlierTooltip(box, i)"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -184,7 +184,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
-                                                         [matTooltip]="value"
+                                                         [matTooltip]="getOutlierTooltip(box, i)"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -197,7 +197,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
-                                                         [matTooltip]="value"
+                                                         [matTooltip]="getOutlierTooltip(box, i)"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -210,7 +210,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
-                                                         [matTooltip]="value"
+                                                         [matTooltip]="getOutlierTooltip(box, i)"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -223,7 +223,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
-                                                         [matTooltip]="value"
+                                                         [matTooltip]="getOutlierTooltip(box, i)"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -236,7 +236,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
-                                                         [matTooltip]="value"
+                                                         [matTooltip]="getOutlierTooltip(box, i)"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -248,7 +248,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                         [boxGroup]="boxGroup"
                                                         [box]="box"
                                                         [value]="value"
-                                                        [matTooltip]="value"
+                                                        [matTooltip]="getOutlierTooltip(box, i)"
                                                         (focus)="highlightOutlier(box, i)"
                                                         (mouseenter)="highlightOutlier(box, i)"
                                                         (blur)="unhighlightOutlier(box, i)"
@@ -419,6 +419,18 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     getContainerAreaClipPath(): string {
         return " url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
+    }
+
+    getOutlierTooltip(box: Box, outlierIndex: number): string {
+        let result = "";
+
+        if (notNullOrUndefined(box.outlierLabels) && notNullOrUndefined(box.outlierLabels[outlierIndex])) {
+            result += box.outlierLabels[outlierIndex] + ": ";
+        }
+
+        result += box.outliers[outlierIndex];
+
+        return result;
     }
 
 }
