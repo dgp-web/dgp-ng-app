@@ -91,6 +91,7 @@ import { ScaleType } from "../../shared/models";
                                                             [series]="series"
                                                             [group]="group"
                                                             [scales]="connectedScatterPlotScales"
+                                                            [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                             (focus)="highlightDot(group, series, dot)"
                                                             (mouseenter)="highlightDot(group, series, dot)"
                                                             (blur)="unhighlightDot(group, series, dot)"
@@ -102,6 +103,7 @@ import { ScaleType } from "../../shared/models";
                                                             [series]="series"
                                                             [group]="group"
                                                             [scales]="connectedScatterPlotScales"
+                                                            [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                             (focus)="highlightDot(group, series, dot)"
                                                             (mouseenter)="highlightDot(group, series, dot)"
                                                             (blur)="unhighlightDot(group, series, dot)"
@@ -113,6 +115,7 @@ import { ScaleType } from "../../shared/models";
                                                           [series]="series"
                                                           [group]="group"
                                                           [scales]="connectedScatterPlotScales"
+                                                          [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                           (focus)="highlightDot(group, series, dot)"
                                                           (mouseenter)="highlightDot(group, series, dot)"
                                                           (blur)="unhighlightDot(group, series, dot)"
@@ -125,6 +128,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -137,6 +141,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -149,6 +154,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -161,6 +167,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -173,6 +180,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -185,6 +193,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -197,6 +206,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
+                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -204,16 +214,6 @@ import { ScaleType } from "../../shared/models";
 
                                                 </ng-container>
                                             </ng-container>
-
-                                            <text class="tooltip --hidden"
-                                                  [class.--visible]="isDotHighlighted(group, series, dot)"
-                                                  dgpScatterPlotDotTooltip
-                                                  [scales]="connectedScatterPlotScales"
-                                                  [dot]="dot"
-                                                  [series]="series"
-                                                  [group]="group">
-                                                ({{ dot.x }} ; {{ dot.y }})
-                                            </text>
 
                                         </ng-container>
 

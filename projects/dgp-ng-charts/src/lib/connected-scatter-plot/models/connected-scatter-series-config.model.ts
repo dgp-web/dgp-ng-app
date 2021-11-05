@@ -1,4 +1,5 @@
 import { Shape } from "../../shapes/models";
+import { Stroke } from "../../stroke/models";
 
 export interface ConnectedScatterSeriesConfig {
     readonly colorHex?: string;
@@ -6,6 +7,11 @@ export interface ConnectedScatterSeriesConfig {
      * default value: "Circle"
      */
     readonly shape?: Shape;
+
+    /**
+     * default value: "Default"
+     */
+    readonly stroke?: Stroke;
 
     /**
      * Whether the lines between the vertices should be displayed

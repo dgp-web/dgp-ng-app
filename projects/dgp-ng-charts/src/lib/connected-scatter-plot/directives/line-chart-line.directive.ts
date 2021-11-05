@@ -2,6 +2,7 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { ConnectedScatterGroup, ConnectedScatterSeries, Dot } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { line } from "d3";
+import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 
 @Directive({selector: "[dgpLineChartLine]"})
 export class DgpLineChartLineDirective implements OnChanges {
@@ -21,11 +22,12 @@ export class DgpLineChartLineDirective implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        if ( changes.series || changes.group || changes.scales) {
+        if (changes.series || changes.group || changes.scales) {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "fill", "transparent");
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.series.colorHex || this.group.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "1.5");
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.series.stroke));
 
             const createLine = line<Dot>().x(dot => {
                 return this.scales.xAxisScale(dot.x);
@@ -36,12 +38,6 @@ export class DgpLineChartLineDirective implements OnChanges {
             const d = createLine(this.series.dots as Array<Dot>);
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "d", d);
-            /* .attr("stroke-dasharray", x => {
-                     if (!isNullOrUndefined(x.strokeStyle)) {
-                         return x.strokeStyle;
-                     }
-                     return ("0, 0");
-                 })*/
 
         }
 
