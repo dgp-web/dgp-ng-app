@@ -186,7 +186,7 @@ export { ChartComponentBase } from "./lib/shared/chart.component-base";
 
 /**
  * -----
- * Symbols
+ * Shapes
  * -----
  */
 export * from "./lib/shapes/constants";
@@ -217,4 +217,11 @@ export { TriangleDownDirective } from "./lib/shapes/directives/triangle-down.dir
 export { TriangleLeftDirective } from "./lib/shapes/directives/triangle-left.directive";
 export { TriangleRightDirective } from "./lib/shapes/directives/triangle-right.directive";
 
-
+/**
+ * -----
+ * Strokes
+ * -----
+ */
+export * from "./lib/stroke/constants";
+export * from "./lib/stroke/functions";
+export * from "./lib/stroke/models";
