@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { ConnectedScatterPlotControlLine } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
+import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 
 @Directive({selector: "[dgpConnectedScatterPlotControlLine]"})
 export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
@@ -28,8 +29,7 @@ export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
             this.renderer.setAttribute(this.elementRef.nativeElement, "y2", y.toString());
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.connectedScatterPlotControlLine.colorHex);
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", ("16, 8"));
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", ("16, 8"));
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.connectedScatterPlotControlLine.stroke));
 
         }
 

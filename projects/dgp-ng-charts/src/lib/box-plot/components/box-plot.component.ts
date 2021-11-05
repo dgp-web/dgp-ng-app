@@ -146,6 +146,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                         [boxGroup]="boxGroup"
                                                         [box]="box"
                                                         [value]="value"
+                                                        [matTooltip]="value"
                                                         (focus)="highlightOutlier(box, i)"
                                                         (mouseenter)="highlightOutlier(box, i)"
                                                         (blur)="unhighlightOutlier(box, i)"
@@ -157,6 +158,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                       [boxGroup]="boxGroup"
                                                       [box]="box"
                                                       [value]="value"
+                                                      [matTooltip]="value"
                                                       (focus)="highlightOutlier(box, i)"
                                                       (mouseenter)="highlightOutlier(box, i)"
                                                       (blur)="unhighlightOutlier(box, i)"
@@ -169,6 +171,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
+                                                         [matTooltip]="value"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -181,6 +184,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
+                                                         [matTooltip]="value"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -193,6 +197,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
+                                                         [matTooltip]="value"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -205,6 +210,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
+                                                         [matTooltip]="value"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -217,6 +223,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
+                                                         [matTooltip]="value"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -229,6 +236,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
                                                          [value]="value"
+                                                         [matTooltip]="value"
                                                          (focus)="highlightOutlier(box, i)"
                                                          (mouseenter)="highlightOutlier(box, i)"
                                                          (blur)="unhighlightOutlier(box, i)"
@@ -240,6 +248,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                         [boxGroup]="boxGroup"
                                                         [box]="box"
                                                         [value]="value"
+                                                        [matTooltip]="value"
                                                         (focus)="highlightOutlier(box, i)"
                                                         (mouseenter)="highlightOutlier(box, i)"
                                                         (blur)="unhighlightOutlier(box, i)"
@@ -248,17 +257,6 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                             </ng-container>
                                         </ng-container>
 
-
-                                        <text *ngFor="let value of box.outliers let i = index;"
-                                              class="tooltip --hidden"
-                                              [class.--visible]="outlierKey === getBoxOutlierKey(box, i)"
-                                              dgpBoxPlotOutlierTooltip
-                                              [scales]="boxPlotScales"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"
-                                              [value]="value">
-                                            {{ value }}
-                                        </text>
                                     </ng-container>
                                 </g>
 

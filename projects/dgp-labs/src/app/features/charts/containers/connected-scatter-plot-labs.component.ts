@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape, Stroke } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -14,7 +14,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         label: "Upper limit",
         colorHex: "#666666",
         connectedScatterPlotControlLineId: "upperLimit",
-        value: 7
+        value: 7,
+        stroke: Stroke.Dashed
     }],
     xAxisTicks: 5,
     yAxisTicks: 5,

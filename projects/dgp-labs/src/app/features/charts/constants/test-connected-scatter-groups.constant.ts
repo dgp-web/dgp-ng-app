@@ -1,4 +1,4 @@
-import { ConnectedScatterGroup, Shape } from "dgp-ng-charts";
+import { ConnectedScatterGroup, Shape, Stroke } from "dgp-ng-charts";
 
 export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = [{
     connectedScatterGroupId: "group01",
@@ -22,6 +22,8 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
     showVertices: false,
     series: [{
         connectedScatterSeriesId: "series03",
+        stroke: Stroke.DashDotted,
+
         dots: [
             {x: -2, y: 5},
             {x: 541, y: 2},
