@@ -5,13 +5,15 @@ import { directives } from "./directives/directives";
 import { DgpResizeSensorModule } from "dgp-ng-app";
 import { CommonModule } from "@angular/common";
 import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
     imports: [
         DgpChartModule,
         DgpResizeSensorModule,
         CommonModule,
-        DgpSVGSymbolsModule
+        DgpSVGSymbolsModule,
+        MatTooltipModule
     ],
     declarations: [
         ...components,
