@@ -3,5 +3,6 @@ import { ConnectedScatterSeriesConfig } from "./connected-scatter-series-config.
 
 export interface ConnectedScatterSeries extends ConnectedScatterSeriesConfig {
     readonly connectedScatterSeriesId: string;
+    readonly label?: string;
     readonly dots: ReadonlyArray<Dot>;
 }

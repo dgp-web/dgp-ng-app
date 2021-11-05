@@ -91,7 +91,7 @@ import { ScaleType } from "../../shared/models";
                                                             [series]="series"
                                                             [group]="group"
                                                             [scales]="connectedScatterPlotScales"
-                                                            [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                            [matTooltip]="getTooltip(group, series, dot)"
                                                             (focus)="highlightDot(group, series, dot)"
                                                             (mouseenter)="highlightDot(group, series, dot)"
                                                             (blur)="unhighlightDot(group, series, dot)"
@@ -103,7 +103,7 @@ import { ScaleType } from "../../shared/models";
                                                             [series]="series"
                                                             [group]="group"
                                                             [scales]="connectedScatterPlotScales"
-                                                            [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                            [matTooltip]="getTooltip(group, series, dot)"
                                                             (focus)="highlightDot(group, series, dot)"
                                                             (mouseenter)="highlightDot(group, series, dot)"
                                                             (blur)="unhighlightDot(group, series, dot)"
@@ -115,7 +115,7 @@ import { ScaleType } from "../../shared/models";
                                                           [series]="series"
                                                           [group]="group"
                                                           [scales]="connectedScatterPlotScales"
-                                                          [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                          [matTooltip]="getTooltip(group, series, dot)"
                                                           (focus)="highlightDot(group, series, dot)"
                                                           (mouseenter)="highlightDot(group, series, dot)"
                                                           (blur)="unhighlightDot(group, series, dot)"
@@ -128,7 +128,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -141,7 +141,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -154,7 +154,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -167,7 +167,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -180,7 +180,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -193,7 +193,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -206,7 +206,7 @@ import { ScaleType } from "../../shared/models";
                                                              [series]="series"
                                                              [group]="group"
                                                              [scales]="connectedScatterPlotScales"
-                                                             [matTooltip]="'(' + dot.x + '; ' + dot.y + ')'"
+                                                             [matTooltip]="getTooltip(group, series, dot)"
                                                              (focus)="highlightDot(group, series, dot)"
                                                              (mouseenter)="highlightDot(group, series, dot)"
                                                              (blur)="unhighlightDot(group, series, dot)"
@@ -440,4 +440,12 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
         if (notNullOrUndefined(series.showVertices)) result = series.showVertices;
         return result;
     }
+
+    getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
+        let result = "";
+        if (notNullOrUndefined(series.label)) result += series.label + ": ";
+        result += "(" + dot.x + ", " + dot.y + ")";
+        return result;
+    }
+
 }

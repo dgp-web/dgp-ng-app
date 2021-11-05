@@ -6,6 +6,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
     shape: Shape.Cross,
     showEdges: false,
     series: [{
+        label: "Series 01",
         connectedScatterSeriesId: "series01",
         dots: [
             {x: 10, y: 2},
@@ -21,6 +22,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
     shape: Shape.Rectangle,
     showVertices: false,
     series: [{
+        label: "Series 03",
         connectedScatterSeriesId: "series03",
         stroke: Stroke.DashDotted,
 
