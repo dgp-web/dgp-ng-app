@@ -1,4 +1,5 @@
 export * from "./circle-shape.constant";
+export * from "./cross-shape.constant";
 export * from "./rectangle-shape.constant";
 export * from "./rhombus-shape.constant";
 export * from "./shape-map.constant";
