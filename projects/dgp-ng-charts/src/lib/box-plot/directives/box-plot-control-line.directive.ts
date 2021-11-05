@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { BoxPlotControlLine, BoxPlotScales } from "../models";
+import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 
 @Directive({selector: "[dgpBoxPlotControlLine]"})
 export class BoxPlotControlLineDirective implements OnChanges {
@@ -27,8 +28,7 @@ export class BoxPlotControlLineDirective implements OnChanges {
             this.renderer.setAttribute(this.elementRef.nativeElement, "y2", y.toString());
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.boxPlotControlLine.colorHex);
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", ("16, 8"));
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", ("16, 8"));
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.boxPlotControlLine.stroke));
 
         }
 
