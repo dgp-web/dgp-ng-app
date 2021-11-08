@@ -57,6 +57,11 @@ import { ShapeBaseComponent } from "./shape.base-component";
             </defs>
 
             <circle dgpCircle
+                    [style.fill]="fillColor + '00'"
+                    [style.stroke]="fillColor"
+                    [width]="width"
+                    [height]="height"/>
+            <circle dgpCircle
                     [style.fill]="fillColor"
                     [style.stroke]="fillColor"
                     [width]="width"

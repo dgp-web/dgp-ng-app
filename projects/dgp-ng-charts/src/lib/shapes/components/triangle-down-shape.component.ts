@@ -57,6 +57,11 @@ import { ShapeBaseComponent } from "./shape.base-component";
             </defs>
 
             <polygon dgpTriangleDown
+                     [style.fill]="fillColor + '00'"
+                     [style.stroke]="fillColor"
+                     [width]="width"
+                     [height]="height"/>
+            <polygon dgpTriangleDown
                      [style.fill]="fillColor"
                      [style.stroke]="fillColor"
                      [width]="width"
