@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ShapeBaseComponent } from "./shape.base-component";
 
 @Component({
@@ -56,6 +56,11 @@ import { ShapeBaseComponent } from "./shape.base-component";
                 </ng-container>
             </defs>
 
+            <polygon dgpTriangleLeft
+                     [style.fill]="fillColor + '00'"
+                     [style.stroke]="fillColor"
+                     [width]="width"
+                     [height]="height"/>
             <polygon dgpTriangleLeft
                      [style.fill]="fillColor"
                      [style.stroke]="fillColor"

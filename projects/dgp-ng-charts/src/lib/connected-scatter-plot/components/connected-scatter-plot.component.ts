@@ -34,18 +34,6 @@ import { ScaleType } from "../../shared/models";
                    dgpResizeSensor
                    (sizeChanged)="drawChart()">
 
-            <ng-container chart-title>
-                <ng-content select="[chart-title]"></ng-content>
-            </ng-container>
-
-            <ng-container x-axis-title>
-                <ng-content select="[x-axis-title]"></ng-content>
-            </ng-container>
-
-            <ng-container y-axis-title>
-                <ng-content select="[y-axis-title]"></ng-content>
-            </ng-container>
-
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
@@ -329,6 +317,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.yAxisTicks
             || changes.yAxisScaleType
             || changes.controlLines
+            || changes.chartTitle
+            || changes.xAxisTitle
+            || changes.yAxisTitle
         ) {
             this.drawChartActionScheduler.emit();
         }
