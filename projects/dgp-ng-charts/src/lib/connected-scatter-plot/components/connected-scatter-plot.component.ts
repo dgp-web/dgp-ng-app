@@ -34,6 +34,7 @@ import { ScaleType } from "../../shared/models";
                    dgpResizeSensor
                    (sizeChanged)="drawChart()">
 
+<!--
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
             </ng-container>
@@ -45,6 +46,7 @@ import { ScaleType } from "../../shared/models";
             <ng-container y-axis-title>
                 <ng-content select="[y-axis-title]"></ng-content>
             </ng-container>
+-->
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>

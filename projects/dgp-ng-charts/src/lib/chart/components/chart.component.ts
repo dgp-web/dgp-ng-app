@@ -8,20 +8,15 @@ import { notNullOrUndefined } from "dgp-ng-app";
 
         <!-- Note that dgpResizeSensor and its handler are needed here or else resizing is not working -->
         <div class="title"
-             #chartTitleRef
-             [class.hidden]="chartTitleRef.innerText.length < 3"
-             dgpResizeSensor
-             (sizeChanged)="noop()">
-            <ng-content select="[chart-title]"></ng-content>
+             *ngIf="chartTitle">
             {{ chartTitle }}
         </div>
 
         <div class="inner-container">
             <div class="y-axis-label-container"
-                 [class.hidden]="yAxisLabelRef.innerText.length < 3">
+                 *ngIf="yAxisTitle">
                 <div class="y-axis-label"
                      #yAxisLabelRef>
-                    <ng-content select="[y-axis-title]"></ng-content>
                     {{ yAxisTitle }}
                 </div>
             </div>
@@ -35,8 +30,7 @@ import { notNullOrUndefined } from "dgp-ng-app";
 
         <div class="x-axis-label"
              #xAxisLabelRef
-             [class.hidden]="xAxisLabelRef.innerText.length < 3">
-            <ng-content select="[x-axis-title]"></ng-content>
+             *ngIf="xAxisTitle">
             {{ xAxisTitle }}
         </div>
     `,
