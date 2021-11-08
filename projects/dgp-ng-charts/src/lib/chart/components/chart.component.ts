@@ -6,7 +6,6 @@ import { notNullOrUndefined } from "dgp-ng-app";
     selector: "dgp-chart",
     template: `
 
-        <!-- Note that dgpResizeSensor and its handler are needed here or else resizing is not working -->
         <div class="title"
              *ngIf="chartTitle">
             {{ chartTitle }}

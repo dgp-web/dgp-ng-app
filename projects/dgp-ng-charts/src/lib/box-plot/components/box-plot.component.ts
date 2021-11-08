@@ -34,18 +34,18 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                    [chartTitle]="chartTitle"
                    dgpResizeSensor
                    (sizeChanged)="drawChart()">
+            <!--
+                 <ng-content select="[chart-title]"></ng-content>
+                        </ng-container>
 
-            <ng-container chart-title>
-                <ng-content select="[chart-title]"></ng-content>
-            </ng-container>
+                        <ng-container x-axis-title>
+                            <ng-content select="[x-axis-title]"></ng-content>
+                        </ng-container>
 
-            <ng-container x-axis-title>
-                <ng-content select="[x-axis-title]"></ng-content>
-            </ng-container>
-
-            <ng-container y-axis-title>
-                <ng-content select="[y-axis-title]"></ng-content>
-            </ng-container>
+                        <ng-container y-axis-title>
+                            <ng-content select="[y-axis-title]"></ng-content>
+                        </ng-container>
+            -->
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
@@ -342,7 +342,22 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
+        if (changes.model
+            || changes.config
+            || changes.selectionMode
+            || changes.selection
+/*            || changes.xAxisMin
+            || changes.xAxisMax
+            || changes.xAxisTicks*/
+            || changes.yAxisMin
+            || changes.yAxisMax
+            || changes.yAxisTicks
+            || changes.yAxisScaleType
+            || changes.controlLines
+            || changes.chartTitle
+            || changes.xAxisTitle
+            || changes.yAxisTitle
+        ) {
             this.drawChartActionScheduler.emit();
         }
     }
