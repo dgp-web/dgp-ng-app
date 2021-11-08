@@ -1,22 +1,21 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { ApplicationRef, FactoryProvider, Injectable, InjectionToken, NgModule } from "@angular/core";
+import { FactoryProvider, Injectable, InjectionToken, NgModule } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import {
     AuthenticationApiClient,
-    AuthenticationApiClientProvider, defaultRuntimeChecks,
+    AuthenticationApiClientProvider,
+    defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
     DgpHamburgerShellModule,
-    DgpNgApp,
     DgpRequestStoreModule,
     DgpRoutingOverlayModule,
     DgpThemeSwitcherModule,
-    hmrReducer,
     InitializationService,
     InitializationServiceProvider
 } from "dgp-ng-app";
-import { Store, StoreModule } from "@ngrx/store";
+import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { MatButtonModule } from "@angular/material/button";
 import { createEntityStore } from "entity-store";
@@ -99,7 +98,6 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         }], {relativeLinkResolution: "legacy"}),
 
         StoreModule.forRoot(APP_REDUCER, {
-            metaReducers: [hmrReducer],
             runtimeChecks: defaultRuntimeChecks
         }),
         EffectsModule.forRoot([]),
@@ -127,11 +125,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
     providers: [appReducerProvider],
     bootstrap: [AppComponent]
 })
-export class AppModule extends DgpNgApp {
+export class AppModule {
 
-    constructor(public readonly appRef: ApplicationRef,
-                protected readonly ngrxStore: Store<any>) {
-        super(appRef, ngrxStore);
-    }
 
 }

@@ -57,6 +57,11 @@ import { ShapeBaseComponent } from "./shape.base-component";
             </defs>
 
             <polygon dgpStar
+                     [style.fill]="fillColor + '00'"
+                     [style.stroke]="fillColor"
+                     [width]="width"
+                     [height]="height"/>
+            <polygon dgpStar
                      [style.fill]="fillColor"
                      [style.stroke]="fillColor"
                      [width]="width"

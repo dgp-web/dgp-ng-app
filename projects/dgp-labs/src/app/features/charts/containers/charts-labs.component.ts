@@ -58,19 +58,10 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                               [model]="logBoxGroups"></dgp-box-plot>
 
                 <dgp-box-plot [model]="boxGroups"
-                              [controlLines]="boxPlotControlLines">
-
-                    <ng-container chart-title>
-                        Title via template slot
-                    </ng-container>
-
-                    <ng-container y-axis-title>
-                        Title for the y axis
-                    </ng-container>
-
-                    <ng-container x-axis-title>
-                        Title for the x axis
-                    </ng-container>
+                              [controlLines]="boxPlotControlLines"
+                              chartTitle="Title"
+                              yAxisTitle="Title for the y axis"
+                              xAxisTitle="Title for the x axis">
 
                     <ng-container right-legend>
                         Right legend
