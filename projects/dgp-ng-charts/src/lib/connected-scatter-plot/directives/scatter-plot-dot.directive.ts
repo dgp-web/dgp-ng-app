@@ -34,13 +34,13 @@ export class DgpScatterPlotDotDirective implements OnChanges {
                 case Shape.Circle:
                     this.renderer.setAttribute(this.elementRef.nativeElement, "cx", x.toString());
                     this.renderer.setAttribute(this.elementRef.nativeElement, "cy", y.toString());
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "r", "3");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "r", "6");
                     break;
                 case Shape.Rectangle:
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "x", (x-3).toString());
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "y", (y-3).toString());
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", "6px");
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", "6px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "x", (x-6).toString());
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "y", (y-6).toString());
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", "12px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", "12px");
                     break;
                 case Shape.Rhombus:
                 case Shape.Triangle:
@@ -50,10 +50,10 @@ export class DgpScatterPlotDotDirective implements OnChanges {
                 case Shape.Star:
                 case Shape.Cross:
                     this.renderer.setStyle(this.elementRef.nativeElement, "transform",
-                        "translate(" + (x - 4.5) + "px, " + (y - 4.5) + "px)"
+                        "translate(" + (x - 6) + "px, " + (y - 6) + "px)"
                     );
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", "6px");
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", "6px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", "12px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", "12px");
                     break;
             }
 

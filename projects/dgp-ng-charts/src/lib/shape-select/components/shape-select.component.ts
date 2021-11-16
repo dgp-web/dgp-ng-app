@@ -12,7 +12,7 @@ import { map } from "rxjs/operators";
             <mat-select [ngModel]="model"
                         (ngModelChange)="setModel($event)"
                         [disabled]="disabled">
-                <mat-option [value]="null"></mat-option>
+                <mat-option [value]="null"><i>Clear selection</i></mat-option>
                 <mat-option *ngFor="let shape of shapes"
                             [value]="shape">
                     <dgp-svg-shape [model]="shape"

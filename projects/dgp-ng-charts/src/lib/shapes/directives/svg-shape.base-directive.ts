@@ -4,7 +4,7 @@ import { AfterViewInit, Directive, ElementRef, Input, OnChanges, Renderer2, Simp
 export abstract class SVGShapeBaseDirective implements AfterViewInit, OnChanges {
 
     @Input()
-    width = 8;
+    width = 12;
 
     @Input()
     height = this.width;
