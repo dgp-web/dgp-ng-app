@@ -4,8 +4,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 import { Shape } from "../../shapes/models";
 import {
     svgShapeDefaultHeight,
-    svgShapeDefaultWidth,
     svgShapeDefaultRadius,
+    svgShapeDefaultWidth,
     svgShapeDefaultXOffset,
     svgShapeDefaultYOffset
 } from "../../shapes/constants";
@@ -71,7 +71,6 @@ export class DgpScatterPlotDotDirective implements OnChanges {
             }
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.series.colorHex || this.group.colorHex);
-            this.renderer.setAttribute(this.elementRef.nativeElement, "tabindex", "0");
         }
 
     }
