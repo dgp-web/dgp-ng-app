@@ -5,7 +5,7 @@ export function ObservableProperty<T>(
     // tslint:disable-next-line:ban-types
 ): Function {
 
-    return (decoratedClass: T, foo, bar) => {
+    return (decoratedClass: T) => {
         return observeProperty(decoratedClass, propertyKey);
     };
 
