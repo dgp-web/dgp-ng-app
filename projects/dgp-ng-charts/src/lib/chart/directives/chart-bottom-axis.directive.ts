@@ -8,13 +8,15 @@ export class DgpChartBottomAxisDirective implements OnChanges {
     @Input()
     scales: AxisScales;
 
-    constructor(private readonly elementRef: ElementRef,
+    constructor(private readonly elementRef: ElementRef<SVGGElement>,
                 private readonly renderer: Renderer2) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
 
         if (changes.scales) {
+            this.elementRef.nativeElement.innerHTML = "";
+
             this.renderer.setAttribute(
                 this.elementRef.nativeElement,
                 "transform",

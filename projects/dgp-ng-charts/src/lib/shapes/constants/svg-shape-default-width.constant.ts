@@ -1,2 +1,2 @@
-export const svgShapeDefaultWidth = 9;
+export const svgShapeDefaultWidth = 10;
 
