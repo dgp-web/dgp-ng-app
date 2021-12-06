@@ -139,76 +139,34 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
                                         <ng-container *ngFor="let value of box.outliers; let i = index;">
                                             <g [ngSwitch]="box.outlierShape"
-                                               [matTooltip]="getOutlierTooltip(box, i)">
-
-                                                <circle *ngSwitchCase="shapeEnum.Circle"
-                                                        dgpBoxPlotOutlier
-                                                        [scales]="boxPlotScales"
-                                                        [boxGroup]="boxGroup"
-                                                        [box]="box"
-                                                        [value]="value"></circle>
-
-                                                <rect *ngSwitchCase="shapeEnum.Rectangle"
-                                                      dgpBoxPlotOutlier
-                                                      [scales]="boxPlotScales"
-                                                      [boxGroup]="boxGroup"
-                                                      [box]="box"
-                                                      [value]="value"></rect>
-
-                                                <polygon *ngSwitchCase="shapeEnum.Rhombus"
-                                                         dgpBoxPlotOutlier
-                                                         dgpRhombus
-                                                         [scales]="boxPlotScales"
-                                                         [boxGroup]="boxGroup"
-                                                         [box]="box"
-                                                         [value]="value"></polygon>
-
-                                                <polygon *ngSwitchCase="shapeEnum.Star"
-                                                         dgpBoxPlotOutlier
-                                                         dgpStar
-                                                         [scales]="boxPlotScales"
-                                                         [boxGroup]="boxGroup"
-                                                         [box]="box"
-                                                         [value]="value"></polygon>
-
-                                                <polygon *ngSwitchCase="shapeEnum.Triangle"
-                                                         dgpBoxPlotOutlier
-                                                         dgpTriangle
-                                                         [scales]="boxPlotScales"
-                                                         [boxGroup]="boxGroup"
-                                                         [box]="box"
-                                                         [value]="value"></polygon>
-
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleDown"
-                                                         dgpBoxPlotOutlier
-                                                         dgpTriangleDown
-                                                         [scales]="boxPlotScales"
-                                                         [boxGroup]="boxGroup"
-                                                         [box]="box"
-                                                         [value]="value"></polygon>
-
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleRight"
-                                                         dgpBoxPlotOutlier
-                                                         dgpTriangleRight
-                                                         [scales]="boxPlotScales"
-                                                         [boxGroup]="boxGroup"
-                                                         [box]="box"
-                                                         [value]="value"></polygon>
-
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
-                                                         dgpBoxPlotOutlier
-                                                         dgpTriangleLeft
-                                                         [scales]="boxPlotScales"
-                                                         [boxGroup]="boxGroup"
-                                                         [box]="box"
-                                                         [value]="value"></polygon>
+                                               [matTooltip]="getOutlierTooltip(box, i)"
+                                               dgpBoxPlotOutlier
+                                               [scales]="boxPlotScales"
+                                               [boxGroup]="boxGroup"
+                                               [box]="box"
+                                               [value]="value">
 
                                                 <circle *ngSwitchDefault
-                                                        dgpBoxPlotOutlier
-                                                        [scales]="boxPlotScales"
-                                                        [boxGroup]="boxGroup"
-                                                        [box]="box"
-                                                        [value]="value"></circle>
+                                                        dgpCircle></circle>
+                                                <circle *ngSwitchCase="shapeEnum.Circle"
+                                                        dgpCircle></circle>
+                                                <rect *ngSwitchCase="shapeEnum.Rectangle"
+                                                      dgpRectangle></rect>
+                                                <polygon *ngSwitchCase="shapeEnum.Rhombus"
+                                                         dgpRhombus></polygon>
+                                                <polygon *ngSwitchCase="shapeEnum.Star"
+                                                         dgpStar></polygon>
+                                                <polygon *ngSwitchCase="shapeEnum.Cross"
+                                                         dgpCross></polygon>
+                                                <polygon *ngSwitchCase="shapeEnum.Triangle"
+                                                         dgpTriangle></polygon>
+                                                <polygon *ngSwitchCase="shapeEnum.TriangleDown"
+                                                         dgpTriangleDown></polygon>
+                                                <polygon *ngSwitchCase="shapeEnum.TriangleRight"
+                                                         dgpTriangleRight></polygon>
+                                                <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
+                                                         dgpTriangleLeft></polygon>
+
 
                                             </g>
                                         </ng-container>

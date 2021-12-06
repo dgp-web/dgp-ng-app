@@ -71,6 +71,7 @@ import { ScaleType } from "../../shared/models";
 
                                             <ng-container *ngIf="showVertices(group, series)">
 
+                                                <!-- TODO: distinguish between dgpScatterPlotDot and a dgpScatterPlotDotShape where the dot registers clicks and so on -->
                                                 <g [ngSwitch]="getShape(group, series)"
                                                    [matTooltip]="getTooltip(group, series, dot)"
                                                    dgpScatterPlotDot
