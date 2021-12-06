@@ -26,3 +26,4 @@ export function observeProperty<T, K extends keyof T>(
 
     return subject.asObservable();
 }
+

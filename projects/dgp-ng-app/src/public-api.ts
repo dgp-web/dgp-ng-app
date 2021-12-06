@@ -235,6 +235,7 @@ export { matrixToMany } from "./utils/matrix-to-many.constant";
 export { ofNull } from "./utils/of-null.function";
 export { withoutDispatch } from "./utils/without-dispatch.constant";
 export { observeProperty } from "./utils/observe-property.function";
+export { ObservableProperty } from "./utils/observable-property.function";
 
 // virtual-list panel
 export { VirtualListItemDirective } from "./virtual-list-panel/directives/virtual-list-item.directive";
