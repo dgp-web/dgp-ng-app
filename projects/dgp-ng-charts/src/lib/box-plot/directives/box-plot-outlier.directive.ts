@@ -3,6 +3,13 @@ import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { getJitter } from "../functions";
 import { defaultBoxPlotConfig } from "../constants";
 import { Shape } from "../../shapes/models";
+import {
+    svgShapeDefaultHeight,
+    svgShapeDefaultWidth,
+    svgShapeDefaultRadius,
+    svgShapeDefaultXOffset,
+    svgShapeDefaultYOffset
+} from "../../shapes/constants";
 
 @Directive({selector: "[dgpBoxPlotOutlier]"})
 export class BoxPlotOutlierDirective implements OnChanges {
@@ -29,6 +36,12 @@ export class BoxPlotOutlierDirective implements OnChanges {
 
         if (changes.scales || changes.box || changes.boxGroup) {
 
+            const referenceWidth = svgShapeDefaultWidth;
+            const referenceHeight = svgShapeDefaultHeight;
+            const referenceXOffset = svgShapeDefaultXOffset;
+            const referenceYOffset = svgShapeDefaultYOffset;
+            const referenceRadius = svgShapeDefaultRadius;
+
             const x = this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId](this.box.boxId)
                 + this.scales.xAxisSubgroupKVS[this.boxGroup.boxGroupId].bandwidth() / 2
                 + getJitter(this.box.boxId + this.value, this.config);
@@ -40,13 +53,13 @@ export class BoxPlotOutlierDirective implements OnChanges {
                 case Shape.Circle:
                     this.renderer.setAttribute(this.elementRef.nativeElement, "cx", x.toString());
                     this.renderer.setAttribute(this.elementRef.nativeElement, "cy", y.toString());
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "r", "6");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "r", referenceRadius.toString());
                     break;
                 case Shape.Rectangle:
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "x", (x-6).toString());
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "y", (y-6).toString());
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", "12px");
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", "12px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "x", (x - referenceXOffset).toString());
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "y", (y - referenceYOffset).toString());
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", referenceWidth + "px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", referenceHeight + "px");
                     break;
                 case Shape.Rhombus:
                 case Shape.Triangle:
@@ -55,10 +68,10 @@ export class BoxPlotOutlierDirective implements OnChanges {
                 case Shape.TriangleRight:
                 case Shape.Star:
                     this.renderer.setStyle(this.elementRef.nativeElement, "transform",
-                        "translate(" + (x - 6) + "px, " + (y - 6) + "px)"
+                        "translate(" + (x - referenceXOffset) + "px, " + (y - referenceYOffset) + "px)"
                     );
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", "12px");
-                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", "12px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "width", referenceWidth + "px");
+                    this.renderer.setAttribute(this.elementRef.nativeElement, "height", referenceHeight + "px");
                     break;
             }
 
