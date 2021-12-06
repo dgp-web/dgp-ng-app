@@ -138,31 +138,22 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                               [box]="box"></line>
 
                                         <ng-container *ngFor="let value of box.outliers; let i = index;">
-                                            <ng-container [ngSwitch]="box.outlierShape">
+                                            <g [ngSwitch]="box.outlierShape"
+                                               [matTooltip]="getOutlierTooltip(box, i)">
 
                                                 <circle *ngSwitchCase="shapeEnum.Circle"
                                                         dgpBoxPlotOutlier
                                                         [scales]="boxPlotScales"
                                                         [boxGroup]="boxGroup"
                                                         [box]="box"
-                                                        [value]="value"
-                                                        [matTooltip]="getOutlierTooltip(box, i)"
-                                                        (focus)="highlightOutlier(box, i)"
-                                                        (mouseenter)="highlightOutlier(box, i)"
-                                                        (blur)="unhighlightOutlier(box, i)"
-                                                        (mouseleave)="unhighlightOutlier(box, i)"></circle>
+                                                        [value]="value"></circle>
 
                                                 <rect *ngSwitchCase="shapeEnum.Rectangle"
                                                       dgpBoxPlotOutlier
                                                       [scales]="boxPlotScales"
                                                       [boxGroup]="boxGroup"
                                                       [box]="box"
-                                                      [value]="value"
-                                                      [matTooltip]="getOutlierTooltip(box, i)"
-                                                      (focus)="highlightOutlier(box, i)"
-                                                      (mouseenter)="highlightOutlier(box, i)"
-                                                      (blur)="unhighlightOutlier(box, i)"
-                                                      (mouseleave)="unhighlightOutlier(box, i)"></rect>
+                                                      [value]="value"></rect>
 
                                                 <polygon *ngSwitchCase="shapeEnum.Rhombus"
                                                          dgpBoxPlotOutlier
@@ -170,12 +161,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [scales]="boxPlotScales"
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
-                                                         [value]="value"
-                                                         [matTooltip]="getOutlierTooltip(box, i)"
-                                                         (focus)="highlightOutlier(box, i)"
-                                                         (mouseenter)="highlightOutlier(box, i)"
-                                                         (blur)="unhighlightOutlier(box, i)"
-                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+                                                         [value]="value"></polygon>
 
                                                 <polygon *ngSwitchCase="shapeEnum.Star"
                                                          dgpBoxPlotOutlier
@@ -183,12 +169,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [scales]="boxPlotScales"
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
-                                                         [value]="value"
-                                                         [matTooltip]="getOutlierTooltip(box, i)"
-                                                         (focus)="highlightOutlier(box, i)"
-                                                         (mouseenter)="highlightOutlier(box, i)"
-                                                         (blur)="unhighlightOutlier(box, i)"
-                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+                                                         [value]="value"></polygon>
 
                                                 <polygon *ngSwitchCase="shapeEnum.Triangle"
                                                          dgpBoxPlotOutlier
@@ -196,12 +177,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [scales]="boxPlotScales"
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
-                                                         [value]="value"
-                                                         [matTooltip]="getOutlierTooltip(box, i)"
-                                                         (focus)="highlightOutlier(box, i)"
-                                                         (mouseenter)="highlightOutlier(box, i)"
-                                                         (blur)="unhighlightOutlier(box, i)"
-                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+                                                         [value]="value"></polygon>
 
                                                 <polygon *ngSwitchCase="shapeEnum.TriangleDown"
                                                          dgpBoxPlotOutlier
@@ -209,12 +185,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [scales]="boxPlotScales"
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
-                                                         [value]="value"
-                                                         [matTooltip]="getOutlierTooltip(box, i)"
-                                                         (focus)="highlightOutlier(box, i)"
-                                                         (mouseenter)="highlightOutlier(box, i)"
-                                                         (blur)="unhighlightOutlier(box, i)"
-                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+                                                         [value]="value"></polygon>
 
                                                 <polygon *ngSwitchCase="shapeEnum.TriangleRight"
                                                          dgpBoxPlotOutlier
@@ -222,12 +193,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [scales]="boxPlotScales"
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
-                                                         [value]="value"
-                                                         [matTooltip]="getOutlierTooltip(box, i)"
-                                                         (focus)="highlightOutlier(box, i)"
-                                                         (mouseenter)="highlightOutlier(box, i)"
-                                                         (blur)="unhighlightOutlier(box, i)"
-                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+                                                         [value]="value"></polygon>
 
                                                 <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
                                                          dgpBoxPlotOutlier
@@ -235,26 +201,16 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          [scales]="boxPlotScales"
                                                          [boxGroup]="boxGroup"
                                                          [box]="box"
-                                                         [value]="value"
-                                                         [matTooltip]="getOutlierTooltip(box, i)"
-                                                         (focus)="highlightOutlier(box, i)"
-                                                         (mouseenter)="highlightOutlier(box, i)"
-                                                         (blur)="unhighlightOutlier(box, i)"
-                                                         (mouseleave)="unhighlightOutlier(box, i)"></polygon>
+                                                         [value]="value"></polygon>
 
                                                 <circle *ngSwitchDefault
                                                         dgpBoxPlotOutlier
                                                         [scales]="boxPlotScales"
                                                         [boxGroup]="boxGroup"
                                                         [box]="box"
-                                                        [value]="value"
-                                                        [matTooltip]="getOutlierTooltip(box, i)"
-                                                        (focus)="highlightOutlier(box, i)"
-                                                        (mouseenter)="highlightOutlier(box, i)"
-                                                        (blur)="unhighlightOutlier(box, i)"
-                                                        (mouseleave)="unhighlightOutlier(box, i)"></circle>
+                                                        [value]="value"></circle>
 
-                                            </ng-container>
+                                            </g>
                                         </ng-container>
 
                                     </ng-container>
@@ -346,9 +302,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             || changes.config
             || changes.selectionMode
             || changes.selection
-/*            || changes.xAxisMin
-            || changes.xAxisMax
-            || changes.xAxisTicks*/
+            /*            || changes.xAxisMin
+                        || changes.xAxisMax
+                        || changes.xAxisTicks*/
             || changes.yAxisMin
             || changes.yAxisMax
             || changes.yAxisTicks
