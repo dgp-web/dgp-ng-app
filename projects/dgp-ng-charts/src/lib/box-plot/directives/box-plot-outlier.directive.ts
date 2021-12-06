@@ -5,8 +5,8 @@ import { defaultBoxPlotConfig } from "../constants";
 import { Shape } from "../../shapes/models";
 import {
     svgShapeDefaultHeight,
-    svgShapeDefaultWidth,
     svgShapeDefaultRadius,
+    svgShapeDefaultWidth,
     svgShapeDefaultXOffset,
     svgShapeDefaultYOffset
 } from "../../shapes/constants";
