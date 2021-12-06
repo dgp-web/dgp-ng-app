@@ -72,84 +72,33 @@ import { ScaleType } from "../../shared/models";
                                             <ng-container *ngIf="showVertices(group, series)">
 
                                                 <g [ngSwitch]="getShape(group, series)"
-                                                   [matTooltip]="getTooltip(group, series, dot)">
-
-                                                    <circle *ngSwitchCase="shapeEnum.Circle"
-                                                            dgpScatterPlotDot
-                                                            [dot]="dot"
-                                                            [series]="series"
-                                                            [group]="group"
-                                                            [scales]="connectedScatterPlotScales"></circle>
+                                                   [matTooltip]="getTooltip(group, series, dot)"
+                                                   dgpScatterPlotDot
+                                                   [dot]="dot"
+                                                   [series]="series"
+                                                   [group]="group"
+                                                   [scales]="connectedScatterPlotScales">
 
                                                     <circle *ngSwitchDefault
-                                                            dgpScatterPlotDot
-                                                            [dot]="dot"
-                                                            [series]="series"
-                                                            [group]="group"
-                                                            [scales]="connectedScatterPlotScales"></circle>
-
+                                                            dgpCircle></circle>
+                                                    <circle *ngSwitchCase="shapeEnum.Circle"
+                                                            dgpCircle></circle>
                                                     <rect *ngSwitchCase="shapeEnum.Rectangle"
-                                                          dgpScatterPlotDot
-                                                          [dot]="dot"
-                                                          [series]="series"
-                                                          [group]="group"
-                                                          [scales]="connectedScatterPlotScales"></rect>
-
+                                                          dgpRectangle></rect>
                                                     <polygon *ngSwitchCase="shapeEnum.Rhombus"
-                                                             dgpScatterPlotDot
-                                                             dgpRhombus
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
-
+                                                             dgpRhombus></polygon>
                                                     <polygon *ngSwitchCase="shapeEnum.Star"
-                                                             dgpScatterPlotDot
-                                                             dgpStar
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
-
+                                                             dgpStar></polygon>
                                                     <polygon *ngSwitchCase="shapeEnum.Cross"
-                                                             dgpScatterPlotDot
-                                                             dgpCross
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
-
+                                                             dgpCross></polygon>
                                                     <polygon *ngSwitchCase="shapeEnum.Triangle"
-                                                             dgpScatterPlotDot
-                                                             dgpTriangle
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
-
+                                                             dgpTriangle></polygon>
                                                     <polygon *ngSwitchCase="shapeEnum.TriangleDown"
-                                                             dgpScatterPlotDot
-                                                             dgpTriangleDown
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
-
+                                                             dgpTriangleDown></polygon>
                                                     <polygon *ngSwitchCase="shapeEnum.TriangleRight"
-                                                             dgpScatterPlotDot
-                                                             dgpTriangleRight
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
-
+                                                             dgpTriangleRight></polygon>
                                                     <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
-                                                             dgpScatterPlotDot
-                                                             dgpTriangleLeft
-                                                             [dot]="dot"
-                                                             [series]="series"
-                                                             [group]="group"
-                                                             [scales]="connectedScatterPlotScales"></polygon>
+                                                             dgpTriangleLeft></polygon>
 
                                                 </g>
                                             </ng-container>
