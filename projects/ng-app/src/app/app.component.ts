@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { of } from "rxjs";
-import { appFeatures } from "../models/models";
+import {coreFeatures} from "../constants/core-features.constant";
 
 @Component({
     selector: "app-root",
@@ -53,5 +53,5 @@ import { appFeatures } from "../models/models";
     `]
 })
 export class AppComponent {
-    readonly appFeatures$ = of(appFeatures);
+    readonly appFeatures$ = of(coreFeatures);
 }

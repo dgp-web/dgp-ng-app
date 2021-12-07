@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { appFeatures } from "../../../models/models";
 import { of } from "rxjs";
+import {coreFeatures} from "../../../constants/core-features.constant";
 
 @Component({
     selector: "dgp-home-page",
@@ -56,7 +56,7 @@ import { of } from "rxjs";
 })
 export class HomePageComponent {
 
-    readonly appFeatures$ = of(appFeatures);
+    readonly appFeatures$ = of(coreFeatures);
     readonly installationCode = `npm install --save dgp-ng-app`;
 
 }
