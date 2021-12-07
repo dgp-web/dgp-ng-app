@@ -65,13 +65,27 @@ import { ScaleType } from "../../shared/models";
                                [scales]="connectedScatterPlotScales"></g>
 
                             <g [attr.clip-path]="getClipPath()">
+
+                                <line *ngFor="let controlLine of controlLines"
+                                      dgpConnectedScatterPlotControlLine
+                                      [scales]="connectedScatterPlotScales"
+                                      [connectedScatterPlotControlLine]="controlLine"></line>
+
+                                <g *ngFor="let group of model">
+                                    <ng-container *ngFor="let series of group.series">
+                                        <path *ngIf="showEdges(group, series)"
+                                              dgpLineChartLine
+                                              [series]="series"
+                                              [group]="group"
+                                              [scales]="connectedScatterPlotScales"></path>
+                                    </ng-container>
+                                </g>
+
                                 <g *ngFor="let group of model">
                                     <ng-container *ngFor="let series of group.series">
                                         <ng-container *ngFor="let dot of series.dots">
-
                                             <ng-container *ngIf="showVertices(group, series)">
 
-                                                <!-- TODO: distinguish between dgpScatterPlotDot and a dgpScatterPlotDotShape where the dot registers clicks and so on -->
                                                 <g [ngSwitch]="getShape(group, series)"
                                                    [matTooltip]="getTooltip(group, series, dot)"
                                                    dgpScatterPlotDot
@@ -106,19 +120,8 @@ import { ScaleType } from "../../shared/models";
 
                                         </ng-container>
 
-                                        <path *ngIf="showEdges(group, series)"
-                                              dgpLineChartLine
-                                              [series]="series"
-                                              [group]="group"
-                                              [scales]="connectedScatterPlotScales"></path>
-
                                     </ng-container>
                                 </g>
-
-                                <line *ngFor="let controlLine of controlLines"
-                                      dgpConnectedScatterPlotControlLine
-                                      [scales]="connectedScatterPlotScales"
-                                      [connectedScatterPlotControlLine]="controlLine"></line>
 
                             </g>
 
