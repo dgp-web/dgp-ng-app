@@ -65,8 +65,16 @@ import { ScaleType } from "../../shared/models";
                                dgpChartBottomAxis
                                [scales]="connectedScatterPlotScales"></g>
 
+                            <g class="chart__x-axis-grid-lines"
+                               dgpChartXAxisGridLines
+                               [scales]="connectedScatterPlotScales"></g>
+
                             <g class="chart__y-axis"
                                dgpChartLeftAxis
+                               [scales]="connectedScatterPlotScales"></g>
+
+                            <g class="chart__y-axis-grid-lines"
+                               dgpChartYAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
                             <g [attr.clip-path]="getClipPath()">

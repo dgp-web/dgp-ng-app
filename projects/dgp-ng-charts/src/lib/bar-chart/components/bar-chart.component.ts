@@ -79,8 +79,16 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
                            dgpChartBottomAxis
                            [scales]="barChartScales"></g>
 
+                        <g class="chart__x-axis-grid-lines"
+                           dgpChartXAxisGridLines
+                           [scales]="barChartScales"></g>
+
                         <g class="chart__y-axis"
                            dgpChartLeftAxis
+                           [scales]="barChartScales"></g>
+
+                        <g class="chart__y-axis-grid-lines"
+                           dgpChartYAxisGridLines
                            [scales]="barChartScales"></g>
 
                         <g *ngFor="let barGroup of model"

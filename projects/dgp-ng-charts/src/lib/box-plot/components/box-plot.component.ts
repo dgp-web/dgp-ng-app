@@ -80,8 +80,16 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartBottomAxis
                                [scales]="boxPlotScales"></g>
 
+                            <g class="chart__x-axis-grid-lines"
+                               dgpChartXAxisGridLines
+                               [scales]="boxPlotScales"></g>
+
                             <g class="chart__y-axis"
                                dgpChartLeftAxis
+                               [scales]="boxPlotScales"></g>
+
+                            <g class="chart__y-axis-grid-lines"
+                               dgpChartYAxisGridLines
                                [scales]="boxPlotScales"></g>
 
                             <line *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"

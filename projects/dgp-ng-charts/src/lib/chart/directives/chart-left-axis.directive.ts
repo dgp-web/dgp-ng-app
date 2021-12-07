@@ -76,7 +76,9 @@ export class DgpChartLeftAxisDirective implements OnChanges {
                 isLogarithmic: false // TODO
             });
 
+
             d3.select(this.elementRef.nativeElement).call(this.scales.yAxis);
+
         }
 
     }

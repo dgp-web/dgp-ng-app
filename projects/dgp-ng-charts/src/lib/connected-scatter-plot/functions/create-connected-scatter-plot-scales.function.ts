@@ -5,7 +5,7 @@ import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../model
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { formatLogTick, getYAxisLimitsWithOffset } from "../../shared/functions";
+import { formatLogTick } from "../../shared/functions";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
@@ -65,13 +65,13 @@ export function createConnectedScatterPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-   /* const yAxisDomain = getYAxisLimitsWithOffset({
-        limitsFromValues: {
-            min: yMin,
-            max: yMax
-        }
-    }, config);
-*/
+    /* const yAxisDomain = getYAxisLimitsWithOffset({
+         limitsFromValues: {
+             min: yMin,
+             max: yMax
+         }
+     }, config);
+ */
     let marginLeft = config.margin.left;
 
     if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
