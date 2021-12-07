@@ -8,8 +8,18 @@
     font-size: 16px;
 }
 
+.chart__y-axis-grid-lines {
+    font-size: 16px;
+    opacity: 0.2;
+}
+
 .chart__x-axis {
     font-size: 16px;
+}
+
+.chart__x-axis-grid-lines {
+    font-size: 16px;
+    opacity: 0.2;
 }
 
 .tick {
@@ -95,10 +105,10 @@ dgp-heatmap-legend, .dgp-heatmap-legend {
 
 
 dgp-svg-shape {
-   /* circle, rect, polygon {
-        fill: black;
-        stroke: black;
-    }*/
+    /* circle, rect, polygon {
+         fill: black;
+         stroke: black;
+     }*/
 }
 
 .dark-theme {

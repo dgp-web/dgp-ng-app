@@ -50,6 +50,8 @@ export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom
 export { DgpChartContainerAreaClipPathDirective } from "./lib/chart/directives/chart-container-area-clip-path.directive";
 export { DgpChartDataAreaClipPathDirective } from "./lib/chart/directives/chart-data-area-clip-path.directive";
 export { DgpChartLeftAxisDirective } from "./lib/chart/directives/chart-left-axis.directive";
+export { DgpChartXAxisGridLinesDirective } from "./lib/chart/directives/chart-xaxis-grid-lines.directive";
+export { DgpChartYAxisGridLinesDirective } from "./lib/chart/directives/chart-yaxis-grid-lines.directive";
 
 /**
  * -----
