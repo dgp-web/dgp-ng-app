@@ -9,10 +9,7 @@ import {
     OnChanges,
     OnDestroy,
     Output,
-    Pipe,
-    PipeTransform,
     SimpleChanges,
-    TrackByFunction,
     ViewChild
 } from "@angular/core";
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
@@ -28,18 +25,6 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
-
-@Pipe({name: "trackByOutlierKey"})
-export class TrackByOutlierKeyPipe implements PipeTransform {
-
-    transform<T>(box: Box): TrackByFunction<number> {
-        return (outlierIndex: number, outlierValue: number) => {
-            return trackByBoxOutlierKey(outlierIndex, {
-                boxId: box.boxId, boxGroupId: box.boxGroupId, outlierIndex
-            });
-        };
-    }
-}
 
 @Component({
     selector: "dgp-box-plot",
