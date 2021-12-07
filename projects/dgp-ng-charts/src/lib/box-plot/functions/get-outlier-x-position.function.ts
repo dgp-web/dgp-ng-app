@@ -1,5 +1,5 @@
 import { BoxOutlier, BoxPlotScales } from "../models";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import { getJitter } from "./get-jitter.function";
 
 export function getOutlierXPosition(

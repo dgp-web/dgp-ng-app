@@ -1,5 +1,5 @@
 import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";

@@ -1,4 +1,4 @@
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as seedrandom from "seedrandom";
 
 export function getJitter(seed: string, config = defaultBoxPlotConfig): number {

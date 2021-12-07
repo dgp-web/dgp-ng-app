@@ -9,7 +9,10 @@ import {
     OnChanges,
     OnDestroy,
     Output,
+    Pipe,
+    PipeTransform,
     SimpleChanges,
+    TrackByFunction,
     ViewChild
 } from "@angular/core";
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
@@ -18,13 +21,25 @@ import { Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
 import { ChartSelectionMode, ScaleType } from "../../shared/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
+
+@Pipe({name: "trackByOutlierKey"})
+export class TrackByOutlierKeyPipe implements PipeTransform {
+
+    transform<T>(box: Box): TrackByFunction<number> {
+        return (outlierIndex: number, outlierValue: number) => {
+            return trackByBoxOutlierKey(outlierIndex, {
+                boxId: box.boxId, boxGroupId: box.boxGroupId, outlierIndex
+            });
+        };
+    }
+}
 
 @Component({
     selector: "dgp-box-plot",
@@ -34,18 +49,6 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                    [chartTitle]="chartTitle"
                    dgpResizeSensor
                    (sizeChanged)="drawChart()">
-            <!--
-                 <ng-content select="[chart-title]"></ng-content>
-                        </ng-container>
-
-                        <ng-container x-axis-title>
-                            <ng-content select="[x-axis-title]"></ng-content>
-                        </ng-container>
-
-                        <ng-container y-axis-title>
-                            <ng-content select="[y-axis-title]"></ng-content>
-                        </ng-container>
-            -->
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
@@ -96,7 +99,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartLeftAxis
                                [scales]="boxPlotScales"></g>
 
-                            <line *ngFor="let controlLine of controlLines"
+                            <line *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"
                                   dgpBoxPlotControlLine
                                   [scales]="boxPlotScales"
                                   [boxPlotControlLine]="controlLine"></line>
@@ -109,9 +112,9 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                (selectionChange)="selectionChange.emit($event)"
                                [attr.clip-path]="getDataAreaClipPath()">
 
-                                <g *ngFor="let boxGroup of model"
+                                <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
-                                    <ng-container *ngFor="let box of boxGroup.boxes">
+                                    <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
                                         <line dgpBoxPlotWhisker
                                               type="max"
                                               [scales]="boxPlotScales"
@@ -145,10 +148,10 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                     </ng-container>
                                 </g>
 
-                                <g *ngFor="let boxGroup of model"
+                                <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
-                                    <ng-container *ngFor="let box of boxGroup.boxes">
-                                        <ng-container *ngFor="let value of box.outliers; let i = index;">
+                                    <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
+                                        <ng-container *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByOutlierKey)">
                                             <g [ngSwitch]="box.outlierShape"
                                                [matTooltip]="getOutlierTooltip(box, i)"
                                                dgpBoxPlotOutlier
@@ -203,6 +206,11 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
     ]
 })
 export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
+
+    readonly trackByBoxGroupId = trackByBoxGroupId;
+    readonly trackByBoxId = trackByBoxId;
+    readonly trackByBoxOutlierKey = trackByBoxOutlierKey;
+    readonly trackByBoxPlotControlLineId = trackByBoxPlotControlLineId;
 
     @ViewChild("chartContainer") elRef: ElementRef;
 

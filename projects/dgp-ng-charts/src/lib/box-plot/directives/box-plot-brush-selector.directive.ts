@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleCh
 import { BoxGroup, BoxOutlier, BoxPlotScales, BoxPlotSelection } from "../models";
 import * as d3 from "d3";
 import { getOutlierXPosition, isBrushed } from "../functions";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import { ChartSelectionMode } from "../../shared/models";
 
 function getOutliers(payload: ReadonlyArray<BoxGroup>) {
