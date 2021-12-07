@@ -1,4 +1,4 @@
-import {AppFeature} from "../models/models";
+import {AppFeature} from "../models/app-feature.model";
 
 export const coreFeatures: ReadonlyArray<AppFeature> = [{
     route: "/authentication",
