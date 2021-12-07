@@ -18,7 +18,12 @@ import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
-import { defaultConnectedScatterPlotConfig } from "../constants";
+import {
+    defaultConnectedScatterPlotConfig,
+    trackByConnectedPlotControlLineId,
+    trackByConnectedScatterGroupId,
+    trackByConnectedScatterSeriesId
+} from "../constants";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
@@ -66,13 +71,13 @@ import { ScaleType } from "../../shared/models";
 
                             <g [attr.clip-path]="getClipPath()">
 
-                                <line *ngFor="let controlLine of controlLines"
+                                <line *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
                                       dgpConnectedScatterPlotControlLine
                                       [scales]="connectedScatterPlotScales"
                                       [connectedScatterPlotControlLine]="controlLine"></line>
 
-                                <g *ngFor="let group of model">
-                                    <ng-container *ngFor="let series of group.series">
+                                <g *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
+                                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
                                         <path *ngIf="showEdges(group, series)"
                                               dgpLineChartLine
                                               [series]="series"
@@ -81,8 +86,8 @@ import { ScaleType } from "../../shared/models";
                                     </ng-container>
                                 </g>
 
-                                <g *ngFor="let group of model">
-                                    <ng-container *ngFor="let series of group.series">
+                                <g *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
+                                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
                                         <ng-container *ngFor="let dot of series.dots">
                                             <ng-container *ngIf="showVertices(group, series)">
 
@@ -147,6 +152,10 @@ import { ScaleType } from "../../shared/models";
     ]
 })
 export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase implements ConnectedScatterPlot, OnChanges, OnDestroy {
+
+    readonly trackByConnectedScatterGroupId = trackByConnectedScatterGroupId;
+    readonly trackByConnectedScatterSeriesId = trackByConnectedScatterSeriesId;
+    readonly trackByConnectedPlotControlLineId = trackByConnectedPlotControlLineId;
 
     readonly shapeEnum = Shape;
 
