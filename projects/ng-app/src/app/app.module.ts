@@ -1,26 +1,32 @@
-import { ApplicationRef, NgModule } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { InspectorDocsModule } from "../features/core/inspector-docs/inspector-docs.module";
-import { AppComponent } from "./app.component";
-import { UiSharedModule } from "../ui/shared";
-import { ApiClientModule, ApiClientSettings, ApiClientSettingsProvider } from "../api-client";
-import { AppEntities, appEntityStore, AppState } from "../store";
-import { RouterModule } from "@angular/router";
+import {ApplicationRef, NgModule} from "@angular/core";
+import {Store} from "@ngrx/store";
+import {InspectorDocsModule} from "../features/core/inspector-docs/inspector-docs.module";
+import {AppComponent} from "./app.component";
+import {UiSharedModule} from "../ui/shared";
+import {ApiClientModule, ApiClientSettings, ApiClientSettingsProvider} from "../api-client";
+import {AppEntities, appEntityStore, AppState} from "../store";
+import {RouterModule} from "@angular/router";
 import * as features from "../features";
+import {ThemeSwitcherDocsModule} from "../features";
 import {
-    authenticateUser, authenticationStoreFeature,
-    defaultBroadcastConfig, DgpAuthenticationModule,
+    authenticateUser,
+    authenticationStoreFeature,
+    defaultBroadcastConfig,
+    DgpAuthenticationModule,
     DgpBroadcastStoreModule,
     DgpNgApp,
     DgpNgAppModule,
     setBroadcastChannelDataId
 } from "dgp-ng-app";
-import { FileUploadDocsModule } from "../features/core/file-upload-docs/file-upload-docs.module";
-import { CommonModule } from "@angular/common";
-import { authenticationApiClientProvider, initializationServiceProvider } from "./services";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { ThemeSwitcherDocsModule } from "../features";
-import { FileViewerDocsModule } from "../features/core/file-viewer-docs/file-viewer-docs.module";
+import {FileUploadDocsModule} from "../features/core/file-upload-docs/file-upload-docs.module";
+import {CommonModule} from "@angular/common";
+import {authenticationApiClientProvider, initializationServiceProvider} from "./services";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {FileViewerDocsModule} from "../features/core/file-viewer-docs/file-viewer-docs.module";
+import {DockingLayoutDocsModule} from "../features/docking-layout/docking-layout-docs.module";
+import {ChartDocsModule} from "../features/charts/chart-docs.module";
+import {DragAndDropDocsModule} from "../features/drag-and-drop/drag-and-drop.module";
+import {DocsDocsModule} from "../features/docs/docs-docs.module";
 
 @NgModule({
     imports: [
@@ -38,7 +44,7 @@ import { FileViewerDocsModule } from "../features/core/file-viewer-docs/file-vie
                     user: state.user.entities
                 }
             }),
-            state => authenticateUser({ user: state[authenticationStoreFeature].user })]
+                state => authenticateUser({user: state[authenticationStoreFeature].user})]
         }),
 
         StoreDevtoolsModule.instrument(),
@@ -49,13 +55,13 @@ import { FileViewerDocsModule } from "../features/core/file-viewer-docs/file-vie
         }),
 
         RouterModule.forRoot([{
-        path: "",
-        pathMatch: "full",
-        redirectTo: "/home"
-    }, {
-        path: "**",
-        redirectTo: "/home"
-    }], { relativeLinkResolution: 'legacy' }),
+            path: "",
+            pathMatch: "full",
+            redirectTo: "/home"
+        }, {
+            path: "**",
+            redirectTo: "/home"
+        }], {relativeLinkResolution: "legacy"}),
 
         UiSharedModule,
 
@@ -80,7 +86,11 @@ import { FileViewerDocsModule } from "../features/core/file-viewer-docs/file-vie
         features.TableCellEditorDocsModule,
         ThemeSwitcherDocsModule,
         CommonModule,
-        FileViewerDocsModule
+        FileViewerDocsModule,
+        ChartDocsModule,
+        DragAndDropDocsModule,
+        DockingLayoutDocsModule,
+        DocsDocsModule
     ],
     declarations: [
         AppComponent
