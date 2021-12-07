@@ -35,6 +35,7 @@ export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outl
 export { BoxPlotBrushSelectorDirective } from "./lib/box-plot/directives/box-plot-brush-selector.directive";
 export { BoxPlotControlLineDirective } from "./lib/box-plot/directives/box-plot-control-line.directive";
 export { BoxPlotOutlierTooltipDirective } from "./lib/box-plot/directives/box-plot-outlier-tooltip.directive";
+export { TrackByBoxOutlierKeyPipe } from "./lib/box-plot/pipes/track-by-box-outlier-key.pipe";
 
 /**
  * -----
@@ -80,6 +81,7 @@ export {
     DgpScatterPlotDotTooltipDirective
 } from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
 export { DgpLineChartLineDirective } from "./lib/connected-scatter-plot/directives/line-chart-line.directive";
+export { TrackByConnectedScatterDotPipe } from "./lib/connected-scatter-plot/pipes/track-by-connected-scatter-dot.pipe";
 
 /**
  * -----

@@ -6,6 +6,7 @@ import { DgpResizeSensorModule } from "dgp-ng-app";
 import { CommonModule } from "@angular/common";
 import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { pipes } from "./pipes/pipes";
 
 @NgModule({
     imports: [
@@ -17,11 +18,13 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     ],
     declarations: [
         ...components,
-        ...directives
+        ...directives,
+        ...pipes
     ],
     exports: [
         ...components,
-        ...directives
+        ...directives,
+        ...pipes
     ]
 })
 export class DgpConnectedScatterPlotModule {

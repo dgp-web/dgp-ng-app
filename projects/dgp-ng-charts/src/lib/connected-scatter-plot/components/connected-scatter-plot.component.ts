@@ -88,7 +88,7 @@ import { ScaleType } from "../../shared/models";
 
                                 <g *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
                                     <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
-                                        <ng-container *ngFor="let dot of series.dots">
+                                        <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
                                             <ng-container *ngIf="showVertices(group, series)">
 
                                                 <g [ngSwitch]="getShape(group, series)"

@@ -1,5 +1,5 @@
-import { TrackByOutlierKeyPipe } from "./track-by-outlier-key.pipe";
+import { TrackByBoxOutlierKeyPipe } from "./track-by-box-outlier-key.pipe";
 
 export const pipes = [
-    TrackByOutlierKeyPipe
+    TrackByBoxOutlierKeyPipe
 ];

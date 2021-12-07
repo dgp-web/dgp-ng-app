@@ -136,7 +136,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                 <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
                                     <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
-                                        <ng-container *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByOutlierKey)">
+                                        <ng-container
+                                            *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
                                             <g [ngSwitch]="box.outlierShape"
                                                [matTooltip]="getOutlierTooltip(box, i)"
                                                dgpBoxPlotOutlier
