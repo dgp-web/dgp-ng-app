@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { getJitter } from "../functions";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 
 @Directive({selector: "[dgpBoxPlotOutlierTooltip]"})
 export class BoxPlotOutlierTooltipDirective implements OnChanges {

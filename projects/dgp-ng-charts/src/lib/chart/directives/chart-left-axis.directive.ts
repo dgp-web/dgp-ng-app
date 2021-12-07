@@ -3,8 +3,6 @@ import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from "@angular
 import * as d3 from "d3";
 import { AxisScales } from "../../shared/models";
 import { estimateContinuousYAxisTickCount } from "../../shared/functions/estimate-continuous-y-axis-tick-count.function";
-import { formatLogTick, formatPower } from "../../shared/functions";
-import { logTickValues } from "../../shared/constants";
 
 
 export function getYAxisTickDomainValues(getYAxisTickPayload: {
@@ -45,7 +43,6 @@ export function getYAxisTickDomainValues(getYAxisTickPayload: {
 }
 
 
-
 // TODO: Check if this is logarithmic
 export function formatValueTick(value: number): string {
     //return value.toPrecision(3);
@@ -58,13 +55,13 @@ export class DgpChartLeftAxisDirective implements OnChanges {
     @Input()
     scales: AxisScales;
 
-    constructor(private readonly elementRef: ElementRef) {
+    constructor(private readonly elementRef: ElementRef<SVGGElement>) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
 
-
         if (changes.scales) {
+            this.elementRef.nativeElement.innerHTML = "";
 
             const yAxisTickCount = estimateContinuousYAxisTickCount({
                 containerHeight: this.scales.containerHeight

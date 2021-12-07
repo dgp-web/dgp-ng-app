@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { Box, BoxGroup, BoxPlotScales } from "../models";
-import { defaultBoxPlotConfig } from "../constants";
+import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 
 export function drawBoxPlot(payload: {
     readonly d3OnGroupDataEnter: d3.Selection<d3.EnterElement, Box, SVGElement, BoxGroup>;

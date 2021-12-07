@@ -1,5 +1,5 @@
-import { BoxPlotConfig } from "./models";
-import { defaultWithCardinalScaleOffset } from "../shared/constants";
+import { BoxPlotConfig } from "../models";
+import { defaultWithCardinalScaleOffset } from "../../shared/constants";
 
 export const defaultBoxPlotConfig: BoxPlotConfig = {
     ...defaultWithCardinalScaleOffset,

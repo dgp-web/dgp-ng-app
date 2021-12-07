@@ -1,10 +1,11 @@
 import { AfterViewInit, Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
+import { svgShapeDefaultWidth } from "../constants";
 
 @Directive()
 export abstract class SVGShapeBaseDirective implements AfterViewInit, OnChanges {
 
     @Input()
-    width = 12;
+    width = svgShapeDefaultWidth;
 
     @Input()
     height = this.width;

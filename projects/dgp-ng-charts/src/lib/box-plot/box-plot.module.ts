@@ -13,6 +13,7 @@ import { DgpResizeSensorModule } from "dgp-ng-app";
 import { DgpSVGPatternsModule } from "../patterns/svg-patterns.module";
 import { DgpSVGMasksModule } from "../masks/svg-masks.module";
 import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
+import { pipes } from "./pipes/pipes";
 
 @NgModule({
     imports: [
@@ -31,11 +32,13 @@ import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
     ],
     declarations: [
         ...components,
-        ...directives
+        ...directives,
+        ...pipes
     ],
     exports: [
         ...components,
-        ...directives
+        ...directives,
+        ...pipes
     ]
 })
 export class DgpBoxPlotModule {
