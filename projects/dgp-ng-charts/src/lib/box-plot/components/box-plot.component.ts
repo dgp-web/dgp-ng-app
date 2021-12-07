@@ -96,6 +96,11 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartLeftAxis
                                [scales]="boxPlotScales"></g>
 
+                            <line *ngFor="let controlLine of controlLines"
+                                  dgpBoxPlotControlLine
+                                  [scales]="boxPlotScales"
+                                  [boxPlotControlLine]="controlLine"></line>
+
                             <g dgpBoxPlotBrushSelector
                                [scales]="boxPlotScales"
                                [boxGroups]="model"
@@ -103,6 +108,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                [selectionMode]="selectionMode"
                                (selectionChange)="selectionChange.emit($event)"
                                [attr.clip-path]="getDataAreaClipPath()">
+
                                 <g *ngFor="let boxGroup of model"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
                                     <ng-container *ngFor="let box of boxGroup.boxes">
@@ -136,7 +142,12 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                               [scales]="boxPlotScales"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
+                                    </ng-container>
+                                </g>
 
+                                <g *ngFor="let boxGroup of model"
+                                   [attr.transform]="getResultRootTransform(boxGroup)">
+                                    <ng-container *ngFor="let box of boxGroup.boxes">
                                         <ng-container *ngFor="let value of box.outliers; let i = index;">
                                             <g [ngSwitch]="box.outlierShape"
                                                [matTooltip]="getOutlierTooltip(box, i)"
@@ -145,7 +156,6 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                [boxGroup]="boxGroup"
                                                [box]="box"
                                                [value]="value">
-
                                                 <circle *ngSwitchDefault
                                                         dgpCircle></circle>
                                                 <circle *ngSwitchCase="shapeEnum.Circle"
@@ -166,22 +176,13 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                                          dgpTriangleRight></polygon>
                                                 <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
                                                          dgpTriangleLeft></polygon>
-
-
                                             </g>
                                         </ng-container>
-
                                     </ng-container>
                                 </g>
 
-                                <line *ngFor="let controlLine of controlLines"
-                                      dgpBoxPlotControlLine
-                                      [scales]="boxPlotScales"
-                                      [boxPlotControlLine]="controlLine"></line>
-
                             </g>
                         </g>
-
                     </g>
                 </svg>
 
