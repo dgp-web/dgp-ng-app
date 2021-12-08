@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { of } from "rxjs";
-import {coreFeatures} from "../constants/core-features.constant";
+import { chartFeatures } from "../constants/charts/chart-features.constant";
+import { coreFeatures } from "../constants/core-features.constant";
 
 @Component({
     selector: "app-root",
@@ -17,16 +18,21 @@ import {coreFeatures} from "../constants/core-features.constant";
                 <dgp-hamburger-menu-entries>
                     <dgp-hamburger-menu-entry route="/home"
                                               label="Home"
-                                              matIconName="home">
-                    </dgp-hamburger-menu-entry>
+                                              matIconName="home"></dgp-hamburger-menu-entry>
 
-                    <h2 mat-subheader>Docs</h2>
+                    <h2 mat-subheader>Core</h2>
 
-                    <dgp-hamburger-menu-entry *ngFor="let appFeature of appFeatures$ | async"
-                                              [route]="appFeature.route"
-                                              [label]="appFeature.label"
-                                              [matIconName]="appFeature.matIconName">
-                    </dgp-hamburger-menu-entry>
+                    <dgp-hamburger-menu-entry *ngFor="let feature of coreFeatures$ | async"
+                                              [route]="feature.route"
+                                              [label]="feature.label"
+                                              [matIconName]="feature.matIconName"></dgp-hamburger-menu-entry>
+
+                    <h2 mat-subheader>Charts</h2>
+
+                    <dgp-hamburger-menu-entry *ngFor="let feature of chartFeatures$ | async"
+                                              [route]="feature.route"
+                                              [label]="feature.label"
+                                              [matIconName]="feature.matIconName"></dgp-hamburger-menu-entry>
 
                 </dgp-hamburger-menu-entries>
 
@@ -35,8 +41,7 @@ import {coreFeatures} from "../constants/core-features.constant";
                 <mat-nav-list>
                     <dgp-hamburger-menu-entry route="/logEntries"
                                               label="Log"
-                                              matIconName="error">
-                    </dgp-hamburger-menu-entry>
+                                              matIconName="error"></dgp-hamburger-menu-entry>
                 </mat-nav-list>
             </dgp-hamburger-menu>
 
@@ -53,5 +58,6 @@ import {coreFeatures} from "../constants/core-features.constant";
     `]
 })
 export class AppComponent {
-    readonly appFeatures$ = of(coreFeatures);
+    readonly coreFeatures$ = of(coreFeatures);
+    readonly chartFeatures$ = of(chartFeatures);
 }
