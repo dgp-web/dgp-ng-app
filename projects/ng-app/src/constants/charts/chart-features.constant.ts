@@ -5,11 +5,13 @@ import { connectedScatterPlotFeature } from "./connected-scatter-plot-feature.co
 import { boxPlotFeature } from "./box-plot-feature.constant";
 import { heatmapFeature } from "./heatmap-feature.constant";
 import { shapeFeature } from "./shape-feature.constant";
+import { fillPatternFeature } from "./fill-pattern-feature.constant";
 
 export const chartFeatures: Many<AppFeature> = [
     barChartFeature,
     boxPlotFeature,
     connectedScatterPlotFeature,
+    fillPatternFeature,
     heatmapFeature,
     shapeFeature
 ];
