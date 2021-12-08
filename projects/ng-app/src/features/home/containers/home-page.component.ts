@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { of } from "rxjs";
-import {coreFeatures} from "../../../constants/core-features.constant";
+import { coreFeatures } from "../../../constants/core-features.constant";
+import { chartFeatures } from "../../../constants/charts/chart-features.constant";
 
 @Component({
     selector: "dgp-home-page",
@@ -26,15 +27,13 @@ import {coreFeatures} from "../../../constants/core-features.constant";
                     Building blocks for Angular applications following patterns and practices by dgp
                 </p>
 
-                <dgp-docs-section-title>Getting started</dgp-docs-section-title>
+                <dgp-docs-section-title>Core</dgp-docs-section-title>
 
                 <p style="margin-top: 16px;">
                     Install the dgp-ng-app npm package.
                 </p>
 
-                <dgp-docs-code-block [code]="installationCode"></dgp-docs-code-block>
-
-                <dgp-docs-section-title>Modules</dgp-docs-section-title>
+                <dgp-docs-code-block [code]="coreInstallationCode"></dgp-docs-code-block>
 
                 <p style="margin-top: 16px;">
                     The modules included in this package facilitate tasks that one frequently encounters when writing
@@ -42,11 +41,32 @@ import {coreFeatures} from "../../../constants/core-features.constant";
                 </p>
 
                 <div style="display: flex; flex-wrap: wrap; justify-content: center">
-                    <dgp-tile *ngFor="let appFeature of appFeatures$ | async"
-                              [route]="appFeature.route"
-                              [matIconName]="appFeature.matIconName"
-                              [label]="appFeature.label"
-                              [description]="appFeature.description"></dgp-tile>
+                    <dgp-tile *ngFor="let feature of coreFeatures$ | async"
+                              [route]="feature.route"
+                              [matIconName]="feature.matIconName"
+                              [label]="feature.label"
+                              [description]="feature.description"></dgp-tile>
+                </div>
+
+                <dgp-docs-section-title>Charts</dgp-docs-section-title>
+
+
+                <p style="margin-top: 16px;">
+                    Install the dgp-ng-charts npm package.
+                </p>
+
+                <dgp-docs-code-block [code]="chartInstallationCode"></dgp-docs-code-block>
+
+                <p style="margin-top: 16px;">
+                    The modules included in this package allow creating Angular charts.
+                </p>
+
+                <div style="display: flex; flex-wrap: wrap; justify-content: center">
+                    <dgp-tile *ngFor="let feature of chartFeatures$ | async"
+                              [route]="feature.route"
+                              [matIconName]="feature.matIconName"
+                              [label]="feature.label"
+                              [description]="feature.description"></dgp-tile>
                 </div>
 
             </dgp-docs-page-content>
@@ -56,7 +76,9 @@ import {coreFeatures} from "../../../constants/core-features.constant";
 })
 export class HomePageComponent {
 
-    readonly appFeatures$ = of(coreFeatures);
-    readonly installationCode = `npm install --save dgp-ng-app`;
+    readonly coreFeatures$ = of(coreFeatures);
+    readonly chartFeatures$ = of(chartFeatures);
+    readonly coreInstallationCode = `npm install --save dgp-ng-app`;
+    readonly chartInstallationCode = `npm install --save dgp-ng-charts`;
 
 }
