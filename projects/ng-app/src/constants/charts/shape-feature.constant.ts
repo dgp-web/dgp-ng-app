@@ -1,6 +1,6 @@
 import { AppFeature } from "dgp-ng-app";
 
-export const shapesFeature: AppFeature = {
+export const shapeFeature: AppFeature = {
     label: "Shapes",
     matIconName: "star",
     description: "Express data features with outlines.",
