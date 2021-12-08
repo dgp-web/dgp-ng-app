@@ -2,7 +2,19 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-box-plot-docs",
-    template: ``,
+    template: `
+        <dgp-page-header>
+            <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+            Boxplot
+        </dgp-page-header>
+
+        <dgp-docs-page>
+            <dgp-docs-page-content>
+                <dgp-docs-chapter-title>Boxplot</dgp-docs-chapter-title>
+
+            </dgp-docs-page-content>
+        </dgp-docs-page>
+    `,
     styles: [`
 
    `],
