@@ -15,6 +15,12 @@ import { AttributeMetadata } from "data-modeling";
 
         <p *ngIf="description || metadata?.description"
            class="description">{{description || metadata?.description}}</p>
+
+        <div class="additional-info">
+            <ng-content select="[additionalInfo]"></ng-content>
+        </div>
+
+
     `,
     styles: [`
 
@@ -39,6 +45,11 @@ import { AttributeMetadata } from "data-modeling";
             margin-right: 58px;
             font-size: smaller;
             opacity: 0.7;
+        }
+
+        .additional-info {
+            margin-left: 58px;
+            margin-right: 58px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
