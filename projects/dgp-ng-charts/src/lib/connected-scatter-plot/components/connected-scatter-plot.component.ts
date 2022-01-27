@@ -194,6 +194,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     showXAxisGridLines = true;
 
     @Input()
+    yAxisTickFormat?: (x: string) => string;
+
+    @Input()
     xAxisTickFormat?: (x: string) => string;
 
     @Input()
@@ -251,6 +254,8 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.chartTitle
             || changes.xAxisTitle
             || changes.yAxisTitle
+            || changes.xAxisTickFormat
+            || changes.yAxisTickFormat
         ) {
             this.drawChartActionScheduler.emit();
         }
@@ -275,6 +280,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
             xAxisTicks: notNullOrUndefined(this.xAxisTicks) ? +this.xAxisTicks : undefined,
             xAxisTickFormat: this.xAxisTickFormat,
+            yAxisTickFormat: this.yAxisTickFormat,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
             yAxisTicks: notNullOrUndefined(this.yAxisTicks) ? +this.yAxisTicks : undefined

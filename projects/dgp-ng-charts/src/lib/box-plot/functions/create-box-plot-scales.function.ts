@@ -17,6 +17,7 @@ export function createBoxPlotScales(payload: {
     readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
+    readonly yAxisTickFormat?: (x: string) => string;
 }, config = defaultBoxPlotConfig): BoxPlotScales {
 
     const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
@@ -143,6 +144,10 @@ export function createBoxPlotScales(payload: {
                 .tickValues(logTickValues)
                 .tickFormat(formatLogTick);
             break;
+    }
+
+    if (notNullOrUndefined(payload.yAxisTickFormat)) {
+        yAxis = yAxis.tickFormat(payload.yAxisTickFormat as any);
     }
 
     return {

@@ -248,6 +248,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     @Input()
     exportConfig: ExportChartConfig;
 
+    @Input()
+    yAxisTickFormat?: (x: string) => string;
+
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
 
@@ -284,6 +287,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             || changes.yAxisTitle
             || changes.showXAxisGridLines
             || changes.showYAxisGridLines
+            || changes.yAxisTickFormat
         ) {
             this.drawChartActionScheduler.emit();
         }
@@ -304,7 +308,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
             yAxisScaleType: this.yAxisScaleType,
-            controlLines: this.controlLines
+            controlLines: this.controlLines,
+            yAxisTickFormat: this.yAxisTickFormat
         });
 
         this.cd.markForCheck();
