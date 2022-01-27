@@ -231,6 +231,12 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     @Input()
     yAxisScaleType?: ScaleType;
 
+    @Input()
+    showYAxisGridLines = true;
+
+    @Input()
+    showXAxisGridLines = true;
+
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -274,6 +280,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             || changes.chartTitle
             || changes.xAxisTitle
             || changes.yAxisTitle
+            || changes.showXAxisGridLines
+            || changes.showYAxisGridLines
         ) {
             this.drawChartActionScheduler.emit();
         }
