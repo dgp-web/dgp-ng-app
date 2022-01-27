@@ -65,7 +65,8 @@ import { ScaleType } from "../../shared/models";
                                dgpChartBottomAxis
                                [scales]="connectedScatterPlotScales"></g>
 
-                            <g class="chart__x-axis-grid-lines"
+                            <g *ngIf="showXAxisGridLines"
+                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
@@ -73,7 +74,8 @@ import { ScaleType } from "../../shared/models";
                                dgpChartLeftAxis
                                [scales]="connectedScatterPlotScales"></g>
 
-                            <g class="chart__y-axis-grid-lines"
+                            <g *ngIf="showYAxisGridLines"
+                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
@@ -189,6 +191,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     xAxisTicks?: number;
 
     @Input()
+    showXAxisGridLines = true;
+
+    @Input()
     xAxisTickFormat?: (x: string) => string;
 
     @Input()
@@ -199,6 +204,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     @Input()
     yAxisTicks?: number;
+
+    @Input()
+    showYAxisGridLines = true;
 
     @Input()
     yAxisScaleType?: ScaleType;
@@ -233,9 +241,11 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.xAxisMin
             || changes.xAxisMax
             || changes.xAxisTicks
+            || changes.showXAxisGridLines
             || changes.yAxisMin
             || changes.yAxisMax
             || changes.yAxisTicks
+            || changes.showYAxisGridLines
             || changes.yAxisScaleType
             || changes.controlLines
             || changes.chartTitle

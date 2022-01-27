@@ -19,7 +19,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
     }],
     xAxisTicks: 5,
     yAxisTicks: 5,
-    xAxisTickFormat: x => x.toString() + "x"
+    xAxisTickFormat: x => x.toString() + "x",
+    showYAxisGridLines: true,
+    showXAxisGridLines: true
 };
 
 @Component({
@@ -41,11 +43,13 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [xAxisMax]="model.xAxisMax"
                                                 [xAxisTicks]="model.xAxisTicks"
                                                 [xAxisTickFormat]="model.xAxisTickFormat"
+                                                [showXAxisGridLines]="model.showXAxisGridLines"
                                                 [yAxisTitle]="model.yAxisTitle"
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"
                                                 [yAxisMax]="model.yAxisMax"
                                                 [yAxisTicks]="model.yAxisTicks"
+                                                [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
 
 
@@ -115,6 +119,13 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </mat-form-field>
                             </dgp-inspector-item>
 
+                            <dgp-inspector-item label="Grid lines"
+                                                matIconName="pin">
+                                <mat-slide-toggle [disabled]="disabled"
+                                                  [ngModel]="model.showXAxisGridLines"
+                                                  (ngModelChange)="setShowXAxisGridLines($event)"></mat-slide-toggle>
+                            </dgp-inspector-item>
+
                         </dgp-inspector-section>
 
                         <dgp-inspector-section label="y axis"
@@ -177,6 +188,13 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                            [ngModel]="model.yAxisTicks"
                                            (ngModelChange)="setYAxisTicks($event)">
                                 </mat-form-field>
+                            </dgp-inspector-item>
+
+                            <dgp-inspector-item label="Grid lines"
+                                                matIconName="pin">
+                                <mat-slide-toggle [disabled]="disabled"
+                                                  [ngModel]="model.showYAxisGridLines"
+                                                  (ngModelChange)="setShowYAxisGridLines($event)"></mat-slide-toggle>
                             </dgp-inspector-item>
 
                         </dgp-inspector-section>
@@ -380,6 +398,14 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateYAxisScaleType(yAxisScaleType: ScaleType) {
         this.updateModel({yAxisScaleType});
+    }
+
+    setShowYAxisGridLines(showYAxisGridLines: boolean) {
+        this.updateModel({showYAxisGridLines});
+    }
+
+    setShowXAxisGridLines(showXAxisGridLines: boolean) {
+        this.updateModel({showXAxisGridLines});
     }
 
     selectControlLine(controlLineId: string) {
