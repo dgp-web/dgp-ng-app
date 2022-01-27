@@ -80,7 +80,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartBottomAxis
                                [scales]="boxPlotScales"></g>
 
-                            <g class="chart__x-axis-grid-lines"
+                            <g *ngIf="showXAxisGridLines"
+                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="boxPlotScales"></g>
 
@@ -88,7 +89,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartLeftAxis
                                [scales]="boxPlotScales"></g>
 
-                            <g class="chart__y-axis-grid-lines"
+                            <g *ngIf="showYAxisGridLines"
+                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="boxPlotScales"></g>
 
@@ -231,6 +233,12 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     @Input()
     yAxisScaleType?: ScaleType;
 
+    @Input()
+    showYAxisGridLines = true;
+
+    @Input()
+    showXAxisGridLines = true;
+
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -239,6 +247,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
 
     @Input()
     exportConfig: ExportChartConfig;
+
+    @Input()
+    yAxisTickFormat?: (x: string) => string;
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
@@ -274,6 +285,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             || changes.chartTitle
             || changes.xAxisTitle
             || changes.yAxisTitle
+            || changes.showXAxisGridLines
+            || changes.showYAxisGridLines
+            || changes.yAxisTickFormat
         ) {
             this.drawChartActionScheduler.emit();
         }
@@ -294,7 +308,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
             yAxisScaleType: this.yAxisScaleType,
-            controlLines: this.controlLines
+            controlLines: this.controlLines,
+            yAxisTickFormat: this.yAxisTickFormat
         });
 
         this.cd.markForCheck();

@@ -17,6 +17,7 @@ export function createConnectedScatterPlotScales(payload: {
     readonly xAxisMax?: number;
     readonly xAxisTicks?: number;
     readonly xAxisTickFormat?: (x: string) => string;
+    readonly yAxisTickFormat?: (x: string) => string;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
     readonly yAxisTicks?: number;
@@ -163,6 +164,10 @@ export function createConnectedScatterPlotScales(payload: {
                 .tickValues(logTickValues)
                 .tickFormat(formatLogTick);
             break;
+    }
+    
+    if (notNullOrUndefined(payload.yAxisTickFormat)) {
+        yAxis = yAxis.tickFormat(payload.yAxisTickFormat as any);
     }
 
     return {

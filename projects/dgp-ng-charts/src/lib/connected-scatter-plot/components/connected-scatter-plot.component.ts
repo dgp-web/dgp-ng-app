@@ -65,7 +65,8 @@ import { ScaleType } from "../../shared/models";
                                dgpChartBottomAxis
                                [scales]="connectedScatterPlotScales"></g>
 
-                            <g class="chart__x-axis-grid-lines"
+                            <g *ngIf="showXAxisGridLines"
+                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
@@ -73,7 +74,8 @@ import { ScaleType } from "../../shared/models";
                                dgpChartLeftAxis
                                [scales]="connectedScatterPlotScales"></g>
 
-                            <g class="chart__y-axis-grid-lines"
+                            <g *ngIf="showYAxisGridLines"
+                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
@@ -189,6 +191,12 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     xAxisTicks?: number;
 
     @Input()
+    showXAxisGridLines = true;
+
+    @Input()
+    yAxisTickFormat?: (x: string) => string;
+
+    @Input()
     xAxisTickFormat?: (x: string) => string;
 
     @Input()
@@ -199,6 +207,9 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     @Input()
     yAxisTicks?: number;
+
+    @Input()
+    showYAxisGridLines = true;
 
     @Input()
     yAxisScaleType?: ScaleType;
@@ -233,14 +244,18 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.xAxisMin
             || changes.xAxisMax
             || changes.xAxisTicks
+            || changes.showXAxisGridLines
             || changes.yAxisMin
             || changes.yAxisMax
             || changes.yAxisTicks
+            || changes.showYAxisGridLines
             || changes.yAxisScaleType
             || changes.controlLines
             || changes.chartTitle
             || changes.xAxisTitle
             || changes.yAxisTitle
+            || changes.xAxisTickFormat
+            || changes.yAxisTickFormat
         ) {
             this.drawChartActionScheduler.emit();
         }
@@ -265,6 +280,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
             xAxisTicks: notNullOrUndefined(this.xAxisTicks) ? +this.xAxisTicks : undefined,
             xAxisTickFormat: this.xAxisTickFormat,
+            yAxisTickFormat: this.yAxisTickFormat,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
             yAxisTicks: notNullOrUndefined(this.yAxisTicks) ? +this.yAxisTicks : undefined

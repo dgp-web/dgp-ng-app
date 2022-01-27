@@ -6,6 +6,11 @@ export interface ConnectedScatterPlot extends Chart, CardinalYAxis {
     readonly model: ReadonlyArray<ConnectedScatterGroup>;
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
 
+    readonly showYAxisGridLines?: boolean;
+
+    readonly showXAxisGridLines?: boolean;
+    readonly yAxisTickFormat?: (x: string) => string;
+
     readonly xAxisMin?: number;
     readonly xAxisMax?: number;
     readonly xAxisTicks?: number;
