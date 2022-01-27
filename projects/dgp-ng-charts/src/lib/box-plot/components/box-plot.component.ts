@@ -80,7 +80,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartBottomAxis
                                [scales]="boxPlotScales"></g>
 
-                            <g class="chart__x-axis-grid-lines"
+                            <g *ngIf="showXAxisGridLines"
+                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="boxPlotScales"></g>
 
@@ -88,7 +89,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartLeftAxis
                                [scales]="boxPlotScales"></g>
 
-                            <g class="chart__y-axis-grid-lines"
+                            <g *ngIf="showYAxisGridLines"
+                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="boxPlotScales"></g>
 

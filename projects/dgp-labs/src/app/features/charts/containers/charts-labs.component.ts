@@ -52,6 +52,8 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                 <dgp-box-plot [model]="boxGroups"
                               [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
                               yAxisMin="3"
+                              [showXAxisGridLines]="false"
+                              [showYAxisGridLines]="false"
                               yAxisMax="17"></dgp-box-plot>
 
                 <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
