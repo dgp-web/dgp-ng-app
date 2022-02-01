@@ -145,10 +145,35 @@ export function createConnectedScatterPlotScales(payload: {
 
             yAxis = d3.axisLeft(yAxisScale);
 
-            if (notNullOrUndefined(payload.yAxisTicks)) {
-                yAxis = yAxis
+            // TODO: We interpret this as a step
+            if (notNullOrUndefined(payload.yAxisTicks) && payload.yAxisTicks > 0) {
+
+                let max = yAxisScale.domain()[0];
+                let min = yAxisScale.domain()[1];
+
+                if (max < min) {
+                    const cache = min;
+                    min = max;
+                    max = cache;
+                }
+
+                const valuesBetween = [];
+
+                let value = min + payload.yAxisTicks;
+
+                while (value < max) {
+                    valuesBetween.push(value);
+                    value += payload.yAxisTicks;
+                }
+
+                const tickValues = [min, ...valuesBetween, max];
+
+                yAxis = yAxis.tickValues(tickValues);
+
+
+                /*yAxis = yAxis
                     .ticks(payload.yAxisTicks)
-                    .tickFormat(x => x.valueOf().toPrecision(3));
+                    .tickFormat(x => x.valueOf().toPrecision(3));*/
             } else {
                 const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
                     containerHeight: payload.containerHeight
@@ -165,7 +190,7 @@ export function createConnectedScatterPlotScales(payload: {
                 .tickFormat(formatLogTick);
             break;
     }
-    
+
     if (notNullOrUndefined(payload.yAxisTickFormat)) {
         yAxis = yAxis.tickFormat(payload.yAxisTickFormat as any);
     }
