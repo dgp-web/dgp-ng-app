@@ -93,7 +93,7 @@ export function createConnectedScatterPlotScales(payload: {
         - config.margin.top
         - config.margin.bottom;
 
-
+    // TODO: Extract, use here and for box plot and try using yAxisStep in .base() of log scale
     let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
 
     switch (payload.yAxisScaleType) {
