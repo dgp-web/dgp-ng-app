@@ -3,7 +3,7 @@ import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.const
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";
-import { formatLogTick } from "../../shared/functions";
+import { formatLogTick, getLinearAxisTickValuesForInterval } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
@@ -14,6 +14,7 @@ export function createBoxPlotScales(payload: {
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
+    readonly yAxisTickInterval?: number;
     readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
@@ -132,12 +133,28 @@ export function createBoxPlotScales(payload: {
     switch (payload.yAxisScaleType) {
         default:
         case ScaleType.Linear:
-            const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
-                containerHeight: payload.containerHeight
-            });
-            yAxis = d3.axisLeft(yAxisScale)
-                .ticks(yTickCount)
-                .tickFormat(x => x.valueOf().toPrecision(3));
+            yAxis = d3.axisLeft(yAxisScale);
+
+            if (notNullOrUndefined(payload.yAxisTickInterval) && payload.yAxisTickInterval > 0) {
+
+                const tickValues = getLinearAxisTickValuesForInterval({
+                    axisScale: yAxisScale,
+                    tickInterval: payload.yAxisTickInterval
+                });
+
+                yAxis = yAxis
+                    .tickValues(tickValues as number[])
+                    .tickFormat(x => x.valueOf().toPrecision(3));
+
+            } else {
+                const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
+                    containerHeight: payload.containerHeight
+                });
+                yAxis = d3.axisLeft(yAxisScale)
+                    .ticks(yTickCount)
+                    .tickFormat(x => x.valueOf().toPrecision(3));
+            }
+
             break;
         case ScaleType.Logarithmic:
             yAxis = d3.axisLeft(yAxisScale)

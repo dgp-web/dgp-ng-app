@@ -5,7 +5,7 @@ import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../model
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { formatLogTick } from "../../shared/functions";
+import { formatLogTick, getLinearAxisTickValuesForInterval } from "../../shared/functions";
 import { ScaleType } from "../../shared/models";
 import { logTickValues } from "../../shared/constants";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
@@ -20,7 +20,7 @@ export function createConnectedScatterPlotScales(payload: {
     readonly yAxisTickFormat?: (x: string) => string;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
-    readonly yAxisTicks?: number;
+    readonly yAxisTickInterval?: number;
     readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
@@ -142,38 +142,19 @@ export function createConnectedScatterPlotScales(payload: {
         default:
         case ScaleType.Linear:
 
-
             yAxis = d3.axisLeft(yAxisScale);
 
-            // TODO: We interpret this as a step
-            if (notNullOrUndefined(payload.yAxisTicks) && payload.yAxisTicks > 0) {
+            if (notNullOrUndefined(payload.yAxisTickInterval) && payload.yAxisTickInterval > 0) {
 
-                let max = yAxisScale.domain()[0];
-                let min = yAxisScale.domain()[1];
+                const tickValues = getLinearAxisTickValuesForInterval({
+                    axisScale: yAxisScale,
+                    tickInterval: payload.yAxisTickInterval
+                });
 
-                if (max < min) {
-                    const cache = min;
-                    min = max;
-                    max = cache;
-                }
+                yAxis = yAxis
+                    .tickValues(tickValues as number[])
+                    .tickFormat(x => x.valueOf().toPrecision(3));
 
-                const valuesBetween = [];
-
-                let value = min + payload.yAxisTicks;
-
-                while (value < max) {
-                    valuesBetween.push(value);
-                    value += payload.yAxisTicks;
-                }
-
-                const tickValues = [min, ...valuesBetween, max];
-
-                yAxis = yAxis.tickValues(tickValues);
-
-
-                /*yAxis = yAxis
-                    .ticks(payload.yAxisTicks)
-                    .tickFormat(x => x.valueOf().toPrecision(3));*/
             } else {
                 const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
                     containerHeight: payload.containerHeight
