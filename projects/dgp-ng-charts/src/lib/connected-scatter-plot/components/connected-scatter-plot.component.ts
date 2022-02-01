@@ -206,7 +206,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     yAxisMax?: number;
 
     @Input()
-    yAxisTickInterval?: number;
+    yAxisStep?: number;
 
     @Input()
     showYAxisGridLines = true;
@@ -283,7 +283,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             yAxisTickFormat: this.yAxisTickFormat,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
-            yAxisTickInterval: notNullOrUndefined(this.yAxisTickInterval) ? +this.yAxisTickInterval : undefined
+            yAxisStep: notNullOrUndefined(this.yAxisStep) ? +this.yAxisStep : undefined
         });
 
         this.cd.markForCheck();

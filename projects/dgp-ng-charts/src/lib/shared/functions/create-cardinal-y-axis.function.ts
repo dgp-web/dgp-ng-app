@@ -2,7 +2,7 @@ import { CardinalD3AxisScale, CardinalYAxis, ScaleType } from "../models";
 import * as d3 from "d3";
 import { Axis } from "d3";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { getLinearAxisTickValuesForInterval } from "./get-linear-axis-tick-values-for-interval.function";
+import { getLinearAxisTickValuesForStep } from "./get-linear-axis-tick-values-for-interval.function";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 import { logTickValues } from "../constants";
 import { formatLogTick } from "./format-log-tick.function";
@@ -22,11 +22,11 @@ export function createCardinalYAxis(payload: {
 
             yAxis = d3.axisLeft(yAxisScale);
 
-            if (notNullOrUndefined(yAxisModel.yAxisTickInterval) && yAxisModel.yAxisTickInterval > 0) {
+            if (notNullOrUndefined(yAxisModel.yAxisStep) && yAxisModel.yAxisStep > 0) {
 
-                const tickValues = getLinearAxisTickValuesForInterval({
+                const tickValues = getLinearAxisTickValuesForStep({
                     axisScale: yAxisScale,
-                    tickInterval: yAxisModel.yAxisTickInterval
+                    tickInterval: yAxisModel.yAxisStep
                 });
 
                 yAxis = yAxis
@@ -44,6 +44,8 @@ export function createCardinalYAxis(payload: {
 
             break;
         case ScaleType.Logarithmic:
+            // TODO: For logarithmic axes, the interval can be used as exponent
+
             yAxis = d3.axisLeft(yAxisScale)
                 .tickValues(logTickValues)
                 .tickFormat(formatLogTick);

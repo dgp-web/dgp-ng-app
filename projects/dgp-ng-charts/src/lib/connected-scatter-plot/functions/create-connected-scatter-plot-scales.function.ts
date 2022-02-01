@@ -19,7 +19,7 @@ export function createConnectedScatterPlotScales(payload: {
     readonly yAxisTickFormat?: (x: string) => string;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
-    readonly yAxisTickInterval?: number;
+    readonly yAxisStep?: number;
     readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;

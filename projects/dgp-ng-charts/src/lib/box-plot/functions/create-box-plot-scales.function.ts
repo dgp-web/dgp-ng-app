@@ -13,7 +13,7 @@ export function createBoxPlotScales(payload: {
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly yAxisMin?: number;
     readonly yAxisMax?: number;
-    readonly yAxisTickInterval?: number;
+    readonly yAxisStep?: number;
     readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;

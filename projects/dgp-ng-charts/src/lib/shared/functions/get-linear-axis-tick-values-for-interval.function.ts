@@ -1,7 +1,7 @@
 import { AxisScale } from "d3-axis";
 import { Many } from "data-modeling";
 
-export function getLinearAxisTickValuesForInterval(payload: {
+export function getLinearAxisTickValuesForStep(payload: {
     readonly axisScale: AxisScale<number>;
     readonly tickInterval: number;
 }): Many<number> {

@@ -231,7 +231,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     yAxisMax?: number;
 
     @Input()
-    yAxisTickInterval?: number;
+    yAxisStep?: number;
 
     @Input()
     yAxisScaleType?: ScaleType;
@@ -313,7 +313,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             yAxisScaleType: this.yAxisScaleType,
             controlLines: this.controlLines,
             yAxisTickFormat: this.yAxisTickFormat,
-            yAxisTickInterval: this.yAxisTickInterval
+            yAxisStep: this.yAxisStep
         });
 
         this.cd.markForCheck();
