@@ -5,20 +5,15 @@ import * as d3 from "d3";
 import { ScaleLinear, ScaleLogarithmic } from "d3";
 import { createCardinalYAxis } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { ScaleType } from "../../shared/models";
+import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
-    readonly yAxisMin?: number;
-    readonly yAxisMax?: number;
-    readonly yAxisStep?: number;
-    readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
-    readonly yAxisTickFormat?: (x: string) => string;
-}, config = defaultBoxPlotConfig): BoxPlotScales {
+} & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
 
     const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
     const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));

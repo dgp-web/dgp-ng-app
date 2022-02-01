@@ -6,7 +6,7 @@ import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { createCardinalYAxis } from "../../shared/functions";
-import { ScaleType } from "../../shared/models";
+import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createConnectedScatterPlotScales(payload: {
@@ -16,14 +16,9 @@ export function createConnectedScatterPlotScales(payload: {
     readonly xAxisMax?: number;
     readonly xAxisTicks?: number;
     readonly xAxisTickFormat?: (x: string) => string;
-    readonly yAxisTickFormat?: (x: string) => string;
-    readonly yAxisMin?: number;
-    readonly yAxisMax?: number;
-    readonly yAxisStep?: number;
-    readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
-}, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
+} & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
 
     const valuesForXExtremumComputation = new Array<number>();
     const valuesForYExtremumComputation = new Array<number>();
