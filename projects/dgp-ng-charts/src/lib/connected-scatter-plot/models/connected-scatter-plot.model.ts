@@ -7,9 +7,7 @@ export interface ConnectedScatterPlot extends Chart, CardinalYAxis {
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
 
     readonly showYAxisGridLines?: boolean;
-
     readonly showXAxisGridLines?: boolean;
-    readonly yAxisTickFormat?: (x: string) => string;
 
     readonly xAxisMin?: number;
     readonly xAxisMax?: number;

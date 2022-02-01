@@ -5,4 +5,5 @@ export interface CardinalYAxis {
     readonly yAxisMax?: number;
     readonly yAxisTickInterval?: number;
     readonly yAxisScaleType?: ScaleType;
+    readonly yAxisTickFormat?: (x: string) => string;
 }

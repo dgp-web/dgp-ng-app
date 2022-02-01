@@ -1,13 +1,12 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";
+import { ScaleLinear, ScaleLogarithmic } from "d3";
 import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { formatLogTick, getLinearAxisTickValuesForInterval } from "../../shared/functions";
+import { createCardinalYAxis } from "../../shared/functions";
 import { ScaleType } from "../../shared/models";
-import { logTickValues } from "../../shared/constants";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createConnectedScatterPlotScales(payload: {
@@ -137,44 +136,11 @@ export function createConnectedScatterPlotScales(payload: {
     }
 
 
-    let yAxis: Axis<any>;
-    switch (payload.yAxisScaleType) {
-        default:
-        case ScaleType.Linear:
-
-            yAxis = d3.axisLeft(yAxisScale);
-
-            if (notNullOrUndefined(payload.yAxisTickInterval) && payload.yAxisTickInterval > 0) {
-
-                const tickValues = getLinearAxisTickValuesForInterval({
-                    axisScale: yAxisScale,
-                    tickInterval: payload.yAxisTickInterval
-                });
-
-                yAxis = yAxis
-                    .tickValues(tickValues as number[])
-                    .tickFormat(x => x.valueOf().toPrecision(3));
-
-            } else {
-                const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
-                    containerHeight: payload.containerHeight
-                });
-                yAxis = yAxis
-                    .ticks(yTickCount)
-                    .tickFormat(x => x.valueOf().toPrecision(3));
-            }
-
-            break;
-        case ScaleType.Logarithmic:
-            yAxis = d3.axisLeft(yAxisScale)
-                .tickValues(logTickValues)
-                .tickFormat(formatLogTick);
-            break;
-    }
-
-    if (notNullOrUndefined(payload.yAxisTickFormat)) {
-        yAxis = yAxis.tickFormat(payload.yAxisTickFormat as any);
-    }
+    const yAxis = createCardinalYAxis({
+        yAxisScale,
+        yAxisModel: payload,
+        containerHeight: payload.containerHeight
+    });
 
     return {
         xAxis,
@@ -192,3 +158,4 @@ export function createConnectedScatterPlotScales(payload: {
     };
 
 }
+
