@@ -3,7 +3,7 @@ import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.const
 import * as _ from "lodash";
 import * as d3 from "d3";
 import { ScaleLinear, ScaleLogarithmic } from "d3";
-import { createCardinalYAxis } from "../../shared/functions";
+import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
@@ -84,21 +84,7 @@ export function createBoxPlotScales(payload: {
         - config.margin.top
         - config.margin.bottom;
 
-    let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
-
-    switch (payload.yAxisScaleType) {
-        default:
-        case ScaleType.Linear:
-            yAxisScale = d3.scaleLinear()
-                .domain([yMax, yMin])
-                .range([0, barAreaHeight]);
-            break;
-        case ScaleType.Logarithmic:
-            yAxisScale = d3.scaleLog()
-                .domain([(yMax >= 0 ? yMax : 0.001), (yMin >= 0 ? yMin : 0.001)])
-                .range([0, barAreaHeight]);
-            break;
-    }
+    const yAxisScale = createYAxisScale({...payload, dataAreaHeight: barAreaHeight, yMin, yMax});
 
     const xAxisScale = d3.scaleBand()
         .domain(boxGroupKeys)

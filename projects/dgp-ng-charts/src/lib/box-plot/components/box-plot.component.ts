@@ -282,7 +282,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
                         || changes.xAxisTicks*/
             || changes.yAxisMin
             || changes.yAxisMax
-            || changes.yAxisTickInterval
+            || changes.yAxisStep
             || changes.yAxisScaleType
             || changes.controlLines
             || changes.chartTitle

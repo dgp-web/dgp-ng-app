@@ -1,11 +1,10 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { ScaleLinear, ScaleLogarithmic } from "d3";
 import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { createCardinalYAxis } from "../../shared/functions";
+import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
@@ -93,22 +92,7 @@ export function createConnectedScatterPlotScales(payload: {
         - config.margin.top
         - config.margin.bottom;
 
-    // TODO: Extract, use here and for box plot and try using yAxisStep in .base() of log scale
-    let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
-
-    switch (payload.yAxisScaleType) {
-        default:
-        case ScaleType.Linear:
-            yAxisScale = d3.scaleLinear()
-                .domain([yMax, yMin])
-                .range([0, dataAreaHeight]);
-            break;
-        case ScaleType.Logarithmic:
-            yAxisScale = d3.scaleLog()
-                .domain([(yMax >= 0 ? yMax : 0.001), (yMin >= 0 ? yMin : 0.001)])
-                .range([0, dataAreaHeight]);
-            break;
-    }
+    const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
     const xAxisScale = d3.scaleLinear()
         .domain([xMin, xMax])

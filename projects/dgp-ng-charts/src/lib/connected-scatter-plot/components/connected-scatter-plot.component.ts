@@ -247,7 +247,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.showXAxisGridLines
             || changes.yAxisMin
             || changes.yAxisMax
-            || changes.yAxisTickInterval
+            || changes.yAxisStep
             || changes.showYAxisGridLines
             || changes.yAxisScaleType
             || changes.controlLines
