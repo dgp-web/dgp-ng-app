@@ -1,13 +1,11 @@
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { Axis, ScaleLinear, ScaleLogarithmic } from "d3";
 import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { formatLogTick } from "../../shared/functions";
-import { ScaleType } from "../../shared/models";
-import { logTickValues } from "../../shared/constants";
+import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createConnectedScatterPlotScales(payload: {
@@ -17,14 +15,9 @@ export function createConnectedScatterPlotScales(payload: {
     readonly xAxisMax?: number;
     readonly xAxisTicks?: number;
     readonly xAxisTickFormat?: (x: string) => string;
-    readonly yAxisTickFormat?: (x: string) => string;
-    readonly yAxisMin?: number;
-    readonly yAxisMax?: number;
-    readonly yAxisTicks?: number;
-    readonly yAxisScaleType?: ScaleType;
     readonly containerWidth: number;
     readonly containerHeight: number;
-}, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
+} & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
 
     const valuesForXExtremumComputation = new Array<number>();
     const valuesForYExtremumComputation = new Array<number>();
@@ -99,22 +92,7 @@ export function createConnectedScatterPlotScales(payload: {
         - config.margin.top
         - config.margin.bottom;
 
-
-    let yAxisScale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
-
-    switch (payload.yAxisScaleType) {
-        default:
-        case ScaleType.Linear:
-            yAxisScale = d3.scaleLinear()
-                .domain([yMax, yMin])
-                .range([0, dataAreaHeight]);
-            break;
-        case ScaleType.Logarithmic:
-            yAxisScale = d3.scaleLog()
-                .domain([(yMax >= 0 ? yMax : 0.001), (yMin >= 0 ? yMin : 0.001)])
-                .range([0, dataAreaHeight]);
-            break;
-    }
+    const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
     const xAxisScale = d3.scaleLinear()
         .domain([xMin, xMax])
@@ -137,38 +115,11 @@ export function createConnectedScatterPlotScales(payload: {
     }
 
 
-    let yAxis: Axis<any>;
-    switch (payload.yAxisScaleType) {
-        default:
-        case ScaleType.Linear:
-
-
-            yAxis = d3.axisLeft(yAxisScale);
-
-            if (notNullOrUndefined(payload.yAxisTicks)) {
-                yAxis = yAxis
-                    .ticks(payload.yAxisTicks)
-                    .tickFormat(x => x.valueOf().toPrecision(3));
-            } else {
-                const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
-                    containerHeight: payload.containerHeight
-                });
-                yAxis = yAxis
-                    .ticks(yTickCount)
-                    .tickFormat(x => x.valueOf().toPrecision(3));
-            }
-
-            break;
-        case ScaleType.Logarithmic:
-            yAxis = d3.axisLeft(yAxisScale)
-                .tickValues(logTickValues)
-                .tickFormat(formatLogTick);
-            break;
-    }
-    
-    if (notNullOrUndefined(payload.yAxisTickFormat)) {
-        yAxis = yAxis.tickFormat(payload.yAxisTickFormat as any);
-    }
+    const yAxis = createCardinalYAxis({
+        yAxisScale,
+        yAxisModel: payload,
+        containerHeight: payload.containerHeight
+    });
 
     return {
         xAxis,
@@ -186,3 +137,4 @@ export function createConnectedScatterPlotScales(payload: {
     };
 
 }
+

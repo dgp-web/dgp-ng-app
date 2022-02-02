@@ -18,7 +18,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         stroke: Stroke.Dashed
     }],
     xAxisTicks: 5,
-    yAxisTicks: 5,
+    yAxisStep: 5,
     xAxisTickFormat: x => x.toString() + "x",
     showYAxisGridLines: true,
     showXAxisGridLines: true
@@ -48,7 +48,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"
                                                 [yAxisMax]="model.yAxisMax"
-                                                [yAxisTicks]="model.yAxisTicks"
+                                                [yAxisStep]="model.yAxisStep"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
 
@@ -185,7 +185,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     <input matInput
                                            type="number"
                                            [disabled]="disabled"
-                                           [ngModel]="model.yAxisTicks"
+                                           [ngModel]="model.yAxisStep"
                                            (ngModelChange)="setYAxisTicks($event)">
                                 </mat-form-field>
                             </dgp-inspector-item>
@@ -465,8 +465,8 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         this.updateModel({xAxisTicks});
     }
 
-    setYAxisTicks(yAxisTicks: number) {
-        this.updateModel({yAxisTicks});
+    setYAxisTicks(yAxisStep: number) {
+        this.updateModel({yAxisStep});
     }
 
     updateSelectedGroupShowVertices(showVertices: boolean) {
