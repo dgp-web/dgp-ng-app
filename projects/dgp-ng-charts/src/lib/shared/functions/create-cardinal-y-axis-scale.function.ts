@@ -24,10 +24,10 @@ export function createYAxisScale(payload: CardinalYAxis & {
                 .range([0, dataAreaHeight]);
             break;
         case ScaleType.Logarithmic:
+            yAxisScale = d3.scaleLog();
 
             if (notNullOrUndefined(yAxisStep) && yAxisStep > 0) {
-                yAxisScale = d3.scaleLog()
-                    .base(yAxisStep);
+                yAxisScale = (yAxisScale as ScaleLogarithmic<number, number>).base(yAxisStep);
             }
 
             yAxisScale = (yAxisScale as ScaleLogarithmic<number, number>)

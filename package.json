@@ -1,6 +1,6 @@
 {
   "name": "dgp-ng-app",
-  "version": "13.5.0",
+  "version": "13.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -36,7 +36,7 @@
     "docs-app:ng-serve": "ng serve ng-app",
     "docs-app:publish": "firebase use dgp-ng-app && firebase deploy --only hosting:dgp-ng-app",
     "dgp-labs:build:prod": "ng build --prod dgp-labs",
-    "dgp-labs:ng-serve": "ng serve dgp-labs",
+    "dgp-labs:ng-serve": "ng serve dgp-labs --configuration development",
     "dgp-labs:publish": "firebase use dgp-labs && firebase deploy --only hosting:dgp-labs",
     "dgp-labs:test": "ng test dgp-labs",
     "dgp-labs:test:prod": "ng test dgp-labs --single-run"

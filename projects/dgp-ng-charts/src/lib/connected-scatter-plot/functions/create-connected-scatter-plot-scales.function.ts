@@ -59,22 +59,28 @@ export function createConnectedScatterPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-    /* const yAxisDomain = getYAxisLimitsWithOffset({
-         limitsFromValues: {
-             min: yMin,
-             max: yMax
-         }
-     }, config);
- */
+    const dataAreaHeight = payload.containerHeight
+        - config.margin.top
+        - config.margin.bottom;
+
+    const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
+
     let marginLeft = config.margin.left;
 
     if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
 
+        /**
+         * We retrieve the configured formatter or the implicit default
+         * used by d3 which is scale.tickFormat()
+         */
+        const yAxisTickFormat = payload.yAxisTickFormat || yAxisScale.tickFormat();
+
+        /**
+         * Note: If this doesn't produce good results, then we can try to
+         * add additional values between the extrema to estimate this length
+         */
         const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => {
-                return x.toPrecision(3).length;
-                // return d3.format("~r")(x).length;
-            })
+            [yMin, yMax].map(x => yAxisTickFormat(x).length)
         );
 
         const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
@@ -87,12 +93,6 @@ export function createConnectedScatterPlotScales(payload: {
     const dataAreaWidth = payload.containerWidth
         - marginLeft
         - config.margin.right;
-
-    const dataAreaHeight = payload.containerHeight
-        - config.margin.top
-        - config.margin.bottom;
-
-    const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
     const xAxisScale = d3.scaleLinear()
         .domain([xMin, xMax])

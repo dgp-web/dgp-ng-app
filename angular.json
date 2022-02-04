@@ -248,6 +248,14 @@
                         ]
                     },
                     "configurations": {
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        },
                         "production": {
                             "fileReplacements": [
                                 {
@@ -285,6 +293,9 @@
                     "configurations": {
                         "production": {
                             "browserTarget": "dgp-labs:build:production"
+                        },
+                        "development": {
+                            "browserTarget": "dgp-labs:build:development"
                         }
                     }
                 },

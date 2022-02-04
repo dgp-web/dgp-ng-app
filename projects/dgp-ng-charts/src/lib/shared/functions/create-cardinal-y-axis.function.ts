@@ -30,16 +30,15 @@ export function createCardinalYAxis(payload: {
                 });
 
                 yAxis = yAxis
-                    .tickValues(tickValues as number[])
-                    .tickFormat(x => x.valueOf().toPrecision(3));
+                    .tickValues(tickValues as number[]);
 
             } else {
                 const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
                     containerHeight: payload.containerHeight
                 });
                 yAxis = yAxis
-                    .ticks(yTickCount)
-                    .tickFormat(x => x.valueOf().toPrecision(3));
+                    .ticks(yTickCount);
+
             }
 
             break;
