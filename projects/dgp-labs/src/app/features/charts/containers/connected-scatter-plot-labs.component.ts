@@ -18,10 +18,12 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         stroke: Stroke.Dashed
     }],
     xAxisTicks: 5,
-    yAxisStep: 5,
     xAxisTickFormat: x => x.toString() + "x",
     showYAxisGridLines: true,
-    showXAxisGridLines: true
+    showXAxisGridLines: true,
+    yAxisMin: Math.pow(10, -15),
+    yAxisMax: Math.pow(10, 15),
+    yAxisScaleType: ScaleType.Logarithmic
 };
 
 @Component({
