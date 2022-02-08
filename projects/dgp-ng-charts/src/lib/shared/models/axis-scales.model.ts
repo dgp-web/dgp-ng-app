@@ -1,6 +1,7 @@
 import { AxisScale } from "d3-axis";
 import { ChartMargin } from "./chart-margin.model";
 import { Axis } from "d3";
+import { CardinalYAxis } from "./cardinal-y-axis.model";
 
 export interface AxisScales {
     readonly containerWidth: number;
@@ -17,4 +18,5 @@ export interface AxisScales {
     readonly xAxis: Axis<any>;
     readonly yAxisScale: AxisScale<any>;
     readonly yAxis: Axis<any>;
+    readonly yAxisModel: CardinalYAxis;
 }

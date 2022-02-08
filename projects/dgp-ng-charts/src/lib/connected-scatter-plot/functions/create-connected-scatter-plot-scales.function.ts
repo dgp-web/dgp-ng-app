@@ -133,6 +133,13 @@ export function createConnectedScatterPlotScales(payload: {
         chartMargin: {
             ...config.margin,
             left: marginLeft
+        },
+        yAxisModel: {
+            yAxisMax: payload.yAxisMax,
+            yAxisMin: payload.yAxisMin,
+            yAxisScaleType: payload.yAxisScaleType,
+            yAxisStep: payload.yAxisStep,
+            yAxisTickFormat: payload.yAxisTickFormat
         }
     };
 
