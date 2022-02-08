@@ -122,7 +122,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Grid lines"
-                                                matIconName="pin">
+                                                matIconName="border_vertical">
                                 <mat-slide-toggle [disabled]="disabled"
                                                   [ngModel]="model.showXAxisGridLines"
                                                   (ngModelChange)="setShowXAxisGridLines($event)"></mat-slide-toggle>
@@ -193,7 +193,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Grid lines"
-                                                matIconName="pin">
+                                                matIconName="border_horizontal">
                                 <mat-slide-toggle [disabled]="disabled"
                                                   [ngModel]="model.showYAxisGridLines"
                                                   (ngModelChange)="setShowYAxisGridLines($event)"></mat-slide-toggle>
