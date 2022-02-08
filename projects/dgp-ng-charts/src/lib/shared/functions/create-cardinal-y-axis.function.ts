@@ -6,6 +6,8 @@ import { getLinearAxisTickValuesForStep } from "./get-linear-axis-tick-values-fo
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 import { formatLogTick } from "./format-log-tick.function";
 import { getLogTickValues } from "../function/get-log-tick-values.function";
+import { NumericDomain } from "../models/numeric-domain.model";
+import { byDomain } from "./by-domain.function";
 
 export function createCardinalYAxis(payload: {
     readonly yAxisModel: CardinalYAxis;
@@ -45,9 +47,13 @@ export function createCardinalYAxis(payload: {
         case ScaleType.Logarithmic:
             const typedScale = yAxisScale as ScaleLogarithmic<number, number>;
             const base = typedScale.base();
+            const domain = typedScale.domain();
+
+            const tickValues = getLogTickValues(base)
+                .filter(byDomain(domain as NumericDomain));
 
             yAxis = d3.axisLeft(yAxisScale)
-                .tickValues(getLogTickValues(base))
+                .tickValues(tickValues)
                 .tickFormat(value => formatLogTick(value as unknown as number, base));
             break;
 
@@ -59,3 +65,4 @@ export function createCardinalYAxis(payload: {
 
     return yAxis;
 }
+
