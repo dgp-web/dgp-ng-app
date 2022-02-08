@@ -30,7 +30,7 @@ describe("table-cell-editor functions", () => {
                 left: 32,
                 right: 640 - 32,
                 bottom: 480 - (16 + 8),
-                top: 480 - 16
+                top: 16
             }
         };
 
@@ -54,7 +54,10 @@ describe("table-cell-editor functions", () => {
                     top: 480 - 16
                 }
             },
-            configureDialogWidth: 700
+            configureDialogWidth: 700,
+            triggerButtonElement: {
+                offsetHeight: 8
+            } as HTMLElement
         });
 
         const expectedResult: DialogPosition = {

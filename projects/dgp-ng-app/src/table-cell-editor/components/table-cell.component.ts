@@ -108,7 +108,7 @@ export class DgpTableCellComponent {
         });
 
         const position = getDialogPositionFromTableCellEditorSizes({
-            tableCellEditorSizes, configureDialogWidth
+            tableCellEditorSizes, configureDialogWidth, triggerButtonElement
         });
 
         this.dialogRef = this.matDialog.open(this.editorTemplate, {

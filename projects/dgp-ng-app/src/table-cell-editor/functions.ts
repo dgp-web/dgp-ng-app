@@ -15,7 +15,7 @@ export function computeTableCellEditorSizes(payload: {
             left: payload.tableCellBoundingRect.left,
             right: payload.window.innerWidth - (payload.tableCellBoundingRect.left),
             bottom: payload.window.innerHeight - (payload.tableCellBoundingRect.top + payload.triggerButtonElement.offsetHeight),
-            top: payload.window.innerHeight - payload.tableCellBoundingRect.top
+            top: payload.tableCellBoundingRect.top
         }
     };
 
@@ -23,6 +23,7 @@ export function computeTableCellEditorSizes(payload: {
 
 export function getDialogPositionFromTableCellEditorSizes(payload: {
     readonly tableCellEditorSizes: TableCellEditorSizes;
+    readonly triggerButtonElement: HTMLElement;
     readonly configureDialogWidth: number;
 }): DialogPosition {
 
@@ -39,6 +40,17 @@ export function getDialogPositionFromTableCellEditorSizes(payload: {
         result = {
             ...result,
             left: (payload.tableCellEditorSizes.offsetRight - payload.configureDialogWidth) + "px"
+        };
+    }
+
+    if (payload.tableCellEditorSizes.availableSpace.bottom < 240
+        && payload.tableCellEditorSizes.availableSpace.top >= 240) {
+        result = {
+            ...result,
+            top: null,
+            bottom: null,
+            left: null,
+            right: null
         };
     }
 
