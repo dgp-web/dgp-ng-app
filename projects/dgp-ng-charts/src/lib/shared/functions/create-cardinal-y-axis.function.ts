@@ -7,7 +7,7 @@ import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-f
 import { formatLogTick } from "./format-log-tick.function";
 import { getLogTickValues } from "../function/get-log-tick-values.function";
 import { NumericDomain } from "../models/numeric-domain.model";
-import { byDomain } from "./by-domain.function";
+import { byInvertedDomain } from "./by-domain.function";
 
 export function createCardinalYAxis(payload: {
     readonly yAxisModel: CardinalYAxis;
@@ -50,7 +50,7 @@ export function createCardinalYAxis(payload: {
             const domain = typedScale.domain();
 
             const tickValues = getLogTickValues(base)
-                .filter(byDomain(domain as NumericDomain));
+                .filter(byInvertedDomain(domain as NumericDomain));
 
             yAxis = d3.axisLeft(yAxisScale)
                 .tickValues(tickValues)

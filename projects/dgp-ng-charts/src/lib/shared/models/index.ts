@@ -8,3 +8,4 @@ export * from "./scale-type.model";
 export * from "./shared-chart-config.model";
 export * from "./with-cardinal-scale-offset.model";
 export { CardinalD3AxisScale } from "./cardinal-d3-axis-scale.model";
+export { CardinalXAxis } from "./cardinal-x-axis.model";

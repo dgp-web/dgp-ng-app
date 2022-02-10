@@ -1,23 +1,19 @@
 import * as _ from "lodash";
-import * as d3 from "d3";
 import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
-import { CardinalYAxis, ScaleType } from "../../shared/models";
-import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
+import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
+import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
+import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
-    readonly xAxisMin?: number;
-    readonly xAxisMax?: number;
-    readonly xAxisTicks?: number;
-    readonly xAxisTickFormat?: (x: string) => string;
     readonly containerWidth: number;
     readonly containerHeight: number;
-} & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
+} & CardinalXAxis & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
 
     const valuesForXExtremumComputation = new Array<number>();
     const valuesForYExtremumComputation = new Array<number>();
@@ -94,26 +90,13 @@ export function createConnectedScatterPlotScales(payload: {
         - marginLeft
         - config.margin.right;
 
-    const xAxisScale = d3.scaleLinear()
-        .domain([xMin, xMax])
-        .range([0, dataAreaWidth]);
+    const xAxisScale = createXAxisScale({...payload, dataAreaWidth, xMin, xMax});
 
-    let xAxis = d3.axisBottom(xAxisScale);
-    if (notNullOrUndefined(payload.xAxisTicks)) {
-        xAxis = xAxis
-            .ticks(payload.xAxisTicks);
-    } else {
-        const xTickCount = axisTickFormattingService.estimateContinuousXAxisTickCount({
-            containerWidth: payload.containerWidth
-        });
-        xAxis = xAxis
-            .ticks(xTickCount);
-    }
-
-    if (notNullOrUndefined(payload.xAxisTickFormat)) {
-        xAxis = xAxis.tickFormat(payload.xAxisTickFormat as any);
-    }
-
+    const xAxis = createCardinalXAxis({
+        xAxisScale,
+        xAxisModel: payload,
+        containerWidth: payload.containerWidth
+    });
 
     const yAxis = createCardinalYAxis({
         yAxisScale,
@@ -140,6 +123,13 @@ export function createConnectedScatterPlotScales(payload: {
             yAxisScaleType: payload.yAxisScaleType,
             yAxisStep: payload.yAxisStep,
             yAxisTickFormat: payload.yAxisTickFormat
+        },
+        xAxisModel: {
+            xAxisMax: payload.xAxisMax,
+            xAxisMin: payload.xAxisMin,
+            xAxisScaleType: payload.xAxisScaleType,
+            xAxisStep: payload.xAxisStep,
+            xAxisTickFormat: payload.xAxisTickFormat
         }
     };
 
