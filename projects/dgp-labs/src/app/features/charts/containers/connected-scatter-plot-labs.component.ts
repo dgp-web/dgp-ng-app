@@ -17,12 +17,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         value: 7,
         stroke: Stroke.Dashed
     }],
-    xAxisStep: 5,
-    xAxisTickFormat: x => x.toString() + "x",
     showYAxisGridLines: true,
     showXAxisGridLines: true,
-    yAxisMin: 0.01,
-    yAxisMax: 105,
     yAxisScaleType: ScaleType.Linear,
     xAxisScaleType: ScaleType.Logarithmic
 };
