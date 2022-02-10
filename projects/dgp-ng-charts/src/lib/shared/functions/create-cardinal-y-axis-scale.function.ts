@@ -20,7 +20,7 @@ export function createXAxisScale(payload: CardinalXAxis & {
         default:
         case ScaleType.Linear:
             xAxisScale = d3.scaleLinear()
-                .domain([xMax, xMin])
+                .domain([xMin, xMax])
                 .range([0, dataAreaWidth]);
             break;
         case ScaleType.Logarithmic:
@@ -31,7 +31,7 @@ export function createXAxisScale(payload: CardinalXAxis & {
             }
 
             xAxisScale = (xAxisScale as ScaleLogarithmic<number, number>)
-                .domain([(xMax >= 0 ? xMax : 0.001), (xMin >= 0 ? xMin : 0.001)])
+                .domain([(xMin >= 0 ? xMin : 0.001), (xMax >= 0 ? xMax : 0.001)])
                 .range([0, dataAreaWidth]);
             break;
     }

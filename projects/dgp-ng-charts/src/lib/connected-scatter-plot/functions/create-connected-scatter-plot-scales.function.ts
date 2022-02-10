@@ -1,12 +1,12 @@
 import * as _ from "lodash";
-import * as d3 from "d3";
 import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../models";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
-import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
+import { createXAxisScale } from "../../shared/functions/create-cardinal-y-axis-scale.function";
+import { createCardinalXAxis } from "../../shared/functions/create-cardinal-y-axis.function";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
@@ -90,26 +90,13 @@ export function createConnectedScatterPlotScales(payload: {
         - marginLeft
         - config.margin.right;
 
-    const xAxisScale = d3.scaleLinear()
-        .domain([xMin, xMax])
-        .range([0, dataAreaWidth]);
+    const xAxisScale = createXAxisScale({...payload, dataAreaWidth, xMin, xMax});
 
-    let xAxis = d3.axisBottom(xAxisScale);
-    if (notNullOrUndefined(payload.xAxisStep)) {
-        xAxis = xAxis
-            .ticks(payload.xAxisStep);
-    } else {
-        const xTickCount = axisTickFormattingService.estimateContinuousXAxisTickCount({
-            containerWidth: payload.containerWidth
-        });
-        xAxis = xAxis
-            .ticks(xTickCount);
-    }
-
-    if (notNullOrUndefined(payload.xAxisTickFormat)) {
-        xAxis = xAxis.tickFormat(payload.xAxisTickFormat as any);
-    }
-
+    const xAxis = createCardinalXAxis({
+        xAxisScale,
+        xAxisModel: payload,
+        containerWidth: payload.containerWidth
+    });
 
     const yAxis = createCardinalYAxis({
         yAxisScale,
