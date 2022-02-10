@@ -188,10 +188,13 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     xAxisMax?: number;
 
     @Input()
-    xAxisTicks?: number;
+    xAxisStep?: number;
 
     @Input()
     showXAxisGridLines = true;
+
+    @Input()
+    xAxisScaleType?: ScaleType;
 
     @Input()
     yAxisTickFormat?: (x: string) => string;
@@ -243,7 +246,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             || changes.selection
             || changes.xAxisMin
             || changes.xAxisMax
-            || changes.xAxisTicks
+            || changes.xAxisStep
             || changes.showXAxisGridLines
             || changes.yAxisMin
             || changes.yAxisMax
@@ -275,11 +278,14 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
             containerWidth: payload.containerWidth,
             connectedScatterGroups: this.model,
             controlLines: this.controlLines,
-            yAxisScaleType: this.yAxisScaleType,
+            // x axis
+            xAxisScaleType: this.xAxisScaleType,
+            xAxisTickFormat: this.xAxisTickFormat,
             xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
             xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
-            xAxisTicks: notNullOrUndefined(this.xAxisTicks) ? +this.xAxisTicks : undefined,
-            xAxisTickFormat: this.xAxisTickFormat,
+            xAxisStep: notNullOrUndefined(this.xAxisStep) ? +this.xAxisStep : undefined,
+            // y axis
+            yAxisScaleType: this.yAxisScaleType,
             yAxisTickFormat: this.yAxisTickFormat,
             yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
             yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,

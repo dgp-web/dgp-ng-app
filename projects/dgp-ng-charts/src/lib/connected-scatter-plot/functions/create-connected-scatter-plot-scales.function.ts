@@ -5,19 +5,15 @@ import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
-import { CardinalYAxis, ScaleType } from "../../shared/models";
+import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
-    readonly xAxisMin?: number;
-    readonly xAxisMax?: number;
-    readonly xAxisTicks?: number;
-    readonly xAxisTickFormat?: (x: string) => string;
     readonly containerWidth: number;
     readonly containerHeight: number;
-} & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
+} & CardinalXAxis & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
 
     const valuesForXExtremumComputation = new Array<number>();
     const valuesForYExtremumComputation = new Array<number>();
@@ -99,9 +95,9 @@ export function createConnectedScatterPlotScales(payload: {
         .range([0, dataAreaWidth]);
 
     let xAxis = d3.axisBottom(xAxisScale);
-    if (notNullOrUndefined(payload.xAxisTicks)) {
+    if (notNullOrUndefined(payload.xAxisStep)) {
         xAxis = xAxis
-            .ticks(payload.xAxisTicks);
+            .ticks(payload.xAxisStep);
     } else {
         const xTickCount = axisTickFormattingService.estimateContinuousXAxisTickCount({
             containerWidth: payload.containerWidth
@@ -140,6 +136,13 @@ export function createConnectedScatterPlotScales(payload: {
             yAxisScaleType: payload.yAxisScaleType,
             yAxisStep: payload.yAxisStep,
             yAxisTickFormat: payload.yAxisTickFormat
+        },
+        xAxisModel: {
+            xAxisMax: payload.xAxisMax,
+            xAxisMin: payload.xAxisMin,
+            xAxisScaleType: payload.xAxisScaleType,
+            xAxisStep: payload.xAxisStep,
+            xAxisTickFormat: payload.xAxisTickFormat
         }
     };
 

@@ -17,13 +17,14 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         value: 7,
         stroke: Stroke.Dashed
     }],
-    xAxisTicks: 5,
+    xAxisStep: 5,
     xAxisTickFormat: x => x.toString() + "x",
     showYAxisGridLines: true,
     showXAxisGridLines: true,
-    yAxisMin: Math.pow(10, -15),
-    yAxisMax: Math.pow(10, 15),
-    yAxisScaleType: ScaleType.Logarithmic
+    yAxisMin: 0.01,
+    yAxisMax: 105,
+    yAxisScaleType: ScaleType.Linear,
+    xAxisScaleType: ScaleType.Logarithmic
 };
 
 @Component({
@@ -43,8 +44,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [xAxisTitle]="model.xAxisTitle"
                                                 [xAxisMin]="model.xAxisMin"
                                                 [xAxisMax]="model.xAxisMax"
-                                                [xAxisTicks]="model.xAxisTicks"
+                                                [xAxisStep]="model.xAxisStep"
                                                 [xAxisTickFormat]="model.xAxisTickFormat"
+                                                [xAxisScaleType]="model.xAxisScaleType"
                                                 [showXAxisGridLines]="model.showXAxisGridLines"
                                                 [yAxisTitle]="model.yAxisTitle"
                                                 [yAxisScaleType]="model.yAxisScaleType"
@@ -88,6 +90,22 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </mat-form-field>
                             </dgp-inspector-item>
 
+                            <dgp-inspector-item label="Scale"
+                                                matIconName="linear_scale">
+                                <mat-form-field class="ml-32px">
+                                    <mat-select [disabled]="disabled"
+                                                [ngModel]="model.xAxisScaleType"
+                                                (ngModelChange)="updateXAxisScaleType($event)">
+                                        <mat-option [value]="scaleTypeEnum.Linear">
+                                            Linear
+                                        </mat-option>
+                                        <mat-option [value]="scaleTypeEnum.Logarithmic">
+                                            Logarithmic
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
                             <dgp-inspector-item label="Max"
                                                 matIconName="maximize">
                                 <mat-form-field class="ml-32px">
@@ -116,8 +134,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     <input matInput
                                            type="number"
                                            [disabled]="disabled"
-                                           [ngModel]="model.xAxisTicks"
-                                           (ngModelChange)="setXAxisTicks($event)">
+                                           [ngModel]="model.xAxisStep"
+                                           (ngModelChange)="setXAxisStep($event)">
                                 </mat-form-field>
                             </dgp-inspector-item>
 
@@ -402,6 +420,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         this.updateModel({yAxisScaleType});
     }
 
+    updateXAxisScaleType(xAxisScaleType: ScaleType) {
+        this.updateModel({xAxisScaleType});
+    }
+
     setShowYAxisGridLines(showYAxisGridLines: boolean) {
         this.updateModel({showYAxisGridLines});
     }
@@ -463,8 +485,8 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         this.updateSelectedGroup({colorHex});
     }
 
-    setXAxisTicks(xAxisTicks: number) {
-        this.updateModel({xAxisTicks});
+    setXAxisStep(xAxisStep: number) {
+        this.updateModel({xAxisStep});
     }
 
     setYAxisTicks(yAxisStep: number) {

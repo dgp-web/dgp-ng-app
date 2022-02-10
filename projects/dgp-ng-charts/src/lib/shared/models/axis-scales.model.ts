@@ -2,6 +2,7 @@ import { AxisScale } from "d3-axis";
 import { ChartMargin } from "./chart-margin.model";
 import { Axis } from "d3";
 import { CardinalYAxis } from "./cardinal-y-axis.model";
+import { CardinalXAxis } from "./cardinal-x-axis.model";
 
 export interface AxisScales {
     readonly containerWidth: number;
@@ -19,4 +20,5 @@ export interface AxisScales {
     readonly yAxisScale: AxisScale<any>;
     readonly yAxis: Axis<any>;
     readonly yAxisModel: CardinalYAxis;
+    readonly xAxisModel?: CardinalXAxis; // TODO: Adjust so other variants can be used --> e.g. for box plot --> band scale
 }
