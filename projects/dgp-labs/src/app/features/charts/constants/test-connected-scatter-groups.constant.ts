@@ -25,7 +25,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
         stroke: Stroke.DashDotted,
 
         dots: [
-            {x: 2, y: 5},
+            {x: 0.01, y: 5},
             {x: 541, y: 2},
             {x: 678, y: 4},
             {x: 712, y: 3},

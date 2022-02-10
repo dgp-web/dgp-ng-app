@@ -5,8 +5,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
-import { createXAxisScale } from "../../shared/functions/create-cardinal-y-axis-scale.function";
-import { createCardinalXAxis } from "../../shared/functions/create-cardinal-y-axis.function";
+import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
+import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
