@@ -35,7 +35,7 @@ export class DgpChartXAxisGridLinesDirective implements OnChanges {
                 .tickFormat(noopTickFormat)
                 .tickSizeInner(-innerTickSize);
 
-            if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Logarithmic) {
+            if (this.scales.xAxisModel?.xAxisScaleType === ScaleType.Logarithmic) {
                 const typedAxisScale = this.scales.xAxis.scale() as ScaleLogarithmic<number, number>;
                 const base = typedAxisScale.base();
                 if (base === 10) {
