@@ -52,8 +52,6 @@ export function createCardinalXAxis(payload: {
             const tickValues = getLogTickValues(base)
                 .filter(byDomain(domain as NumericDomain));
 
-            console.log(tickValues);
-
             xAxis = d3.axisBottom(xAxisScale)
                 .tickValues(tickValues)
                 .tickFormat(value => formatLogTick(value as unknown as number, base));
