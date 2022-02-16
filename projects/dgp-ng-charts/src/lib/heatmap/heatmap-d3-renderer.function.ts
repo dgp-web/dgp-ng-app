@@ -66,7 +66,9 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
         ctx.beginPath();
 
-        ctx.fillStyle = colorScale(tile.value) as any;
+        ctx.fillStyle = notNullOrUndefined(tile.value)
+            ? colorScale(tile.value) as any
+            : "transparent";
         ctx.fillRect(
             xAxis(tile.x.toString()),
             yAxis(tile.y.toString()),

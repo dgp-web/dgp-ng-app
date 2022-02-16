@@ -174,10 +174,14 @@ export class ChartsLabsComponent {
 
         for (let i = 0; i < 50; i++) {
             for (let j = 0; j < 150; j++) {
+
+                const value = Math.random() * (i + j);
+                const useNullValue = (i + j) % 2;
+
                 heatmapTiles.push({
                     x: j,
                     y: i,
-                    value: Math.random() * (i + j)
+                    value: useNullValue ? null : value
                 });
             }
         }
