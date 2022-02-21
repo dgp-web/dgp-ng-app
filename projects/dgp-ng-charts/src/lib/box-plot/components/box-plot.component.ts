@@ -44,7 +44,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
                 <svg #svgRoot
                      class="chart-svg"
-                     *ngIf="boxPlotScales"
+                     *ngIf="model && boxPlotScales"
                      [attr.viewBox]="getViewBox()">
 
                     <defs>
