@@ -13,6 +13,7 @@ export function createBoxPlotScales(payload: {
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly containerWidth: number;
     readonly containerHeight: number;
+    readonly xAxisTickFormat?: (x: string) => string;
 } & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
 
     const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
@@ -107,7 +108,11 @@ export function createBoxPlotScales(payload: {
         containerWidth: payload.containerWidth
     });
 
-    const xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
+    let xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
+
+    if (notNullOrUndefined(payload.xAxisTickFormat)) {
+        xAxis = xAxis.tickFormat(payload.yAxisTickFormat as any);
+    }
 
     const yAxis = createCardinalYAxis({
         yAxisScale,

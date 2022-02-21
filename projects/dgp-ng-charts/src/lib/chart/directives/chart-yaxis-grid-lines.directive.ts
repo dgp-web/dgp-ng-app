@@ -4,7 +4,7 @@ import * as d3 from "d3";
 import { ScaleLogarithmic } from "d3";
 import { AxisScales, ScaleType } from "../../shared/models";
 import { getMinorLogGridValues } from "../functions/get-minor-log-grid-values.function";
-import { byDomain } from "../../shared/functions/by-domain.function";
+import { byDomain, byInvertedDomain } from "../../shared/functions/by-domain.function";
 import { NumericDomain } from "../../shared/models/numeric-domain.model";
 import { noopTickFormat } from "../constants/noop-tick-format.constant";
 
@@ -28,12 +28,12 @@ export class DgpChartYAxisGridLinesDirective implements OnChanges {
                 .tickFormat(noopTickFormat)
                 .tickSizeInner(-innerTickSize);
 
-            if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Logarithmic) {
+            if (this.scales.yAxisModel?.yAxisScaleType === ScaleType.Logarithmic) {
                 const typedAxisScale = this.scales.yAxis.scale() as ScaleLogarithmic<number, number>;
                 const base = typedAxisScale.base();
                 if (base === 10) {
                     const tickValues = getMinorLogGridValues(base)
-                        .filter(byDomain(typedAxisScale.domain() as NumericDomain));
+                        .filter(byInvertedDomain(typedAxisScale.domain() as NumericDomain));
                     yGridDummyAxis.tickValues(tickValues as number[]);
                 }
             }

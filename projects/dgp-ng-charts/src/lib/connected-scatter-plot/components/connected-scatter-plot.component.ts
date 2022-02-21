@@ -47,7 +47,7 @@ import { ScaleType } from "../../shared/models";
                  #chartContainer>
 
                 <svg #svgRoot
-                     *ngIf="connectedScatterPlotScales"
+                     *ngIf="model && connectedScatterPlotScales"
                      class="chart-svg"
                      [attr.viewBox]="getViewBox()">
 

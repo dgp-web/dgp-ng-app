@@ -44,7 +44,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
                 <svg #svgRoot
                      class="chart-svg"
-                     *ngIf="boxPlotScales"
+                     *ngIf="model && boxPlotScales"
                      [attr.viewBox]="getViewBox()">
 
                     <defs>
@@ -225,6 +225,9 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     boxPlotScales: BoxPlotScales;
 
     @Input()
+    xAxisTickFormat?: (x: string) => string;
+
+    @Input()
     yAxisMin?: number;
 
     @Input()
@@ -291,6 +294,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             || changes.showXAxisGridLines
             || changes.showYAxisGridLines
             || changes.yAxisTickFormat
+            || changes.xAxisTickFormat
         ) {
             this.drawChartActionScheduler.emit();
         }
@@ -313,7 +317,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
             yAxisScaleType: this.yAxisScaleType,
             controlLines: this.controlLines,
             yAxisTickFormat: this.yAxisTickFormat,
-            yAxisStep: this.yAxisStep
+            yAxisStep: this.yAxisStep,
+            xAxisTickFormat: this.xAxisTickFormat
         });
 
         this.cd.markForCheck();

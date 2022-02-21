@@ -37,6 +37,8 @@ export class DgpLineChartLineDirective implements OnChanges {
 
             const d = createLine(this.series.dots as Array<Dot>);
 
+            if (d.includes("NaN")) return;
+
             this.renderer.setAttribute(this.elementRef.nativeElement, "d", d);
 
         }

@@ -5,7 +5,7 @@ import { BoxPlotControlLine } from "./box-plot-control-line.model";
 export interface BoxPlot extends Chart, CardinalYAxis {
     readonly model: ReadonlyArray<BoxGroup>;
 
-    readonly yAxisTickFormat?: (x: string) => string;
+    readonly xAxisTickFormat?: (x: string) => string;
     readonly showYAxisGridLines?: boolean;
     readonly showXAxisGridLines?: boolean;
 
