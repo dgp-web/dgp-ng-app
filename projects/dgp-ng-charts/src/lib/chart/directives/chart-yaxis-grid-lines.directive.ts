@@ -28,7 +28,7 @@ export class DgpChartYAxisGridLinesDirective implements OnChanges {
                 .tickFormat(noopTickFormat)
                 .tickSizeInner(-innerTickSize);
 
-            if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Logarithmic) {
+            if (this.scales.yAxisModel?.yAxisScaleType === ScaleType.Logarithmic) {
                 const typedAxisScale = this.scales.yAxis.scale() as ScaleLogarithmic<number, number>;
                 const base = typedAxisScale.base();
                 if (base === 10) {
