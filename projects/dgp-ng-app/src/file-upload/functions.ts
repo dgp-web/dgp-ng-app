@@ -1,6 +1,6 @@
 import { FileItem } from "../file-viewer/models";
 import { createGuid } from "../broadcast/functions/create-guid.function";
-import { Matrix } from "../utils/matrix.model";
+import { Matrix } from "data-modeling";
 
 export function parseFileNameWithExtension(fileNameWithExtension: string): {
     readonly extension: string;
