@@ -1,5 +1,5 @@
 import { Directive, Input } from "@angular/core";
-import { observeInput$ } from "./observe-input";
+import { observeAttribute$ } from "./observe-input";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -10,7 +10,7 @@ export abstract class DgpViewComponentBase<TModel> {
 
     protected modelValue: TModel = null;
 
-    readonly model$ = observeInput$(this as DgpViewComponentBase<TModel>, "model");
+    readonly model$ = observeAttribute$(this as DgpViewComponentBase<TModel>, "model");
 
     constructor() {
         /**

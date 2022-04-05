@@ -1,7 +1,7 @@
 import { isEqual } from "lodash";
 import { getOrCreateRxAttribute$ } from "./functions/get-or-create-rx-attribute$.function";
 
-export function observeInput$<TTarget extends object, TAttributeKey extends keyof TTarget>(
+export function observeAttribute$<TTarget extends object, TAttributeKey extends keyof TTarget>(
     target: TTarget, attributeKey: TAttributeKey
 ) {
 
