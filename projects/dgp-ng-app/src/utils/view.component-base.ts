@@ -1,5 +1,5 @@
 import { Directive, Input } from "@angular/core";
-import { observeAttribute$ } from "./observe-input";
+import { observeAttribute$ } from "./observe-input/observe-attribute$.function";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix

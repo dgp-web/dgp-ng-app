@@ -12,6 +12,7 @@ export function observeAttribute$<TTarget extends object, TAttributeKey extends 
     Object.defineProperty(target, attributeKey, {
         set(value) {
             if (isEqual(value, attribute$.value)) return;
+
             attribute$.next(value);
         },
         get() {
