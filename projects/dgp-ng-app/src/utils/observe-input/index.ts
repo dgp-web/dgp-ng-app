@@ -1,2 +1,2 @@
 export * from "./models";
-export * from "./observe-input$.function";
+export * from "./observe-attribute$.function";
