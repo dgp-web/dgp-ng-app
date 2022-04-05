@@ -9,7 +9,8 @@ export abstract class DgpViewComponentBase<TModel> {
     disabled: boolean;
 
     protected modelValue: TModel = null;
-    readonly model$ = observeInput$(this, "model");
+
+    readonly model$ = observeInput$(this as DgpViewComponentBase<TModel>, "model");
 
     constructor() {
         /**
