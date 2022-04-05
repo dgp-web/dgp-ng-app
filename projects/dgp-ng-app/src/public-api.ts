@@ -3,7 +3,13 @@
  */
 
 // action context
+
 import { negateMap } from "./utils/negate-map.function";
+
+/**
+ * @deprecated
+ */
+export { resolveAsMany, mutatify } from "data-modeling";
 
 export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
@@ -198,7 +204,6 @@ export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { AppFeature } from "./utils/app-feature.model";
-export { AttributeMetadata } from "./utils/attribute-metadata";
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
 export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
 export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
@@ -207,13 +212,12 @@ export { filterEmpty } from "./utils/filter-empty.function";
 export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.function";
 export { flattenMatrix } from "./utils/flatten-matrix.function";
 export { getHashCode } from "./utils/get-hash-code.function";
-export { ModelMetadata } from "./utils/model-metadata";
 export { negate } from "./utils/negate.function";
 export { negateMap } from "./utils/negate-map.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { DgpHybridComponentBase, HybridComponentBase } from "./utils/hybrid.component-base";
-export { Matrix } from "./utils/matrix.model";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
+export * from "./utils/observe-input";
 export {
     DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig
 } from "./utils/select-entity-via-route.resolver-base";
@@ -228,7 +232,6 @@ export { firstAsPromise } from "./utils/first-as-promise";
 export { there } from "./utils/there.function";
 export { DgpViewComponentBase } from "./utils/view.component-base";
 export { DgpView } from "./utils/view";
-export { resolveAsMany } from "./utils/resolve-as-many.function";
 export { getDefaultValue } from "./utils/get-default-value.function";
 export { byUnique } from "./utils/by-unique.function";
 export { matrixToMany } from "./utils/matrix-to-many.constant";

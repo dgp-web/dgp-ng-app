@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Inject, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { AxisScales } from "../../shared/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 @Directive({selector: "[dgpChartDataAreaClipPath]"})
 export class DgpChartDataAreaClipPathDirective implements OnChanges {
@@ -23,8 +24,15 @@ export class DgpChartDataAreaClipPathDirective implements OnChanges {
 
             this.renderer.setAttribute(rect, "x", "-1");
             this.renderer.setAttribute(rect, "y", "-4");
-            this.renderer.setAttribute(rect, "width", (this.scales.dataAreaWidth+5).toString());
-            this.renderer.setAttribute(rect, "height", (this.scales.dataAreaHeight+5).toString());
+            const width = (this.scales.dataAreaWidth + 5).toString();
+            if (notNullOrUndefined(width) && !width.includes("NaN") && this.scales.dataAreaWidth + 5 > 0) {
+                this.renderer.setAttribute(rect, "width", width);
+            }
+
+            const height = (this.scales.dataAreaHeight + 5).toString();
+            if (notNullOrUndefined(height) && !height.includes("NaN") && this.scales.dataAreaHeight + 5 > 0) {
+                this.renderer.setAttribute(rect, "height", height);
+            }
 
             this.elementRef.nativeElement.innerHTML = "";
             this.elementRef.nativeElement.appendChild(rect);

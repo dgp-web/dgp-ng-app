@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     `,
     styles: [`
         :host {
-            padding: 8px;
+            padding: 0px;
             overflow: auto;
         }
     `],

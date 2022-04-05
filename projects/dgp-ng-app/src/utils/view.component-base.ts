@@ -1,6 +1,5 @@
 import { Directive, Input } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { isEqual } from "lodash";
+import { observeAttribute$ } from "./observe-input/observe-attribute$.function";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -10,19 +9,17 @@ export abstract class DgpViewComponentBase<TModel> {
     disabled: boolean;
 
     protected modelValue: TModel = null;
-    readonly model$ = new BehaviorSubject<TModel>(this.modelValue);
+
+    readonly model$ = observeAttribute$(this as DgpViewComponentBase<TModel>, "model");
+
+    constructor() {
+        /**
+         * Ensure the initial model value is correctly derived
+         */
+        this.model = this.modelValue;
+    }
 
     @Input()
-    get model(): TModel {
-        return this.modelValue;
-    }
-
-    set model(value: TModel) {
-
-        if (isEqual(value, this.modelValue)) return;
-
-        this.modelValue = value;
-        this.model$.next(value);
-    }
+    model: TModel;
 
 }

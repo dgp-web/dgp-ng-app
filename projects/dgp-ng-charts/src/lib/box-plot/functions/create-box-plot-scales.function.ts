@@ -2,7 +2,6 @@ import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { ScaleLinear, ScaleLogarithmic } from "d3";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { CardinalYAxis, ScaleType } from "../../shared/models";
@@ -52,22 +51,27 @@ export function createBoxPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-    /* const yAxisDomain = getYAxisLimitsWithOffset({
-         limitsFromValues: {
-             min: yMin,
-             max: yMax
-         }
-     }, config);*/
+    const barAreaHeight = payload.containerHeight
+        - config.margin.top
+        - config.margin.bottom;
+
+    const yAxisScale = createYAxisScale({...payload, dataAreaHeight: barAreaHeight, yMin, yMax});
 
     let marginLeft = config.margin.left;
 
     if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
+        /**
+         * We retrieve the configured formatter or the implicit default
+         * used by d3 which is scale.tickFormat()
+         */
+        const yAxisTickFormat = payload.yAxisTickFormat || yAxisScale.tickFormat();
 
+        /**
+         * Note: If this doesn't produce good results, then we can try to
+         * add additional values between the extrema to estimate this length
+         */
         const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => {
-                return x.toPrecision(3).length;
-                // return d3.format("~r")(x).length;
-            })
+            [yMin, yMax].map(x => yAxisTickFormat(x).length)
         );
 
         const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
@@ -80,12 +84,6 @@ export function createBoxPlotScales(payload: {
     const barAreaWidth = payload.containerWidth
         - marginLeft
         - config.margin.right;
-
-    const barAreaHeight = payload.containerHeight
-        - config.margin.top
-        - config.margin.bottom;
-
-    const yAxisScale = createYAxisScale({...payload, dataAreaHeight: barAreaHeight, yMin, yMax});
 
     const xAxisScale = d3.scaleBand()
         .domain(boxGroupKeys)
