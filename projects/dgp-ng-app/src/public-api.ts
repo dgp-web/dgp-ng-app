@@ -211,6 +211,7 @@ export { negateMap } from "./utils/negate-map.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { DgpHybridComponentBase, HybridComponentBase } from "./utils/hybrid.component-base";
 export { DgpModelEditorComponentBase } from "./utils/model-editor.component-base";
+export { observeInput$ } from "./utils/observe-ng-input.function";
 export {
     DgpSelectEntityViaRouteResolver, SelectEntityViaRouteResolverConfig
 } from "./utils/select-entity-via-route.resolver-base";
