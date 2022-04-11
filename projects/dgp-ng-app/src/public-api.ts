@@ -6,11 +6,6 @@
 
 import { negateMap } from "./utils/negate-map.function";
 
-/**
- * @deprecated
- */
-export { resolveAsMany, mutatify } from "data-modeling";
-
 export { DgpActionContextModule } from "./action-context/action-context.module";
 export { deselectActionContext } from "./action-context/actions/deselect-action-context.action";
 export { selectActionContext } from "./action-context/actions/select-action-context.action";
