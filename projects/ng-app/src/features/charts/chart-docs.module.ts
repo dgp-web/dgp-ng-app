@@ -9,6 +9,7 @@ import { ShapeDocsComponent } from "./components/shape-docs.component";
 import { FillPatternDocsComponent } from "./components/fill-pattern-docs.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { DocsPageModule } from "../shared";
+import { DgpBoxPlotModule } from "dgp-ng-charts";
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { DocsPageModule } from "../shared";
         }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
-        DocsPageModule
+        DocsPageModule,
+        DgpBoxPlotModule
     ],
     declarations: [
         ...components
