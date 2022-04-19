@@ -127,7 +127,8 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 })
 export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart, OnChanges, OnDestroy {
 
-    @ViewChild("chartContainer") elRef: ElementRef;
+    @ViewChild("chartContainer")
+    elRef: ElementRef<HTMLDivElement>;
 
     @Input()
     model: BarGroups;
@@ -147,7 +148,7 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     readonly viewBox$ = this.config$.pipe(
         map(config => {
-            const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+            const rect = this.elRef.nativeElement.getBoundingClientRect();
 
             const height = rect.height - config.margin.top - config.margin.bottom;
             const width = rect.width - config.margin.left - config.margin.right;
