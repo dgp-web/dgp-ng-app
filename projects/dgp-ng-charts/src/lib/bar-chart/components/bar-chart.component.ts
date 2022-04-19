@@ -80,7 +80,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartBottomAxis
                                [scales]="scales$ | async"></g>
 
-                            <g class="chart__x-axis-grid-lines"
+                            <g *ngIf="showXAxisGridLines"
+                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="scales$ | async"></g>
 
@@ -88,7 +89,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartLeftAxis
                                [scales]="scales$ | async"></g>
 
-                            <g class="chart__y-axis-grid-lines"
+                            <g *ngIf="showYAxisGridLines"
+                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="scales$ | async"></g>
 
@@ -165,11 +167,9 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     @Input()
     showYAxisGridLines = true;
-    readonly showYAxisGridLines$ = observeAttribute$(this as DgpBarChartComponent, "showYAxisGridLines");
 
     @Input()
     showXAxisGridLines = true;
-    readonly showXAxisGridLines$ = observeAttribute$(this as DgpBarChartComponent, "showXAxisGridLines");
 
     @Input()
     yAxisTickFormat?: (x: string) => string;
@@ -193,8 +193,6 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
         this.yAxisMax$,
         this.yAxisStep$,
         this.yAxisScaleType$,
-        this.showYAxisGridLines$, // TODO: Mb trim
-        this.showXAxisGridLines$, // TODO: Mb trim
         this.yAxisTickFormat$,
     ]).pipe(
         debounceTime(250),
@@ -206,7 +204,7 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
             yAxisMax: combination[3] as number,
             yAxisStep: combination[4] as number,
             yAxisScaleType: combination[5] as ScaleType,
-            yAxisTickFormat: combination[8] as CardinalAxisTickFormat
+            yAxisTickFormat: combination[6] as CardinalAxisTickFormat
         })),
         shareReplay(1)
     );
