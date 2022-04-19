@@ -7,7 +7,8 @@ import {
     DgpFillPatternIconModule,
     DgpFillPatternSelectModule,
     DgpHeatmapModule,
-    DgpShapeSelectModule
+    DgpShapeSelectModule,
+    DgpSVGSymbolsModule
 } from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
 import { containers } from "./containers/containers";
@@ -17,7 +18,6 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { CommonModule } from "@angular/common";
-import { DgpSVGSymbolsModule } from "dgp-ng-charts";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @NgModule({

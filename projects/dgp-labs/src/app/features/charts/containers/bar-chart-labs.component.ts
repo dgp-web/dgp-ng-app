@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { BarChart } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-bar-chart-labs",
@@ -16,7 +17,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                     Bar chart
                 </dgp-docs-chapter-title>
 
-                <dgp-bar-chart></dgp-bar-chart>
+                <dgp-bar-chart [model]="barChart.model"></dgp-bar-chart>
 
             </dgp-docs-page-content>
         </dgp-docs-page>
@@ -31,9 +32,29 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             overflow: auto;
         }
 
+        dgp-bar-chart {
+            max-height: 400px;
+            max-width: 800px;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarChartLabsComponent {
+
+    readonly barChart: BarChart = {
+        model: [{
+            barGroupKey: "barGroup01",
+            label: "A group of bars",
+            bars: [{
+                barKey: "barGroup01.bar01",
+                value: 5,
+                colorHex: "#999999"
+            }, {
+                barKey: "barGroup01.bar02",
+                value: 3,
+                colorHex: "#999999"
+            }]
+        }]
+    };
 
 }
