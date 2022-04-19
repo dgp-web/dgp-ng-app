@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, ViewChild } from "@angular/core";
 import { filterNotNullOrUndefined, isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { BarChart, BarGroups } from "../models";
-import { ExportChartConfig } from "../../heatmap/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { debounceTime, map, shareReplay } from "rxjs/operators";
@@ -136,9 +135,6 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     @Input()
     model: BarGroups;
     readonly model$ = observeAttribute$(this as DgpBarChartComponent, "model");
-
-    @Input()
-    exportConfig: ExportChartConfig;
 
     @Input()
     config = defaultBarChartConfig;
