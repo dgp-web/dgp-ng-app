@@ -29,6 +29,7 @@ import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { ScaleType } from "../../shared/models";
+import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -169,7 +170,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     readonly shapeEnum = Shape;
 
-    @ViewChild("chartContainer") elRef: ElementRef;
+    @ViewChild("chartContainer") elRef: ElementRef<HTMLDivElement>;
     @ViewChild("svgRoot") svgRoot: ElementRef<SVGElement>;
 
     @Input()
@@ -305,7 +306,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
 
-        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+        const rect = this.elRef.nativeElement.getBoundingClientRect();
 
         this.drawD3Chart({
             svg: null,
@@ -317,12 +318,8 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     }
 
     getViewBox() {
-        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
-
-        const height = rect.height;
-        const width = rect.width;
-
-        return "0 0 " + width + " " + height;
+        const containerDOMRect = this.elRef.nativeElement.getBoundingClientRect();
+        return getChartViewBox({containerDOMRect});
     }
 
     highlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
