@@ -16,21 +16,18 @@ import { defaultBarChartConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
-import { combineLatest, Subject, Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { debounceTime, map, tap } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-import { ChartMargin } from "../../shared/models";
 
 export function getChartViewBox(payload: {
-    readonly margin: ChartMargin;
     readonly containerDOMRect: DOMRectReadOnly;
 }): string {
-    const margin = payload.margin;
     const rect = payload.containerDOMRect;
 
-    const height = rect.height - margin.top - margin.bottom;
-    const width = rect.width - margin.left - margin.right;
+    const height = rect.height;
+    const width = rect.width;
 
     return "0 0 " + width + " " + height;
 }
@@ -162,15 +159,10 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     readonly containerDOMRect$ = new Subject<DOMRectReadOnly>();
 
-    readonly viewBox$ = combineLatest([
-        this.containerDOMRect$,
-        this.config$
-    ]).pipe(
-        map(combination => getChartViewBox({
-            containerDOMRect: combination[0],
-            margin: combination[1].margin
-        }))
+    readonly viewBox$ = this.containerDOMRect$.pipe(
+        map(containerDOMRect => getChartViewBox({containerDOMRect}))
     );
+
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -197,8 +189,8 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
         this.drawD3Chart({
             svg: null,
-            containerHeight: rect.height - this.config.margin.top - this.config.margin.bottom,
-            containerWidth: rect.width - this.config.margin.left - this.config.margin.right
+            containerHeight: rect.height,
+            containerWidth: rect.width
         });
 
     }
