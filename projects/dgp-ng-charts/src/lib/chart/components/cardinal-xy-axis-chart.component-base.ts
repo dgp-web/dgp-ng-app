@@ -1,8 +1,9 @@
 import { Directive, Input } from "@angular/core";
-import { CardinalXAxis, DgpCardinalYAxisChartComponentBase, ScaleType } from "dgp-ng-charts";
 import { observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
+import { DgpCardinalYAxisChartComponentBase } from "./cardinal-y-axis-chart.component-base";
+import { CardinalXAxis, ScaleType } from "../../shared/models";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
