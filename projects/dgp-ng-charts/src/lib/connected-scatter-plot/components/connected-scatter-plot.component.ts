@@ -2,14 +2,12 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ElementRef,
     EventEmitter,
     Inject,
     Input,
     OnChanges,
     OnDestroy,
-    SimpleChanges,
-    ViewChild
+    SimpleChanges
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
@@ -28,7 +26,6 @@ import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { ScaleType } from "../../shared/models";
-import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
 
 @Component({
@@ -44,13 +41,11 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <div class="plot-container"
-                 #chartContainer>
+            <dgp-plot-container>
 
-                <svg #svgRoot
-                     *ngIf="model && connectedScatterPlotScales"
+                <svg *ngIf="model && connectedScatterPlotScales"
                      class="chart-svg"
-                     [attr.viewBox]="getViewBox()">
+                     [attr.viewBox]="viewBox$ | async">
 
                     <defs>
                         <clipPath dgpChartDataAreaClipPath
@@ -59,28 +54,24 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                                   [scales]="connectedScatterPlotScales"></clipPath>
                     </defs>
 
-                    <g [attr.clip-path]="getContainerAreaClipPath()">
-                        <g [attr.transform]="getContainerTransform()">
+                    <g [attr.clip-path]="containerAreaClipPath">
+                        <g [attr.transform]="containerTransform$ | async">
 
-                            <g class="chart__x-axis"
-                               dgpChartBottomAxis
+                            <g dgpChartBottomAxis
                                [scales]="connectedScatterPlotScales"></g>
 
                             <g *ngIf="showXAxisGridLines"
-                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
-                            <g class="chart__y-axis"
-                               dgpChartLeftAxis
+                            <g dgpChartLeftAxis
                                [scales]="connectedScatterPlotScales"></g>
 
                             <g *ngIf="showYAxisGridLines"
-                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="connectedScatterPlotScales"></g>
 
-                            <g [attr.clip-path]="getClipPath()">
+                            <g [attr.clip-path]="dataAreaClipPath">
 
                                 <line *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
                                       dgpConnectedScatterPlotControlLine
@@ -145,7 +136,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                     </g>
                 </svg>
 
-            </div>
+            </dgp-plot-container>
 
         </dgp-chart>
     `,
@@ -169,9 +160,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
     readonly trackByConnectedPlotControlLineId = trackByConnectedPlotControlLineId;
 
     readonly shapeEnum = Shape;
-
-    @ViewChild("chartContainer") elRef: ElementRef<HTMLDivElement>;
-    @ViewChild("svgRoot") svgRoot: ElementRef<SVGElement>;
 
     @Input()
     model: readonly ConnectedScatterGroup[];
@@ -277,10 +265,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
 
     }
 
-    getContainerTransform(): string {
-        return "translate(" + this.connectedScatterPlotScales.chartMargin.left + " " + this.connectedScatterPlotScales.chartMargin.top + ")";
-    }
-
     drawChart() {
 
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
@@ -294,11 +278,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
         });
 
 
-    }
-
-    getViewBox() {
-        const containerDOMRect = this.elRef.nativeElement.getBoundingClientRect();
-        return getChartViewBox({containerDOMRect});
     }
 
     highlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
@@ -318,15 +297,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
             + "." + series.connectedScatterSeriesId
             + "." + dot.x + "." + dot.y;
     }
-
-    getClipPath(): string {
-        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    }
-
-    getContainerAreaClipPath(): string {
-        return " url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
-    }
-
 
     getShape(group: ConnectedScatterGroup, series: ConnectedScatterSeries): Shape {
         if (notNullOrUndefined(series.shape)) {
