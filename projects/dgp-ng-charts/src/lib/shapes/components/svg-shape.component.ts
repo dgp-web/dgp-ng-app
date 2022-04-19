@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from "@angular
 import { DgpView } from "dgp-ng-app";
 import { Shape } from "../models";
 import { FillPattern } from "../../fill-pattern-icon/models";
+import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
 @Component({
     selector: "dgp-svg-shape",
@@ -62,7 +63,10 @@ import { FillPattern } from "../../fill-pattern-icon/models";
             align-items: center;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        idPrefixProvider
+    ]
 })
 export class SVGShapeComponent extends DgpView<Shape> {
 

@@ -3,12 +3,14 @@ import { components } from "./components/components";
 import { CommonModule } from "@angular/common";
 import { DgpSVGPatternsModule } from "../patterns/svg-patterns.module";
 import { DgpSVGMasksModule } from "../masks/svg-masks.module";
+import { DgpPatternAndMaskDefsModule } from "../pattern-and-mask-defs/pattern-and-mask-defs.module";
 
 @NgModule({
     imports: [
         CommonModule,
         DgpSVGPatternsModule,
-        DgpSVGMasksModule
+        DgpSVGMasksModule,
+        DgpPatternAndMaskDefsModule
     ],
     declarations: [
         ...components
