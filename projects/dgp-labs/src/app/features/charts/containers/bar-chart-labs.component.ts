@@ -16,6 +16,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                     Bar chart
                 </dgp-docs-chapter-title>
 
+                <dgp-bar-chart></dgp-bar-chart>
+
             </dgp-docs-page-content>
         </dgp-docs-page>
 
