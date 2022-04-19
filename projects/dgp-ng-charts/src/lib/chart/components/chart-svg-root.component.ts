@@ -9,27 +9,28 @@ import { defaultChartConfig } from "../../shared/constants";
 @Component({
     selector: "[dgpChartSVGRoot]",
     template: `
-        <svg:g [attr.clip-path]="containerAreaClipPath">
-            <svg:g [attr.transform]="containerTransform$ | async">
+        <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+               [attr.clip-path]="containerAreaClipPath">
+            <g [attr.transform]="containerTransform$ | async">
 
-                <svg:g dgpChartBottomAxis
-                       [scales]="scales"></svg:g>
+                <g dgpChartBottomAxis
+                   [scales]="scales"></g>
 
-                <svg:g *ngIf="showXAxisGridLines"
-                       dgpChartXAxisGridLines
-                       [scales]="scales"></svg:g>
+                <g *ngIf="showXAxisGridLines"
+                   dgpChartXAxisGridLines
+                   [scales]="scales"></g>
 
-                <svg:g dgpChartLeftAxis
-                       [scales]="scales"></svg:g>
+                <g dgpChartLeftAxis
+                   [scales]="scales"></g>
 
                 <svg:g *ngIf="showYAxisGridLines"
                        dgpChartYAxisGridLines
                        [scales]="scales"></svg:g>
 
-                <svg:g [attr.clip-path]="dataAreaClipPath">
+                <g [attr.clip-path]="dataAreaClipPath">
                     <ng-content></ng-content>
-                </svg:g>
-            </svg:g>
+                </g>
+            </g>
         </svg:g>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
