@@ -25,6 +25,7 @@ import { DgpChartComponentBase } from "../../chart/components/chart.component-ba
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
+import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 
 @Component({
     selector: "dgp-box-plot",
@@ -208,7 +209,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     readonly trackByBoxOutlierKey = trackByBoxOutlierKey;
     readonly trackByBoxPlotControlLineId = trackByBoxPlotControlLineId;
 
-    @ViewChild("chartContainer") elRef: ElementRef;
+    @ViewChild("chartContainer") elRef: ElementRef<HTMLDivElement>;
 
     @Input()
     model: ReadonlyArray<BoxGroup>;
@@ -361,12 +362,8 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     }
 
     getViewBox() {
-        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
-
-        const height = rect.height;
-        const width = rect.width;
-
-        return "0 0 " + width + " " + height;
+        const containerDOMRect = this.elRef.nativeElement.getBoundingClientRect();
+        return getChartViewBox({containerDOMRect});
     }
 
     getDataAreaClipPath(): string {

@@ -13,6 +13,7 @@ import { DgpChartModule } from "../chart/chart.module";
 import { directives } from "./directives/directives";
 import { DgpSVGPatternsModule } from "../patterns/svg-patterns.module";
 import { DgpSVGMasksModule } from "../masks/svg-masks.module";
+import { DgpPlotContainerModule } from "../plot-container/dgp-plot-container.module";
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { DgpSVGMasksModule } from "../masks/svg-masks.module";
         DgpChartModule,
         DgpResizeSensorModule,
         DgpSVGPatternsModule,
-        DgpSVGMasksModule
+        DgpSVGMasksModule,
+        DgpPlotContainerModule
     ],
     declarations: [
         ...components,

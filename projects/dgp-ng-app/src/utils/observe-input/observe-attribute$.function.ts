@@ -5,6 +5,8 @@ export function observeAttribute$<TTarget extends object, TAttributeKey extends 
     target: TTarget, attributeKey: TAttributeKey
 ) {
 
+    const initialAttributeValue = target[attributeKey];
+
     delete target[attributeKey];
 
     const attribute$ = getOrCreateRxAttribute$(target, attributeKey);
@@ -19,6 +21,8 @@ export function observeAttribute$<TTarget extends object, TAttributeKey extends 
             return attribute$.value;
         },
     });
+
+    target[attributeKey] = initialAttributeValue;
 
     return attribute$.asObservable();
 
