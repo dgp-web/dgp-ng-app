@@ -11,7 +11,6 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { Subscription } from "rxjs";
 import { debounceTime, tap } from "rxjs/operators";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
@@ -30,6 +29,7 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { ScaleType } from "../../shared/models";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
+import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -162,7 +162,7 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
         idPrefixProvider
     ]
 })
-export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase implements ConnectedScatterPlot, OnChanges, OnDestroy {
+export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartComponentBase implements ConnectedScatterPlot, OnChanges, OnDestroy {
 
     readonly trackByConnectedScatterGroupId = trackByConnectedScatterGroupId;
     readonly trackByConnectedScatterSeriesId = trackByConnectedScatterSeriesId;
@@ -195,22 +195,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     xAxisScaleType?: ScaleType;
 
     @Input()
-    yAxisTickFormat?: (x: string) => string;
-
-    @Input()
     xAxisTickFormat?: (x: string) => string;
-
-    @Input()
-    yAxisMin?: number;
-
-    @Input()
-    yAxisMax?: number;
-
-    @Input()
-    yAxisStep?: number;
-
-    @Input()
-    yAxisScaleType?: ScaleType;
 
     private readonly drawChartActionScheduler = new EventEmitter();
 
@@ -225,7 +210,7 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
         @Inject(ID_PREFIX)
         protected readonly idPrefix: string
     ) {
-        super();
+        super(idPrefix);
 
         this.drawChartSubscription = this.drawChartActionScheduler.pipe(
             debounceTime(250),
