@@ -32,6 +32,7 @@ export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot
 export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";
 export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
+export { BoxPlotBoxGroupDirective } from "./lib/box-plot/directives/box-plot-box-group.directive";
 export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outlier.directive";
 export { BoxPlotBrushSelectorDirective } from "./lib/box-plot/directives/box-plot-brush-selector.directive";
 export { BoxPlotControlLineDirective } from "./lib/box-plot/directives/box-plot-control-line.directive";
