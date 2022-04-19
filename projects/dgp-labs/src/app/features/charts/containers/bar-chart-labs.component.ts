@@ -17,7 +17,8 @@ import { BarChart } from "dgp-ng-charts";
                     Bar chart
                 </dgp-docs-chapter-title>
 
-                <dgp-bar-chart [model]="barChart.model"></dgp-bar-chart>
+                <dgp-bar-chart [model]="barChart.model"
+                               [yAxisMin]="barChart.yAxisMin"></dgp-bar-chart>
 
             </dgp-docs-page-content>
         </dgp-docs-page>
@@ -42,6 +43,7 @@ import { BarChart } from "dgp-ng-charts";
 export class BarChartLabsComponent {
 
     readonly barChart: BarChart = {
+        yAxisMin: 0,
         model: [{
             barGroupKey: "barGroup01",
             label: "A group of bars",
