@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { DgpChartComponentBase } from "./chart.component-base";
-import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined, Size } from "dgp-ng-app";
 import { AxisScales } from "../../shared/models";
-import { Size } from "dgp-ng-app/resize-sensor/directives/resize-sensor.directive";
 
 @Component({
     selector: "dgp-chart",
@@ -132,9 +131,6 @@ export class DgpChartComponent extends DgpChartComponentBase {
         }
 
         return maxHeight;
-    }
-
-    noop() {
     }
 
     onResize() {

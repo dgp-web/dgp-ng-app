@@ -6,25 +6,35 @@ import { Shape } from "../../shapes/models";
     selector: "[dgpDot]",
     template: `
         <ng-container [ngSwitch]="model">
-            <svg:circle *ngSwitchDefault
+            <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
+                        *ngSwitchDefault
                         dgpCircle></svg:circle>
-            <svg:circle *ngSwitchCase="shapeEnum.Circle"
+            <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
+                        *ngSwitchCase="shapeEnum.Circle"
                         dgpCircle></svg:circle>
-            <svg:rect *ngSwitchCase="shapeEnum.Rectangle"
+            <svg:rect xmlns:svg="http://www.w3.org/2000/svg"
+                      *ngSwitchCase="shapeEnum.Rectangle"
                       dgpRectangle></svg:rect>
-            <svg:polygon *ngSwitchCase="shapeEnum.Rhombus"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.Rhombus"
                          dgpRhombus></svg:polygon>
-            <svg:polygon *ngSwitchCase="shapeEnum.Star"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.Star"
                          dgpStar></svg:polygon>
-            <svg:polygon *ngSwitchCase="shapeEnum.Cross"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.Cross"
                          dgpCross></svg:polygon>
-            <svg:polygon *ngSwitchCase="shapeEnum.Triangle"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.Triangle"
                          dgpTriangle></svg:polygon>
-            <svg:polygon *ngSwitchCase="shapeEnum.TriangleDown"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.TriangleDown"
                          dgpTriangleDown></svg:polygon>
-            <svg:polygon *ngSwitchCase="shapeEnum.TriangleRight"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.TriangleRight"
                          dgpTriangleRight></svg:polygon>
-            <svg:polygon *ngSwitchCase="shapeEnum.TriangleLeft"
+            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                         *ngSwitchCase="shapeEnum.TriangleLeft"
                          dgpTriangleLeft></svg:polygon>
         </ng-container>
     `,

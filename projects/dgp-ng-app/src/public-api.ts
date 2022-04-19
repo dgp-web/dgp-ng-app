@@ -164,7 +164,7 @@ export {
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // resize-sensor
-export { DgpResizeSensorDirective } from "./resize-sensor/directives/resize-sensor.directive";
+export { DgpResizeSensorDirective, Size } from "./resize-sensor/directives/resize-sensor.directive";
 export { DgpResizeSensorModule } from "./resize-sensor/resize-sensor.module";
 
 // routing-overlay
