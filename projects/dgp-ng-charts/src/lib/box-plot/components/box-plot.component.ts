@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotSelection } from "../models";
 import { debounceTime, map, shareReplay } from "rxjs/operators";
-import { combineLatest } from "rxjs";
+import { BehaviorSubject, combineLatest } from "rxjs";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
-import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
 import { ChartSelectionMode } from "../../shared/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
@@ -16,140 +16,114 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
-                   dgpResizeSensor
-                   (sizeChanged)="onResize()">
+                   [scales]="scales$ | async"
+                   [showXAxisGridLines]="showXAxisGridLines"
+                   [showYAxisGridLines]="showYAxisGridLines"
+                   (sizeChanged)="onResize($event)">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <dgp-plot-container>
+            <ng-container defs>
+                <!-- Patterns -->
+                <pattern dgpHorizontalLinesPattern></pattern>
+                <pattern dgpVerticalLinesPattern></pattern>
+                <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
+                <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
+                <pattern dgpCheckerboardPattern></pattern>
+                <pattern dgpDiagonalCheckerboardPattern></pattern>
 
-                <svg #svgRoot
-                     class="chart-svg"
-                     *ngIf="model && (scales$ | async)"
-                     [attr.viewBox]="viewBox$ | async">
+                <!-- Masks -->
+                <mask dgpVerticalLinesMask></mask>
+                <mask dgpHorizontalLinesMask></mask>
+                <mask dgpLinesFromLeftTopToRightBottomMask></mask>
+                <mask dgpLinesFromLeftBottomToRightTopMask></mask>
+                <mask dgpGridMask></mask>
+                <mask dgpDiagonalGridMask></mask>
+                <mask dgpCheckerboardMask></mask>
+                <mask dgpDiagonalCheckerboardMask></mask>
 
-                    <defs>
-                        <!-- Patterns -->
-                        <pattern dgpHorizontalLinesPattern></pattern>
-                        <pattern dgpVerticalLinesPattern></pattern>
-                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
-                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
-                        <pattern dgpCheckerboardPattern></pattern>
-                        <pattern dgpDiagonalCheckerboardPattern></pattern>
+            </ng-container>
 
-                        <!-- Masks -->
-                        <mask dgpVerticalLinesMask></mask>
-                        <mask dgpHorizontalLinesMask></mask>
-                        <mask dgpLinesFromLeftTopToRightBottomMask></mask>
-                        <mask dgpLinesFromLeftBottomToRightTopMask></mask>
-                        <mask dgpGridMask></mask>
-                        <mask dgpDiagonalGridMask></mask>
-                        <mask dgpCheckerboardMask></mask>
-                        <mask dgpDiagonalCheckerboardMask></mask>
+            <ng-container *ngIf="scales$ | async">
+                <svg:line xmlns:svg="http://www.w3.org/2000/svg"
+                          *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"
+                          dgpBoxPlotControlLine
+                          [scales]="scales$ | async"
+                          [boxPlotControlLine]="controlLine"></svg:line>
 
-                        <!-- Other -->
-                        <clipPath dgpChartDataAreaClipPath
-                                  [scales]="scales$ | async"></clipPath>
-                        <clipPath dgpChartContainerAreaClipPath
-                                  [scales]="scales$ | async"></clipPath>
-                    </defs>
+                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                       dgpBoxPlotBrushSelector
+                       [scales]="scales$ | async"
+                       [boxGroups]="model"
+                       [config]="config"
+                       [selectionMode]="selectionMode"
+                       (selectionChange)="selectionChange.emit($event)"
+                       [attr.clip-path]="dataAreaClipPath">
 
-                    <g [attr.clip-path]="containerAreaClipPath">
-                        <g [attr.transform]="containerTransform$ | async">
-
-                            <g dgpChartBottomAxis
-                               [scales]="scales$ | async"></g>
-
-                            <g *ngIf="showXAxisGridLines"
-                               dgpChartXAxisGridLines
-                               [scales]="scales$ | async"></g>
-
-                            <g dgpChartLeftAxis
-                               [scales]="scales$ | async"></g>
-
-                            <g *ngIf="showYAxisGridLines"
-                               dgpChartYAxisGridLines
-                               [scales]="scales$ | async"></g>
-
-                            <line *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"
-                                  dgpBoxPlotControlLine
+                    <g xmlns:svg="http://www.w3.org/2000/svg"
+                       *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
+                       dgpBoxPlotBoxGroup
+                       [boxGroup]="boxGroup"
+                       [scales]="scales$ | async">
+                        <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
+                            <line dgpBoxPlotWhisker
+                                  type="max"
                                   [scales]="scales$ | async"
-                                  [boxPlotControlLine]="controlLine"></line>
-
-                            <g dgpBoxPlotBrushSelector
-                               [scales]="scales$ | async"
-                               [boxGroups]="model"
-                               [config]="config"
-                               [selectionMode]="selectionMode"
-                               (selectionChange)="selectionChange.emit($event)"
-                               [attr.clip-path]="dataAreaClipPath">
-
-                                <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
-                                   dgpBoxPlotBoxGroup
-                                   [boxGroup]="boxGroup"
-                                   [scales]="scales$ | async">
-                                    <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
-                                        <line dgpBoxPlotWhisker
-                                              type="max"
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></line>
-                                        <line dgpBoxPlotUpperAntenna
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></line>
-                                        <rect dgpBoxPlotBoxFillPattern
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></rect>
-                                        <rect dgpBoxPlotBox
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></rect>
-                                        <line dgpBoxPlotMedian
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></line>
-                                        <line dgpBoxPlotLowerAntenna
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></line>
-                                        <line dgpBoxPlotWhisker
-                                              type="min"
-                                              [scales]="scales$ | async"
-                                              [boxGroup]="boxGroup"
-                                              [box]="box"></line>
-                                    </ng-container>
-                                </g>
-
-                                <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
-                                   dgpBoxPlotBoxGroup
-                                   [boxGroup]="boxGroup"
-                                   [scales]="scales$ | async">
-                                    <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
-                                        <ng-container
-                                            *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
-                                            <g [matTooltip]="getOutlierTooltip(box, i)"
-                                               dgpBoxPlotOutlier
-                                               [scales]="scales$ | async"
-                                               [boxGroup]="boxGroup"
-                                               [box]="box"
-                                               [value]="value"
-                                               dgpDot
-                                               [model]="box.outlierShape">
-                                            </g>
-                                        </ng-container>
-                                    </ng-container>
-                                </g>
-
-                            </g>
-                        </g>
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <line dgpBoxPlotUpperAntenna
+                                  [scales]="scales$ | async"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <rect dgpBoxPlotBoxFillPattern
+                                  [scales]="scales$ | async"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></rect>
+                            <rect dgpBoxPlotBox
+                                  [scales]="scales$ | async"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></rect>
+                            <line dgpBoxPlotMedian
+                                  [scales]="scales$ | async"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <line dgpBoxPlotLowerAntenna
+                                  [scales]="scales$ | async"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                            <line dgpBoxPlotWhisker
+                                  type="min"
+                                  [scales]="scales$ | async"
+                                  [boxGroup]="boxGroup"
+                                  [box]="box"></line>
+                        </ng-container>
                     </g>
-                </svg>
 
-            </dgp-plot-container>
+                    <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                           *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
+                           dgpBoxPlotBoxGroup
+                           [boxGroup]="boxGroup"
+                           [scales]="scales$ | async">
+                        <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
+                            <ng-container
+                                *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
+                                <g [matTooltip]="getOutlierTooltip(box, i)"
+                                   dgpBoxPlotOutlier
+                                   [scales]="scales$ | async"
+                                   [boxGroup]="boxGroup"
+                                   [box]="box"
+                                   [value]="value"
+                                   dgpDot
+                                   [model]="box.outlierShape">
+                                </g>
+                            </ng-container>
+                        </ng-container>
+                    </svg:g>
+
+                </svg:g>
+            </ng-container>
 
         </dgp-chart>
     `,
@@ -197,8 +171,10 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
 
     readonly shapeEnum = Shape;
 
+    readonly size$ = new BehaviorSubject<Size>(null);
+
     readonly scales$ = combineLatest([
-        this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
+        this.size$.pipe(filterNotNullOrUndefined()),
         this.model$,
         this.yAxis$,
         this.xAxisTickFormat$,
@@ -242,9 +218,8 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
         return result;
     }
 
-    onResize() {
-        if (isNullOrUndefined(this.elRef.nativeElement)) return;
-        this.containerDOMRect$.next(this.elRef.nativeElement.getBoundingClientRect());
+    onResize(size: Size) {
+        this.size$.next(size);
     }
 
 }
