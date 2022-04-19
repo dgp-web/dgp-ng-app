@@ -21,6 +21,7 @@ import { debounceTime, map, tap } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
+import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -47,8 +48,7 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <div class="plot-container"
-                 #chartContainer>
+            <dgp-plot-container>
 
                 <svg #svgRoot
                      *ngIf="barChartScales"
@@ -110,7 +110,7 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
 
                 </svg>
 
-            </div>
+            </dgp-plot-container>
 
         </dgp-chart>
     `,
@@ -128,7 +128,10 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
 })
 export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart, OnChanges, OnDestroy {
 
-    @ViewChild("chartContainer")
+    @ViewChild(DgpPlotContainerComponent, {
+        read: ElementRef,
+        static: true
+    })
     elRef: ElementRef<HTMLDivElement>;
 
     @Input()

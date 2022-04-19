@@ -168,6 +168,15 @@ export { VerticalLinesPatternDirective } from "./lib/patterns/directives/vertica
 
 /**
  * -----
+ * Plot container
+ * -----
+ */
+
+export { DgpPlotContainerModule } from "./lib/plot-container/dgp-plot-container.module";
+export { DgpPlotContainerComponent } from "./lib/plot-container/components/plot-container.component";
+
+/**
+ * -----
  * Shape select
  * -----
  */
