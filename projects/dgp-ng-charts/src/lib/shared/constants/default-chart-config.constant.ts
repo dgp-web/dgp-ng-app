@@ -1,4 +1,4 @@
-import { SharedChartConfig } from "dgp-ng-charts";
+import { SharedChartConfig } from "../models";
 
 export const defaultChartConfig: SharedChartConfig = {
     margin: {

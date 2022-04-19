@@ -363,7 +363,6 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 
     readonly scaleTypeEnum = ScaleType;
-    protected modelValue = testConnectScatterPlot;
     readonly selectedControlLineId$ = new BehaviorSubject<string>(null);
     readonly selectedControlLine$ = this.selectedControlLineId$.pipe(
         map(controlLineId => {
@@ -382,6 +381,12 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
         })
     );
+
+    constructor() {
+        super();
+
+        this.model = testConnectScatterPlot;
+    }
 
     updateChartTitle(chartTitle: string) {
         this.updateModel({chartTitle});

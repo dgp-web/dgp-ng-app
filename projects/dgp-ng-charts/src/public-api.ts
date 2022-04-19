@@ -32,6 +32,7 @@ export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot
 export { BoxPlotUpperAntennaDirective } from "./lib/box-plot/directives/box-plot-upper-antenna.directive";
 export { BoxPlotBoxDirective } from "./lib/box-plot/directives/box-plot-box.directive";
 export { BoxPlotMedianDirective } from "./lib/box-plot/directives/box-plot-median.directive";
+export { BoxPlotBoxGroupDirective } from "./lib/box-plot/directives/box-plot-box-group.directive";
 export { BoxPlotOutlierDirective } from "./lib/box-plot/directives/box-plot-outlier.directive";
 export { BoxPlotBrushSelectorDirective } from "./lib/box-plot/directives/box-plot-brush-selector.directive";
 export { BoxPlotControlLineDirective } from "./lib/box-plot/directives/box-plot-control-line.directive";
@@ -47,6 +48,7 @@ export { TrackByBoxOutlierKeyPipe } from "./lib/box-plot/pipes/track-by-box-outl
 export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
 export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
+export { DgpCardinalXYAxisChartComponentBase } from "./lib/chart/components/cardinal-xy-axis-chart.component-base";
 export { DgpCardinalYAxisChartComponentBase } from "./lib/chart/components/cardinal-y-axis-chart.component-base";
 export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
 export { DgpChartContainerAreaClipPathDirective } from "./lib/chart/directives/chart-container-area-clip-path.directive";

@@ -4,8 +4,8 @@ import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
 import { axisTickFormattingService } from "./axis-tick-formatting.service";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
-import { CardinalYAxis, ContainerSize, ScaleType } from "dgp-ng-charts";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { CardinalYAxis, ContainerSize, ScaleType } from "../../shared/models";
 
 // TODO: Homogenize with createBoxPlotScales
 export function createBarChartScales(payload: {
