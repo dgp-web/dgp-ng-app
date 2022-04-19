@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Directive, ElementRef, Inject, Input, ViewChild } from "@angular/core";
 import { filterNotNullOrUndefined, isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { BarChart, BarGroups } from "../models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
@@ -12,9 +12,60 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
 import { trackByBarGroupId } from "../functions/track-by-bar-group-id.function";
 import { trackByBarId } from "../functions/track-by-bar-id.function";
 import { defaultBarChartConfig } from "../constants";
-import { ScaleType } from "../../shared/models";
-import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-format.model";
+import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
+
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
+export class DgpCardinalYAxisChartComponentBase extends DgpChartComponentBase {
+
+    @Input()
+    yAxisMin?: number;
+    readonly yAxisMin$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisMin");
+
+    @Input()
+    yAxisMax?: number;
+    readonly yAxisMax$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisMax");
+
+    @Input()
+    yAxisStep?: number;
+    readonly yAxisStep$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisStep");
+
+    @Input()
+    yAxisScaleType?: ScaleType;
+    readonly yAxisScaleType$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisScaleType");
+
+    @Input()
+    yAxisTickFormat?: (x: string) => string;
+    readonly yAxisTickFormat$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisTickFormat");
+
+    readonly yAxis$ = combineLatest([
+        this.yAxisMin$,
+        this.yAxisMax$,
+        this.yAxisStep$,
+        this.yAxisScaleType$,
+        this.yAxisTickFormat$,
+    ]).pipe(
+        map(x => ({
+            yAxisMin: x[0],
+            yAxisMax: x[1],
+            yAxisStep: x[2],
+            yAxisScaleType: x[3],
+            yAxisTickFormat: x[4]
+        } as CardinalYAxis))
+    );
+
+    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
+
+    constructor(
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
+    ) {
+        super();
+    }
+
+}
 
 @Component({
     selector: "dgp-bar-chart",
@@ -127,7 +178,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
         idPrefixProvider
     ]
 })
-export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart {
+export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase implements BarChart {
 
     @ViewChild(DgpPlotContainerComponent, {read: ElementRef, static: true})
     elRef: ElementRef<HTMLDivElement>;
@@ -142,30 +193,10 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     readonly margin$ = this.config$.pipe(map(x => x.margin));
 
     @Input()
-    yAxisMin?: number;
-    readonly yAxisMin$ = observeAttribute$(this as DgpBarChartComponent, "yAxisMin");
-
-    @Input()
-    yAxisMax?: number;
-    readonly yAxisMax$ = observeAttribute$(this as DgpBarChartComponent, "yAxisMax");
-
-    @Input()
-    yAxisStep?: number;
-    readonly yAxisStep$ = observeAttribute$(this as DgpBarChartComponent, "yAxisStep");
-
-    @Input()
-    yAxisScaleType?: ScaleType;
-    readonly yAxisScaleType$ = observeAttribute$(this as DgpBarChartComponent, "yAxisScaleType");
-
-    @Input()
     showYAxisGridLines = true;
 
     @Input()
     showXAxisGridLines = true;
-
-    @Input()
-    yAxisTickFormat?: (x: string) => string;
-    readonly yAxisTickFormat$ = observeAttribute$(this as DgpBarChartComponent, "yAxisTickFormat");
 
     readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
     readonly trackByBarGroupId = trackByBarGroupId;
@@ -181,35 +212,17 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     readonly scales$ = combineLatest([
         this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
         this.model$,
-        this.yAxisMin$,
-        this.yAxisMax$,
-        this.yAxisStep$,
-        this.yAxisScaleType$,
-        this.yAxisTickFormat$,
+        this.yAxis$
     ]).pipe(
         debounceTime(250),
         map(combination => createBarChartScales({
-            containerHeight: (combination[0] as DOMRectReadOnly).height,
-            containerWidth: (combination[0] as DOMRectReadOnly).width,
+            containerHeight: combination[0].height,
+            containerWidth: combination[0].width,
             barGroups: combination[1] as BarGroups,
-            yAxisMin: combination[2] as number,
-            yAxisMax: combination[3] as number,
-            yAxisStep: combination[4] as number,
-            yAxisScaleType: combination[5] as ScaleType,
-            yAxisTickFormat: combination[6] as CardinalAxisTickFormat
+            ...combination[2]
         })),
         shareReplay(1)
     );
-
-    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
-
-    constructor(
-        @Inject(ID_PREFIX)
-        protected readonly idPrefix: string
-    ) {
-        super();
-    }
 
     onResize() {
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
