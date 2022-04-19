@@ -73,7 +73,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                   [scales]="scales$ | async"></clipPath>
                     </defs>
 
-                    <g [attr.clip-path]="getContainerAreaClipPath()">
+                    <g [attr.clip-path]="containerAreaClipPath">
                         <g [attr.transform]="containerTransform$ | async">
 
                             <g class="chart__x-axis"
@@ -92,7 +92,7 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                                dgpChartYAxisGridLines
                                [scales]="scales$ | async"></g>
 
-                            <g [attr.clip-path]="getDataAreaClipPath()">
+                            <g [attr.clip-path]="dataAreaClipPath">
                                 <g *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
                                    dgpBarChartBarGroup
                                    [barGroup]="barGroup"
@@ -211,19 +211,14 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
         shareReplay(1)
     );
 
+    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
+
     constructor(
         @Inject(ID_PREFIX)
         protected readonly idPrefix: string
     ) {
         super();
-    }
-
-    getDataAreaClipPath(): string {
-        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    }
-
-    getContainerAreaClipPath(): string {
-        return " url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
     }
 
     onResize() {
