@@ -4,6 +4,7 @@
 
 // action context
 
+export { FirstArg } from "./utils/first-arg.model";
 import { negateMap } from "./utils/negate-map.function";
 
 export { DgpActionContextModule } from "./action-context/action-context.module";

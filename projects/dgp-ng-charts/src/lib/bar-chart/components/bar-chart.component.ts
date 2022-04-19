@@ -12,14 +12,28 @@ import {
 } from "@angular/core";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { BarChart, BarChartConfig, BarChartScales, BarGroup, BarGroups } from "../models";
-import { defaultBarChartConfig } from "../constants/default-bar-chart-config.constant";
+import { defaultBarChartConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
-import { Subscription } from "rxjs";
+import { combineLatest, Subject, Subscription } from "rxjs";
 import { debounceTime, map, tap } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
+import { ChartMargin } from "../../shared/models";
+
+export function getChartViewBox(payload: {
+    readonly margin: ChartMargin;
+    readonly containerDOMRect: DOMRectReadOnly;
+}): string {
+    const margin = payload.margin;
+    const rect = payload.containerDOMRect;
+
+    const height = rect.height - margin.top - margin.bottom;
+    const width = rect.width - margin.left - margin.right;
+
+    return "0 0 " + width + " " + height;
+}
 
 @Component({
     selector: "dgp-bar-chart",
@@ -146,15 +160,16 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     barChartScales: BarChartScales;
 
-    readonly viewBox$ = this.config$.pipe(
-        map(config => {
-            const rect = this.elRef.nativeElement.getBoundingClientRect();
+    readonly containerDOMRect$ = new Subject<DOMRectReadOnly>();
 
-            const height = rect.height - config.margin.top - config.margin.bottom;
-            const width = rect.width - config.margin.left - config.margin.right;
-
-            return "0 0 " + width + " " + height;
-        })
+    readonly viewBox$ = combineLatest([
+        this.containerDOMRect$,
+        this.config$
+    ]).pipe(
+        map(combination => getChartViewBox({
+            containerDOMRect: combination[0],
+            margin: combination[1].margin
+        }))
     );
     private readonly drawChartActionScheduler = new EventEmitter();
 
@@ -178,6 +193,7 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
 
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+        this.containerDOMRect$.next(rect);
 
         this.drawD3Chart({
             svg: null,
