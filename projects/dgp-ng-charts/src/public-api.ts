@@ -78,6 +78,9 @@ export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/conn
 export {
     DgpConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
+export {
+    DgpChartSVGRootComponent
+} from "./lib/connected-scatter-plot/components/chart-svg-root.component";
 
 // Directives
 export {
