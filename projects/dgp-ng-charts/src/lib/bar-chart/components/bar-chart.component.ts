@@ -13,6 +13,8 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
 import { trackByBarGroupId } from "../functions/track-by-bar-group-id.function";
 import { trackByBarId } from "../functions/track-by-bar-id.function";
 import { defaultBarChartConfig } from "../constants";
+import { ScaleType } from "../../shared/models";
+import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-format.model";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -125,16 +127,44 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     @Input()
     model: BarGroups;
+    readonly model$ = observeAttribute$(this as DgpBarChartComponent, "model");
 
     @Input()
     exportConfig: ExportChartConfig;
 
     @Input()
     config = defaultBarChartConfig;
-
-    readonly model$ = observeAttribute$(this as DgpBarChartComponent, "model");
     readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
     readonly margin$ = this.config$.pipe(map(x => x.margin));
+
+    @Input()
+    yAxisMin?: number;
+    readonly yAxisMin$ = observeAttribute$(this as DgpBarChartComponent, "yAxisMin");
+
+    @Input()
+    yAxisMax?: number;
+    readonly yAxisMax$ = observeAttribute$(this as DgpBarChartComponent, "yAxisMax");
+
+    @Input()
+    yAxisStep?: number;
+    readonly yAxisStep$ = observeAttribute$(this as DgpBarChartComponent, "yAxisStep");
+
+    @Input()
+    yAxisScaleType?: ScaleType;
+    readonly yAxisScaleType$ = observeAttribute$(this as DgpBarChartComponent, "yAxisScaleType");
+
+    @Input()
+    showYAxisGridLines = true;
+    readonly showYAxisGridLines$ = observeAttribute$(this as DgpBarChartComponent, "showYAxisGridLines");
+
+    @Input()
+    showXAxisGridLines = true;
+    readonly showXAxisGridLines$ = observeAttribute$(this as DgpBarChartComponent, "showXAxisGridLines");
+
+    @Input()
+    yAxisTickFormat?: (x: string) => string;
+    readonly yAxisTickFormat$ = observeAttribute$(this as DgpBarChartComponent, "yAxisTickFormat");
+
     readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
     readonly trackByBarGroupId = trackByBarGroupId;
     readonly trackByBarId = trackByBarId;
@@ -148,13 +178,25 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     readonly scales$ = combineLatest([
         this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
-        this.model$
+        this.model$,
+        this.yAxisMin$,
+        this.yAxisMax$,
+        this.yAxisStep$,
+        this.yAxisScaleType$,
+        this.showYAxisGridLines$, // TODO: Mb trim
+        this.showXAxisGridLines$, // TODO: Mb trim
+        this.yAxisTickFormat$,
     ]).pipe(
         debounceTime(250),
         map(combination => createBarChartScales({
-            containerHeight: combination[0].height,
-            containerWidth: combination[0].width,
-            barGroups: combination[1]
+            containerHeight: (combination[0] as DOMRectReadOnly).height,
+            containerWidth: (combination[0] as DOMRectReadOnly).width,
+            barGroups: combination[1] as BarGroups,
+            yAxisMin: combination[2] as number,
+            yAxisMax: combination[3] as number,
+            yAxisStep: combination[4] as number,
+            yAxisScaleType: combination[5] as ScaleType,
+            yAxisTickFormat: combination[8] as CardinalAxisTickFormat
         })),
         shareReplay(1)
     );

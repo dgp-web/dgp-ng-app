@@ -4,16 +4,14 @@ import * as _ from "lodash";
 import * as d3 from "d3";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { CardinalYAxis, ScaleType } from "../../shared/models";
+import { CardinalYAxis, ContainerSize, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
-    readonly containerWidth: number;
-    readonly containerHeight: number;
     readonly xAxisTickFormat?: (x: string) => string;
-} & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
+} & ContainerSize & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
 
     const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
     const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));
@@ -51,11 +49,11 @@ export function createBoxPlotScales(payload: {
         yMax = payload.yAxisMax;
     }
 
-    const barAreaHeight = payload.containerHeight
+    const dataAreaHeight = payload.containerHeight
         - config.margin.top
         - config.margin.bottom;
 
-    const yAxisScale = createYAxisScale({...payload, dataAreaHeight: barAreaHeight, yMin, yMax});
+    const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
     let marginLeft = config.margin.left;
 
@@ -81,13 +79,13 @@ export function createBoxPlotScales(payload: {
             : estimatedNeededMaxYTickWidthPx;
     }
 
-    const barAreaWidth = payload.containerWidth
+    const dataAreaWidth = payload.containerWidth
         - marginLeft
         - config.margin.right;
 
     const xAxisScale = d3.scaleBand()
         .domain(boxGroupKeys)
-        .range([0, barAreaWidth])
+        .range([0, dataAreaWidth])
         .padding(0.2);
 
     const xAxisSubgroupKVS = payload.boxGroups.reduce((previousValue, currentValue) => {
@@ -109,7 +107,7 @@ export function createBoxPlotScales(payload: {
     let xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
 
     if (notNullOrUndefined(payload.xAxisTickFormat)) {
-        xAxis = xAxis.tickFormat(payload.yAxisTickFormat as any);
+        xAxis = xAxis.tickFormat(payload.xAxisTickFormat as any);
     }
 
     const yAxis = createCardinalYAxis({
@@ -126,8 +124,8 @@ export function createBoxPlotScales(payload: {
         xAxisSubgroupKVS,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,
-        dataAreaHeight: barAreaHeight,
-        dataAreaWidth: barAreaWidth,
+        dataAreaHeight,
+        dataAreaWidth,
         chartMargin: {
             ...config.margin,
             left: marginLeft
