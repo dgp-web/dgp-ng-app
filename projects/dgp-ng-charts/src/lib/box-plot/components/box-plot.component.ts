@@ -26,6 +26,7 @@ import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
+import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
 
 @Component({
     selector: "dgp-box-plot",
@@ -40,8 +41,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <div class="plot-container"
-                 #chartContainer>
+            <dgp-plot-container>
 
                 <svg #svgRoot
                      class="chart-svg"
@@ -182,7 +182,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                     </g>
                 </svg>
 
-            </div>
+            </dgp-plot-container>
 
         </dgp-chart>
     `,
@@ -205,7 +205,8 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     readonly trackByBoxOutlierKey = trackByBoxOutlierKey;
     readonly trackByBoxPlotControlLineId = trackByBoxPlotControlLineId;
 
-    @ViewChild("chartContainer") elRef: ElementRef<HTMLDivElement>;
+    @ViewChild(DgpPlotContainerComponent, {read: ElementRef, static: true})
+    elRef: ElementRef<HTMLDivElement>;
 
     @Input()
     model: ReadonlyArray<BoxGroup>;
