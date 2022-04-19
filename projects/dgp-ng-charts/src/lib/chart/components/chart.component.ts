@@ -145,15 +145,6 @@ export class DgpChartComponent extends DgpChartComponentBase {
     @Input()
     scales: AxisScales;
 
-    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
-
-    constructor(
-        @Inject(ID_PREFIX)
-        protected readonly idPrefix: string
-    ) {
-        super();
-    }
 
     geMaxHeight(chartRef: HTMLDivElement, chartTitleRef: HTMLDivElement, xAxisLabelRef: HTMLDivElement) {
         let maxHeight = chartRef.getBoundingClientRect().height;

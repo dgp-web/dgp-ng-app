@@ -37,25 +37,8 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <ng-container defs>
-                <!-- Patterns -->
-                <pattern dgpHorizontalLinesPattern></pattern>
-                <pattern dgpVerticalLinesPattern></pattern>
-                <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
-                <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
-                <pattern dgpCheckerboardPattern></pattern>
-                <pattern dgpDiagonalCheckerboardPattern></pattern>
-
-                <!-- Masks -->
-                <mask dgpVerticalLinesMask></mask>
-                <mask dgpHorizontalLinesMask></mask>
-                <mask dgpLinesFromLeftTopToRightBottomMask></mask>
-                <mask dgpLinesFromLeftBottomToRightTopMask></mask>
-                <mask dgpGridMask></mask>
-                <mask dgpDiagonalGridMask></mask>
-                <mask dgpCheckerboardMask></mask>
-                <mask dgpDiagonalCheckerboardMask></mask>
-            </ng-container>
+            <svg:defs xmlns:svg="http://www.w3.org/2000/svg"
+                      dgpPatternAndMaskDefs></svg:defs>
 
             <ng-container *ngIf="scales$ | async">
                 <svg:g xmlns:svg="http://www.w3.org/2000/svg"

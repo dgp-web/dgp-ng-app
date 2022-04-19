@@ -26,7 +26,6 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
-export { DgpPatternAndMaskDefsComponent } from "./lib/box-plot/components/pattern-and-mask-defs.component";
 export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";
 export { BoxPlotWhiskerDirective } from "./lib/box-plot/directives/box-plot-whisker.directive";
 export { BoxPlotLowerAntennaDirective } from "./lib/box-plot/directives/box-plot-lower-antenna.directive";
@@ -182,6 +181,15 @@ export {
     LinesFromLeftTopToRightBottomPatternDirective
 } from "./lib/patterns/directives/lines-from-left-top-to-right-bottom-pattern.directive";
 export { VerticalLinesPatternDirective } from "./lib/patterns/directives/vertical-lines-pattern.directive";
+
+/**
+ * -----
+ * Pattern and mask defs
+ * -----
+ */
+
+export { DgpPatternAndMaskDefsModule } from "./lib/pattern-and-mask-defs/pattern-and-mask-defs.module";
+export { DgpPatternAndMaskDefsComponent } from "./lib/pattern-and-mask-defs/components/pattern-and-mask-defs.component";
 
 /**
  * -----
