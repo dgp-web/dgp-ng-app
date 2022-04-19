@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { filterNotNullOrUndefined, isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { BarChart, BarGroups } from "../models";
 import { BehaviorSubject, combineLatest } from "rxjs";
@@ -6,7 +6,6 @@ import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
-import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
 import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
 import { trackByBarGroupId } from "../functions/track-by-bar-group-id.function";
 import { trackByBarId } from "../functions/track-by-bar-id.function";
@@ -125,9 +124,6 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
     ]
 })
 export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase implements BarChart {
-
-    @ViewChild(DgpPlotContainerComponent, {read: ElementRef, static: true})
-    elRef: ElementRef<HTMLDivElement>;
 
     @Input()
     model: BarGroups;

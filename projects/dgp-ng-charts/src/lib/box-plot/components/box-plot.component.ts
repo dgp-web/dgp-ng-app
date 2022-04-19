@@ -205,9 +205,6 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     readonly trackByBoxOutlierKey = trackByBoxOutlierKey;
     readonly trackByBoxPlotControlLineId = trackByBoxPlotControlLineId;
 
-    @ViewChild(DgpPlotContainerComponent, {read: ElementRef, static: true})
-    elRef: ElementRef<HTMLDivElement>;
-
     @Input()
     model: ReadonlyArray<BoxGroup>;
 
