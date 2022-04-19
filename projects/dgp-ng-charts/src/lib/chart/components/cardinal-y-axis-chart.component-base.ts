@@ -8,7 +8,7 @@ import { DgpChartComponentBase } from "./chart.component-base";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class DgpCardinalYAxisChartComponentBase extends DgpChartComponentBase {
+export class DgpCardinalYAxisChartComponentBase extends DgpChartComponentBase implements CardinalYAxis {
 
     @Input()
     yAxisMin?: number;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Directive, Input } from "@angular/core";
 import { combineLatest } from "rxjs";
 import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
@@ -12,9 +12,50 @@ import {
 import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-import { CardinalYAxis, ScaleType } from "../../shared/models";
+import { CardinalXAxis, ScaleType } from "../../shared/models";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
-import { Many } from "data-modeling";
+
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
+export class DgpCardinalXYAxisChartComponentBase extends DgpCardinalYAxisChartComponentBase implements CardinalXAxis {
+
+    @Input()
+    xAxisMin?: number;
+    readonly xAxisMin$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisMin");
+
+    @Input()
+    xAxisMax?: number;
+    readonly xAxisMax$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisMax");
+
+    @Input()
+    xAxisStep?: number;
+    readonly xAxisStep$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisStep");
+
+    @Input()
+    xAxisScaleType?: ScaleType;
+    readonly xAxisScaleType$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisScaleType");
+
+    @Input()
+    xAxisTickFormat?: (x: string) => string;
+    readonly xAxisTickFormat$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisTickFormat");
+
+    readonly xAxis$ = combineLatest([
+        this.xAxisMin$,
+        this.xAxisMax$,
+        this.xAxisStep$,
+        this.xAxisScaleType$,
+        this.xAxisTickFormat$,
+    ]).pipe(
+        map(x => ({
+            xAxisMin: x[0],
+            xAxisMax: x[1],
+            xAxisStep: x[2],
+            xAxisScaleType: x[3],
+            xAxisTickFormat: x[4]
+        } as CardinalXAxis))
+    );
+
+}
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -141,7 +182,7 @@ import { Many } from "data-modeling";
         idPrefixProvider
     ]
 })
-export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartComponentBase implements ConnectedScatterPlot {
+export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComponentBase implements ConnectedScatterPlot {
 
     readonly trackByConnectedScatterGroupId = trackByConnectedScatterGroupId;
     readonly trackByConnectedScatterSeriesId = trackByConnectedScatterSeriesId;
@@ -160,51 +201,23 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
     @Input()
     config = defaultConnectedScatterPlotConfig;
 
-    @Input()
-    xAxisMin?: number;
-    readonly xAxisMin$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisMin");
-
-    @Input()
-    xAxisMax?: number;
-    readonly xAxisMax$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisMax");
-
-    @Input()
-    xAxisStep?: number;
-    readonly xAxisStep$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisStep");
-
-    @Input()
-    xAxisScaleType?: ScaleType;
-    readonly xAxisScaleType$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisScaleType");
-
-    @Input()
-    xAxisTickFormat?: (x: string) => string;
-    readonly xAxisTickFormat$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisTickFormat");
-
     selectedDotKey: string = null;
 
     readonly scales$ = combineLatest([
         this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
         this.model$,
+        this.xAxis$,
         this.yAxis$,
-        this.xAxisMin$,
-        this.xAxisMax$,
-        this.xAxisStep$,
-        this.xAxisScaleType$,
-        this.xAxisTickFormat$,
         this.controlLines$
     ]).pipe(
         debounceTime(250),
         map(combination => createConnectedScatterPlotScales({
-            containerHeight: (combination[0] as DOMRectReadOnly).height,
-            containerWidth: (combination[0] as DOMRectReadOnly).width,
-            connectedScatterGroups: combination[1] as Many<ConnectedScatterGroup>,
-            ...combination[2] as CardinalYAxis,
-            xAxisMin: combination[3] as number,
-            xAxisMax: combination[4] as number,
-            xAxisStep: combination[5] as number,
-            xAxisScaleType: combination[6] as ScaleType,
-            xAxisTickFormat: combination[7] as (x: string) => string,
-            controlLines: combination[8] as Many<ConnectedScatterPlotControlLine>
+            containerHeight: combination[0].height,
+            containerWidth: combination[0].width,
+            connectedScatterGroups: combination[1],
+            ...combination[2],
+            ...combination[3],
+            controlLines: combination[4]
         })),
         shareReplay(1)
     );
