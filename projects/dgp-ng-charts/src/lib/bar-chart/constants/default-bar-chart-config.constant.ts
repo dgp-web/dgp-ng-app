@@ -1,12 +1,9 @@
 import { BarChartConfig } from "../models";
+import { defaultChartConfig } from "../../shared/constants";
+
 
 export const defaultBarChartConfig: BarChartConfig = {
-    margin: {
-        top: 10,
-        right: 30,
-        left: 50,
-        bottom: 20
-    },
+    ...defaultChartConfig,
     groupPadding: 0.2,
     subGroupPadding: 0.05,
     cardinalScaleOffset: 0.05

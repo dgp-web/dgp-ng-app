@@ -12,7 +12,7 @@ import {
 } from "@angular/core";
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, tap } from "rxjs/operators";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
@@ -21,7 +21,6 @@ import { ChartSelectionMode } from "../../shared/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
-import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
 
 @Component({
@@ -31,7 +30,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
                    dgpResizeSensor
-                   (sizeChanged)="drawChart()">
+                   (sizeChanged)="onResize()">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
@@ -42,7 +41,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                 <svg #svgRoot
                      class="chart-svg"
                      *ngIf="model && boxPlotScales"
-                     [attr.viewBox]="getViewBox()">
+                     [attr.viewBox]="viewBox$ | async">
 
                     <defs>
                         <!-- Patterns -->
@@ -71,7 +70,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                     </defs>
 
                     <g [attr.clip-path]="containerAreaClipPath">
-                        <g [attr.transform]="getContainerTransform()">
+                        <g [attr.transform]="containerTransform$ | async">
 
                             <g dgpChartBottomAxis
                                [scales]="boxPlotScales"></g>
@@ -229,6 +228,8 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
 
     readonly shapeEnum = Shape;
 
+    readonly containerDOMRect$ = new BehaviorSubject<DOMRectReadOnly>(null);
+
     constructor(
         private readonly cd: ChangeDetectorRef,
         @Inject(ID_PREFIX)
@@ -305,10 +306,6 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
 
     }
 
-    getContainerTransform(): string {
-        return "translate(" + this.boxPlotScales.chartMargin.left + " " + this.boxPlotScales.chartMargin.top + ")";
-    }
-
     getResultRootTransform(boxGroup: BoxGroup) {
         return "translate(" + this.boxPlotScales.xAxisScale(boxGroup.boxGroupId) + ")";
     }
@@ -327,11 +324,6 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
         this.outlierKey = null;
     }
 
-    getViewBox() {
-        const containerDOMRect = this.elRef.nativeElement.getBoundingClientRect();
-        return getChartViewBox({containerDOMRect});
-    }
-
     getOutlierTooltip(box: Box, outlierIndex: number): string {
         let result = "";
 
@@ -342,6 +334,11 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
         result += box.outliers[outlierIndex].toPrecision(3);
 
         return result;
+    }
+
+    onResize() {
+        if (isNullOrUndefined(this.elRef.nativeElement)) return;
+        this.containerDOMRect$.next(this.elRef.nativeElement.getBoundingClientRect());
     }
 
 }

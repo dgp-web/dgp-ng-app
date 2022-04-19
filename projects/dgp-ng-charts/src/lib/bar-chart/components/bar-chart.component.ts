@@ -131,19 +131,9 @@ export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase imp
 
     @Input()
     config = defaultBarChartConfig;
-    readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
-    readonly margin$ = this.config$.pipe(map(x => x.margin));
 
-    readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
     readonly trackByBarGroupId = trackByBarGroupId;
     readonly trackByBarId = trackByBarId;
-
-    readonly containerDOMRect$ = new BehaviorSubject<DOMRectReadOnly>(null);
-
-    readonly viewBox$ = this.containerDOMRect$.pipe(
-        filterNotNullOrUndefined(),
-        map(containerDOMRect => getChartViewBox({containerDOMRect}))
-    );
 
     readonly scales$ = combineLatest([
         this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
