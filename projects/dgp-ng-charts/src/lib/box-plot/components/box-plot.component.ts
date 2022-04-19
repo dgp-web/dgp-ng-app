@@ -131,33 +131,14 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                                     <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
                                         <ng-container
                                             *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
-                                            <g [ngSwitch]="box.outlierShape"
-                                               [matTooltip]="getOutlierTooltip(box, i)"
+                                            <g [matTooltip]="getOutlierTooltip(box, i)"
                                                dgpBoxPlotOutlier
                                                [scales]="scales$ | async"
                                                [boxGroup]="boxGroup"
                                                [box]="box"
-                                               [value]="value">
-                                                <circle *ngSwitchDefault
-                                                        dgpCircle></circle>
-                                                <circle *ngSwitchCase="shapeEnum.Circle"
-                                                        dgpCircle></circle>
-                                                <rect *ngSwitchCase="shapeEnum.Rectangle"
-                                                      dgpRectangle></rect>
-                                                <polygon *ngSwitchCase="shapeEnum.Rhombus"
-                                                         dgpRhombus></polygon>
-                                                <polygon *ngSwitchCase="shapeEnum.Star"
-                                                         dgpStar></polygon>
-                                                <polygon *ngSwitchCase="shapeEnum.Cross"
-                                                         dgpCross></polygon>
-                                                <polygon *ngSwitchCase="shapeEnum.Triangle"
-                                                         dgpTriangle></polygon>
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleDown"
-                                                         dgpTriangleDown></polygon>
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleRight"
-                                                         dgpTriangleRight></polygon>
-                                                <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
-                                                         dgpTriangleLeft></polygon>
+                                               [value]="value"
+                                               dgpDot
+                                               [model]="box.outlierShape">
                                             </g>
                                         </ng-container>
                                     </ng-container>
