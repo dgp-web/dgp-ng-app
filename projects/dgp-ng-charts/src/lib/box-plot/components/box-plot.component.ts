@@ -20,12 +20,12 @@ import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
-import { ChartSelectionMode, ScaleType } from "../../shared/models";
-import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
+import { ChartSelectionMode } from "../../shared/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
+import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
 
 @Component({
     selector: "dgp-box-plot",
@@ -74,7 +74,7 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
                                   [scales]="boxPlotScales"></clipPath>
                     </defs>
 
-                    <g [attr.clip-path]="getContainerAreaClipPath()">
+                    <g [attr.clip-path]="containerAreaClipPath">
                         <g [attr.transform]="getContainerTransform()">
 
                             <g dgpChartBottomAxis
@@ -102,7 +102,7 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
                                [config]="config"
                                [selectionMode]="selectionMode"
                                (selectionChange)="selectionChange.emit($event)"
-                               [attr.clip-path]="getDataAreaClipPath()">
+                               [attr.clip-path]="dataAreaClipPath">
 
                                 <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
                                    [attr.transform]="getResultRootTransform(boxGroup)">
@@ -198,7 +198,7 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
         idPrefixProvider
     ]
 })
-export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
+export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
 
     readonly trackByBoxGroupId = trackByBoxGroupId;
     readonly trackByBoxId = trackByBoxId;
@@ -224,18 +224,6 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     @Input()
     xAxisTickFormat?: (x: string) => string;
 
-    @Input()
-    yAxisMin?: number;
-
-    @Input()
-    yAxisMax?: number;
-
-    @Input()
-    yAxisStep?: number;
-
-    @Input()
-    yAxisScaleType?: ScaleType;
-
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -258,7 +246,7 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
         @Inject(ID_PREFIX)
         protected readonly idPrefix: string
     ) {
-        super();
+        super(idPrefix);
 
         this.drawChartSubscription = this.drawChartActionScheduler.pipe(
             debounceTime(250),
@@ -354,14 +342,6 @@ export class DgpBoxPlotComponent extends DgpChartComponentBase implements BoxPlo
     getViewBox() {
         const containerDOMRect = this.elRef.nativeElement.getBoundingClientRect();
         return getChartViewBox({containerDOMRect});
-    }
-
-    getDataAreaClipPath(): string {
-        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    }
-
-    getContainerAreaClipPath(): string {
-        return " url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
     }
 
     getOutlierTooltip(box: Box, outlierIndex: number): string {
