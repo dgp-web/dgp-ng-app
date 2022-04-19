@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { filterNotNullOrUndefined, isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
-import { BarChart, BarChartConfig, BarGroups } from "../models";
+import { BarChart, BarGroups } from "../models";
 import { ExportChartConfig } from "../../heatmap/models";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { BehaviorSubject, combineLatest } from "rxjs";
@@ -41,8 +41,7 @@ import { defaultBarChartConfig } from "../constants";
 
             <dgp-plot-container>
 
-                <svg #svgRoot
-                     *ngIf="scales$ | async"
+                <svg *ngIf="scales$ | async"
                      [attr.viewBox]="viewBox$ | async">
 
                     <defs>
