@@ -20,28 +20,19 @@
         ],
         "paths": {
             "dgp-ng-app": [
-                "dist/dgp-ng-app"
-            ],
-            "dgp-ng-app/*": [
-                "dist/dgp-ng-app/*"
+                "projects/dgp-ng-app/src/public-api.ts"
             ],
             "dgp-ng-docs": [
-                "dist/dgp-ng-docs"
-            ],
-            "dgp-ng-docs/*": [
-                "dist/dgp-ng-docs/*"
+                "projects/dgp-ng-docs/src/public-api.ts"
             ],
             "dgp-ng-docking-layout": [
-                "dist/dgp-ng-docking-layout/dgp-ng-docking-layout",
-                "dist/dgp-ng-docking-layout"
+                "projects/dgp-ng-docking-layout/src/public-api.ts"
             ],
             "dgp-ng-charts": [
-                "dist/dgp-ng-charts/dgp-ng-charts",
-                "dist/dgp-ng-charts"
+                "projects/dgp-ng-charts/src/public-api.ts"
             ],
             "dgp-ng-drag-and-drop": [
-                "dist/dgp-ng-drag-and-drop/dgp-ng-drag-and-drop",
-                "dist/dgp-ng-drag-and-drop"
+                "projects/dgp-ng-drag-and-drop/src/public-api.ts"
             ]
         }
     },
