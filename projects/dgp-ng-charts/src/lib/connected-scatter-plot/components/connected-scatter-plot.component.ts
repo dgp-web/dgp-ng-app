@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Directive, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { combineLatest } from "rxjs";
 import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
@@ -12,50 +12,7 @@ import {
 import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-import { CardinalXAxis, ScaleType } from "../../shared/models";
-import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
-
-@Directive()
-// tslint:disable-next-line:directive-class-suffix
-export class DgpCardinalXYAxisChartComponentBase extends DgpCardinalYAxisChartComponentBase implements CardinalXAxis {
-
-    @Input()
-    xAxisMin?: number;
-    readonly xAxisMin$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisMin");
-
-    @Input()
-    xAxisMax?: number;
-    readonly xAxisMax$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisMax");
-
-    @Input()
-    xAxisStep?: number;
-    readonly xAxisStep$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisStep");
-
-    @Input()
-    xAxisScaleType?: ScaleType;
-    readonly xAxisScaleType$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisScaleType");
-
-    @Input()
-    xAxisTickFormat?: (x: string) => string;
-    readonly xAxisTickFormat$ = observeAttribute$(this as DgpCardinalXYAxisChartComponentBase, "xAxisTickFormat");
-
-    readonly xAxis$ = combineLatest([
-        this.xAxisMin$,
-        this.xAxisMax$,
-        this.xAxisStep$,
-        this.xAxisScaleType$,
-        this.xAxisTickFormat$,
-    ]).pipe(
-        map(x => ({
-            xAxisMin: x[0],
-            xAxisMax: x[1],
-            xAxisStep: x[2],
-            xAxisScaleType: x[3],
-            xAxisTickFormat: x[4]
-        } as CardinalXAxis))
-    );
-
-}
+import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
