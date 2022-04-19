@@ -76,21 +76,17 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
                     <g [attr.clip-path]="containerAreaClipPath">
                         <g [attr.transform]="containerTransform$ | async">
 
-                            <g class="chart__x-axis"
-                               dgpChartBottomAxis
+                            <g dgpChartBottomAxis
                                [scales]="scales$ | async"></g>
 
                             <g *ngIf="showXAxisGridLines"
-                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="scales$ | async"></g>
 
-                            <g class="chart__y-axis"
-                               dgpChartLeftAxis
+                            <g dgpChartLeftAxis
                                [scales]="scales$ | async"></g>
 
                             <g *ngIf="showYAxisGridLines"
-                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="scales$ | async"></g>
 

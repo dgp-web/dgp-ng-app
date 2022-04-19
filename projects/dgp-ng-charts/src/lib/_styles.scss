@@ -4,20 +4,20 @@
     height: 100%;
 }
 
-.chart__y-axis {
+.chart__y-axis, *[dgpChartLeftAxis] {
     font-size: 16px;
 }
 
-.chart__y-axis-grid-lines {
+.chart__y-axis-grid-lines, *[dgpChartYAxisGridLines] {
     font-size: 16px;
     opacity: 0.2;
 }
 
-.chart__x-axis {
+.chart__x-axis, *[dgpChartBottomAxis] {
     font-size: 16px;
 }
 
-.chart__x-axis-grid-lines {
+.chart__x-axis-grid-lines, *[dgpChartXAxisGridLines] {
     font-size: 16px;
     opacity: 0.2;
 }
