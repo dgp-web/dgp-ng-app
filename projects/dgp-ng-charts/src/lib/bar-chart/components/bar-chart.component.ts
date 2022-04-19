@@ -10,14 +10,14 @@ import {
     SimpleChanges,
     ViewChild
 } from "@angular/core";
-import { isNullOrUndefined } from "dgp-ng-app";
-import { BarChart, BarChartScales, BarGroup, BarGroups } from "../models";
+import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { BarChart, BarChartConfig, BarChartScales, BarGroup, BarGroups } from "../models";
 import { defaultBarChartConfig } from "../constants/default-bar-chart-config.constant";
 import { ExportChartConfig } from "../../heatmap/models";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
 import { Subscription } from "rxjs";
-import { debounceTime, tap } from "rxjs/operators";
+import { debounceTime, map, tap } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
@@ -51,7 +51,7 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 
                 <svg #svgRoot
                      *ngIf="barChartScales"
-                     [attr.viewBox]="getViewBox()">
+                     [attr.viewBox]="viewBox$ | async">
 
                     <defs>
                         <!-- Patterns -->
@@ -139,10 +139,22 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     exportConfig: ExportChartConfig;
 
     @Input()
-    config = defaultBarChartConfig;
+    config: BarChartConfig;
+
+    readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
 
     barChartScales: BarChartScales;
 
+    readonly viewBox$ = this.config$.pipe(
+        map(config => {
+            const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
+
+            const height = rect.height - config.margin.top - config.margin.bottom;
+            const width = rect.width - config.margin.left - config.margin.right;
+
+            return "0 0 " + width + " " + height;
+        })
+    );
     private readonly drawChartActionScheduler = new EventEmitter();
 
     private drawChartSubscription: Subscription;
@@ -156,6 +168,8 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
             debounceTime(250),
             tap(() => this.drawChart())
         ).subscribe();
+
+        this.config = defaultBarChartConfig;
     }
 
     drawChart() {
@@ -207,12 +221,4 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
         return "translate(" + this.barChartScales.xAxisScale(barGroup.barGroupKey) + ")";
     }
 
-    getViewBox() {
-        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
-
-        const height = rect.height - this.config.margin.top - this.config.margin.bottom;
-        const width = rect.width - this.config.margin.left - this.config.margin.right;
-
-        return "0 0 " + width + " " + height;
-    }
 }
