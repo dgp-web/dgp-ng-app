@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from "@angular/core";
 import { DgpChartComponentBase } from "./chart.component-base";
 import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { AxisScales } from "../../shared/models";
@@ -8,6 +8,7 @@ import { map } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-chart",
@@ -35,13 +36,12 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
                      [attr.viewBox]="viewBox$ | async">
 
                     <defs>
-                        <ng-content select="[defs]"></ng-content>
-
                         <clipPath dgpChartDataAreaClipPath
                                   [scales]="scales"></clipPath>
                         <clipPath dgpChartContainerAreaClipPath
                                   [scales]="scales"></clipPath>
                     </defs>
+                    <ng-content select="[defs]"></ng-content>
 
                     <g dgpChartSVGRoot
                        [scales]="scales"
@@ -144,6 +144,16 @@ export class DgpChartComponent extends DgpChartComponentBase {
 
     @Input()
     scales: AxisScales;
+
+    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
+
+    constructor(
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
+    ) {
+        super();
+    }
 
     geMaxHeight(chartRef: HTMLDivElement, chartTitleRef: HTMLDivElement, xAxisLabelRef: HTMLDivElement) {
         let maxHeight = chartRef.getBoundingClientRect().height;
