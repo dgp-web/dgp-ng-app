@@ -1,32 +1,20 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Inject,
-    Input,
-    OnChanges,
-    OnDestroy,
-    SimpleChanges
-} from "@angular/core";
-import { Subscription } from "rxjs";
-import { debounceTime, tap } from "rxjs/operators";
-import { DrawD3ChartPayload } from "../../shared/chart.component-base";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { combineLatest } from "rxjs";
+import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
-import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import {
     defaultConnectedScatterPlotConfig,
     trackByConnectedPlotControlLineId,
     trackByConnectedScatterGroupId,
     trackByConnectedScatterSeriesId
 } from "../constants";
-import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
-import { ScaleType } from "../../shared/models";
+import { CardinalYAxis, ScaleType } from "../../shared/models";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
+import { Many } from "data-modeling";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -35,7 +23,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
                    dgpResizeSensor
-                   (sizeChanged)="drawChart()">
+                   (sizeChanged)="onResize()">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
@@ -43,39 +31,39 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
 
             <dgp-plot-container>
 
-                <svg *ngIf="model && connectedScatterPlotScales"
+                <svg *ngIf="model && (scales$ | async)"
                      class="chart-svg"
                      [attr.viewBox]="viewBox$ | async">
 
                     <defs>
                         <clipPath dgpChartDataAreaClipPath
-                                  [scales]="connectedScatterPlotScales"></clipPath>
+                                  [scales]="scales$ | async"></clipPath>
                         <clipPath dgpChartContainerAreaClipPath
-                                  [scales]="connectedScatterPlotScales"></clipPath>
+                                  [scales]="scales$ | async"></clipPath>
                     </defs>
 
                     <g [attr.clip-path]="containerAreaClipPath">
                         <g [attr.transform]="containerTransform$ | async">
 
                             <g dgpChartBottomAxis
-                               [scales]="connectedScatterPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g *ngIf="showXAxisGridLines"
                                dgpChartXAxisGridLines
-                               [scales]="connectedScatterPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g dgpChartLeftAxis
-                               [scales]="connectedScatterPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g *ngIf="showYAxisGridLines"
                                dgpChartYAxisGridLines
-                               [scales]="connectedScatterPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g [attr.clip-path]="dataAreaClipPath">
 
                                 <line *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
                                       dgpConnectedScatterPlotControlLine
-                                      [scales]="connectedScatterPlotScales"
+                                      [scales]="scales$ | async"
                                       [connectedScatterPlotControlLine]="controlLine"></line>
 
                                 <g *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
@@ -84,7 +72,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                                               dgpLineChartLine
                                               [series]="series"
                                               [group]="group"
-                                              [scales]="connectedScatterPlotScales"></path>
+                                              [scales]="scales$ | async"></path>
                                     </ng-container>
                                 </g>
 
@@ -99,7 +87,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                                                    [dot]="dot"
                                                    [series]="series"
                                                    [group]="group"
-                                                   [scales]="connectedScatterPlotScales">
+                                                   [scales]="scales$ | async">
 
                                                     <circle *ngSwitchDefault
                                                             dgpCircle></circle>
@@ -153,7 +141,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
         idPrefixProvider
     ]
 })
-export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartComponentBase implements ConnectedScatterPlot, OnChanges, OnDestroy {
+export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartComponentBase implements ConnectedScatterPlot {
 
     readonly trackByConnectedScatterGroupId = trackByConnectedScatterGroupId;
     readonly trackByConnectedScatterSeriesId = trackByConnectedScatterSeriesId;
@@ -163,122 +151,63 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
 
     @Input()
     model: readonly ConnectedScatterGroup[];
+    readonly model$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "model");
 
     @Input()
     controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
+    readonly controlLines$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "controlLines");
 
     @Input()
     config = defaultConnectedScatterPlotConfig;
 
     @Input()
     xAxisMin?: number;
+    readonly xAxisMin$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisMin");
 
     @Input()
     xAxisMax?: number;
+    readonly xAxisMax$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisMax");
 
     @Input()
     xAxisStep?: number;
+    readonly xAxisStep$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisStep");
 
     @Input()
     xAxisScaleType?: ScaleType;
+    readonly xAxisScaleType$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisScaleType");
 
     @Input()
     xAxisTickFormat?: (x: string) => string;
-
-    private readonly drawChartActionScheduler = new EventEmitter();
-
-    private drawChartSubscription: Subscription;
-
-    connectedScatterPlotScales: ConnectedScatterPlotScales;
+    readonly xAxisTickFormat$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "xAxisTickFormat");
 
     selectedDotKey: string = null;
 
-    constructor(
-        private readonly cd: ChangeDetectorRef,
-        @Inject(ID_PREFIX)
-        protected readonly idPrefix: string
-    ) {
-        super(idPrefix);
-
-        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
-            debounceTime(250),
-            tap(() => this.drawChart())
-        ).subscribe();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (
-            changes.model
-            || changes.config
-            || changes.selectionMode
-            || changes.selection
-            || changes.xAxisMin
-            || changes.xAxisMax
-            || changes.xAxisStep
-            || changes.showXAxisGridLines
-            || changes.yAxisMin
-            || changes.yAxisMax
-            || changes.yAxisStep
-            || changes.showYAxisGridLines
-            || changes.xAxisScaleType
-            || changes.yAxisScaleType
-            || changes.controlLines
-            || changes.chartTitle
-            || changes.xAxisTitle
-            || changes.yAxisTitle
-            || changes.xAxisTickFormat
-            || changes.yAxisTickFormat
-        ) {
-            this.drawChartActionScheduler.emit();
-        }
-    }
-
-    ngOnDestroy(): void {
-        if (!this.drawChartSubscription?.closed) {
-            this.drawChartSubscription?.unsubscribe();
-        }
-    }
-
-    protected drawD3Chart(payload: DrawD3ChartPayload): void {
-
-
-        this.connectedScatterPlotScales = createConnectedScatterPlotScales({
-            containerHeight: payload.containerHeight,
-            containerWidth: payload.containerWidth,
-            connectedScatterGroups: this.model,
-            controlLines: this.controlLines,
-            // x axis
-            xAxisScaleType: this.xAxisScaleType,
-            xAxisTickFormat: this.xAxisTickFormat,
-            xAxisMin: notNullOrUndefined(this.xAxisMin) ? +this.xAxisMin : undefined,
-            xAxisMax: notNullOrUndefined(this.xAxisMax) ? +this.xAxisMax : undefined,
-            xAxisStep: notNullOrUndefined(this.xAxisStep) ? +this.xAxisStep : undefined,
-            // y axis
-            yAxisScaleType: this.yAxisScaleType,
-            yAxisTickFormat: this.yAxisTickFormat,
-            yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
-            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
-            yAxisStep: notNullOrUndefined(this.yAxisStep) ? +this.yAxisStep : undefined
-        });
-
-        this.cd.markForCheck();
-
-    }
-
-    drawChart() {
-
-        if (isNullOrUndefined(this.elRef.nativeElement)) return;
-
-        const rect = this.elRef.nativeElement.getBoundingClientRect();
-
-        this.drawD3Chart({
-            svg: null,
-            containerHeight: rect.height,
-            containerWidth: rect.width
-        });
-
-
-    }
+    readonly scales$ = combineLatest([
+        this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
+        this.model$,
+        this.yAxis$,
+        this.xAxisMin$,
+        this.xAxisMax$,
+        this.xAxisStep$,
+        this.xAxisScaleType$,
+        this.xAxisTickFormat$,
+        this.controlLines$
+    ]).pipe(
+        debounceTime(250),
+        map(combination => createConnectedScatterPlotScales({
+            containerHeight: (combination[0] as DOMRectReadOnly).height,
+            containerWidth: (combination[0] as DOMRectReadOnly).width,
+            connectedScatterGroups: combination[1] as Many<ConnectedScatterGroup>,
+            ...combination[2] as CardinalYAxis,
+            xAxisMin: combination[3] as number,
+            xAxisMax: combination[4] as number,
+            xAxisStep: combination[5] as number,
+            xAxisScaleType: combination[6] as ScaleType,
+            xAxisTickFormat: combination[7] as (x: string) => string,
+            controlLines: combination[8] as Many<ConnectedScatterPlotControlLine>
+        })),
+        shareReplay(1)
+    );
 
     highlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         this.selectedDotKey = this.getDotKey(group, series, dot);
@@ -327,6 +256,11 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalYAxisChartCompo
         if (notNullOrUndefined(series.label)) result += series.label + ": ";
         result += "(" + dot.x.toPrecision(3) + ", " + dot.y.toPrecision(3) + ")";
         return result;
+    }
+
+    onResize() {
+        if (isNullOrUndefined(this.elRef.nativeElement)) return;
+        this.containerDOMRect$.next(this.elRef.nativeElement.getBoundingClientRect());
     }
 
 }
