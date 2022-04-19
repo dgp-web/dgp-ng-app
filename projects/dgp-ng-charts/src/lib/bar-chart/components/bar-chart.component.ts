@@ -22,6 +22,7 @@ import { createBarChartScales } from "../functions/create-bar-chart-scales.funct
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
+import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -74,7 +75,7 @@ import { DgpPlotContainerComponent } from "../../plot-container/components/plot-
                         <mask dgpDiagonalCheckerboardMask></mask>
                     </defs>
 
-                    <g [attr.transform]="getContainerTransform()">
+                    <g [attr.transform]="containerTransform$ | async">
 
                         <g class="chart__x-axis"
                            dgpChartBottomAxis
@@ -147,6 +148,8 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     config: BarChartConfig;
 
     readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
+    readonly margin$ = this.config$.pipe(map(x => x.margin));
+    readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
 
     barChartScales: BarChartScales;
 
@@ -213,11 +216,6 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
         this.cd.markForCheck();
 
     }
-
-    getContainerTransform(): string {
-        return "translate(" + this.config.margin.left + " " + this.config.margin.top + ")";
-    }
-
 
     getResultRootTransform(barGroup: BarGroup) {
         return "translate(" + this.barChartScales.xAxisScale(barGroup.barGroupKey) + ")";
