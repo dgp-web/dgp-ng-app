@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotSelection } from "../models";
 import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { BehaviorSubject, combineLatest } from "rxjs";
-import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
+import { createBoxPlotScales } from "../functions";
 import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
 import { ChartSelectionMode } from "../../shared/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-import { Shape } from "../../shapes/models";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
+import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-format.model";
 
 @Component({
     selector: "dgp-box-plot",
@@ -143,15 +143,11 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     selectionMode: ChartSelectionMode = "None";
 
     @Input()
-    xAxisTickFormat?: (x: string) => string;
+    xAxisTickFormat?: CardinalAxisTickFormat;
     readonly xAxisTickFormat$ = observeAttribute$(this as DgpBoxPlotComponent, "xAxisTickFormat");
-
-    outlierKey: string;
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
-
-    readonly shapeEnum = Shape;
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
@@ -173,20 +169,6 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
         })),
         shareReplay(1)
     );
-
-    getBoxOutlierKey(box: Box, outlierIndex: number) {
-        return getBoxOutlierSurrogateKey({
-            boxId: box.boxId, boxGroupId: box.boxGroupId, outlierIndex
-        });
-    }
-
-    highlightOutlier(box: Box, outlierIndex: number) {
-        this.outlierKey = this.getBoxOutlierKey(box, outlierIndex);
-    }
-
-    unhighlightOutlier(box: Box, value: number) {
-        this.outlierKey = null;
-    }
 
     getOutlierTooltip(box: Box, outlierIndex: number): string {
         let result = "";
