@@ -43,7 +43,6 @@ import { BarChart } from "dgp-ng-charts";
 export class BarChartLabsComponent {
 
     readonly barChart: BarChart = {
-        yAxisMin: 0,
         model: [{
             barGroupKey: "barGroup01",
             label: "A group of bars",
@@ -53,7 +52,7 @@ export class BarChartLabsComponent {
                 colorHex: "#999999"
             }, {
                 barKey: "barGroup01.bar02",
-                value: 3,
+                value: -3,
                 colorHex: "#999999"
             }]
         }]

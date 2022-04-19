@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, ViewChild } from "@angular/core";
 import { filterNotNullOrUndefined, isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { BarChart, BarGroups } from "../models";
 import { ExportChartConfig } from "../../heatmap/models";
@@ -15,6 +15,7 @@ import { trackByBarId } from "../functions/track-by-bar-id.function";
 import { defaultBarChartConfig } from "../constants";
 import { ScaleType } from "../../shared/models";
 import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-format.model";
+import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -64,42 +65,51 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                         <mask dgpDiagonalGridMask></mask>
                         <mask dgpCheckerboardMask></mask>
                         <mask dgpDiagonalCheckerboardMask></mask>
+
+                        <!-- Other -->
+                        <clipPath dgpChartDataAreaClipPath
+                                  [scales]="scales$ | async"></clipPath>
+                        <clipPath dgpChartContainerAreaClipPath
+                                  [scales]="scales$ | async"></clipPath>
                     </defs>
 
-                    <g [attr.transform]="containerTransform$ | async">
+                    <g [attr.clip-path]="getContainerAreaClipPath()">
+                        <g [attr.transform]="containerTransform$ | async">
 
-                        <g class="chart__x-axis"
-                           dgpChartBottomAxis
-                           [scales]="scales$ | async"></g>
+                            <g class="chart__x-axis"
+                               dgpChartBottomAxis
+                               [scales]="scales$ | async"></g>
 
-                        <g class="chart__x-axis-grid-lines"
-                           dgpChartXAxisGridLines
-                           [scales]="scales$ | async"></g>
+                            <g class="chart__x-axis-grid-lines"
+                               dgpChartXAxisGridLines
+                               [scales]="scales$ | async"></g>
 
-                        <g class="chart__y-axis"
-                           dgpChartLeftAxis
-                           [scales]="scales$ | async"></g>
+                            <g class="chart__y-axis"
+                               dgpChartLeftAxis
+                               [scales]="scales$ | async"></g>
 
-                        <g class="chart__y-axis-grid-lines"
-                           dgpChartYAxisGridLines
-                           [scales]="scales$ | async"></g>
+                            <g class="chart__y-axis-grid-lines"
+                               dgpChartYAxisGridLines
+                               [scales]="scales$ | async"></g>
 
-                        <g *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
-                           dgpBarChartBarGroup
-                           [barGroup]="barGroup"
-                           [scales]="scales$ | async">
-                            <ng-container *ngFor="let bar of barGroup.bars; trackBy: trackByBarId">
-                                <rect dgpBarChartBarFillPattern
-                                      [scales]="scales$ | async"
-                                      [barGroup]="barGroup"
-                                      [bar]="bar"></rect>
-                                <rect dgpBarChartBar
-                                      [scales]="scales$ | async"
-                                      [barGroup]="barGroup"
-                                      [bar]="bar"></rect>
-                            </ng-container>
+                            <g [attr.clip-path]="getDataAreaClipPath()">
+                                <g *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
+                                   dgpBarChartBarGroup
+                                   [barGroup]="barGroup"
+                                   [scales]="scales$ | async">
+                                    <ng-container *ngFor="let bar of barGroup.bars; trackBy: trackByBarId">
+                                        <rect dgpBarChartBarFillPattern
+                                              [scales]="scales$ | async"
+                                              [barGroup]="barGroup"
+                                              [bar]="bar"></rect>
+                                        <rect dgpBarChartBar
+                                              [scales]="scales$ | async"
+                                              [barGroup]="barGroup"
+                                              [bar]="bar"></rect>
+                                    </ng-container>
+                                </g>
+                            </g>
                         </g>
-
                     </g>
 
                 </svg>
@@ -200,6 +210,21 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
         })),
         shareReplay(1)
     );
+
+    constructor(
+        @Inject(ID_PREFIX)
+        protected readonly idPrefix: string
+    ) {
+        super();
+    }
+
+    getDataAreaClipPath(): string {
+        return " url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
+    }
+
+    getContainerAreaClipPath(): string {
+        return " url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
+    }
 
     onResize() {
         if (isNullOrUndefined(this.elRef.nativeElement)) return;

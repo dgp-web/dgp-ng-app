@@ -13,7 +13,6 @@ export function createBarChartScales(payload: {
 } & ContainerSize & CardinalYAxis, config = defaultBarChartConfig): BarChartScales {
 
     const barGroupKeys = payload.barGroups.map(x => x.barGroupKey);
-    const barIds = _.flatten(payload.barGroups.map(x => x.bars.map(y => y.barKey)));
 
     const valuesForExtremumComputation = payload.barGroups.reduce((previousValue, currentValue) => {
 
