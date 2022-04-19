@@ -20,17 +20,7 @@ import { Subject, Subscription } from "rxjs";
 import { debounceTime, map, tap } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
-
-export function getChartViewBox(payload: {
-    readonly containerDOMRect: DOMRectReadOnly;
-}): string {
-    const rect = payload.containerDOMRect;
-
-    const height = rect.height;
-    const width = rect.width;
-
-    return "0 0 " + width + " " + height;
-}
+import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 
 @Component({
     selector: "dgp-bar-chart",
