@@ -6,8 +6,6 @@ export interface BoxPlot extends Chart, CardinalYAxis {
     readonly model: ReadonlyArray<BoxGroup>;
 
     readonly xAxisTickFormat?: (x: string) => string;
-    readonly showYAxisGridLines?: boolean;
-    readonly showXAxisGridLines?: boolean;
 
     /**
      * Optional lines that indicate limits in which values should lie

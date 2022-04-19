@@ -47,6 +47,7 @@ export { TrackByBoxOutlierKeyPipe } from "./lib/box-plot/pipes/track-by-box-outl
 export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
 export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
+export { DgpCardinalYAxisChartComponentBase } from "./lib/chart/components/cardinal-y-axis-chart.component-base";
 export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
 export { DgpChartContainerAreaClipPathDirective } from "./lib/chart/directives/chart-container-area-clip-path.directive";
 export { DgpChartDataAreaClipPathDirective } from "./lib/chart/directives/chart-data-area-clip-path.directive";
