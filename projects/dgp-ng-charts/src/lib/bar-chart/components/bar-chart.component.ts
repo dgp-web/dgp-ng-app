@@ -120,10 +120,7 @@ import { defaultBarChartConfig } from "../constants";
 })
 export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart {
 
-    @ViewChild(DgpPlotContainerComponent, {
-        read: ElementRef,
-        static: true
-    })
+    @ViewChild(DgpPlotContainerComponent, {read: ElementRef, static: true})
     elRef: ElementRef<HTMLDivElement>;
 
     @Input()
@@ -167,9 +164,7 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
     onResize() {
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
-
-        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
-        this.containerDOMRect$.next(rect);
+        this.containerDOMRect$.next(this.elRef.nativeElement.getBoundingClientRect());
     }
 
 }
