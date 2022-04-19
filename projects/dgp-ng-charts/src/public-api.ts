@@ -78,6 +78,10 @@ export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/conn
 export {
     DgpConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
+export {
+    DgpChartSVGRootComponent
+} from "./lib/chart/components/chart-svg-root.component";
+
 // Directives
 export {
     DgpConnectedScatterPlotControlLineDirective
@@ -88,6 +92,14 @@ export {
 } from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
 export { DgpLineChartLineDirective } from "./lib/connected-scatter-plot/directives/line-chart-line.directive";
 export { TrackByConnectedScatterDotPipe } from "./lib/connected-scatter-plot/pipes/track-by-connected-scatter-dot.pipe";
+
+/**
+ * -----
+ * Dot
+ * -----
+ */
+export { DgpDotModule } from "./lib/dot/dot.module";
+export { DgpDotComponent } from "./lib/dot/components/dot.component";
 
 /**
  * -----
@@ -169,6 +181,15 @@ export {
     LinesFromLeftTopToRightBottomPatternDirective
 } from "./lib/patterns/directives/lines-from-left-top-to-right-bottom-pattern.directive";
 export { VerticalLinesPatternDirective } from "./lib/patterns/directives/vertical-lines-pattern.directive";
+
+/**
+ * -----
+ * Pattern and mask defs
+ * -----
+ */
+
+export { DgpPatternAndMaskDefsModule } from "./lib/pattern-and-mask-defs/pattern-and-mask-defs.module";
+export { DgpPatternAndMaskDefsComponent } from "./lib/pattern-and-mask-defs/components/pattern-and-mask-defs.component";
 
 /**
  * -----

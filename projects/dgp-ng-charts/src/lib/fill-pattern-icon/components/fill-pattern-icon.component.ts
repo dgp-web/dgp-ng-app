@@ -9,59 +9,12 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
     selector: "dgp-fill-pattern-icon",
     template: `
         <svg>
-            <defs>
-                <ng-container [ngSwitch]="model">
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.HorizontalLines">
-                        <pattern dgpHorizontalLinesPattern></pattern>
-                        <mask dgpHorizontalLinesMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.VerticalLines">
-                        <pattern dgpVerticalLinesPattern></pattern>
-                        <mask dgpVerticalLinesMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.LinesFromLeftTopToRightBottom">
-                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
-                        <mask dgpLinesFromLeftTopToRightBottomMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.LinesFromLeftBottomToRightTop">
-                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
-                        <mask dgpLinesFromLeftBottomToRightTopMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.Grid">
-                        <pattern dgpHorizontalLinesPattern></pattern>
-                        <pattern dgpVerticalLinesPattern></pattern>
-                        <mask dgpGridMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.DiagonalGrid">
-                        <pattern dgpLinesFromLeftTopToRightBottomPattern></pattern>
-                        <pattern dgpLinesFromLeftBottomToRightTopPattern></pattern>
-                        <mask dgpDiagonalGridMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.Checkerboard">
-                        <pattern dgpCheckerboardPattern></pattern>
-                        <mask dgpCheckerboardMask></mask>
-                    </ng-container>
-
-                    <ng-container *ngSwitchCase="fillPatternEnum.DiagonalCheckerboard">
-                        <pattern dgpDiagonalCheckerboardPattern></pattern>
-                        <mask dgpDiagonalCheckerboardMask></mask>
-                    </ng-container>
-
-                </ng-container>
-            </defs>
+            <defs dgpPatternAndMaskDefs></defs>
             <rect x="0"
                   y="0"
                   [attr.mask]="getMaskForFillPattern()"
                   [style.fill]="colorHex"
                   stroke-width="2"/>
-
         </svg>
     `,
     styles: [`

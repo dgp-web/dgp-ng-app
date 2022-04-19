@@ -9,9 +9,15 @@
         ],
         "component-selector": [
             true,
-            "element",
+            [
+                "element",
+                "attribute"
+            ],
             "dgp",
-            "kebab-case"
+            [
+                "kebab-case",
+                "camelCase"
+            ]
         ]
     }
 }

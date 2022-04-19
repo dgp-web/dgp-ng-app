@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { combineLatest } from "rxjs";
+import { BehaviorSubject, combineLatest } from "rxjs";
 import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
@@ -9,7 +9,7 @@ import {
     trackByConnectedScatterGroupId,
     trackByConnectedScatterSeriesId
 } from "../constants";
-import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { Shape } from "../../shapes/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
@@ -20,110 +20,57 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
-                   dgpResizeSensor
-                   (sizeChanged)="onResize()">
+                   [scales]="scales$ | async"
+                   [showXAxisGridLines]="showXAxisGridLines"
+                   [showYAxisGridLines]="showYAxisGridLines"
+                   (sizeChanged)="onResize($event)">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <dgp-plot-container>
+            <ng-container *ngIf="scales$ | async">
 
-                <svg *ngIf="model && (scales$ | async)"
-                     class="chart-svg"
-                     [attr.viewBox]="viewBox$ | async">
+                <svg:line xmlns:svg="http://www.w3.org/2000/svg"
+                          *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
+                          dgpConnectedScatterPlotControlLine
+                          [scales]="scales$ | async"
+                          [connectedScatterPlotControlLine]="controlLine"></svg:line>
 
-                    <defs>
-                        <clipPath dgpChartDataAreaClipPath
-                                  [scales]="scales$ | async"></clipPath>
-                        <clipPath dgpChartContainerAreaClipPath
-                                  [scales]="scales$ | async"></clipPath>
-                    </defs>
+                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                       *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
+                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
+                        <path *ngIf="showEdges(group, series)"
+                              dgpLineChartLine
+                              [series]="series"
+                              [group]="group"
+                              [scales]="scales$ | async"></path>
+                    </ng-container>
+                </svg:g>
 
-                    <g [attr.clip-path]="containerAreaClipPath">
-                        <g [attr.transform]="containerTransform$ | async">
+                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                       *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
+                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
+                        <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
+                            <ng-container *ngIf="showVertices(group, series)">
 
-                            <g dgpChartBottomAxis
-                               [scales]="scales$ | async"></g>
-
-                            <g *ngIf="showXAxisGridLines"
-                               dgpChartXAxisGridLines
-                               [scales]="scales$ | async"></g>
-
-                            <g dgpChartLeftAxis
-                               [scales]="scales$ | async"></g>
-
-                            <g *ngIf="showYAxisGridLines"
-                               dgpChartYAxisGridLines
-                               [scales]="scales$ | async"></g>
-
-                            <g [attr.clip-path]="dataAreaClipPath">
-
-                                <line *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
-                                      dgpConnectedScatterPlotControlLine
-                                      [scales]="scales$ | async"
-                                      [connectedScatterPlotControlLine]="controlLine"></line>
-
-                                <g *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
-                                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
-                                        <path *ngIf="showEdges(group, series)"
-                                              dgpLineChartLine
-                                              [series]="series"
-                                              [group]="group"
-                                              [scales]="scales$ | async"></path>
-                                    </ng-container>
+                                <g [matTooltip]="getTooltip(group, series, dot)"
+                                   dgpScatterPlotDot
+                                   [dot]="dot"
+                                   [series]="series"
+                                   [group]="group"
+                                   [scales]="scales$ | async"
+                                   dgpDot
+                                   [model]="getShape(group, series)">
                                 </g>
+                            </ng-container>
 
-                                <g *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
-                                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
-                                        <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
-                                            <ng-container *ngIf="showVertices(group, series)">
+                        </ng-container>
 
-                                                <g [ngSwitch]="getShape(group, series)"
-                                                   [matTooltip]="getTooltip(group, series, dot)"
-                                                   dgpScatterPlotDot
-                                                   [dot]="dot"
-                                                   [series]="series"
-                                                   [group]="group"
-                                                   [scales]="scales$ | async">
+                    </ng-container>
+                </svg:g>
 
-                                                    <circle *ngSwitchDefault
-                                                            dgpCircle></circle>
-                                                    <circle *ngSwitchCase="shapeEnum.Circle"
-                                                            dgpCircle></circle>
-                                                    <rect *ngSwitchCase="shapeEnum.Rectangle"
-                                                          dgpRectangle></rect>
-                                                    <polygon *ngSwitchCase="shapeEnum.Rhombus"
-                                                             dgpRhombus></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.Star"
-                                                             dgpStar></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.Cross"
-                                                             dgpCross></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.Triangle"
-                                                             dgpTriangle></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.TriangleDown"
-                                                             dgpTriangleDown></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.TriangleRight"
-                                                             dgpTriangleRight></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
-                                                             dgpTriangleLeft></polygon>
-
-                                                </g>
-                                            </ng-container>
-
-                                        </ng-container>
-
-                                    </ng-container>
-                                </g>
-
-                            </g>
-
-                        </g>
-                    </g>
-                </svg>
-
-            </dgp-plot-container>
-
+            </ng-container>
         </dgp-chart>
     `,
     styles: [`
@@ -145,8 +92,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     readonly trackByConnectedScatterSeriesId = trackByConnectedScatterSeriesId;
     readonly trackByConnectedPlotControlLineId = trackByConnectedPlotControlLineId;
 
-    readonly shapeEnum = Shape;
-
     @Input()
     model: readonly ConnectedScatterGroup[];
     readonly model$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "model");
@@ -158,10 +103,12 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     @Input()
     config = defaultConnectedScatterPlotConfig;
 
+    readonly size$ = new BehaviorSubject<Size>(null);
+
     selectedDotKey: string = null;
 
     readonly scales$ = combineLatest([
-        this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
+        this.size$.pipe(filterNotNullOrUndefined()),
         this.model$,
         this.xAxis$,
         this.yAxis$,
@@ -228,9 +175,8 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
         return result;
     }
 
-    onResize() {
-        if (isNullOrUndefined(this.elRef.nativeElement)) return;
-        this.containerDOMRect$.next(this.elRef.nativeElement.getBoundingClientRect());
+    onResize(size: Size) {
+        this.size$.next(size);
     }
 
 }

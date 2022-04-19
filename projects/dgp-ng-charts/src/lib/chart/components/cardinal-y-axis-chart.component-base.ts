@@ -1,9 +1,8 @@
-import { Directive, Inject, Input } from "@angular/core";
+import { Directive, Input } from "@angular/core";
 import { observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { CardinalYAxis, ScaleType } from "../../shared/models";
-import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { DgpChartComponentBase } from "./chart.component-base";
 
 @Directive()
@@ -45,15 +44,5 @@ export class DgpCardinalYAxisChartComponentBase extends DgpChartComponentBase im
             yAxisTickFormat: x[4]
         } as CardinalYAxis))
     );
-
-    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
-
-    constructor(
-        @Inject(ID_PREFIX)
-        protected readonly idPrefix: string
-    ) {
-        super();
-    }
 
 }

@@ -8,6 +8,7 @@ import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { pipes } from "./pipes/pipes";
 import { DgpPlotContainerModule } from "../plot-container/dgp-plot-container.module";
+import { DgpDotModule } from "../dot/dot.module";
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { DgpPlotContainerModule } from "../plot-container/dgp-plot-container.mod
         CommonModule,
         DgpSVGSymbolsModule,
         MatTooltipModule,
-        DgpPlotContainerModule
+        DgpPlotContainerModule,
+        DgpDotModule
     ],
     declarations: [
         ...components,

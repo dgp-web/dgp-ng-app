@@ -15,6 +15,8 @@ import { DgpSVGMasksModule } from "../masks/svg-masks.module";
 import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
 import { pipes } from "./pipes/pipes";
 import { DgpPlotContainerModule } from "../plot-container/dgp-plot-container.module";
+import { DgpDotModule } from "../dot/dot.module";
+import { DgpPatternAndMaskDefsModule } from "../pattern-and-mask-defs/pattern-and-mask-defs.module";
 
 @NgModule({
     imports: [
@@ -30,7 +32,9 @@ import { DgpPlotContainerModule } from "../plot-container/dgp-plot-container.mod
         DgpSVGPatternsModule,
         DgpSVGMasksModule,
         DgpSVGSymbolsModule,
-        DgpPlotContainerModule
+        DgpPlotContainerModule,
+        DgpDotModule,
+        DgpPatternAndMaskDefsModule
     ],
     declarations: [
         ...components,
