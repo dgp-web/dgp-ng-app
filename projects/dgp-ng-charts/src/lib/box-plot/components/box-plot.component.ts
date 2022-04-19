@@ -2,15 +2,13 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ElementRef,
     EventEmitter,
     Inject,
     Input,
     OnChanges,
     OnDestroy,
     Output,
-    SimpleChanges,
-    ViewChild
+    SimpleChanges
 } from "@angular/core";
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
 import { debounceTime, tap } from "rxjs/operators";
@@ -19,14 +17,12 @@ import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
-import { ExportChartConfig } from "../../heatmap/models";
 import { ChartSelectionMode } from "../../shared/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
-import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
 
 @Component({
     selector: "dgp-box-plot",
@@ -227,12 +223,6 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     private drawChartSubscription: Subscription;
 
     outlierKey: string;
-
-    @Input()
-    exportConfig: ExportChartConfig;
-
-    @Input()
-    yAxisTickFormat?: (x: string) => string;
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();
