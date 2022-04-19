@@ -77,21 +77,17 @@ import { getChartViewBox } from "../../shared/functions/get-chart-view-box.funct
                     <g [attr.clip-path]="getContainerAreaClipPath()">
                         <g [attr.transform]="getContainerTransform()">
 
-                            <g class="chart__x-axis"
-                               dgpChartBottomAxis
+                            <g dgpChartBottomAxis
                                [scales]="boxPlotScales"></g>
 
                             <g *ngIf="showXAxisGridLines"
-                               class="chart__x-axis-grid-lines"
                                dgpChartXAxisGridLines
                                [scales]="boxPlotScales"></g>
 
-                            <g class="chart__y-axis"
-                               dgpChartLeftAxis
+                            <g dgpChartLeftAxis
                                [scales]="boxPlotScales"></g>
 
                             <g *ngIf="showYAxisGridLines"
-                               class="chart__y-axis-grid-lines"
                                dgpChartYAxisGridLines
                                [scales]="boxPlotScales"></g>
 
