@@ -15,5 +15,11 @@ export class DgpChartComponentBase implements Mutable<Chart> {
     @Input()
     xAxisTitle: string;
 
+    @Input()
+    showYAxisGridLines = true;
+
+    @Input()
+    showXAxisGridLines = true;
+
 
 }

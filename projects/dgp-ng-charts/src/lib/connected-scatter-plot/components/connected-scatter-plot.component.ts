@@ -192,9 +192,6 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
     xAxisStep?: number;
 
     @Input()
-    showXAxisGridLines = true;
-
-    @Input()
     xAxisScaleType?: ScaleType;
 
     @Input()
@@ -211,9 +208,6 @@ export class DgpConnectedScatterPlotComponent extends DgpChartComponentBase impl
 
     @Input()
     yAxisStep?: number;
-
-    @Input()
-    showYAxisGridLines = true;
 
     @Input()
     yAxisScaleType?: ScaleType;

@@ -138,12 +138,6 @@ export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase imp
     readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
     readonly margin$ = this.config$.pipe(map(x => x.margin));
 
-    @Input()
-    showYAxisGridLines = true;
-
-    @Input()
-    showXAxisGridLines = true;
-
     readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
     readonly trackByBarGroupId = trackByBarGroupId;
     readonly trackByBarId = trackByBarId;
