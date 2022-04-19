@@ -1,4 +1,4 @@
 import { TrackByFunction } from "@angular/core";
-import { Bar } from "dgp-ng-charts";
+import { Bar } from "../models";
 
 export const trackByBarId: TrackByFunction<Bar> = (i, x) => x.barKey;
