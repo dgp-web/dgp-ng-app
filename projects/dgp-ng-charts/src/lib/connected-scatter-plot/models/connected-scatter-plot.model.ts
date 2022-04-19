@@ -5,7 +5,4 @@ import { ConnectedScatterPlotControlLine } from "./connected-scatter-plot-contro
 export interface ConnectedScatterPlot extends Chart, CardinalXAxis, CardinalYAxis {
     readonly model: ReadonlyArray<ConnectedScatterGroup>;
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
-
-    readonly showYAxisGridLines?: boolean;
-    readonly showXAxisGridLines?: boolean;
 }
