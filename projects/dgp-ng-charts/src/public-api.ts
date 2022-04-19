@@ -14,6 +14,7 @@ export { DgpBarChartComponent } from "./lib/bar-chart/components/bar-chart.compo
 export { DgpExportChartDialogComponent } from "./lib/bar-chart/components/export-chart-dialog.component";
 export { BarChartBarDirective } from "./lib/bar-chart/directives/bar-chart-bar.directive";
 export { BarChartBarFillPatternDirective } from "./lib/bar-chart/directives/bar-chart-bar-fill-pattern.directive";
+export { BarChartBarGroupDirective } from "./lib/bar-chart/directives/bar-chart-bar-group.directive";
 
 /**
  * -----

@@ -11,7 +11,7 @@ import {
     ViewChild
 } from "@angular/core";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
-import { BarChart, BarChartConfig, BarChartScales, BarGroup, BarGroups } from "../models";
+import { BarChart, BarChartConfig, BarChartScales, BarGroups } from "../models";
 import { defaultBarChartConfig } from "../constants";
 import { ExportChartConfig } from "../../heatmap/models";
 import { DrawD3ChartPayload } from "../../shared/chart.component-base";
@@ -96,7 +96,9 @@ import { trackByBarId } from "../functions/track-by-bar-id.function";
                            [scales]="barChartScales"></g>
 
                         <g *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
-                           [attr.transform]="getResultRootTransform(barGroup)">
+                           dgpBarChartBarGroup
+                           [barGroup]="barGroup"
+                           [scales]="barChartScales">
                             <ng-container *ngFor="let bar of barGroup.bars; trackBy: trackByBarId">
                                 <rect dgpBarChartBarFillPattern
                                       [scales]="barChartScales"
@@ -219,10 +221,6 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
 
         this.cd.markForCheck();
 
-    }
-
-    getResultRootTransform(barGroup: BarGroup) {
-        return "translate(" + this.barChartScales.xAxisScale(barGroup.barGroupKey) + ")";
     }
 
 }
