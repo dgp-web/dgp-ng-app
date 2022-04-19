@@ -78,6 +78,7 @@ export { DgpConnectedScatterPlotModule } from "./lib/connected-scatter-plot/conn
 export {
     DgpConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
+
 // Directives
 export {
     DgpConnectedScatterPlotControlLineDirective
@@ -88,6 +89,14 @@ export {
 } from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
 export { DgpLineChartLineDirective } from "./lib/connected-scatter-plot/directives/line-chart-line.directive";
 export { TrackByConnectedScatterDotPipe } from "./lib/connected-scatter-plot/pipes/track-by-connected-scatter-dot.pipe";
+
+/**
+ * -----
+ * Dot
+ * -----
+ */
+export { DgpDotModule } from "./lib/dot/dot.module";
+export { DgpDotComponent } from "./lib/dot/components/dot.component";
 
 /**
  * -----

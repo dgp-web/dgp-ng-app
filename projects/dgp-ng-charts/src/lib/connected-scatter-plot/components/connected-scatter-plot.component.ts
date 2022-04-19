@@ -79,35 +79,14 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                                         <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
                                             <ng-container *ngIf="showVertices(group, series)">
 
-                                                <g [ngSwitch]="getShape(group, series)"
-                                                   [matTooltip]="getTooltip(group, series, dot)"
+                                                <g [matTooltip]="getTooltip(group, series, dot)"
                                                    dgpScatterPlotDot
                                                    [dot]="dot"
                                                    [series]="series"
                                                    [group]="group"
-                                                   [scales]="scales$ | async">
-
-                                                    <circle *ngSwitchDefault
-                                                            dgpCircle></circle>
-                                                    <circle *ngSwitchCase="shapeEnum.Circle"
-                                                            dgpCircle></circle>
-                                                    <rect *ngSwitchCase="shapeEnum.Rectangle"
-                                                          dgpRectangle></rect>
-                                                    <polygon *ngSwitchCase="shapeEnum.Rhombus"
-                                                             dgpRhombus></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.Star"
-                                                             dgpStar></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.Cross"
-                                                             dgpCross></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.Triangle"
-                                                             dgpTriangle></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.TriangleDown"
-                                                             dgpTriangleDown></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.TriangleRight"
-                                                             dgpTriangleRight></polygon>
-                                                    <polygon *ngSwitchCase="shapeEnum.TriangleLeft"
-                                                             dgpTriangleLeft></polygon>
-
+                                                   [scales]="scales$ | async"
+                                                   dgpDot
+                                                   [model]="getShape(group, series)">
                                                 </g>
                                             </ng-container>
 
