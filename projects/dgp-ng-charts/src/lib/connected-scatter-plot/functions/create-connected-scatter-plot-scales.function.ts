@@ -14,7 +14,6 @@ export function createConnectedScatterPlotScales(payload: {
     readonly containerWidth: number;
     readonly containerHeight: number;
 } & CardinalXAxis & CardinalYAxis, config = defaultConnectedScatterPlotConfig): ConnectedScatterPlotScales {
-
     const valuesForXExtremumComputation = new Array<number>();
     const valuesForYExtremumComputation = new Array<number>();
 

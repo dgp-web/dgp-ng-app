@@ -80,7 +80,7 @@ export {
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
 export {
     DgpChartSVGRootComponent
-} from "./lib/connected-scatter-plot/components/chart-svg-root.component";
+} from "./lib/chart/components/chart-svg-root.component";
 
 // Directives
 export {

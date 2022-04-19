@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { DgpChartComponentBase } from "./chart.component-base";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+import { AxisScales } from "../../shared/models";
+import { Size } from "dgp-ng-app/resize-sensor/directives/resize-sensor.directive";
 
 @Component({
     selector: "dgp-chart",
     template: `
-
         <div class="title"
              *ngIf="chartTitle">
             {{ chartTitle }}
@@ -20,7 +21,31 @@ import { notNullOrUndefined } from "dgp-ng-app";
                 </div>
             </div>
 
-            <ng-content></ng-content>
+            <dgp-plot-container
+                dgpResizeSensor
+                (sizeChanged)="onResize()">
+
+                <svg *ngIf="scales"
+                     class="chart-svg"
+                     [attr.viewBox]="viewBox$ | async">
+
+                    <defs>
+                        <clipPath dgpChartDataAreaClipPath
+                                  [scales]="scales"></clipPath>
+                        <clipPath dgpChartContainerAreaClipPath
+                                  [scales]="scales"></clipPath>
+                    </defs>
+
+                    <g dgpChartSVGRoot
+                       [scales]="scales"
+                       [config]="config"
+                       [showXAxisGridLines]="showXAxisGridLines"
+                       [showYAxisGridLines]="showYAxisGridLines">
+
+                        <ng-content></ng-content>
+                    </g>
+                </svg>
+            </dgp-plot-container>
 
             <div class="right-legend">
                 <ng-content select="[right-legend]"></ng-content>
@@ -90,6 +115,12 @@ import { notNullOrUndefined } from "dgp-ng-app";
 })
 export class DgpChartComponent extends DgpChartComponentBase {
 
+    @Output()
+    readonly sizeChanged = new EventEmitter<Size>();
+
+    @Input()
+    scales: AxisScales;
+
     geMaxHeight(chartRef: HTMLDivElement, chartTitleRef: HTMLDivElement, xAxisLabelRef: HTMLDivElement) {
         let maxHeight = chartRef.getBoundingClientRect().height;
 
@@ -104,6 +135,16 @@ export class DgpChartComponent extends DgpChartComponentBase {
     }
 
     noop() {
+    }
+
+    onResize() {
+        if (isNullOrUndefined(this.elRef.nativeElement)) return;
+        const rect = this.elRef.nativeElement.getBoundingClientRect();
+        this.containerDOMRect$.next(rect);
+        this.sizeChanged.emit({
+            width: rect.width,
+            height: rect.height
+        });
     }
 
 }
