@@ -127,9 +127,6 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     model: BarGroups;
 
     @Input()
-    barSortIndex: ReadonlyArray<string>;
-
-    @Input()
     exportConfig: ExportChartConfig;
 
     @Input()
