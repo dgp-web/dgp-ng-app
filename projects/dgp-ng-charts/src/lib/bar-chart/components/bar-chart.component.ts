@@ -1,23 +1,10 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    SimpleChanges,
-    ViewChild
-} from "@angular/core";
-import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
-import { BarChart, BarChartConfig, BarChartScales, BarGroups } from "../models";
-import { defaultBarChartConfig } from "../constants";
+import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { filterNotNullOrUndefined, isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { BarChart, BarChartConfig, BarGroups } from "../models";
 import { ExportChartConfig } from "../../heatmap/models";
-import { DrawD3ChartPayload } from "../../shared/chart.component-base";
 import { DgpChartComponentBase } from "../../chart/components/chart.component-base";
-import { Subject, Subscription } from "rxjs";
-import { debounceTime, map, tap } from "rxjs/operators";
+import { BehaviorSubject, combineLatest } from "rxjs";
+import { debounceTime, map, shareReplay } from "rxjs/operators";
 import { createBarChartScales } from "../functions/create-bar-chart-scales.function";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
@@ -25,6 +12,7 @@ import { DgpPlotContainerComponent } from "../../plot-container/components/plot-
 import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
 import { trackByBarGroupId } from "../functions/track-by-bar-group-id.function";
 import { trackByBarId } from "../functions/track-by-bar-id.function";
+import { defaultBarChartConfig } from "../constants";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -33,7 +21,7 @@ import { trackByBarId } from "../functions/track-by-bar-id.function";
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
                    dgpResizeSensor
-                   (sizeChanged)="drawChart()">
+                   (sizeChanged)="onResize()">
 
             <ng-container chart-title>
                 <ng-content select="[chart-title]"></ng-content>
@@ -54,7 +42,7 @@ import { trackByBarId } from "../functions/track-by-bar-id.function";
             <dgp-plot-container>
 
                 <svg #svgRoot
-                     *ngIf="barChartScales"
+                     *ngIf="scales$ | async"
                      [attr.viewBox]="viewBox$ | async">
 
                     <defs>
@@ -81,31 +69,31 @@ import { trackByBarId } from "../functions/track-by-bar-id.function";
 
                         <g class="chart__x-axis"
                            dgpChartBottomAxis
-                           [scales]="barChartScales"></g>
+                           [scales]="scales$ | async"></g>
 
                         <g class="chart__x-axis-grid-lines"
                            dgpChartXAxisGridLines
-                           [scales]="barChartScales"></g>
+                           [scales]="scales$ | async"></g>
 
                         <g class="chart__y-axis"
                            dgpChartLeftAxis
-                           [scales]="barChartScales"></g>
+                           [scales]="scales$ | async"></g>
 
                         <g class="chart__y-axis-grid-lines"
                            dgpChartYAxisGridLines
-                           [scales]="barChartScales"></g>
+                           [scales]="scales$ | async"></g>
 
                         <g *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
                            dgpBarChartBarGroup
                            [barGroup]="barGroup"
-                           [scales]="barChartScales">
+                           [scales]="scales$ | async">
                             <ng-container *ngFor="let bar of barGroup.bars; trackBy: trackByBarId">
                                 <rect dgpBarChartBarFillPattern
-                                      [scales]="barChartScales"
+                                      [scales]="scales$ | async"
                                       [barGroup]="barGroup"
                                       [bar]="bar"></rect>
                                 <rect dgpBarChartBar
-                                      [scales]="barChartScales"
+                                      [scales]="scales$ | async"
                                       [barGroup]="barGroup"
                                       [bar]="bar"></rect>
                             </ng-container>
@@ -131,7 +119,7 @@ import { trackByBarId } from "../functions/track-by-bar-id.function";
         idPrefixProvider
     ]
 })
-export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart, OnChanges, OnDestroy {
+export class DgpBarChartComponent extends DgpChartComponentBase implements BarChart {
 
     @ViewChild(DgpPlotContainerComponent, {
         read: ElementRef,
@@ -149,78 +137,40 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     exportConfig: ExportChartConfig;
 
     @Input()
-    config: BarChartConfig;
+    config = defaultBarChartConfig;
 
+    readonly model$ = observeAttribute$(this as DgpBarChartComponent, "model");
     readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
     readonly margin$ = this.config$.pipe(map(x => x.margin));
     readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
     readonly trackByBarGroupId = trackByBarGroupId;
     readonly trackByBarId = trackByBarId;
 
-    barChartScales: BarChartScales;
-
-    readonly containerDOMRect$ = new Subject<DOMRectReadOnly>();
+    readonly containerDOMRect$ = new BehaviorSubject<DOMRectReadOnly>(null);
 
     readonly viewBox$ = this.containerDOMRect$.pipe(
+        filterNotNullOrUndefined(),
         map(containerDOMRect => getChartViewBox({containerDOMRect}))
     );
 
-    private readonly drawChartActionScheduler = new EventEmitter();
+    readonly scales$ = combineLatest([
+        this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
+        this.model$
+    ]).pipe(
+        debounceTime(250),
+        map(combination => createBarChartScales({
+            containerHeight: combination[0].height,
+            containerWidth: combination[0].width,
+            barGroups: combination[1]
+        })),
+        shareReplay(1)
+    );
 
-    private drawChartSubscription: Subscription;
-
-    constructor(
-        private readonly cd: ChangeDetectorRef
-    ) {
-        super();
-
-        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
-            debounceTime(250),
-            tap(() => this.drawChart())
-        ).subscribe();
-
-        this.config = defaultBarChartConfig;
-    }
-
-    drawChart() {
-
+    onResize() {
         if (isNullOrUndefined(this.elRef.nativeElement)) return;
 
         const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
         this.containerDOMRect$.next(rect);
-
-        this.drawD3Chart({
-            svg: null,
-            containerHeight: rect.height,
-            containerWidth: rect.width
-        });
-
-    }
-
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
-            this.drawChartActionScheduler.emit();
-        }
-    }
-
-    ngOnDestroy(): void {
-        if (!this.drawChartSubscription?.closed) {
-            this.drawChartSubscription?.unsubscribe();
-        }
-    }
-
-
-    protected drawD3Chart(payload: DrawD3ChartPayload): void {
-
-        this.barChartScales = createBarChartScales({
-            containerHeight: payload.containerHeight,
-            containerWidth: payload.containerWidth,
-            barGroups: this.model
-        });
-
-        this.cd.markForCheck();
-
     }
 
 }
