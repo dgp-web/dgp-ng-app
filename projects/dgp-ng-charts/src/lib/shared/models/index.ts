@@ -10,3 +10,5 @@ export * from "./with-cardinal-scale-offset.model";
 export { CardinalD3AxisScale } from "./cardinal-d3-axis-scale.model";
 export { CardinalXAxis } from "./cardinal-x-axis.model";
 export { CategoricalXAxis } from "./categorical-x-axis.model";
+export { DataAreaSize } from "./data-area-size.model";
+export { ContainerSize } from "./container-size.model";
