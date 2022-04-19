@@ -23,6 +23,7 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
 import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
+import { trackByBarGroupId } from "../functions/track-by-bar-group-id.function";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -93,7 +94,7 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
                            dgpChartYAxisGridLines
                            [scales]="barChartScales"></g>
 
-                        <g *ngFor="let barGroup of model"
+                        <g *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
                            [attr.transform]="getResultRootTransform(barGroup)">
                             <ng-container *ngFor="let bar of barGroup.bars">
                                 <rect dgpBarChartBarFillPattern
@@ -150,6 +151,7 @@ export class DgpBarChartComponent extends DgpChartComponentBase implements BarCh
     readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
     readonly margin$ = this.config$.pipe(map(x => x.margin));
     readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
+    readonly trackByBarGroupId = trackByBarGroupId;
 
     barChartScales: BarChartScales;
 
