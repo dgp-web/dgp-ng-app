@@ -81,9 +81,11 @@ export function createBarChartScales(payload: {
         xAxisSubgroupKVS,
         containerHeight: payload.containerHeight,
         containerWidth: payload.containerWidth,
-        barAreaHeight,
-        barAreaWidth,
-        chartMargin: config.margin
+        dataAreaHeight: barAreaHeight,
+        dataAreaWidth: barAreaWidth,
+        chartMargin: config.margin,
+        xAxisModel: {},
+        yAxisModel: {}
     };
 
 }
