@@ -1,26 +1,13 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Inject,
-    Input,
-    OnChanges,
-    OnDestroy,
-    Output,
-    SimpleChanges
-} from "@angular/core";
-import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotScales, BoxPlotSelection } from "../models";
-import { debounceTime, tap } from "rxjs/operators";
-import { BehaviorSubject, Subscription } from "rxjs";
-import { DrawD3ChartPayload } from "../../shared/chart.component-base";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotSelection } from "../models";
+import { debounceTime, map, shareReplay } from "rxjs/operators";
+import { combineLatest } from "rxjs";
 import { createBoxPlotScales, getBoxOutlierSurrogateKey } from "../functions";
-import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
 import { ChartSelectionMode } from "../../shared/models";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { Shape } from "../../shapes/models";
-import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
 
 @Component({
@@ -40,7 +27,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
 
                 <svg #svgRoot
                      class="chart-svg"
-                     *ngIf="model && boxPlotScales"
+                     *ngIf="model && (scales$ | async)"
                      [attr.viewBox]="viewBox$ | async">
 
                     <defs>
@@ -64,35 +51,35 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
 
                         <!-- Other -->
                         <clipPath dgpChartDataAreaClipPath
-                                  [scales]="boxPlotScales"></clipPath>
+                                  [scales]="scales$ | async"></clipPath>
                         <clipPath dgpChartContainerAreaClipPath
-                                  [scales]="boxPlotScales"></clipPath>
+                                  [scales]="scales$ | async"></clipPath>
                     </defs>
 
                     <g [attr.clip-path]="containerAreaClipPath">
                         <g [attr.transform]="containerTransform$ | async">
 
                             <g dgpChartBottomAxis
-                               [scales]="boxPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g *ngIf="showXAxisGridLines"
                                dgpChartXAxisGridLines
-                               [scales]="boxPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g dgpChartLeftAxis
-                               [scales]="boxPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <g *ngIf="showYAxisGridLines"
                                dgpChartYAxisGridLines
-                               [scales]="boxPlotScales"></g>
+                               [scales]="scales$ | async"></g>
 
                             <line *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"
                                   dgpBoxPlotControlLine
-                                  [scales]="boxPlotScales"
+                                  [scales]="scales$ | async"
                                   [boxPlotControlLine]="controlLine"></line>
 
                             <g dgpBoxPlotBrushSelector
-                               [scales]="boxPlotScales"
+                               [scales]="scales$ | async"
                                [boxGroups]="model"
                                [config]="config"
                                [selectionMode]="selectionMode"
@@ -100,50 +87,54 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
                                [attr.clip-path]="dataAreaClipPath">
 
                                 <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
-                                   [attr.transform]="getResultRootTransform(boxGroup)">
+                                   dgpBoxPlotBoxGroup
+                                   [boxGroup]="boxGroup"
+                                   [scales]="scales$ | async">
                                     <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
                                         <line dgpBoxPlotWhisker
                                               type="max"
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
                                         <line dgpBoxPlotUpperAntenna
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
                                         <rect dgpBoxPlotBoxFillPattern
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></rect>
                                         <rect dgpBoxPlotBox
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></rect>
                                         <line dgpBoxPlotMedian
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
                                         <line dgpBoxPlotLowerAntenna
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
                                         <line dgpBoxPlotWhisker
                                               type="min"
-                                              [scales]="boxPlotScales"
+                                              [scales]="scales$ | async"
                                               [boxGroup]="boxGroup"
                                               [box]="box"></line>
                                     </ng-container>
                                 </g>
 
                                 <g *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
-                                   [attr.transform]="getResultRootTransform(boxGroup)">
+                                   dgpBoxPlotBoxGroup
+                                   [boxGroup]="boxGroup"
+                                   [scales]="scales$ | async">
                                     <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
                                         <ng-container
                                             *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
                                             <g [ngSwitch]="box.outlierShape"
                                                [matTooltip]="getOutlierTooltip(box, i)"
                                                dgpBoxPlotOutlier
-                                               [scales]="boxPlotScales"
+                                               [scales]="scales$ | async"
                                                [boxGroup]="boxGroup"
                                                [box]="box"
                                                [value]="value">
@@ -193,7 +184,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
         idPrefixProvider
     ]
 })
-export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase implements BoxPlot, OnChanges, OnDestroy {
+export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase implements BoxPlot {
 
     readonly trackByBoxGroupId = trackByBoxGroupId;
     readonly trackByBoxId = trackByBoxId;
@@ -202,9 +193,11 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
 
     @Input()
     model: ReadonlyArray<BoxGroup>;
+    readonly model$ = observeAttribute$(this as DgpBoxPlotComponent, "model");
 
     @Input()
     controlLines?: ReadonlyArray<BoxPlotControlLine>;
+    readonly controlLines$ = observeAttribute$(this as DgpBoxPlotComponent, "controlLines");
 
     @Input()
     config = defaultBoxPlotConfig;
@@ -212,14 +205,9 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     @Input()
     selectionMode: ChartSelectionMode = "None";
 
-    boxPlotScales: BoxPlotScales;
-
     @Input()
     xAxisTickFormat?: (x: string) => string;
-
-    private readonly drawChartActionScheduler = new EventEmitter();
-
-    private drawChartSubscription: Subscription;
+    readonly xAxisTickFormat$ = observeAttribute$(this as DgpBoxPlotComponent, "xAxisTickFormat");
 
     outlierKey: string;
 
@@ -228,87 +216,24 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
 
     readonly shapeEnum = Shape;
 
-    readonly containerDOMRect$ = new BehaviorSubject<DOMRectReadOnly>(null);
-
-    constructor(
-        private readonly cd: ChangeDetectorRef,
-        @Inject(ID_PREFIX)
-        protected readonly idPrefix: string
-    ) {
-        super(idPrefix);
-
-        this.drawChartSubscription = this.drawChartActionScheduler.pipe(
-            debounceTime(250),
-            tap(() => this.drawChart())
-        ).subscribe();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model
-            || changes.config
-            || changes.selectionMode
-            || changes.selection
-            /*            || changes.xAxisMin
-                        || changes.xAxisMax
-                        || changes.xAxisTicks*/
-            || changes.yAxisMin
-            || changes.yAxisMax
-            || changes.yAxisStep
-            || changes.yAxisScaleType
-            || changes.controlLines
-            || changes.chartTitle
-            || changes.xAxisTitle
-            || changes.yAxisTitle
-            || changes.showXAxisGridLines
-            || changes.showYAxisGridLines
-            || changes.yAxisTickFormat
-            || changes.xAxisTickFormat
-        ) {
-            this.drawChartActionScheduler.emit();
-        }
-    }
-
-    ngOnDestroy(): void {
-        if (!this.drawChartSubscription?.closed) {
-            this.drawChartSubscription?.unsubscribe();
-        }
-    }
-
-    drawD3Chart(payload: DrawD3ChartPayload): void {
-
-        this.boxPlotScales = createBoxPlotScales({
-            containerHeight: payload.containerHeight,
-            containerWidth: payload.containerWidth,
-            boxGroups: this.model,
-            yAxisMin: notNullOrUndefined(this.yAxisMin) ? +this.yAxisMin : undefined,
-            yAxisMax: notNullOrUndefined(this.yAxisMax) ? +this.yAxisMax : undefined,
-            yAxisScaleType: this.yAxisScaleType,
-            controlLines: this.controlLines,
-            yAxisTickFormat: this.yAxisTickFormat,
-            yAxisStep: this.yAxisStep,
-            xAxisTickFormat: this.xAxisTickFormat
-        });
-
-        this.cd.markForCheck();
-    }
-
-    drawChart() {
-
-        if (isNullOrUndefined(this.elRef.nativeElement)) return;
-
-        const rect = this.elRef.nativeElement.getBoundingClientRect() as DOMRect;
-
-        this.drawD3Chart({
-            svg: null,
-            containerHeight: rect.height,
-            containerWidth: rect.width
-        });
-
-    }
-
-    getResultRootTransform(boxGroup: BoxGroup) {
-        return "translate(" + this.boxPlotScales.xAxisScale(boxGroup.boxGroupId) + ")";
-    }
+    readonly scales$ = combineLatest([
+        this.containerDOMRect$.pipe(filterNotNullOrUndefined()),
+        this.model$,
+        this.yAxis$,
+        this.xAxisTickFormat$,
+        this.controlLines$
+    ]).pipe(
+        debounceTime(250),
+        map(combination => createBoxPlotScales({
+            containerHeight: combination[0].height,
+            containerWidth: combination[0].width,
+            boxGroups: combination[1],
+            ...combination[2],
+            xAxisTickFormat: combination[3],
+            controlLines: combination[4]
+        })),
+        shareReplay(1)
+    );
 
     getBoxOutlierKey(box: Box, outlierIndex: number) {
         return getBoxOutlierSurrogateKey({
