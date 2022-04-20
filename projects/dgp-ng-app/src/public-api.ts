@@ -241,4 +241,5 @@ export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-pan
 
 export * from "./dgp-ng-app.module";
 export { Size } from "./resize-sensor/models/size.model";
+export { ResizeSensor, defaultResizeSensorConfig, ResizeSensorConfig } from "./resize-sensor/services/resize-sensor.service";
 
