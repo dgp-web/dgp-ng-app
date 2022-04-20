@@ -164,7 +164,7 @@ export {
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // resize-sensor
-export { DgpResizeSensorDirective, Size } from "./resize-sensor/directives/resize-sensor.directive";
+export { DgpResizeSensorDirective} from "./resize-sensor/directives/resize-sensor.directive";
 export { DgpResizeSensorModule } from "./resize-sensor/resize-sensor.module";
 
 // routing-overlay
@@ -240,4 +240,5 @@ export { VirtualListPanelComponent } from "./virtual-list-panel/components/virtu
 export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-panel.module";
 
 export * from "./dgp-ng-app.module";
+export { Size } from "./resize-sensor/models/size.model";
 

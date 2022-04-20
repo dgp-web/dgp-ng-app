@@ -1,18 +1,8 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output } from "@angular/core";
 import { debounceTime, startWith } from "rxjs/operators";
 import { Subscription } from "rxjs";
-
-export interface Size {
-    readonly width: number;
-    readonly  height: number;
-}
-
-export function getInitialSizeFromElRef(payload: ElementRef<HTMLDivElement>): Size {
-    return {
-        height: payload.nativeElement.clientHeight,
-        width: payload.nativeElement.clientWidth
-    } as Size;
-}
+import { Size } from "../models/size.model";
+import { getInitialSizeFromElRef } from "../functions/get-initial-size-from-el-ref.function";
 
 /**
  * Angular wrapper around the excellent library "css-element-queries"
