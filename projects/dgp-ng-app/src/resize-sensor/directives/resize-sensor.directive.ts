@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output } from "@angular/core";
 import { Size } from "../models/size.model";
-import { ResizeSensor } from "../services/resize-sensor.service";
+import { ResizeSensor, ResizeSensorConfig } from "../services/resize-sensor.service";
 
 /**
  * Angular wrapper around the excellent library "css-element-queries"
@@ -9,7 +9,7 @@ import { ResizeSensor } from "../services/resize-sensor.service";
 @Directive({
     selector: "[dgpResizeSensor]"
 })
-export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
+export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy, ResizeSensorConfig {
 
     private sensor: ResizeSensor;
 
@@ -28,6 +28,9 @@ export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.sensor = new ResizeSensor(this.elRef.nativeElement, x => {
             this.ngZone.run(() => this.sizeChanged.next(x));
+        });
+        this.sensor.configure({
+            stableTime: this.stableTime
         });
         this.sensor.connect();
     }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { DgpChartComponentBase } from "./chart.component-base";
 import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { AxisScales } from "../../shared/models";
@@ -8,7 +8,6 @@ import { map } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
-import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
 @Component({
     selector: "dgp-chart",
