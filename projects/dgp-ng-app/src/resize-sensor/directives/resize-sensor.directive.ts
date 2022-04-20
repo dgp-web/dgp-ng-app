@@ -1,7 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, OnDestroy, Output } from "@angular/core";
 import { debounceTime, startWith, switchMap, tap } from "rxjs/operators";
 import { ResizeSensor } from "css-element-queries";
-import { from, interval, Subscription, timer } from "rxjs";
+import { from, interval, Subscription } from "rxjs";
 import { there } from "../../utils/there.function";
 
 export interface Size {
@@ -26,6 +26,7 @@ export function getInitialSizeFromElRef(payload: ElementRef): Size {
 export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
 
     private resizeSensor: ResizeSensor;
+    private resizeObserver: ResizeObserver;
     private readonly resizeActionScheduler = new EventEmitter<Size>();
     private resizeSubscription: Subscription;
     private checkBrokenResizeSensorSubscription: Subscription;
@@ -51,6 +52,7 @@ export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
         )
             .subscribe();
 
+        // TODO: mb trim
         this.checkBrokenResizeSensorSubscription = interval(1000)
             .pipe(
                 tap(() => {
@@ -72,16 +74,19 @@ export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
         if (!this.checkBrokenResizeSensorSubscription?.closed) {
             this.checkBrokenResizeSensorSubscription?.unsubscribe();
         }
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
     }
 
     async doResize(size: Size): Promise<void> {
-        this.resizeSensor.detach(this.onResize);
-        await timer(0).toPromise();
+        // this.resizeSensor.detach(this.onResize);
+        // await timer(0).toPromise();
 
         this.sizeChanged.next(size);
 
-        this.isInitialResize = true;
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
+        // this.isInitialResize = true;
+        // this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
     }
 
     protected scheduleResizeAction(size: Size): void {
@@ -94,10 +99,20 @@ export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
 
     private initResizeSensor() {
         if (there(this.resizeSensor) && there(this.onResize)) {
-            this.resizeSensor.detach(this.onResize);
+            // this.resizeSensor.detach(this.onResize);
         }
 
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
+        this.resizeObserver = new ResizeObserver(entries => {
+            const firstItem = entries[0];
+            this.onResize({
+                width: firstItem.contentRect.width,
+                height: firstItem.contentRect.height,
+            });
+        });
+
+        this.resizeObserver.observe(this.elRef.nativeElement);
+
+        // this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
     }
 
 }
