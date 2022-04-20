@@ -1,8 +1,54 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output } from "@angular/core";
 import { debounceTime, startWith } from "rxjs/operators";
-import { Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { Size } from "../models/size.model";
-import { getInitialSizeFromElRef } from "../functions/get-initial-size-from-el-ref.function";
+import { getInitialSize } from "../functions/get-initial-size-from-el-ref.function";
+
+export class DgpResizeSensor {
+
+    private readonly resizeActionScheduler = new Subject<Size>();
+
+    private resizeObserver: ResizeObserver;
+    private resizeSubscription: Subscription;
+
+    readonly size$ = new Subject<Size>();
+
+    constructor(
+        private readonly element: HTMLElement
+    ) {
+    }
+
+    connect() {
+        this.resizeSubscription = this.resizeActionScheduler.pipe(
+            startWith(getInitialSize(this.element)),
+            debounceTime(250)
+        ).subscribe(x => this.size$.next(x));
+
+        this.initResizeSensor();
+    }
+
+    disconnect() {
+        this.resizeObserver.disconnect();
+    }
+
+    private initResizeSensor() {
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            const firstItem = entries[0];
+            this.scheduleResizeAction({
+                width: firstItem.contentRect.width,
+                height: firstItem.contentRect.height,
+            });
+        });
+
+        this.resizeObserver.observe(this.element);
+    }
+
+    protected scheduleResizeAction(size: Size): void {
+        this.resizeActionScheduler.next(size);
+    }
+
+}
 
 /**
  * Angular wrapper around the excellent library "css-element-queries"
@@ -13,9 +59,7 @@ import { getInitialSizeFromElRef } from "../functions/get-initial-size-from-el-r
 })
 export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
 
-    private readonly resizeActionScheduler = new EventEmitter<Size>();
-
-    private resizeObserver: ResizeObserver;
+    private sensor: DgpResizeSensor;
     private resizeSubscription: Subscription;
 
     @Input()
@@ -31,41 +75,19 @@ export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-
-        this.resizeSubscription = this.resizeActionScheduler.pipe(
-            startWith(getInitialSizeFromElRef(this.elRef)),
-            debounceTime(this.stableTime)
-        ).subscribe(x => this.sizeChanged.next(x));
-
-        this.initResizeSensor();
+        this.sensor = new DgpResizeSensor(this.elRef.nativeElement);
+        this.resizeSubscription = this.sensor.size$
+            .subscribe(x => this.ngZone.run(() => this.sizeChanged.next(x)));
+        this.sensor.connect();
     }
 
     ngOnDestroy(): void {
         if (!this.resizeSubscription?.closed) {
             this.resizeSubscription?.unsubscribe();
         }
-        if (this.resizeObserver) {
-            this.resizeObserver.disconnect();
+        if (this.sensor) {
+            this.sensor.disconnect();
         }
-    }
-
-    protected scheduleResizeAction(size: Size): void {
-        this.resizeActionScheduler.emit(size);
-    }
-
-    private initResizeSensor() {
-
-        this.resizeObserver = new ResizeObserver(entries => {
-            const firstItem = entries[0];
-            this.ngZone.run(() => {
-                this.scheduleResizeAction({
-                    width: firstItem.contentRect.width,
-                    height: firstItem.contentRect.height,
-                });
-            });
-        });
-
-        this.resizeObserver.observe(this.elRef.nativeElement);
     }
 
 }
