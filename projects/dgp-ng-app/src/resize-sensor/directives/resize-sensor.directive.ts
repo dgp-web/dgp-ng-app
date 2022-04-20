@@ -4,7 +4,7 @@ import { Subject, Subscription } from "rxjs";
 import { Size } from "../models/size.model";
 import { getInitialSize } from "../functions/get-initial-size-from-el-ref.function";
 
-export class DgpResizeSensor {
+export class ResizeSensor {
 
     private readonly resizeActionScheduler = new Subject<Size>();
 
@@ -59,7 +59,7 @@ export class DgpResizeSensor {
 })
 export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
 
-    private sensor: DgpResizeSensor;
+    private sensor: ResizeSensor;
     private resizeSubscription: Subscription;
 
     @Input()
@@ -75,7 +75,7 @@ export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.sensor = new DgpResizeSensor(this.elRef.nativeElement);
+        this.sensor = new ResizeSensor(this.elRef.nativeElement);
         this.resizeSubscription = this.sensor.size$
             .subscribe(x => this.ngZone.run(() => this.sizeChanged.next(x)));
         this.sensor.connect();
