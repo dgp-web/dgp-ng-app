@@ -23,27 +23,27 @@ import { shareReplay, switchMap, tap } from "rxjs/operators";
 // tslint:disable-next-line:directive-class-suffix
 export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, AfterViewInit, OnDestroy, Mutable<WithDragContext> {
 
+    protected readonly dragContext$ = new BehaviorSubject<string>(null);
+
+    private readonly isModelDragged$ = this.dragContext$.pipe(
+        switchMap(dragContext => this.dragAndDropService.isModelDragged$({dragContext})),
+        tap(isModelDragged => this.toggleDropIndicator(isModelDragged)),
+        shareReplay(1)
+    );
+
+    private subscription: Subscription;
+
     @HostBinding("class.dgp-drag-over")
     dragover = false;
 
     @HostBinding("class.dgp-show-drop-indicator")
     showDropIndicator = false;
 
-    protected readonly dragContext$ = new BehaviorSubject<string>(null);
-
-    readonly isModelDragged$ = this.dragContext$.pipe(
-        switchMap(dragContext => this.dragAndDropService.isModelDragged$({dragContext})),
-        tap(isModelDragged => this.toggleDropIndicator(isModelDragged)),
-        shareReplay(1)
-    );
-
     @Input()
     dragContext: string;
 
     @Output()
     readonly modelDropped = new EventEmitter<TModel>();
-
-    private subscription: Subscription;
 
     constructor(
         private readonly elementRef: ElementRef,
@@ -75,18 +75,18 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
         if (this.subscription && !this.subscription.closed) this.subscription.unsubscribe();
     }
 
-    readonly onDragOver = (e: DragEvent) => {
+    private readonly onDragOver = (e: DragEvent) => {
         e.preventDefault();
     };
 
-    readonly onDragStart = (e: DragEvent) => {
+    private readonly onDragStart = (e: DragEvent) => {
         const modelDragInfo = this.parseDragEvent(e);
         if (!modelDragInfo) return;
 
         this.dragAndDropService.registerDragStart(modelDragInfo);
     };
 
-    readonly onDragEnd = (e: DragEvent) => {
+    private readonly onDragEnd = (e: DragEvent) => {
         e.preventDefault();
 
         if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
@@ -94,7 +94,7 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
         this.dragAndDropService.registerDragEnd();
     };
 
-    readonly onDragEnter = (e: DragEvent) => {
+    private readonly onDragEnter = (e: DragEvent) => {
         e.preventDefault();
 
         if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
@@ -102,7 +102,7 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
         this.activateDragOverEffect();
     };
 
-    readonly onDragLeave = (e: DragEvent) => {
+    private readonly onDragLeave = (e: DragEvent) => {
         e.preventDefault();
 
         if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
@@ -154,7 +154,7 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
         this.cd.markForCheck();
     }
 
-    toggleDropIndicator(isModelDragged: boolean) {
+    private toggleDropIndicator(isModelDragged: boolean) {
         this.showDropIndicator = isModelDragged;
         this.cd.markForCheck();
     }

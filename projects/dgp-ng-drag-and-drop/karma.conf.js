@@ -31,14 +31,14 @@ module.exports = function (config) {
                 {type: 'text'},
                 {type: 'text-summary'}
             ],
-            check: {
+    /*        check: {
                 global: {
                     statements: 80,
                     branches: 80,
                     functions: 80,
                     lines: 80
                 }
-            }
+            }*/
         },
         reporters: ['spec'],
         port: 9876,
