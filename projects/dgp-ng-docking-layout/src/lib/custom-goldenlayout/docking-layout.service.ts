@@ -16,8 +16,8 @@ import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import * as _ from "lodash";
 import { InitializedEvent } from "./models/events/initialized-event.model";
-
-export type SelectionChangedEvent = ["selectionChanged", AbstractContentItemComponent];
+import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
+import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 
 /*export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -175,19 +175,7 @@ export class DockingLayoutService extends EventEmitter {
         }
 
 
-        /**
-         * We add an additional stack around every component that's not within a stack anyways.
-         */
-        if (
-            // If this is a component
-            config.type === "component" &&
-
-            // and it's not already within a stack
-            !(parent instanceof StackComponent) &&
-
-            // and we have a parent
-            !!parent
-        ) {
+        if (shouldWrapInStack({itemConfig: config, parentItem: parent})) {
             config = {
                 type: "stack",
                 width: config.width,
