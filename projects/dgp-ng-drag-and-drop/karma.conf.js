@@ -28,9 +28,17 @@ module.exports = function (config) {
             dir: require('path').join(__dirname, '../../coverage/dgp-ng-drag-and-drop'),
             subdir: '.',
             reporters: [
-                {type: 'html'},
+                {type: 'text'},
                 {type: 'text-summary'}
-            ]
+            ],
+            check: {
+                global: {
+                    statements: 80,
+                    branches: 80,
+                    functions: 80,
+                    lines: 80
+                }
+            }
         },
         reporters: ['spec'],
         port: 9876,
@@ -41,11 +49,10 @@ module.exports = function (config) {
         singleRun: false,
         restartOnFileChange: true,
         specReporter: {
-            maxLogLines: 5,
             suppressErrorSummary: false,
             suppressFailed: false,
-            suppressPassed: true,
-            suppressSkipped: true,
+            suppressPassed: false,
+            suppressSkipped: false,
             showSpecTiming: false,
             failFast: false,
         }
