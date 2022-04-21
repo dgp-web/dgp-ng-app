@@ -47,6 +47,7 @@ describe(DgpDropzoneDirectiveBase.name, () => {
         const isModelDragged = true;
         spyOn(service, "isModelDragged$").and.returnValue(of(isModelDragged));
         component.dragContext = payload.dragContext;
+        // TODO: This looks weird
         component.ngOnChanges({
             dragContext: {
                 currentValue: payload.dragContext,
