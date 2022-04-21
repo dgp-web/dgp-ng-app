@@ -25,7 +25,7 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
 
     protected readonly dragContext$ = new BehaviorSubject<string>(null);
 
-    private readonly isModelDragged$ = this.dragContext$.pipe(
+    readonly isModelDragged$ = this.dragContext$.pipe(
         switchMap(dragContext => this.dragAndDropService.isModelDragged$({dragContext})),
         tap(isModelDragged => this.toggleDropIndicator(isModelDragged)),
         shareReplay(1)
