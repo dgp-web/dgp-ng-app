@@ -6,8 +6,11 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
         <h3 class="label-item"
             mat-subheader>
             {{ label }}
+            <mat-icon style="margin-left: 8px;"
+                      class="mat-icon--small">{{matIconName}}</mat-icon>
             <dgp-spacer></dgp-spacer>
-            <mat-icon>{{matIconName}}</mat-icon>
+            <ng-content select="[actions]"></ng-content>
+            <dgp-expansion-toggle></dgp-expansion-toggle>
         </h3>
         <ng-content></ng-content>
     `,

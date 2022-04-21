@@ -76,6 +76,10 @@ export { DgpPageHeaderContextActionsModule } from "./context-action-slot/page-he
 export { EmptyStateComponent } from "./empty-state/components/empty-state.component";
 export { DgpEmptyStateModule } from "./empty-state/empty-state.module";
 
+// expansion-toggle
+export { DgpExpansionToggleComponent } from "./expansion-toggle/components/expansion-toggle.component";
+export { DgpExpansionToggleModule } from "./expansion-toggle/expansion-toggle.module";
+
 // file-upload
 export * from "./file-viewer/models";
 export * from "./file-viewer/functions";
@@ -164,7 +168,7 @@ export {
 export { DgpRequestStoreModule } from "./request-store/request-store.module";
 
 // resize-sensor
-export { DgpResizeSensorDirective} from "./resize-sensor/directives/resize-sensor.directive";
+export { DgpResizeSensorDirective } from "./resize-sensor/directives/resize-sensor.directive";
 export { DgpResizeSensorModule } from "./resize-sensor/resize-sensor.module";
 
 // routing-overlay

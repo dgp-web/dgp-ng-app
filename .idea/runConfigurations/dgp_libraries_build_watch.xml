@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="dgp-libraries:build:watch" type="CompoundRunConfigurationType">
+    <toRun name="dgp-ng-app:build:watch" type="js.build_tools.npm" />
+    <toRun name="dgp-ng-charts:build:watch" type="js.build_tools.npm" />
+    <toRun name="dgp-ng-docking-layout:build:watch" type="js.build_tools.npm" />
+    <toRun name="dgp-ng-docs:build:watch" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>
