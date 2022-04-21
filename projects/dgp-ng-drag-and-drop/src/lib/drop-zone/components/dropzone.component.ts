@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { DgpDropzoneBase } from "../shared/dropzone-base";
+import { DgpDropzoneDirectiveBase } from "../shared/dropzone.directive-base";
 
 @Component({
     selector: "dgp-dropzone",
@@ -11,6 +11,6 @@ import { DgpDropzoneBase } from "../shared/dropzone-base";
         </ng-container>
     `
 })
-export class DgpDropzoneComponent<TModel> extends DgpDropzoneBase<TModel> {
+export class DgpDropzoneComponent<TModel> extends DgpDropzoneDirectiveBase<TModel> {
 
 }

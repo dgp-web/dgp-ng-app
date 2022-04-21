@@ -21,7 +21,7 @@ import { shareReplay, switchMap, tap } from "rxjs/operators";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class DgpDropzoneBase<TModel> implements OnInit, OnChanges, AfterViewInit, OnDestroy, Mutable<WithDragContext> {
+export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, AfterViewInit, OnDestroy, Mutable<WithDragContext> {
 
     @HostBinding("class.dgp-drag-over")
     dragover = false;

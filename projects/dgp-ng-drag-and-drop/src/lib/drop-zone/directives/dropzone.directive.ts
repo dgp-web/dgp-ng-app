@@ -1,10 +1,10 @@
 import { Directive } from "@angular/core";
-import { DgpDropzoneBase } from "../shared/dropzone-base";
+import { DgpDropzoneDirectiveBase } from "../shared/dropzone.directive-base";
 
 @Directive({
     selector: "[dgpDropzone]",
 })
-export class DgpDropzoneDirective<TModel> extends DgpDropzoneBase<TModel> {
+export class DgpDropzoneDirective<TModel> extends DgpDropzoneDirectiveBase<TModel> {
 
 }
 
