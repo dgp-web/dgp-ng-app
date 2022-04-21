@@ -15,6 +15,9 @@ import { Root } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import * as _ from "lodash";
+import { InitializedEvent } from "./models/events/initialized-event.model";
+
+export type SelectionChangedEvent = ["selectionChanged", AbstractContentItemComponent];
 
 /*export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -115,7 +118,7 @@ export class DockingLayoutService extends EventEmitter {
         this.create(this.config);
         this.isInitialised = true;
         this.adjustColumnsResponsive();
-        this.emit("initialised");
+        this.emit<InitializedEvent>("initialised");
     }
 
     /**
@@ -248,7 +251,8 @@ export class DockingLayoutService extends EventEmitter {
 
         this.selectedItem = item;
 
-        this.emit("selectionChanged", item);
+
+        this.emit<SelectionChangedEvent>("selectionChanged", item);
     }
 
     /*************************
