@@ -12,6 +12,8 @@ import { StackComponent } from "./components/stack.component";
 import { Component } from "./components/component.component";
 import { DropTargetIndicator } from "./components/drop-target-indicator.component";
 import { Root } from "./components/root.component";
+import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
+import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 
 /*export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -52,12 +54,7 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     createDockingLayout(config: LayoutConfiguration, container: HTMLElement) {
-        if (!$ || typeof $.noConflict !== "function") {
-            let errorMsg = "jQuery is missing as dependency for GoldenLayout. ";
-            errorMsg += "Please either expose $ on GoldenLayout's scope (e.g. window) or add \"jquery\" to ";
-            errorMsg += "your paths when using RequireJS/AMD";
-            throw new Error(errorMsg);
-        }
+        if (!isJQueryLoaded()) throw new Error(jqueryErrorMessage);
 
         this.container = $(container);
         // TODO: Extract creation to store
