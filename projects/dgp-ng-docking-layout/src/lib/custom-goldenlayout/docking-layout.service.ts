@@ -14,6 +14,7 @@ import { DropTargetIndicator } from "./components/drop-target-indicator.componen
 import { Root } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
+import * as _ from "lodash";
 
 /*export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -373,9 +374,9 @@ export class DockingLayoutService extends EventEmitter {
 
     private createConfig(config) {
 
-        config = $.extend(true, {}, defaultLayoutConfig, config);
+        config = _.merge({}, defaultLayoutConfig, config);
 
-        const nextNode = function (node) {
+        const nextNode = function (node: any) {
             for (const key in node) {
                 if (node.hasOwnProperty(key) && key !== "props" && typeof node[key] === "object") {
                     nextNode(node[key]);
