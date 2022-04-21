@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Actions, Effect, ofType} from "@ngrx/effects";
+import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {first, switchMap, tap} from "rxjs/operators";
 import {select, Store} from "@ngrx/store";
 import { toggleDarkMode } from "./actions";
@@ -9,10 +9,8 @@ import { ThemeSwitcherState } from "./models";
 @Injectable()
 export class ThemeSwitcherEffects {
 
-    @Effect({
-        dispatch: false
-    })
-    readonly toggleDarkMode$ = this.actions$.pipe(
+    
+    readonly toggleDarkMode$ = createEffect(() => this.actions$.pipe(
         ofType(toggleDarkMode),
         switchMap(() => {
 
@@ -25,7 +23,9 @@ export class ThemeSwitcherEffects {
             );
 
         })
-    );
+    ), {
+        dispatch: false
+    });
 
     constructor(
         private readonly actions$: Actions,

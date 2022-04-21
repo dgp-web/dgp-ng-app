@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
 import { timer, of } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
@@ -13,8 +13,8 @@ export class RoutingOverlayEffects {
 
     private dialogRef: MatDialogRef<any>;
 
-    @Effect()
-    readonly observeRouteEvents$ = this.router.events.pipe(
+    
+    readonly observeRouteEvents$ = createEffect(() => this.router.events.pipe(
         map(event => {
             if (event instanceof ActivationStart) {
                 return showLoadingSpinner({ showSpinner: true });
@@ -28,12 +28,10 @@ export class RoutingOverlayEffects {
 
         }),
         filter(event => !isNullOrUndefined(event))
-    );
+    ));
 
-    @Effect({
-        dispatch: false
-    })
-    readonly showLoadingSpinner$ = this.actions$.pipe(
+    
+    readonly showLoadingSpinner$ = createEffect(() => this.actions$.pipe(
         ofType(showLoadingSpinner),
         distinctUntilKeyChanged("showSpinner"),
         switchMap(action => {
@@ -57,7 +55,9 @@ export class RoutingOverlayEffects {
                 );
             }
         })
-    );
+    ), {
+        dispatch: false
+    });
 
     constructor(
         private readonly actions$: Actions,

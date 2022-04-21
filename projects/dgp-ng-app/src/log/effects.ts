@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { defaultIfEmpty, map, switchMap } from "rxjs/operators";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
@@ -10,8 +10,8 @@ import { logStore } from "./reducers";
 @Injectable()
 export class LogEffects {
 
-    @Effect()
-    readonly logError$ = this.actions$.pipe(
+    
+    readonly logError$ = createEffect(() => this.actions$.pipe(
         ofType(logError),
         map(action => {
 
@@ -25,10 +25,10 @@ export class LogEffects {
             return addLogEntry({logEntry});
 
         })
-    );
+    ));
 
-    @Effect()
-    readonly addLogEntry$ = this.actions$.pipe(
+    
+    readonly addLogEntry$ = createEffect(() => this.actions$.pipe(
         ofType(addLogEntry),
         map(action => logStore.actions.composeEntityActions({
             add: {
@@ -37,12 +37,10 @@ export class LogEffects {
                 }
             }
         }))
-    );
+    ));
 
-    @Effect({
-        dispatch: false
-    })
-    readonly showErrorSnack$ = this.actions$.pipe(
+    
+    readonly showErrorSnack$ = createEffect(() => this.actions$.pipe(
         ofType(addLogEntry),
         switchMap(action => this.matSnackbar.open(action.logEntry.title, "Show log", {
             duration: 5000
@@ -52,7 +50,9 @@ export class LogEffects {
                 map(() => this.router.navigate(["/logEntries", action.logEntry.timeStamp.toString()])),
                 defaultIfEmpty(null)
             ))
-    );
+    ), {
+        dispatch: false
+    });
 
     constructor(
         private readonly actions$: Actions,

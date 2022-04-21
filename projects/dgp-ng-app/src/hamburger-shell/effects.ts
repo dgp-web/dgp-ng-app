@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { Actions, Effect } from "@ngrx/effects";
+import { Actions, createEffect } from "@ngrx/effects";
 import { debounceTime, filter, map, switchMap } from "rxjs/operators";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { setHamburgerMenuState, setListDetailsPageState } from "./actions";
@@ -13,8 +13,8 @@ import { of } from "rxjs";
 @Injectable()
 export class HamburgerShellEffects {
 
-    @Effect()
-    readonly setHamburgerMenuState$ = of(this.hamburgerShellConfig.hamburgerShellMode)
+    
+    readonly setHamburgerMenuState$ = createEffect(() => of(this.hamburgerShellConfig.hamburgerShellMode)
         .pipe(
             filter(x => x === HamburgerShellMode.Responsive),
             switchMap(() => {
@@ -33,10 +33,10 @@ export class HamburgerShellEffects {
                 });
 
             })
-        );
+        ));
 
-    @Effect()
-    readonly setListDetailsPageLayout$ = of(this.hamburgerShellConfig.listDetailsPageMode)
+    
+    readonly setListDetailsPageLayout$ = createEffect(() => of(this.hamburgerShellConfig.listDetailsPageMode)
         .pipe(
             filter(x => x === ListDetailsPageMode.Responsive),
             switchMap(() => {
@@ -56,7 +56,7 @@ export class HamburgerShellEffects {
                 });
 
             })
-        );
+        ));
 
     constructor(
         private readonly actions: Actions,
