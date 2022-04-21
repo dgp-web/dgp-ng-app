@@ -6,10 +6,17 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
         <h3 class="label-item"
             mat-subheader>
             {{ label }}
+            <mat-icon style="margin-left: 8px;"
+                      class="mat-icon--small">{{matIconName}}</mat-icon>
             <dgp-spacer></dgp-spacer>
-            <mat-icon>{{matIconName}}</mat-icon>
+            <ng-content select="[actions]"></ng-content>
+            <dgp-expansion-toggle *ngIf="expandable"
+                                  [model]="expanded"
+                                  (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
         </h3>
-        <ng-content></ng-content>
+        <ng-container *ngIf="expanded">
+            <ng-content></ng-content>
+        </ng-container>
     `,
     styles: [`
         .label-item {
@@ -28,4 +35,13 @@ export class InspectorSectionComponent {
     @Input()
     label: string;
 
+    @Input()
+    expanded = true;
+
+    @Input()
+    expandable = true;
+
+    updateExpanded(expanded: boolean) {
+        this.expanded = expanded;
+    }
 }

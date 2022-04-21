@@ -9,8 +9,12 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     `,
     styles: [`
         :host {
-            padding: 0px;
+            padding: 0;
             overflow: auto;
+        }
+
+        mat-list {
+            padding: 0;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

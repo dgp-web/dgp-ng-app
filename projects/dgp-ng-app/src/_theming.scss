@@ -101,6 +101,12 @@
         background: mat.get-color-from-palette($accent, 100) !important;
     }
 
+    .mat-icon--small {
+        height: 20px !important;
+        width: 20px !important;
+        font-size: 20px !important;
+    }
+
 }
 
 .dgp-file-manager-overlay--maximized {
@@ -126,11 +132,16 @@
 }
 
 
-
 dgp-inspector-item {
     mat-list-item {
         .mat-list-item-content {
             flex-grow: 1 !important;
         }
+    }
+}
+
+dgp-inspector-section {
+    .mat-subheader:first-child {
+        margin-top: 0 !important;
     }
 }
