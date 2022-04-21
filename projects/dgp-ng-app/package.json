@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app",
-    "version": "13.13.0",
+    "version": "13.14.0",
     "license": "MIT",
     "description": "Building blocks for Angular apps",
     "keywords": [
@@ -33,11 +33,11 @@
         "@angular/platform-browser-dynamic": "^13",
         "@angular/router": "^13",
         "@angularclass/hmr": "^2",
-        "@ngrx/store": "^12",
-        "@ngrx/store-devtools": "^12",
-        "@ngrx/effects": "^12",
+        "@ngrx/store": "^13",
+        "@ngrx/store-devtools": "^13",
+        "@ngrx/effects": "^13",
         "@types/lodash": "^4",
-        "entity-store": "^1.7",
+        "entity-store": "^2",
         "event-source-polyfill": "^1",
         "lodash": "4",
         "rxjs": "^6"
