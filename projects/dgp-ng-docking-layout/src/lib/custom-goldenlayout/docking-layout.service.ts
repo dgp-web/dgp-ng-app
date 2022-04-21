@@ -156,35 +156,9 @@ export class DockingLayoutService extends EventEmitter {
         this.eventHub.destroy();
     }
 
-    /**
-     * Recursively creates new item tree structures based on a provided
-     * ItemConfiguration object
-     */
     createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
-        let typeErrorMsg;
 
-        if (typeof itemConfig.type !== "string") {
-            throw new ConfigurationError("Missing parameter 'type'", itemConfig);
-        }
-
-        if (!this.typeToComponentMap[itemConfig.type]) {
-            typeErrorMsg = "Unknown type '" + itemConfig.type + "'. " +
-                "Valid types are " + Object.keys(this.typeToComponentMap)
-                    .join(",");
-
-            throw new ConfigurationError(typeErrorMsg);
-        }
-
-
-        if (shouldWrapInStack({itemConfig, parentItem})) {
-            itemConfig = wrapInStack(itemConfig);
-        }
-
-        /*     const fileType = fileItem.extension;
-             const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-                 this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] :
-                 this.config.fileTypeViewerMap.default
-             );*/
+        if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
 
         // TODO: Replace this with component factory
         // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
@@ -193,28 +167,6 @@ export class DockingLayoutService extends EventEmitter {
         return new this.typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
     }
 
-    /*   private loadComponent(fileItem: FileItem) {
-           const fileType = fileItem.extension;
-           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-               this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] :
-               this.config.fileTypeViewerMap.default
-           );
-           this.viewContainerRef.clear();
-           const componentRef = this.viewContainerRef.createComponent(componentFactory);
-           const viewerComponent = componentRef.instance as FileViewerComponentBase;
-           viewerComponent.fileItem = this.fileItem;
-       }
-
-       private clear() {
-           this.viewContainerRef.clear();
-       }
-   */
-
-    /**
-     * Programmatically selects an item. This deselects
-     * the currently selected item, selects the specified item
-     * and emits a selectionChanged event
-     */
     selectItem(item: AbstractContentItemComponent, silent: boolean) {
 
         if (this.config.settings.selectionEnabled !== true) {
@@ -234,7 +186,6 @@ export class DockingLayoutService extends EventEmitter {
         }
 
         this.selectedItem = item;
-
 
         this.emit<SelectionChangedEvent>("selectionChanged", item);
     }

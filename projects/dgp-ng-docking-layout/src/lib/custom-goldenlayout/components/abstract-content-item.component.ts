@@ -208,9 +208,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.parent.removeChild(this);
     }
 
-    /**
-     * Selects the item if it is not already selected
-     */
     select() {
         if (this.layoutManager.selectedItem !== this) {
             this.layoutManager.selectItem(this, true);
@@ -218,9 +215,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * De-selects the item if it is selected
-     */
     deselect() {
         if (this.layoutManager.selectedItem === this) {
             this.layoutManager.selectedItem = null;
