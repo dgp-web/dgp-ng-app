@@ -8,7 +8,7 @@ module.exports = function (config) {
         plugins: [
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
-            require('karma-jasmine-html-reporter'),
+            require('karma-spec-reporter'),
             require('karma-coverage'),
             require('@angular-devkit/build-angular/plugins/karma')
         ],
@@ -28,17 +28,33 @@ module.exports = function (config) {
             dir: require('path').join(__dirname, '../../coverage/dgp-ng-drag-and-drop'),
             subdir: '.',
             reporters: [
-                {type: 'html'},
+                {type: 'text'},
                 {type: 'text-summary'}
-            ]
+            ],
+    /*        check: {
+                global: {
+                    statements: 80,
+                    branches: 80,
+                    functions: 80,
+                    lines: 80
+                }
+            }*/
         },
-        reporters: ['progress', 'kjhtml'],
+        reporters: ['spec'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['Chrome'],
+        browsers: ['ChromeHeadless'],
         singleRun: false,
-        restartOnFileChange: true
+        restartOnFileChange: true,
+        specReporter: {
+            suppressErrorSummary: false,
+            suppressFailed: false,
+            suppressPassed: false,
+            suppressSkipped: false,
+            showSpecTiming: false,
+            failFast: false,
+        }
     });
 };

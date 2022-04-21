@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observer } from "rxjs";
 import { Store } from "@ngrx/store";
-import { Effect, ofType } from "@ngrx/effects";
+import { createEffect, ofType } from "@ngrx/effects";
 import { concatMap } from "rxjs/operators";
 import { Actions } from "@ngrx/effects";
 import {
@@ -18,10 +18,8 @@ export class RequestEffects {
      * in the order they arrive and keeps track of how
      * many requests are currently running
      */
-    @Effect({
-        dispatch: false
-    })
-    scheduleRequest$ = this.actions$
+    
+    scheduleRequest$ = createEffect(() => this.actions$
         .pipe(
             ofType(scheduleRequest),
             concatMap(action => {
@@ -33,7 +31,9 @@ export class RequestEffects {
 
                 }
             )
-        );
+        ), {
+        dispatch: false
+    });
 
     private getRequestObserver(): Observer<any> {
         this.store.dispatch(registerRequest());

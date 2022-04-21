@@ -1,16 +1,16 @@
 import { Injectable } from "@angular/core";
-import { Actions, Effect, ofType } from "@ngrx/effects";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { createDockingLayout } from "./actions";
 
 @Injectable()
 export class DockingLayoutEffects {
 
-    @Effect({
-        dispatch: false
-    })
-    readonly createDockingLayout$ = this.actions$.pipe(
+    
+    readonly createDockingLayout$ = createEffect(() => this.actions$.pipe(
         ofType(createDockingLayout)
-    );
+    ), {
+        dispatch: false
+    });
 
     constructor(
         private readonly actions$: Actions
