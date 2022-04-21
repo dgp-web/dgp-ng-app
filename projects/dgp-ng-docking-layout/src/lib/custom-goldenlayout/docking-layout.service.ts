@@ -18,6 +18,7 @@ import * as _ from "lodash";
 import { InitializedEvent } from "./models/events/initialized-event.model";
 import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
+import { wrapInStack } from "./functions/wrap-in-stack.function";
 
 /*export interface TypeToComponentMap {
     readonly [key: string]: typeof AbstractContentItemComponent;
@@ -159,15 +160,15 @@ export class DockingLayoutService extends EventEmitter {
      * Recursively creates new item tree structures based on a provided
      * ItemConfiguration object
      */
-    createContentItem(config: ItemConfiguration, parent: AbstractContentItemComponent): AbstractContentItemComponent {
+    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
         let typeErrorMsg;
 
-        if (typeof config.type !== "string") {
-            throw new ConfigurationError("Missing parameter 'type'", config);
+        if (typeof itemConfig.type !== "string") {
+            throw new ConfigurationError("Missing parameter 'type'", itemConfig);
         }
 
-        if (!this.typeToComponentMap[config.type]) {
-            typeErrorMsg = "Unknown type '" + config.type + "'. " +
+        if (!this.typeToComponentMap[itemConfig.type]) {
+            typeErrorMsg = "Unknown type '" + itemConfig.type + "'. " +
                 "Valid types are " + Object.keys(this.typeToComponentMap)
                     .join(",");
 
@@ -175,13 +176,8 @@ export class DockingLayoutService extends EventEmitter {
         }
 
 
-        if (shouldWrapInStack({itemConfig: config, parentItem: parent})) {
-            config = {
-                type: "stack",
-                width: config.width,
-                height: config.height,
-                content: [config]
-            };
+        if (shouldWrapInStack({itemConfig, parentItem})) {
+            itemConfig = wrapInStack(itemConfig);
         }
 
         /*     const fileType = fileItem.extension;
@@ -194,7 +190,7 @@ export class DockingLayoutService extends EventEmitter {
         // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
         // const foo = this.componentFactoryResolver.resolveComponentFactory();
 
-        return new this.typeToComponentMap[config.type](this, config, parent);
+        return new this.typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
     }
 
     /*   private loadComponent(fileItem: FileItem) {

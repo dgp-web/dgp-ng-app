@@ -8,3 +8,4 @@ export { GoldenLayoutEvent } from "./models/events/golden-layout-event.model";
 export { InitializedEvent } from "./models/events/initialized-event.model";
 export { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
 export { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
+export { wrapInStack } from "./functions/wrap-in-stack.function";

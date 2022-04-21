@@ -72,8 +72,8 @@ export interface SelectedItemChange {
 
 export interface StackConfiguration extends ItemConfiguration {
     type: "stack";
-    activeItemIndex: number;
-    activeItemId: string;
+    activeItemIndex?: number;
+    activeItemId?: string;
 
     content: ItemConfiguration[];
     onSelectedItemChange?: (id: string) => void;
