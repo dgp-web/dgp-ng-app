@@ -14,8 +14,7 @@ import {
     ViewChild,
     ViewContainerRef
 } from "@angular/core";
-import { ResizeSensor } from "css-element-queries";
-import { createGuid, notNullOrUndefined } from "dgp-ng-app";
+import { createGuid, notNullOrUndefined, ResizeSensor } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { uniqBy } from "lodash";
 import { combineLatest, timer } from "rxjs";
@@ -105,7 +104,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             });
 
         if (this.resizeSensor) {
-            this.resizeSensor.detach();
+            this.resizeSensor.disconnect();
         }
         if (this.dockingLayoutService) {
             this.dockingLayoutService.destroy();
@@ -131,14 +130,14 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             this.dockingLayoutService.destroy();
         }
         if (this.resizeSensor) {
-            this.resizeSensor.detach();
+            this.resizeSensor.disconnect();
         }
 
         const content = this.topLevelItems.toArray()
             .map(x => x.configuration);
 
         const components = this.getComponents(content);
-       // const stacks = this.getStacks(content);
+        // const stacks = this.getStacks(content);
         const uniqComponents = uniqBy(components, item => item.id);
 
         const config: any = {
@@ -218,6 +217,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
         const element = this.elementRef.nativeElement;
         this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
+        this.resizeSensor.connect();
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
