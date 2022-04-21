@@ -11,10 +11,12 @@
         "type": "git",
         "url": "https://github.com/dgp-web/dgp-ng-app"
     },
+    "dependencies": {
+        "tslib": "^2"
+    },
     "peerDependencies": {
         "@angular/common": "^13",
         "@angular/core": "^13",
-        "tslib": "^2",
         "jquery": "^3",
         "@types/jquery": "^3"
     }

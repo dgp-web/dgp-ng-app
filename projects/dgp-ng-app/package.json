@@ -17,6 +17,9 @@
         "type": "git",
         "url": "https://github.com/dgp-web/dgp-ng-app"
     },
+    "dependencies": {
+        "tslib": "^2"
+    },
     "peerDependencies": {
         "@angular/animations": "^13",
         "@angular/cdk": "13",
