@@ -5,7 +5,6 @@
         "@angular/common": "^13",
         "@angular/core": "^13",
         "@types/d3": "^5",
-        "css-element-queries": "^1",
         "d3": "^5",
         "tslib": "^2"
     }

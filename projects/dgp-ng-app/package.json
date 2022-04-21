@@ -34,7 +34,6 @@
         "@ngrx/store-devtools": "^12",
         "@ngrx/effects": "^12",
         "@types/lodash": "^4",
-        "css-element-queries": "^1",
         "entity-store": "^1.7",
         "event-source-polyfill": "^1",
         "lodash": "4",

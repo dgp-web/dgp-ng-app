@@ -2,10 +2,6 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDe
 import { Size } from "../models/size.model";
 import { ResizeSensor, ResizeSensorConfig } from "../services/resize-sensor.service";
 
-/**
- * Angular wrapper around the excellent library "css-element-queries"
- * https://github.com/marcj/css-element-queries
- */
 @Directive({
     selector: "[dgpResizeSensor]"
 })

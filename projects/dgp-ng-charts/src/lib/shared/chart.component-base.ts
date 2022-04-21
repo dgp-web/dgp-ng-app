@@ -1,19 +1,8 @@
-import {
-    AfterViewInit,
-    Directive,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    SimpleChanges,
-    ViewChild
-} from "@angular/core";
-import {ResizeSensor} from "css-element-queries";
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from "@angular/core";
+import { notNullOrUndefined, ResizeSensor } from "dgp-ng-app";
 import * as d3 from "d3";
-import {notNullOrUndefined} from "dgp-ng-app";
-import {from, interval, Subscription, timer} from "rxjs";
-import {debounceTime, switchMap, tap} from "rxjs/operators";
+import { from, Subscription, timer } from "rxjs";
+import { debounceTime, switchMap } from "rxjs/operators";
 import { ChartSelectionMode, SharedChartConfig } from "./models";
 
 
@@ -50,10 +39,8 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
 
     private resizeSensor: ResizeSensor;
     private readonly drawChartActionScheduler = new EventEmitter();
-    private isInitialResize = true;
 
     private resizeSubscription: Subscription;
-    private checkBrokenResizeSensorSubscription: Subscription;
 
     constructor(
         readonly elRef: ElementRef
@@ -68,23 +55,11 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
     }
 
     ngAfterViewInit(): void {
-
-        this.checkBrokenResizeSensorSubscription = interval(1000)
-            .pipe(
-                tap(() => {
-                    try {
-                        this.resizeSensor?.reset();
-                    } catch (e) {
-                    }
-                })
-            )
-            .subscribe();
-
         this.initResizeSensor();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config || changes.selectionMode  || changes.selection) {
+        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
             this.scheduleDrawChartAction();
         }
     }
@@ -93,16 +68,9 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
         if (!this.resizeSubscription?.closed) {
             this.resizeSubscription?.unsubscribe();
         }
-        if (!this.checkBrokenResizeSensorSubscription?.closed) {
-            this.checkBrokenResizeSensorSubscription?.unsubscribe();
-        }
     }
 
     protected scheduleDrawChartAction(): void {
-        if (this.isInitialResize) {
-            this.isInitialResize = false;
-            return;
-        }
         this.drawChartActionScheduler.emit();
     }
 
@@ -112,7 +80,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
 
     private initResizeSensor() {
         if (notNullOrUndefined(this.resizeSensor) && notNullOrUndefined(this.onResize)) {
-            this.resizeSensor.detach(this.onResize);
+            this.resizeSensor.disconnect();
         }
 
         this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
@@ -120,7 +88,6 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
 
     private async drawChart(): Promise<void> {
 
-        this.resizeSensor.detach(this.onResize);
         await timer(0)
             .toPromise();
 
@@ -154,9 +121,6 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
                 containerWidth
             });
         }
-
-        this.isInitialResize = true;
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
 
     }
 

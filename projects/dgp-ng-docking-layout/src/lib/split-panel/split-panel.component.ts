@@ -12,8 +12,7 @@ import {
     ViewChild,
     ViewContainerRef
 } from "@angular/core";
-import { ResizeSensor } from "css-element-queries";
-import { createGuid } from "dgp-ng-app";
+import { createGuid, ResizeSensor } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { timer } from "rxjs";
 import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
@@ -135,6 +134,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         this.dockingLayoutService.init();
         const element = this.elementRef.nativeElement;
         this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
+        this.resizeSensor.connect();
     }
 
     private updateLayout() {
@@ -143,7 +143,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
     private destroyLayout() {
         if (this.resizeSensor) {
-            this.resizeSensor.detach();
+            this.resizeSensor.disconnect();
         }
         if (this.dockingLayoutService) {
             this.dockingLayoutService.destroy();
