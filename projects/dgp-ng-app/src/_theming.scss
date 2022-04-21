@@ -139,3 +139,9 @@ dgp-inspector-item {
         }
     }
 }
+
+dgp-inspector-section {
+    .mat-subheader:first-child {
+        margin-top: 0 !important;
+    }
+}
