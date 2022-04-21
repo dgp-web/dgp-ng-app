@@ -2,6 +2,7 @@ import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
+import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -213,7 +214,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     select() {
         if (this.layoutManager.selectedItem !== this) {
             this.layoutManager.selectItem(this, true);
-            this.element.addClass("lm_selected");
+            this.element.addClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
     }
 
@@ -223,7 +224,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     deselect() {
         if (this.layoutManager.selectedItem === this) {
             this.layoutManager.selectedItem = null;
-            this.element.removeClass("lm_selected");
+            this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
     }
 

@@ -227,7 +227,7 @@ export class DockingLayoutService extends EventEmitter {
      * the currently selected item, selects the specified item
      * and emits a selectionChanged event
      */
-    selectItem(item: AbstractContentItemComponent, _$silent) {
+    selectItem(item: AbstractContentItemComponent, silent: boolean) {
 
         if (this.config.settings.selectionEnabled !== true) {
             throw new Error("Please set selectionEnabled to true to use this feature");
@@ -241,7 +241,7 @@ export class DockingLayoutService extends EventEmitter {
             this.selectedItem.deselect();
         }
 
-        if (item && _$silent !== true) {
+        if (item && silent !== true) {
             item.select();
         }
 
