@@ -1,6 +1,14 @@
-import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { AfterViewInit, ChangeDetectionStrategy, Component, forwardRef, Inject, InjectionToken } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    forwardRef,
+    HostBinding,
+    Inject,
+    InjectionToken
+} from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { AreaSides } from "../models/area.model";
 
@@ -10,12 +18,21 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
 @Component({
     selector: "dgp-gl-root",
     template: ``,
+    styles: [`
+        :host {
+            position: relative;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RootComponent extends AbstractContentItemComponent implements AfterViewInit {
+
+    @HostBinding("class.lm_item")
+    readonly bindings = true;
+
     readonly isRoot = true;
     readonly type = "root";
-    public element: any;
+    public element: JQuery;
     public childElementContainer: any;
     public _containerElement: any;
 
@@ -25,15 +42,14 @@ export class RootComponent extends AbstractContentItemComponent implements After
         @Inject(ROOT_CONFIG)
         public config,
         @Inject(ROOT_CONTAINER_ELEMENT)
-        public containerElement
+        public containerElement,
+        private readonly elRef: ElementRef
     ) {
         super(layoutManager, config, containerElement);
     }
 
     ngAfterViewInit() {
-        this.element = $(
-            dockingLayoutViewMap.root.render()
-        );
+        this.element = $(this.elRef.nativeElement);
         this.childElementContainer = this.element;
         this._containerElement = this.containerElement;
         this._containerElement.append(this.element);

@@ -5,10 +5,6 @@
 @import "~bootstrap/scss/card";
 @import "~bootstrap/scss/reboot";
 
-.lm_root {
-    position: relative
-}
-
 .lm_row > .lm_item {
     float: left
 }
@@ -311,9 +307,6 @@
 
 .lm_title {
     display: inline-block;
-}
-
-.lm_goldenlayout {
 }
 
 .lm_content {
