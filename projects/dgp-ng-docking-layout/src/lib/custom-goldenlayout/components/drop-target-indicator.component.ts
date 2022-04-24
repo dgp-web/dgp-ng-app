@@ -1,5 +1,5 @@
 import { Area } from "../../docking-layout/models";
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2 } from "@angular/core";
 
 @Component({
     selector: "dgp-drop-target-indicator",
@@ -26,42 +26,31 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef } from "@
             background: #000000;
             opacity: .1
         }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DropTargetIndicatorComponent implements AfterViewInit {
 
-    private element: JQuery;
-
     constructor(
-        private readonly elRef: ElementRef<HTMLDivElement>
+        private readonly elRef: ElementRef<HTMLDivElement>,
+        private readonly renderer: Renderer2
     ) {
     }
 
-    destroy() {
-        this.element.remove();
-    }
-
     highlightArea(area: Area) {
-        this.element.css({
-            left: area.x1,
-            top: area.y1,
-            width: area.x2 - area.x1,
-            height: area.y2 - area.y1
-        })
-            .show();
+        this.renderer.setStyle(this.elRef.nativeElement, "left", area.x1 + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "top", area.y1 + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "width", (area.x2 - area.x1) + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "height", (area.y2 - area.y1) + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "display", "block");
     }
 
     hide() {
-        this.element.hide();
+        this.renderer.setStyle(this.elRef.nativeElement, "display", "none");
     }
 
     ngAfterViewInit(): void {
-        this.element = $(this.elRef.nativeElement);
-
-        $(document.body)
-            .append(this.element);
+        document.body.appendChild(this.elRef.nativeElement);
     }
 
 }

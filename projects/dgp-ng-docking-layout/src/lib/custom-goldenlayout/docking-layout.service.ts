@@ -126,7 +126,6 @@ export class DockingLayoutService extends EventEmitter {
         this.root.callDownwards("_$destroy", [], true);
         this.root.contentItems = [];
         this.tabDropPlaceholder.remove();
-        this.dropTargetIndicator.destroy();
         this.eventHub.destroy();
     }
 
