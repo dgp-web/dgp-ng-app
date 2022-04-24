@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injectable, ViewContainerRef } from "@angular/core";
+import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
 import { ItemConfiguration, LayoutConfiguration } from "./types";
 import { EventEmitter } from "./utilities";
@@ -37,12 +37,13 @@ export class DockingLayoutService extends EventEmitter {
     private root: Root;
     private eventHub: EventHub;
 
-    private readonly viewContainerRef: ViewContainerRef;
+    private viewContainerRef: ViewContainerRef;
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly componentRegistry: ComponentRegistry,
-        private readonly areaService: AreaService
+        private readonly areaService: AreaService,
+        private readonly injector: Injector
     ) {
         super();
     }
@@ -52,6 +53,7 @@ export class DockingLayoutService extends EventEmitter {
 
         if (!isJQueryLoaded()) throw new Error(jqueryErrorMessage);
 
+        this.viewContainerRef = viewContainerRef;
         const container = viewContainerRef.element.nativeElement as HTMLElement;
         this.container = $(container);
 
@@ -131,6 +133,11 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     private createRootComponent(config: LayoutConfiguration): void {
+        const injector = Injector.create({
+            providers: [],
+            parent: this.injector
+        });
+        //this.viewContainerRef.createComponent(Root);
         this.root = new Root(this, {content: config.content}, this.container);
     }
 
