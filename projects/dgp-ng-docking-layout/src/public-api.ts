@@ -5,6 +5,8 @@
 export * from "./lib/common";
 export * from "./lib/custom-goldenlayout";
 export { RowOrColumnComponent } from "./lib/custom-goldenlayout/components/row-or-column.component";
+export { RowComponent } from "./lib/custom-goldenlayout/components/row.component";
+export { ColumnComponent } from "./lib/custom-goldenlayout/components/column.component";
 export { StackComponent } from "./lib/custom-goldenlayout/components/stack.component";
 export { ItemContainerComponent } from "./lib/custom-goldenlayout/components/item-container.component";
 export { DockingLayoutContainerComponent } from "./lib/docking-layout/components/docking-layout-container.component";

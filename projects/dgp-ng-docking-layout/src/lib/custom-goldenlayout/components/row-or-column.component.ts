@@ -6,7 +6,6 @@ import { LayoutManagerUtilities } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { SplitterComponent } from "./splitter.component";
 
-
 @Component({
     selector: "dgp-row-or-column",
     template: ``,
