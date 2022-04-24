@@ -171,7 +171,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         };
 
         this.dockingLayoutService.createDockingLayout(
-            config, this.elementRef.nativeElement
+            config, this.vcRef
         );
 
 

@@ -98,7 +98,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         });
 
         this.dockingLayoutService.createDockingLayout(
-            createLayoutConfig(root, this.splitterSize), this.elementRef.nativeElement
+            createLayoutConfig(root, this.splitterSize), this.viewContainerRef
         );
 
         componentConfigurations
