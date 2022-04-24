@@ -1,5 +1,5 @@
 import { Area } from "../models/area.model";
-import { Root } from "../components/root.component";
+import { RootComponent } from "../components/root.component";
 import { getAllContentItems } from "../functions/content-item/get-all-content-items.function";
 import { createRootItemAreas } from "../functions/areas/create-content-root-item-areas.function";
 import { findArea } from "../functions/areas/find-area.function";
@@ -12,7 +12,7 @@ export class AreaService {
 
     private itemAreas: Array<Area>;
 
-    calculateItemAreas(root: Root): void {
+    calculateItemAreas(root: RootComponent): void {
         let i: number;
         let area: Area;
         const allContentItems = getAllContentItems(root);

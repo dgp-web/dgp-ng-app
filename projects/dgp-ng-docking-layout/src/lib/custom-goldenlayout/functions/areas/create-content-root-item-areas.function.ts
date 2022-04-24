@@ -1,8 +1,8 @@
-import { Root } from "../../components/root.component";
+import { RootComponent } from "../../components/root.component";
 import { Area, AreaSides } from "../../models/area.model";
 import { mutatify } from "data-modeling";
 
-export function createRootItemAreas(payload: Root): Array<Area> {
+export function createRootItemAreas(payload: RootComponent): Array<Area> {
     const areaSize = 50;
     const sides: AreaSides = {y2: 0, x2: 0, y1: "y2", x1: "x2"};
     return Object.keys(sides).map(side => {

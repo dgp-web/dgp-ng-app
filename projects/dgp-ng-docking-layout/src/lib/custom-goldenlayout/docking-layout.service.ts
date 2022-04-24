@@ -6,7 +6,7 @@ import { EventHub } from "./utilities/event-hub";
 import { dockingLayoutViewMap } from "../docking-layout/views";
 import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
 import { DropTargetIndicator } from "./components/drop-target-indicator.component";
-import { Root } from "./components/root.component";
+import { RootComponent } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import { InitializedEvent } from "./models/events/initialized-event.model";
@@ -34,7 +34,7 @@ export class DockingLayoutService extends EventEmitter {
     private isInitialised = false;
     private width: number;
     private height: number;
-    private root: Root;
+    private root: RootComponent;
     private eventHub: EventHub;
 
     private viewContainerRef: ViewContainerRef;
@@ -137,8 +137,8 @@ export class DockingLayoutService extends EventEmitter {
             providers: [],
             parent: this.injector
         });
-        //this.viewContainerRef.createComponent(Root);
-        this.root = new Root(this, {content: config.content}, this.container);
+        // this.viewContainerRef.createComponent(RootComponent);
+        this.root = new RootComponent(this, {content: config.content}, this.container);
     }
 
     getArea(x: number, y: number): Area {

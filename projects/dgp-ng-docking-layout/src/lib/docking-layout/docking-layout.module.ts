@@ -16,6 +16,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { DockingLayoutEffects } from "./effects";
 import { ColumnComponent } from "../custom-goldenlayout/components/column.component";
 import { RowComponent } from "../custom-goldenlayout/components/row.component";
+import { RootComponent } from "../custom-goldenlayout/components/root.component";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -47,7 +48,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         StackComponent,
         ItemContainerComponent,
         ColumnComponent,
-        RowComponent
+        RowComponent,
+        RootComponent
     ],
     exports: [
         DockingLayoutContainerComponent,
@@ -57,7 +59,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         StackComponent,
         ItemContainerComponent,
         ColumnComponent,
-        RowComponent
+        RowComponent,
+        RootComponent
     ],
     providers: [
         DockingLayoutService,

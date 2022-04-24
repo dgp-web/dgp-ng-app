@@ -1,17 +1,31 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { Directive } from "@angular/core";
+import { ChangeDetectionStrategy, Component, forwardRef, Inject, InjectionToken } from "@angular/core";
+import { DockingLayoutService } from "../docking-layout.service";
 
+export const ROOT_CONFIG = new InjectionToken("rootConfig");
+export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
 
-@Directive()
-export class Root extends AbstractContentItemComponent {
+@Component({
+    selector: "dgp-gl-root",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class RootComponent extends AbstractContentItemComponent {
     isRoot: boolean;
     type: any;
     public element: any;
     public childElementContainer: any;
     public _containerElement: any;
 
-    constructor(public layoutManager, public config, public containerElement) {
+    constructor(
+        @Inject(forwardRef(() => DockingLayoutService))
+        public layoutManager: DockingLayoutService,
+        @Inject(ROOT_CONFIG)
+        public config,
+        @Inject(ROOT_CONTAINER_ELEMENT)
+        public containerElement
+    ) {
         super(layoutManager, config, containerElement);
 
         this.isRoot = true;
@@ -31,7 +45,6 @@ export class Root extends AbstractContentItemComponent {
             throw new Error("Root node can only have a single child");
         }
 
-        contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
         this.childElementContainer.append(contentItem.element);
 
         super.addChild(contentItem);
