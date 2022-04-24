@@ -1,7 +1,13 @@
 import { Area } from "../../docking-layout/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
-export class DropTargetIndicator {
+@Component({
+    selector: "dgp-drop-target-indicator",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class DropTargetIndicatorComponent {
 
     private readonly element: JQuery;
 

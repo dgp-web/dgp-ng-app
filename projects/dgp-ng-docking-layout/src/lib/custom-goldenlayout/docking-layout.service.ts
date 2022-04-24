@@ -5,7 +5,7 @@ import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 import { dockingLayoutViewMap } from "../docking-layout/views";
 import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
-import { DropTargetIndicator } from "./components/drop-target-indicator.component";
+import { DropTargetIndicatorComponent } from "./components/drop-target-indicator.component";
 import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
@@ -28,7 +28,7 @@ export class DockingLayoutService extends EventEmitter {
     selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery;
-    dropTargetIndicator: DropTargetIndicator;
+    dropTargetIndicator: DropTargetIndicatorComponent;
     tabDropPlaceholder: JQuery;
 
     private isInitialised = false;
@@ -77,7 +77,7 @@ export class DockingLayoutService extends EventEmitter {
     getComponent = x => this.componentRegistry.getComponent(x);
 
     init() {
-        this.dropTargetIndicator = new DropTargetIndicator();
+        this.dropTargetIndicator = new DropTargetIndicatorComponent();
         this.updateSize();
         this.createRootComponent(this.config);
         this.isInitialised = true;
