@@ -40,7 +40,7 @@ export interface LayoutConfiguration {
 }
 
 export interface ItemConfiguration {
-    type: ItemType;
+    type?: ItemType;
     id?: string | string[];
     width?: number;
     height?: number;

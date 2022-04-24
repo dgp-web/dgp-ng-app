@@ -18,7 +18,7 @@ import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { Many, mutatify } from "data-modeling";
+import { Many, Mutable, mutatify } from "data-modeling";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -369,50 +369,37 @@ export class DockingLayoutService extends EventEmitter {
             || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
     }
 
-    toConfig(root) {
-        let config, next;
-
-        /*
-         * settings & labels
-         */
-        config = {
+    extractLayoutConfig(root: AbstractContentItemComponent): LayoutConfiguration {
+        const config: Mutable<LayoutConfiguration> = {
             settings: this.config.settings,
             dimensions: this.config.dimensions,
-            labels: this.config.labels
+            labels: this.config.labels,
+            content: []
         };
 
-        /*
-         * Content
-         */
-        config.content = [];
-        next = function (configNode, item) {
-            let key, i;
-
-            for (key in item.config) {
-                if (key !== "content") {
-                    configNode[key] = item.config[key];
-                }
-            }
-
-            if (item.contentItems.length) {
-                configNode.content = [];
-
-                for (i = 0; i < item.contentItems.length; i++) {
-                    configNode.content[i] = {};
-                    next(configNode.content[i], item.contentItems[i]);
-                }
-            }
-        };
-
-        if (root) {
-            next(config, {
-                contentItems: [root]
-            });
-        } else {
-            next(config, this.root);
-        }
+        this.extractConfigFromItem(config, root);
 
         return config;
+    }
+
+    private extractConfigFromItem(configNode: ItemConfiguration, item: AbstractContentItemComponent) {
+        let key: string;
+        let i: number;
+
+        for (key in item.config) {
+            if (key !== "content") {
+                configNode[key] = item.config[key];
+            }
+        }
+
+        if (item.contentItems.length) {
+            configNode.content = [];
+
+            for (i = 0; i < item.contentItems.length; i++) {
+                configNode.content[i] = {} as any; // TODO: Typing is not correct;
+                this.extractConfigFromItem(configNode.content[i], item.contentItems[i]);
+            }
+        }
     }
 
 }
