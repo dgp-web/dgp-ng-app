@@ -1,20 +1,33 @@
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { ItemContainerComponent } from "./item-container.component";
-import { Directive } from "@angular/core";
+import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular/core";
+import { DockingLayoutService } from "../docking-layout.service";
+import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 
 /**
  * @param {[type]} layoutManager [description]
  * @param {[type]} config      [description]
  * @param {[type]} parent        [description]
  */
-@Directive()
-export class Component extends AbstractContentItemComponent {
+@Component({
+    selector: "dgp-gl-component",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class GlComponent extends AbstractContentItemComponent {
     componentName: any;
     public container: any;
     public instance: any;
     public element: any;
 
-    constructor(public layoutManager, public config, public parent) {
+    constructor(
+        @Inject(forwardRef(() => DockingLayoutService))
+        public layoutManager: DockingLayoutService,
+        @Inject(ITEM_CONFIG)
+        public config: any,
+        @Inject(PARENT_ITEM_COMPONENT)
+        public parent: AbstractContentItemComponent
+    ) {
         super(layoutManager, config, parent);
 
         let ComponentConstructor = layoutManager.getComponent(this.config.id),

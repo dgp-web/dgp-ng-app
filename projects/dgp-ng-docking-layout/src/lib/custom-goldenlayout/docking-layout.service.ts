@@ -102,25 +102,20 @@ export class DockingLayoutService extends EventEmitter {
 
         if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
 
-        if (itemConfig.type === "component") {
-            return new typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
-        } else {
-            const injector = Injector.create({
-                providers: [{
-                    provide: ITEM_CONFIG,
-                    useValue: itemConfig
-                }, {
-                    provide: PARENT_ITEM_COMPONENT,
-                    useValue: parentItem
-                }],
-                parent: this.injector
-            });
+        const injector = Injector.create({
+            providers: [{
+                provide: ITEM_CONFIG,
+                useValue: itemConfig
+            }, {
+                provide: PARENT_ITEM_COMPONENT,
+                useValue: parentItem
+            }],
+            parent: this.injector
+        });
 
-            const componentType = typeToComponentMap[itemConfig.type];
+        const componentType = typeToComponentMap[itemConfig.type];
 
-            return this.viewContainerRef.createComponent<any>(componentType as any, {injector}).instance;
-        }
-
+        return this.viewContainerRef.createComponent<any>(componentType as any, {injector}).instance;
     }
 
     destroy() {
