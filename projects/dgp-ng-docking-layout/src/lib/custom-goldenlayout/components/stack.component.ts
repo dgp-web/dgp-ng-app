@@ -44,9 +44,7 @@ export class StackComponent extends AbstractContentItemComponent {
             close: cfg.settings.showCloseIcon && cfg.labels.close,
             minimise: cfg.labels.minimise,
         };
-        if (cfg.header) {
-            Object.assign(this._header, cfg.header);
-        }
+
         if (config.header) {
             Object.assign(this._header, config.header);
         }

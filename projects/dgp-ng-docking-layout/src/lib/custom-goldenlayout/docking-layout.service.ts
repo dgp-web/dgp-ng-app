@@ -16,8 +16,9 @@ import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { Many } from "data-modeling";
+import { Many, mutatify } from "data-modeling";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
+import { AreaSides, AreaSize } from "./models/area.model";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -173,17 +174,17 @@ export class DockingLayoutService extends EventEmitter {
 
     _$createRootItemAreas() {
         const areaSize = 50;
-        const sides = {y2: 0, x2: 0, y1: "y2", x1: "x2"};
+        const sides: AreaSides = {y2: 0, x2: 0, y1: "y2", x1: "x2"};
         // tslint:disable-next-line:forin
         for (const side in sides) {
-            const area = this.root._$getArea();
-            area.side = side;
+            const area = mutatify(this.root._$getArea());
+            area.side = side as keyof AreaSides;
             if (sides [side]) {
                 area[side] = area[sides [side]] - areaSize;
             } else {
                 area[side] = areaSize;
             }
-            area.surface = (area.x2 - area.x1) * (area.y2 - area.y1);
+            area.surface = (area.x2 as number - (area.x1 as number)) * (area.y2 as number - (area.y1 as number));
             this._itemAreas.push(area);
         }
     }
@@ -267,7 +268,7 @@ export class DockingLayoutService extends EventEmitter {
         return allContentItems;
     }
 
-    private create(config) {
+    private create(config: LayoutConfiguration) {
         let errorMsg: string;
 
         if (!(config.content instanceof Array)) {
@@ -288,9 +289,6 @@ export class DockingLayoutService extends EventEmitter {
         this.root = new Root(this, {content: config.content}, this.container);
         this.root.callDownwards("_$init");
 
-        if (config.maximisedItemId === "__glMaximised") {
-            this.root.getItemsById(config.maximisedItemId)[0].toggleMaximise();
-        }
     }
 
     private adjustColumnsResponsive() {
