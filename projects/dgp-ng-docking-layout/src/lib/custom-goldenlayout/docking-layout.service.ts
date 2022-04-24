@@ -18,7 +18,7 @@ import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { Many, mutatify } from "data-modeling";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
-import { AreaSides, AreaSize } from "./models/area.model";
+import { Area, AreaSides } from "./models/area.model";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -32,7 +32,7 @@ export class DockingLayoutService extends EventEmitter {
     dropTargetIndicator: DropTargetIndicator;
     tabDropPlaceholder: JQuery;
     private isInitialised = false;
-    private _itemAreas = [];
+    private _itemAreas = [] as Array<Area>;
     private _updatingColumnsResponsive = false;
     private _firstLoad = true;
     private width: number;
@@ -151,8 +151,11 @@ export class DockingLayoutService extends EventEmitter {
      * PACKAGE PRIVATE
      *************************/
 
-    _$getArea(x: number, y: number) {
-        let i, area, smallestSurface = Infinity, mathingArea = null;
+    _$getArea(x: number, y: number): Area {
+        let i: number;
+        let area: Area;
+        let smallestSurface = Infinity;
+        let mathingArea: Area = null;
 
         for (i = 0; i < this._itemAreas.length; i++) {
             area = this._itemAreas[i];
@@ -185,7 +188,7 @@ export class DockingLayoutService extends EventEmitter {
                 area[side] = areaSize;
             }
             area.surface = (area.x2 as number - (area.x1 as number)) * (area.y2 as number - (area.y1 as number));
-            this._itemAreas.push(area);
+            this._itemAreas.push(area as any); // TODO Fix types
         }
     }
 
