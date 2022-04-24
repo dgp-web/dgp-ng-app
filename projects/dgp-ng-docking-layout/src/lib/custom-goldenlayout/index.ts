@@ -16,3 +16,4 @@ export { createItemConfig } from "./functions/create-config/create-item-config.f
 export { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 export { getAllContentItems } from "./functions/content-item/get-all-content-items.function";
 export { createRootItemAreas } from "./functions/areas/create-content-root-item-areas.function";
+export { findArea } from "./functions/areas/find-area.function";

@@ -19,6 +19,7 @@ import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { createRootItemAreas } from "./functions/areas/create-content-root-item-areas.function";
+import { findArea } from "./functions/areas/find-area.function";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -142,27 +143,7 @@ export class DockingLayoutService extends EventEmitter {
      *************************/
 
     _$getArea(x: number, y: number): Area {
-        let i: number;
-        let area: Area;
-        let smallestSurface = Infinity;
-        let mathingArea: Area = null;
-
-        for (i = 0; i < this.itemAreas.length; i++) {
-            area = this.itemAreas[i];
-
-            if (
-                x > area.x1 &&
-                x < area.x2 &&
-                y > area.y1 &&
-                y < area.y2 &&
-                smallestSurface > area.surface
-            ) {
-                smallestSurface = area.surface;
-                mathingArea = area;
-            }
-        }
-
-        return mathingArea;
+        return findArea(x, y, this.itemAreas);
     }
 
     _$calculateItemAreas(): void {
