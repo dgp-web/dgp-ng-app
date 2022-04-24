@@ -1,7 +1,6 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { Directive } from "@angular/core";
-import { createContentItem } from "../functions/content-item/create-content-item.function";
 
 
 @Directive()
@@ -64,7 +63,7 @@ export class Root extends AbstractContentItemComponent {
         let stack;
 
         if (contentItem.isComponent) {
-            stack = createContentItem({
+            stack = this.layoutManager.createContentItem({
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
@@ -81,7 +80,7 @@ export class Root extends AbstractContentItemComponent {
             const insertBefore = area.side[1] === "2";
             const column: AbstractContentItemComponent = this.contentItems[0];
             if (!(column.isRow || column.isColumn) || column.type !== type) { // TODO: move this type here
-                const rowOrColumn = createContentItem({type}, this);
+                const rowOrColumn = this.layoutManager.createContentItem({type}, this);
                 this.replaceChild(column, rowOrColumn);
                 rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
                 rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);

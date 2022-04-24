@@ -14,4 +14,4 @@ export { extractItemConfig } from "./functions/extract-config/extract-item-confi
 export { extractLayoutConfig } from "./functions/extract-config/extract-layout.config.function";
 export { createItemConfig } from "./functions/create-config/create-item-config.function";
 export { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
-export { createContentItem } from "./functions/content-item/create-content-item.function";
+export { getAllContentItems } from "./functions/content-item/get-all-content-items.function";

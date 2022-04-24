@@ -7,7 +7,6 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { createContentItem } from "../functions/content-item/create-content-item.function";
 
 @Component({
     selector: "dgp-stack",
@@ -263,7 +262,7 @@ export class StackComponent extends AbstractContentItemComponent {
          * The content item can be either a component or a stack. If it is a component, wrap it into a stack
          */
         if (contentItem.isComponent) {
-            stack = createContentItem({
+            stack = this.layoutManager.createContentItem({
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
@@ -288,7 +287,7 @@ export class StackComponent extends AbstractContentItemComponent {
              */
         } else {
             type = isVertical ? "column" : "row";
-            rowOrColumn = createContentItem({type}, this);
+            rowOrColumn = this.layoutManager.createContentItem({type}, this);
             this.parent.replaceChild(this, rowOrColumn);
 
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);

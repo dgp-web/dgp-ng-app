@@ -13,10 +13,13 @@ import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import { InitializedEvent } from "./models/events/initialized-event.model";
 import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { Many, mutatify } from "data-modeling";
+import { mutatify } from "data-modeling";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area, AreaSides } from "./models/area.model";
-import { createContentItem } from "./functions/content-item/create-content-item.function";
+import { getAllContentItems } from "./functions/content-item/get-all-content-items.function";
+import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
+import { wrapInStack } from "./functions/wrap-in-stack.function";
+import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -93,6 +96,18 @@ export class DockingLayoutService extends EventEmitter {
 
             this.adjustColumnsResponsive();
         }
+    }
+
+    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
+
+        if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
+
+        // TODO: Replace this with component factory
+        // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
+        // const foo = this.componentFactoryResolver.resolveComponentFactory();
+
+
+        return new typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
     }
 
     /**
@@ -181,7 +196,7 @@ export class DockingLayoutService extends EventEmitter {
     _$calculateItemAreas(): void {
         let i: number;
         let area: Area;
-        const allContentItems = this.getAllContentItems();
+        const allContentItems = getAllContentItems(this.root);
         this.itemAreas = [];
 
         /**
@@ -231,31 +246,12 @@ export class DockingLayoutService extends EventEmitter {
         }
 
         if ($.isPlainObject(contentItemOrConfig) && contentItemOrConfig.type) {
-            const newContentItem = createContentItem(contentItemOrConfig, parent);
+            const newContentItem = this.createContentItem(contentItemOrConfig, parent);
             newContentItem.callDownwards("_$init");
             return newContentItem;
         } else {
             throw new Error("Invalid contentItem");
         }
-    }
-
-    private getAllContentItems(): Many<AbstractContentItemComponent> {
-        const allContentItems = new Array<AbstractContentItemComponent>();
-
-        const addChildren = function (contentItem) {
-            allContentItems.push(contentItem);
-
-            if (contentItem.contentItems instanceof Array) {
-                // tslint:disable-next-line:prefer-for-of
-                for (let i = 0; i < contentItem.contentItems.length; i++) {
-                    addChildren(contentItem.contentItems[i]);
-                }
-            }
-        };
-
-        addChildren(this.root);
-
-        return allContentItems;
     }
 
     private create(config: LayoutConfiguration) {
