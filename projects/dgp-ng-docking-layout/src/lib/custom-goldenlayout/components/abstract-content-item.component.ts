@@ -2,6 +2,8 @@ import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
+import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
+import { Area, AreaSides } from "../models/area.model";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -159,8 +161,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      */
     replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, _$destroyOldChild?: boolean) {
 
-        newChild = this.layoutManager._$normalizeContentItem(newChild);
-
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;
 
@@ -207,23 +207,17 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.parent.removeChild(this);
     }
 
-    /**
-     * Selects the item if it is not already selected
-     */
     select() {
         if (this.layoutManager.selectedItem !== this) {
             this.layoutManager.selectItem(this, true);
-            this.element.addClass("lm_selected");
+            this.element.addClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
     }
 
-    /**
-     * De-selects the item if it is selected
-     */
     deselect() {
         if (this.layoutManager.selectedItem === this) {
             this.layoutManager.selectedItem = null;
-            this.element.removeClass("lm_selected");
+            this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
     }
 
@@ -325,7 +319,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.parent = parent;
     }
 
-    _$highlightDropZone(x: number, y: number, area) {
+    highlightDropZone(x: number, y: number, area: AreaSides) {
         this.layoutManager.dropTargetIndicator.highlightArea(area);
     }
 
@@ -373,7 +367,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Returns the area the component currently occupies in the format
      */
-    _$getArea(element?: JQuery): any {
+    _$getArea(element?: JQuery): Area {
         element = element || this.element;
 
         const offset = element.offset(),

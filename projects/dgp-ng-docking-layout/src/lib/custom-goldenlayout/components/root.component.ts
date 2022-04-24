@@ -1,27 +1,62 @@
-import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { Directive } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    forwardRef,
+    HostBinding,
+    Inject,
+    InjectionToken
+} from "@angular/core";
+import { DockingLayoutService } from "../docking-layout.service";
+import { AreaSides } from "../models/area.model";
 
+export const ROOT_CONFIG = new InjectionToken("rootConfig");
+export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
 
-@Directive()
-export class Root extends AbstractContentItemComponent {
-    isRoot: boolean;
-    type: any;
-    public element: any;
+@Component({
+    selector: "dgp-gl-root",
+    template: ``,
+    styles: [`
+        :host {
+            position: relative;
+        }
+    `],
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class RootComponent extends AbstractContentItemComponent implements AfterViewInit {
+
+    @HostBinding("class.lm_item")
+    readonly bindings = true;
+
+    readonly isRoot = true;
+    readonly type = "root";
+    public element: JQuery;
     public childElementContainer: any;
     public _containerElement: any;
 
-    constructor(public layoutManager, public config, public containerElement) {
+    constructor(
+        @Inject(forwardRef(() => DockingLayoutService))
+        public layoutManager: DockingLayoutService,
+        @Inject(ROOT_CONFIG)
+        public config,
+        @Inject(ROOT_CONTAINER_ELEMENT)
+        public containerElement,
+        private readonly elRef: ElementRef
+    ) {
         super(layoutManager, config, containerElement);
+    }
 
-        this.isRoot = true;
-        this.type = "root";
-        this.element = $(
-            dockingLayoutViewMap.root.render()
-        );
+    ngAfterViewInit() {
+        this.element = $(this.elRef.nativeElement);
         this.childElementContainer = this.element;
-        this._containerElement = containerElement;
+        this._containerElement = this.containerElement;
         this._containerElement.append(this.element);
+
+        this.callDownwards("_$init");
+
+        this.layoutManager.registerInitialization();
     }
 
     addChild(contentItem) {
@@ -29,7 +64,6 @@ export class Root extends AbstractContentItemComponent {
             throw new Error("Root node can only have a single child");
         }
 
-        contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
         this.childElementContainer.append(contentItem.element);
 
         super.addChild(contentItem);
@@ -54,9 +88,9 @@ export class Root extends AbstractContentItemComponent {
         }
     }
 
-    _$highlightDropZone(x, y, area) {
+    highlightDropZone(x, y, area: AreaSides) {
         this.layoutManager.tabDropPlaceholder.remove();
-        AbstractContentItemComponent.prototype._$highlightDropZone.apply(this, arguments);
+        super.highlightDropZone(x, y, area);
     }
 
     _$onDrop(contentItem, area) {

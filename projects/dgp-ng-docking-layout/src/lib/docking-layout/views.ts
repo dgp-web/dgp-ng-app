@@ -28,7 +28,7 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
     dropTargetIndicator: {
         render() {
             return `
-                <div class="lm_dropTargetIndicator"><div class="lm_inner"></div></div>
+                <div class="dgp-drop-target-indicator"><div class="lm_inner"></div></div>
             `;
         }
     },

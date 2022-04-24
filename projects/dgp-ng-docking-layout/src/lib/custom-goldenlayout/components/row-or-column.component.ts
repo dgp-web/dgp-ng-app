@@ -1,18 +1,14 @@
-import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ROW_OR_COLUMN } from "../types";
+import { ItemConfiguration } from "../types";
 import { LayoutManagerUtilities } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { SplitterComponent } from "./splitter.component";
 
-
-@Component({
-    selector: "dgp-row-or-column",
-    template: ``,
-    changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class RowOrColumnComponent extends AbstractContentItemComponent {
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
+export class RowOrColumnComponentBase extends AbstractContentItemComponent {
 
     public readonly element: any;
     public readonly _splitterSize: number;
@@ -27,10 +23,12 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
     public _splitterMaxPosition: any;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
-    constructor(@Inject(ROW_OR_COLUMN) isColumn: boolean,
-                public layoutManager: DockingLayoutService,
-                @Inject(ITEM_CONFIG) config: ItemConfiguration,
-                @Optional() parent: AbstractContentItemComponent) {
+    constructor(
+        isColumn: boolean,
+        public layoutManager: DockingLayoutService,
+        config: ItemConfiguration,
+        parent: AbstractContentItemComponent
+    ) {
         super(layoutManager, config, parent);
 
         this.isRow = !isColumn;
@@ -56,8 +54,6 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
     addChild(contentItem: AbstractContentItemComponent, index: number, _$suspendResize: boolean) {
 
         let newItemSize, itemSize, i, splitterElement;
-
-        contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
 
         if (index === undefined) {
             index = this.contentItems.length;
@@ -564,4 +560,13 @@ export class RowOrColumnComponent extends AbstractContentItemComponent {
     }
 
 
+}
+
+
+@Component({
+    selector: "dgp-row-or-column",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class RowOrColumnComponent extends RowOrColumnComponentBase {
 }

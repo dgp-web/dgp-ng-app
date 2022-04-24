@@ -1,7 +1,7 @@
 import { InjectionToken, TemplateRef } from "@angular/core";
-import { Observer, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
-export type ItemType = "row" | "column" | "stack" | "component";
+export type ItemType = "row" | "column" | "stack" | "component" | "root";
 
 export interface LayoutConfiguration {
     readonly settings?: {
@@ -40,7 +40,7 @@ export interface LayoutConfiguration {
 }
 
 export interface ItemConfiguration {
-    type: ItemType;
+    type?: ItemType;
     id?: string | string[];
     width?: number;
     height?: number;
@@ -72,8 +72,8 @@ export interface SelectedItemChange {
 
 export interface StackConfiguration extends ItemConfiguration {
     type: "stack";
-    activeItemIndex: number;
-    activeItemId: string;
+    activeItemIndex?: number;
+    activeItemId?: string;
 
     content: ItemConfiguration[];
     onSelectedItemChange?: (id: string) => void;
@@ -93,4 +93,5 @@ export interface ColumnConfiguration extends ItemConfiguration {
 }
 
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
+export const PARENT_ITEM_COMPONENT = new InjectionToken("parentItemCOmponent");
 export const ROW_OR_COLUMN = new InjectionToken<boolean>("RowOrColumn");

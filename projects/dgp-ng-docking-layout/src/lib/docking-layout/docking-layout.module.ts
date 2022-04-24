@@ -14,6 +14,13 @@ import { StoreModule } from "@ngrx/store";
 import { dockingLayoutStoreFeature } from "./models";
 import { EffectsModule } from "@ngrx/effects";
 import { DockingLayoutEffects } from "./effects";
+import { ColumnComponent } from "../custom-goldenlayout/components/column.component";
+import { RowComponent } from "../custom-goldenlayout/components/row.component";
+import { RootComponent } from "../custom-goldenlayout/components/root.component";
+import { GlComponent } from "../custom-goldenlayout/components/component.component";
+import { DropTargetIndicatorComponent } from "../custom-goldenlayout/components/drop-target-indicator.component";
+import { TabDropPlaceholderComponent } from "../custom-goldenlayout/components/tab-drop-placeholder.component";
+import { DgpResizeSensorModule } from "dgp-ng-app";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -35,7 +42,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         StoreModule.forFeature(dockingLayoutStoreFeature, DOCKING_LAYOUT_REDUCER),
         EffectsModule.forFeature([
             DockingLayoutEffects
-        ])
+        ]),
+        DgpResizeSensorModule
     ],
     declarations: [
         DockingLayoutContainerComponent,
@@ -43,7 +51,13 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DockingLayoutComponent,
         RowOrColumnComponent,
         StackComponent,
-        ItemContainerComponent
+        ItemContainerComponent,
+        ColumnComponent,
+        RowComponent,
+        RootComponent,
+        GlComponent,
+        DropTargetIndicatorComponent,
+        TabDropPlaceholderComponent
     ],
     exports: [
         DockingLayoutContainerComponent,
@@ -51,7 +65,13 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DockingLayoutComponent,
         RowOrColumnComponent,
         StackComponent,
-        ItemContainerComponent
+        ItemContainerComponent,
+        ColumnComponent,
+        RowComponent,
+        RootComponent,
+        GlComponent,
+        DropTargetIndicatorComponent,
+        TabDropPlaceholderComponent
     ],
     providers: [
         DockingLayoutService,

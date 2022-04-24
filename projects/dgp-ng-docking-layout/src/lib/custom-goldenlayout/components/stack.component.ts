@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ItemType, StackConfiguration } from "../types";
+import { ITEM_CONFIG, ItemConfiguration, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../types";
 import { LayoutManagerUtilities } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
@@ -27,8 +27,10 @@ export class StackComponent extends AbstractContentItemComponent {
 
     constructor(
         dockingLayoutService: DockingLayoutService,
-        @Inject(ITEM_CONFIG) config: ItemConfiguration,
-        @Optional() parent: AbstractContentItemComponent
+        @Inject(ITEM_CONFIG)
+            config: ItemConfiguration,
+        @Inject(PARENT_ITEM_COMPONENT)
+            parent: AbstractContentItemComponent
     ) {
         super(dockingLayoutService, config, parent);
 
@@ -44,9 +46,7 @@ export class StackComponent extends AbstractContentItemComponent {
             close: cfg.settings.showCloseIcon && cfg.labels.close,
             minimise: cfg.labels.minimise,
         };
-        if (cfg.header) {
-            Object.assign(this._header, cfg.header);
-        }
+
         if (config.header) {
             Object.assign(this._header, config.header);
         }
@@ -148,7 +148,6 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
     addChild(contentItem: AbstractContentItemComponent, index?) {
-        contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
         this.header.createTab(contentItem, index);
@@ -305,7 +304,7 @@ export class StackComponent extends AbstractContentItemComponent {
      * If the user hovers above the header part of the stack, indicate drop positions for tabs.
      * otherwise indicate which segment of the body the dragged item would be dropped on
      */
-    _$highlightDropZone(x, y) {
+    highlightDropZone(x, y) {
         let segment, area;
 
         for (segment in this._contentAreaDimensions) {
@@ -503,10 +502,10 @@ export class StackComponent extends AbstractContentItemComponent {
 
         if (x < halfX) {
             this._dropIndex = i;
-            tabElement.before(this.layoutManager.tabDropPlaceholder);
+            tabElement.before(this.layoutManager.tabDropPlaceholder.$element);
         } else {
             this._dropIndex = Math.min(i + 1, tabsLength);
-            tabElement.after(this.layoutManager.tabDropPlaceholder);
+            tabElement.after(this.layoutManager.tabDropPlaceholder.$element);
         }
 
 

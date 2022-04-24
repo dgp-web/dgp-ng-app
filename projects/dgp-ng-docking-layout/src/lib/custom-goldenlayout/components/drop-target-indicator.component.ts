@@ -1,33 +1,56 @@
-import { Area } from "../../docking-layout/models";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2 } from "@angular/core";
+import { AreaSides } from "../models/area.model";
 
-export class DropTargetIndicator {
+@Component({
+    selector: "dgp-drop-target-indicator",
+    template: `
+        <div class="content"></div>
+    `,
+    styles: [`
+        :host {
+            display: none;
+            position: absolute;
+            z-index: 20;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
+            outline: 1px dashed #cccccc;
+            margin: 1px;
+            transition: all 200ms ease
+        }
 
-    private readonly element: JQuery;
+        .content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+            background: #000000;
+            opacity: .1
+        }
+    `],
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class DropTargetIndicatorComponent implements AfterViewInit {
 
-    constructor() {
-        this.element = $(dockingLayoutViewMap.dropTargetIndicator.render());
-
-        $(document.body)
-            .append(this.element);
+    constructor(
+        private readonly elRef: ElementRef<HTMLDivElement>,
+        private readonly renderer: Renderer2
+    ) {
     }
 
-    destroy() {
-        this.element.remove();
-    }
-
-    highlightArea(area: Area) {
-        this.element.css({
-            left: area.x1,
-            top: area.y1,
-            width: area.x2 - area.x1,
-            height: area.y2 - area.y1
-        })
-            .show();
+    highlightArea(area: AreaSides) {
+        this.renderer.setStyle(this.elRef.nativeElement, "left", area.x1 + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "top", area.y1 + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "width", ((area.x2 as number) - (area.x1 as number)) + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "height", ((area.y2 as number) - (area.y1 as number)) + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "display", "block");
     }
 
     hide() {
-        this.element.hide();
+        this.renderer.setStyle(this.elRef.nativeElement, "display", "none");
+    }
+
+    ngAfterViewInit(): void {
+        document.body.appendChild(this.elRef.nativeElement);
     }
 
 }

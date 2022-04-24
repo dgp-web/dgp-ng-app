@@ -12,7 +12,7 @@ import {
     ViewChild,
     ViewContainerRef
 } from "@angular/core";
-import { createGuid, ResizeSensor } from "dgp-ng-app";
+import { createGuid } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { timer } from "rxjs";
 import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
@@ -22,7 +22,12 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
 
 @Component({
     selector: "dgp-split-panel",
-    template: "<mat-card #host><ng-content></ng-content></mat-card>",
+    template: `
+        <mat-card #host
+                  dgpResizeSensor
+                  (sizeChanged)="updateLayout()">
+            <ng-content></ng-content>
+        </mat-card>`,
     styles: [`
         :host {
             display: flex;
@@ -56,7 +61,6 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     @Input()
     orientation: SplitPanelOrientation = "vertical";
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
-    private resizeSensor: ResizeSensor;
 
     @Input()
     splitterSize = 1;
@@ -98,7 +102,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
         });
 
         this.dockingLayoutService.createDockingLayout(
-            createLayoutConfig(root, this.splitterSize), this.elementRef.nativeElement
+            createLayoutConfig(root, this.splitterSize), this.viewContainerRef
         );
 
         componentConfigurations
@@ -132,19 +136,13 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
     private initLayout() {
         this.dockingLayoutService.init();
-        const element = this.elementRef.nativeElement;
-        this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
-        this.resizeSensor.connect();
     }
 
-    private updateLayout() {
+    updateLayout() {
         this.dockingLayoutService.updateSize();
     }
 
     private destroyLayout() {
-        if (this.resizeSensor) {
-            this.resizeSensor.disconnect();
-        }
         if (this.dockingLayoutService) {
             this.dockingLayoutService.destroy();
         }

@@ -62,7 +62,7 @@ export class DragProxy extends EventEmitter {
         this.childElementContainer.append(contentItem.element);
 
         this.updateTree();
-        this.layoutManager._$calculateItemAreas();
+        this.layoutManager.calculateItemAreas();
         this.setDimensions();
 
         $(document.body)
@@ -109,11 +109,11 @@ export class DragProxy extends EventEmitter {
      */
     private setDropPosition(coordinates: Vector2) {
         this.$element.css({left: coordinates.x, top: coordinates.y});
-        this._area = this.layoutManager._$getArea(coordinates.x, coordinates.y);
+        this._area = this.layoutManager.getArea(coordinates.x, coordinates.y);
 
         if (this._area !== null) {
             this._lastValidArea = this._area;
-            this._area.contentItem._$highlightDropZone(coordinates.x, coordinates.y, this._area);
+            this._area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this._area);
         }
     }
 

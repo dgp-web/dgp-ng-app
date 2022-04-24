@@ -1,5 +1,7 @@
 import { LayoutManagerUtilities } from "./layout-manager.utilities";
 import { RxComponent } from "../../common/app";
+import { KVS } from "entity-store";
+import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
 
 /**
  * The name of the event that's triggered for every other event
@@ -24,7 +26,7 @@ export const ALL_EVENT = "__all";
  */
 export class EventEmitter extends RxComponent {
 
-    mSubscriptions = {
+    mSubscriptions: KVS<any> = {
         [ALL_EVENT]: []
     };
 
@@ -56,7 +58,7 @@ export class EventEmitter extends RxComponent {
     /**
      * Emit an event and notify listeners
      */
-    emit(sEvent, x?) {
+    emit<TEvent extends GoldenLayoutEvent= any>(sEvent: TEvent[0], x?: TEvent[1]) {
         // tslint:disable-next-line:one-variable-per-declaration
         let i, ctx, args;
 
