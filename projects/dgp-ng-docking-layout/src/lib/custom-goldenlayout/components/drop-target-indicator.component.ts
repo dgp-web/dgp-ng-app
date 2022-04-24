@@ -4,8 +4,30 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef } from "@
 @Component({
     selector: "dgp-drop-target-indicator",
     template: `
-        <div class="lm_inner"></div>
+        <div class="content"></div>
     `,
+    styles: [`
+        :host {
+            display: none;
+            position: absolute;
+            z-index: 20;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
+            outline: 1px dashed #cccccc;
+            margin: 1px;
+            transition: all 200ms ease
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+            background: #000000;
+            opacity: .1
+        }
+
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DropTargetIndicatorComponent implements AfterViewInit {

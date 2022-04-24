@@ -271,20 +271,6 @@
     overflow: hidden
 }
 
-dgp-drop-target-indicator {
-    display: none;
-    position: absolute;
-    z-index: 20
-}
-
-dgp-drop-target-indicator .lm_inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    top: 0;
-    left: 0
-}
-
 .lm_transition_indicator {
     display: none;
     width: 20px;
@@ -344,18 +330,6 @@ dgp-drop-target-indicator .lm_inner {
 .lm_dragProxy .lm_content {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     box-sizing: border-box
-}
-
-dgp-drop-target-indicator {
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
-    outline: 1px dashed #cccccc;
-    margin: 1px;
-    transition: all 200ms ease
-}
-
-dgp-drop-target-indicator .lm_inner {
-    background: #000000;
-    opacity: .1
 }
 
 .lm_splitter {
