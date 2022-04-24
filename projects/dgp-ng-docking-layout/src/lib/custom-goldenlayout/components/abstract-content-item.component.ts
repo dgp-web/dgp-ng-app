@@ -161,8 +161,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      */
     replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, _$destroyOldChild?: boolean) {
 
-        newChild = this.layoutManager._$normalizeContentItem(newChild);
-
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;
 

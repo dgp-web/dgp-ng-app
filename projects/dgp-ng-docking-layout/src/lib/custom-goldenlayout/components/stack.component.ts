@@ -146,7 +146,6 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
     addChild(contentItem: AbstractContentItemComponent, index?) {
-        contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
         this.header.createTab(contentItem, index);

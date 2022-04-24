@@ -230,26 +230,6 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    /**
-     * Takes a contentItem or a configuration and optionally a parent
-     * item and returns an initialised instance of the contentItem.
-     * If the contentItem is a function, it is first called
-     */
-    _$normalizeContentItem(contentItemOrConfig: ItemConfiguration, parent?: AbstractContentItemComponent) {
-
-        if (contentItemOrConfig instanceof AbstractContentItemComponent) {
-            return contentItemOrConfig;
-        }
-
-        if ($.isPlainObject(contentItemOrConfig) && contentItemOrConfig.type) {
-            const newContentItem = this.createContentItem(contentItemOrConfig, parent);
-            newContentItem.callDownwards("_$init");
-            return newContentItem;
-        } else {
-            throw new Error("Invalid contentItem");
-        }
-    }
-
     private create(config: LayoutConfiguration) {
         let errorMsg: string;
 

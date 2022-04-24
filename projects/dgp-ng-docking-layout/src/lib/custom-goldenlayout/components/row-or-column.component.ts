@@ -53,8 +53,6 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
 
         let newItemSize, itemSize, i, splitterElement;
 
-        contentItem = this.layoutManager._$normalizeContentItem(contentItem, this);
-
         if (index === undefined) {
             index = this.contentItems.length;
         }
