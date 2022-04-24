@@ -78,9 +78,7 @@ export class DockingLayoutService extends EventEmitter {
     getComponent = x => this.componentRegistry.getComponent(x);
 
     init() {
-        // this.dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
         this.dropTargetIndicator = this.viewContainerRef.createComponent(DropTargetIndicatorComponent).instance;
-        // this.dropTargetIndicator = new DropTargetIndicatorComponent();
         this.updateSize();
         this.createRootComponent(this.config);
         this.isInitialised = true;
