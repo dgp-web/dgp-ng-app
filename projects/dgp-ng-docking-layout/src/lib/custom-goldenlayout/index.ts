@@ -15,3 +15,4 @@ export { extractLayoutConfig } from "./functions/extract-config/extract-layout.c
 export { createItemConfig } from "./functions/create-config/create-item-config.function";
 export { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 export { getAllContentItems } from "./functions/content-item/get-all-content-items.function";
+export { createRootItemAreas } from "./functions/areas/create-content-root-item-areas.function";
