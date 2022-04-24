@@ -10,3 +10,5 @@ export { SelectionChangedEvent } from "./models/events/selection-changed-event.m
 export { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 export { wrapInStack } from "./functions/wrap-in-stack.function";
 export { typeToComponentMap } from "./constants/type-to-component-map.constant";
+export { extractItemConfig } from "./functions/extract-config/extract-item-config.function";
+export { extractLayoutConfig } from "./functions/extract-config/extract-layout.config.function";
