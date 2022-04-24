@@ -12,13 +12,11 @@ import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import { InitializedEvent } from "./models/events/initialized-event.model";
 import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
-import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
-import { wrapInStack } from "./functions/wrap-in-stack.function";
-import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { Many, mutatify } from "data-modeling";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area, AreaSides } from "./models/area.model";
+import { createContentItem } from "./functions/content-item/create-content-item.function";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -32,7 +30,7 @@ export class DockingLayoutService extends EventEmitter {
     dropTargetIndicator: DropTargetIndicator;
     tabDropPlaceholder: JQuery;
     private isInitialised = false;
-    private _itemAreas = [] as Array<Area>;
+    private itemAreas = [] as Array<Area>;
     private _updatingColumnsResponsive = false;
     private _firstLoad = true;
     private width: number;
@@ -112,18 +110,6 @@ export class DockingLayoutService extends EventEmitter {
         this.eventHub.destroy();
     }
 
-    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
-
-        if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
-
-        // TODO: Replace this with component factory
-        // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
-        // const foo = this.componentFactoryResolver.resolveComponentFactory();
-
-
-        return new typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
-    }
-
     selectItem(item: AbstractContentItemComponent, silent: boolean) {
 
         if (this.config.settings.selectionEnabled !== true) {
@@ -157,8 +143,8 @@ export class DockingLayoutService extends EventEmitter {
         let smallestSurface = Infinity;
         let mathingArea: Area = null;
 
-        for (i = 0; i < this._itemAreas.length; i++) {
-            area = this._itemAreas[i];
+        for (i = 0; i < this.itemAreas.length; i++) {
+            area = this.itemAreas[i];
 
             if (
                 x > area.x1 &&
@@ -188,14 +174,15 @@ export class DockingLayoutService extends EventEmitter {
                 area[side] = areaSize;
             }
             area.surface = (area.x2 as number - (area.x1 as number)) * (area.y2 as number - (area.y1 as number));
-            this._itemAreas.push(area as any); // TODO Fix types
+            this.itemAreas.push(area as any); // TODO Fix types
         }
     }
 
-    _$calculateItemAreas() {
-        let i: number, area;
+    _$calculateItemAreas(): void {
+        let i: number;
+        let area: Area;
         const allContentItems = this.getAllContentItems();
-        this._itemAreas = [];
+        this.itemAreas = [];
 
         /**
          * If the last item is dragged out, highlight the entire container size to
@@ -205,7 +192,7 @@ export class DockingLayoutService extends EventEmitter {
          * will used for every gap in the layout, e.g. splitters
          */
         if (allContentItems.length === 1) {
-            this._itemAreas.push(this.root._$getArea());
+            this.itemAreas.push(this.root._$getArea());
             return;
         }
         this._$createRootItemAreas();
@@ -220,14 +207,14 @@ export class DockingLayoutService extends EventEmitter {
 
             if (area === null) {
             } else if (area instanceof Array) {
-                this._itemAreas = this._itemAreas.concat(area);
+                this.itemAreas = this.itemAreas.concat(area);
             } else {
-                this._itemAreas.push(area);
+                this.itemAreas.push(area);
                 const header: any = {};
                 Object.assign(header, area);
-                Object.assign(header, area.contentItem._contentAreaDimensions.header.highlightArea);
+                Object.assign(header, (area.contentItem as any)._contentAreaDimensions.header.highlightArea); // TODO: Investigate typing
                 header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
-                this._itemAreas.push(header);
+                this.itemAreas.push(header);
             }
         }
     }
@@ -244,7 +231,7 @@ export class DockingLayoutService extends EventEmitter {
         }
 
         if ($.isPlainObject(contentItemOrConfig) && contentItemOrConfig.type) {
-            const newContentItem = this.createContentItem(contentItemOrConfig, parent);
+            const newContentItem = createContentItem(contentItemOrConfig, parent);
             newContentItem.callDownwards("_$init");
             return newContentItem;
         } else {

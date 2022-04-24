@@ -4,6 +4,7 @@ import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { Area } from "../models/area.model";
+import { createContentItem } from "../functions/content-item/create-content-item.function";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -433,7 +434,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * PLEASE NOTE, please see addChild for adding contentItems add runtime
      */
     private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.layoutManager.createContentItem(x, this));
+        this.contentItems = config.content.map(x => createContentItem(x, this));
     }
 
     /**
