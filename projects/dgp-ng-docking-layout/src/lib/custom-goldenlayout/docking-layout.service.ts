@@ -17,6 +17,8 @@ import { SelectionChangedEvent } from "./models/events/selection-changed-event.m
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
+import { notNullOrUndefined } from "dgp-ng-app";
+import { Many, mutatify } from "data-modeling";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -82,7 +84,7 @@ export class DockingLayoutService extends EventEmitter {
     /**
      * Updates the layout managers size
      */
-    updateSize(width?, height?) {
+    updateSize(width?: number, height?: number) {
         if (arguments.length === 2) {
             this.width = width;
             this.height = height;
@@ -135,7 +137,7 @@ export class DockingLayoutService extends EventEmitter {
             return;
         }
 
-        if (this.selectedItem !== null && this.selectedItem !== undefined) {
+        if (notNullOrUndefined(this.selectedItem)) {
             this.selectedItem.deselect();
         }
 
@@ -152,7 +154,7 @@ export class DockingLayoutService extends EventEmitter {
      * PACKAGE PRIVATE
      *************************/
 
-    _$getArea(x, y) {
+    _$getArea(x: number, y: number) {
         let i, area, smallestSurface = Infinity, mathingArea = null;
 
         for (i = 0; i < this._itemAreas.length; i++) {
@@ -250,8 +252,8 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    private getAllContentItems() {
-        const allContentItems = [];
+    private getAllContentItems(): Many<AbstractContentItemComponent> {
+        const allContentItems = new Array<AbstractContentItemComponent>();
 
         const addChildren = function (contentItem) {
             allContentItems.push(contentItem);
@@ -269,11 +271,11 @@ export class DockingLayoutService extends EventEmitter {
         return allContentItems;
     }
 
-    private createConfig(config) {
+    private createConfig(payload: LayoutConfiguration): LayoutConfiguration {
 
-        config = _.merge({}, defaultLayoutConfig, config);
+        const config = _.merge({}, defaultLayoutConfig, payload);
 
-        const nextNode = function (node: any) {
+        const nextNode = function (node: LayoutConfiguration) {
             for (const key in node) {
                 if (node.hasOwnProperty(key) && key !== "props" && typeof node[key] === "object") {
                     nextNode(node[key]);
@@ -284,7 +286,7 @@ export class DockingLayoutService extends EventEmitter {
         nextNode(config);
 
         if (config.settings.hasHeaders === false) {
-            config.dimensions.headerHeight = 0;
+            mutatify(config.dimensions).headerHeight = 0;
         }
 
         return config;
