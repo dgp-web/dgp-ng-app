@@ -1,5 +1,4 @@
 import { ComponentFactoryResolver, Injectable } from "@angular/core";
-import { addChildContentItemsToContainer, findAllStackContainers } from "./functions";
 import { ComponentRegistry } from "./services/component-registry";
 import { ConfigurationError, ItemConfiguration, LayoutConfiguration } from "./types";
 import { EventEmitter } from "./utilities";
@@ -78,7 +77,6 @@ export class DockingLayoutService extends EventEmitter {
         this.updateSize();
         this.create(this.config);
         this.isInitialised = true;
-        this.adjustColumnsResponsive();
         this.emit<InitializedEvent>("initialised");
     }
 
@@ -93,8 +91,6 @@ export class DockingLayoutService extends EventEmitter {
 
         if (this.isInitialised === true) {
             this.root.callDownwards("setSize", [this.width, this.height]);
-
-            this.adjustColumnsResponsive();
         }
     }
 
@@ -275,57 +271,6 @@ export class DockingLayoutService extends EventEmitter {
         this.root = new Root(this, {content: config.content}, this.container);
         this.root.callDownwards("_$init");
 
-    }
-
-    private adjustColumnsResponsive() {
-
-        // If there is no min width set, or not content items, do nothing.
-        if (!this.useResponsiveLayout()
-            || this._updatingColumnsResponsive
-            || !this.config.dimensions
-            || !this.config.dimensions.minItemWidth
-            || this.root.contentItems.length === 0
-            || !this.root.contentItems[0].isRow) {
-            this._firstLoad = false;
-            return;
-        }
-
-        this._firstLoad = false;
-
-        // If there is only one column, do nothing.
-        const columnCount = this.root.contentItems[0].contentItems.length;
-        if (columnCount <= 1) {
-            return;
-        }
-
-        // If they all still fit, do nothing.
-        const minItemWidth = this.config.dimensions.minItemWidth;
-        const totalMinWidth = columnCount * minItemWidth;
-        if (totalMinWidth <= this.width) {
-            return;
-        }
-
-        // Prevent updates while it is already happening.
-        this._updatingColumnsResponsive = true;
-
-        // Figure out how many columns to stack, and put them all in the first stack container.
-        const finalColumnCount = Math.max(Math.floor(this.width / minItemWidth), 1);
-        const stackColumnCount = columnCount - finalColumnCount;
-
-        const rootContentItem = this.root.contentItems[0];
-        const firstStackContainer = findAllStackContainers(this.root)[0];
-        for (let i = 0; i < stackColumnCount; i++) {
-            // Stack from right.
-            const column = rootContentItem.contentItems[rootContentItem.contentItems.length - 1];
-            addChildContentItemsToContainer(firstStackContainer, column);
-        }
-
-        this._updatingColumnsResponsive = false;
-    }
-
-    private useResponsiveLayout() {
-        return this.config.settings && (this.config.settings.responsiveMode === "always"
-            || (this.config.settings.responsiveMode === "onload" && this._firstLoad));
     }
 
 }
