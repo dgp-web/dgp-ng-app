@@ -113,7 +113,7 @@ export class DragProxy extends EventEmitter {
 
         if (this._area !== null) {
             this._lastValidArea = this._area;
-            this._area.contentItem._$highlightDropZone(coordinates.x, coordinates.y, this._area);
+            this._area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this._area);
         }
     }
 

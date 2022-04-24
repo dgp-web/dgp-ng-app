@@ -304,7 +304,7 @@ export class StackComponent extends AbstractContentItemComponent {
      * If the user hovers above the header part of the stack, indicate drop positions for tabs.
      * otherwise indicate which segment of the body the dragged item would be dropped on
      */
-    _$highlightDropZone(x, y) {
+    highlightDropZone(x, y) {
         let segment, area;
 
         for (segment in this._contentAreaDimensions) {

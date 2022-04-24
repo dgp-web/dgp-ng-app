@@ -1,5 +1,5 @@
-import { Area } from "../../docking-layout/models";
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2 } from "@angular/core";
+import { AreaSides } from "../models/area.model";
 
 @Component({
     selector: "dgp-drop-target-indicator",
@@ -37,11 +37,11 @@ export class DropTargetIndicatorComponent implements AfterViewInit {
     ) {
     }
 
-    highlightArea(area: Area) {
+    highlightArea(area: AreaSides) {
         this.renderer.setStyle(this.elRef.nativeElement, "left", area.x1 + "px");
         this.renderer.setStyle(this.elRef.nativeElement, "top", area.y1 + "px");
-        this.renderer.setStyle(this.elRef.nativeElement, "width", (area.x2 - area.x1) + "px");
-        this.renderer.setStyle(this.elRef.nativeElement, "height", (area.y2 - area.y1) + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "width", ((area.x2 as number) - (area.x1 as number)) + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, "height", ((area.y2 as number) - (area.y1 as number)) + "px");
         this.renderer.setStyle(this.elRef.nativeElement, "display", "block");
     }
 

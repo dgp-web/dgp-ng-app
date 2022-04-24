@@ -3,7 +3,7 @@ import { DockingLayoutService } from "../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
-import { Area } from "../models/area.model";
+import { Area, AreaSides } from "../models/area.model";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -319,7 +319,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.parent = parent;
     }
 
-    _$highlightDropZone(x: number, y: number, area) {
+    highlightDropZone(x: number, y: number, area: AreaSides) {
         this.layoutManager.dropTargetIndicator.highlightArea(area);
     }
 

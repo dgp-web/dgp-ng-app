@@ -2,6 +2,7 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { ChangeDetectionStrategy, Component, forwardRef, Inject, InjectionToken } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
+import { AreaSides } from "../models/area.model";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -69,9 +70,9 @@ export class RootComponent extends AbstractContentItemComponent {
         }
     }
 
-    _$highlightDropZone(x, y, area) {
+    highlightDropZone(x, y, area: AreaSides) {
         this.layoutManager.tabDropPlaceholder.remove();
-        AbstractContentItemComponent.prototype._$highlightDropZone.apply(this, arguments);
+        super.highlightDropZone(x, y, area);
     }
 
     _$onDrop(contentItem, area) {
