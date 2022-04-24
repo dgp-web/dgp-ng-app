@@ -81,9 +81,6 @@ export class DockingLayoutService extends EventEmitter {
         this.emit<InitializedEvent>("initialised");
     }
 
-    /**
-     * Updates the layout managers size
-     */
     updateSize(width?: number, height?: number) {
         if (arguments.length === 2) {
             this.width = width;
@@ -193,7 +190,7 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     _$calculateItemAreas() {
-        let i, area;
+        let i: number, area;
         const allContentItems = this.getAllContentItems();
         this._itemAreas = [];
 

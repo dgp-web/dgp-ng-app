@@ -3,6 +3,7 @@ import { DockingLayoutService } from "../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
+import { Area } from "../models/area.model";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -368,7 +369,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Returns the area the component currently occupies in the format
      */
-    _$getArea(element?: JQuery): any {
+    _$getArea(element?: JQuery): Area {
         element = element || this.element;
 
         const offset = element.offset(),
