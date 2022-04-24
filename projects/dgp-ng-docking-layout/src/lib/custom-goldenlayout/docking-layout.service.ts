@@ -14,12 +14,10 @@ import { SelectionChangedEvent } from "./models/events/selection-changed-event.m
 import { notNullOrUndefined } from "dgp-ng-app";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
-import { getAllContentItems } from "./functions/content-item/get-all-content-items.function";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
-import { createRootItemAreas } from "./functions/areas/create-content-root-item-areas.function";
-import { findArea } from "./functions/areas/find-area.function";
+import { AreaService } from "./services/area.service";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -34,7 +32,6 @@ export class DockingLayoutService extends EventEmitter {
     tabDropPlaceholder: JQuery;
 
     private isInitialised = false;
-    private itemAreas = [] as Array<Area>;
     private width: number;
     private height: number;
     private root: Root;
@@ -42,7 +39,8 @@ export class DockingLayoutService extends EventEmitter {
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private readonly componentRegistry: ComponentRegistry
+        private readonly componentRegistry: ComponentRegistry,
+        private readonly areaService: AreaService
     ) {
         super();
     }
@@ -106,9 +104,7 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     destroy() {
-        if (this.isInitialised === false) {
-            return;
-        }
+        if (this.isInitialised === false) return;
         this.root.callDownwards("_$destroy", [], true);
         this.root.contentItems = [];
         this.tabDropPlaceholder.remove();
@@ -133,53 +129,12 @@ export class DockingLayoutService extends EventEmitter {
         this.root = new Root(this, {content: config.content}, this.container);
     }
 
-    /*************************
-     * PACKAGE PRIVATE
-     *************************/
-
-    _$getArea(x: number, y: number): Area {
-        return findArea(x, y, this.itemAreas);
+    getArea(x: number, y: number): Area {
+        return this.areaService.getArea(x, y);
     }
 
-    _$calculateItemAreas(): void {
-        let i: number;
-        let area: Area;
-        const allContentItems = getAllContentItems(this.root);
-        this.itemAreas = [];
-
-        /**
-         * If the last item is dragged out, highlight the entire container size to
-         * allow to re-drop it. allContentItems[ 0 ] === this.root at this point
-         *
-         * Don't include root into the possible drop areas though otherwise since it
-         * will used for every gap in the layout, e.g. splitters
-         */
-        if (allContentItems.length === 1) {
-            this.itemAreas.push(this.root._$getArea());
-            return;
-        }
-        this.itemAreas = createRootItemAreas(this.root);
-
-        for (i = 0; i < allContentItems.length; i++) {
-
-            if (!(allContentItems[i].isStack)) {
-                continue;
-            }
-
-            area = allContentItems[i]._$getArea();
-
-            if (area === null) {
-            } else if (area instanceof Array) {
-                this.itemAreas = this.itemAreas.concat(area);
-            } else {
-                this.itemAreas.push(area);
-                const header: any = {};
-                Object.assign(header, area);
-                Object.assign(header, (area.contentItem as any)._contentAreaDimensions.header.highlightArea); // TODO: Investigate typing
-                header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
-                this.itemAreas.push(header);
-            }
-        }
+    calculateItemAreas(): void {
+        this.areaService.calculateItemAreas(this.root);
     }
 
 }
