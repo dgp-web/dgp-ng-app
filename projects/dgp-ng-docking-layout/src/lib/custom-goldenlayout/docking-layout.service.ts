@@ -1,9 +1,8 @@
-import { ComponentFactoryResolver, ComponentRef, Injectable, Injector, ViewContainerRef } from "@angular/core";
+import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
 import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
 import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
-import { dockingLayoutViewMap } from "../docking-layout/views";
 import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
 import { DropTargetIndicatorComponent } from "./components/drop-target-indicator.component";
 import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
@@ -18,6 +17,7 @@ import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
+import { TabDropPlaceholderComponent } from "./components/tab-drop-placeholder.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -28,9 +28,8 @@ export class DockingLayoutService extends EventEmitter {
     selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery;
-    private dropTargetIndicatorComponentRef: ComponentRef<DropTargetIndicatorComponent>;
     dropTargetIndicator: DropTargetIndicatorComponent;
-    tabDropPlaceholder: JQuery;
+    tabDropPlaceholder: TabDropPlaceholderComponent;
 
     private isInitialised = false;
     private width: number;
@@ -61,9 +60,7 @@ export class DockingLayoutService extends EventEmitter {
         this.eventHub = new EventHub(this);
         this.config = createLayoutConfig(config);
         this.dropTargetIndicator = null;
-        this.tabDropPlaceholder = $(
-            dockingLayoutViewMap.tabDropPlaceholder.render()
-        );
+        this.tabDropPlaceholder = viewContainerRef.createComponent(TabDropPlaceholderComponent).instance;
 
         /*this.on("stateChanged", (x) => {
             console.log(x);
@@ -123,7 +120,6 @@ export class DockingLayoutService extends EventEmitter {
         if (this.isInitialised === false) return;
         this.root.callDownwards("_$destroy", [], true);
         this.root.contentItems = [];
-        this.tabDropPlaceholder.remove();
         this.eventHub.destroy();
     }
 

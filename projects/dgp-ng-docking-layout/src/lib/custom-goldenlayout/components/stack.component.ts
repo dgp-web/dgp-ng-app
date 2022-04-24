@@ -502,10 +502,10 @@ export class StackComponent extends AbstractContentItemComponent {
 
         if (x < halfX) {
             this._dropIndex = i;
-            tabElement.before(this.layoutManager.tabDropPlaceholder);
+            tabElement.before(this.layoutManager.tabDropPlaceholder.$element);
         } else {
             this._dropIndex = Math.min(i + 1, tabsLength);
-            tabElement.after(this.layoutManager.tabDropPlaceholder);
+            tabElement.after(this.layoutManager.tabDropPlaceholder.$element);
         }
 
 

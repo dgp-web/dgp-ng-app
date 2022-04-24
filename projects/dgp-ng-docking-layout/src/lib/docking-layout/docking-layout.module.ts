@@ -19,6 +19,7 @@ import { RowComponent } from "../custom-goldenlayout/components/row.component";
 import { RootComponent } from "../custom-goldenlayout/components/root.component";
 import { GlComponent } from "../custom-goldenlayout/components/component.component";
 import { DropTargetIndicatorComponent } from "../custom-goldenlayout/components/drop-target-indicator.component";
+import { TabDropPlaceholderComponent } from "../custom-goldenlayout/components/tab-drop-placeholder.component";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -53,7 +54,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         RowComponent,
         RootComponent,
         GlComponent,
-        DropTargetIndicatorComponent
+        DropTargetIndicatorComponent,
+        TabDropPlaceholderComponent
     ],
     exports: [
         DockingLayoutContainerComponent,
@@ -66,7 +68,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         RowComponent,
         RootComponent,
         GlComponent,
-        DropTargetIndicatorComponent
+        DropTargetIndicatorComponent,
+        TabDropPlaceholderComponent
     ],
     providers: [
         DockingLayoutService,
