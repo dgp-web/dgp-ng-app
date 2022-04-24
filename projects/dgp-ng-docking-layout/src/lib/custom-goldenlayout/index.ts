@@ -9,3 +9,4 @@ export { InitializedEvent } from "./models/events/initialized-event.model";
 export { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
 export { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 export { wrapInStack } from "./functions/wrap-in-stack.function";
+export { typeToComponentMap } from "./constants/type-to-component-map.constant";

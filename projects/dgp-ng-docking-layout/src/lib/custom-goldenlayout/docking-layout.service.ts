@@ -7,9 +7,6 @@ import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 import { dockingLayoutViewMap } from "../docking-layout/views";
 import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
-import { RowOrColumnComponent } from "./components/row-or-column.component";
-import { StackComponent } from "./components/stack.component";
-import { Component } from "./components/component.component";
 import { DropTargetIndicator } from "./components/drop-target-indicator.component";
 import { Root } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
@@ -19,10 +16,7 @@ import { InitializedEvent } from "./models/events/initialized-event.model";
 import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
-
-/*export interface TypeToComponentMap {
-    readonly [key: string]: typeof AbstractContentItemComponent;
-}*/
+import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -43,13 +37,6 @@ export class DockingLayoutService extends EventEmitter {
     private height: number;
     private root: Root;
     private eventHub: EventHub;
-
-    private typeToComponentMap = {
-        column: this.fnBind(RowOrColumnComponent, this, [true]),
-        row: this.fnBind(RowOrColumnComponent, this, [false]),
-        stack: StackComponent,
-        component: Component
-    };
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
@@ -81,38 +68,8 @@ export class DockingLayoutService extends EventEmitter {
         });*/
     }
 
-    // TODO: This can be removed by extracting 2 components
-    fnBind(fn, context, boundArgs?) {
-
-        if (Function.prototype.bind !== undefined) {
-            return Function.prototype.bind.apply(fn, [context].concat(boundArgs || []));
-        }
-
-        const bound = function () {
-
-            // Join the already applied arguments to the now called ones (after converting to an array again).
-            const args = (boundArgs || []).concat(Array.prototype.slice.call(arguments, 0));
-
-            // If not being called as a constructor
-            if (!(this instanceof bound)) {
-                // return the result of the function called bound to target and partially applied.
-                return fn.apply(context, args);
-            }
-            // If being called as a constructor, apply the function bound to self.
-            fn.apply(this, args);
-        };
-        // Attach the prototype of the function to our newly created function.
-        bound.prototype = fn.prototype;
-        return bound;
-    }
-
     getComponent = x => this.componentRegistry.getComponent(x);
 
-    /**
-     * Creates the actual layout. Must be called after all initial components
-     * are registered. Recurses through the configuration and sets up
-     * the item tree.
-     */
     init() {
         this.dropTargetIndicator = new DropTargetIndicator();
         this.updateSize();
@@ -164,7 +121,8 @@ export class DockingLayoutService extends EventEmitter {
         // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
         // const foo = this.componentFactoryResolver.resolveComponentFactory();
 
-        return new this.typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
+
+        return new typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
     }
 
     selectItem(item: AbstractContentItemComponent, silent: boolean) {
