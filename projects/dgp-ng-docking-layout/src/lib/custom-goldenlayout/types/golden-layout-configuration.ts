@@ -1,7 +1,7 @@
 import { InjectionToken, TemplateRef } from "@angular/core";
-import { Observer, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
-export type ItemType = "row" | "column" | "stack" | "component";
+export type ItemType = "row" | "column" | "stack" | "component" | "root";
 
 export interface LayoutConfiguration {
     readonly settings?: {

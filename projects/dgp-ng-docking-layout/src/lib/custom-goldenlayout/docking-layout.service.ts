@@ -78,6 +78,9 @@ export class DockingLayoutService extends EventEmitter {
         this.dropTargetIndicator = this.viewContainerRef.createComponent(DropTargetIndicatorComponent).instance;
         this.updateSize();
         this.createRootComponent(this.config);
+    }
+
+    registerInitialization() {
         this.isInitialised = true;
         this.emit<InitializedEvent>("initialised");
     }
@@ -91,7 +94,7 @@ export class DockingLayoutService extends EventEmitter {
             this.height = this.container.height();
         }
 
-        if (this.isInitialised === true) {
+        if (this.isInitialised) {
             this.root.callDownwards("setSize", [this.width, this.height]);
         }
     }

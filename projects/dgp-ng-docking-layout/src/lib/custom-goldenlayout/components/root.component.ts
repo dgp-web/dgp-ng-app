@@ -1,6 +1,6 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { ChangeDetectionStrategy, Component, forwardRef, Inject, InjectionToken } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, forwardRef, Inject, InjectionToken } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { AreaSides } from "../models/area.model";
 
@@ -12,9 +12,9 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     template: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends AbstractContentItemComponent {
-    isRoot: boolean;
-    type: any;
+export class RootComponent extends AbstractContentItemComponent implements AfterViewInit {
+    readonly isRoot = true;
+    readonly type = "root";
     public element: any;
     public childElementContainer: any;
     public _containerElement: any;
@@ -28,17 +28,19 @@ export class RootComponent extends AbstractContentItemComponent {
         public containerElement
     ) {
         super(layoutManager, config, containerElement);
+    }
 
-        this.isRoot = true;
-        this.type = "root";
+    ngAfterViewInit() {
         this.element = $(
             dockingLayoutViewMap.root.render()
         );
         this.childElementContainer = this.element;
-        this._containerElement = containerElement;
+        this._containerElement = this.containerElement;
         this._containerElement.append(this.element);
 
         this.callDownwards("_$init");
+
+        this.layoutManager.registerInitialization();
     }
 
     addChild(contentItem) {
