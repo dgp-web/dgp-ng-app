@@ -1,6 +1,5 @@
 import { ComponentFactoryResolver, Injectable } from "@angular/core";
 import { addChildContentItemsToContainer, findAllStackContainers } from "./functions";
-import { defaultLayoutConfig } from "./models";
 import { ComponentRegistry } from "./services/component-registry";
 import { ConfigurationError, ItemConfiguration, LayoutConfiguration } from "./types";
 import { EventEmitter } from "./utilities";
@@ -11,14 +10,14 @@ import { DropTargetIndicator } from "./components/drop-target-indicator.componen
 import { Root } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
-import * as _ from "lodash";
 import { InitializedEvent } from "./models/events/initialized-event.model";
 import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { Many, mutatify } from "data-modeling";
+import { Many } from "data-modeling";
+import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -54,7 +53,7 @@ export class DockingLayoutService extends EventEmitter {
         // TODO: Extract creation to store
 
         this.eventHub = new EventHub(this);
-        this.config = this.createConfig(config);
+        this.config = createLayoutConfig(config);
         this.dropTargetIndicator = null;
         this.tabDropPlaceholder = $(
             dockingLayoutViewMap.tabDropPlaceholder.render()
@@ -266,27 +265,6 @@ export class DockingLayoutService extends EventEmitter {
         addChildren(this.root);
 
         return allContentItems;
-    }
-
-    private createConfig(payload: LayoutConfiguration): LayoutConfiguration {
-
-        const config = _.merge({}, defaultLayoutConfig, payload);
-
-        const nextNode = function (node: LayoutConfiguration) {
-            for (const key in node) {
-                if (node.hasOwnProperty(key) && key !== "props" && typeof node[key] === "object") {
-                    nextNode(node[key]);
-                }
-            }
-        };
-
-        nextNode(config);
-
-        if (config.settings.hasHeaders === false) {
-            mutatify(config.dimensions).headerHeight = 0;
-        }
-
-        return config;
     }
 
     private create(config) {
