@@ -1,6 +1,6 @@
 import { ComponentFactoryResolver, Injectable } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
-import { ConfigurationError, ItemConfiguration, LayoutConfiguration } from "./types";
+import { ItemConfiguration, LayoutConfiguration } from "./types";
 import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 import { dockingLayoutViewMap } from "../docking-layout/views";
@@ -230,27 +230,9 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    private create(config: LayoutConfiguration) {
-        let errorMsg: string;
-
-        if (!(config.content instanceof Array)) {
-            if (config.content === undefined) {
-                errorMsg = "Missing setting 'content' on top level of configuration";
-            } else {
-                errorMsg = "Configuration parameter 'content' must be an array";
-            }
-
-            throw new ConfigurationError(errorMsg, config);
-        }
-
-        if (config.content.length > 1) {
-            errorMsg = "Top level content can't contain more then one element.";
-            throw new ConfigurationError(errorMsg, config);
-        }
-
+    private create(config: LayoutConfiguration): void {
         this.root = new Root(this, {content: config.content}, this.container);
         this.root.callDownwards("_$init");
-
     }
 
 }
