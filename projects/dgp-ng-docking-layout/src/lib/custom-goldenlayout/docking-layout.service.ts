@@ -1,6 +1,6 @@
 import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
-import { ItemConfiguration, LayoutConfiguration } from "./types";
+import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
 import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 import { dockingLayoutViewMap } from "../docking-layout/views";
@@ -102,12 +102,25 @@ export class DockingLayoutService extends EventEmitter {
 
         if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
 
-        // TODO: Replace this with component factory
-        // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.typeToComponentMap[config.type]);
-        // const foo = this.componentFactoryResolver.resolveComponentFactory();
+        if (itemConfig.type === "component") {
+            return new typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
+        } else {
+            const injector = Injector.create({
+                providers: [{
+                    provide: ITEM_CONFIG,
+                    useValue: itemConfig
+                }, {
+                    provide: PARENT_ITEM_COMPONENT,
+                    useValue: parentItem
+                }],
+                parent: this.injector
+            });
 
+            const componentType = typeToComponentMap[itemConfig.type];
 
-        return new typeToComponentMap[itemConfig.type](this, itemConfig, parentItem);
+            return this.viewContainerRef.createComponent<any>(componentType as any, {injector}).instance;
+        }
+
     }
 
     destroy() {

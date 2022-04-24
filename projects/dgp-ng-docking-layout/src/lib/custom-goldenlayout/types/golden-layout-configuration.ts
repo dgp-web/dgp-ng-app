@@ -93,4 +93,5 @@ export interface ColumnConfiguration extends ItemConfiguration {
 }
 
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
+export const PARENT_ITEM_COMPONENT = new InjectionToken("parentItemCOmponent");
 export const ROW_OR_COLUMN = new InjectionToken<boolean>("RowOrColumn");
