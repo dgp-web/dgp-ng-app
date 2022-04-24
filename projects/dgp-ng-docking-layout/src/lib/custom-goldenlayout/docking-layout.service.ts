@@ -32,6 +32,7 @@ export class DockingLayoutService extends EventEmitter {
     container: JQuery;
     dropTargetIndicator: DropTargetIndicator;
     tabDropPlaceholder: JQuery;
+
     private isInitialised = false;
     private itemAreas = [] as Array<Area>;
     private width: number;
@@ -117,21 +118,11 @@ export class DockingLayoutService extends EventEmitter {
 
     selectItem(item: AbstractContentItemComponent, silent: boolean) {
 
-        if (this.config.settings.selectionEnabled !== true) {
-            throw new Error("Please set selectionEnabled to true to use this feature");
-        }
+        if (item === this.selectedItem) return;
 
-        if (item === this.selectedItem) {
-            return;
-        }
+        if (notNullOrUndefined(this.selectedItem)) this.selectedItem.deselect();
 
-        if (notNullOrUndefined(this.selectedItem)) {
-            this.selectedItem.deselect();
-        }
-
-        if (item && silent !== true) {
-            item.select();
-        }
+        if (item && silent !== true) item.select();
 
         this.selectedItem = item;
 
