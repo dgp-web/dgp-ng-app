@@ -22,6 +22,8 @@ export class Root extends AbstractContentItemComponent {
         this.childElementContainer = this.element;
         this._containerElement = containerElement;
         this._containerElement.append(this.element);
+
+        this.callDownwards("_$init");
     }
 
     addChild(contentItem) {

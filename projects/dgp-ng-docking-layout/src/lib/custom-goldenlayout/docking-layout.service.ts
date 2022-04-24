@@ -74,7 +74,7 @@ export class DockingLayoutService extends EventEmitter {
     init() {
         this.dropTargetIndicator = new DropTargetIndicator();
         this.updateSize();
-        this.create(this.config);
+        this.createRootComponent(this.config);
         this.isInitialised = true;
         this.emit<InitializedEvent>("initialised");
     }
@@ -129,6 +129,10 @@ export class DockingLayoutService extends EventEmitter {
         this.emit<SelectionChangedEvent>("selectionChanged", item);
     }
 
+    private createRootComponent(config: LayoutConfiguration): void {
+        this.root = new Root(this, {content: config.content}, this.container);
+    }
+
     /*************************
      * PACKAGE PRIVATE
      *************************/
@@ -178,11 +182,5 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    private create(config: LayoutConfiguration): void {
-        this.root = new Root(this, {content: config.content}, this.container);
-        this.root.callDownwards("_$init");
-    }
-
 }
-
 
