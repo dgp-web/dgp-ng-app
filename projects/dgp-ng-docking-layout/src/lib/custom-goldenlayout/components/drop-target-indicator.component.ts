@@ -1,21 +1,20 @@
 import { Area } from "../../docking-layout/models";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef } from "@angular/core";
 
 @Component({
     selector: "dgp-drop-target-indicator",
-    template: ``,
+    template: `
+        <div class="lm_inner"></div>
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DropTargetIndicatorComponent {
+export class DropTargetIndicatorComponent implements AfterViewInit {
 
-    private readonly element: JQuery;
+    private element: JQuery;
 
-    constructor() {
-        this.element = $(dockingLayoutViewMap.dropTargetIndicator.render());
-
-        $(document.body)
-            .append(this.element);
+    constructor(
+        private readonly elRef: ElementRef<HTMLDivElement>
+    ) {
     }
 
     destroy() {
@@ -34,6 +33,13 @@ export class DropTargetIndicatorComponent {
 
     hide() {
         this.element.hide();
+    }
+
+    ngAfterViewInit(): void {
+        this.element = $(this.elRef.nativeElement);
+
+        $(document.body)
+            .append(this.element);
     }
 
 }

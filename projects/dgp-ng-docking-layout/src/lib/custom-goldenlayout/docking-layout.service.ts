@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
+import { ComponentFactoryResolver, ComponentRef, Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
 import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
 import { EventEmitter } from "./utilities";
@@ -28,6 +28,7 @@ export class DockingLayoutService extends EventEmitter {
     selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery;
+    private dropTargetIndicatorComponentRef: ComponentRef<DropTargetIndicatorComponent>;
     dropTargetIndicator: DropTargetIndicatorComponent;
     tabDropPlaceholder: JQuery;
 
@@ -77,7 +78,9 @@ export class DockingLayoutService extends EventEmitter {
     getComponent = x => this.componentRegistry.getComponent(x);
 
     init() {
-        this.dropTargetIndicator = new DropTargetIndicatorComponent();
+        // this.dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
+        this.dropTargetIndicator = this.viewContainerRef.createComponent(DropTargetIndicatorComponent).instance;
+        // this.dropTargetIndicator = new DropTargetIndicatorComponent();
         this.updateSize();
         this.createRootComponent(this.config);
         this.isInitialised = true;

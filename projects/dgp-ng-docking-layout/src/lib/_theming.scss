@@ -271,13 +271,13 @@
     overflow: hidden
 }
 
-.lm_dropTargetIndicator {
+dgp-drop-target-indicator {
     display: none;
     position: absolute;
     z-index: 20
 }
 
-.lm_dropTargetIndicator .lm_inner {
+dgp-drop-target-indicator .lm_inner {
     width: 100%;
     height: 100%;
     position: relative;
@@ -346,14 +346,14 @@
     box-sizing: border-box
 }
 
-.lm_dropTargetIndicator {
+dgp-drop-target-indicator {
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
     outline: 1px dashed #cccccc;
     margin: 1px;
     transition: all 200ms ease
 }
 
-.lm_dropTargetIndicator .lm_inner {
+dgp-drop-target-indicator .lm_inner {
     background: #000000;
     opacity: .1
 }
