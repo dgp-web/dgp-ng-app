@@ -14,7 +14,7 @@ import {
     ViewChild,
     ViewContainerRef
 } from "@angular/core";
-import { createGuid, notNullOrUndefined, ResizeSensor } from "dgp-ng-app";
+import { createGuid, notNullOrUndefined } from "dgp-ng-app";
 import { KeyValueStore } from "entity-store";
 import { uniqBy } from "lodash";
 import { combineLatest, timer } from "rxjs";
@@ -30,7 +30,13 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
 
 @Component({
     selector: "dgp-docking-layout",
-    template: "<mat-card #host><ng-content></ng-content></mat-card>",
+    template: `
+        <mat-card #host
+                  dgpResizeSensor
+                  (sizeChanged)="updateLayout()">
+            <ng-content></ng-content>
+        </mat-card>
+    `,
     styles: [`
         :host {
             display: flex;
@@ -89,7 +95,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     @Input() popoutLabel = "open in new window";
 
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
-    private resizeSensor: ResizeSensor;
 
     constructor(private readonly vcRef: ViewContainerRef,
                 private readonly dockingLayoutService: DockingLayoutService,
@@ -103,9 +108,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
                 this.embeddedViewRefs[key].destroy();
             });
 
-        if (this.resizeSensor) {
-            this.resizeSensor.disconnect();
-        }
         if (this.dockingLayoutService) {
             this.dockingLayoutService.destroy();
         }
@@ -129,10 +131,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
         if (this.dockingLayoutService) {
             this.dockingLayoutService.destroy();
         }
-        if (this.resizeSensor) {
-            this.resizeSensor.disconnect();
-        }
-
         const content = this.topLevelItems.toArray()
             .map(x => x.configuration);
 
@@ -214,10 +212,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
             });
 
         this.dockingLayoutService.init();
-
-        const element = this.elementRef.nativeElement;
-        this.resizeSensor = new ResizeSensor(element, () => this.updateLayout());
-        this.resizeSensor.connect();
     }
 
     public ngOnChanges(changes: SimpleChanges): void {

@@ -31,9 +31,7 @@ import { AttributeMetadata } from "data-modeling";
                 <dgp-docking-layout-item type="column"
                                          width="60">
 
-                    <dgp-docking-layout-item type="stack"
-                                             [selectedItemId]="selectedItemId$ | async"
-                                             (selectedItemIdChange)="selectedItem($event)">
+                    <dgp-docking-layout-item type="stack">
                         <dgp-docking-layout-container label="Main tab"
                                                       id="Main tab">
                             <ng-template>
