@@ -27,9 +27,9 @@ import { Many, mutatify } from "data-modeling";
 export class DockingLayoutService extends EventEmitter {
 
     selectedItem: AbstractContentItemComponent;
-    config: any;
+    config: LayoutConfiguration;
     container: JQuery;
-    dropTargetIndicator: any;
+    dropTargetIndicator: DropTargetIndicator;
     tabDropPlaceholder: JQuery;
     private isInitialised = false;
     private _itemAreas = [];
@@ -293,7 +293,7 @@ export class DockingLayoutService extends EventEmitter {
     }
 
     private create(config) {
-        let errorMsg;
+        let errorMsg: string;
 
         if (!(config.content instanceof Array)) {
             if (config.content === undefined) {
