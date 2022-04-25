@@ -17,7 +17,18 @@ export abstract class JQueryComponent {
  */
 @Component({
     selector: "dgp-tab",
-    template: ``,
+    template: `
+      <!--  <li class="lm_tab nav-item">
+            <a class="lm_title nav-link">
+                <button type="button"
+                        class="close"
+                        aria-label="Close"
+                        style="cursor:pointer;margin-left:16px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </a>
+        </li>-->
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabComponent {
