@@ -151,7 +151,7 @@ export class DragProxy extends EventEmitter {
              * content item.
              */
         } else {
-            this.contentItem._$destroy();
+            this.contentItem.destroy();
         }
 
         this.$element.remove();

@@ -46,7 +46,7 @@ export class AreaService {
                 this.itemAreas.push(area);
                 const header: any = {};
                 Object.assign(header, area);
-                Object.assign(header, (area.contentItem as any)._contentAreaDimensions.header.highlightArea); // TODO: Investigate typing
+               // Object.assign(header, area.contentItem.contentAreaDimensions.header.highlightArea); // TODO: Investigate typing
                 header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
                 this.itemAreas.push(header);
             }

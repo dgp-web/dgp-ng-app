@@ -37,7 +37,7 @@ export class HeaderButtonComponent {
             })
         );
         this.rawElement = this.element[0];
-        this._header.on("destroy", this._$destroy, this);
+        this._header.on("destroy", this.destroy, this);
         this._action = action;
         this.rawElement.addEventListener("click", this._action, {
             passive: true
@@ -48,7 +48,7 @@ export class HeaderButtonComponent {
         this._header.controlsContainer.append(this.element);
     }
 
-    _$destroy() {
+    destroy() {
         this.element.off();
         this.element.remove();
     }

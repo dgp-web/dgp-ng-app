@@ -5,7 +5,7 @@ export class SplitterComponent {
 
     _dragListener: DragListenerDirective;
     private readonly grabSize: number;
-    private readonly element: JQuery;
+    readonly element: JQuery;
 
     constructor(
         private readonly isVertical: boolean,
@@ -22,7 +22,7 @@ export class SplitterComponent {
         this._dragListener.on(event, callback, context);
     }
 
-    _$destroy() {
+    destroy() {
         this.element.remove();
     }
 

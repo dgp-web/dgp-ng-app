@@ -57,14 +57,14 @@ export class GlComponent extends AbstractContentItemComponent {
         }
     }
 
-    _$init() {
-        super._$init();
+    init() {
+        super.init();
         this.container.emit("open");
     }
 
-    _$hide() {
+    hide() {
         this.container.hide();
-        super._$hide();
+        super.hide();
     }
 
     _$show() {
@@ -77,9 +77,9 @@ export class GlComponent extends AbstractContentItemComponent {
         // super._$shown();
     }
 
-    _$destroy() {
+    destroy() {
         this.container.emit("destroy", this);
-        super._$destroy();
+        super.destroy();
     }
 
     /**

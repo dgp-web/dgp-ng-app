@@ -116,7 +116,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
          * to be the first in the row/column
          */
         if (this._splitter[splitterIndex]) {
-            this._splitter[splitterIndex]._$destroy();
+            this._splitter[splitterIndex].destroy();
             this._splitter.splice(splitterIndex, 1);
         }
 
@@ -164,23 +164,14 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         this.emit("resize");
     }
 
-    /**
-     * Invoked recursively by the layout manager. AbstractContentItem.init appends
-     * the contentItem's DOM elements to the container, RowOrColumn init adds splitters
-     * in between them
-     *
-     * @package private
-     * @override AbstractContentItem._$init
-     * @returns {void}
-     */
-    _$init() {
+    init() {
         if (this.isInitialised === true) {
             return;
         }
 
         let i;
 
-        AbstractContentItemComponent.prototype._$init.call(this);
+        AbstractContentItemComponent.prototype.init.call(this);
 
         for (i = 0; i < this.contentItems.length - 1; i++) {
             this.contentItems[i].element.after(this._createSplitter(i).element);
@@ -423,9 +414,8 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      *
      * @returns {lm.controls.Splitter}
      */
-    _createSplitter(index) {
-        let splitter;
-        splitter = new SplitterComponent(this._isColumn, this._splitterSize, this._splitterGrabSize);
+    private _createSplitter(index) {
+        const splitter = new SplitterComponent(this._isColumn, this._splitterSize, this._splitterGrabSize);
 
         const dragSub = splitter
             ._dragListener

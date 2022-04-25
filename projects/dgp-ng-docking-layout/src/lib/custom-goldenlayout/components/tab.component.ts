@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component, Inject, InjectionToken } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, InjectionToken, Output } from "@angular/core";
 import { Subscription } from "rxjs";
 import { stripHtmlTags } from "../../common/functions";
 import { Vector2 } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { HeaderComponent } from "./header.component";
+import { DockingLayoutService } from "../docking-layout.service";
 
 export abstract class JQueryComponent {
 
@@ -20,19 +23,21 @@ export abstract class JQueryComponent {
 export const TAB_HEADER_REF = new InjectionToken("tabHeaderRef");
 export const TAB_CONTENT_ITEM_REF = new InjectionToken("tabContentItemRef");
 
+export type ClickHandler<TEvent> = (event: TEvent) => void;
+
 @Component({
     selector: "dgp-tab",
     template: `
-        <li class="lm_tab nav-item">
-            <a class="lm_title nav-link">
-                <button type="button"
-                        class="close"
-                        aria-label="Close"
-                        style="cursor:pointer;margin-left:16px;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </a>
-        </li>
+        <!-- <li class="lm_tab nav-item">
+             <a class="lm_title nav-link">
+                 <button type="button"
+                         class="close"
+                         aria-label="Close"
+                         style="cursor:pointer;margin-left:16px;">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </a>
+         </li>-->
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -40,19 +45,22 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
-    private header: any;
-    private contentItem: any;
-    private element: any;
-    private titleElement: any;
-    private closeElement: any;
-    private isActive: any;
-    private _layoutManager: any;
-    private _dragListener: DragListenerDirective;
-    private _onTabClickFn: any;
-    private _onCloseClickFn: any;
-    private rawElement: any;
+    private header: HeaderComponent;
+    private contentItem: AbstractContentItemComponent;
+    element: JQuery;
+    private titleElement: JQuery;
+    private closeElement: JQuery;
+    private isActive: boolean;
+    private dragListener: DragListenerDirective;
+    private onTabClickFn: ClickHandler<any>;
+    private onCloseClickFn: ClickHandler<any>;
+    private rawElement: HTMLElement;
+
+    @Output()
+    readonly selected = new EventEmitter();
 
     constructor(
+        private readonly dockingLayoutService: DockingLayoutService,
         @Inject(TAB_HEADER_REF)
             header,
         @Inject(TAB_CONTENT_ITEM_REF)
@@ -72,40 +80,38 @@ export class TabComponent {
         this.setTitle(contentItem.config.title);
         this.contentItem.on("titleChanged", this.setTitle, this);
 
-        this._layoutManager = this.contentItem.layoutManager;
-
         if (
-            this._layoutManager.config.settings.reorderEnabled === true &&
+            this.dockingLayoutService.config.settings.reorderEnabled === true &&
             contentItem.config.reorderEnabled === true
         ) {
-            this._dragListener = new DragListenerDirective(this.element);
-            const dragStartSubscription = this._dragListener
+            this.dragListener = new DragListenerDirective(this.element);
+            const dragStartSubscription = this.dragListener
                 .dragStart$
-                .subscribe(x => this._onDragStart(x));
+                .subscribe(x => this.onDragStart(x));
             this.subscriptions.push(dragStartSubscription);
-            this.contentItem.on("destroy", this._dragListener.destroy, this._dragListener);
+            this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
         }
 
-        this._onTabClickFn = (x) => this._onTabClick(x);
-        this._onCloseClickFn = (x) => this._onCloseClick(x);
+        this.onTabClickFn = (x) => this.onTabClick(x);
+        this.onCloseClickFn = (x) => this.onCloseClick(x);
 
-        this.rawElement.addEventListener("mousedown", this._onTabClickFn, {
+        this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
             passive: true
         });
-        this.rawElement.addEventListener("touchstart", this._onTabClickFn, {
+        this.rawElement.addEventListener("touchstart", this.onTabClickFn, {
             passive: true
         });
 
         if (this.contentItem.config.isClosable) {
-            this.closeElement.on("click touchstart", this._onCloseClickFn);
-            this.closeElement.on("mousedown", this._onCloseMousedown);
+            this.closeElement.on("click touchstart", this.onCloseClickFn);
+            this.closeElement.on("mousedown", this.onCloseMousedown);
         } else {
             this.closeElement.remove();
         }
 
         this.contentItem.tab = this;
         this.contentItem.emit("tab", this);
-        this.contentItem.layoutManager.emit("tabCreated", this);
+        this.dockingLayoutService.emit("tabCreated", this);
 
         if (this.contentItem.isComponent) {
             this.contentItem.container.tab = this;
@@ -113,25 +119,13 @@ export class TabComponent {
         }
     }
 
-    /**
-     * Sets the tab's title to the provided string and sets
-     * its title attribute to a pure text representation (without
-     * html tags) of the same string.
-     */
     setTitle(title) {
         this.element.attr("title", stripHtmlTags(title));
         this.titleElement.append(title);
-        // this.titleElement.html( title );
     }
 
-    /**
-     * Sets this tab's active state. To programmatically
-     * switch tabs, use header.setActiveContentItem( item ) instead.
-     */
-    setActive(isActive) {
-        if (isActive === this.isActive) {
-            return;
-        }
+    setActive(isActive: boolean) {
+        if (isActive === this.isActive) return;
         this.isActive = isActive;
 
         if (isActive) {
@@ -150,73 +144,43 @@ export class TabComponent {
         }
     }
 
-    /**
-     * Destroys the tab
-     */
-    _$destroy() {
+    destroy() {
 
         this.subscriptions.forEach(x => x.unsubscribe());
 
-        this.rawElement.removeEventListener("mousedown", this._onTabClickFn);
-        this.rawElement.removeEventListener("touchstart", this._onTabClickFn);
+        this.rawElement.removeEventListener("mousedown", this.onTabClickFn);
+        this.rawElement.removeEventListener("touchstart", this.onTabClickFn);
 
-        this.closeElement.off("click touchstart", this._onCloseClickFn);
-        if (this._dragListener) {
-            this.contentItem.off("destroy", this._dragListener.destroy, this._dragListener);
-            this._dragListener = null;
+        this.closeElement.off("click touchstart", this.onCloseClickFn);
+        if (this.dragListener) {
+            this.contentItem.off("destroy", this.dragListener.destroy, this.dragListener);
+            this.dragListener = null;
         }
         this.element.remove();
     }
 
-    /**
-     * Callback for the DragListener
-     */
-    _onDragStart(coordinates: Vector2) {
-        if (this.contentItem.parent.isMaximised === true) {
-            this.contentItem.parent.toggleMaximise();
-        }
+    onDragStart(coordinates: Vector2) {
         // tslint:disable-next-line:no-unused-expression
         new DragProxy(
             coordinates,
-            this._dragListener,
-            this._layoutManager,
+            this.dragListener,
+            this.dockingLayoutService,
             this.contentItem,
             this.header.parent
         );
     }
 
-    /**
-     * Callback when the tab is clicked
-     */
-    _onTabClick(event) {
-        // left mouse button or tap
-        if (event.button === 0 || event.type === "touchstart") {
-            const activeContentItem = this.header.parent.getActiveContentItem();
-            if (this.contentItem !== activeContentItem) {
-                this.header.parent.setActiveContentItem(this.contentItem);
-            }
-
-            // middle mouse button
-        } else if (event.button === 1 && this.contentItem.config.isClosable) {
-            this._onCloseClick(event);
-        }
+    private onTabClick(event: Event) {
+        this.selected.emit();
     }
 
-    /**
-     * Callback when the tab's close button is
-     * clicked
-     */
-    _onCloseClick(event) {
+    onCloseClick(event: Event) {
         event.stopPropagation();
+        // TODO: Output
         this.header.parent.removeChild(this.contentItem);
     }
 
-
-    /**
-     * Callback to capture tab close button mousedown
-     * to prevent tab from activating.
-     */
-    _onCloseMousedown(event) {
+    onCloseMousedown(event: Event) {
         event.stopPropagation();
     }
 

@@ -4,6 +4,7 @@ import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
 import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { Area, AreaSides } from "../models/area.model";
+import { TabComponent } from "./tab.component";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -30,6 +31,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     isStack = false;
     isComponent = false;
 
+    tab: TabComponent;
+    container: AbstractContentItemComponent;
     element: JQuery;
     childElementContainer: any;
 
@@ -104,7 +107,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
          * Call ._$destroy on the content item. this also calls ._$destroy on all its children
          */
         if (keepChild !== true) {
-            this.contentItems[index]._$destroy();
+            this.contentItems[index].destroy();
         }
 
         /**
@@ -151,7 +154,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         contentItem.parent = this;
 
         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem._$init();
+            contentItem.init();
         }
     }
 
@@ -175,7 +178,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
          */
         if (_$destroyOldChild === true) {
             oldChild.parent = null;
-            oldChild._$destroy();
+            oldChild.destroy();
         }
 
         /*
@@ -193,7 +196,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            newChild._$init();
+            newChild.init();
         }
 
         this.callDownwards("setSize");
@@ -327,7 +330,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.addChild(contentItem);
     }
 
-    _$hide() {
+    hide() {
         this._callOnActiveComponents("hide");
         this.element.hide();
         this.layoutManager.updateSize();
@@ -356,10 +359,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Destroys this item ands its children
      */
-    _$destroy() {
+    destroy() {
         this.unsubscribe();
         this.emitBubblingEvent("beforeItemDestroyed");
-        this.callDownwards("_$destroy", [], true, true);
+        this.callDownwards("destroy", [], true, true);
         this.element.remove();
         this.emitBubblingEvent("itemDestroyed");
     }
@@ -395,7 +398,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      *
      * @returns {void}
      */
-    _$init() {
+    init() {
         let i;
         this.setSize();
 
