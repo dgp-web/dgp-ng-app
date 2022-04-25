@@ -78,6 +78,13 @@ export class StackComponent extends AbstractContentItemComponent {
         });
 
         this.header = headerComponentRef.instance;
+        this.header.activeContentItemChange.subscribe(contentItem => {
+            const activeContentItem = this.getActiveContentItem();
+            if (contentItem !== activeContentItem) {
+                this.setActiveContentItem(contentItem);
+            }
+        });
+
 
         this.element.append(this.header.element);
         this.element.append(this.childElementContainer);

@@ -2,8 +2,17 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { EventEmitter } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderButtonComponent } from "./header-button.component";
-import { TabComponent } from "./tab.component";
-import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular/core";
+import { TAB_CONTENT_ITEM_REF, TAB_HEADER_REF, TabComponent } from "./tab.component";
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter as NgEventEmitter,
+    forwardRef,
+    Inject,
+    Injector,
+    Output,
+    ViewContainerRef
+} from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { PARENT_ITEM_COMPONENT } from "../types";
 
@@ -40,11 +49,16 @@ export class HeaderComponent extends EventEmitter {
     private _lastVisibleTabIndex: number;
     private readonly _tabControlOffset: any;
 
+    @Output()
+    readonly activeContentItemChange = new NgEventEmitter<AbstractContentItemComponent>();
+
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
             layoutManager: DockingLayoutService,
         @Inject(PARENT_ITEM_COMPONENT)
-            parent: AbstractContentItemComponent
+            parent: AbstractContentItemComponent,
+        private readonly viewContainerRef: ViewContainerRef,
+        private readonly injector: Injector
     ) {
         super();
 
@@ -92,7 +106,7 @@ export class HeaderComponent extends EventEmitter {
      * @returns {void}
      */
     createTab(contentItem, index?: number) {
-        let tab, i;
+        let tab: TabComponent, i;
 
         // If there's already a tab relating to the
         // content item, don't do anything
@@ -102,7 +116,24 @@ export class HeaderComponent extends EventEmitter {
             }
         }
 
-        tab = new TabComponent(this, contentItem);
+        const childInjector = Injector.create({
+            parent: this.injector,
+            providers: [{
+                provide: TAB_HEADER_REF,
+                useValue: this
+            }, {
+                provide: TAB_CONTENT_ITEM_REF,
+                useValue: contentItem
+            }]
+        });
+        const tabComponentRef = this.viewContainerRef.createComponent(TabComponent, {
+            injector: childInjector
+        });
+        tab = tabComponentRef.instance;
+
+        tab.selected.subscribe(() => {
+            this.activeContentItemChange.emit(contentItem);
+        });
 
         if (this.tabs.length === 0) {
             this.tabs.push(tab);
