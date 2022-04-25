@@ -1,10 +1,17 @@
+import { ChangeDetectionStrategy, Component, Inject, InjectionToken } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+
+/*<li class="${model.cssClass}" title="${model.label}"></li>*/
+
+export const HEADER_BUTTON_HEADER_REF = new InjectionToken("headerButtonHeaderRef");
+export const HEADER_BUTTON_LABEL_REF = new InjectionToken("headerButtonLabelRef");
+export const HEADER_BUTTON_CSS_CLASS_REF = new InjectionToken("headerButtonCssClassRef");
+export const HEADER_BUTTON_ACTION_REF = new InjectionToken("headerButtonActionRef");
 
 @Component({
     selector: "dgp-header-button",
     template: `
-        /*<li class="${model.cssClass}" title="${model.label}"></li>*/
+
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -14,7 +21,15 @@ export class HeaderButtonComponent {
     private readonly rawElement: any;
     private readonly _action: any;
 
-    constructor(header, label, cssClass, action) {
+    constructor(
+        @Inject(HEADER_BUTTON_HEADER_REF)
+            header,
+        @Inject(HEADER_BUTTON_LABEL_REF)
+            label,
+        @Inject(HEADER_BUTTON_CSS_CLASS_REF)
+            cssClass,
+        @Inject(HEADER_BUTTON_ACTION_REF)
+            action) {
         this._header = header;
         this.element = $(
             dockingLayoutViewMap.headerButton.render({

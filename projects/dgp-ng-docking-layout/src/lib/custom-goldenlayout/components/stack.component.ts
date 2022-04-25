@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, Injector, ViewContainerRef } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../types";
@@ -30,7 +30,9 @@ export class StackComponent extends AbstractContentItemComponent {
         @Inject(ITEM_CONFIG)
             config: ItemConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-            parent: AbstractContentItemComponent
+            parent: AbstractContentItemComponent,
+        private readonly viewContainerRef: ViewContainerRef,
+        private readonly injector: Injector
     ) {
         super(dockingLayoutService, config, parent);
 
@@ -64,7 +66,18 @@ export class StackComponent extends AbstractContentItemComponent {
         this.childElementContainer = $(
             dockingLayoutViewMap.stackContent.render()
         );
-        this.header = new HeaderComponent(dockingLayoutService, this);
+        const childInjector = Injector.create({
+            parent: injector,
+            providers: [{
+                provide: PARENT_ITEM_COMPONENT,
+                useValue: this
+            }]
+        });
+        const headerComponentRef = viewContainerRef.createComponent(HeaderComponent, {
+            injector: childInjector
+        });
+
+        this.header = headerComponentRef.instance;
 
         this.element.append(this.header.element);
         this.element.append(this.childElementContainer);

@@ -2,6 +2,7 @@ import { LayoutManagerUtilities } from "./layout-manager.utilities";
 import { RxComponent } from "../../common/app";
 import { KVS } from "entity-store";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
+import { Directive } from "@angular/core";
 
 /**
  * The name of the event that's triggered for every other event
@@ -24,6 +25,8 @@ export const ALL_EVENT = "__all";
  * event for every event triggered. This allows
  * to hook into it and proxy events forwards
  */
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class EventEmitter extends RxComponent {
 
     mSubscriptions: KVS<any> = {

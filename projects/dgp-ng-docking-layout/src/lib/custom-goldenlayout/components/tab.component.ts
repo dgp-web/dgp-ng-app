@@ -1,10 +1,10 @@
+import { ChangeDetectionStrategy, Component, Inject, InjectionToken } from "@angular/core";
 import { Subscription } from "rxjs";
 import { stripHtmlTags } from "../../common/functions";
 import { Vector2 } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 export abstract class JQueryComponent {
 
@@ -12,13 +12,18 @@ export abstract class JQueryComponent {
 
 }
 
+
 /**
  * Represents an individual tab within a Stack's header
  */
+
+export const TAB_HEADER_REF = new InjectionToken("tabHeaderRef");
+export const TAB_CONTENT_ITEM_REF = new InjectionToken("tabContentItemRef");
+
 @Component({
     selector: "dgp-tab",
     template: `
-      <!--  <li class="lm_tab nav-item">
+        <li class="lm_tab nav-item">
             <a class="lm_title nav-link">
                 <button type="button"
                         class="close"
@@ -27,7 +32,7 @@ export abstract class JQueryComponent {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </a>
-        </li>-->
+        </li>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -47,7 +52,11 @@ export class TabComponent {
     private _onCloseClickFn: any;
     private rawElement: any;
 
-    constructor(header, contentItem) {
+    constructor(
+        @Inject(TAB_HEADER_REF)
+            header,
+        @Inject(TAB_CONTENT_ITEM_REF)
+            contentItem) {
 
         this.header = header;
         this.contentItem = contentItem;

@@ -63,6 +63,7 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
         TabComponent,
+        HeaderComponent,
         HeaderButtonComponent
     ],
     exports: [
@@ -80,6 +81,7 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
         TabComponent,
+        HeaderComponent,
         HeaderButtonComponent
     ],
     providers: [
