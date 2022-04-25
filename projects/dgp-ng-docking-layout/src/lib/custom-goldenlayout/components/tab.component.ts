@@ -4,6 +4,7 @@ import { Vector2 } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 export abstract class JQueryComponent {
 
@@ -14,6 +15,11 @@ export abstract class JQueryComponent {
 /**
  * Represents an individual tab within a Stack's header
  */
+@Component({
+    selector: "dgp-tab",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
 export class TabComponent {
 
     private subscriptions: Subscription[] = [];
