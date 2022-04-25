@@ -23,6 +23,7 @@ import { TabDropPlaceholderComponent } from "../custom-goldenlayout/components/t
 import { DgpResizeSensorModule } from "dgp-ng-app";
 import { TabComponent } from "../custom-goldenlayout/components/tab.component";
 import { HeaderComponent } from "../custom-goldenlayout/components/header.component";
+import { HeaderButtonComponent } from "../custom-goldenlayout/components/header-button.component";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -61,7 +62,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         GlComponent,
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
-        TabComponent
+        TabComponent,
+        HeaderButtonComponent
     ],
     exports: [
         DockingLayoutContainerComponent,
@@ -77,7 +79,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         GlComponent,
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
-        TabComponent
+        TabComponent,
+        HeaderButtonComponent
     ],
     providers: [
         DockingLayoutService,

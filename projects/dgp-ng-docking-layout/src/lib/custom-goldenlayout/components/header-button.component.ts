@@ -1,5 +1,13 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
+@Component({
+    selector: "dgp-header-button",
+    template: `
+        /*<li class="${model.cssClass}" title="${model.label}"></li>*/
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
 export class HeaderButtonComponent {
     private _header: any;
     private readonly element: any;
