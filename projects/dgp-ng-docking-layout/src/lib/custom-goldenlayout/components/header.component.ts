@@ -3,10 +3,22 @@ import { EventEmitter } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderButtonComponent } from "./header-button.component";
 import { TabComponent } from "./tab.component";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 /**
  * This class represents a header above a Stack ContentItem.
  */
+@Component({
+    selector: "dgp-header",
+    template: `
+        <!--        <div class="lm_header card-header">
+                    <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+                    <ul class="lm_controls"></ul>
+                    <ul class="lm_tabdropdown_list"></ul>
+                </div>-->
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
 export class HeaderComponent extends EventEmitter {
 
     readonly element: any;
