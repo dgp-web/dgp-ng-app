@@ -3,13 +3,18 @@ import {Vector2, Vector2Utils} from "../../common/models";
 import {dockingLayoutViewMap} from "../../docking-layout/views";
 import {$x} from "../../jquery-extensions";
 import {DockingLayoutService} from "../docking-layout.service";
-import {EventEmitter} from "../utilities/event-emitter";
 import {DragEvent, DragListenerDirective} from "./drag-listener.directive";
 import {AbstractContentItemComponent} from "./abstract-content-item.component";
 import {Area} from "../models/area.model";
+import {Subscription} from "rxjs";
+import {Component} from "@angular/core";
 
-
-export class DragProxy extends EventEmitter {
+@Component({
+    selector: "dgp-drag-proxy",
+    template: ``
+})
+export class DragProxyComponent {
+    private subscriptions: Subscription[] = [];
 
     private area: Area = null;
     private lastValidArea: Area = null;
@@ -26,7 +31,6 @@ export class DragProxy extends EventEmitter {
                 private readonly dockingLayoutService: DockingLayoutService,
                 private readonly contentItem: AbstractContentItemComponent,
                 private readonly originalParent: AbstractContentItemComponent) {
-        super();
 
         const dragSub = this.dragListener
             .drag$
@@ -86,7 +90,6 @@ export class DragProxy extends EventEmitter {
     }
 
     private onDrag = (dragEvent: DragEvent) => {
-
         const coordinates = $x.getPointerCoordinates(dragEvent.event);
         const isWithinContainer = Vector2Utils.isWithinRectangle(coordinates, this.min, this.max);
 
@@ -97,9 +100,6 @@ export class DragProxy extends EventEmitter {
         this.setDropPosition(coordinates);
     };
 
-    /**
-     * Sets the target position, highlighting the appropriate area
-     */
     private setDropPosition(coordinates: Vector2) {
         this.$element.css({left: coordinates.x, top: coordinates.y});
         this.area = this.dockingLayoutService.getArea(coordinates.x, coordinates.y);
@@ -110,58 +110,25 @@ export class DragProxy extends EventEmitter {
         }
     }
 
-    /**
-     * Callback when the drag has finished. Determines the drop area
-     * and adds the child to it
-     */
     private onDrop = () => {
         this.dockingLayoutService.dropTargetIndicator.hide();
-
-        /*
-         * Valid drop area found
-         */
         if (this.area !== null) {
             this.area.contentItem._$onDrop(this.contentItem, this.area);
-
-            /**
-             * No valid drop area available at present, but one has been found before.
-             * Use it
-             */
         } else if (this.lastValidArea !== null) {
             this.lastValidArea.contentItem._$onDrop(this.contentItem, this.lastValidArea);
-
-            /**
-             * No valid drop area found during the duration of the drag. Return
-             * content item to its original position if a original parent is provided.
-             * (Which is not the case if the drag had been initiated by createDragSource)
-             */
         } else if (this.originalParent) {
             this.originalParent.addChild(this.contentItem);
-
-            /**
-             * The drag didn't ultimately end up with adding the content item to
-             * any container. In order to ensure clean up happens, destroy the
-             * content item.
-             */
         } else {
             this.contentItem.destroy();
         }
 
         this.$element.remove();
-
         this.dockingLayoutService.emit("itemDropped", this.contentItem);
-
         this.dockingLayoutService.updateSize();
     };
 
-    /**
-     * Removes the item from its original position within the tree
-     */
     private updateTree() {
 
-        /**
-         * parent is null if the drag had been initiated by a external drag source
-         */
         if (this.contentItem.parent) {
             this.contentItem.parent.removeChild(this.contentItem, true);
         }
@@ -169,9 +136,6 @@ export class DragProxy extends EventEmitter {
         this.contentItem._$setParent(this as any); // TODO
     }
 
-    /**
-     * Updates the Drag Proxie's dimensions
-     */
     private setDimensions() {
         const dimensions = this.dockingLayoutService.config.dimensions;
 

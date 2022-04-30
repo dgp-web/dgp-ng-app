@@ -4,7 +4,7 @@ import {stripHtmlTags} from "../../common/functions";
 import {Vector2} from "../../common/models";
 import {dockingLayoutViewMap} from "../../docking-layout/views";
 import {DragListenerDirective} from "./drag-listener.directive";
-import {DragProxy} from "./drag-proxy.component";
+import {DragProxyComponent} from "./drag-proxy.component";
 import {AbstractContentItemComponent} from "./abstract-content-item.component";
 import {HeaderComponent} from "./header.component";
 import {DockingLayoutService} from "../docking-layout.service";
@@ -139,7 +139,7 @@ export class TabComponent {
 
     private onDragStart(coordinates: Vector2) {
         // tslint:disable-next-line:no-unused-expression
-        new DragProxy(
+        new DragProxyComponent(
             coordinates,
             this.dragListener,
             this.dockingLayoutService,
