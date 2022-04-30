@@ -72,7 +72,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Calls a method recursively downwards on the tree
      */
-    callDownwards(functionName: string, functionArguments?: any[], bottomUp?: boolean, skipSelf?: boolean) {
+    callDownwards<T extends AbstractContentItemComponent>(functionName: keyof AbstractContentItemComponent, functionArguments?: any[], bottomUp?: boolean, skipSelf?: boolean) {
         let i;
 
         if (bottomUp !== true && skipSelf !== true) {

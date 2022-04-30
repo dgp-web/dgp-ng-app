@@ -23,12 +23,12 @@ import {PARENT_ITEM_COMPONENT} from "../types";
     selector: "dgp-header",
     template: `
 
-       <!-- <div class="lm_header card-header">
-            <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
-            <ul class="lm_controls"></ul>
-            <ul class=
-                    "lm_tabdropdown_list"></ul>
-        </div>;-->
+        <!-- <div class="lm_header card-header">
+             <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+             <ul class="lm_controls"></ul>
+             <ul class=
+                     "lm_tabdropdown_list"></ul>
+         </div>;-->
 
     `,
     changeDetection: ChangeDetectionStrategy.OnPush

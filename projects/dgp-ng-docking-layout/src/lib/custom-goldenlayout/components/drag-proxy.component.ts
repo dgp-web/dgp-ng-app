@@ -6,12 +6,13 @@ import {DockingLayoutService} from "../docking-layout.service";
 import {EventEmitter} from "../utilities/event-emitter";
 import {DragEvent, DragListenerDirective} from "./drag-listener.directive";
 import {AbstractContentItemComponent} from "./abstract-content-item.component";
+import {Area} from "../models/area.model";
 
 
 export class DragProxy extends EventEmitter {
 
-    _area = null;
-    _lastValidArea = null;
+    private area: Area = null;
+    private lastValidArea: Area = null;
     $element;
     _sided;
     childElementContainer;
@@ -22,7 +23,7 @@ export class DragProxy extends EventEmitter {
 
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
-                private readonly layoutManager: DockingLayoutService,
+                private readonly dockingLayoutService: DockingLayoutService,
                 private readonly contentItem: AbstractContentItemComponent,
                 private readonly originalParent: AbstractContentItemComponent) {
         super();
@@ -59,21 +60,21 @@ export class DragProxy extends EventEmitter {
         this.childElementContainer.append(contentItem.element);
 
         this.updateTree();
-        this.layoutManager.calculateItemAreas();
+        this.dockingLayoutService.calculateItemAreas();
         this.setDimensions();
 
         $(document.body)
             .append(this.$element);
 
-        const offset = this.layoutManager.container.offset();
+        const offset = this.dockingLayoutService.container.offset();
 
         this.min = {
             x: offset.left, y: offset.top
         };
 
         this.max = {
-            x: this.layoutManager.container.width() + this.min.x,
-            y: this.layoutManager.container.height() + this.min.y
+            x: this.dockingLayoutService.container.width() + this.min.x,
+            y: this.dockingLayoutService.container.height() + this.min.y
         };
 
         this.size = {
@@ -84,17 +85,12 @@ export class DragProxy extends EventEmitter {
         this.setDropPosition(coordinates);
     }
 
-    /**
-     * Callback on every mouseMove event during a drag. Determines if the drag is
-     * still within the valid drag area and calls the layoutManager to highlight the
-     * current drop area
-     */
     private onDrag = (dragEvent: DragEvent) => {
 
         const coordinates = $x.getPointerCoordinates(dragEvent.event);
         const isWithinContainer = Vector2Utils.isWithinRectangle(coordinates, this.min, this.max);
 
-        if (!isWithinContainer && this.layoutManager.config.settings.constrainDragToContainer === true) {
+        if (!isWithinContainer && this.dockingLayoutService.config.settings.constrainDragToContainer === true) {
             return;
         }
 
@@ -106,11 +102,11 @@ export class DragProxy extends EventEmitter {
      */
     private setDropPosition(coordinates: Vector2) {
         this.$element.css({left: coordinates.x, top: coordinates.y});
-        this._area = this.layoutManager.getArea(coordinates.x, coordinates.y);
+        this.area = this.dockingLayoutService.getArea(coordinates.x, coordinates.y);
 
-        if (this._area !== null) {
-            this._lastValidArea = this._area;
-            this._area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this._area);
+        if (this.area !== null) {
+            this.lastValidArea = this.area;
+            this.area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this.area);
         }
     }
 
@@ -119,20 +115,20 @@ export class DragProxy extends EventEmitter {
      * and adds the child to it
      */
     private onDrop = () => {
-        this.layoutManager.dropTargetIndicator.hide();
+        this.dockingLayoutService.dropTargetIndicator.hide();
 
         /*
          * Valid drop area found
          */
-        if (this._area !== null) {
-            this._area.contentItem._$onDrop(this.contentItem, this._area);
+        if (this.area !== null) {
+            this.area.contentItem._$onDrop(this.contentItem, this.area);
 
             /**
              * No valid drop area available at present, but one has been found before.
              * Use it
              */
-        } else if (this._lastValidArea !== null) {
-            this._lastValidArea.contentItem._$onDrop(this.contentItem, this._lastValidArea);
+        } else if (this.lastValidArea !== null) {
+            this.lastValidArea.contentItem._$onDrop(this.contentItem, this.lastValidArea);
 
             /**
              * No valid drop area found during the duration of the drag. Return
@@ -153,9 +149,9 @@ export class DragProxy extends EventEmitter {
 
         this.$element.remove();
 
-        this.layoutManager.emit("itemDropped", this.contentItem);
+        this.dockingLayoutService.emit("itemDropped", this.contentItem);
 
-        this.layoutManager.updateSize();
+        this.dockingLayoutService.updateSize();
     };
 
     /**
@@ -177,7 +173,7 @@ export class DragProxy extends EventEmitter {
      * Updates the Drag Proxie's dimensions
      */
     private setDimensions() {
-        const dimensions = this.layoutManager.config.dimensions;
+        const dimensions = this.dockingLayoutService.config.dimensions;
 
         let width = dimensions.dragProxyWidth;
         let height = dimensions.dragProxyHeight;
