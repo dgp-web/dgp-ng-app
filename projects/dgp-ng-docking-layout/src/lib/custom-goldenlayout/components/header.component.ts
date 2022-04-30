@@ -1,8 +1,8 @@
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { EventEmitter } from "../utilities";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { HeaderButtonComponent } from "./header-button.component";
-import { TAB_CONTENT_ITEM_REF, TAB_HEADER_REF, TabComponent } from "./tab.component";
+import {dockingLayoutViewMap} from "../../docking-layout/views";
+import {EventEmitter} from "../utilities";
+import {AbstractContentItemComponent} from "./abstract-content-item.component";
+import {HeaderButtonComponent} from "./header-button.component";
+import {TAB_CONTENT_ITEM_REF, TAB_HEADER_REF, TabComponent} from "./tab.component";
 import {
     ChangeDetectionStrategy,
     Component,
@@ -13,15 +13,8 @@ import {
     Output,
     ViewContainerRef
 } from "@angular/core";
-import { DockingLayoutService } from "../docking-layout.service";
-import { PARENT_ITEM_COMPONENT } from "../types";
-
-/*<div class="lm_header card-header">
-<ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
-    <ul class="lm_controls"></ul>
-    <ul class=
-"lm_tabdropdown_list" > </ul>
-< /div>;*/
+import {DockingLayoutService} from "../docking-layout.service";
+import {PARENT_ITEM_COMPONENT} from "../types";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -29,6 +22,14 @@ import { PARENT_ITEM_COMPONENT } from "../types";
 @Component({
     selector: "dgp-header",
     template: `
+        /*
+        <div class="lm_header card-header">
+            <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+            <ul class="lm_controls"></ul>
+            <ul class=
+                    "lm_tabdropdown_list"></ul>
+            < /div>;*/
+
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })

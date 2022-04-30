@@ -9,12 +9,6 @@ import {AbstractContentItemComponent} from "./abstract-content-item.component";
 import {HeaderComponent} from "./header.component";
 import {DockingLayoutService} from "../docking-layout.service";
 
-export abstract class JQueryComponent {
-
-    private readonly element: JQuery;
-
-}
-
 
 /**
  * Represents an individual tab within a Stack's header
@@ -45,29 +39,27 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
-    private header: HeaderComponent;
-    private contentItem: AbstractContentItemComponent;
-    element: JQuery;
     private titleElement: JQuery;
     private closeElement: JQuery;
     private isActive: boolean;
     private dragListener: DragListenerDirective;
-    private onTabClickFn: ClickHandler<any>;
-    private onCloseClickFn: ClickHandler<any>;
     private rawElement: HTMLElement;
 
     @Output()
     readonly selected = new EventEmitter();
 
+    private readonly onTabClickFn: ClickHandler<any> = (x) => this.onTabClick(x);
+    private readonly onCloseClickFn: ClickHandler<any> = (x) => this.onCloseClick(x);
+
+    element: JQuery;
+
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
         @Inject(TAB_HEADER_REF)
-            header,
+        private readonly header: HeaderComponent,
         @Inject(TAB_CONTENT_ITEM_REF)
-            contentItem) {
+        private readonly contentItem: AbstractContentItemComponent) {
 
-        this.header = header;
-        this.contentItem = contentItem;
         this.element = $(
             dockingLayoutViewMap.tab.render()
         );
@@ -91,9 +83,6 @@ export class TabComponent {
             this.subscriptions.push(dragStartSubscription);
             this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
         }
-
-        this.onTabClickFn = (x) => this.onTabClick(x);
-        this.onCloseClickFn = (x) => this.onCloseClick(x);
 
         this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
             passive: true
@@ -119,29 +108,18 @@ export class TabComponent {
         }
     }
 
-    setTitle(title) {
-        this.element.attr("title", stripHtmlTags(title));
-        this.titleElement.append(title);
-    }
-
     setActive(isActive: boolean) {
         if (isActive === this.isActive) return;
         this.isActive = isActive;
 
         if (isActive) {
             this.element.addClass("lm_active");
+            this.element.find("a").addClass("active");
         } else {
             this.element.removeClass("lm_active");
+            this.element.find("a").removeClass("active");
         }
 
-        // modified
-        if (isActive) {
-            this.element.find("a")
-                .addClass("active");
-        } else {
-            this.element.find("a")
-                .removeClass("active");
-        }
     }
 
     destroy() {
@@ -159,7 +137,7 @@ export class TabComponent {
         this.element.remove();
     }
 
-    onDragStart(coordinates: Vector2) {
+    private onDragStart(coordinates: Vector2) {
         // tslint:disable-next-line:no-unused-expression
         new DragProxy(
             coordinates,
@@ -174,7 +152,12 @@ export class TabComponent {
         this.selected.emit();
     }
 
-    onCloseClick(event: Event) {
+    private setTitle(title: string) {
+        this.element.attr("title", stripHtmlTags(title));
+        this.titleElement.append(title);
+    }
+
+    private onCloseClick(event: Event) {
         event.stopPropagation();
         // TODO: Output
         this.header.parent.removeChild(this.contentItem);
