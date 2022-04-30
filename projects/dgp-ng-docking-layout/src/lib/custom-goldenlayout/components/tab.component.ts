@@ -45,6 +45,7 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
+<<<<<<< HEAD
     private header: HeaderComponent;
     private contentItem: AbstractContentItemComponent;
     element: JQuery;
@@ -55,6 +56,22 @@ export class TabComponent {
     private onTabClickFn: ClickHandler<any>;
     private onCloseClickFn: ClickHandler<any>;
     private rawElement: HTMLElement;
+
+    @Output()
+    readonly selected = new EventEmitter();
+=======
+    private header: any;
+    private contentItem: any;
+    element: any;
+    private titleElement: any;
+    private closeElement: any;
+    private isActive: any;
+    private _layoutManager: any;
+    private _dragListener: DragListenerDirective;
+    private _onTabClickFn: any;
+    private _onCloseClickFn: any;
+    private rawElement: any;
+>>>>>>> 96811564682502886854e7309f0b59c14fd4101f
 
     @Output()
     readonly selected = new EventEmitter();
@@ -92,8 +109,13 @@ export class TabComponent {
             this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
         }
 
+<<<<<<< HEAD
         this.onTabClickFn = (x) => this.onTabClick(x);
         this.onCloseClickFn = (x) => this.onCloseClick(x);
+=======
+        this._onTabClickFn = (x) => this.onTabClick(x);
+        this._onCloseClickFn = (x) => this._onCloseClick(x);
+>>>>>>> 96811564682502886854e7309f0b59c14fd4101f
 
         this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
             passive: true
@@ -170,7 +192,14 @@ export class TabComponent {
         );
     }
 
+<<<<<<< HEAD
     private onTabClick(event: Event) {
+=======
+    /**
+     * Callback when the tab is clicked
+     */
+    private onTabClick(event) {
+>>>>>>> 96811564682502886854e7309f0b59c14fd4101f
         this.selected.emit();
     }
 
