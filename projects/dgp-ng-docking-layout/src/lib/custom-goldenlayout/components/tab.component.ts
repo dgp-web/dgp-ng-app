@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, InjectionToken, Output } from "@angular/core";
-import { Subscription } from "rxjs";
-import { stripHtmlTags } from "../../common/functions";
-import { Vector2 } from "../../common/models";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { DragListenerDirective } from "./drag-listener.directive";
-import { DragProxy } from "./drag-proxy.component";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { HeaderComponent } from "./header.component";
-import { DockingLayoutService } from "../docking-layout.service";
+import {ChangeDetectionStrategy, Component, EventEmitter, Inject, InjectionToken, Output} from "@angular/core";
+import {Subscription} from "rxjs";
+import {stripHtmlTags} from "../../common/functions";
+import {Vector2} from "../../common/models";
+import {dockingLayoutViewMap} from "../../docking-layout/views";
+import {DragListenerDirective} from "./drag-listener.directive";
+import {DragProxy} from "./drag-proxy.component";
+import {AbstractContentItemComponent} from "./abstract-content-item.component";
+import {HeaderComponent} from "./header.component";
+import {DockingLayoutService} from "../docking-layout.service";
 
 export abstract class JQueryComponent {
 
@@ -45,7 +45,6 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
-<<<<<<< HEAD
     private header: HeaderComponent;
     private contentItem: AbstractContentItemComponent;
     element: JQuery;
@@ -59,19 +58,6 @@ export class TabComponent {
 
     @Output()
     readonly selected = new EventEmitter();
-=======
-    private header: any;
-    private contentItem: any;
-    element: any;
-    private titleElement: any;
-    private closeElement: any;
-    private isActive: any;
-    private _layoutManager: any;
-    private _dragListener: DragListenerDirective;
-    private _onTabClickFn: any;
-    private _onCloseClickFn: any;
-    private rawElement: any;
->>>>>>> 96811564682502886854e7309f0b59c14fd4101f
 
     @Output()
     readonly selected = new EventEmitter();
@@ -109,13 +95,8 @@ export class TabComponent {
             this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
         }
 
-<<<<<<< HEAD
         this.onTabClickFn = (x) => this.onTabClick(x);
         this.onCloseClickFn = (x) => this.onCloseClick(x);
-=======
-        this._onTabClickFn = (x) => this.onTabClick(x);
-        this._onCloseClickFn = (x) => this._onCloseClick(x);
->>>>>>> 96811564682502886854e7309f0b59c14fd4101f
 
         this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
             passive: true
@@ -192,14 +173,7 @@ export class TabComponent {
         );
     }
 
-<<<<<<< HEAD
     private onTabClick(event: Event) {
-=======
-    /**
-     * Callback when the tab is clicked
-     */
-    private onTabClick(event) {
->>>>>>> 96811564682502886854e7309f0b59c14fd4101f
         this.selected.emit();
     }
 
