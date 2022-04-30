@@ -22,13 +22,13 @@ import {PARENT_ITEM_COMPONENT} from "../types";
 @Component({
     selector: "dgp-header",
     template: `
-        /*
-        <div class="lm_header card-header">
+
+       <!-- <div class="lm_header card-header">
             <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
             <ul class="lm_controls"></ul>
             <ul class=
                     "lm_tabdropdown_list"></ul>
-            < /div>;*/
+        </div>;-->
 
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
