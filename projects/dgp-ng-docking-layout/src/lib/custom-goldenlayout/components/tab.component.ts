@@ -59,9 +59,6 @@ export class TabComponent {
     @Output()
     readonly selected = new EventEmitter();
 
-    @Output()
-    readonly selected = new EventEmitter();
-
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
         @Inject(TAB_HEADER_REF)
