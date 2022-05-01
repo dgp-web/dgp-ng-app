@@ -7,7 +7,7 @@ import {DragEvent, DragListenerDirective} from "./drag-listener.directive";
 import {AbstractContentItemComponent} from "./abstract-content-item.component";
 import {Area} from "../models/area.model";
 import {Subscription} from "rxjs";
-import {Component, forwardRef, Inject, InjectionToken} from "@angular/core";
+import {AfterViewInit, Component, forwardRef, Inject, InjectionToken} from "@angular/core";
 
 export const DRAG_PROXY_COORDINATES = new InjectionToken<Vector2>("dragProxyCoordinates");
 export const DRAG_PROXY_DRAG_LISTENER = new InjectionToken<DragListenerDirective>("dragProxyDragListener");
@@ -18,7 +18,7 @@ export const DRAG_PROXY_ORIGINAL_PARENT = new InjectionToken<DragListenerDirecti
     selector: "dgp-drag-proxy",
     template: ``
 })
-export class DragProxyComponent {
+export class DragProxyComponent implements AfterViewInit {
     private subscriptions: Subscription[] = [];
 
     private area: Area = null;
@@ -43,6 +43,10 @@ export class DragProxyComponent {
         @Inject(DRAG_PROXY_ORIGINAL_PARENT)
         private readonly originalParent: AbstractContentItemComponent
     ) {
+    }
+
+    // TODO: This doesn't work properly in ngAfterViewInit :(
+    ngAfterViewInit(): void {
 
         const dragSub = this.dragListener
             .drag$
@@ -58,22 +62,22 @@ export class DragProxyComponent {
 
         this.$element = $(dockingLayoutViewMap.dragProxy.render());
 
-        if (originalParent && originalParent._side) {
-            this._sided = originalParent._sided;
-            this.$element.addClass("lm_" + originalParent._side);
-            if (["right", "bottom"].indexOf(originalParent._side) >= 0) {
+        if (this.originalParent && this.originalParent._side) {
+            this._sided = this.originalParent._sided;
+            this.$element.addClass("lm_" + this.originalParent._side);
+            if (["right", "bottom"].indexOf(this.originalParent._side) >= 0) {
                 this.$element.find(".lm_content")
                     .after(this.$element.find(".lm_header"));
             }
         }
 
-        $x.position(this.$element, coordinates);
+        $x.position(this.$element, this.coordinates);
         this.$element.find(".lm_tab")
             .attr("title", stripHtmlTags(this.contentItem.config.title));
         this.$element.find(".lm_title")
             .html(this.contentItem.config.title);
         this.childElementContainer = this.$element.find(".lm_content");
-        this.childElementContainer.append(contentItem.element);
+        this.childElementContainer.append(this.contentItem.element);
 
         this.updateTree();
         this.dockingLayoutService.calculateItemAreas();
@@ -98,7 +102,7 @@ export class DragProxyComponent {
             y: this.$element.height(),
         };
 
-        this.setDropPosition(coordinates);
+        this.setDropPosition(this.coordinates);
     }
 
     private onDrag = (dragEvent: DragEvent) => {
