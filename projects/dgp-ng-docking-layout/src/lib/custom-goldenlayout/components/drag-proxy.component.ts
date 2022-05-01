@@ -7,7 +7,12 @@ import {DragEvent, DragListenerDirective} from "./drag-listener.directive";
 import {AbstractContentItemComponent} from "./abstract-content-item.component";
 import {Area} from "../models/area.model";
 import {Subscription} from "rxjs";
-import {Component} from "@angular/core";
+import {Component, forwardRef, Inject, InjectionToken} from "@angular/core";
+
+export const DRAG_PROXY_COORDINATES = new InjectionToken<Vector2>("dragProxyCoordinates");
+export const DRAG_PROXY_DRAG_LISTENER = new InjectionToken<DragListenerDirective>("dragProxyDragListener");
+export const DRAG_PROXY_CONTENT_ITEM = new InjectionToken<DragListenerDirective>("dragProxyContentItem");
+export const DRAG_PROXY_ORIGINAL_PARENT = new InjectionToken<DragListenerDirective>("dragProxyOriginalParent");
 
 @Component({
     selector: "dgp-drag-proxy",
@@ -26,11 +31,18 @@ export class DragProxyComponent {
     private max: Vector2;
     private size: Vector2;
 
-    constructor(private readonly coordinates: Vector2,
-                private readonly dragListener: DragListenerDirective,
-                private readonly dockingLayoutService: DockingLayoutService,
-                private readonly contentItem: AbstractContentItemComponent,
-                private readonly originalParent: AbstractContentItemComponent) {
+    constructor(
+        @Inject(DRAG_PROXY_COORDINATES)
+        private readonly coordinates: Vector2,
+        @Inject(DRAG_PROXY_DRAG_LISTENER)
+        private readonly dragListener: DragListenerDirective,
+        @Inject(forwardRef(() => DockingLayoutService))
+        private readonly dockingLayoutService: DockingLayoutService,
+        @Inject(DRAG_PROXY_CONTENT_ITEM)
+        private readonly contentItem: AbstractContentItemComponent,
+        @Inject(DRAG_PROXY_ORIGINAL_PARENT)
+        private readonly originalParent: AbstractContentItemComponent
+    ) {
 
         const dragSub = this.dragListener
             .drag$

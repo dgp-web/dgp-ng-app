@@ -1,10 +1,16 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Inject, InjectionToken, Output} from "@angular/core";
+import {ChangeDetectionStrategy, Component, EventEmitter, Inject, InjectionToken, Injector, Output} from "@angular/core";
 import {Subscription} from "rxjs";
 import {stripHtmlTags} from "../../common/functions";
 import {Vector2} from "../../common/models";
 import {dockingLayoutViewMap} from "../../docking-layout/views";
 import {DragListenerDirective} from "./drag-listener.directive";
-import {DragProxyComponent} from "./drag-proxy.component";
+import {
+    DRAG_PROXY_CONTENT_ITEM,
+    DRAG_PROXY_COORDINATES,
+    DRAG_PROXY_DRAG_LISTENER,
+    DRAG_PROXY_ORIGINAL_PARENT,
+    DragProxyComponent
+} from "./drag-proxy.component";
 import {AbstractContentItemComponent} from "./abstract-content-item.component";
 import {HeaderComponent} from "./header.component";
 import {DockingLayoutService} from "../docking-layout.service";
@@ -58,7 +64,8 @@ export class TabComponent {
         @Inject(TAB_HEADER_REF)
         private readonly header: HeaderComponent,
         @Inject(TAB_CONTENT_ITEM_REF)
-        private readonly contentItem: AbstractContentItemComponent) {
+        private readonly contentItem: AbstractContentItemComponent,
+        private readonly injector: Injector) {
 
         this.element = $(
             dockingLayoutViewMap.tab.render()
@@ -138,14 +145,25 @@ export class TabComponent {
     }
 
     private onDragStart(coordinates: Vector2) {
-        // tslint:disable-next-line:no-unused-expression
-        new DragProxyComponent(
-            coordinates,
-            this.dragListener,
-            this.dockingLayoutService,
-            this.contentItem,
-            this.header.parent
-        );
+        const injector = Injector.create({
+            providers: [{
+                provide: DRAG_PROXY_COORDINATES,
+                useValue: coordinates
+            }, {
+                provide: DRAG_PROXY_DRAG_LISTENER,
+                useValue: this.dragListener
+            }, {
+                provide: DRAG_PROXY_CONTENT_ITEM,
+                useValue: this.contentItem
+            }, {
+                provide: DRAG_PROXY_ORIGINAL_PARENT,
+                useValue: this.header.parent
+            }],
+            parent: this.injector
+        });
+
+        this.dockingLayoutService.viewContainerRef
+            .createComponent(DragProxyComponent, {injector});
     }
 
     private onTabClick(event: Event) {

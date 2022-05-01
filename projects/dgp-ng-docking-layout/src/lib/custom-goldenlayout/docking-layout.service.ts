@@ -1,23 +1,23 @@
-import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
-import { ComponentRegistry } from "./services/component-registry";
-import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
-import { EventEmitter } from "./utilities";
-import { EventHub } from "./utilities/event-hub";
-import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
-import { DropTargetIndicatorComponent } from "./components/drop-target-indicator.component";
-import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
-import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
-import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
-import { InitializedEvent } from "./models/events/initialized-event.model";
-import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
-import { notNullOrUndefined } from "dgp-ng-app";
-import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
-import { Area } from "./models/area.model";
-import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
-import { wrapInStack } from "./functions/wrap-in-stack.function";
-import { typeToComponentMap } from "./constants/type-to-component-map.constant";
-import { AreaService } from "./services/area.service";
-import { TabDropPlaceholderComponent } from "./components/tab-drop-placeholder.component";
+import {ComponentFactoryResolver, Injectable, Injector, ViewContainerRef} from "@angular/core";
+import {ComponentRegistry} from "./services/component-registry";
+import {ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT} from "./types";
+import {EventEmitter} from "./utilities";
+import {EventHub} from "./utilities/event-hub";
+import {AbstractContentItemComponent} from "./components/abstract-content-item.component";
+import {DropTargetIndicatorComponent} from "./components/drop-target-indicator.component";
+import {ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent} from "./components/root.component";
+import {jqueryErrorMessage} from "./constants/jquery-error-message.constant";
+import {isJQueryLoaded} from "./functions/is-jquery-loaded.function";
+import {InitializedEvent} from "./models/events/initialized-event.model";
+import {SelectionChangedEvent} from "./models/events/selection-changed-event.model";
+import {notNullOrUndefined} from "dgp-ng-app";
+import {createLayoutConfig} from "./functions/create-config/create-layout-config.function";
+import {Area} from "./models/area.model";
+import {shouldWrapInStack} from "./functions/should-wrap-in-stack.function";
+import {wrapInStack} from "./functions/wrap-in-stack.function";
+import {typeToComponentMap} from "./constants/type-to-component-map.constant";
+import {AreaService} from "./services/area.service";
+import {TabDropPlaceholderComponent} from "./components/tab-drop-placeholder.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -37,7 +37,7 @@ export class DockingLayoutService extends EventEmitter {
     private root: RootComponent;
     private eventHub: EventHub;
 
-    private viewContainerRef: ViewContainerRef;
+    viewContainerRef: ViewContainerRef;
 
     constructor(
         private readonly componentFactoryResolver: ComponentFactoryResolver,
