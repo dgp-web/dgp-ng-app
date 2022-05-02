@@ -43,10 +43,6 @@ export class DragProxyComponent implements AfterViewInit {
         @Inject(DRAG_PROXY_ORIGINAL_PARENT)
         private readonly originalParent: AbstractContentItemComponent
     ) {
-    }
-
-    // TODO: This doesn't work properly in ngAfterViewInit :(
-    ngAfterViewInit(): void {
 
         const dragSub = this.dragListener
             .drag$
@@ -103,6 +99,11 @@ export class DragProxyComponent implements AfterViewInit {
         };
 
         this.setDropPosition(this.coordinates);
+    }
+
+    // TODO: This doesn't work properly in ngAfterViewInit :(
+    ngAfterViewInit(): void {
+
     }
 
     private onDrag = (dragEvent: DragEvent) => {
