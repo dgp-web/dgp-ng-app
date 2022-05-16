@@ -57,8 +57,6 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
     }
 
     ngAfterViewInit(): void {
-        this.elementRef.nativeElement.addEventListener("dragstart", this.onDragStart);
-        this.elementRef.nativeElement.addEventListener("dragend", this.onDragEnd);
         this.elementRef.nativeElement.addEventListener("dragenter", this.onDragEnter);
         this.elementRef.nativeElement.addEventListener("dragleave", this.onDragLeave);
         this.elementRef.nativeElement.addEventListener("dragover", this.onDragOver);
@@ -77,21 +75,6 @@ export class DgpDropzoneDirectiveBase<TModel> implements OnInit, OnChanges, Afte
 
     private readonly onDragOver = (e: DragEvent) => {
         e.preventDefault();
-    };
-
-    private readonly onDragStart = (e: DragEvent) => {
-        const modelDragInfo = this.parseDragEvent(e);
-        if (!modelDragInfo) return;
-
-        this.dragAndDropService.registerDragStart(modelDragInfo);
-    };
-
-    private readonly onDragEnd = (e: DragEvent) => {
-        e.preventDefault();
-
-        if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
-
-        this.dragAndDropService.registerDragEnd();
     };
 
     private readonly onDragEnter = (e: DragEvent) => {
