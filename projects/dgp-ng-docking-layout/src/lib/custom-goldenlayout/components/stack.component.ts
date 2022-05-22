@@ -17,7 +17,6 @@ import { GlComponent } from "./component.component";
 export class StackComponent extends AbstractContentItemComponent {
 
     private activeContentItem: GlComponent;
-    private dropZones: any;
     private dropSegment: any;
     private contentAreaDimensions: any;
     private dropIndex: number;
@@ -56,7 +55,6 @@ export class StackComponent extends AbstractContentItemComponent {
             Object.assign(this._header, config.content[0].header);
         }
 
-        this.dropZones = {};
         this.dropSegment = null;
         this.contentAreaDimensions = null;
         this.dropIndex = null;
