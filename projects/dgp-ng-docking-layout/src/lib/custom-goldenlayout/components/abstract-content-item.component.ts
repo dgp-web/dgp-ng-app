@@ -287,12 +287,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.updateSize();
     }
 
-    _$show() {
-        this._callOnActiveComponents("show");
-        this.element.show();
-        this.layoutManager.updateSize();
-    }
-
     _callOnActiveComponents(methodName: string) {
         const stacks = this.getItemsByType("stack");
         let activeContentItem;

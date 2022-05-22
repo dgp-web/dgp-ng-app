@@ -77,7 +77,9 @@ export class GlComponent extends AbstractContentItemComponent implements AfterVi
 
     _$show() {
         this.container.show();
-        super._$show();
+        this._callOnActiveComponents("show");
+        this.element.show();
+        this.layoutManager.updateSize();
     }
 
     destroy() {

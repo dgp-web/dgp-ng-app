@@ -1,13 +1,13 @@
-import {stripHtmlTags} from "../../common/functions";
-import {Vector2, Vector2Utils} from "../../common/models";
-import {dockingLayoutViewMap} from "../../docking-layout/views";
-import {$x} from "../../jquery-extensions";
-import {DockingLayoutService} from "../docking-layout.service";
-import {DragEvent, DragListenerDirective} from "./drag-listener.directive";
-import {AbstractContentItemComponent} from "./abstract-content-item.component";
-import {Area} from "../models/area.model";
-import {Subscription} from "rxjs";
-import {AfterViewInit, Component, forwardRef, Inject, InjectionToken} from "@angular/core";
+import { stripHtmlTags } from "../../common/functions";
+import { Vector2, Vector2Utils } from "../../common/models";
+import { dockingLayoutViewMap } from "../../docking-layout/views";
+import { $x } from "../../jquery-extensions";
+import { DockingLayoutService } from "../docking-layout.service";
+import { DragEvent, DragListenerDirective } from "./drag-listener.directive";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { Area } from "../models/area.model";
+import { Subscription } from "rxjs";
+import { AfterViewInit, Component, forwardRef, Inject, InjectionToken } from "@angular/core";
 
 export const DRAG_PROXY_COORDINATES = new InjectionToken<Vector2>("dragProxyCoordinates");
 export const DRAG_PROXY_DRAG_LISTENER = new InjectionToken<DragListenerDirective>("dragProxyDragListener");
@@ -167,7 +167,6 @@ export class DragProxyComponent implements AfterViewInit {
         $x.size(this.childElementContainer, {x: width, y: height});
         $x.size(this.contentItem.element, {x: width, y: height});
 
-        this.contentItem.callDownwards("_$show");
         this.contentItem.callDownwards("setSize");
     }
 
