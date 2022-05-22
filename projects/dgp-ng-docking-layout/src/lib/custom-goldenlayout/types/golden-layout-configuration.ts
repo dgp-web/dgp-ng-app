@@ -62,6 +62,7 @@ export interface ComponentConfiguration extends ItemConfiguration {
     };
 
     isClosable?: boolean;
+    label?: string;
     title?: string;
     selected?: () => void;
 }
