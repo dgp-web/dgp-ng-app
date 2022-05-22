@@ -271,7 +271,7 @@ export class StackComponent extends AbstractContentItemComponent {
          * get the hell out of this logic
          */
         if (this.dropSegment === "header") {
-            this._resetHeaderDropZone();
+            this.resetHeaderDropZone();
             this.addChild(contentItem, this.dropIndex);
             return;
         }
@@ -344,24 +344,20 @@ export class StackComponent extends AbstractContentItemComponent {
      * otherwise indicate which segment of the body the dragged item would be dropped on
      */
     highlightDropZone(x, y) {
-        let segment, area;
-
-        for (segment in this.contentAreaDimensions) {
-            area = this.contentAreaDimensions[segment].hoverArea;
+        Object.keys(this.contentAreaDimensions).forEach(segment => {
+            const area = this.contentAreaDimensions[segment].hoverArea;
 
             if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
 
                 if (segment === "header") {
                     this.dropSegment = "header";
-                    this._highlightHeaderDropZone(this._sided ? y : x);
+                    this.highlightHeaderDropZone(this._sided ? y : x);
                 } else {
-                    this._resetHeaderDropZone();
-                    this._highlightBodyDropZone(segment);
+                    this.resetHeaderDropZone();
+                    this.highlightBodyDropZone(segment);
                 }
-
-                return;
             }
-        }
+        });
     }
 
     _$getArea() {
@@ -468,7 +464,7 @@ export class StackComponent extends AbstractContentItemComponent {
         return getArea.call(this, this.element);
     }
 
-    _highlightHeaderDropZone(x) {
+    private highlightHeaderDropZone(x) {
         let i,
             tabElement,
             tabsLength = this.header.tabs.length,
@@ -550,10 +546,6 @@ export class StackComponent extends AbstractContentItemComponent {
         });
     }
 
-    _resetHeaderDropZone() {
-        this.layoutManager.tabDropPlaceholder.remove();
-    }
-
     _setupHeaderPosition() {
         const side = ["right", "left", "bottom"].indexOf(this._header.show) >= 0 && this._header.show;
         this.header.element.toggle(!!this._header.show);
@@ -570,7 +562,11 @@ export class StackComponent extends AbstractContentItemComponent {
         }
     }
 
-    _highlightBodyDropZone(segment) {
+    private resetHeaderDropZone() {
+        this.layoutManager.tabDropPlaceholder.remove();
+    }
+
+    private highlightBodyDropZone(segment) {
         const highlightArea = this.contentAreaDimensions[segment].highlightArea;
         this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
         this.dropSegment = segment;
