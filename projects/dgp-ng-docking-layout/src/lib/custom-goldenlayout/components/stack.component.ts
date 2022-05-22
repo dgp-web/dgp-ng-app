@@ -16,7 +16,7 @@ import { GlComponent } from "./component.component";
 })
 export class StackComponent extends AbstractContentItemComponent {
 
-    private activeContentItem: AbstractContentItemComponent;
+    private activeContentItem: GlComponent;
     private dropZones: any;
     private dropSegment: any;
     private contentAreaDimensions: any;
@@ -81,7 +81,7 @@ export class StackComponent extends AbstractContentItemComponent {
         this.header.activeContentItemChange.subscribe(contentItem => {
             const activeContentItem = this.getActiveContentItem();
             if (contentItem !== activeContentItem) {
-                this.setActiveContentItem(contentItem);
+                this.setActiveContentItem(contentItem as GlComponent);
             }
         });
 
@@ -112,7 +112,7 @@ export class StackComponent extends AbstractContentItemComponent {
     init() {
         if (this.isInitialised) return;
 
-        let initialItem: AbstractContentItemComponent;
+        let initialItem: GlComponent;
 
         super.init();
 
@@ -122,7 +122,8 @@ export class StackComponent extends AbstractContentItemComponent {
         });
 
         if (this.contentItems.length > 0) {
-            initialItem = this.contentItems[this.config.activeItemIndex || 0];
+            const contentItems = this.contentItems as Array<GlComponent>;
+            initialItem = contentItems[this.config.activeItemIndex || 0];
 
             if (!initialItem) {
                 throw new Error("Configured activeItemIndex out of bounds");
@@ -133,14 +134,15 @@ export class StackComponent extends AbstractContentItemComponent {
         if (notNullOrUndefined((this.config as StackConfiguration).publishSelectedItemChange$)) {
             this.subscription = (this.config as StackConfiguration).publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
-                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
+                    const contentItems = this.contentItems as Array<GlComponent>;
+                    this.setActiveContentItem(contentItems.find(x => x.config.id === change.id));
                 }
             });
         }
 
     }
 
-    setActiveContentItem(contentItem: AbstractContentItemComponent) {
+    setActiveContentItem(contentItem: GlComponent) {
         if (new LayoutManagerUtilities().indexOf(contentItem, this.contentItems) === -1) {
             throw new Error("contentItem is not a child of this stack");
         }
@@ -167,7 +169,7 @@ export class StackComponent extends AbstractContentItemComponent {
         return this.header.activeContentItem;
     }
 
-    addChild(contentItem: AbstractContentItemComponent, index?) {
+    addChild(contentItem: GlComponent, index?) {
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
         this.header.createTab(contentItem, index);
@@ -183,7 +185,8 @@ export class StackComponent extends AbstractContentItemComponent {
         this.header.removeTab(contentItem);
         if (this.header.activeContentItem === contentItem) {
             if (this.contentItems.length > 0) {
-                this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)]);
+                const contentItems = this.contentItems as Array<GlComponent>;
+                this.setActiveContentItem(contentItems[Math.max(index - 1, 0)]);
             } else {
                 this.activeContentItem = null;
             }
@@ -372,14 +375,6 @@ export class StackComponent extends AbstractContentItemComponent {
                 }
             }
         };
-
-        /**
-         * If this Stack is a parent to rows, columns or other stacks only its
-         * header is a valid dropzone.
-         */
-        if (this.activeContentItem && this.activeContentItem.isComponent === false) {
-            return headerArea;
-        }
 
         /**
          * Highlight the entire body if the stack is empty
