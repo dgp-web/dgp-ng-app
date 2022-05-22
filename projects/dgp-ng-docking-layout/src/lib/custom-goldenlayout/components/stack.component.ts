@@ -11,6 +11,7 @@ import { GlComponent } from "./component.component";
 import { Mutable } from "data-modeling";
 import { StackDropSegment } from "../models/stack-drop-segment.model";
 import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
+import { Area } from "../models/area.model";
 
 @Component({
     selector: "dgp-stack",
@@ -344,26 +345,16 @@ export class StackComponent extends AbstractContentItemComponent {
             return null;
         }
 
-        const getArea = super._$getArea,
-            headerArea = getArea.call(this, this.header.element),
-            contentArea = getArea.call(this, this.childElementContainer),
-            contentWidth = contentArea.x2 - contentArea.x1,
-            contentHeight = contentArea.y2 - contentArea.y1;
+        const getArea = super._$getArea;
+        const headerArea: Area = getArea.call(this, this.header.element);
+        const contentArea: Area = getArea.call(this, this.childElementContainer);
+        const contentWidth = (contentArea.x2 as number) - (contentArea.x1 as number);
+        const contentHeight = (contentArea.y2 as number) - (contentArea.y1 as number);
 
         this.contentAreaDimensions = {
             header: {
-                hoverArea: {
-                    x1: headerArea.x1,
-                    y1: headerArea.y1,
-                    x2: headerArea.x2,
-                    y2: headerArea.y2
-                },
-                highlightArea: {
-                    x1: headerArea.x1,
-                    y1: headerArea.y1,
-                    x2: headerArea.x2,
-                    y2: headerArea.y2
-                }
+                hoverArea: headerArea,
+                highlightArea: headerArea
             }
         };
 
@@ -382,61 +373,49 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this.contentAreaDimensions.left = {
             hoverArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.25,
-                y2: contentArea.y2
+                ...contentArea,
+                x2: (contentArea.x1 as number) + contentWidth * 0.25
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.5,
-                y2: contentArea.y2
+                ...contentArea,
+                x2: (contentArea.x1 as number) + contentWidth * 0.5
             }
         };
 
         this.contentAreaDimensions.top = {
             hoverArea: {
-                x1: contentArea.x1 + contentWidth * 0.25,
+                x1: (contentArea.x1 as number) + contentWidth * 0.25,
                 y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.75,
-                y2: contentArea.y1 + contentHeight * 0.5
+                x2: (contentArea.x1 as number) + contentWidth * 0.75,
+                y2: (contentArea.y1 as number) + contentHeight * 0.5
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y1 + contentHeight * 0.5
+                ...contentArea,
+                y2: (contentArea.y1 as number) + contentHeight * 0.5
             }
         };
 
         this.contentAreaDimensions.right = {
             hoverArea: {
-                x1: contentArea.x1 + contentWidth * 0.75,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                x1: (contentArea.x1 as number) + contentWidth * 0.75
             },
             highlightArea: {
-                x1: contentArea.x1 + contentWidth * 0.5,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                x1: (contentArea.x1 as number) + contentWidth * 0.5
             }
         };
 
         this.contentAreaDimensions.bottom = {
             hoverArea: {
-                x1: contentArea.x1 + contentWidth * 0.25,
-                y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x1 + contentWidth * 0.75,
+                x1: (contentArea.x1 as number) + contentWidth * 0.25,
+                y1: (contentArea.y1 as number) + contentHeight * 0.5,
+                x2: (contentArea.x1 as number) + contentWidth * 0.75,
                 y2: contentArea.y2
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                y1: (contentArea.y1 as number) + contentHeight * 0.5
             }
         };
 
