@@ -51,7 +51,6 @@ export interface ItemConfiguration {
     activeItemIndex?: number;
 
     content?: ItemConfiguration[];
-    header?: any;
 }
 
 export interface ComponentConfiguration extends ItemConfiguration {

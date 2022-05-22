@@ -66,11 +66,8 @@ export class StackComponent extends AbstractContentItemComponent {
             minimise: cfg.labels.minimise,
         };
 
-        if (config.header) {
-            Object.assign(this._header, config.header);
-        }
-        if (config.content && config.content[0] && config.content[0].header) {
-            Object.assign(this._header, config.content[0].header);
+        if (config.content && config.content[0]) {
+            Object.assign(this._header);
         }
 
         this.dropSegment = null;
@@ -302,10 +299,7 @@ export class StackComponent extends AbstractContentItemComponent {
          * The content item can be either a component or a stack. If it is a component, wrap it into a stack
          */
         if (contentItem.isComponent) {
-            stack = this.layoutManager.createContentItem({
-                type: "stack",
-                header: contentItem.config.header || {}
-            }, this);
+            stack = this.layoutManager.createContentItem({type: "stack"}, this);
             stack.init();
             stack.addChild(contentItem);
             contentItem = stack;

@@ -108,8 +108,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
 
         if (contentItem.isComponent) {
             stack = this.layoutManager.createContentItem({
-                type: "stack",
-                header: contentItem.config.header || {}
+                type: "stack"
             }, this);
             stack.init();
             stack.addChild(contentItem);
