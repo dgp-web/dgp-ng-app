@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 import { ComponentDefinition } from "../utilities/models";
+import { ComponentRegistry } from "../services/component-registry";
 
 @Component({
     selector: "dgp-gl-component",
@@ -21,11 +22,12 @@ export class GlComponent extends AbstractContentItemComponent {
         @Inject(ITEM_CONFIG)
         public config: ComponentConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        public parent: AbstractContentItemComponent
+        public parent: AbstractContentItemComponent,
+        private readonly componentRegistry: ComponentRegistry,
     ) {
         super(layoutManager, config, parent);
 
-        let ComponentConstructor = layoutManager.getComponent(this.config.id);
+        let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
         const componentConfig: Partial<ComponentConfiguration> = $.extend(true, {}, this.config.componentState || {});
 
         componentConfig.componentName = this.config.id as string;
