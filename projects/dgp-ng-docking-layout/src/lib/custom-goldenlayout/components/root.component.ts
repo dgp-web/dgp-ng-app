@@ -17,7 +17,17 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
 
 @Component({
     selector: "dgp-gl-root",
-    template: ``,
+    template: `
+        <!--        <ng-container *ngFor="let contentItem of contentItems">
+
+                    <ng-container [ngSwitch]="contentItem.config.type">
+                        <dgp-stack *ngSwitchCase="'stack'"></dgp-stack>
+                        <dgp-row-or-column *ngSwitchCase="'row'"></dgp-row-or-column>
+                        <dgp-row-or-column *ngSwitchCase="'column'"></dgp-row-or-column>
+                    </ng-container>
+
+                </ng-container>-->
+    `,
     styles: [`
         :host {
             position: relative;
