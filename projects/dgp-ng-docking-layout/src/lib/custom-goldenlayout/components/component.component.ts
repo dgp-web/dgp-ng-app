@@ -1,6 +1,6 @@
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { ItemContainerComponent } from "./item-container.component";
-import { ChangeDetectionStrategy, Component, Inject, Injector, ViewContainerRef } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, Injector, ViewContainerRef } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 import { ComponentRegistry } from "../services/component-registry";
@@ -10,7 +10,7 @@ import { ComponentRegistry } from "../services/component-registry";
     template: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlComponent extends AbstractContentItemComponent {
+export class GlComponent extends AbstractContentItemComponent implements AfterViewInit {
 
     readonly isComponent = true;
 
@@ -44,9 +44,14 @@ export class GlComponent extends AbstractContentItemComponent {
             injector: childInjector
         }).instance;
 
-        let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
-        ComponentConstructor(this.container, this.config.componentState);
+        const createComponent = this.componentRegistry.getComponentFactory(this.config.id);
+        createComponent(this.container, this.config.componentState);
+
         this.element = this.container.element;
+    }
+
+    ngAfterViewInit(): void {
+        throw new Error("Method not implemented.");
     }
 
     close() {

@@ -15,7 +15,7 @@ export class ComponentRegistry {
         return this.components[componentKey] !== null && this.components[componentKey] !== undefined;
     }
 
-    getComponent(componentKey: string): ComponentConstructor {
+    getComponentFactory(componentKey: string): ComponentConstructor {
         if (this.components[componentKey] === undefined) {
             throw new ConfigurationError("Unknown component '" + componentKey + "'");
         }
