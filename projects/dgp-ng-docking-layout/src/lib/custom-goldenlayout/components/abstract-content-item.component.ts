@@ -224,31 +224,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * Checks whether a provided id is present
-     */
-    hasId(id: string) {
-        if (!this.config.id) {
-            return false;
-        } else if (typeof this.config.id === "string") {
-            return this.config.id === id;
-        }
-    }
-
-    /**
-     * Removes an existing id. Throws an error
-     * if the id is not present
-     */
-    removeId(id: string) {
-        if (!this.hasId(id)) {
-            throw new Error("Id not found");
-        }
-
-        if (typeof this.config.id === "string") {
-            delete this.config.id;
-        }
-    }
-
     /****************************************
      * SELECTOR
      ****************************************/
