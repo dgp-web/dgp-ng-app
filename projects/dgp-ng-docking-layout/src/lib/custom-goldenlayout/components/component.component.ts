@@ -13,7 +13,6 @@ import { ComponentDefinition } from "../utilities/models";
 export class GlComponent extends AbstractContentItemComponent {
     private componentName: string;
     public container: ItemContainerComponent;
-    public instance: any;
     public element: any;
 
     constructor(
@@ -38,7 +37,7 @@ export class GlComponent extends AbstractContentItemComponent {
 
         this.isComponent = true;
         this.container = new ItemContainerComponent(this.config, this, layoutManager);
-        this.instance = ComponentConstructor(this.container, componentConfig as ComponentDefinition<any>);
+        ComponentConstructor(this.container, componentConfig as ComponentDefinition<any>);
         this.element = this.container._element;
     }
 

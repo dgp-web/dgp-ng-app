@@ -232,27 +232,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
             return false;
         } else if (typeof this.config.id === "string") {
             return this.config.id === id;
-        } else if (this.config.id instanceof Array) {
-            return new LayoutManagerUtilities().indexOf(id, this.config.id) !== -1;
-        }
-    }
-
-    /**
-     * Adds an id. Adds it as a string if the component doesn't
-     * have an id yet or creates/uses an array
-     *
-     */
-    addId(id: string) {
-        if (this.hasId(id)) {
-            return;
-        }
-
-        if (!this.config.id) {
-            this.config.id = id;
-        } else if (typeof this.config.id === "string") {
-            this.config.id = [this.config.id, id];
-        } else if (this.config.id instanceof Array) {
-            this.config.id.push(id);
         }
     }
 
@@ -267,9 +246,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         if (typeof this.config.id === "string") {
             delete this.config.id;
-        } else if (this.config.id instanceof Array) {
-            const index = new LayoutManagerUtilities().indexOf(id, this.config.id);
-            this.config.id.splice(index, 1);
         }
     }
 

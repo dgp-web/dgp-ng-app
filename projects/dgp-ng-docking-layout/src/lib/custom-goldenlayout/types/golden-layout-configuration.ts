@@ -41,7 +41,7 @@ export interface LayoutConfiguration {
 
 export interface ItemConfiguration {
     type?: ItemType;
-    id?: string | string[];
+    id?: string;
     width?: number;
     height?: number;
     isClosable?: boolean;
