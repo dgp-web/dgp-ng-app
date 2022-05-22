@@ -419,23 +419,8 @@ export class StackComponent extends AbstractContentItemComponent {
             offset,
             placeHolderTop,
             placeHolderLeft,
-            headerOffset,
             tabWidth,
             halfX;
-
-        // Empty stack
-        if (tabsLength === 0) {
-            headerOffset = this.header.element.offset();
-
-            this.layoutManager.dropTargetIndicator.highlightArea({
-                x1: headerOffset.left,
-                x2: headerOffset.left + 100,
-                y1: headerOffset.top + this.header.element.height() - 20,
-                y2: headerOffset.top + this.header.element.height()
-            });
-
-            return;
-        }
 
         for (i = 0; i < tabsLength; i++) {
             tabElement = this.header.tabs[i].element;
