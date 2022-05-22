@@ -14,7 +14,6 @@ import { ComponentRegistry } from "../services/component-registry";
 export class GlComponent extends AbstractContentItemComponent {
     readonly isComponent = true;
 
-    private componentName: string;
     public container: ItemContainerComponent;
     public element: JQuery;
 
@@ -31,9 +30,7 @@ export class GlComponent extends AbstractContentItemComponent {
         super(layoutManager, config, parent);
 
         const componentConfig: Partial<ComponentConfiguration> = $.extend(true, {}, this.config.componentState || {});
-
-        componentConfig.componentName = this.config.id as string;
-        this.componentName = this.config.id as string;
+        componentConfig.componentName = this.config.id;
 
         this.container = new ItemContainerComponent(this.config, this, layoutManager);
         let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
