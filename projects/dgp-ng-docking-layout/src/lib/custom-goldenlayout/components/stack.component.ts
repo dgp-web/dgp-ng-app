@@ -8,24 +8,9 @@ import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { GlComponent } from "./component.component";
-import { AreaSides } from "../models/area.model";
 import { Mutable } from "data-modeling";
-
-export type StackDropSegment = "header" | "body";
-
-export interface ContentAreaDimensionsItem {
-    readonly hoverArea: AreaSides;
-    readonly highlightArea: AreaSides;
-}
-
-export interface ContentAreaDimensions {
-    readonly body: ContentAreaDimensionsItem;
-    readonly left: ContentAreaDimensionsItem;
-    readonly right: ContentAreaDimensionsItem;
-    readonly top: ContentAreaDimensionsItem;
-    readonly bottom: ContentAreaDimensionsItem;
-    readonly header: ContentAreaDimensionsItem;
-}
+import { StackDropSegment } from "../models/stack-drop-segment.model";
+import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
 
 @Component({
     selector: "dgp-stack",
