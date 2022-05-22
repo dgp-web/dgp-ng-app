@@ -30,7 +30,7 @@ export class GlComponent extends AbstractContentItemComponent implements AfterVi
         super(layoutManager, config, parent);
 
         const childInjector = Injector.create({
-            parent: injector,
+            parent: this.injector,
             providers: [{
                 provide: ITEM_CONFIG,
                 useValue: this.config
@@ -51,7 +51,7 @@ export class GlComponent extends AbstractContentItemComponent implements AfterVi
     }
 
     ngAfterViewInit(): void {
-        throw new Error("Method not implemented.");
+
     }
 
     close() {
