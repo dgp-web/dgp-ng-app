@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration } from "../types";
+import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../types";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
 @Component({
@@ -22,6 +22,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     constructor(@Inject(ITEM_CONFIG)
                 readonly config: ItemConfiguration,
                 @Optional()
+                @Inject(PARENT_ITEM_COMPONENT)
                 readonly parent: AbstractContentItemComponent,
                 readonly layoutManager: DockingLayoutService) {
         super(layoutManager, config, parent);
