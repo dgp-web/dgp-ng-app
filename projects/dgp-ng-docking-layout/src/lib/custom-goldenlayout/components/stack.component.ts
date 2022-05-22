@@ -358,19 +358,6 @@ export class StackComponent extends AbstractContentItemComponent {
             }
         };
 
-        /**
-         * Highlight the entire body if the stack is empty
-         */
-        if (this.contentItems.length === 0) {
-
-            this.contentAreaDimensions.body = {
-                hoverArea: contentArea,
-                highlightArea: contentArea
-            };
-
-            return getArea.call(this, this.element);
-        }
-
         this.contentAreaDimensions.left = {
             hoverArea: {
                 ...contentArea,
