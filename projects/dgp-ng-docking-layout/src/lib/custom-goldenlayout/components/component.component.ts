@@ -69,13 +69,4 @@ export class GlComponent extends AbstractContentItemComponent {
         super.destroy();
     }
 
-    /**
-     * Dragging onto a component directly is not an option
-     *
-     * @returns null
-     */
-    _$getArea() {
-        return null;
-    }
-
 }
