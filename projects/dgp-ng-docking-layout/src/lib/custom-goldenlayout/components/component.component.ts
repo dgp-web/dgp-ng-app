@@ -14,7 +14,7 @@ import { ComponentRegistry } from "../services/component-registry";
 export class GlComponent extends AbstractContentItemComponent {
     private componentName: string;
     public container: ItemContainerComponent;
-    public element: any;
+    public element: JQuery;
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
@@ -27,7 +27,6 @@ export class GlComponent extends AbstractContentItemComponent {
     ) {
         super(layoutManager, config, parent);
 
-        let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
         const componentConfig: Partial<ComponentConfiguration> = $.extend(true, {}, this.config.componentState || {});
 
         componentConfig.componentName = this.config.id as string;
@@ -39,6 +38,7 @@ export class GlComponent extends AbstractContentItemComponent {
 
         this.isComponent = true;
         this.container = new ItemContainerComponent(this.config, this, layoutManager);
+        let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
         ComponentConstructor(this.container, componentConfig as ComponentDefinition<any>);
         this.element = this.container._element;
     }

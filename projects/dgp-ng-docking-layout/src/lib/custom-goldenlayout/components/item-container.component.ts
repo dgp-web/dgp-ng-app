@@ -16,7 +16,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     title: string;
     isHidden: boolean;
     _config: any;
-    _element: any;
+    _element: JQuery;
     _contentElement: any;
 
     constructor(@Inject(ITEM_CONFIG)
