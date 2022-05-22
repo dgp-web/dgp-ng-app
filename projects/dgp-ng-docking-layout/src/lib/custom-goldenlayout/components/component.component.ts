@@ -12,7 +12,7 @@ import { ComponentDefinition } from "../utilities/models";
 })
 export class GlComponent extends AbstractContentItemComponent {
     private componentName: string;
-    public container: any;
+    public container: ItemContainerComponent;
     public instance: any;
     public element: any;
 
@@ -66,11 +66,6 @@ export class GlComponent extends AbstractContentItemComponent {
     _$show() {
         this.container.show();
         super._$show();
-    }
-
-    _$shown() {
-        this.container.shown();
-        // super._$shown();
     }
 
     destroy() {
