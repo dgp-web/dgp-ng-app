@@ -12,9 +12,12 @@ import { ComponentRegistry } from "../services/component-registry";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlComponent extends AbstractContentItemComponent {
+    readonly isComponent = true;
+
     private componentName: string;
     public container: ItemContainerComponent;
     public element: JQuery;
+
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
@@ -32,11 +35,6 @@ export class GlComponent extends AbstractContentItemComponent {
         componentConfig.componentName = this.config.id as string;
         this.componentName = this.config.id as string;
 
-        if (this.config.label === "") {
-            this.config.label = this.config.id as string;
-        }
-
-        this.isComponent = true;
         this.container = new ItemContainerComponent(this.config, this, layoutManager);
         let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
         ComponentConstructor(this.container, componentConfig as ComponentDefinition<any>);
