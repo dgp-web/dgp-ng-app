@@ -1,9 +1,8 @@
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { ItemContainerComponent } from "./item-container.component";
-import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
-import { ComponentDefinition } from "../utilities/models";
 import { ComponentRegistry } from "../services/component-registry";
 
 @Component({
@@ -12,14 +11,13 @@ import { ComponentRegistry } from "../services/component-registry";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlComponent extends AbstractContentItemComponent {
+
     readonly isComponent = true;
 
-    public container: ItemContainerComponent;
-    public element: JQuery;
-
+    container: ItemContainerComponent;
+    element: JQuery;
 
     constructor(
-        @Inject(forwardRef(() => DockingLayoutService))
         public layoutManager: DockingLayoutService,
         @Inject(ITEM_CONFIG)
         public config: ComponentConfiguration,
@@ -29,13 +27,10 @@ export class GlComponent extends AbstractContentItemComponent {
     ) {
         super(layoutManager, config, parent);
 
-        const componentConfig: Partial<ComponentConfiguration> = $.extend(true, {}, this.config.componentState || {});
-        componentConfig.componentName = this.config.id;
-
         this.container = new ItemContainerComponent(this.config, this, layoutManager);
         let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
-        ComponentConstructor(this.container, componentConfig as ComponentDefinition<any>);
-        this.element = this.container._element;
+        ComponentConstructor(this.container, this.config.componentState);
+        this.element = this.container.element;
     }
 
     close() {

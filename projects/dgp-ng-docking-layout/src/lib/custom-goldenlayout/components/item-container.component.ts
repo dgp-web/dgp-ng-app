@@ -16,7 +16,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     title: string;
     isHidden: boolean;
     _config: any;
-    _element: JQuery;
+    element: JQuery;
     _contentElement: any;
 
     constructor(@Inject(ITEM_CONFIG)
@@ -27,11 +27,11 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
         super(layoutManager, config, parent);
 
         this.title = config.id as string;
-        this._element = $(
+        this.element = $(
             dockingLayoutViewMap.itemContainer.render()
         );
 
-        this._contentElement = this._element.find(".lm_content");
+        this._contentElement = this.element.find(".lm_content");
     }
 
     /**
@@ -50,7 +50,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     hide() {
         this.emit("hide");
         this.isHidden = true;
-        this._element.hide();
+        this.element.hide();
     }
 
     /**
@@ -61,7 +61,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     show() {
         this.emit("show");
         this.isHidden = false;
-        this._element.show();
+        this.element.show();
         // call shown only if the container has a valid size
         if (this.height !== 0 || this.width !== 0) {
             this.emit("shown");
