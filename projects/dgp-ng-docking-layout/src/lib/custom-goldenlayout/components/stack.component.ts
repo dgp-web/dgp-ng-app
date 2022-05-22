@@ -7,6 +7,7 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { GlComponent } from "./component.component";
 
 @Component({
     selector: "dgp-stack",
@@ -139,7 +140,7 @@ export class StackComponent extends AbstractContentItemComponent {
 
     }
 
-    setActiveContentItem(contentItem) {
+    setActiveContentItem(contentItem: AbstractContentItemComponent) {
         if (new LayoutManagerUtilities().indexOf(contentItem, this.contentItems) === -1) {
             throw new Error("contentItem is not a child of this stack");
         }
@@ -150,7 +151,9 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this.activeContentItem = contentItem;
         this.header.setActiveContentItem(contentItem);
-        contentItem._$show();
+        if (contentItem.isComponent) {
+            (contentItem as GlComponent)._$show();
+        }
         this.emit("activeContentItemChanged", contentItem);
         this.layoutManager.emit("activeContentItemChanged", contentItem);
         this.emitBubblingEvent("stateChanged");
