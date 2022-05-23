@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
-import { timer, of } from "rxjs";
+import { of, timer } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { showLoadingSpinner } from "./actions";
@@ -13,16 +13,16 @@ export class RoutingOverlayEffects {
 
     private dialogRef: MatDialogRef<any>;
 
-    
+
     readonly observeRouteEvents$ = createEffect(() => this.router.events.pipe(
         map(event => {
             if (event instanceof ActivationStart) {
-                return showLoadingSpinner({ showSpinner: true });
+                return showLoadingSpinner({showSpinner: true});
             }
             if (event instanceof NavigationEnd
                 || event instanceof NavigationCancel
                 || event instanceof NavigationError) {
-                return showLoadingSpinner({ showSpinner: false });
+                return showLoadingSpinner({showSpinner: false});
             }
             return null;
 
@@ -30,7 +30,7 @@ export class RoutingOverlayEffects {
         filter(event => !isNullOrUndefined(event))
     ));
 
-    
+
     readonly showLoadingSpinner$ = createEffect(() => this.actions$.pipe(
         ofType(showLoadingSpinner),
         distinctUntilKeyChanged("showSpinner"),
@@ -40,8 +40,9 @@ export class RoutingOverlayEffects {
                     tap(() => {
                         this.dialogRef = this.matDialog.open(RoutingOverlayComponent, {
                             disableClose: true,
-                            width: "400px",
-                            height: "320px"
+                            hasBackdrop: true,
+                            panelClass: "dgp-routing-overlay-dialog-panel",
+                            backdropClass: "dgp-routing-overlay-backdrop"
                         });
                     })
                 );

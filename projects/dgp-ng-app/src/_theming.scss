@@ -145,3 +145,14 @@ dgp-inspector-section {
         margin-top: 0 !important;
     }
 }
+
+.dgp-routing-overlay-dialog-panel {
+    mat-dialog-container {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+}
+
+.dgp-routing-overlay-backdrop {
+    background: #00000022;
+}
