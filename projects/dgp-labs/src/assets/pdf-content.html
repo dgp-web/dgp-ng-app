@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>PDF Content</title>
+    <base href="/">
+
+    <style>
+
+        html, body {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: auto;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        .dgp-page-A4 {
+            min-height: 297mm;
+            min-width: 210mm;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border: 1px solid gainsboro;
+            margin: 16px auto;
+            padding: 32px;
+            position: relative;
+            background: ghostwhite;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<section class="dgp-page-A4">
+    <div style="color: red;">
+        Test
+    </div>
+</section>
+
+
+</body>
+</html>
