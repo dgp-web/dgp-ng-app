@@ -25,14 +25,19 @@
 
 
         .dgp-page-A4 {
-            min-height: 297mm;
-            min-width: 210mm;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            height: 297mm;
+            width: 210mm;
             border: 1px solid gainsboro;
-            margin: 16px auto;
             padding: 32px;
             position: relative;
-            background: ghostwhite;
+            background: white;
+        }
+
+        @media only screen {
+            .dgp-page-A4 {
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                margin: 16px auto;
+            }
         }
 
     </style>
@@ -41,9 +46,27 @@
 <body>
 
 <section class="dgp-page-A4">
+
+    <h1>First page</h1>
+
     <div style="color: red;">
         Test
     </div>
+
+    <h1>Test</h1>
+</section>
+
+
+<section class="dgp-page-A4">
+
+    <h1>Second page</h1>
+
+
+    <div style="color: red;">
+        Test
+    </div>
+
+    <h1>Test</h1>
 </section>
 
 
