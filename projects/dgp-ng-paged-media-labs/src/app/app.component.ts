@@ -6,31 +6,30 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         <div class="dgp-page-A4">
 
             <header class="dgp-page-header">
-                First section header
+                Second section header
             </header>
 
             <main class="dgp-page-content">
                 First section content
-                <dgp-blind-text></dgp-blind-text>
             </main>
 
             <footer class="dgp-page-footer">
-                First section footer
+                Second section footer
             </footer>
-
         </div>
 
         <div class="dgp-page-A4">
 
-            <header class="dgp-page-header dgp-page-header-02">
+            <header class="dgp-page-header">
                 Second section header
             </header>
 
             <main class="dgp-page-content">
                 Second section content
+                <dgp-blind-text></dgp-blind-text>
             </main>
 
-            <footer class="dgp-page-footer dgp-page-footer-last">
+            <footer class="dgp-page-footer">
                 Second section footer
             </footer>
         </div>
