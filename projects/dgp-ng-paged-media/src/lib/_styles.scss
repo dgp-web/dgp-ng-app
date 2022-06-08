@@ -9,21 +9,21 @@ $default-dgp-A4-page-config: (
 
 @mixin dgp-paged-media-common() {
 
-    .dgp-paged-media-header, .dgp-paged-media-footer {
+    .dgp-paged-media-header, dgp-paged-media-header, .dgp-paged-media-footer, dgp-paged-media-footer {
         width: 100%;
         background: white;
         flex-shrink: 0;
     }
 
-    .dgp-paged-media-header {
+    .dgp-paged-media-header, dgp-paged-media-header {
         top: 0;
     }
 
-    .dgp-paged-media-footer {
+    .dgp-paged-media-footer, dgp-paged-media-footer {
         bottom: 0;
     }
 
-    .dgp-paged-media-content {
+    .dgp-paged-media-content, dgp-paged-media-content {
         flex-grow: 1;
         page-break-inside: auto;
         overflow: hidden;
@@ -56,19 +56,19 @@ $default-dgp-A4-page-config: (
     $page-A4-height: 297mm;
     $page-A4-width: 210mm;
 
-    .dgp-paged-media-header {
+    .dgp-paged-media-header, dgp-paged-media-header {
         height: $top-margin;
     }
 
-    .dgp-paged-media-content {
+    .dgp-paged-media-content, dgp-paged-media-content {
         padding: 0 $right-margin 0 $left-margin;
     }
 
-    .dgp-paged-media-footer {
+    .dgp-paged-media-footer, dgp-paged-media-footer {
         height: $bottom-margin;
     }
 
-    .dgp-paged-media-page-A4, .dgp-paged-media-section-A4 {
+    .dgp-paged-media-page-A4, dgp-paged-media-page-A4, .dgp-paged-media-section-A4, dgp-paged-media-section-A4 {
         @extend .dgp-paged-media-page-or-section;
         width: $page-A4-width;
     }
