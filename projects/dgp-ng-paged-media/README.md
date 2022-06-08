@@ -25,3 +25,8 @@ Run `ng test dgp-ng-paged-media` to execute the unit tests via [Karma](https://k
 
 To get more help on the Angular CLI use `ng help` or go check out
 the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+# Resources
+https://developer.mozilla.org/en-US/docs/Web/CSS/Paged_Media
+
+https://sebsauvage.net/wiki/doku.php?id=word_document_generation
