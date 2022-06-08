@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../../dgp-ng-paged-media/src/lib/styles';
 
+@include dgp-A4-page();
+
 html, body {
     display: flex;
     flex-direction: column;

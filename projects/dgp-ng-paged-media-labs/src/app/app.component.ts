@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         <div class="dgp-page-A4">
 
             <header class="dgp-page-header">
-                Second section header
+                First section header
             </header>
 
             <main class="dgp-page-content">
@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             </main>
 
             <footer class="dgp-page-footer">
-                Second section footer
+                First section footer
             </footer>
         </div>
 

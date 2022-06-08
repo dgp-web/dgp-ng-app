@@ -1,50 +1,68 @@
-.dgp-page-A4, .dgp-page-A4-portrait, .dgp-section-A4, .dgp-section-A4-portrait {
-    position: relative;
-    width: 210mm;
-    background: white;
-    page-break-after: always !important;
-    display: flex;
-    flex-direction: column;
-}
+@mixin dgp-A4-page() {
 
-.dgp-page-A4, .dgp-page-A4-portrait {
-    height: 297mm;
-    overflow: hidden;
-}
+    $top-margin: 3.5cm;
+    $bottom-margin: 2.25cm;
+    $left-margin: 1.45cm;
+    $right-margin: 1.45cm;
 
-.dgp-section-A4, .dgp-section-A4-portrait {
-    min-height: 297mm;
-}
+    .dgp-page-header {
+        height: $top-margin;
+    }
 
-.dgp-page-header, .dgp-page-footer {
-    width: 100%;
-    background: white;
-    flex-shrink: 0;
-}
+    .dgp-page-content {
+        padding: 0 $right-margin 0 $left-margin;
+    }
 
-.dgp-page-header {
-    height: 35mm;
-    top: 0;
-}
+    .dgp-page-footer {
+        height: $bottom-margin;
+    }
 
-.dgp-page-content {
-    flex-grow: 1;
-    padding: 0mm 1.45cm 0mm 1.45cm;
-    page-break-inside: auto;
-    overflow: hidden;
-}
+    .dgp-page-A4, .dgp-page-A4-portrait, .dgp-section-A4, .dgp-section-A4-portrait {
+        position: relative;
+        width: 210mm;
+        background: white;
+        page-break-after: always !important;
+        display: flex;
+        flex-direction: column;
+    }
 
-.dgp-page-footer {
-    bottom: 0;
-    height: 22.5mm;
-}
+    .dgp-page-A4, .dgp-page-A4-portrait {
+        height: 297mm;
+        overflow: hidden;
+    }
 
-@media only screen {
+    .dgp-section-A4, .dgp-section-A4-portrait {
+        min-height: 297mm;
+    }
 
-    .dgp-page-A4, .dgp-section-A4, .dgp-section-A4-portrait {
-        border: 1px solid gainsboro;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        margin: 16px auto;
+    .dgp-page-header, .dgp-page-footer {
+        width: 100%;
+        background: white;
+        flex-shrink: 0;
+    }
+
+    .dgp-page-header {
+        top: 0;
+    }
+
+    .dgp-page-content {
+        flex-grow: 1;
+        page-break-inside: auto;
+        overflow: hidden;
+    }
+
+    .dgp-page-footer {
+        bottom: 0;
+    }
+
+    @media only screen {
+
+        .dgp-page-A4, .dgp-section-A4, .dgp-section-A4-portrait {
+            border: 1px solid gainsboro;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            margin: 16px auto;
+        }
+
     }
 
 }
