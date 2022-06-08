@@ -73,7 +73,7 @@ $default-dgp-A4-page-config: (
         width: $page-A4-width;
     }
 
-    .dgp-paged-media-page-A4 {
+    .dgp-paged-media-page-A4, dgp-paged-media-page-A4 {
         @extend .dgp-paged-media-page;
         height: $page-A4-height;
     }
@@ -83,7 +83,7 @@ $default-dgp-A4-page-config: (
     }
 
     @media only screen {
-        .dgp-paged-media-page-A4, .dgp-paged-media-section-A4 {
+        .dgp-paged-media-page-A4, dgp-paged-media-page-a4, .dgp-paged-media-section-A4, dgp-paged-media-section-A4 {
             border: 1px solid gainsboro;
             box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
             margin: 16px auto;

@@ -3,36 +3,36 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 @Component({
     selector: "dgp-ng-paged-media-labs",
     template: `
-        <div class="dgp-paged-media-page-A4">
+        <dgp-paged-media-page-A4>
 
-            <header class="dgp-paged-media-header">
+            <dgp-paged-media-header>
                 First section header
-            </header>
+            </dgp-paged-media-header>
 
-            <main class="dgp-paged-media-content">
+            <dgp-paged-media-content>
                 First section content
-            </main>
+            </dgp-paged-media-content>
 
-            <footer class="dgp-paged-media-footer">
+            <dgp-paged-media-footer>
                 First section footer
-            </footer>
-        </div>
+            </dgp-paged-media-footer>
+        </dgp-paged-media-page-A4>
 
-        <div class="dgp-paged-media-page-A4">
+        <dgp-paged-media-page-A4>
 
-            <header class="dgp-paged-media-header">
+            <dgp-paged-media-header>
                 Second section header
-            </header>
+            </dgp-paged-media-header>
 
-            <main class="dgp-paged-media-content">
+            <dgp-paged-media-content>
                 Second section content
                 <dgp-blind-text></dgp-blind-text>
-            </main>
+            </dgp-paged-media-content>
 
-            <footer class="dgp-paged-media-footer">
+            <dgp-paged-media-footer>
                 Second section footer
-            </footer>
-        </div>
+            </dgp-paged-media-footer>
+        </dgp-paged-media-page-A4>
     `,
     styles: [`
         :host {
