@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app",
-    "version": "13.14.2",
+    "version": "13.15.0",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -34,6 +34,12 @@
         "dgp-ng-docs:build:prod": "ng build --prod dgp-ng-docs",
         "postdgp-ng-docs:build:prod": "cpx projects/dgp-ng-docs/src/lib/_styles.scss dist/dgp-ng-docs",
         "dgp-ng-docs:publish": "npm publish dist/dgp-ng-docs",
+        "dgp-ng-paged-media:build:watch": "ng build --watch dgp-ng-paged-media",
+        "dgp-ng-paged-media:build:prod": "ng build --prod dgp-ng-paged-media",
+        "postdgp-ng-paged-media:build:prod": "cpx projects/dgp-ng-paged-media/src/lib/_styles.scss dist/dgp-ng-paged-media",
+        "dgp-ng-paged-media:publish": "npm publish dist/dgp-ng-paged-media",
+        "dgp-ng-paged-media:test": "ng test --code-coverage dgp-ng-paged-media",
+        "dgp-ng-paged-media-labs:ng-serve": "ng serve dgp-ng-paged-media-labs --configuration development",
         "docs-app:build:prod": "ng build --configuration production ng-app",
         "docs-app:ng-serve": "ng serve ng-app",
         "docs-app:publish": "firebase use dgp-ng-app && firebase deploy --only hosting:dgp-ng-app",
