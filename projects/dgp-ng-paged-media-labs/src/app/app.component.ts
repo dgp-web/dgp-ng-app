@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 @Component({
     selector: "dgp-ng-paged-media-labs",
     template: `
-        <div class="dgp-section-A4">
+        <div class="dgp-page-A4">
 
             <header class="dgp-page-header">
                 First section header
@@ -20,7 +20,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 
         </div>
 
-        <div class="dgp-section-A4">
+        <div class="dgp-page-A4">
 
             <header class="dgp-page-header dgp-page-header-02">
                 Second section header

@@ -1,3 +1,14 @@
+@page {
+    margin-top: 2cm;
+    margin-bottom: 2cm;
+}
+
+@media print {
+    body {
+        margin-top: 2cm;
+        margin-bottom: 2cm;
+    }
+}
 
 .dgp-page-A4, .dgp-page-A4-portrait, .dgp-section-A4, .dgp-section-A4-portrait {
     position: relative;
@@ -10,22 +21,33 @@
 
 .dgp-page-A4, .dgp-page-A4-portrait {
     height: 297mm;
+    overflow: hidden;
 }
 
 .dgp-section-A4, .dgp-section-A4-portrait {
     min-height: 297mm;
 }
 
+.dgp-page-header, .dgp-page-footer {
+    position: absolute;
+    width: 100%;
+    background: white;
+}
+
 .dgp-page-header {
     height: 35mm;
+    top: 0;
 }
 
 .dgp-page-content {
     flex-grow: 1;
-    padding: 0 1.45cm 0 1.45cm;
+    padding: 35mm 1.45cm 22.5mm 1.45cm;
+    page-break-inside: auto;
+    overflow: hidden;
 }
 
 .dgp-page-footer {
+    bottom: 0;
     height: 22.5mm;
 }
 

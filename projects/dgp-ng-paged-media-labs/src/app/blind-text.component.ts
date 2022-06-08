@@ -108,7 +108,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             display: flex;
             flex-direction: column;
             height: 100%;
-            overflow: auto;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
