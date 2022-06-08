@@ -1,14 +1,11 @@
 
-.dgp-document-A4 {
-    position: relative;
-}
-
 .dgp-page-A4, .dgp-page-A4-portrait, .dgp-section-A4, .dgp-section-A4-portrait {
     position: relative;
     width: 210mm;
     background: white;
-    padding: 3.5cm 1.45cm 2.25cm 1.45cm;
     page-break-after: always !important;
+    display: flex;
+    flex-direction: column;
 }
 
 .dgp-page-A4, .dgp-page-A4-portrait {
@@ -19,23 +16,20 @@
     min-height: 297mm;
 }
 
-.dgp-page-header, .dgp-page-footer {
-    position: absolute;
-    left: 0;
+.dgp-page-header {
+    height: 35mm;
 }
 
-.dgp-page-header {
-    top: 0;
+.dgp-page-content {
+    flex-grow: 1;
+    padding: 0 1.45cm 0 1.45cm;
 }
 
 .dgp-page-footer {
-    bottom: 0;
+    height: 22.5mm;
 }
 
 @media only screen {
-    .dgp-page-header, .dgp-page-footer {
-        position: absolute;
-    }
 
     .dgp-page-A4, .dgp-section-A4, .dgp-section-A4-portrait {
         border: 1px solid gainsboro;
