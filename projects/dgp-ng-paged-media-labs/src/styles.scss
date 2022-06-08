@@ -1,7 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../../dgp-ng-paged-media/src/lib/styles';
 
-@include dgp-A4-page();
+$demo-dgp-A4-page-config: (
+    "page-margins": (
+        "top": 2.5cm,
+        "bottom": 2.5cm,
+        "left": 2cm,
+        "right": 2.5cm
+    )
+);
+
+@include dgp-A4-page($demo-dgp-A4-page-config);
 
 html, body {
     display: flex;

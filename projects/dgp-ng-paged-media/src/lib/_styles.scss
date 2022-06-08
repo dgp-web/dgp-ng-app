@@ -1,9 +1,19 @@
-@mixin dgp-A4-page() {
+$default-dgp-A4-page-config: (
+    "page-margins": (
+        "top": 3.5cm,
+        "bottom": 2.25cm,
+        "left": 1.45cm,
+        "right": 1.45cm
+    )
+);
 
-    $top-margin: 3.5cm;
-    $bottom-margin: 2.25cm;
-    $left-margin: 1.45cm;
-    $right-margin: 1.45cm;
+@mixin dgp-A4-page($config: $default-dgp-A4-page-config) {
+
+    $page-margins: map-get($config, page-margins);
+    $top-margin: map-get($page-margins, top);
+    $bottom-margin: map-get($page-margins, bottom);
+    $left-margin: map-get($page-margins, left);
+    $right-margin: map-get($page-margins, right);
 
     .dgp-page-header {
         height: $top-margin;
