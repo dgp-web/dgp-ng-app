@@ -29,24 +29,28 @@
          * Use ctrl + P and select "no margins" in Firefox
          */
 
-        .dgp-page-A4 {
-            height: 297mm;
+        .dgp-document-A4 {
             width: 210mm;
             position: relative;
-            background: white;
         }
 
-        .dgp-section-A4, .dgp-section-A4-portrait {
-            min-height: 297mm;
-            width: 210mm;
+        .dgp-page-A4, .dgp-page-A4-portrait, .dgp-section-A4, .dgp-section-A4-portrait {
             position: relative;
             background: white;
             padding: 3.5cm 1.45cm 2.25cm 1.45cm;
             page-break-after: always !important;
         }
 
+        .dgp-page-A4, .dgp-page-A4-portrait {
+            height: 297mm;
+        }
+
+        .dgp-section-A4, .dgp-section-A4-portrait {
+            min-height: 297mm;
+        }
+
         .dgp-page-header, .dgp-page-footer {
-            position: fixed;
+            position: absolute;
         }
 
         .dgp-page-header {

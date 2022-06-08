@@ -39,6 +39,7 @@
         "postdgp-ng-paged-media:build:prod": "cpx projects/dgp-ng-paged-media/src/lib/_styles.scss dist/dgp-ng-paged-media",
         "dgp-ng-paged-media:publish": "npm publish dist/dgp-ng-paged-media",
         "dgp-ng-paged-media:test": "ng test --code-coverage dgp-ng-paged-media",
+        "dgp-ng-paged-media-labs:ng-serve": "ng serve dgp-ng-paged-media-labs --configuration development",
         "docs-app:build:prod": "ng build --configuration production ng-app",
         "docs-app:ng-serve": "ng serve ng-app",
         "docs-app:publish": "firebase use dgp-ng-app && firebase deploy --only hosting:dgp-ng-app",
