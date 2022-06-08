@@ -11,6 +11,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 
             <main class="dgp-page-content">
                 First section content
+                <dgp-blind-text></dgp-blind-text>
             </main>
 
             <footer class="dgp-page-footer">
