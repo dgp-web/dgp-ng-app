@@ -13,26 +13,17 @@ $default-dgp-A4-page-config: (
         width: 100%;
         background: white;
         flex-shrink: 0;
-    }
-
-    .dgp-paged-media-header, dgp-paged-media-header {
-        top: 0;
-    }
-
-    .dgp-paged-media-footer, dgp-paged-media-footer {
-        bottom: 0;
+        overflow: hidden;
     }
 
     .dgp-paged-media-content, dgp-paged-media-content {
         flex-grow: 1;
-        page-break-inside: auto;
         overflow: hidden;
     }
 
     .dgp-paged-media-page-or-section {
         position: relative;
         background: white;
-        page-break-after: always !important;
         display: flex;
         flex-direction: column;
     }
@@ -41,6 +32,14 @@ $default-dgp-A4-page-config: (
         overflow: hidden;
     }
 
+    /**
+     * Overrides
+     */
+    @media print {
+        .cdk-visually-hidden {
+            display: none;
+        }
+    }
 }
 
 @mixin dgp-A4-page($config: $default-dgp-A4-page-config) {

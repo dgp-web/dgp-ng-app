@@ -1,22 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../../dgp-ng-paged-media/src/lib/styles';
+@import '../../dgp-ng-charts/src/lib/styles';
 
 $demo-dgp-A4-page-config: (
     "page-margins": (
         "top": 2.5cm,
         "bottom": 2.5cm,
-        "left": 2cm,
-        "right": 2.5cm
+        "left": 1.5cm,
+        "right": 1.5cm
     )
 );
 
 @include dgp-A4-page($demo-dgp-A4-page-config);
 
 html, body {
-    display: flex;
+/*    display: flex;
     flex-direction: column;
     flex-grow: 1;
-    overflow: auto;
+    overflow: auto;*/
 }
 
 body {
