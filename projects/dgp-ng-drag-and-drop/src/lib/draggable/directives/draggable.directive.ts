@@ -13,6 +13,7 @@ import { Mutable } from "data-modeling";
 import { DgpView } from "dgp-ng-app";
 import { WithDragContext } from "../../models";
 import { ModelDragInfo } from "../../models/model-drag-info.model";
+import { DgpDragAndDropService } from "../../data/services/drag-and-drop.service";
 
 @Directive({selector: "[dgpDraggable]"})
 export class DgpDraggableDirective<TModel> extends DgpView<TModel> implements AfterViewInit, OnChanges, Mutable<WithDragContext> {
@@ -29,9 +30,16 @@ export class DgpDraggableDirective<TModel> extends DgpView<TModel> implements Af
     constructor(
         private readonly cd: ChangeDetectorRef,
         private readonly elementRef: ElementRef,
-        private readonly renderer: Renderer2
+        private readonly renderer: Renderer2,
+        private readonly dragAndDropService: DgpDragAndDropService
     ) {
         super();
+    }
+
+    ngAfterViewInit(): void {
+        this.elementRef.nativeElement.addEventListener("dragstart", this.dragStartHandler);
+        this.elementRef.nativeElement.addEventListener("dragend", this.onDragEnd);
+        this.elementRef.nativeElement.addEventListener("dragover", this.onDragOver);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -43,11 +51,20 @@ export class DgpDraggableDirective<TModel> extends DgpView<TModel> implements Af
     readonly dragStartHandler = (e: DragEvent) => {
         const modelDragInfo: ModelDragInfo<TModel> = {model: this.model, dragContext: this.dragContext};
         e.dataTransfer.setData("text/plain", JSON.stringify(modelDragInfo));
+        this.dragAndDropService.registerDragStart(modelDragInfo);
     };
 
-    ngAfterViewInit(): void {
-        this.elementRef.nativeElement.addEventListener("dragstart", this.dragStartHandler);
-    }
+    private readonly onDragOver = (e: DragEvent) => {
+        e.preventDefault();
+    };
+
+    private readonly onDragEnd = (e: DragEvent) => {
+        e.preventDefault();
+
+        if (!this.dragAndDropService.isContextDragged({dragContext: this.dragContext})) return;
+
+        this.dragAndDropService.registerDragEnd();
+    };
 
 }
 

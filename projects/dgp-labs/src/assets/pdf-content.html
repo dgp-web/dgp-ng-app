@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>PDF Content</title>
+    <base href="/">
+
+    <style>
+
+        html, body {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: auto;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /**
+         * Provide a mixin that helps create this!
+         *
+         * Use ctrl + P and select "no margins" in Firefox
+         */
+
+        .dgp-document-A4 {
+            width: 210mm;
+            position: relative;
+        }
+
+        .dgp-paged-media-page-A4, .dgp-page-A4-portrait, .dgp-paged-media-section-A4, .dgp-section-A4-portrait {
+            position: relative;
+            background: white;
+            padding: 3.5cm 1.45cm 2.25cm 1.45cm;
+            page-break-after: always !important;
+        }
+
+        .dgp-paged-media-page-A4, .dgp-page-A4-portrait {
+            height: 297mm;
+        }
+
+        .dgp-paged-media-section-A4, .dgp-section-A4-portrait {
+            min-height: 297mm;
+        }
+
+        .dgp-paged-media-header, .dgp-paged-media-footer {
+            position: absolute;
+        }
+
+        .dgp-paged-media-header {
+            top: 0;
+        }
+
+        .dgp-paged-media-footer {
+            bottom: 0;
+        }
+
+        @media only screen {
+            .dgp-paged-media-header, .dgp-paged-media-footer {
+                position: absolute;
+            }
+
+            .dgp-paged-media-page-A4, .dgp-paged-media-section-A4, .dgp-section-A4-portrait {
+                border: 1px solid gainsboro;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                margin: 16px auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="dgp-section-A4">
+    <div class="dgp-page-header">Header</div>
+    <div class="dgp-page-footer">Footer</div>
+
+    <h1>First page</h1>
+
+    <div style="color: red;">
+        Test
+    </div>
+
+    <div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+        <div>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+            <td>Inhalt</td>
+        </div>
+
+
+    </div>
+
+</div>
+
+<div class="dgp-section-A4">
+
+    <h1>Second page</h1>
+
+    <div style="color: red;">
+        Test
+    </div>
+
+    <h1>Test</h1>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+    "extends": "../../tslint.json",
+    "rules": {
+        "directive-selector": [
+            true,
+            "attribute",
+            "dgp",
+            "camelCase"
+        ],
+        "component-selector": [
+            true,
+            "element",
+            "dgp",
+            "kebab-case"
+        ],
+        "space-before-function-paren": false,
+        "variable-name": false,
+        "only-arrow-functions": false,
+        "one-variable-per-declaration": false,
+        "prefer-const": false,
+        "no-redundant-jsdoc": false,
+        "prefer-for-of": false,
+        "forin": false
+    }
+}

@@ -6,6 +6,7 @@
  * Data
  */
 export * from "./lib/data/drag-and-drop.module";
+export * from "./lib/data/services/drag-and-drop.service";
 
 /**
  * Draggable

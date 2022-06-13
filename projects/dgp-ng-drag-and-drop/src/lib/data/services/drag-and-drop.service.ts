@@ -18,6 +18,16 @@ export class DgpDragAndDropService {
         this.modelDragInfo$.next(null);
     }
 
+    getDraggedModel$<TModel>(payload: WithDragContext): Observable<TModel> {
+        return this.modelDragInfo$.pipe(
+            map(x => {
+                if (x && x.dragContext !== payload.dragContext) return null;
+
+                return x ? x.model : null;
+            })
+        );
+    }
+
     isModelDragged$(payload: WithDragContext): Observable<boolean> {
         return this.modelDragInfo$.pipe(
             map(x => {

@@ -36,6 +36,9 @@ jobs:
     - name: Build dgp-ng-charts
       run: npm run dgp-ng-charts:build:prod
 
+    - name: Build dgp-ng-paged-media
+      run: npm run dgp-ng-paged-media:build:prod
+
     - name: Publish dgp-ng-app to npm
       run: npm run dgp-ng-app:publish
       env:
@@ -58,6 +61,11 @@ jobs:
 
     - name: Publish dgp-ng-charts to npm
       run: npm run dgp-ng-charts:publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+    - name: Publish dgp-ng-paged-media to npm
+      run: npm run dgp-ng-paged-media:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 

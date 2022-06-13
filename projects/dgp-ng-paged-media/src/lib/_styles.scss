@@ -1,0 +1,92 @@
+$default-dgp-A4-page-config: (
+    "page-margins": (
+        "top": 3.5cm,
+        "bottom": 2.25cm,
+        "left": 1.45cm,
+        "right": 1.45cm
+    )
+);
+
+@mixin dgp-paged-media-common() {
+
+    .dgp-paged-media-header, dgp-paged-media-header, .dgp-paged-media-footer, dgp-paged-media-footer {
+        width: 100%;
+        background: white;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+    .dgp-paged-media-content, dgp-paged-media-content {
+        flex-grow: 1;
+        overflow: hidden;
+    }
+
+    .dgp-paged-media-page-or-section {
+        position: relative;
+        background: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dgp-paged-media-page {
+        overflow: hidden;
+    }
+
+    /**
+     * Overrides
+     */
+    @media print {
+        .cdk-visually-hidden {
+            display: none;
+        }
+    }
+}
+
+@mixin dgp-A4-page($config: $default-dgp-A4-page-config) {
+
+    @include dgp-paged-media-common();
+
+    $page-margins: map-get($config, page-margins);
+    $top-margin: map-get($page-margins, top);
+    $bottom-margin: map-get($page-margins, bottom);
+    $left-margin: map-get($page-margins, left);
+    $right-margin: map-get($page-margins, right);
+
+    $page-A4-height: 297mm;
+    $page-A4-width: 210mm;
+
+    .dgp-paged-media-header, dgp-paged-media-header {
+        height: $top-margin;
+    }
+
+    .dgp-paged-media-content, dgp-paged-media-content {
+        padding: 0 $right-margin 0 $left-margin;
+    }
+
+    .dgp-paged-media-footer, dgp-paged-media-footer {
+        height: $bottom-margin;
+    }
+
+    .dgp-paged-media-page-A4, dgp-paged-media-page-A4, .dgp-paged-media-section-A4, dgp-paged-media-section-A4 {
+        @extend .dgp-paged-media-page-or-section;
+        width: $page-A4-width;
+    }
+
+    .dgp-paged-media-page-A4, dgp-paged-media-page-A4 {
+        @extend .dgp-paged-media-page;
+        height: $page-A4-height;
+    }
+
+    .dgp-paged-media-section-A4 {
+        min-height: $page-A4-height;
+    }
+
+    @media only screen {
+        .dgp-paged-media-page-A4, dgp-paged-media-page-a4, .dgp-paged-media-section-A4, dgp-paged-media-section-A4 {
+            border: 1px solid gainsboro;
+            box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+            margin: 16px auto;
+        }
+    }
+
+}
