@@ -34,7 +34,7 @@ $default-dgp-A4-page-config: (
     }
 
     .dgp-hide-in-print {
-        visibility: hidden;
+
     }
 
     /**
@@ -101,6 +101,30 @@ $default-dgp-A4-page-config: (
             box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
             margin: 16px auto;
         }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
     }
+
+    body {
+        margin: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    @media only screen {
+        .dgp-root {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+    }
+
 
 }

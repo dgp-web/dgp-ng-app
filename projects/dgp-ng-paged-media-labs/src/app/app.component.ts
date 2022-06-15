@@ -52,10 +52,6 @@ import { timer } from "rxjs";
 
     `,
     styles: [`
-        :host {
-
-        }
-
         dgp-box-plot, dgp-connected-scatter-plot {
             width: 320px;
             height: 240px;
@@ -64,6 +60,7 @@ import { timer } from "rxjs";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements AfterViewInit {
+
     readonly boxGroups: Many<BoxGroup> = [{
         boxGroupId: "Box data",
         label: "First group",
@@ -103,7 +100,7 @@ export class AppComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         timer(0).subscribe(() => {
-          //  this.offscreenRenderer.createComponent(BlindTextComponent);
+            this.offscreenRenderer.createComponent(BlindTextComponent);
         });
     }
 
