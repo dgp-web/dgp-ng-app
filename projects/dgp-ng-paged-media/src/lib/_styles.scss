@@ -77,7 +77,7 @@ $default-dgp-A4-page-config: (
         height: $page-A4-height;
     }
 
-    .dgp-paged-media-section-A4 {
+    .dgp-paged-media-section-A4, dgp-paged-media-section-A4 {
         min-height: $page-A4-height;
     }
 

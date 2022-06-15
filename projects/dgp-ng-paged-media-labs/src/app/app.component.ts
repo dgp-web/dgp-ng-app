@@ -26,7 +26,7 @@ import { createGuid } from "dgp-ng-app";
             </dgp-paged-media-header>
 
             <dgp-paged-media-content>
-                <div style="display: flex; flex-wrap: wrapM">
+                <div style="display: flex; flex-wrap: wrap;">
                     <dgp-box-plot [model]="boxGroups"></dgp-box-plot>
                     <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
                 </div>
@@ -35,7 +35,22 @@ import { createGuid } from "dgp-ng-app";
             <dgp-paged-media-footer>
                 Second section footer
             </dgp-paged-media-footer>
-        </dgp-paged-media-page-A4>`,
+        </dgp-paged-media-page-A4>
+
+        <dgp-paged-media-section-A4>
+            <dgp-paged-media-header>
+                Dynamic-length section header
+            </dgp-paged-media-header>
+
+            <dgp-paged-media-content>
+
+            </dgp-paged-media-content>
+
+            <dgp-paged-media-footer>
+                Dynamic-length section footer
+            </dgp-paged-media-footer>
+        </dgp-paged-media-section-A4>
+    `,
     styles: [`
         :host {
         }
