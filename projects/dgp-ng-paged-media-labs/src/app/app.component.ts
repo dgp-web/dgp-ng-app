@@ -1,7 +1,20 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+    AfterViewInit,
+    ApplicationRef,
+    ChangeDetectionStrategy,
+    Component,
+    ComponentRef,
+    ElementRef,
+    Injectable,
+    Renderer2,
+    Type,
+    ViewContainerRef
+} from "@angular/core";
 import { BoxGroup, ConnectedScatterGroup } from "dgp-ng-charts";
 import { Many } from "data-modeling";
 import { createGuid } from "dgp-ng-app";
+import { BlindTextComponent } from "./blind-text.component";
+import { timer } from "rxjs";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -37,22 +50,10 @@ import { createGuid } from "dgp-ng-app";
             </dgp-paged-media-footer>
         </dgp-paged-media-page-A4>
 
-        <dgp-paged-media-section-A4>
-            <dgp-paged-media-header>
-                Dynamic-length section header
-            </dgp-paged-media-header>
-
-            <dgp-paged-media-content>
-
-            </dgp-paged-media-content>
-
-            <dgp-paged-media-footer>
-                Dynamic-length section footer
-            </dgp-paged-media-footer>
-        </dgp-paged-media-section-A4>
     `,
     styles: [`
         :host {
+
         }
 
         dgp-box-plot, dgp-connected-scatter-plot {
@@ -62,7 +63,7 @@ import { createGuid } from "dgp-ng-app";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
     readonly boxGroups: Many<BoxGroup> = [{
         boxGroupId: "Box data",
         label: "First group",
@@ -93,4 +94,53 @@ export class AppComponent {
             }]
         }]
     }];
+
+    constructor(
+        private readonly offscreenRenderer: OffscreenRenderer
+    ) {
+
+    }
+
+    ngAfterViewInit(): void {
+        timer(0).subscribe(() => {
+          //  this.offscreenRenderer.createComponent(BlindTextComponent);
+        });
+    }
+
+}
+
+@Injectable({
+    providedIn: "root"
+})
+export class OffscreenRenderer {
+
+    constructor(
+        private readonly appRef: ApplicationRef
+    ) {
+    }
+
+    createComponent<C>(componentType: Type<C>): ComponentRef<C> {
+        const componentRef = this.getViewContainerRef()
+            .createComponent(componentType);
+
+        const renderer = this.getRenderer();
+        renderer.addClass(componentRef.injector.get(ElementRef).nativeElement, "dgp-hide-in-print");
+
+        return componentRef;
+    }
+
+    getRenderer(): Renderer2 {
+        const rootComponentRef = this.appRef.components[0] as ComponentRef<any>;
+        return rootComponentRef.injector.get(Renderer2);
+    }
+
+    private getRootComponentRef<TRootComponent extends any>(): ComponentRef<TRootComponent> {
+        return this.appRef.components[0] as ComponentRef<TRootComponent>;
+    }
+
+    private getViewContainerRef() {
+        const rootComponentRef = this.getRootComponentRef();
+        return rootComponentRef.injector.get(ViewContainerRef);
+    }
+
 }

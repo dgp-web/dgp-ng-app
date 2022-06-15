@@ -26,10 +26,24 @@ $default-dgp-A4-page-config: (
         background: white;
         display: flex;
         flex-direction: column;
+        flex-shrink: 0;
     }
 
     .dgp-paged-media-page {
         overflow: hidden;
+    }
+
+    .dgp-hide-in-print {
+        visibility: hidden;
+    }
+
+    /**
+     * Utilities
+     */
+    @media print {
+        .dgp-hide-in-print {
+            display: none !important;
+        }
     }
 
     /**
