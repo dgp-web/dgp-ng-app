@@ -106,12 +106,15 @@ export class AppComponent implements AfterViewInit {
             const renderer = this.offscreenRenderer.getRenderer();
             renderer.setStyle(elRef.nativeElement, "width", "677.34px");
 
-            console.log(elRef);
-
             const refWidth = 677.34;
             const refHeight = 930.56;
 
-            console.log(elRef.nativeElement.getBoundingClientRect());
+            const actualHeight = elRef.nativeElement.getBoundingClientRect().height;
+            console.log("Available height in page: " + refHeight + "px");
+            console.log("Actual height of element: " + actualHeight + "px");
+            const neededPages = Math.ceil(actualHeight / refHeight);
+            console.log("Needed pages: " + neededPages);
+
         });
     }
 
