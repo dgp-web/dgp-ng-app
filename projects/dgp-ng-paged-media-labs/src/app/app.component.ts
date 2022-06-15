@@ -100,7 +100,18 @@ export class AppComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         timer(0).subscribe(() => {
-            this.offscreenRenderer.createComponent(BlindTextComponent);
+            const componentRef = this.offscreenRenderer.createComponent(BlindTextComponent);
+            const elRef = componentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
+
+            const renderer = this.offscreenRenderer.getRenderer();
+            renderer.setStyle(elRef.nativeElement, "width", "677.34px");
+
+            console.log(elRef);
+
+            const refWidth = 677.34;
+            const refHeight = 930.56;
+
+            console.log(elRef.nativeElement.getBoundingClientRect());
         });
     }
 
