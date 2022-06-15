@@ -15,6 +15,7 @@ import { Many } from "data-modeling";
 import { createGuid } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
+import { chunk } from "lodash";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -50,6 +51,17 @@ import { timer } from "rxjs";
             </dgp-paged-media-footer>
         </dgp-paged-media-page-A4>
 
+        <dgp-paged-media-page-A4 *ngFor="let items of chunks"
+                                 style="font-size: 16px;">
+            <dgp-paged-media-header></dgp-paged-media-header>
+            <dgp-paged-media-content>
+                <p *ngFor="let item of items"
+                   [innerHTML]="item.innerHTML"></p>
+
+            </dgp-paged-media-content>
+            <dgp-paged-media-footer></dgp-paged-media-footer>
+        </dgp-paged-media-page-A4>
+
     `,
     styles: [`
         dgp-box-plot, dgp-connected-scatter-plot {
@@ -60,6 +72,8 @@ import { timer } from "rxjs";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements AfterViewInit {
+
+    chunks: any[];
 
     readonly boxGroups: Many<BoxGroup> = [{
         boxGroupId: "Box data",
@@ -110,10 +124,21 @@ export class AppComponent implements AfterViewInit {
             const refHeight = 930.56;
 
             const actualHeight = elRef.nativeElement.getBoundingClientRect().height;
-            console.log("Available height in page: " + refHeight + "px");
-            console.log("Actual height of element: " + actualHeight + "px");
+            console.debug("Available height in page: " + refHeight + "px");
+            console.debug("Actual height of element: " + actualHeight + "px");
             const neededPages = Math.ceil(actualHeight / refHeight);
-            console.log("Needed pages: " + neededPages);
+            console.debug("Needed pages: " + neededPages);
+
+            const childHtmlElement = elRef.nativeElement.children;
+            console.debug(elRef.nativeElement.children);
+
+            /**
+             * Apply strategy for equal-size / fixed-size / similar-size items
+             */
+
+            this.chunks = chunk(childHtmlElement, neededPages);
+
+            // TODO: get chunked items
 
         });
     }
