@@ -5,7 +5,7 @@ import { createGuid } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
 import { BlindTableComponent } from "./blind-table.component";
-import { computePagedHTML, OffscreenRenderer, PagedHTMLContent, pageSizeA4 } from "dgp-ng-paged-media";
+import { computePagedHTML, OffscreenRenderer, pageContentSizeA4, PagedHTMLContent } from "dgp-ng-paged-media";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -114,7 +114,7 @@ export class AppComponent implements AfterViewInit {
             div.innerText = "A random div content";
 
             this.pagedHTML = computePagedHTML({
-                pageSize: pageSizeA4,
+                pageContentSize: pageContentSizeA4,
                 htmlSections: [{
                     type: "text",
                     nativeElement: textElRef.nativeElement
