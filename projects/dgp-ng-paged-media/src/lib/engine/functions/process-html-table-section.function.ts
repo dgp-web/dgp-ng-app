@@ -1,9 +1,7 @@
 import { HTMLSection, PagedHTMLComputationEngine, PageSize } from "../models";
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
-import { createHTMLTableElement } from "./create-html-paragraph-element.function";
 import { checkHeight } from "./check-height.function";
-
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -29,7 +27,7 @@ export function processHTMLTableSection(payload: {
         if (height <= engine.currentPageRemainingHeight) {
             table.appendChild(htmlItem);
         } else {
-            engine.currentPage.itemsOnPage.push(createHTMLTableElement(table));
+            engine.currentPage.itemsOnPage.push(table);
             engine.finishPage();
 
             document.body.removeChild(table);
@@ -39,7 +37,7 @@ export function processHTMLTableSection(payload: {
         document.body.removeChild(helpTable);
     });
 
-    engine.currentPage.itemsOnPage.push(createHTMLTableElement(table));
+    engine.currentPage.itemsOnPage.push(table);
     const height1 = table.getBoundingClientRect().height;
     engine.currentPageRemainingHeight -= height1;
     document.body.removeChild(table);

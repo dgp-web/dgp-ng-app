@@ -8,7 +8,7 @@ export function extractHTMLItemsFromSection(payload: HTMLSection): NodeListOf<HT
         case "text":
             return extractHTMLItemsFromTextSection(payload.nativeElement);
         case "table":
-            return extractHTMLItemsFromTableSection(payload.nativeElement) as any;
+            return extractHTMLItemsFromTableSection(payload.nativeElement);
         case "heading":
             return extractHTMLItemsFromHeadingSection(payload.nativeElement) as any;
     }

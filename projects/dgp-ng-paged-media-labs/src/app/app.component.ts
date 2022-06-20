@@ -5,7 +5,7 @@ import { createGuid } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
 import { BlindTableComponent } from "./blind-table.component";
-import { computePagedHTML, HTMlElementType, OffscreenRenderer, PagedHTML, pageSizeA4 } from "dgp-ng-paged-media";
+import { computePagedHTML, OffscreenRenderer, PagedHTML, pageSizeA4 } from "dgp-ng-paged-media";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -46,12 +46,25 @@ import { computePagedHTML, HTMlElementType, OffscreenRenderer, PagedHTML, pageSi
             <dgp-paged-media-content>
 
                 <ng-container *ngFor="let item of page.itemsOnPage">
-                    <ng-container [ngSwitch]="item.type">
-                        <p *ngSwitchCase="htmlElementTypeEnum.Paragraph"
-                           [innerHTML]="item.nativeElement.innerHTML | safe:'html'"></p>
+                    <ng-container [ngSwitch]="item.tagName">
+                        <p *ngSwitchCase="'P'"
+                           [innerHTML]="item.innerHTML | safe:'html'"></p>
 
-                        <table *ngSwitchCase="htmlElementTypeEnum.Table"
-                               [innerHTML]="item.nativeElement.innerHTML | safe:'html'"></table>
+                        <table *ngSwitchCase="'TABLE'"
+                               [innerHTML]="item.innerHTML | safe:'html'"></table>
+
+                        <h1 *ngSwitchCase="'H1'"
+                            [innerHTML]="item.innerHTML | safe:'html'"></h1>
+                        <h2 *ngSwitchCase="'H2'"
+                            [innerHTML]="item.innerHTML | safe:'html'"></h2>
+                        <h3 *ngSwitchCase="'H3'"
+                            [innerHTML]="item.innerHTML | safe:'html'"></h3>
+                        <h4 *ngSwitchCase="'H4'"
+                            [innerHTML]="item.innerHTML | safe:'html'"></h4>
+                        <h5 *ngSwitchCase="'H5'"
+                            [innerHTML]="item.innerHTML | safe:'html'"></h5>
+                        <h6 *ngSwitchCase="'H6'"
+                            [innerHTML]="item.innerHTML | safe:'html'"></h6>
                     </ng-container>
                 </ng-container>
 
@@ -73,7 +86,6 @@ export class AppComponent implements AfterViewInit {
 
     chunks: any[];
     pagedHTML: PagedHTML;
-    readonly htmlElementTypeEnum = HTMlElementType;
 
     readonly boxGroups: Many<BoxGroup> = [{
         boxGroupId: "Box data",
@@ -119,6 +131,12 @@ export class AppComponent implements AfterViewInit {
             const tableComponentRef = this.offscreenRenderer.createComponent(BlindTableComponent);
             const tableElRef = tableComponentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
 
+            const h1Element = document.createElement("h1");
+            h1Element.textContent = "This is a heading";
+            const div = document.createElement("div");
+            div.appendChild(h1Element);
+            document.body.appendChild(div);
+
             this.pagedHTML = computePagedHTML({
                 pageSize: pageSizeA4,
                 htmlSections: [{
@@ -127,6 +145,9 @@ export class AppComponent implements AfterViewInit {
                 }, {
                     type: "table",
                     nativeElement: tableElRef.nativeElement
+                }, {
+                    type: "heading",
+                    nativeElement: div
                 }]
             });
 
