@@ -3,7 +3,7 @@ import { Many } from "data-modeling";
 import { createPagedHTMLComputationEngine } from "./create-paged-html-computation-engine.function";
 import { processHTMLTextSection } from "./process-html-text-section.function";
 import { processHTMLTableSection } from "./process-html-table-section.function";
-import { processHTMLHeadingSection } from "./process-html-heading-section.function";
+import { processHTMLSingleItemSection } from "./process-html-single-item-section.function";
 
 export function computePagedHTML(payload: {
     readonly pageSize: PageSize;
@@ -19,8 +19,8 @@ export function computePagedHTML(payload: {
             processHTMLTextSection({engine, pageSize, htmlSection});
         } else if (htmlSection.type === "table") {
             processHTMLTableSection({engine, pageSize, htmlSection});
-        } else if (htmlSection.type === "heading") {
-            processHTMLHeadingSection({engine, pageSize, htmlSection});
+        } else if (htmlSection.type === "singleItem") {
+            processHTMLSingleItemSection({engine, pageSize, htmlSection});
         }
 
     });

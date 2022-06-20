@@ -65,6 +65,8 @@ import { computePagedHTML, OffscreenRenderer, PagedHTML, pageSizeA4 } from "dgp-
                             [innerHTML]="item.innerHTML | safe:'html'"></h5>
                         <h6 *ngSwitchCase="'H6'"
                             [innerHTML]="item.innerHTML | safe:'html'"></h6>
+                        <div *ngSwitchCase="'DIV'"
+                             [innerHTML]="item.innerHTML | safe:'html'"></div>
                     </ng-container>
                 </ng-container>
 
@@ -133,9 +135,9 @@ export class AppComponent implements AfterViewInit {
 
             const h1Element = document.createElement("h1");
             h1Element.textContent = "This is a heading";
+
             const div = document.createElement("div");
-            div.appendChild(h1Element);
-            document.body.appendChild(div);
+            div.innerText = "A random div content";
 
             this.pagedHTML = computePagedHTML({
                 pageSize: pageSizeA4,
@@ -146,7 +148,10 @@ export class AppComponent implements AfterViewInit {
                     type: "table",
                     nativeElement: tableElRef.nativeElement
                 }, {
-                    type: "heading",
+                    type: "singleItem",
+                    nativeElement: h1Element
+                }, {
+                    type: "singleItem",
                     nativeElement: div
                 }]
             });
