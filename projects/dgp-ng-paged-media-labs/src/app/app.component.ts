@@ -44,7 +44,7 @@ import { computePagedHTML, OffscreenRenderer, PagedHTMLContent, pageSizeA4 } fro
         <dgp-paged-media-page-A4 *ngFor="let page of pagedHTML?.pages">
             <dgp-paged-media-header></dgp-paged-media-header>
             <dgp-paged-media-content>
-                <dgp-html-page-content-view [model]="page"></dgp-html-page-content-view>
+                <dgp-paged-media-content-view [model]="page"></dgp-paged-media-content-view>
             </dgp-paged-media-content>
             <dgp-paged-media-footer></dgp-paged-media-footer>
         </dgp-paged-media-page-A4>

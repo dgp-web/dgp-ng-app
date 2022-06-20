@@ -3,7 +3,7 @@ import { DgpView } from "dgp-ng-app";
 import { HTMLPageContent } from "../../engine/models";
 
 @Component({
-    selector: "dgp-html-page-content-view",
+    selector: "dgp-paged-media-content-view",
     template: `
         <ng-container *ngFor="let item of model.itemsOnPage">
             <ng-container [ngSwitch]="item.tagName">
@@ -35,6 +35,6 @@ import { HTMLPageContent } from "../../engine/models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpHTMLPageContentViewComponent extends DgpView<HTMLPageContent> {
+export class DgpPagedMediaContentViewComponent extends DgpView<HTMLPageContent> {
 
 }

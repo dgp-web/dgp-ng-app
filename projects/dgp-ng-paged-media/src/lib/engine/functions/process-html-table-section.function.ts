@@ -1,7 +1,6 @@
 import { HTMLSection, PagedHTMLComputationEngine, PageSize } from "../models";
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
-import { checkHeight } from "./check-height.function";
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -17,12 +16,10 @@ export function processHTMLTableSection(payload: {
     let table = createHTMLWrapperElement("table", pageSize);
 
     htmlItems.forEach(htmlItem => {
-        // TODO: handle header row
         const helpTable = createHTMLWrapperElement("table", pageSize);
         helpTable.appendChild(htmlItem);
 
         const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
-        checkHeight({height, pageSize});
 
         if (height <= engine.currentPageRemainingHeight) {
             table.appendChild(htmlItem);
