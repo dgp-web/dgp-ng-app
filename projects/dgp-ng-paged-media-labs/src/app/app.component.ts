@@ -1,21 +1,11 @@
-import {
-    AfterViewInit,
-    ApplicationRef,
-    ChangeDetectionStrategy,
-    Component,
-    ComponentRef,
-    ElementRef,
-    Injectable,
-    Renderer2,
-    Type,
-    ViewContainerRef
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef } from "@angular/core";
 import { BoxGroup, ConnectedScatterGroup } from "dgp-ng-charts";
 import { Many } from "data-modeling";
-import { createGuid, isNullOrUndefined } from "dgp-ng-app";
+import { createGuid } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
 import { chunk } from "lodash";
+import { OffscreenRenderer } from "../../../dgp-ng-paged-media/src/lib/engine/services/offscreen-renderer.service";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -146,57 +136,3 @@ export class AppComponent implements AfterViewInit {
 
 }
 
-@Injectable({
-    providedIn: "root"
-})
-export class OffscreenRenderer<TRootComponent = any> {
-
-    private rootComponentRef: ComponentRef<TRootComponent>;
-    private viewContainerRef: ViewContainerRef;
-    private renderer: Renderer2;
-
-    constructor(
-        private readonly appRef: ApplicationRef
-    ) {
-    }
-
-    createComponent<C>(componentType: Type<C>): ComponentRef<C> {
-        const componentRef = this.getViewContainerRef()
-            .createComponent(componentType);
-
-        const renderer = this.getRenderer();
-        renderer.addClass(componentRef.injector.get(ElementRef).nativeElement, "dgp-hide-in-print");
-
-        return componentRef;
-    }
-
-    getRenderer(): Renderer2 {
-
-        if (isNullOrUndefined(this.renderer)) {
-            const rootComponentRef = this.getRootComponentRef();
-            this.renderer = rootComponentRef.injector.get(Renderer2);
-        }
-
-        return this.renderer;
-    }
-
-    private getRootComponentRef(): ComponentRef<TRootComponent> {
-
-        if (isNullOrUndefined(this.rootComponentRef)) {
-            this.rootComponentRef = this.appRef.components[0] as ComponentRef<TRootComponent>;
-        }
-
-        return this.rootComponentRef;
-    }
-
-    private getViewContainerRef() {
-
-        if (isNullOrUndefined(this.viewContainerRef)) {
-            const rootComponentRef = this.getRootComponentRef();
-            this.viewContainerRef = rootComponentRef.injector.get(ViewContainerRef);
-        }
-
-        return this.viewContainerRef;
-    }
-
-}
