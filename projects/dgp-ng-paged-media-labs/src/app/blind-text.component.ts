@@ -315,8 +315,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         :host {
             display: flex;
             flex-direction: column;
-            font-size: 14px;
-            line-height: 1.25;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush

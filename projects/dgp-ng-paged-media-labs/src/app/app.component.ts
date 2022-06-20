@@ -48,8 +48,14 @@ import { pageSizeA4 } from "../../../dgp-ng-paged-media/src/lib/engine/constants
                                  style="font-size: 16px;">
             <dgp-paged-media-header></dgp-paged-media-header>
             <dgp-paged-media-content>
-                <p *ngFor="let item of page.itemsOnPage"
-                   [innerHTML]="item.innerHTML"></p>
+
+                <ng-container *ngFor="let item of page.itemsOnPage">
+                    <ng-container [ngSwitch]="item.type">
+                        <p *ngSwitchCase="'p'"
+                           [innerHTML]="item.nativeElement.innerHTML"></p>
+                    </ng-container>
+                </ng-container>
+
 
             </dgp-paged-media-content>
             <dgp-paged-media-footer></dgp-paged-media-footer>
@@ -111,7 +117,6 @@ export class AppComponent implements AfterViewInit {
             const componentRef = this.offscreenRenderer.createComponent(BlindTextComponent);
             const elRef = componentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
 
-
             this.pagedHTML = computePagedHTML({
                 pageSize: pageSizeA4,
                 htmlSections: [{
@@ -119,28 +124,6 @@ export class AppComponent implements AfterViewInit {
                     nativeElement: elRef.nativeElement
                 }]
             });
-            /*
-
-                        const refWidth = 677.34;
-                        const refHeight = 930.56;
-
-                        const actualHeight = elRef.nativeElement.getBoundingClientRect().height;
-                        console.debug("Available height in page: " + refHeight + "px");
-                        console.debug("Actual height of element: " + actualHeight + "px");
-                        const neededPages = Math.ceil(actualHeight / refHeight);
-                        console.debug("Needed pages: " + neededPages);
-
-                        const childHtmlElement = elRef.nativeElement.children;
-                        console.debug(elRef.nativeElement.children);
-
-                        /!**
-                         * Apply strategy for equal-size / fixed-size / similar-size items
-                         *!/
-
-                        this.chunks = chunk(childHtmlElement, neededPages);
-            */
-
-            // TODO: get chunked items
 
         });
     }
@@ -175,9 +158,9 @@ export function computePagedHTML(payload: {
 
     payload.htmlSections.forEach(htmlSection => {
         /**
-         * Strategy for splitting up a section
+         * Strategy for splitting up a text section
          */
-        const htmlItems = htmlSection.nativeElement.querySelectorAll("p");
+        const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
         htmlItems.forEach(htmlItem => {
 
@@ -185,17 +168,18 @@ export function computePagedHTML(payload: {
              * We set the width so we get the correct height
              */
             htmlItem.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
-            htmlItem.style.fontSize = "16px";
 
             const height = htmlItem.getBoundingClientRect().height;
 
             if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
 
             if (height <= currentPageRemainingHeight) {
-                currentPage.itemsOnPage.push(htmlItem);
+                currentPage.itemsOnPage.push({
+                    type: "p",
+                    nativeElement: htmlItem
+                });
                 currentPageRemainingHeight -= height;
             } else {
-
                 /**
                  * Finalize HTML page
                  */
@@ -203,9 +187,11 @@ export function computePagedHTML(payload: {
                 currentPage = {itemsOnPage: []};
                 currentPageRemainingHeight = payload.pageSize.height;
 
-                currentPage.itemsOnPage.push(htmlItem);
+                currentPage.itemsOnPage.push({
+                    type: "p",
+                    nativeElement: htmlItem
+                });
                 currentPageRemainingHeight -= height;
-
             }
 
         });
@@ -213,4 +199,21 @@ export function computePagedHTML(payload: {
     });
 
     return {pages};
+}
+
+export function extractHTMLItemsFromTextSection(payload: HTMLElement) {
+    return payload.querySelectorAll("p");
+}
+
+
+export function extractHTMLItemsFromSection(payload: HTMLSection) {
+    switch (payload.type) {
+        case "text":
+            return extractHTMLItemsFromTextSection(payload.nativeElement);
+        case "table":
+            break;
+        case "heading":
+            break;
+
+    }
 }
