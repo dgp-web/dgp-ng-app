@@ -1,0 +1,45 @@
+import { HTMLSection, PagedHTMLComputationEngine, PageSize } from "../models";
+import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
+import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
+import { createHTMLTableElement } from "./create-html-paragraph-element.function";
+import { checkHeight } from "./check-height.function";
+
+export function processHTMLTableSection(payload: {
+    readonly engine: PagedHTMLComputationEngine;
+    readonly htmlSection: HTMLSection;
+    readonly pageSize: PageSize;
+}) {
+    const engine = payload.engine;
+    const htmlSection = payload.htmlSection;
+    const pageSize = payload.pageSize;
+
+    const htmlItems = extractHTMLItemsFromSection(htmlSection);
+
+    let table = createHTMLWrapperElement("table", pageSize);
+
+    htmlItems.forEach(htmlItem => {
+        // TODO: handle header row
+        const helpTable = createHTMLWrapperElement("table", pageSize);
+        helpTable.appendChild(htmlItem);
+
+        const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
+        checkHeight({height, pageSize});
+
+        if (height <= engine.currentPageRemainingHeight) {
+            table.appendChild(htmlItem);
+        } else {
+            engine.currentPage.itemsOnPage.push(createHTMLTableElement(table));
+            engine.finishPage();
+
+            document.body.removeChild(table);
+            table = createHTMLWrapperElement("table", pageSize);
+        }
+
+        document.body.removeChild(helpTable);
+    });
+
+    engine.currentPage.itemsOnPage.push(createHTMLTableElement(table));
+    const height1 = table.getBoundingClientRect().height;
+    engine.currentPageRemainingHeight -= height1;
+    document.body.removeChild(table);
+}
