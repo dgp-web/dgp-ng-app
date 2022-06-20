@@ -152,6 +152,13 @@ export function createHTMLParagraphElement(htmlItem: HTMLElement): HTMLElementCo
     };
 }
 
+export function createHTMLTablelement(htmlItem: HTMLElement): HTMLElementContainer {
+    return {
+        type: HTMlElementType.Table,
+        nativeElement: htmlItem
+    };
+}
+
 export interface PagedHTMLComputationEngineState {
     pages: HTMLPage[];
     currentPage: HTMLPage;
@@ -197,34 +204,62 @@ export function computePagedHTML(payload: {
     const engine = createPagedHTMLComputationEngine(payload);
 
     payload.htmlSections.forEach(htmlSection => {
-        /**
-         * Handle text section
-         */
-        const htmlItems = extractHTMLItemsFromSection(htmlSection);
-        htmlItems.forEach(htmlItem => {
-            /**
-             * We set the width so we get the correct height
-             */
-            htmlItem.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
 
-            const height = htmlItem.getBoundingClientRect().height;
-            if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
-
-            if (height <= engine.currentPageRemainingHeight) {
-                engine.currentPage.itemsOnPage.push(createHTMLParagraphElement(htmlItem));
-                engine.currentPageRemainingHeight -= height;
-            } else {
+        if (htmlSection.type === "text") {
+            const htmlItems = extractHTMLItemsFromSection(htmlSection);
+            htmlItems.forEach(htmlItem => {
                 /**
-                 * Finalize HTML page
+                 * We set the width so we get the correct height
                  */
-                engine.pages.push(engine.currentPage);
-                engine.reset();
+                htmlItem.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
 
-                engine.currentPage.itemsOnPage.push(createHTMLParagraphElement(htmlItem));
-                engine.currentPageRemainingHeight -= height;
-            }
+                const height = htmlItem.getBoundingClientRect().height;
+                if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
 
-        });
+                const container = createHTMLParagraphElement(htmlItem);
+
+                if (height <= engine.currentPageRemainingHeight) {
+                    engine.currentPage.itemsOnPage.push(container);
+                    engine.currentPageRemainingHeight -= height;
+                } else {
+                    /**
+                     * Finalize HTML page
+                     */
+                    engine.pages.push(engine.currentPage);
+                    engine.reset();
+
+                    engine.currentPage.itemsOnPage.push(container);
+                    engine.currentPageRemainingHeight -= height;
+                }
+            });
+
+        } else if (htmlSection.type === "table") {
+            // TODO: Iterate over rows and create a wrapper row in a table
+            const htmlItems = extractHTMLItemsFromSection(htmlSection);
+
+            let table = document.createElement("table");
+            table.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
+
+            htmlItems.forEach(htmlItem => {
+                // TODO: header row
+                table.appendChild(htmlItem);
+
+                const height = htmlItem.getBoundingClientRect().height;
+                if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+
+                if (height <= engine.currentPageRemainingHeight) {
+
+                } else {
+                    // TODO: get last item
+                }
+
+            });
+
+            // TODO: at last table
+
+        } else if (htmlSection.type === "heading") {
+
+        }
 
     });
 
@@ -242,7 +277,6 @@ export function extractHTMLItemsFromTableSection(payload: HTMLElement): any {
 export function extractHTMLItemsFromHeadingSection(payload: HTMLElement): any {
     throw new Error("Not implemented");
 }
-
 
 export function extractHTMLItemsFromSection(payload: HTMLSection): NodeListOf<HTMLElement> {
     switch (payload.type) {

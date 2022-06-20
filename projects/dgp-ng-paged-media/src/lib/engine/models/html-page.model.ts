@@ -1,12 +1,4 @@
-export enum HTMlElementType {
-    Paragraph = "paragraph",
-    Table = "table"
-}
-
-export interface HTMLElementContainer {
-    type: HTMlElementType;
-    nativeElement: HTMLElement;
-}
+import { HTMLElementContainer } from "./html-element-container.model";
 
 export interface HTMLPage {
     itemsOnPage: Array<HTMLElementContainer>;
