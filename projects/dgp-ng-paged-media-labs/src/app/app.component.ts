@@ -6,6 +6,8 @@ import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
 import { chunk } from "lodash";
 import { OffscreenRenderer } from "../../../dgp-ng-paged-media/src/lib/engine/services/offscreen-renderer.service";
+import { PageSize } from "../../../dgp-ng-paged-media/src/lib/engine/models/page-size.model";
+import { PagedHTML } from "../../../dgp-ng-paged-media/src/lib/engine/models/paged-html.model";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -99,7 +101,6 @@ export class AppComponent implements AfterViewInit {
     constructor(
         private readonly offscreenRenderer: OffscreenRenderer
     ) {
-
     }
 
     ngAfterViewInit(): void {
@@ -136,3 +137,20 @@ export class AppComponent implements AfterViewInit {
 
 }
 
+// scheduleTextSectionRendering
+
+export const getPagedContentElements = () => {
+    return {
+        pages: []
+    } as PagedHTML;
+};
+
+// TODO: text section, table section
+export function computePagedHTML(payload: {
+    readonly pageSize: PageSize;
+    readonly htmlItems: HTMLParagraphElement | HTMLTableElement | HTMLHeadingElement;
+}): PagedHTML {
+    return {
+        pages: []
+    };
+}
