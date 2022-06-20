@@ -4,10 +4,11 @@ import { Many } from "data-modeling";
 import { createGuid } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
-import { chunk } from "lodash";
 import { OffscreenRenderer } from "../../../dgp-ng-paged-media/src/lib/engine/services/offscreen-renderer.service";
 import { PageSize } from "../../../dgp-ng-paged-media/src/lib/engine/models/page-size.model";
 import { PagedHTML } from "../../../dgp-ng-paged-media/src/lib/engine/models/paged-html.model";
+import { HTMLPage } from "../../../dgp-ng-paged-media/src/lib/engine/models";
+import { pageSizeA4 } from "../../../dgp-ng-paged-media/src/lib/engine/constants";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -43,11 +44,11 @@ import { PagedHTML } from "../../../dgp-ng-paged-media/src/lib/engine/models/pag
             </dgp-paged-media-footer>
         </dgp-paged-media-page-A4>
 
-        <dgp-paged-media-page-A4 *ngFor="let items of chunks"
+        <dgp-paged-media-page-A4 *ngFor="let page of pagedHTML?.pages"
                                  style="font-size: 16px;">
             <dgp-paged-media-header></dgp-paged-media-header>
             <dgp-paged-media-content>
-                <p *ngFor="let item of items"
+                <p *ngFor="let item of page.itemsOnPage"
                    [innerHTML]="item.innerHTML"></p>
 
             </dgp-paged-media-content>
@@ -66,6 +67,7 @@ import { PagedHTML } from "../../../dgp-ng-paged-media/src/lib/engine/models/pag
 export class AppComponent implements AfterViewInit {
 
     chunks: any[];
+    pagedHTML: PagedHTML;
 
     readonly boxGroups: Many<BoxGroup> = [{
         boxGroupId: "Box data",
@@ -109,26 +111,34 @@ export class AppComponent implements AfterViewInit {
             const componentRef = this.offscreenRenderer.createComponent(BlindTextComponent);
             const elRef = componentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
 
-            const renderer = this.offscreenRenderer.getRenderer();
-            renderer.setStyle(elRef.nativeElement, "width", "677.34px");
 
-            const refWidth = 677.34;
-            const refHeight = 930.56;
+            this.pagedHTML = computePagedHTML({
+                pageSize: pageSizeA4,
+                htmlSections: [{
+                    type: "text",
+                    nativeElement: elRef.nativeElement
+                }]
+            });
+            /*
 
-            const actualHeight = elRef.nativeElement.getBoundingClientRect().height;
-            console.debug("Available height in page: " + refHeight + "px");
-            console.debug("Actual height of element: " + actualHeight + "px");
-            const neededPages = Math.ceil(actualHeight / refHeight);
-            console.debug("Needed pages: " + neededPages);
+                        const refWidth = 677.34;
+                        const refHeight = 930.56;
 
-            const childHtmlElement = elRef.nativeElement.children;
-            console.debug(elRef.nativeElement.children);
+                        const actualHeight = elRef.nativeElement.getBoundingClientRect().height;
+                        console.debug("Available height in page: " + refHeight + "px");
+                        console.debug("Actual height of element: " + actualHeight + "px");
+                        const neededPages = Math.ceil(actualHeight / refHeight);
+                        console.debug("Needed pages: " + neededPages);
 
-            /**
-             * Apply strategy for equal-size / fixed-size / similar-size items
-             */
+                        const childHtmlElement = elRef.nativeElement.children;
+                        console.debug(elRef.nativeElement.children);
 
-            this.chunks = chunk(childHtmlElement, neededPages);
+                        /!**
+                         * Apply strategy for equal-size / fixed-size / similar-size items
+                         *!/
+
+                        this.chunks = chunk(childHtmlElement, neededPages);
+            */
 
             // TODO: get chunked items
 
@@ -145,12 +155,62 @@ export const getPagedContentElements = () => {
     } as PagedHTML;
 };
 
+export interface HTMLSection {
+    readonly type: "text" | "table" | "heading";
+    readonly nativeElement: HTMLElement;
+}
+
 // TODO: text section, table section
 export function computePagedHTML(payload: {
     readonly pageSize: PageSize;
-    readonly htmlItems: HTMLParagraphElement | HTMLTableElement | HTMLHeadingElement;
+    readonly htmlSections: Many<HTMLSection>;
 }): PagedHTML {
-    return {
-        pages: []
+
+    const pages = new Array<HTMLPage>();
+    let currentPage: HTMLPage = {
+        itemsOnPage: []
     };
+
+    let currentPageRemainingHeight = payload.pageSize.height;
+
+    payload.htmlSections.forEach(htmlSection => {
+        /**
+         * Strategy for splitting up a section
+         */
+        const htmlItems = htmlSection.nativeElement.querySelectorAll("p");
+
+        htmlItems.forEach(htmlItem => {
+
+            /**
+             * We set the width so we get the correct height
+             */
+            htmlItem.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
+            htmlItem.style.fontSize = "16px";
+
+            const height = htmlItem.getBoundingClientRect().height;
+
+            if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+
+            if (height <= currentPageRemainingHeight) {
+                currentPage.itemsOnPage.push(htmlItem);
+                currentPageRemainingHeight -= height;
+            } else {
+
+                /**
+                 * Finalize HTML page
+                 */
+                pages.push(currentPage);
+                currentPage = {itemsOnPage: []};
+                currentPageRemainingHeight = payload.pageSize.height;
+
+                currentPage.itemsOnPage.push(htmlItem);
+                currentPageRemainingHeight -= height;
+
+            }
+
+        });
+
+    });
+
+    return {pages};
 }
