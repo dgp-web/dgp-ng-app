@@ -206,7 +206,6 @@ export function computePagedHTML(payload: {
              * We set the width so we get the correct height
              */
             htmlItem.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
-            htmlItem.style.fontSize = "16px";
 
             const height = htmlItem.getBoundingClientRect().height;
             if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
