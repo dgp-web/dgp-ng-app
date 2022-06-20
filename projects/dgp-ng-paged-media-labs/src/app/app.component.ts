@@ -268,7 +268,7 @@ export function computePagedHTML(payload: {
                     document.body.removeChild(table);
                     table = document.createElement("table");
                     table.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
-                    table.appendChild(htmlItem);
+                    document.body.appendChild(table);
                 }
 
                 document.body.removeChild(helpTable);
