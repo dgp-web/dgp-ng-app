@@ -9,6 +9,7 @@ import { PageSize } from "../../../dgp-ng-paged-media/src/lib/engine/models/page
 import { PagedHTML } from "../../../dgp-ng-paged-media/src/lib/engine/models/paged-html.model";
 import { HTMLElementContainer, HTMlElementType, HTMLPage } from "../../../dgp-ng-paged-media/src/lib/engine/models";
 import { pageSizeA4 } from "../../../dgp-ng-paged-media/src/lib/engine/constants";
+import { BlindTableComponent } from "./blind-table.component";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -51,9 +52,10 @@ import { pageSizeA4 } from "../../../dgp-ng-paged-media/src/lib/engine/constants
                 <ng-container *ngFor="let item of page.itemsOnPage">
                     <ng-container [ngSwitch]="item.type">
                         <p *ngSwitchCase="htmlElementTypeEnum.Paragraph"
-                           [innerHTML]="item.nativeElement.innerHTML"></p>
+                           [innerHTML]="item.nativeElement.innerHTML | safe:'html'"></p>
 
-                        <table *ngSwitchCase="htmlElementTypeEnum.Table"></table>
+                        <table *ngSwitchCase="htmlElementTypeEnum.Table"
+                               [innerHTML]="item.nativeElement.innerHTML | safe:'html'"></table>
                     </ng-container>
                 </ng-container>
 
@@ -115,15 +117,20 @@ export class AppComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         timer(0).subscribe(() => {
-            // TODO: schedule for drawing
-            const componentRef = this.offscreenRenderer.createComponent(BlindTextComponent);
-            const elRef = componentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
+            const textComponentRef = this.offscreenRenderer.createComponent(BlindTextComponent);
+            const textElRef = textComponentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
+
+            const tableComponentRef = this.offscreenRenderer.createComponent(BlindTableComponent);
+            const tableElRef = tableComponentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
 
             this.pagedHTML = computePagedHTML({
                 pageSize: pageSizeA4,
                 htmlSections: [{
                     type: "text",
-                    nativeElement: elRef.nativeElement
+                    nativeElement: textElRef.nativeElement
+                }, {
+                    type: "table",
+                    nativeElement: tableElRef.nativeElement
                 }]
             });
 
@@ -238,6 +245,7 @@ export function computePagedHTML(payload: {
             const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
             let table = document.createElement("table");
+            document.body.appendChild(table);
             table.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
 
             htmlItems.forEach(htmlItem => {
@@ -245,6 +253,7 @@ export function computePagedHTML(payload: {
                 const helpTable = document.createElement("table");
                 helpTable.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
                 helpTable.appendChild(htmlItem);
+                document.body.appendChild(helpTable);
 
                 const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
                 if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
@@ -253,25 +262,32 @@ export function computePagedHTML(payload: {
                     table.appendChild(htmlItem);
                 } else {
                     engine.currentPage.itemsOnPage.push(createHTMLTablelement(table));
+                    engine.pages.push(engine.currentPage);
                     engine.reset();
 
+                    document.body.removeChild(table);
                     table = document.createElement("table");
                     table.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
                     table.appendChild(htmlItem);
                 }
 
+                document.body.removeChild(helpTable);
             });
 
             // TODO: add last table
             engine.currentPage.itemsOnPage.push(createHTMLTablelement(table));
+            engine.pages.push(engine.currentPage);
             const height1 = table.getBoundingClientRect().height;
             engine.currentPageRemainingHeight -= height1;
+            document.body.removeChild(table);
 
         } else if (htmlSection.type === "heading") {
             // TODO
         }
 
     });
+
+    console.log(engine.pages);
 
     return {pages: engine.pages};
 }
@@ -281,7 +297,7 @@ export function extractHTMLItemsFromTextSection(payload: HTMLElement) {
 }
 
 export function extractHTMLItemsFromTableSection(payload: HTMLElement): any {
-    throw new Error("Not implemented");
+    return payload.querySelectorAll("tr");
 }
 
 export function extractHTMLItemsFromHeadingSection(payload: HTMLElement): any {
