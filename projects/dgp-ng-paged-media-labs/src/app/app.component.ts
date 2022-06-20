@@ -12,7 +12,7 @@ import {
 } from "@angular/core";
 import { BoxGroup, ConnectedScatterGroup } from "dgp-ng-charts";
 import { Many } from "data-modeling";
-import { createGuid } from "dgp-ng-app";
+import { createGuid, isNullOrUndefined } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
 import { chunk } from "lodash";
@@ -114,6 +114,7 @@ export class AppComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         timer(0).subscribe(() => {
+            // TODO: schedule for drawing
             const componentRef = this.offscreenRenderer.createComponent(BlindTextComponent);
             const elRef = componentRef.injector.get(ElementRef) as ElementRef<HTMLDivElement>;
 
@@ -148,7 +149,11 @@ export class AppComponent implements AfterViewInit {
 @Injectable({
     providedIn: "root"
 })
-export class OffscreenRenderer {
+export class OffscreenRenderer<TRootComponent = any> {
+
+    private rootComponentRef: ComponentRef<TRootComponent>;
+    private viewContainerRef: ViewContainerRef;
+    private renderer: Renderer2;
 
     constructor(
         private readonly appRef: ApplicationRef
@@ -166,17 +171,32 @@ export class OffscreenRenderer {
     }
 
     getRenderer(): Renderer2 {
-        const rootComponentRef = this.appRef.components[0] as ComponentRef<any>;
-        return rootComponentRef.injector.get(Renderer2);
+
+        if (isNullOrUndefined(this.renderer)) {
+            const rootComponentRef = this.getRootComponentRef();
+            this.renderer = rootComponentRef.injector.get(Renderer2);
+        }
+
+        return this.renderer;
     }
 
-    private getRootComponentRef<TRootComponent extends any>(): ComponentRef<TRootComponent> {
-        return this.appRef.components[0] as ComponentRef<TRootComponent>;
+    private getRootComponentRef(): ComponentRef<TRootComponent> {
+
+        if (isNullOrUndefined(this.rootComponentRef)) {
+            this.rootComponentRef = this.appRef.components[0] as ComponentRef<TRootComponent>;
+        }
+
+        return this.rootComponentRef;
     }
 
     private getViewContainerRef() {
-        const rootComponentRef = this.getRootComponentRef();
-        return rootComponentRef.injector.get(ViewContainerRef);
+
+        if (isNullOrUndefined(this.viewContainerRef)) {
+            const rootComponentRef = this.getRootComponentRef();
+            this.viewContainerRef = rootComponentRef.injector.get(ViewContainerRef);
+        }
+
+        return this.viewContainerRef;
     }
 
 }
