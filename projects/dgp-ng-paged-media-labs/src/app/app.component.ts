@@ -241,24 +241,34 @@ export function computePagedHTML(payload: {
             table.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
 
             htmlItems.forEach(htmlItem => {
-                // TODO: header row
-                table.appendChild(htmlItem);
+                // TODO: handle header row
+                const helpTable = document.createElement("table");
+                helpTable.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
+                helpTable.appendChild(htmlItem);
 
-                const height = htmlItem.getBoundingClientRect().height;
+                const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
                 if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
 
                 if (height <= engine.currentPageRemainingHeight) {
-
+                    table.appendChild(htmlItem);
                 } else {
-                    // TODO: get last item
+                    engine.currentPage.itemsOnPage.push(createHTMLTablelement(table));
+                    engine.reset();
+
+                    table = document.createElement("table");
+                    table.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
+                    table.appendChild(htmlItem);
                 }
 
             });
 
-            // TODO: at last table
+            // TODO: add last table
+            engine.currentPage.itemsOnPage.push(createHTMLTablelement(table));
+            const height1 = table.getBoundingClientRect().height;
+            engine.currentPageRemainingHeight -= height1;
 
         } else if (htmlSection.type === "heading") {
-
+            // TODO
         }
 
     });

@@ -5,11 +5,13 @@ import { RouterModule } from "@angular/router";
 import { BlindTextComponent } from "./blind-text.component";
 import { DgpPagedMediaA4Module } from "../../../dgp-ng-paged-media/src/lib/A4/paged-media-a4.module";
 import { DgpBoxPlotModule, DgpConnectedScatterPlotModule } from "dgp-ng-charts";
+import { BlindTableComponent } from "./blind-table.component";
 
 @NgModule({
     declarations: [
         AppComponent,
-        BlindTextComponent
+        BlindTextComponent,
+        BlindTableComponent
     ],
     imports: [
         BrowserModule,
