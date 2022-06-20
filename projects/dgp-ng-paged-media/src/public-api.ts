@@ -2,6 +2,7 @@
  * Public API Surface of dgp-ng-paged-media
  */
 
+export * from "./lib/A4/components/html-page-content-view.component";
 export * from "./lib/A4/components/paged-media-content.component";
 export * from "./lib/A4/components/paged-media-footer.component";
 export * from "./lib/A4/components/paged-media-header.component";

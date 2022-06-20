@@ -1,8 +1,8 @@
-import { HTMLPage } from "./html-page.model";
+import { HTMLPageContent } from "./html-page-content.model";
 
 export interface PagedHTMLComputationEngineState {
-    pages: HTMLPage[];
-    currentPage: HTMLPage;
+    pages: HTMLPageContent[];
+    currentPage: HTMLPageContent;
     currentPageRemainingHeight: number;
 }
 

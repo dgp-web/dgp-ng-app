@@ -5,7 +5,7 @@ import { createGuid } from "dgp-ng-app";
 import { BlindTextComponent } from "./blind-text.component";
 import { timer } from "rxjs";
 import { BlindTableComponent } from "./blind-table.component";
-import { computePagedHTML, OffscreenRenderer, PagedHTML, pageSizeA4 } from "dgp-ng-paged-media";
+import { computePagedHTML, OffscreenRenderer, PagedHTMLContent, pageSizeA4 } from "dgp-ng-paged-media";
 
 @Component({
     selector: "dgp-ng-paged-media-labs",
@@ -44,33 +44,7 @@ import { computePagedHTML, OffscreenRenderer, PagedHTML, pageSizeA4 } from "dgp-
         <dgp-paged-media-page-A4 *ngFor="let page of pagedHTML?.pages">
             <dgp-paged-media-header></dgp-paged-media-header>
             <dgp-paged-media-content>
-
-                <ng-container *ngFor="let item of page.itemsOnPage">
-                    <ng-container [ngSwitch]="item.tagName">
-                        <p *ngSwitchCase="'P'"
-                           [innerHTML]="item.innerHTML | safe:'html'"></p>
-
-                        <table *ngSwitchCase="'TABLE'"
-                               [innerHTML]="item.innerHTML | safe:'html'"></table>
-
-                        <h1 *ngSwitchCase="'H1'"
-                            [innerHTML]="item.innerHTML | safe:'html'"></h1>
-                        <h2 *ngSwitchCase="'H2'"
-                            [innerHTML]="item.innerHTML | safe:'html'"></h2>
-                        <h3 *ngSwitchCase="'H3'"
-                            [innerHTML]="item.innerHTML | safe:'html'"></h3>
-                        <h4 *ngSwitchCase="'H4'"
-                            [innerHTML]="item.innerHTML | safe:'html'"></h4>
-                        <h5 *ngSwitchCase="'H5'"
-                            [innerHTML]="item.innerHTML | safe:'html'"></h5>
-                        <h6 *ngSwitchCase="'H6'"
-                            [innerHTML]="item.innerHTML | safe:'html'"></h6>
-                        <div *ngSwitchCase="'DIV'"
-                             [innerHTML]="item.innerHTML | safe:'html'"></div>
-                    </ng-container>
-                </ng-container>
-
-
+                <dgp-html-page-content-view [model]="page"></dgp-html-page-content-view>
             </dgp-paged-media-content>
             <dgp-paged-media-footer></dgp-paged-media-footer>
         </dgp-paged-media-page-A4>
@@ -87,7 +61,7 @@ import { computePagedHTML, OffscreenRenderer, PagedHTML, pageSizeA4 } from "dgp-
 export class AppComponent implements AfterViewInit {
 
     chunks: any[];
-    pagedHTML: PagedHTML;
+    pagedHTML: PagedHTMLContent;
 
     readonly boxGroups: Many<BoxGroup> = [{
         boxGroupId: "Box data",

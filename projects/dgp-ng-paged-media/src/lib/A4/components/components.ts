@@ -3,8 +3,10 @@ import { DgpPagedMediaHeaderComponent } from "./paged-media-header.component";
 import { DgpPagedMediaFooterComponent } from "./paged-media-footer.component";
 import { DgpPagedMediaContentComponent } from "./paged-media-content.component";
 import { DgpPagedMediaSectionA4Component } from "./paged-media-section-A4.component";
+import { DgpHTMLPageContentViewComponent } from "./html-page-content-view.component";
 
 export const components = [
+    DgpHTMLPageContentViewComponent,
     DgpPagedMediaContentComponent,
     DgpPagedMediaFooterComponent,
     DgpPagedMediaHeaderComponent,

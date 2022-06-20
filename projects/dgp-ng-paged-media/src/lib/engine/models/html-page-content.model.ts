@@ -1,3 +1,3 @@
-export interface HTMLPage {
+export interface HTMLPageContent {
     itemsOnPage: Array<HTMLElement>;
 }

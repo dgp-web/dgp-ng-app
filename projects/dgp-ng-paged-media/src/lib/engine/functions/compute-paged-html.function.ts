@@ -1,4 +1,4 @@
-import { HTMLSection, PagedHTML, PageSize } from "../models";
+import { HTMLSection, PagedHTMLContent, PageSize } from "../models";
 import { Many } from "data-modeling";
 import { createPagedHTMLComputationEngine } from "./create-paged-html-computation-engine.function";
 import { processHTMLTextSection } from "./process-html-text-section.function";
@@ -8,7 +8,7 @@ import { processHTMLSingleItemSection } from "./process-html-single-item-section
 export function computePagedHTML(payload: {
     readonly pageSize: PageSize;
     readonly htmlSections: Many<HTMLSection>;
-}): PagedHTML {
+}): PagedHTMLContent {
 
     const engine = createPagedHTMLComputationEngine(payload);
     const pageSize = payload.pageSize;
