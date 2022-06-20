@@ -5,7 +5,6 @@ import { createHTMLParagraphElement, createHTMLTableElement } from "./create-htm
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 
-// TODO: text section, table section
 export function computePagedHTML(payload: {
     readonly pageSize: PageSize;
     readonly htmlSections: Many<HTMLSection>;
@@ -18,13 +17,10 @@ export function computePagedHTML(payload: {
         if (htmlSection.type === "text") {
             const htmlItems = extractHTMLItemsFromSection(htmlSection);
             htmlItems.forEach(htmlItem => {
-                /**
-                 * We set the width so we get the correct height
-                 */
                 htmlItem.style.width = payload.pageSize.width + payload.pageSize.widthUnit;
 
                 const height = htmlItem.getBoundingClientRect().height;
-                if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+                checkHeight({height, pageSize: payload.pageSize});
 
                 const container = createHTMLParagraphElement(htmlItem);
 
@@ -32,11 +28,7 @@ export function computePagedHTML(payload: {
                     engine.currentPage.itemsOnPage.push(container);
                     engine.currentPageRemainingHeight -= height;
                 } else {
-                    /**
-                     * Finalize HTML page
-                     */
-                    engine.pages.push(engine.currentPage);
-                    engine.reset();
+                    engine.finishPage();
 
                     engine.currentPage.itemsOnPage.push(container);
                     engine.currentPageRemainingHeight -= height;
@@ -55,14 +47,13 @@ export function computePagedHTML(payload: {
                 helpTable.appendChild(htmlItem);
 
                 const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
-                if (height > payload.pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+                checkHeight({height, pageSize: payload.pageSize});
 
                 if (height <= engine.currentPageRemainingHeight) {
                     table.appendChild(htmlItem);
                 } else {
                     engine.currentPage.itemsOnPage.push(createHTMLTableElement(table));
-                    engine.pages.push(engine.currentPage);
-                    engine.reset();
+                    engine.finishPage();
 
                     document.body.removeChild(table);
                     table = createHTMLWrapperElement("table", payload.pageSize);
@@ -72,7 +63,6 @@ export function computePagedHTML(payload: {
             });
 
             engine.currentPage.itemsOnPage.push(createHTMLTableElement(table));
-            engine.pages.push(engine.currentPage);
             const height1 = table.getBoundingClientRect().height;
             engine.currentPageRemainingHeight -= height1;
             document.body.removeChild(table);
@@ -83,6 +73,16 @@ export function computePagedHTML(payload: {
 
     });
 
+    engine.finishPage();
     return {pages: engine.pages};
 }
 
+export function checkHeight(payload: {
+    readonly height: number;
+    readonly pageSize: PageSize;
+}) {
+    const height = payload.height;
+    const pageSize = payload.pageSize;
+
+    if (height > pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+}

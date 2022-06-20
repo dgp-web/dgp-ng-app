@@ -8,7 +8,8 @@ export function createPagedHTMLComputationEngine(payload: {
 
     const engine: Partial<PagedHTMLComputationEngine> = state;
 
-    engine.reset = () => {
+    engine.finishPage = () => {
+        engine.pages.push(engine.currentPage);
         state.currentPage = {itemsOnPage: []};
         state.currentPageRemainingHeight = payload.pageSize.height;
     };
