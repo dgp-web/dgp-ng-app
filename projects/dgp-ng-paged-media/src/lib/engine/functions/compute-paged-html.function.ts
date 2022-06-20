@@ -3,6 +3,7 @@ import { Many } from "data-modeling";
 import { createPagedHTMLComputationEngine } from "./create-paged-html-computation-engine.function";
 import { processHTMLTextSection } from "./process-html-text-section.function";
 import { processHTMLTableSection } from "./process-html-table-section.function";
+import { processHTMLHeadingSection } from "./process-html-heading-section.function";
 
 export function computePagedHTML(payload: {
     readonly pageSize: PageSize;
@@ -19,7 +20,7 @@ export function computePagedHTML(payload: {
         } else if (htmlSection.type === "table") {
             processHTMLTableSection({engine, pageSize, htmlSection});
         } else if (htmlSection.type === "heading") {
-            // TODO
+            processHTMLHeadingSection({engine, pageSize, htmlSection});
         }
 
     });

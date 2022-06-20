@@ -8,4 +8,5 @@ export * from "./extract-html-items-from-text-section.function";
 export { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 export { processHTMLTextSection } from "./process-html-text-section.function";
 export { processHTMLTableSection } from "./process-html-table-section.function";
+export { processHTMLHeadingSection } from "./process-html-heading-section.function";
 export { checkHeight } from "./check-height.function";

@@ -4,6 +4,7 @@ import { createHTMLWrapperElement } from "./create-html-wrapper-element.function
 import { createHTMLTableElement } from "./create-html-paragraph-element.function";
 import { checkHeight } from "./check-height.function";
 
+
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
     readonly htmlSection: HTMLSection;
