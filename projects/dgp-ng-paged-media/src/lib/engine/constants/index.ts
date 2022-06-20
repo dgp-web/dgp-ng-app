@@ -1,1 +1,1 @@
-export * from "./page-size-A4.constant";
+export * from "./page-content-size-A4.constant";

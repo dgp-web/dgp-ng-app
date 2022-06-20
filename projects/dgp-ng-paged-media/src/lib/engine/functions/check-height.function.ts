@@ -1,11 +1,11 @@
-import { PageSize } from "../models";
+import { PageContentSize } from "../models";
 
 export function checkHeight(payload: {
     readonly height: number;
-    readonly pageSize: PageSize;
+    readonly pageContentSize: PageContentSize;
 }) {
     const height = payload.height;
-    const pageSize = payload.pageSize;
+    const pageContentSize = payload.pageContentSize;
 
-    if (height > pageSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+    if (height > pageContentSize.height) throw Error("Item height exceeds page height. This is not allowed.");
 }

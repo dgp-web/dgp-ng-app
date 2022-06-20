@@ -1,11 +1,11 @@
-import { HTMLPageContent, PagedHTMLComputationEngineState, PageSize } from "../models";
+import { HTMLPageContent, PageContentSize, PagedHTMLComputationEngineState } from "../models";
 
 export function createPagedHTMLComputationEngineState(payload: {
-    readonly pageSize: PageSize;
+    readonly pageContentSize: PageContentSize;
 }): PagedHTMLComputationEngineState {
     const pages = new Array<HTMLPageContent>();
     const currentPage: HTMLPageContent = {itemsOnPage: []};
-    const currentPageRemainingHeight = payload.pageSize.height;
+    const currentPageRemainingHeight = payload.pageContentSize.height;
 
     return {pages, currentPage, currentPageRemainingHeight};
 }

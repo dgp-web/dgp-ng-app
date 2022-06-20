@@ -1,22 +1,22 @@
-import { HTMLSection, PagedHTMLComputationEngine, PageSize } from "../models";
+import { HTMLSection, PagedHTMLComputationEngine, PageContentSize } from "../models";
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
     readonly htmlSection: HTMLSection;
-    readonly pageSize: PageSize;
+    readonly pageContentSize: PageContentSize;
 }) {
     const engine = payload.engine;
     const htmlSection = payload.htmlSection;
-    const pageSize = payload.pageSize;
+    const pageContentSize = payload.pageContentSize;
 
     const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
-    let table = createHTMLWrapperElement("table", pageSize);
+    let table = createHTMLWrapperElement("table", pageContentSize);
 
     htmlItems.forEach(htmlItem => {
-        const helpTable = createHTMLWrapperElement("table", pageSize);
+        const helpTable = createHTMLWrapperElement("table", pageContentSize);
         helpTable.appendChild(htmlItem);
 
         const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
@@ -28,7 +28,7 @@ export function processHTMLTableSection(payload: {
             engine.finishPage();
 
             document.body.removeChild(table);
-            table = createHTMLWrapperElement("table", pageSize);
+            table = createHTMLWrapperElement("table", pageContentSize);
         }
 
         document.body.removeChild(helpTable);
