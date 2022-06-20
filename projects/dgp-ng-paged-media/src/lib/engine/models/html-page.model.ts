@@ -1,5 +1,10 @@
+export enum HTMlElementType {
+    Paragraph = "paragraph",
+    Table = "table"
+}
+
 export interface HTMLElementContainer {
-    type: "p";
+    type: HTMlElementType;
     nativeElement: HTMLElement;
 }
 
