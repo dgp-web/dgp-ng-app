@@ -1,5 +1,8 @@
+export * from "./html-element-type.model";
+export * from "./html-element-container.model";
 export * from "./html-page.model";
-export * from "./page-size.model";
+export * from "./html-section.model";
 export * from "./paged-html.model";
-export { HTMlElementType } from "./html-element-type.model";
-export { HTMLElementContainer } from "./html-element-container.model";
+export * from "./page-size.model";
+export * from "./paged-html-computation-engine.model";
+export * from "./paged-html-computation-engine-state.model";
