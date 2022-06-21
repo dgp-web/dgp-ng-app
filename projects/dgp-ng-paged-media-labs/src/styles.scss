@@ -13,17 +13,17 @@ $demo-dgp-A4-page-config: (
 
 @include dgp-A4-page($demo-dgp-A4-page-config);
 
-html, body {
-/*    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow: auto;*/
+dgp-ng-paged-media-labs {
+    @extend .dgp-root;
 }
 
 body {
-    margin: 0;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
 }
 
-* {
-    box-sizing: border-box;
+p {
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
