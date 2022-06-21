@@ -1,4 +1,4 @@
-import { HTMLSection, PagedHTMLComputationEngine, PageContentSize } from "../models";
+import { HTMLSection, PageContentSize, PagedHTMLComputationEngine } from "../models";
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 
@@ -14,6 +14,9 @@ export function processHTMLTableSection(payload: {
     const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
     let table = createHTMLWrapperElement("table", pageContentSize);
+    htmlSection.nativeElement.classList.forEach(x => {
+        table.classList.add(x);
+    });
 
     htmlItems.forEach(htmlItem => {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
@@ -29,6 +32,9 @@ export function processHTMLTableSection(payload: {
 
             document.body.removeChild(table);
             table = createHTMLWrapperElement("table", pageContentSize);
+            htmlSection.nativeElement.classList.forEach(x => {
+                table.classList.add(x);
+            });
         }
 
         document.body.removeChild(helpTable);
