@@ -1,6 +1,7 @@
 import { HTMLSection, PageContentSize, PagedHTMLComputationEngine } from "../models";
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
+import { getOuterHeight } from "./get-outer-height.function";
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -23,7 +24,7 @@ export function processHTMLTableSection(payload: {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
         helpTable.appendChild(htmlItem);
 
-        const height = table.getBoundingClientRect().height + helpTable.getBoundingClientRect().height;
+        const height = getOuterHeight(table);
 
         if (height <= engine.currentPageRemainingHeight) {
             table.appendChild(htmlItem);
@@ -36,13 +37,14 @@ export function processHTMLTableSection(payload: {
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
+            table.appendChild(htmlItem);
         }
 
         document.body.removeChild(helpTable);
     });
 
     engine.currentPage.itemsOnPage.push(table);
-    const height1 = table.getBoundingClientRect().height;
+    const height1 = getOuterHeight(table);
     engine.currentPageRemainingHeight -= height1;
     document.body.removeChild(table);
 }

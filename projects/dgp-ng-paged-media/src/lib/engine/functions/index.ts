@@ -9,3 +9,4 @@ export { processHTMLTextSection } from "./process-html-text-section.function";
 export { processHTMLTableSection } from "./process-html-table-section.function";
 export { processHTMLSingleItemSection } from "./process-html-single-item-section.function";
 export { checkHeight } from "./check-height.function";
+export { getOuterHeight } from "./get-outer-height.function";

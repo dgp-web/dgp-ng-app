@@ -1,6 +1,7 @@
-import { HTMLSection, PagedHTMLComputationEngine, PageContentSize } from "../models";
+import { HTMLSection, PageContentSize, PagedHTMLComputationEngine } from "../models";
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { checkHeight } from "./check-height.function";
+import { getOuterHeight } from "./get-outer-height.function";
 
 export function processHTMLTextSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -15,7 +16,7 @@ export function processHTMLTextSection(payload: {
     htmlItems.forEach(htmlItem => {
         htmlItem.style.width = pageContentSize.width + pageContentSize.widthUnit;
 
-        const height = htmlItem.getBoundingClientRect().height;
+        const height = getOuterHeight(htmlItem);
         checkHeight({height, pageContentSize});
 
         if (height <= engine.currentPageRemainingHeight) {
@@ -30,3 +31,4 @@ export function processHTMLTextSection(payload: {
     });
 
 }
+
