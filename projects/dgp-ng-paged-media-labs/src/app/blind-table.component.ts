@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 @Component({
     selector: "dgp-blind-table",
     template: `
-        <table>
+        <table class="test">
             <tr>
                 <td>Column 01</td>
                 <td>Column 02</td>

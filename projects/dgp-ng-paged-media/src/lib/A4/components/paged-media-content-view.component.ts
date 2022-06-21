@@ -11,7 +11,8 @@ import { HTMLPageContent } from "../../engine/models";
                    [innerHTML]="item.innerHTML | safe:'html'"></p>
 
                 <table *ngSwitchCase="'TABLE'"
-                       [innerHTML]="item.innerHTML | safe:'html'"></table>
+                       [innerHTML]="item.innerHTML | safe:'html'"
+                       [classList]="item.classList"></table>
 
                 <h1 *ngSwitchCase="'H1'"
                     [innerHTML]="item.innerHTML | safe:'html'"></h1>
