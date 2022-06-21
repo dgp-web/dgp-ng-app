@@ -11,10 +11,11 @@ export function processHTMLTableSection(payload: {
     const htmlSection = payload.htmlSection;
     const pageContentSize = payload.pageContentSize;
 
+    const refTable = htmlSection.nativeElement.querySelector("table");
     const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
     let table = createHTMLWrapperElement("table", pageContentSize);
-    htmlSection.nativeElement.classList.forEach(x => {
+    refTable.classList.forEach(x => {
         table.classList.add(x);
     });
 
@@ -32,7 +33,7 @@ export function processHTMLTableSection(payload: {
 
             document.body.removeChild(table);
             table = createHTMLWrapperElement("table", pageContentSize);
-            htmlSection.nativeElement.classList.forEach(x => {
+            refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
         }
