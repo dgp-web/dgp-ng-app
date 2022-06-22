@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { BehaviorSubject, combineLatest } from "rxjs";
-import { debounceTime, map, shareReplay } from "rxjs/operators";
+import { debounceTime, map, shareReplay, take } from "rxjs/operators";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
 import { createConnectedScatterPlotScales } from "../functions";
 import {
@@ -110,7 +110,7 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     showDotTooltips = true;
 
     @Input()
-    autosize = true;
+    autoResize = true;
 
     @Input()
     model: readonly ConnectedScatterGroup[];
@@ -128,7 +128,9 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     selectedDotKey: string = null;
 
     readonly scales$ = combineLatest([
-        this.size$.pipe(filterNotNullOrUndefined()),
+        this.autoResize
+            ? this.size$.pipe(filterNotNullOrUndefined())
+            : this.size$.pipe(filterNotNullOrUndefined(), take(1)),
         this.model$,
         this.xAxis$,
         this.yAxis$,

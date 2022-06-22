@@ -34,17 +34,20 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                     Connected scatterplot
                 </dgp-docs-section-title>
 
-                <dgp-connected-scatter-plot [model]="connectedScatterGroups"></dgp-connected-scatter-plot>
+                <dgp-connected-scatter-plot [model]="connectedScatterGroups"
+                                            [autoResize]="false"></dgp-connected-scatter-plot>
 
                 <dgp-connected-scatter-plot [model]="logConnectedScatterGroups"
-                                            yAxisScaleType="Logarithmic"></dgp-connected-scatter-plot>
+                                            yAxisScaleType="Logarithmic"
+                                            [autoResize]="false"></dgp-connected-scatter-plot>
 
                 <dgp-connected-scatter-plot [model]="connectedScatterGroups"
                                             [controlLines]="connectedScatterPlotControlLines"
                                             xAxisMin="1"
                                             xAxisMax="6"
                                             yAxisMin="2"
-                                            yAxisMax="9"></dgp-connected-scatter-plot>
+                                            yAxisMax="9"
+                                            [autoResize]="false"></dgp-connected-scatter-plot>
                 <dgp-docs-section-title>
                     Box plot
                 </dgp-docs-section-title>
@@ -55,16 +58,19 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                               [showXAxisGridLines]="false"
                               [showYAxisGridLines]="false"
                               [showOutlierTooltips]="false"
-                              yAxisMax="17"></dgp-box-plot>
+                              yAxisMax="17"
+                              [autoResize]="false"></dgp-box-plot>
 
                 <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
-                              [model]="logBoxGroups"></dgp-box-plot>
+                              [model]="logBoxGroups"
+                              [autoResize]="false"></dgp-box-plot>
 
                 <dgp-box-plot [model]="boxGroups"
                               [controlLines]="boxPlotControlLines"
                               chartTitle="Title"
                               yAxisTitle="Title for the y axis"
-                              xAxisTitle="Title for the x axis">
+                              xAxisTitle="Title for the x axis"
+                              [autoResize]="false">
 
                     <ng-container right-legend>
                         Right legend

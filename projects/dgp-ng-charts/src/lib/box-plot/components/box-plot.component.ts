@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { Box, BoxGroup, BoxPlot, BoxPlotControlLine, BoxPlotSelection } from "../models";
-import { debounceTime, map, shareReplay } from "rxjs/operators";
+import { debounceTime, map, shareReplay, take } from "rxjs/operators";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { createBoxPlotScales } from "../functions";
 import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
@@ -144,6 +144,9 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     showOutlierTooltips = true;
 
     @Input()
+    autoResize = true;
+
+    @Input()
     model: ReadonlyArray<BoxGroup>;
     readonly model$ = observeAttribute$(this as DgpBoxPlotComponent, "model");
 
@@ -167,7 +170,9 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     readonly size$ = new BehaviorSubject<Size>(null);
 
     readonly scales$ = combineLatest([
-        this.size$.pipe(filterNotNullOrUndefined()),
+        this.autoResize
+            ? this.size$.pipe(filterNotNullOrUndefined())
+            : this.size$.pipe(filterNotNullOrUndefined(), take(1)),
         this.model$,
         this.yAxis$,
         this.xAxisTickFormat$,
