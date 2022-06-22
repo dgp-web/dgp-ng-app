@@ -50,7 +50,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [yAxisMax]="model.yAxisMax"
                                                 [yAxisStep]="model.yAxisStep"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
-                                                [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
+                                                [controlLines]="model.controlLines"
+                                                [showDotTooltips]="false"></dgp-connected-scatter-plot>
 
 
                 </ng-template>

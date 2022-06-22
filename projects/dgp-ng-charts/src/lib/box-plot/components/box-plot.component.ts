@@ -91,7 +91,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                         <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
                             <ng-container
                                 *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
-                                <g [matTooltip]="getOutlierTooltip(box, i)"
+                                <g *ngIf="showOutlierTooltips; else noTooltip"
+                                   [matTooltip]="getOutlierTooltip(box, i)"
                                    dgpBoxPlotOutlier
                                    [scales]="scales$ | async"
                                    [boxGroup]="boxGroup"
@@ -100,6 +101,17 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                    dgpDot
                                    [model]="box.outlierShape">
                                 </g>
+                                <ng-template #noTooltip>
+                                    <g dgpBoxPlotOutlier
+                                       [scales]="scales$ | async"
+                                       [boxGroup]="boxGroup"
+                                       [box]="box"
+                                       [value]="value"
+                                       dgpDot
+                                       [model]="box.outlierShape">
+                                    </g>
+                                </ng-template>
+
                             </ng-container>
                         </ng-container>
                     </svg:g>
@@ -127,6 +139,9 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     readonly trackByBoxId = trackByBoxId;
     readonly trackByBoxOutlierKey = trackByBoxOutlierKey;
     readonly trackByBoxPlotControlLineId = trackByBoxPlotControlLineId;
+
+    @Input()
+    showOutlierTooltips = true;
 
     @Input()
     model: ReadonlyArray<BoxGroup>;

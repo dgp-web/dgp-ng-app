@@ -54,7 +54,8 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                         <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
                             <ng-container *ngIf="showVertices(group, series)">
 
-                                <g [matTooltip]="getTooltip(group, series, dot)"
+                                <g *ngIf="showDotTooltips; else noTooltip"
+                                   [matTooltip]="getTooltip(group, series, dot)"
                                    dgpScatterPlotDot
                                    [dot]="dot"
                                    [series]="series"
@@ -63,6 +64,19 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                                    dgpDot
                                    [model]="getShape(group, series)">
                                 </g>
+
+                                <ng-template #noTooltip>
+                                    <g dgpScatterPlotDot
+                                       [dot]="dot"
+                                       [series]="series"
+                                       [group]="group"
+                                       [scales]="scales$ | async"
+                                       dgpDot
+                                       [model]="getShape(group, series)">
+                                    </g>
+                                </ng-template>
+
+
                             </ng-container>
 
                         </ng-container>
@@ -91,6 +105,12 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     readonly trackByConnectedScatterGroupId = trackByConnectedScatterGroupId;
     readonly trackByConnectedScatterSeriesId = trackByConnectedScatterSeriesId;
     readonly trackByConnectedPlotControlLineId = trackByConnectedPlotControlLineId;
+
+    @Input()
+    showDotTooltips = true;
+
+    @Input()
+    autosize = true;
 
     @Input()
     model: readonly ConnectedScatterGroup[];
