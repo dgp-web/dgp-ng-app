@@ -154,8 +154,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
-    selectedDotKey: string = null;
-
     readonly scales$ = combineLatest([
         this.autoResize
             ? this.size$.pipe(filterNotNullOrUndefined())
@@ -176,24 +174,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
         })),
         shareReplay(1)
     );
-
-    highlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
-        this.selectedDotKey = this.getDotKey(group, series, dot);
-    }
-
-    unhighlightDot(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
-        this.selectedDotKey = null;
-    }
-
-    isDotHighlighted(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
-        return this.selectedDotKey === this.getDotKey(group, series, dot);
-    }
-
-    private getDotKey(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot): string {
-        return group.connectedScatterGroupId
-            + "." + series.connectedScatterSeriesId
-            + "." + dot.x + "." + dot.y;
-    }
 
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         let result = "";
