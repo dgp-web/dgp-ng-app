@@ -40,17 +40,13 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                 <svg:g xmlns:svg="http://www.w3.org/2000/svg"
                        *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
                     <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
+
                         <path *ngIf="showEdges(group, series)"
                               dgpLineChartLine
                               [series]="series"
                               [group]="group"
                               [scales]="scales$ | async"></path>
-                    </ng-container>
-                </svg:g>
 
-                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-                       *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
-                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
                         <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
                             <ng-container *ngIf="showVertices(group, series)">
 
@@ -80,7 +76,6 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                             </ng-container>
 
                         </ng-container>
-
                     </ng-container>
                 </svg:g>
 
