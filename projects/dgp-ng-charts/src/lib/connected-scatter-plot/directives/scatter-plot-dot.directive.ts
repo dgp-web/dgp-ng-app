@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
-import { ConnectedScatterGroup, ConnectedScatterSeries, Dot } from "../models";
+import { ConnectedScatterSeries, Dot } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { svgShapeDefaultXOffset, svgShapeDefaultYOffset } from "../../shapes/constants";
 
@@ -13,9 +13,6 @@ export class DgpScatterPlotDotDirective implements OnChanges {
     series: ConnectedScatterSeries;
 
     @Input()
-    group: ConnectedScatterGroup;
-
-    @Input()
     scales: ConnectedScatterPlotScales;
 
     constructor(private readonly elementRef: ElementRef,
@@ -24,7 +21,7 @@ export class DgpScatterPlotDotDirective implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        if (changes.dot || changes.series || changes.group || changes.scales) {
+        if (changes.dot || changes.series || changes.scales) {
             const referenceXOffset = svgShapeDefaultXOffset;
             const referenceYOffset = svgShapeDefaultYOffset;
 
@@ -34,7 +31,7 @@ export class DgpScatterPlotDotDirective implements OnChanges {
             this.renderer.setStyle(this.elementRef.nativeElement, "transform",
                 "translate(" + (x - referenceXOffset) + "px, " + (y - referenceYOffset) + "px)"
             );
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.series.colorHex || this.group.colorHex);
+            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", this.series.colorHex);
         }
 
     }

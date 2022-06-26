@@ -90,7 +90,6 @@ export function resolveConnectedScatterGroups(payload: Many<ConnectedScatterGrou
                                    dgpScatterPlotDot
                                    [dot]="dot"
                                    [series]="series"
-                                   [group]="group"
                                    [scales]="scales"
                                    dgpDot
                                    [model]="series.shape">
@@ -100,7 +99,6 @@ export function resolveConnectedScatterGroups(payload: Many<ConnectedScatterGrou
                                     <g dgpScatterPlotDot
                                        [dot]="dot"
                                        [series]="series"
-                                       [group]="group"
                                        [scales]="scales"
                                        dgpDot
                                        [model]="series.shape">
