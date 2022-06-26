@@ -38,7 +38,12 @@ export function resolveConnectedScatterGroups(payload: Many<ConnectedScatterGrou
                         ? series.showEdges
                         : notNullOrUndefined(group.showEdges)
                             ? group.showEdges
-                            : true
+                            : true,
+                    colorHex: notNullOrUndefined(series.colorHex)
+                        ? series.colorHex
+                        : notNullOrUndefined(group.colorHex)
+                            ? group.colorHex
+                            : null,
                 };
             })
         };
@@ -75,7 +80,6 @@ export function resolveConnectedScatterGroups(payload: Many<ConnectedScatterGrou
                         <path *ngIf="series.showEdges"
                               dgpLineChartLine
                               [series]="series"
-                              [group]="group"
                               [scales]="scales"></path>
 
                         <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">

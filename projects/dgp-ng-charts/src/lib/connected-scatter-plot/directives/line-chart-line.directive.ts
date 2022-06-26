@@ -1,17 +1,14 @@
-import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
-import { ConnectedScatterGroup, ConnectedScatterSeries, Dot } from "../models";
+import { AfterViewInit, Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
+import { ConnectedScatterSeries, Dot } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { line } from "d3";
 import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 
 @Directive({selector: "[dgpLineChartLine]"})
-export class DgpLineChartLineDirective implements OnChanges {
+export class DgpLineChartLineDirective implements AfterViewInit, OnChanges {
 
     @Input()
     series: ConnectedScatterSeries;
-
-    @Input()
-    group: ConnectedScatterGroup;
 
     @Input()
     scales: ConnectedScatterPlotScales;
@@ -20,15 +17,19 @@ export class DgpLineChartLineDirective implements OnChanges {
                 private readonly renderer: Renderer2) {
     }
 
+    ngAfterViewInit(): void {
+        this.renderer.setAttribute(this.elementRef.nativeElement, "fill", "transparent");
+        this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "1.5");
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
 
-        if (changes.series || changes.group || changes.scales) {
-
-            this.renderer.setAttribute(this.elementRef.nativeElement, "fill", "transparent");
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.series.colorHex || this.group.colorHex);
-            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "1.5");
+        if (changes.series) {
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.series.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.series.stroke));
+        }
 
+        if (changes.series || changes.scales) {
             const createLine = line<Dot>().x(dot => {
                 return this.scales.xAxisScale(dot.x);
             }).y(dot => {
