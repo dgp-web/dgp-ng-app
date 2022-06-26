@@ -136,7 +136,7 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
         this.yAxis$,
         this.controlLines$
     ]).pipe(
-        debounceTime(250),
+        debounceTime(0),
         map(combination => createConnectedScatterPlotScales({
             containerHeight: combination[0].height,
             containerWidth: combination[0].width,

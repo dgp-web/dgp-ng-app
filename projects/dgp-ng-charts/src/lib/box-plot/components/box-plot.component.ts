@@ -178,7 +178,7 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
         this.xAxisTickFormat$,
         this.controlLines$
     ]).pipe(
-        debounceTime(250),
+        debounceTime(0),
         map(combination => createBoxPlotScales({
             containerHeight: combination[0].height,
             containerWidth: combination[0].width,
