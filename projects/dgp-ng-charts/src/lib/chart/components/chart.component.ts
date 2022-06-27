@@ -128,9 +128,9 @@ export class DgpChartComponent extends DgpChartComponentBase {
     readonly config$ = observeAttribute$(this as DgpChartComponent, "config");
     readonly margin$ = this.config$.pipe(map(x => x.margin));
 
-    readonly containerDOMRect$ = new BehaviorSubject<DOMRectReadOnly>(null);
+    readonly size$ = new BehaviorSubject<Size>(null);
 
-    readonly viewBox$ = this.containerDOMRect$.pipe(
+    readonly viewBox$ = this.size$.pipe(
         filterNotNullOrUndefined(),
         map(containerDOMRect => getChartViewBox({containerDOMRect}))
     );
@@ -155,6 +155,7 @@ export class DgpChartComponent extends DgpChartComponentBase {
     }
 
     onResize(payload: Size) {
+        this.size$.next(payload);
         this.sizeChanged.emit(payload);
     }
 

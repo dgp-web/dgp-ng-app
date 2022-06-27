@@ -93,7 +93,7 @@ export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase imp
         this.model$,
         this.yAxis$
     ]).pipe(
-        debounceTime(250),
+        debounceTime(0),
         map(combination => createBarChartScales({
             containerHeight: combination[0].height,
             containerWidth: combination[0].width,
