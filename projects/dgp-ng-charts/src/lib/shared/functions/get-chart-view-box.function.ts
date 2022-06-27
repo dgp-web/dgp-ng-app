@@ -1,5 +1,7 @@
+import { Size } from "dgp-ng-app";
+
 export function getChartViewBox(payload: {
-    readonly containerDOMRect: DOMRectReadOnly;
+    readonly containerDOMRect: Size;
 }): string {
     const rect = payload.containerDOMRect;
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { DgpChartComponentBase } from "./chart.component-base";
 import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { AxisScales } from "../../shared/models";
@@ -7,6 +7,7 @@ import { map } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
 import { getChartViewBox } from "../../shared/functions/get-chart-view-box.function";
 import { getPlotRootTransform } from "../../shared/functions/get-plot-root-transform.function";
+import { DgpPlotContainerComponent } from "../../plot-container/components/plot-container.component";
 
 @Component({
     selector: "dgp-chart",
@@ -120,6 +121,9 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
 })
 export class DgpChartComponent extends DgpChartComponentBase {
 
+    @ViewChild(DgpPlotContainerComponent, {read: ElementRef, static: true})
+    elRef: ElementRef<HTMLDivElement>;
+
     @Output()
     readonly sizeChanged = new EventEmitter<Size>();
 
@@ -128,9 +132,9 @@ export class DgpChartComponent extends DgpChartComponentBase {
     readonly config$ = observeAttribute$(this as DgpChartComponent, "config");
     readonly margin$ = this.config$.pipe(map(x => x.margin));
 
-    readonly containerDOMRect$ = new BehaviorSubject<DOMRectReadOnly>(null);
+    readonly size$ = new BehaviorSubject<Size>(null);
 
-    readonly viewBox$ = this.containerDOMRect$.pipe(
+    readonly viewBox$ = this.size$.pipe(
         filterNotNullOrUndefined(),
         map(containerDOMRect => getChartViewBox({containerDOMRect}))
     );
@@ -155,6 +159,7 @@ export class DgpChartComponent extends DgpChartComponentBase {
     }
 
     onResize(payload: Size) {
+        this.size$.next(payload);
         this.sizeChanged.emit(payload);
     }
 
