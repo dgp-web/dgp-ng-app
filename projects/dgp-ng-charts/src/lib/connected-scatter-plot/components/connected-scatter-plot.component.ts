@@ -2,53 +2,16 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { debounceTime, map, shareReplay, take } from "rxjs/operators";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
-import { createConnectedScatterPlotScales } from "../functions";
+import { createConnectedScatterPlotScales, resolveConnectedScatterGroups } from "../functions";
 import {
     defaultConnectedScatterPlotConfig,
     trackByConnectedPlotControlLineId,
     trackByConnectedScatterGroupId,
     trackByConnectedScatterSeriesId
 } from "../constants";
-import { filterNotNullOrUndefined, isNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
+import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
-import { Many } from "data-modeling";
-import { Shape } from "../../shapes/models";
-
-export function resolveConnectedScatterGroups(payload: Many<ConnectedScatterGroup>): Many<ConnectedScatterGroup> {
-    if (isNullOrUndefined(payload)) return null;
-
-    return payload.map(group => {
-        return {
-            ...group,
-            series: group.series.map(series => {
-                return {
-                    ...series,
-                    shape: notNullOrUndefined(series.shape)
-                        ? series.shape
-                        : notNullOrUndefined(group.shape)
-                            ? group.shape
-                            : Shape.Circle,
-                    showVertices: notNullOrUndefined(series.showVertices)
-                        ? series.showVertices
-                        : notNullOrUndefined(group.showVertices)
-                            ? group.showVertices
-                            : true,
-                    showEdges: notNullOrUndefined(series.showEdges)
-                        ? series.showEdges
-                        : notNullOrUndefined(group.showEdges)
-                            ? group.showEdges
-                            : true,
-                    colorHex: notNullOrUndefined(series.colorHex)
-                        ? series.colorHex
-                        : notNullOrUndefined(group.colorHex)
-                            ? group.colorHex
-                            : null,
-                };
-            })
-        };
-    });
-}
 
 @Component({
     selector: "dgp-connected-scatter-plot",
