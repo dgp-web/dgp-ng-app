@@ -4,6 +4,7 @@ import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlot
 import { observeAttribute$, Size } from "dgp-ng-app";
 import { combineLatest, Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
+import { mapStrokeToArray } from "../../stroke/functions";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -39,6 +40,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
     @Input()
     scales: AxisScales;
+    readonly scales$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "scales");
 
     @Input()
     size: Size;
@@ -62,7 +64,8 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         this.subscription = combineLatest([
             this.model$,
             this.controlLines$,
-            this.size$
+            this.size$,
+            this.scales$
         ]).pipe(
             debounceTime(50)
         ).subscribe(combination => {
@@ -95,7 +98,8 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                         if (series.showEdges) {
                             ctx.beginPath();
                             ctx.lineWidth = 1.5;
-                            ctx.setLineDash([]);
+                            const stroke = mapStrokeToArray(series.stroke);
+                            ctx.setLineDash(stroke);
                             series.dots.forEach((dot, index) => {
 
                                 const x = this.scales.xAxisScale(dot.x);
@@ -120,14 +124,15 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                     ctx.beginPath();
                     ctx.lineWidth = 1.5;
 
+
                     const y = this.scales.yAxisScale(controlLine.value);
                     const x0 = this.scales.xAxisScale.range()[0];
                     const x1 = this.scales.xAxisScale.range()[1];
 
 
                     ctx.strokeStyle = controlLine.colorHex;
-                    // TODO: Compute depending on dash
-                    ctx.setLineDash([16, 8]);
+                    const stroke = mapStrokeToArray(controlLine.stroke);
+                    ctx.setLineDash(stroke);
 
                     ctx.moveTo(x0, y);
                     ctx.lineTo(x1, y);

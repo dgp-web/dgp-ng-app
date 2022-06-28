@@ -1,7 +1,6 @@
 import { Stroke } from "../models";
-import { Many } from "data-modeling";
 
-export function mapStrokeToArray(stroke: Stroke): Many<number> {
+export function mapStrokeToArray(stroke: Stroke): number[] {
     switch (stroke) {
         default:
         case Stroke.Default:
