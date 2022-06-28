@@ -1,8 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from "@angular/core";
 import { AxisScales } from "../../shared/models";
 import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
-import { observeAttribute$ } from "dgp-ng-app";
-import { Subscription } from "rxjs";
+import { observeAttribute$, Size } from "dgp-ng-app";
+import { combineLatest, Subscription } from "rxjs";
+import { debounceTime } from "rxjs/operators";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -34,11 +35,14 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     @ViewChild("canvas", {read: ElementRef})
     canvasElementRef: ElementRef<HTMLCanvasElement>;
 
-    private modelSubscription: Subscription;
-    private controlLinesSubscription: Subscription;
+    private subscription: Subscription;
 
     @Input()
     scales: AxisScales;
+
+    @Input()
+    size: Size;
+    readonly size$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "size");
 
     @Input()
     config: ConnectedScatterPlotConfig;
@@ -52,9 +56,20 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     readonly controlLines$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "controlLines");
 
     ngAfterViewInit(): void {
-        this.modelSubscription = this.model$.subscribe(model => {
-            const canvas = this.canvasElementRef.nativeElement;
-            const ctx = canvas.getContext("2d");
+        const canvas = this.canvasElementRef.nativeElement;
+        const ctx = canvas.getContext("2d");
+
+        const subscription = combineLatest([
+            this.model$,
+            this.controlLines$,
+            this.size$
+        ]).pipe(
+            debounceTime(250)
+        ).subscribe(combination => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const model = combination[0];
+            const controlLines = combination[1];
 
             if (model) {
                 model.forEach(group => {
@@ -93,11 +108,6 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 });
             }
 
-        });
-        this.controlLinesSubscription = this.controlLines$.subscribe(controlLines => {
-            const canvas = this.canvasElementRef.nativeElement;
-            const ctx = canvas.getContext("2d");
-
             if (controlLines) {
                 controlLines.forEach(controlLine => {
                     ctx.beginPath();
@@ -120,11 +130,11 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             }
 
         });
+
     }
 
     ngOnDestroy(): void {
-        if (!this.modelSubscription?.closed) this.modelSubscription.unsubscribe();
-        if (!this.controlLinesSubscription?.closed) this.controlLinesSubscription.unsubscribe();
+        if (!this.subscription?.closed) this.subscription.unsubscribe();
     }
 
 }

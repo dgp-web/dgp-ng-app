@@ -74,7 +74,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                                                 [scales]="scales"
                                                 [config]="config"
                                                 [model]="model"
-                                                [controlLines]="controlLines"></dgp-connected-scatter-plot-data-canvas>
+                                                [controlLines]="controlLines"
+                                                [size]="size"></dgp-connected-scatter-plot-data-canvas>
     `,
     styles: [`
         :host {
