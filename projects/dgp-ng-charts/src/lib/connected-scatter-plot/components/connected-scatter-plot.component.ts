@@ -22,7 +22,7 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
             </ng-container>
 
             <!-- TODO: This needs some cleaning up. Passing around unneeded models and scales is weird -->
-            <dgp-svg-connected-scatter-plot *ngIf="rendererEnum.SVG"
+            <dgp-svg-connected-scatter-plot *ngIf="renderer === rendererEnum.SVG"
                                             [size]="size$ | async"
                                             [showXAxisGridLines]="showXAxisGridLines"
                                             [showYAxisGridLines]="showYAxisGridLines"
@@ -32,7 +32,7 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                             [showDotTooltips]="showDotTooltips"
                                             [config]="config"></dgp-svg-connected-scatter-plot>
 
-            <dgp-hybrid-connected-scatter-plot *ngIf="rendererEnum.Hybrid"
+            <dgp-hybrid-connected-scatter-plot *ngIf="renderer === rendererEnum.Hybrid"
                                                [size]="size$ | async"
                                                [showXAxisGridLines]="showXAxisGridLines"
                                                [showYAxisGridLines]="showYAxisGridLines"
