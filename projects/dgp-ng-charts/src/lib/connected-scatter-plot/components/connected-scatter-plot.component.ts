@@ -32,7 +32,15 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                             [showDotTooltips]="showDotTooltips"
                                             [config]="config"></dgp-svg-connected-scatter-plot>
 
-            <!-- dgp-hybrid-connected-scatter-plot -->
+            <dgp-hybrid-connected-scatter-plot *ngIf="rendererEnum.Hybrid"
+                                               [size]="size$ | async"
+                                               [showXAxisGridLines]="showXAxisGridLines"
+                                               [showYAxisGridLines]="showYAxisGridLines"
+                                               [model]="resolvedModel$ | async"
+                                               [controlLines]="controlLines"
+                                               [scales]="scales$ | async"
+                                               [showDotTooltips]="showDotTooltips"
+                                               [config]="config"></dgp-hybrid-connected-scatter-plot>
 
         </dgp-chart>
     `,

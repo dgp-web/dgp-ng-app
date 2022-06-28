@@ -86,6 +86,9 @@ export {
 export {
     DgpSvgConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/svg-connected-scatter-plot.component";
+export {
+    DgpHybridConnectedScatterPlotComponent
+} from "./lib/connected-scatter-plot/components/hybrid-connected-scatter-plot.component";
 
 // Directives
 export {
