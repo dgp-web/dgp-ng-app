@@ -7,6 +7,35 @@ import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computeStarPoints } from "../../shapes/functions/compute-star-points.function";
+import { computeCrossPoints } from "../../shapes/functions/compute-cross-points.function";
+import { computeRhombusPoints } from "../../shapes/functions/compute-rhombus-points.function";
+import { computeTrianglePoints } from "../../shapes/functions/compute-triangle-points.function";
+import { computeTriangleDownPoints } from "../../shapes/functions/compute-triangle-down-points.function";
+import { computeTriangleRightPoints } from "../../shapes/functions/compute-triangle-right-points.function";
+import { computeTriangleLeftPoints } from "../../shapes/functions/compute-triangle-left-points.function";
+
+export function computePointsForShape(payload: {
+    readonly shape: Shape;
+} & Size) {
+
+    switch (payload.shape) {
+        case Shape.Cross:
+            return computeCrossPoints(payload);
+        case Shape.Rhombus:
+            return computeRhombusPoints(payload);
+        case Shape.Triangle:
+            return computeTrianglePoints(payload);
+        case Shape.TriangleDown:
+            return computeTriangleDownPoints(payload);
+        case Shape.TriangleLeft:
+            return computeTriangleLeftPoints(payload);
+        case Shape.TriangleRight:
+            return computeTriangleRightPoints(payload);
+        case Shape.Star:
+            return computeStarPoints(payload);
+    }
+
+}
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -81,41 +110,56 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                     group.series.forEach(series => {
                         ctx.fillStyle = series.colorHex;
                         ctx.strokeStyle = series.colorHex;
+                        ctx.lineWidth = 1.5;
 
                         if (series.showVertices) {
                             series.dots.forEach(dot => {
+                                ctx.beginPath();
 
-                                if (series.shape === Shape.Star) {
-                                    const size = 10;
-                                    const halfSize = size / 2;
+                                switch (series.shape) {
+                                    default:
+                                    case Shape.Circle:
+                                        const centerX = this.scales.xAxisScale(dot.x);
+                                        const centerY = this.scales.yAxisScale(dot.y);
 
-                                    const points = computeStarPoints({
-                                        width: size,
-                                        height: size
-                                    });
-                                    ctx.beginPath();
+                                        ctx.beginPath();
+                                        ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
+                                        break;
+                                    case Shape.Rectangle:
+                                        const x = this.scales.xAxisScale(dot.x) - 4;
+                                        const y = this.scales.yAxisScale(dot.y) - 4;
 
-                                    points.forEach(point => {
-                                        const x = this.scales.xAxisScale(dot.x) + point[0] - halfSize;
-                                        const y = this.scales.yAxisScale(dot.y) + point[1] - halfSize;
+                                        ctx.beginPath();
+                                        ctx.rect(x, y, 8, 8);
+                                        break;
+                                    case Shape.Star:
+                                    case Shape.Cross:
+                                    case Shape.Triangle:
+                                    case Shape.TriangleLeft:
+                                    case Shape.TriangleDown:
+                                    case Shape.TriangleRight:
+                                    case Shape.Rhombus:
+                                        const size = 10;
+                                        const halfSize = size / 2;
 
-                                        ctx.lineTo(x, y);
-                                    });
+                                        const points = computePointsForShape({
+                                            shape: series.shape,
+                                            width: size,
+                                            height: size
+                                        });
 
-                                    ctx.stroke();
-                                    ctx.fill();
-                                } else {
+                                        points.forEach((point, index) => {
+                                            const x1 = this.scales.xAxisScale(dot.x) + point[0] - halfSize;
+                                            const y1 = this.scales.yAxisScale(dot.y) + point[1] - halfSize;
 
-                                    const centerX = this.scales.xAxisScale(dot.x);
-                                    const centerY = this.scales.yAxisScale(dot.y);
-
-                                    ctx.beginPath();
-                                    ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
-
-                                    ctx.fill();
-                                    ctx.lineWidth = 5;
-                                    ctx.stroke();
+                                            ctx.lineTo(x1, y1);
+                                        });
+                                        break;
                                 }
+
+
+                                ctx.fill();
+                                ctx.stroke();
 
                             });
                         }
