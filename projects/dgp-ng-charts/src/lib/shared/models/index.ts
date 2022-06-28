@@ -12,3 +12,5 @@ export { CardinalXAxis } from "./cardinal-x-axis.model";
 export { CategoricalXAxis } from "./categorical-x-axis.model";
 export { DataAreaSize } from "./data-area-size.model";
 export { ContainerSize } from "./container-size.model";
+export { ChartTitles } from "./chart-titles.model";
+export { ChartGridLineConfig } from "./chart-grid-line-config.model";

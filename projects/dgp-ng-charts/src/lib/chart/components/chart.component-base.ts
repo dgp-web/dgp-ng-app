@@ -1,11 +1,10 @@
-import { Directive, Inject, Input } from "@angular/core";
+import { Directive, Input } from "@angular/core";
 import { Mutable } from "data-modeling";
-import { Chart } from "../../shared/models";
-import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
+import { ChartTitles } from "../../shared/models";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class DgpChartComponentBase implements Mutable<Chart> {
+export class DgpChartComponentBase implements Mutable<ChartTitles> {
 
     @Input()
     chartTitle: string;
@@ -15,19 +14,5 @@ export class DgpChartComponentBase implements Mutable<Chart> {
 
     @Input()
     xAxisTitle: string;
-
-    @Input()
-    showYAxisGridLines = true;
-
-    @Input()
-    showXAxisGridLines = true;
-
-    readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
-    readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";
-
-    constructor(
-        @Inject(ID_PREFIX)
-        protected readonly idPrefix: string
-    ) {
-    }
 }
+

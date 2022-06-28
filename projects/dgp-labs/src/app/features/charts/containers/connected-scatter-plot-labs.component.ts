@@ -1,7 +1,15 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape, Stroke } from "dgp-ng-charts";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlot,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterPlotRenderer,
+    ScaleType,
+    Shape,
+    Stroke
+} from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -36,6 +44,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             <dgp-split-panel-content [size]="80">
                 <ng-template>
                     <dgp-connected-scatter-plot [model]="model.model"
+                                                [renderer]="renderer"
                                                 [chartTitle]="model.chartTitle"
                                                 [xAxisTitle]="model.xAxisTitle"
                                                 [xAxisMin]="model.xAxisMin"
@@ -62,6 +71,22 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                     <dgp-inspector class="--dynamic-form-fields">
                         <dgp-inspector-section label="General"
                                                matIconName="info">
+                            <dgp-inspector-item label="Renderer"
+                                                matIconName="label">
+                                <mat-form-field class="ml-32px">
+                                    <mat-select [disabled]="disabled"
+                                                [ngModel]="renderer"
+                                                (ngModelChange)="updateRenderer($event)">
+                                        <mat-option [value]="rendererEnum.SVG">
+                                            SVG
+                                        </mat-option>
+                                        <mat-option [value]="rendererEnum.Hybrid">
+                                            Hybrid
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </dgp-inspector-item>
+
                             <dgp-inspector-item label="Chart title"
                                                 matIconName="label">
                                 <mat-form-field class="ml-32px">
@@ -362,6 +387,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 })
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 
+    readonly rendererEnum = ConnectedScatterPlotRenderer;
+    renderer = ConnectedScatterPlotRenderer.Hybrid;
+
     readonly scaleTypeEnum = ScaleType;
     readonly selectedControlLineId$ = new BehaviorSubject<string>(null);
     readonly selectedControlLine$ = this.selectedControlLineId$.pipe(
@@ -423,6 +451,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateXAxisScaleType(xAxisScaleType: ScaleType) {
         this.updateModel({xAxisScaleType});
+    }
+
+    updateRenderer(renderer: ConnectedScatterPlotRenderer) {
+        this.renderer = renderer;
     }
 
     setShowYAxisGridLines(showYAxisGridLines: boolean) {

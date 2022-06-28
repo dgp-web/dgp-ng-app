@@ -48,8 +48,10 @@ export { TrackByBoxOutlierKeyPipe } from "./lib/box-plot/pipes/track-by-box-outl
 export { DgpChartModule } from "./lib/chart/chart.module";
 export { DgpChartComponent } from "./lib/chart/components/chart.component";
 export { DgpChartComponentBase } from "./lib/chart/components/chart.component-base";
+export { DgpPlotComponentBase } from "./lib/chart/components/plot.component-base";
 export { DgpCardinalXYAxisChartComponentBase } from "./lib/chart/components/cardinal-xy-axis-chart.component-base";
 export { DgpCardinalYAxisChartComponentBase } from "./lib/chart/components/cardinal-y-axis-chart.component-base";
+export { DgpSvgPlotComponent } from "./lib/chart/components/svg-plot.component";
 export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
 export { DgpChartContainerAreaClipPathDirective } from "./lib/chart/directives/chart-container-area-clip-path.directive";
 export { DgpChartDataAreaClipPathDirective } from "./lib/chart/directives/chart-data-area-clip-path.directive";
@@ -79,8 +81,17 @@ export {
     DgpConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
 export {
+    DgpConnectedScatterPlotDataCanvasComponent
+} from "./lib/connected-scatter-plot/components/connected-scatter-plot-data-canvas.component";
+export {
     DgpChartSVGRootComponent
 } from "./lib/chart/components/chart-svg-root.component";
+export {
+    DgpSvgConnectedScatterPlotComponent
+} from "./lib/connected-scatter-plot/components/svg-connected-scatter-plot.component";
+export {
+    DgpHybridConnectedScatterPlotComponent
+} from "./lib/connected-scatter-plot/components/hybrid-connected-scatter-plot.component";
 
 // Directives
 export {

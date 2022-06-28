@@ -16,93 +16,87 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
-                   [scales]="scales$ | async"
-                   [showXAxisGridLines]="showXAxisGridLines"
-                   [showYAxisGridLines]="showYAxisGridLines"
                    (sizeChanged)="onResize($event)">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <svg:defs xmlns:svg="http://www.w3.org/2000/svg"
-                      dgpPatternAndMaskDefs></svg:defs>
-
-            <ng-container *ngIf="scales$ | async">
-                <svg:line xmlns:svg="http://www.w3.org/2000/svg"
-                          *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"
-                          dgpBoxPlotControlLine
+            <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
+                          [showYAxisGridLines]="showYAxisGridLines"
                           [scales]="scales$ | async"
-                          [boxPlotControlLine]="controlLine"></svg:line>
+                          [config]="config"
+                          [size]="size$ | async">
 
-                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-                       dgpBoxPlotBrushSelector
-                       [scales]="scales$ | async"
-                       [boxGroups]="model"
-                       [config]="config"
-                       [selectionMode]="selectionMode"
-                       (selectionChange)="selectionChange.emit($event)"
-                       [attr.clip-path]="dataAreaClipPath">
+                <svg:defs xmlns:svg="http://www.w3.org/2000/svg"
+                          dgpPatternAndMaskDefs></svg:defs>
 
-                    <g xmlns:svg="http://www.w3.org/2000/svg"
-                       *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
-                       dgpBoxPlotBoxGroup
-                       [boxGroup]="boxGroup"
-                       [scales]="scales$ | async">
-                        <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
-                            <line dgpBoxPlotWhisker
-                                  type="max"
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <line dgpBoxPlotUpperAntenna
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <rect dgpBoxPlotBoxFillPattern
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></rect>
-                            <rect dgpBoxPlotBox
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></rect>
-                            <line dgpBoxPlotMedian
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <line dgpBoxPlotLowerAntenna
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                            <line dgpBoxPlotWhisker
-                                  type="min"
-                                  [scales]="scales$ | async"
-                                  [boxGroup]="boxGroup"
-                                  [box]="box"></line>
-                        </ng-container>
-                    </g>
+                <ng-container *ngIf="scales$ | async">
+                    <svg:line xmlns:svg="http://www.w3.org/2000/svg"
+                              *ngFor="let controlLine of controlLines; trackBy: trackByBoxPlotControlLineId"
+                              dgpBoxPlotControlLine
+                              [scales]="scales$ | async"
+                              [boxPlotControlLine]="controlLine"></svg:line>
 
                     <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                           dgpBoxPlotBrushSelector
+                           [scales]="scales$ | async"
+                           [boxGroups]="model"
+                           [config]="config"
+                           [selectionMode]="selectionMode"
+                           (selectionChange)="selectionChange.emit($event)"
+                           [attr.clip-path]="dataAreaClipPath">
+
+                        <g xmlns:svg="http://www.w3.org/2000/svg"
                            *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
                            dgpBoxPlotBoxGroup
                            [boxGroup]="boxGroup"
                            [scales]="scales$ | async">
-                        <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
-                            <ng-container
-                                *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
-                                <g *ngIf="showOutlierTooltips; else noTooltip"
-                                   [matTooltip]="getOutlierTooltip(box, i)"
-                                   dgpBoxPlotOutlier
-                                   [scales]="scales$ | async"
-                                   [boxGroup]="boxGroup"
-                                   [box]="box"
-                                   [value]="value"
-                                   dgpDot
-                                   [model]="box.outlierShape">
-                                </g>
-                                <ng-template #noTooltip>
-                                    <g dgpBoxPlotOutlier
+                            <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
+                                <line dgpBoxPlotWhisker
+                                      type="max"
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></line>
+                                <line dgpBoxPlotUpperAntenna
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></line>
+                                <rect dgpBoxPlotBoxFillPattern
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></rect>
+                                <rect dgpBoxPlotBox
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></rect>
+                                <line dgpBoxPlotMedian
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></line>
+                                <line dgpBoxPlotLowerAntenna
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></line>
+                                <line dgpBoxPlotWhisker
+                                      type="min"
+                                      [scales]="scales$ | async"
+                                      [boxGroup]="boxGroup"
+                                      [box]="box"></line>
+                            </ng-container>
+                        </g>
+
+                        <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                               *ngFor="let boxGroup of model; trackBy: trackByBoxGroupId"
+                               dgpBoxPlotBoxGroup
+                               [boxGroup]="boxGroup"
+                               [scales]="scales$ | async">
+                            <ng-container *ngFor="let box of boxGroup.boxes; trackBy: trackByBoxId">
+                                <ng-container
+                                    *ngFor="let value of box.outliers; let i = index; trackBy: (box | trackByBoxOutlierKey)">
+                                    <g *ngIf="showOutlierTooltips; else noTooltip"
+                                       [matTooltip]="getOutlierTooltip(box, i)"
+                                       dgpBoxPlotOutlier
                                        [scales]="scales$ | async"
                                        [boxGroup]="boxGroup"
                                        [box]="box"
@@ -110,15 +104,25 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                        dgpDot
                                        [model]="box.outlierShape">
                                     </g>
-                                </ng-template>
+                                    <ng-template #noTooltip>
+                                        <g dgpBoxPlotOutlier
+                                           [scales]="scales$ | async"
+                                           [boxGroup]="boxGroup"
+                                           [box]="box"
+                                           [value]="value"
+                                           dgpDot
+                                           [model]="box.outlierShape">
+                                        </g>
+                                    </ng-template>
 
+                                </ng-container>
                             </ng-container>
-                        </ng-container>
+                        </svg:g>
+
                     </svg:g>
+                </ng-container>
 
-                </svg:g>
-            </ng-container>
-
+            </dgp-svg-plot>
         </dgp-chart>
     `,
     styles: [`
