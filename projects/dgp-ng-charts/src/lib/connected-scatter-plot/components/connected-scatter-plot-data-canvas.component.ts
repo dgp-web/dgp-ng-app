@@ -6,36 +6,7 @@ import { combineLatest, Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
-import { computeStarPoints } from "../../shapes/functions/compute-star-points.function";
-import { computeCrossPoints } from "../../shapes/functions/compute-cross-points.function";
-import { computeRhombusPoints } from "../../shapes/functions/compute-rhombus-points.function";
-import { computeTrianglePoints } from "../../shapes/functions/compute-triangle-points.function";
-import { computeTriangleDownPoints } from "../../shapes/functions/compute-triangle-down-points.function";
-import { computeTriangleRightPoints } from "../../shapes/functions/compute-triangle-right-points.function";
-import { computeTriangleLeftPoints } from "../../shapes/functions/compute-triangle-left-points.function";
-
-export function computePointsForShape(payload: {
-    readonly shape: Shape;
-} & Size) {
-
-    switch (payload.shape) {
-        case Shape.Cross:
-            return computeCrossPoints(payload);
-        case Shape.Rhombus:
-            return computeRhombusPoints(payload);
-        case Shape.Triangle:
-            return computeTrianglePoints(payload);
-        case Shape.TriangleDown:
-            return computeTriangleDownPoints(payload);
-        case Shape.TriangleLeft:
-            return computeTriangleLeftPoints(payload);
-        case Shape.TriangleRight:
-            return computeTriangleRightPoints(payload);
-        case Shape.Star:
-            return computeStarPoints(payload);
-    }
-
-}
+import { computePointsForShape } from "../functions/compute-points-for-shape.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
