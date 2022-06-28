@@ -59,12 +59,12 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         const canvas = this.canvasElementRef.nativeElement;
         const ctx = canvas.getContext("2d");
 
-        this. subscription = combineLatest([
+        this.subscription = combineLatest([
             this.model$,
             this.controlLines$,
             this.size$
         ]).pipe(
-            debounceTime(0)
+            debounceTime(50)
         ).subscribe(combination => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -74,35 +74,42 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             if (model) {
                 model.forEach(group => {
                     group.series.forEach(series => {
-                        series.dots.forEach(dot => {
+                        ctx.fillStyle = series.colorHex;
+                        ctx.strokeStyle = series.colorHex;
 
-                            const centerX = this.scales.xAxisScale(dot.x);
-                            const centerY = this.scales.yAxisScale(dot.y);
+                        if (series.showVertices) {
+                            series.dots.forEach(dot => {
 
+                                const centerX = this.scales.xAxisScale(dot.x);
+                                const centerY = this.scales.yAxisScale(dot.y);
+
+                                ctx.beginPath();
+                                ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
+
+                                ctx.fill();
+                                ctx.lineWidth = 5;
+                                ctx.stroke();
+                            });
+                        }
+
+                        if (series.showEdges) {
                             ctx.beginPath();
-                            ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
-                            ctx.fillStyle = series.colorHex;
-                            ctx.fill();
-                            ctx.lineWidth = 5;
-                            ctx.strokeStyle = series.colorHex;
+                            ctx.lineWidth = 1.5;
+                            ctx.setLineDash([]);
+                            series.dots.forEach((dot, index) => {
+
+                                const x = this.scales.xAxisScale(dot.x);
+                                const y = this.scales.yAxisScale(dot.y);
+
+                                if (index === 0) {
+                                    ctx.moveTo(x, y);
+                                }
+
+                                ctx.lineTo(x, y);
+                            });
+
                             ctx.stroke();
-                        });
-
-                        ctx.beginPath();
-                        ctx.lineWidth = 1.5;
-                        series.dots.forEach((dot, index) => {
-
-                            const x = this.scales.xAxisScale(dot.x);
-                            const y = this.scales.yAxisScale(dot.y);
-
-                            if (index === 0) {
-                                ctx.moveTo(x, y);
-                            }
-
-                            ctx.lineTo(x, y);
-                        });
-
-                        ctx.stroke();
+                        }
 
                     });
                 });
