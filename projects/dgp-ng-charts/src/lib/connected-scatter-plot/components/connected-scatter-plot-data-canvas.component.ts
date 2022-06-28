@@ -54,7 +54,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     ngAfterViewInit(): void {
         this.modelSubscription = this.model$.subscribe(model => {
             const canvas = this.canvasElementRef.nativeElement;
-            const context = canvas.getContext("2d");
+            const ctx = canvas.getContext("2d");
 
             if (model) {
                 model.forEach(group => {
@@ -64,14 +64,30 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                             const centerX = this.scales.xAxisScale(dot.x);
                             const centerY = this.scales.yAxisScale(dot.y);
 
-                            context.beginPath();
-                            context.arc(centerX, centerY, 4, 0, 2 * Math.PI, false);
-                            context.fillStyle = series.colorHex;
-                            context.fill();
-                            context.lineWidth = 5;
-                            context.strokeStyle = series.colorHex;
-                            context.stroke();
+                            ctx.beginPath();
+                            ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
+                            ctx.fillStyle = series.colorHex;
+                            ctx.fill();
+                            ctx.lineWidth = 5;
+                            ctx.strokeStyle = series.colorHex;
+                            ctx.stroke();
                         });
+
+                        ctx.beginPath();
+                        ctx.lineWidth = 1.5;
+                        series.dots.forEach((dot, index) => {
+
+                            const x = this.scales.xAxisScale(dot.x);
+                            const y = this.scales.yAxisScale(dot.y);
+
+                            if (index === 0) {
+                                ctx.moveTo(x, y);
+                            }
+
+                            ctx.lineTo(x, y);
+                        });
+
+                        ctx.stroke();
 
                     });
                 });
