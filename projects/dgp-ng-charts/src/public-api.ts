@@ -81,6 +81,9 @@ export {
     DgpConnectedScatterPlotComponent
 } from "./lib/connected-scatter-plot/components/connected-scatter-plot.component";
 export {
+    DgpConnectedScatterPlotDataCanvasComponent
+} from "./lib/connected-scatter-plot/components/connected-scatter-plot-data-canvas.component";
+export {
     DgpChartSVGRootComponent
 } from "./lib/chart/components/chart-svg-root.component";
 export {

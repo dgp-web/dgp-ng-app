@@ -69,6 +69,9 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 
             </ng-container>
         </dgp-svg-plot>
+
+        <dgp-connected-scatter-plot-data-canvas [scales]="scales"
+                                                [config]="config"></dgp-connected-scatter-plot-data-canvas>
     `,
     styles: [`
         :host {
@@ -76,6 +79,7 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
             justify-content: center;
             flex-grow: 1;
             height: 100%;
+            position: relative;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
