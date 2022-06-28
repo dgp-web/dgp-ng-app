@@ -1,8 +1,7 @@
 import { Directive } from "@angular/core";
 import { SVGShapeBaseDirective } from "./svg-shape.base-directive";
-import { Many } from "data-modeling";
-import { Point } from "../models";
 import { serializePoints } from "../functions/serialize-points.function";
+import { computeTriangleDownPoints } from "../functions/compute-triangle-down-points.function";
 
 @Directive({
     selector: "[dgpTriangleDown]",
@@ -10,11 +9,7 @@ import { serializePoints } from "../functions/serialize-points.function";
 export class TriangleDownDirective extends SVGShapeBaseDirective {
 
     setAttributes(): void {
-        const points: Many<Point> = [
-            [0, 0],
-            [this.width, 0],
-            [this.width / 2, this.height]
-        ];
+        const points = computeTriangleDownPoints(this);
         this.renderer.setAttribute(this.elementRef.nativeElement, "points", serializePoints(points));
     }
 
