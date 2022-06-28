@@ -7,6 +7,7 @@ import { defaultConnectedScatterPlotConfig } from "../constants";
 import { filterNotNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
+import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-renderer.model";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -20,8 +21,9 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <!-- TODO: This needs some cleaning up. Passing around models is weird -->
-            <dgp-svg-connected-scatter-plot [size]="size$ | async"
+            <!-- TODO: This needs some cleaning up. Passing around unneeded models and scales is weird -->
+            <dgp-svg-connected-scatter-plot *ngIf="rendererEnum.SVG"
+                                            [size]="size$ | async"
                                             [showXAxisGridLines]="showXAxisGridLines"
                                             [showYAxisGridLines]="showYAxisGridLines"
                                             [model]="resolvedModel$ | async"
@@ -48,6 +50,11 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
     ]
 })
 export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComponentBase implements ConnectedScatterPlot {
+
+    readonly rendererEnum = ConnectedScatterPlotRenderer;
+
+    @Input()
+    renderer = ConnectedScatterPlotRenderer.SVG;
 
     @Input()
     showDotTooltips = true;
