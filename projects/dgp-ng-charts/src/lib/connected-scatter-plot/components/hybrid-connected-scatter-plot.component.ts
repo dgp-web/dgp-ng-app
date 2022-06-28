@@ -70,7 +70,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
             </ng-container>
         </dgp-svg-plot>
 
-        <dgp-connected-scatter-plot-data-canvas [scales]="scales"
+        <dgp-connected-scatter-plot-data-canvas *ngIf="scales"
+                                                [scales]="scales"
                                                 [config]="config"
                                                 [model]="model"
                                                 [controlLines]="controlLines"></dgp-connected-scatter-plot-data-canvas>
