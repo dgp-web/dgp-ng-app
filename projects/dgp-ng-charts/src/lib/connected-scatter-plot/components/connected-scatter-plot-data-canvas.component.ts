@@ -95,6 +95,29 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
         });
         this.controlLinesSubscription = this.controlLines$.subscribe(controlLines => {
+            const canvas = this.canvasElementRef.nativeElement;
+            const ctx = canvas.getContext("2d");
+
+            if (controlLines) {
+                controlLines.forEach(controlLine => {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1.5;
+
+                    const y = this.scales.yAxisScale(controlLine.value);
+                    const x0 = this.scales.xAxisScale.range()[0];
+                    const x1 = this.scales.xAxisScale.range()[1];
+
+
+                    ctx.strokeStyle = controlLine.colorHex;
+                    // TODO: Compute depending on dash
+                    ctx.setLineDash([16, 8]);
+
+                    ctx.moveTo(x0, y);
+                    ctx.lineTo(x1, y);
+                    ctx.stroke();
+
+                });
+            }
 
         });
     }
