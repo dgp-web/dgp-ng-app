@@ -59,12 +59,12 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         const canvas = this.canvasElementRef.nativeElement;
         const ctx = canvas.getContext("2d");
 
-        const subscription = combineLatest([
+        this. subscription = combineLatest([
             this.model$,
             this.controlLines$,
             this.size$
         ]).pipe(
-            debounceTime(250)
+            debounceTime(0)
         ).subscribe(combination => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 

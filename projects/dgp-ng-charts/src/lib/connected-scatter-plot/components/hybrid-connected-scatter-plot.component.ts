@@ -85,6 +85,12 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
             height: 100%;
             position: relative;
         }
+
+        dgp-svg-plot {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
