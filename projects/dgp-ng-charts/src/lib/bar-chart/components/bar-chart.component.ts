@@ -16,7 +16,6 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
-                   [scales]="scales$ | async"
                    (sizeChanged)="onResize($event)">
 
             <ng-container chart-title>

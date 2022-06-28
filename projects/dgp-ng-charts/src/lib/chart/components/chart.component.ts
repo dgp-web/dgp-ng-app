@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { DgpChartComponentBase } from "./chart.component-base";
 import { filterNotNullOrUndefined, notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
-import { AxisScales } from "../../shared/models";
 import { defaultChartConfig } from "../../shared/constants";
 import { map } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
@@ -115,10 +114,6 @@ export class DgpChartComponent extends DgpChartComponentBase {
     );
 
     readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
-
-    @Input()
-    scales: AxisScales;
-
 
     geMaxHeight(chartRef: HTMLDivElement, chartTitleRef: HTMLDivElement, xAxisLabelRef: HTMLDivElement) {
         let maxHeight = chartRef.getBoundingClientRect().height;

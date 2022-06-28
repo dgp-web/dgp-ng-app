@@ -16,7 +16,6 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
-                   [scales]="scales$ | async"
                    (sizeChanged)="onResize($event)">
 
             <ng-container right-legend>

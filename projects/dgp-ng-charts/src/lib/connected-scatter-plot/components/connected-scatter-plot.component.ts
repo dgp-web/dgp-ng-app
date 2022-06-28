@@ -14,13 +14,13 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
         <dgp-chart [yAxisTitle]="yAxisTitle"
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
-                   [scales]="scales$ | async"
                    (sizeChanged)="onResize($event)">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
+            <!-- TODO: This needs some cleaning up. Passing around models is weird -->
             <dgp-svg-connected-scatter-plot [size]="size$ | async"
                                             [showXAxisGridLines]="showXAxisGridLines"
                                             [showYAxisGridLines]="showYAxisGridLines"
@@ -28,9 +28,6 @@ import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/card
                                             [controlLines]="controlLines"
                                             [scales]="scales$ | async"
                                             [showDotTooltips]="showDotTooltips"
-                                            [yAxisTitle]="yAxisTitle"
-                                            [xAxisTitle]="xAxisTitle"
-                                            [chartTitle]="chartTitle"
                                             [config]="config"></dgp-svg-connected-scatter-plot>
 
             <!-- dgp-hybrid-connected-scatter-plot -->
