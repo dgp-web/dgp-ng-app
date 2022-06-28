@@ -28,9 +28,7 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
             <dgp-plot-container
                 dgpResizeSensor
                 (sizeChanged)="onResize($event)">
-
                 <ng-content></ng-content>
-
             </dgp-plot-container>
 
             <div class="right-legend">

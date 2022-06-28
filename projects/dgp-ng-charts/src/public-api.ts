@@ -83,6 +83,9 @@ export {
 export {
     DgpChartSVGRootComponent
 } from "./lib/chart/components/chart-svg-root.component";
+export {
+    DgpSvgConnectedScatterPlotComponent
+} from "./lib/connected-scatter-plot/components/svg-connected-scatter-plot.component";
 
 // Directives
 export {
