@@ -5,6 +5,8 @@ import { observeAttribute$, Size } from "dgp-ng-app";
 import { combineLatest, Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
+import { Shape } from "../../shapes/models";
+import { computeStarPoints } from "../../shapes/functions/compute-star-points.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -83,15 +85,38 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                         if (series.showVertices) {
                             series.dots.forEach(dot => {
 
-                                const centerX = this.scales.xAxisScale(dot.x);
-                                const centerY = this.scales.yAxisScale(dot.y);
+                                if (series.shape === Shape.Star) {
+                                    const size = 10;
+                                    const halfSize = size / 2;
 
-                                ctx.beginPath();
-                                ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
+                                    const points = computeStarPoints({
+                                        width: size,
+                                        height: size
+                                    });
+                                    ctx.beginPath();
 
-                                ctx.fill();
-                                ctx.lineWidth = 5;
-                                ctx.stroke();
+                                    points.forEach(point => {
+                                        const x = this.scales.xAxisScale(dot.x) + point[0] - halfSize;
+                                        const y = this.scales.yAxisScale(dot.y) + point[1] - halfSize;
+
+                                        ctx.lineTo(x, y);
+                                    });
+
+                                    ctx.stroke();
+                                    ctx.fill();
+                                } else {
+
+                                    const centerX = this.scales.xAxisScale(dot.x);
+                                    const centerY = this.scales.yAxisScale(dot.y);
+
+                                    ctx.beginPath();
+                                    ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
+
+                                    ctx.fill();
+                                    ctx.lineWidth = 5;
+                                    ctx.stroke();
+                                }
+
                             });
                         }
 
