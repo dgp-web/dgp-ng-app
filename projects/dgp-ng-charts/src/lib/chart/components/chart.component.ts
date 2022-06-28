@@ -29,27 +29,8 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
                 dgpResizeSensor
                 (sizeChanged)="onResize($event)">
 
-                <svg *ngIf="scales"
-                     class="chart-svg"
-                     [attr.viewBox]="viewBox$ | async">
+                <ng-content></ng-content>
 
-                    <defs>
-                        <clipPath dgpChartDataAreaClipPath
-                                  [scales]="scales"></clipPath>
-                        <clipPath dgpChartContainerAreaClipPath
-                                  [scales]="scales"></clipPath>
-                    </defs>
-                    <ng-content select="[defs]"></ng-content>
-
-                    <g dgpChartSVGRoot
-                       [scales]="scales"
-                       [config]="config"
-                       [showXAxisGridLines]="showXAxisGridLines"
-                       [showYAxisGridLines]="showYAxisGridLines">
-
-                        <ng-content></ng-content>
-                    </g>
-                </svg>
             </dgp-plot-container>
 
             <div class="right-legend">

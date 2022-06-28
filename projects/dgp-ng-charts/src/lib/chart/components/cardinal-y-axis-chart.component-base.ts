@@ -2,12 +2,22 @@ import { Directive, Input } from "@angular/core";
 import { observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { CardinalYAxis, ScaleType } from "../../shared/models";
-import { DgpChartComponentBase } from "./chart.component-base";
+import { CardinalYAxis, ChartTitles, ScaleType } from "../../shared/models";
+import { DgpPlotComponentBase } from "./plot.component-base";
+import { Mutable } from "data-modeling";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class DgpCardinalYAxisChartComponentBase extends DgpChartComponentBase implements CardinalYAxis {
+export class DgpCardinalYAxisChartComponentBase extends DgpPlotComponentBase implements CardinalYAxis, Mutable<ChartTitles> {
+
+    @Input()
+    chartTitle: string;
+
+    @Input()
+    yAxisTitle: string;
+
+    @Input()
+    xAxisTitle: string;
 
     @Input()
     yAxisMin?: number;

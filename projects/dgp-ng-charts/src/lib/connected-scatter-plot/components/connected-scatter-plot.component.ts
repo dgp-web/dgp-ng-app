@@ -57,62 +57,67 @@ export function resolveConnectedScatterGroups(payload: Many<ConnectedScatterGrou
                    [xAxisTitle]="xAxisTitle"
                    [chartTitle]="chartTitle"
                    [scales]="scales$ | async"
-                   [showXAxisGridLines]="showXAxisGridLines"
-                   [showYAxisGridLines]="showYAxisGridLines"
                    (sizeChanged)="onResize($event)">
 
             <ng-container right-legend>
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <ng-container *ngIf="scales$ | async as scales">
+            <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
+                          [showYAxisGridLines]="showYAxisGridLines"
+                          [scales]="scales$ | async"
+                          [config]="config"
+                          [size]="size$ | async">
 
-                <svg:line xmlns:svg="http://www.w3.org/2000/svg"
-                          *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
-                          dgpConnectedScatterPlotControlLine
-                          [scales]="scales"
-                          [connectedScatterPlotControlLine]="controlLine"></svg:line>
+                <ng-container *ngIf="scales$ | async as scales">
 
-                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-                       *ngFor="let group of resolvedModel$ | async; trackBy: trackByConnectedScatterGroupId">
-                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
+                    <svg:line xmlns:svg="http://www.w3.org/2000/svg"
+                              *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
+                              dgpConnectedScatterPlotControlLine
+                              [scales]="scales"
+                              [connectedScatterPlotControlLine]="controlLine"></svg:line>
 
-                        <path *ngIf="series.showEdges"
-                              dgpLineChartLine
-                              [series]="series"
-                              [scales]="scales"></path>
+                    <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                           *ngFor="let group of resolvedModel$ | async; trackBy: trackByConnectedScatterGroupId">
+                        <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
 
-                        <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
-                            <ng-container *ngIf="series.showVertices">
+                            <path *ngIf="series.showEdges"
+                                  dgpLineChartLine
+                                  [series]="series"
+                                  [scales]="scales"></path>
 
-                                <g *ngIf="showDotTooltips; else noTooltip"
-                                   [matTooltip]="getTooltip(group, series, dot)"
-                                   dgpScatterPlotDot
-                                   [dot]="dot"
-                                   [series]="series"
-                                   [scales]="scales"
-                                   dgpDot
-                                   [model]="series.shape">
-                                </g>
+                            <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
+                                <ng-container *ngIf="series.showVertices">
 
-                                <ng-template #noTooltip>
-                                    <g dgpScatterPlotDot
+                                    <g *ngIf="showDotTooltips; else noTooltip"
+                                       [matTooltip]="getTooltip(group, series, dot)"
+                                       dgpScatterPlotDot
                                        [dot]="dot"
                                        [series]="series"
                                        [scales]="scales"
                                        dgpDot
                                        [model]="series.shape">
                                     </g>
-                                </ng-template>
 
+                                    <ng-template #noTooltip>
+                                        <g dgpScatterPlotDot
+                                           [dot]="dot"
+                                           [series]="series"
+                                           [scales]="scales"
+                                           dgpDot
+                                           [model]="series.shape">
+                                        </g>
+                                    </ng-template>
+
+
+                                </ng-container>
 
                             </ng-container>
-
                         </ng-container>
-                    </ng-container>
-                </svg:g>
+                    </svg:g>
 
-            </ng-container>
+                </ng-container>
+            </dgp-svg-plot>
         </dgp-chart>
     `,
     styles: [`
