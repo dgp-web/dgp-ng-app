@@ -14,10 +14,10 @@ import { computePointsForShape } from "../functions/compute-points-for-shape.fun
         <canvas #canvas
                 [width]="scales.xAxisScale.range()[1]"
                 [height]="scales.yAxisScale.range()[1]"
-                [style.margin-left.px]="config.margin.left"
-                [style.margin-top.px]="config.margin.top"
-                [style.margin-right.px]="config.margin.right"
-                [style.margin-bottom.px]="config.margin.bottom"></canvas>`,
+                [style.margin-left.px]="scales.chartMargin.left"
+                [style.margin-top.px]="scales.chartMargin.top"
+                [style.margin-right.px]="scales.chartMargin.right"
+                [style.margin-bottom.px]="scales.chartMargin.bottom"></canvas>`,
     styles: [`
         :host {
             position: absolute;
@@ -94,7 +94,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                         const centerY = this.scales.yAxisScale(dot.y);
 
                                         ctx.beginPath();
-                                        ctx.arc(centerX, centerY, 2.5, 0, 2 * Math.PI, false);
+                                        ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI, false);
                                         break;
                                     case Shape.Rectangle:
                                         const x = this.scales.xAxisScale(dot.x) - 4;

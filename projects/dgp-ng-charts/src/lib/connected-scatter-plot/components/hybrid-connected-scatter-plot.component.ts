@@ -18,57 +18,7 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                       [showYAxisGridLines]="showYAxisGridLines"
                       [scales]="scales"
                       [config]="config"
-                      [size]="size">
-
-            <ng-container *ngIf="scales">
-
-                <!--<svg:line xmlns:svg="http://www.w3.org/2000/svg"
-                          *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
-                          dgpConnectedScatterPlotControlLine
-                          [scales]="scales"
-                          [connectedScatterPlotControlLine]="controlLine"></svg:line>
-
-                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-                       *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
-                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
-
-                        <path *ngIf="series.showEdges"
-                              dgpLineChartLine
-                              [series]="series"
-                              [scales]="scales"></path>
-
-                        <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
-                            <ng-container *ngIf="series.showVertices">
-
-                                <g *ngIf="showDotTooltips; else noTooltip"
-                                   [matTooltip]="getTooltip(group, series, dot)"
-                                   dgpScatterPlotDot
-                                   [dot]="dot"
-                                   [series]="series"
-                                   [scales]="scales"
-                                   dgpDot
-                                   [model]="series.shape">
-                                </g>
-
-                                <ng-template #noTooltip>
-                                    <g dgpScatterPlotDot
-                                       [dot]="dot"
-                                       [series]="series"
-                                       [scales]="scales"
-                                       dgpDot
-                                       [model]="series.shape">
-                                    </g>
-                                </ng-template>
-
-
-                            </ng-container>
-
-                        </ng-container>
-                    </ng-container>
-                </svg:g>-->
-
-            </ng-container>
-        </dgp-svg-plot>
+                      [size]="size"></dgp-svg-plot>
 
         <dgp-connected-scatter-plot-data-canvas *ngIf="scales"
                                                 [scales]="scales"
