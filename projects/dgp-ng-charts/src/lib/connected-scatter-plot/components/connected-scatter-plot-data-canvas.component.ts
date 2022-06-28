@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy } from "@angular/core";
 import { AxisScales } from "../../shared/models";
-import { defaultConnectedScatterPlotConfig } from "../constants";
-import { ConnectedScatterPlotConfig } from "../models";
+import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
+import { observeAttribute$ } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -28,12 +28,27 @@ import { ConnectedScatterPlotConfig } from "../models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpConnectedScatterPlotDataCanvasComponent {
+export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
 
     @Input()
     scales: AxisScales;
 
     @Input()
     config: ConnectedScatterPlotConfig;
+
+    @Input()
+    model: readonly ConnectedScatterGroup[];
+    readonly model$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "model");
+
+    @Input()
+    controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
+    readonly controlLines$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "controlLines");
+
+    ngAfterViewInit(): void {
+       
+    }
+
+    ngOnDestroy(): void {
+    }
 
 }

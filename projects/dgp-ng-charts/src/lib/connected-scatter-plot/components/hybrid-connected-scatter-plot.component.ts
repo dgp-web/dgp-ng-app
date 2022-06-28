@@ -22,7 +22,7 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 
             <ng-container *ngIf="scales">
 
-                <svg:line xmlns:svg="http://www.w3.org/2000/svg"
+                <!--<svg:line xmlns:svg="http://www.w3.org/2000/svg"
                           *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
                           dgpConnectedScatterPlotControlLine
                           [scales]="scales"
@@ -65,13 +65,15 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 
                         </ng-container>
                     </ng-container>
-                </svg:g>
+                </svg:g>-->
 
             </ng-container>
         </dgp-svg-plot>
 
         <dgp-connected-scatter-plot-data-canvas [scales]="scales"
-                                                [config]="config"></dgp-connected-scatter-plot-data-canvas>
+                                                [config]="config"
+                                                [model]="model"
+                                                [controlLines]="controlLines"></dgp-connected-scatter-plot-data-canvas>
     `,
     styles: [`
         :host {
