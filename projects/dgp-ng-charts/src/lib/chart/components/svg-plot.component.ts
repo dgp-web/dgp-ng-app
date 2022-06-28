@@ -32,7 +32,11 @@ import { DgpPlotComponentBase } from "./plot.component-base";
         </svg>
     `,
     styles: [`
-
+        :host {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
