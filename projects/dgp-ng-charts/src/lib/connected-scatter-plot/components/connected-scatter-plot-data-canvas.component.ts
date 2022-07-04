@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, ViewChild } from "@angular/core";
 import { AxisScales } from "../../shared/models";
 import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
 import { observeAttribute$, Size } from "dgp-ng-app";
@@ -17,14 +17,13 @@ import { computePointsForShape } from "../functions/compute-points-for-shape.fun
                 [style.margin-left.px]="scales.chartMargin.left"
                 [style.margin-top.px]="scales.chartMargin.top"
                 [style.margin-right.px]="scales.chartMargin.right"
-                [style.margin-bottom.px]="scales.chartMargin.bottom"></canvas>`,
+                [style.margin-bottom.px]="scales.chartMargin.bottom"
+                (pointermove)="pointermove($event)"></canvas>`,
     styles: [`
         :host {
             position: absolute;
             top: 0;
             bottom: 0;
-            pointer-events: none;
-            user-select: none;
             width: 100%;
             height: 100%;
             display: flex;
@@ -189,4 +188,17 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         if (!this.subscription?.closed) this.subscription.unsubscribe();
     }
 
+    @HostBinding("pointermove")
+    pointermove(e: PointerEvent) {
+        const pointerX = e.clientX;
+        const pointerY = e.clientY;
+
+        
+        // TODO: Compute back from screen coordinates to actual chart coordinates
+        // TODO: Filter all dots that the pointer is over
+        // TODO: Pick the last of them which should be the one drawn on top
+
+
+        console.log(e);
+    }
 }
