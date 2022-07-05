@@ -192,13 +192,25 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     pointermove(e: PointerEvent) {
         const pointerX = e.clientX;
         const pointerY = e.clientY;
-
-        
         // TODO: Compute back from screen coordinates to actual chart coordinates
         // TODO: Filter all dots that the pointer is over
         // TODO: Pick the last of them which should be the one drawn on top
 
+        const canvasBoundingClient = this.canvasElementRef.nativeElement.getBoundingClientRect();
+        const xRange = this.scales.xAxisScale.range();
+        const xDomain = this.scales.xAxisScale.domain();
+        const yRange = this.scales.yAxisScale.range();
+        const yDomain = this.scales.yAxisScale.domain();
 
-        console.log(e);
+        const x = pointerX - canvasBoundingClient.x;
+        const xDelta = (x - xRange[0]) / (xRange[1] - xRange[0]);
+        const xDomainDelta = xDomain[0] + xDelta * (xDomain[1] - xDomain[0]);
+
+
+        const y = pointerY - canvasBoundingClient.y;
+        const yDelta = (y - yRange[0]) / (yRange[1] - yRange[0]);
+        const yDomainDelta = yDomain[0] + yDelta * (yDomain[1] - yDomain[0]);
+
+        console.log(xDomainDelta, yDomainDelta);
     }
 }
