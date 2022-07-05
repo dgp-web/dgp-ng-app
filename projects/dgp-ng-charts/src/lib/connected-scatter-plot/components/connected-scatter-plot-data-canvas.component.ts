@@ -267,7 +267,13 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 })
             : [];
 
+        if (dots.length > 0) {
+            const dot = dots[dots.length - 1];
+            console.log(dot);
+        } else {
 
-        console.log(dots);
+        }
+
     }
 }
+
