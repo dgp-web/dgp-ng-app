@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlot,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterSeries,
+    Dot,
+    DotHoverEvent
+} from "../models";
 import { notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import {
     defaultConnectedScatterPlotConfig,
@@ -9,6 +16,7 @@ import {
     trackByConnectedScatterSeriesId
 } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
     selector: "dgp-hybrid-connected-scatter-plot",
@@ -25,7 +33,17 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                                                 [config]="config"
                                                 [model]="model"
                                                 [controlLines]="controlLines"
-                                                [size]="size"></dgp-connected-scatter-plot-data-canvas>
+                                                [size]="size"
+                                                [showDotTooltips]="showDotTooltips"
+                                                (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
+
+        <div *ngIf="showDotTooltips && hoverEvent$.value"
+             class="tooltip"
+             [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
+             [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
+            {{getCurrentTooltip()}}
+        </div>
+
     `,
     styles: [`
         :host {
@@ -40,6 +58,17 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+        }
+
+        .tooltip {
+            position: fixed;
+            z-index: 100;
+            border: 1px solid gray;
+            background: #303030;
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,6 +99,16 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
     @Input()
     scales: ConnectedScatterPlotScales;
 
+    readonly hoverEvent$ = new BehaviorSubject<DotHoverEvent>(null);
+
+    getCurrentTooltip() {
+        return this.getTooltip(
+            this.hoverEvent$.value.group,
+            this.hoverEvent$.value.series,
+            this.hoverEvent$.value.dot,
+        );
+    }
+
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         let result = "";
         if (notNullOrUndefined(series.label)) result += series.label + ": ";
@@ -77,4 +116,7 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
         return result;
     }
 
+    showTooltip(payload: DotHoverEvent) {
+        this.hoverEvent$.next(payload);
+    }
 }

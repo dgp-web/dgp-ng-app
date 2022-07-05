@@ -1,7 +1,24 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, ViewChild } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+    ViewChild
+} from "@angular/core";
 import { AxisScales, ScaleType } from "../../shared/models";
-import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
-import { matrixToMany, observeAttribute$, Size } from "dgp-ng-app";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlotConfig,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterSeries,
+    Dot,
+    DotHoverEvent
+} from "../models";
+import { observeAttribute$, Size } from "dgp-ng-app";
 import { combineLatest, Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
@@ -40,6 +57,9 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     private subscription: Subscription;
 
     @Input()
+    showDotTooltips: boolean;
+
+    @Input()
     scales: AxisScales;
     readonly scales$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "scales");
 
@@ -57,6 +77,9 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     @Input()
     controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
     readonly controlLines$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "controlLines");
+
+    @Output()
+    readonly dotHovered = new EventEmitter<DotHoverEvent>();
 
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;
@@ -188,13 +211,13 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         if (!this.subscription?.closed) this.subscription.unsubscribe();
     }
 
-    @HostBinding("pointermove")
     pointermove(e: PointerEvent) {
+
+        if (!this.showDotTooltips) return;
+        if (!this.model) return;
+
         const pointerX = e.clientX;
         const pointerY = e.clientY;
-        // TODO: Compute back from screen coordinates to actual chart coordinates
-        // TODO: Filter all dots that the pointer is over
-        // TODO: Pick the last of them which should be the one drawn on top
 
         const canvasBoundingClient = this.canvasElementRef.nativeElement.getBoundingClientRect();
         const xRange = this.scales.xAxisScale.range();
@@ -203,62 +226,84 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         const yDomain = this.scales.yAxisScale.domain();
 
         const absoluteX = pointerX - canvasBoundingClient.x;
-        const xDelta = (absoluteX - xRange[0]) / (xRange[1] - xRange[0]);
+        const xRelativeDistance = (absoluteX - xRange[0]) / (xRange[1] - xRange[0]);
         let xDomainDistance: number;
-        let xDomainValue: number;
         let xTolerance: number;
         let lowerXBoundary: number;
         let upperXBoundary: number;
 
         if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Linear) {
             xDomainDistance = xDomain[1] - xDomain[0];
-            xDomainValue = xDomain[0] + xDelta * xDomainDistance;
+            const xDomainValue = xDomain[0] + xRelativeDistance * xDomainDistance;
             xTolerance = Math.abs(xDomainDistance * 0.005);
             lowerXBoundary = xDomainValue - xTolerance;
             upperXBoundary = xDomainValue + xTolerance;
         } else if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Logarithmic) {
             xDomainDistance = Math.log10(xDomain[1]) - Math.log10(xDomain[0]);
-            xDomainValue = Math.log10(xDomain[0]) + xDomainDistance + xDelta;
+            lowerXBoundary = Math.pow(10,
+                Math.log10(xDomain[0]) + xDomainDistance * xRelativeDistance - xDomainDistance * xRelativeDistance * 0.005
+            );
+            upperXBoundary = Math.pow(10,
+                Math.log10(xDomain[0]) + xDomainDistance * xRelativeDistance + xDomainDistance * xRelativeDistance * 0.005
+            );
         }
 
         const absoluteY = pointerY - canvasBoundingClient.y;
-        const yDelta = (absoluteY - yRange[0]) / (yRange[1] - yRange[0]);
+        const yRelativeDistance = (absoluteY - yRange[0]) / (yRange[1] - yRange[0]);
         let yDomainDistance: number;
-        let yDomainValue: number;
         let yTolerance: number;
         let lowerYBoundary: number;
         let upperYBoundary: number;
 
         if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Linear) {
             yDomainDistance = yDomain[1] - yDomain[0];
-            yDomainValue = yDomain[0] + yDelta * yDomainDistance;
+            const yDomainValue = yDomain[0] + yRelativeDistance * yDomainDistance;
             yTolerance = Math.abs(yDomainDistance * 0.005);
             lowerYBoundary = yDomainValue - yTolerance;
             upperYBoundary = yDomainValue + yTolerance;
         } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Logarithmic) {
-
+            yDomainDistance = Math.log10(yDomain[1]) - Math.log10(yDomain[0]);
+            lowerYBoundary = Math.pow(10,
+                Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance + yDomainDistance * yRelativeDistance * 0.005
+            );
+            upperYBoundary = Math.pow(10,
+                Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
+            );
         }
 
-        const dots = this.model
-            ? this.model.map(x => x.series)
-                .reduce(matrixToMany, [])
-                .map(x => x.dots)
-                .reduce(matrixToMany, [])
-                .filter(x => {
+        let dot: Dot;
+        let series: ConnectedScatterSeries;
+        let group: ConnectedScatterGroup;
 
-                    if (x.x >= lowerXBoundary
-                        && x.x <= upperXBoundary
-                        && x.y >= lowerYBoundary
-                        && x.y <= upperYBoundary) {
-                        return true;
+        this.model.forEach(xGroup => {
+            xGroup.series.forEach(xSeries => {
+
+                xSeries.dots.forEach(xDot => {
+                    if (xDot.x >= lowerXBoundary && xDot.x <= upperXBoundary
+                        && xDot.y >= lowerYBoundary && xDot.y <= upperYBoundary) {
+
+                        dot = xDot;
+                        series = xSeries;
+                        group = xGroup;
+
                     }
+                });
 
-                    return false;
+            });
+        });
 
-                })
-            : [];
+        if (dot) {
+            this.dotHovered.emit({
+                dot,
+                series,
+                group,
+                absoluteDomXPx: pointerX,
+                absoluteDomYPx: pointerY
+            });
+        } else {
+            this.dotHovered.emit(null);
+        }
 
-
-        console.log(dots);
     }
 }
+
