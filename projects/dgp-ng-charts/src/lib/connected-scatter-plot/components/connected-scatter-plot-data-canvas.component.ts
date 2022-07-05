@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, ViewChild } from "@angular/core";
-import { AxisScales } from "../../shared/models";
+import { AxisScales, ScaleType } from "../../shared/models";
 import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
 import { matrixToMany, observeAttribute$, Size } from "dgp-ng-app";
 import { combineLatest, Subscription } from "rxjs";
@@ -204,18 +204,40 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
         const absoluteX = pointerX - canvasBoundingClient.x;
         const xDelta = (absoluteX - xRange[0]) / (xRange[1] - xRange[0]);
-        const xDomainInterval = xDomain[1] - xDomain[0];
-        const xDomainValue = xDomain[0] + xDelta * xDomainInterval;
+        let xDomainDistance: number;
+        let xDomainValue: number;
+        let xTolerance: number;
+        let lowerXBoundary: number;
+        let upperXBoundary: number;
+
+        if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Linear) {
+            xDomainDistance = xDomain[1] - xDomain[0];
+            xDomainValue = xDomain[0] + xDelta * xDomainDistance;
+            xTolerance = Math.abs(xDomainDistance * 0.005);
+            lowerXBoundary = xDomainValue - xTolerance;
+            upperXBoundary = xDomainValue + xTolerance;
+        } else if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Logarithmic) {
+            xDomainDistance = Math.log10(xDomain[1]) - Math.log10(xDomain[0]);
+            xDomainValue = Math.log10(xDomain[0]) + xDomainDistance + xDelta;
+        }
 
         const absoluteY = pointerY - canvasBoundingClient.y;
         const yDelta = (absoluteY - yRange[0]) / (yRange[1] - yRange[0]);
-        const yDomainInterval = yDomain[1] - yDomain[0];
-        const yDomainValue = yDomain[0] + yDelta * yDomainInterval;
+        let yDomainDistance: number;
+        let yDomainValue: number;
+        let yTolerance: number;
+        let lowerYBoundary: number;
+        let upperYBoundary: number;
 
-        // TODO: Respect log axes
+        if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Linear) {
+            yDomainDistance = yDomain[1] - yDomain[0];
+            yDomainValue = yDomain[0] + yDelta * yDomainDistance;
+            yTolerance = Math.abs(yDomainDistance * 0.005);
+            lowerYBoundary = yDomainValue - yTolerance;
+            upperYBoundary = yDomainValue + yTolerance;
+        } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Logarithmic) {
 
-        const xTolerance = Math.abs(xDomainInterval * 0.005);
-        const yTolerance = Math.abs(yDomainInterval * 0.005);
+        }
 
         const dots = this.model
             ? this.model.map(x => x.series)
@@ -224,10 +246,10 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 .reduce(matrixToMany, [])
                 .filter(x => {
 
-                    if (x.x >= xDomainValue - xTolerance
-                        && x.x <= xDomainValue + xTolerance
-                        && x.y >= yDomainValue - yTolerance
-                        && x.y <= yDomainValue + yTolerance) {
+                    if (x.x >= lowerXBoundary
+                        && x.x <= upperXBoundary
+                        && x.y >= lowerYBoundary
+                        && x.y <= upperYBoundary) {
                         return true;
                     }
 
