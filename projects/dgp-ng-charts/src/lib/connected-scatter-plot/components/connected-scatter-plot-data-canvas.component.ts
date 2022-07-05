@@ -1,7 +1,24 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, ViewChild } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+    ViewChild
+} from "@angular/core";
 import { AxisScales, ScaleType } from "../../shared/models";
-import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
-import { matrixToMany, observeAttribute$, Size } from "dgp-ng-app";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlotConfig,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterSeries,
+    Dot,
+    DotHoverEvent
+} from "../models";
+import { observeAttribute$, Size } from "dgp-ng-app";
 import { combineLatest, Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
@@ -40,6 +57,9 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     private subscription: Subscription;
 
     @Input()
+    showDotTooltips: boolean;
+
+    @Input()
     scales: AxisScales;
     readonly scales$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "scales");
 
@@ -57,6 +77,9 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     @Input()
     controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
     readonly controlLines$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "controlLines");
+
+    @Output()
+    readonly dotHovered = new EventEmitter<DotHoverEvent>();
 
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;
@@ -188,13 +211,13 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         if (!this.subscription?.closed) this.subscription.unsubscribe();
     }
 
-    @HostBinding("pointermove")
     pointermove(e: PointerEvent) {
+
+        if (!this.showDotTooltips) return;
+        if (!this.model) return;
+
         const pointerX = e.clientX;
         const pointerY = e.clientY;
-        // TODO: Compute back from screen coordinates to actual chart coordinates
-        // TODO: Filter all dots that the pointer is over
-        // TODO: Pick the last of them which should be the one drawn on top
 
         const canvasBoundingClient = this.canvasElementRef.nativeElement.getBoundingClientRect();
         const xRange = this.scales.xAxisScale.range();
@@ -248,30 +271,37 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             );
         }
 
-        const dots = this.model
-            ? this.model.map(x => x.series)
-                .reduce(matrixToMany, [])
-                .map(x => x.dots)
-                .reduce(matrixToMany, [])
-                .filter(x => {
+        let dot: Dot;
+        let series: ConnectedScatterSeries;
+        let group: ConnectedScatterGroup;
 
-                    if (x.x >= lowerXBoundary
-                        && x.x <= upperXBoundary
-                        && x.y >= lowerYBoundary
-                        && x.y <= upperYBoundary) {
-                        return true;
+        this.model.forEach(xGroup => {
+            xGroup.series.forEach(xSeries => {
+
+                xSeries.dots.forEach(xDot => {
+                    if (xDot.x >= lowerXBoundary && xDot.x <= upperXBoundary
+                        && xDot.y >= lowerYBoundary && xDot.y <= upperYBoundary) {
+
+                        dot = xDot;
+                        series = xSeries;
+                        group = xGroup;
+
                     }
+                });
 
-                    return false;
+            });
+        });
 
-                })
-            : [];
-
-        if (dots.length > 0) {
-            const dot = dots[dots.length - 1];
-            console.log(dot);
+        if (dot) {
+            this.dotHovered.emit({
+                dot,
+                series,
+                group,
+                absoluteDomXPx: pointerX,
+                absoluteDomYPx: pointerY
+            });
         } else {
-
+            this.dotHovered.emit(null);
         }
 
     }

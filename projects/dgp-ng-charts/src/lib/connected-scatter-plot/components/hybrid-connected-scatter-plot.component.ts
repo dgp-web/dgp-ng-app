@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlot,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterSeries,
+    Dot,
+    DotHoverEvent
+} from "../models";
 import { notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import {
     defaultConnectedScatterPlotConfig,
@@ -25,7 +32,9 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                                                 [config]="config"
                                                 [model]="model"
                                                 [controlLines]="controlLines"
-                                                [size]="size"></dgp-connected-scatter-plot-data-canvas>
+                                                [size]="size"
+                                                [showDotTooltips]="showDotTooltips"
+                                                (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
     `,
     styles: [`
         :host {
@@ -77,4 +86,7 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
         return result;
     }
 
+    showTooltip(payload: DotHoverEvent) {
+        console.log(payload);
+    }
 }

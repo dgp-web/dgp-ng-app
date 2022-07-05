@@ -7,3 +7,4 @@ export * from "./connected-scatter-series.model";
 export * from "./dot.model";
 export * from "./dot-hover-event.model";
 export * from "./connected-scatter-series-config.model";
+
