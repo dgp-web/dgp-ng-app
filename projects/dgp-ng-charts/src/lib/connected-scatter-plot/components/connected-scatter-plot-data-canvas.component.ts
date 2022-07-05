@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnDestroy, ViewChild } from "@angular/core";
 import { AxisScales } from "../../shared/models";
 import { ConnectedScatterGroup, ConnectedScatterPlotConfig, ConnectedScatterPlotControlLine } from "../models";
-import { observeAttribute$, Size } from "dgp-ng-app";
+import { matrixToMany, observeAttribute$, Size } from "dgp-ng-app";
 import { combineLatest, Subscription } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
@@ -202,15 +202,41 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         const yRange = this.scales.yAxisScale.range();
         const yDomain = this.scales.yAxisScale.domain();
 
-        const x = pointerX - canvasBoundingClient.x;
-        const xDelta = (x - xRange[0]) / (xRange[1] - xRange[0]);
-        const xDomainDelta = xDomain[0] + xDelta * (xDomain[1] - xDomain[0]);
+        const absoluteX = pointerX - canvasBoundingClient.x;
+        const xDelta = (absoluteX - xRange[0]) / (xRange[1] - xRange[0]);
+        const xDomainInterval = xDomain[1] - xDomain[0];
+        const xDomainValue = xDomain[0] + xDelta * xDomainInterval;
+
+        const absoluteY = pointerY - canvasBoundingClient.y;
+        const yDelta = (absoluteY - yRange[0]) / (yRange[1] - yRange[0]);
+        const yDomainInterval = yDomain[1] - yDomain[0];
+        const yDomainValue = yDomain[0] + yDelta * yDomainInterval;
+
+        // TODO: Respect log axes
+
+        const xTolerance = Math.abs(xDomainInterval * 0.005);
+        const yTolerance = Math.abs(yDomainInterval * 0.005);
+
+        const dots = this.model
+            ? this.model.map(x => x.series)
+                .reduce(matrixToMany, [])
+                .map(x => x.dots)
+                .reduce(matrixToMany, [])
+                .filter(x => {
+
+                    if (x.x >= xDomainValue - xTolerance
+                        && x.x <= xDomainValue + xTolerance
+                        && x.y >= yDomainValue - yTolerance
+                        && x.y <= yDomainValue + yTolerance) {
+                        return true;
+                    }
+
+                    return false;
+
+                })
+            : [];
 
 
-        const y = pointerY - canvasBoundingClient.y;
-        const yDelta = (y - yRange[0]) / (yRange[1] - yRange[0]);
-        const yDomainDelta = yDomain[0] + yDelta * (yDomain[1] - yDomain[0]);
-
-        console.log(xDomainDelta, yDomainDelta);
+        console.log(dots);
     }
 }
