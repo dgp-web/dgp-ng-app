@@ -38,13 +38,11 @@ export class DgpChartSVGRootComponent {
 
     @Input()
     config = defaultChartConfig;
-    readonly config$ = observeAttribute$(this as DgpChartSVGRootComponent, "config");
-    readonly margin$ = this.config$.pipe(map(x => x.margin));
-
-    readonly containerTransform$ = this.margin$.pipe(map(getPlotRootTransform));
 
     @Input()
     scales: AxisScales;
+    readonly scales$ = observeAttribute$(this as DgpChartSVGRootComponent, "scales");
+    readonly containerTransform$ = this.scales$.pipe(map(x => x ? getPlotRootTransform(x.chartMargin) : null));
 
     @Input()
     showYAxisGridLines = true;
