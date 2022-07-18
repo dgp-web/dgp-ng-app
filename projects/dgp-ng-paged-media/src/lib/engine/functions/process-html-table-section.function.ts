@@ -2,6 +2,7 @@ import { HTMLSection, PageContentSize, PagedHTMLComputationEngine } from "../mod
 import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 import { getOuterHeight } from "./get-outer-height.function";
+import { checkHeight } from "./check-height.function";
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -25,8 +26,10 @@ export function processHTMLTableSection(payload: {
         helpTable.appendChild(htmlItem);
 
         const height = getOuterHeight(table);
+        const height02 = getOuterHeight(helpTable);
+        checkHeight({height, pageContentSize});
 
-        if (height <= engine.currentPageRemainingHeight) {
+        if (height + height02 <= engine.currentPageRemainingHeight) {
             table.appendChild(htmlItem);
         } else {
             engine.currentPage.itemsOnPage.push(table);
