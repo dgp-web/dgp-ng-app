@@ -11,6 +11,7 @@ import {
 } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { AreaSides } from "../models/area.model";
+import { isNullOrUndefined } from "dgp-ng-app";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -73,6 +74,8 @@ export class RootComponent extends AbstractContentItemComponent implements After
     }
 
     setSize(width?: number, height?: number) {
+        if (isNullOrUndefined(this.element)) return;
+
         width = (typeof width === "undefined") ? this._containerElement.width() : width;
         height = (typeof height === "undefined") ? this._containerElement.height() : height;
 
