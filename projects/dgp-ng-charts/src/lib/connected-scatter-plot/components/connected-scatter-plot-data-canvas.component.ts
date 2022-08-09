@@ -203,8 +203,8 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 });
             }
 
-            this.drawTopLine(ctx);
-            this.drawRightLine(ctx);
+            /*this.drawTopLine(ctx);
+            this.drawRightLine(ctx);*/
 
         });
 

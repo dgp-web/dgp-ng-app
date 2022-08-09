@@ -55,6 +55,8 @@ export { DgpSvgPlotComponent } from "./lib/chart/components/svg-plot.component";
 export { DgpChartBottomAxisDirective } from "./lib/chart/directives/chart-bottom-axis.directive";
 export { DgpChartContainerAreaClipPathDirective } from "./lib/chart/directives/chart-container-area-clip-path.directive";
 export { DgpChartDataAreaClipPathDirective } from "./lib/chart/directives/chart-data-area-clip-path.directive";
+export { ChartDataAreaOutlineRightDirective } from "./lib/chart/directives/chart-data-area-outline-right.directive";
+export { ChartDataAreaOutlineTopDirective } from "./lib/chart/directives/chart-data-area-outline-top.directive";
 export { DgpChartLeftAxisDirective } from "./lib/chart/directives/chart-left-axis.directive";
 export { DgpChartXAxisGridLinesDirective } from "./lib/chart/directives/chart-xaxis-grid-lines.directive";
 export { DgpChartYAxisGridLinesDirective } from "./lib/chart/directives/chart-yaxis-grid-lines.directive";

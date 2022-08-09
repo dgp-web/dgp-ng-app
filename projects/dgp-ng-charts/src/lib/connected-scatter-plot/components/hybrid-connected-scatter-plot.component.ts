@@ -70,6 +70,11 @@ import { BehaviorSubject } from "rxjs";
             display: flex;
             align-items: center;
         }
+
+        dgp-connected-scatter-plot-data-canvas {
+            border-right: 1px solid inherit;
+            border-top: 1px solid inherit;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -98,6 +103,9 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
 
     @Input()
     scales: ConnectedScatterPlotScales;
+
+    @Input()
+    showDataAreaOutline: boolean;
 
     readonly hoverEvent$ = new BehaviorSubject<DotHoverEvent>(null);
 

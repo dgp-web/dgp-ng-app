@@ -106,6 +106,9 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
     @Input()
     scales: ConnectedScatterPlotScales;
 
+    @Input()
+    showDataAreaOutline: boolean;
+
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         let result = "";
         if (notNullOrUndefined(series.label)) result += series.label + ": ";

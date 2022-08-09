@@ -53,6 +53,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [xAxisTickFormat]="model.xAxisTickFormat"
                                                 [xAxisScaleType]="model.xAxisScaleType"
                                                 [showXAxisGridLines]="model.showXAxisGridLines"
+                                                [showDataAreaOutline]="true"
                                                 [yAxisTitle]="model.yAxisTitle"
                                                 [yAxisScaleType]="model.yAxisScaleType"
                                                 [yAxisMin]="model.yAxisMin"
