@@ -11,8 +11,8 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
     selector: "dgp-chart",
     template: `
         <div class="title"
-             *ngIf="chartTitle">
-            {{ chartTitle }}
+             *ngIf="chartTitle"
+             [innerHTML]="chartTitle | safe:'html'">
         </div>
 
         <div class="inner-container">
