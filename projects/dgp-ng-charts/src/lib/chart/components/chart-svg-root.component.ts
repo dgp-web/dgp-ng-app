@@ -58,7 +58,7 @@ export class DgpChartSVGRootComponent {
     showXAxisGridLines = true;
 
     @Input()
-    showDataAreaOutline = true;
+    showDataAreaOutline = false;
 
     readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
     readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";

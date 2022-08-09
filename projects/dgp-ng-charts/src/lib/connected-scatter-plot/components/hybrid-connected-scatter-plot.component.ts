@@ -24,6 +24,7 @@ import { BehaviorSubject } from "rxjs";
 
         <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
                       [showYAxisGridLines]="showYAxisGridLines"
+                      [showDataAreaOutline]="showDataAreaOutline"
                       [scales]="scales"
                       [config]="config"
                       [size]="size"></dgp-svg-plot>
@@ -103,9 +104,6 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
 
     @Input()
     scales: ConnectedScatterPlotScales;
-
-    @Input()
-    showDataAreaOutline: boolean;
 
     readonly hoverEvent$ = new BehaviorSubject<DotHoverEvent>(null);
 

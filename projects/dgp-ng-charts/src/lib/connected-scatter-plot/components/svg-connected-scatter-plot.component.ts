@@ -16,6 +16,7 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 
         <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
                       [showYAxisGridLines]="showYAxisGridLines"
+                      [showDataAreaOutline]="showDataAreaOutline"
                       [scales]="scales"
                       [config]="config"
                       [size]="size">
@@ -105,9 +106,6 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
 
     @Input()
     scales: ConnectedScatterPlotScales;
-
-    @Input()
-    showDataAreaOutline: boolean;
 
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         let result = "";

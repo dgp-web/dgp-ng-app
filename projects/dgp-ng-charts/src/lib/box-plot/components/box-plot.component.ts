@@ -24,6 +24,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
 
             <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
                           [showYAxisGridLines]="showYAxisGridLines"
+                          [showDataAreaOutline]="showDataAreaOutline"
                           [scales]="scales$ | async"
                           [config]="config"
                           [size]="size$ | async">
