@@ -203,8 +203,45 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 });
             }
 
+            this.drawTopLine(ctx);
+            this.drawRightLine(ctx);
+
         });
 
+    }
+
+    private drawTopLine(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.lineWidth = 1.5;
+
+        const y = this.scales.yAxisScale.range()[0];
+        const x0 = this.scales.xAxisScale.range()[0];
+        const x1 = this.scales.xAxisScale.range()[1];
+
+        ctx.strokeStyle = "#ffffffff";
+        const stroke = [0, 0];
+        ctx.setLineDash(stroke);
+
+        ctx.moveTo(x0, y);
+        ctx.lineTo(x1, y);
+        ctx.stroke();
+    }
+
+    private drawRightLine(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.lineWidth = 1.5;
+
+        const x = this.scales.xAxisScale.range()[1];
+        const y0 = this.scales.yAxisScale.range()[0];
+        const y1 = this.scales.yAxisScale.range()[1];
+
+        ctx.strokeStyle = "#ffffffff";
+        const stroke = [0, 0];
+        ctx.setLineDash(stroke);
+
+        ctx.moveTo(x, y0);
+        ctx.lineTo(x, y1);
+        ctx.stroke();
     }
 
     ngOnDestroy(): void {
