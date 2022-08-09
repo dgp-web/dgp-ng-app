@@ -16,6 +16,7 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 
         <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
                       [showYAxisGridLines]="showYAxisGridLines"
+                      [showDataAreaOutline]="showDataAreaOutline"
                       [scales]="scales"
                       [config]="config"
                       [size]="size">

@@ -36,6 +36,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
 
             <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
                           [showYAxisGridLines]="showYAxisGridLines"
+                          [showDataAreaOutline]="showDataAreaOutline"
                           [scales]="scales$ | async"
                           [config]="config"
                           [size]="size$ | async">

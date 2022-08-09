@@ -15,6 +15,23 @@
 
 .chart__x-axis, *[dgpChartBottomAxis] {
     font-size: 16px;
+
+}
+
+*[dgpChartBottomAxis] {
+    g:first-of-type text {
+        text-anchor: start;
+    }
+
+    g:last-of-type text {
+        text-anchor: end;
+    }
+}
+
+*[dgpChartLeftAxis] {
+    g:first-of-type text {
+        dominant-baseline: central;
+    }
 }
 
 .chart__x-axis-grid-lines, *[dgpChartXAxisGridLines] {

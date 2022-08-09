@@ -28,6 +28,13 @@ import { defaultChartConfig } from "../../shared/constants";
                        [scales]="scales"></svg:g>
 
                 <g [attr.clip-path]="dataAreaClipPath">
+                    <line *ngIf="showDataAreaOutline"
+                          dgpChartDataAreaOutlineTop
+                          [scales]="scales"></line>
+                    <line *ngIf="showDataAreaOutline"
+                          dgpChartDataAreaOutlineRight
+                          [scales]="scales"></line>
+
                     <ng-content></ng-content>
                 </g>
             </g>
@@ -49,6 +56,9 @@ export class DgpChartSVGRootComponent {
 
     @Input()
     showXAxisGridLines = true;
+
+    @Input()
+    showDataAreaOutline = false;
 
     readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
     readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";

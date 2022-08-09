@@ -54,7 +54,7 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
             justify-content: center;
             align-items: center;
             display: flex;
-            padding: 16px;
+            padding: 8px;
             word-break: break-all;
         }
 
@@ -68,8 +68,8 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
             display: flex;
             justify-content: center;
             align-items: center;
-            min-width: 40px;
-            max-width: 40px;
+            min-width: 32px;
+            max-width: 32px;
         }
 
         .y-axis-label {
@@ -78,10 +78,10 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
         }
 
         .x-axis-label {
-            min-height: 56px;
+            min-height: 32px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
         .right-legend {

@@ -25,7 +25,8 @@ import { DgpPlotComponentBase } from "./plot.component-base";
                [scales]="scales"
                [config]="config"
                [showXAxisGridLines]="showXAxisGridLines"
-               [showYAxisGridLines]="showYAxisGridLines">
+               [showYAxisGridLines]="showYAxisGridLines"
+               [showDataAreaOutline]="showDataAreaOutline">
 
                 <ng-content></ng-content>
             </g>

@@ -24,6 +24,7 @@ import { BehaviorSubject } from "rxjs";
 
         <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
                       [showYAxisGridLines]="showYAxisGridLines"
+                      [showDataAreaOutline]="showDataAreaOutline"
                       [scales]="scales"
                       [config]="config"
                       [size]="size"></dgp-svg-plot>
@@ -69,6 +70,11 @@ import { BehaviorSubject } from "rxjs";
             padding: 8px 12px;
             display: flex;
             align-items: center;
+        }
+
+        dgp-connected-scatter-plot-data-canvas {
+            border-right: 1px solid inherit;
+            border-top: 1px solid inherit;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
