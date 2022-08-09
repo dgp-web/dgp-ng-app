@@ -81,6 +81,7 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
             min-height: 32px;
             display: flex;
             justify-content: center;
+            align-items: center;
         }
 
         .right-legend {
