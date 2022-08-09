@@ -14,7 +14,7 @@ export class DgpPlotComponentBase implements Mutable<ChartGridLineConfig> {
     showXAxisGridLines = true;
 
     @Input()
-    showDataAreaOutline = false;
+    showDataAreaOutline = true;
 
     readonly dataAreaClipPath = "url(#" + this.idPrefix + ".dataAreaClipPath" + ")";
     readonly containerAreaClipPath = "url(#" + this.idPrefix + ".containerAreaClipPath" + ")";

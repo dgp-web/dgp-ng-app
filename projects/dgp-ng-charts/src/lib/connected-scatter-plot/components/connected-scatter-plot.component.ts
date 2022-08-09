@@ -73,9 +73,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     autoResize = true;
 
     @Input()
-    showDataAreaOutline = false;
-
-    @Input()
     model: readonly ConnectedScatterGroup[];
     readonly model$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "model");
     readonly resolvedModel$ = this.model$.pipe(map(resolveConnectedScatterGroups), shareReplay(1));
