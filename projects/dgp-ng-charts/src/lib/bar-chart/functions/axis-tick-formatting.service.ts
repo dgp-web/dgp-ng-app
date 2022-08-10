@@ -77,7 +77,7 @@ export interface GetContinuousXAxisTickCountConfig {
 }
 
 export const defaultGetContinuousXAxisTickCountConfig: GetContinuousXAxisTickCountConfig = {
-    assumedTickWidth: 64
+    assumedTickWidth: 80
 };
 
 /**
