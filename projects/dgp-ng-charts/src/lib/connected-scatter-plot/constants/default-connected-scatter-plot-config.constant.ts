@@ -6,7 +6,7 @@ export const defaultConnectedScatterPlotConfig: ConnectedScatterPlotConfig = {
     margin: {
         top: 1,
         right: 1,
-        left: 1,
+        left: 50,
         bottom: 20
     }
 };
