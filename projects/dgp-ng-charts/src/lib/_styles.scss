@@ -32,6 +32,10 @@
     g:first-of-type text {
         dominant-baseline: central;
     }
+
+    g:last-of-type text {
+        dominant-baseline: central;
+    }
 }
 
 .chart__x-axis-grid-lines, *[dgpChartXAxisGridLines] {
