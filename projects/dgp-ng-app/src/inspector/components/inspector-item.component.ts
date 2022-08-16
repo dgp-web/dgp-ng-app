@@ -36,6 +36,7 @@ import { AttributeMetadata } from "data-modeling";
         .label {
             font-size: smaller;
             margin-top: 8px;
+            flex-shrink: 0;
         }
 
         .description {
