@@ -21,7 +21,7 @@ import { ModelValidationResult } from "data-modeling/src/lib/models";
                            [model]="model"
                            (modelChange)="setModel($event)"></dgp-input>
 
-                <div *ngIf="hasMax()"
+                <div *ngIf="showInfo$ | async"
                      class="input-info">
                     <div *ngIf="hasErrors$ | async"
                          class="error-message">
@@ -125,6 +125,13 @@ export class DgpInspectorInputItemComponent extends DgpModelEditorComponentBase<
     readonly hasErrors$ = this.validationResult$.pipe(map(x => !x.isValid));
     readonly firstErrorMessage$ = this.validationResult$.pipe(map(x => x.errors?.length > 0 ? x.errors[0].message : null));
 
+    readonly hasMax$ = this.metadata$.pipe(map(x => x && notNullOrUndefined(x.max)));
+
+    readonly showInfo$ = combineLatest([
+        this.hasErrors$,
+        this.hasMax$
+    ]).pipe(x => x[0] && x[1]);
+
     @Input()
     label: string;
 
@@ -133,9 +140,5 @@ export class DgpInspectorInputItemComponent extends DgpModelEditorComponentBase<
 
     @Input()
     matIconName: string;
-
-    hasMax() {
-        return notNullOrUndefined(this.metadata) && notNullOrUndefined(this.metadata.max);
-    }
 
 }
