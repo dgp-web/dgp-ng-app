@@ -5,70 +5,45 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
 @Component({
     selector: "dgp-input",
     template: `
-        <ng-container *ngIf="metadata">
-            <ng-container [ngSwitch]="metadata.type">
-                <ng-container *ngSwitchCase="'string'">
+        <dgp-input-field [metadata]="metadata"
+                         [disabled]="disabled"
+                         [model]="model"
+                         (modelChange)="setModel($event)"></dgp-input-field>
 
-                    <input [minLength]="metadata.min"
-                           [maxLength]="metadata.max"
-                           [disabled]="disabled"
-                           [required]="metadata.isRequired"
-                           [placeholder]="metadata.placeholder || ''"
-
-                           [ngModel]="model"
-                           (ngModelChange)="setModel($event)">
-
-                </ng-container>
-                <ng-container *ngSwitchCase="'number'">
-
-                    <input [min]="metadata.min"
-                           [max]="metadata.max"
-                           [step]="metadata.step"
-                           [disabled]="disabled"
-                           [required]="metadata.isRequired"
-                           [placeholder]="metadata.placeholder || ''"
-                           type="number"
-
-                           [ngModel]="model"
-                           (ngModelChange)="setModel($event)">
-
-                </ng-container>
-                <ng-container *ngSwitchCase="'boolean'">
-
-                    <div class="boolean-container">
-                        <dgp-spacer></dgp-spacer>
-                        <mat-slide-toggle [disabled]="disabled"
-                                          [required]="metadata.isRequired"
-                                          type="checkbox"
-
-                                          [ngModel]="model"
-                                          (ngModelChange)="setModel($event)"></mat-slide-toggle>
-
-                    </div>
-
-                </ng-container>
-            </ng-container>
-        </ng-container>
+        <dgp-input-info [metadata]="metadata"
+                        [disabled]="disabled"
+                        [model]="model"></dgp-input-info>
     `,
     styles: [`
         :host {
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+            margin-left: 16px;
+            max-width: 320px;
+            width: 100%;
         }
 
-        input {
-            display: flex;
+        dgp-input-field {
             flex-grow: 1;
         }
 
-        .boolean-container {
-            display: flex;
-            flex-grow: 1;
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DgpInputComponent extends DgpModelEditorComponentBase<any> {
+
     @Input()
     metadata: AttributeMetadata<any>;
+
+    @Input()
+    label: string;
+
+    @Input()
+    description: string;
+
+    @Input()
+    matIconName: string;
+
 }

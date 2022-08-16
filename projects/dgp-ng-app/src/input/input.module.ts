@@ -4,13 +4,15 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { DgpSpacerModule } from "../spacer/spacer.module";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         MatSlideToggleModule,
-        DgpSpacerModule
+        DgpSpacerModule,
+        MatIconModule
     ],
     declarations: [
         ...components
