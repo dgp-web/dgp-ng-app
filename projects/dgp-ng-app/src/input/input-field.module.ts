@@ -6,6 +6,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { DgpSpacerModule } from "../spacer/spacer.module";
 import { MatIconModule } from "@angular/material/icon";
 import { directives } from "./directives/directives";
+import { DgpInspectorModule } from "../inspector/inspector.module";
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { directives } from "./directives/directives";
         FormsModule,
         MatSlideToggleModule,
         DgpSpacerModule,
-        MatIconModule
+        MatIconModule,
+        DgpInspectorModule
     ],
     declarations: [
         ...components,
@@ -24,5 +26,5 @@ import { directives } from "./directives/directives";
         ...directives
     ]
 })
-export class DgpInputModule {
+export class DgpInputFieldModule {
 }

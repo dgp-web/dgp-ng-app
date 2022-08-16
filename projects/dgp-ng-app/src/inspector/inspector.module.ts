@@ -7,7 +7,6 @@ import { InspectorItemComponent } from "./components/inspector-item.component";
 import { InspectorSectionComponent } from "./components/inspector-section.component";
 import { InspectorComponent } from "./components/inspector.component";
 import { DgpExpansionToggleModule } from "../expansion-toggle/expansion-toggle.module";
-import { DgpInputModule } from "../input/input.module";
 
 const components = [
     InspectorComponent,
@@ -21,8 +20,7 @@ const components = [
         MatListModule,
         DgpSpacerModule,
         MatIconModule,
-        DgpExpansionToggleModule,
-        DgpInputModule
+        DgpExpansionToggleModule
     ],
     declarations: [
         ...components

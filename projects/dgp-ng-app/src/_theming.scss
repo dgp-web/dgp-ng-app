@@ -127,23 +127,24 @@
         font-size: 20px !important;
     }
 
-    dgp-inspector-input-item {
 
+    dgp-input-field {
         dgp-inspector-item {
-
             mat-list-item {
-                mat-icon {
-                    margin-top: 6px;
-                }
+                padding-bottom: 8px !important;
+                padding-top: 8px !important;
+            }
+
+            .mat-list-item-content {
+                align-items: flex-start !important;
 
                 .label {
                     margin-top: 8px;
                 }
-            }
 
-
-            .mat-list-item-content {
-                align-items: flex-start !important;
+                mat-icon {
+                    margin-top: 6px;
+                }
             }
         }
     }

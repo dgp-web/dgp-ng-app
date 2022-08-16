@@ -21,29 +21,16 @@ export interface SampleItem {
                         A
                         <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
 
-                        <dgp-inspector>
+                        <dgp-input-field [model]="stringInputModel"
+                                         [metadata]="stringInputMetadata">
 
-                            <dgp-inspector-item [metadata]="stringInputMetadata">
+                            <input [ngModel]="stringInputModel"
+                                   (ngModelChange)="stringInputModel = $event"
+                                   dgpInputMetadata
+                                   [metadata]="stringInputMetadata">
 
-                                <input [ngModel]="stringInputModel"
-                                       (ngModelChange)="stringInputModel = $event"
-                                       dgpInputMetadata
-                                       [metadata]="stringInputMetadata">
+                        </dgp-input-field>
 
-                                <dgp-input-info [model]="stringInputModel"
-                                                [metadata]="stringInputMetadata"></dgp-input-info>
-
-                            </dgp-inspector-item>
-                            <!--
-
-                                                                                    <dgp-inspector-input-item [model]="numberInputModel"
-                                                                                                              [metadata]="numberInputMetadata"></dgp-inspector-input-item>
-
-                                                                                    <dgp-inspector-input-item [model]="booleanInputModel"
-                                                                                                              [metadata]="booleanInputMetadata"></dgp-inspector-input-item>
-                            -->
-
-                        </dgp-inspector>
                     </div>
                 </ng-template>
             </dgp-split-panel-content>
