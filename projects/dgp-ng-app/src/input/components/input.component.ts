@@ -21,7 +21,6 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
             flex-grow: 1;
             position: relative;
             margin-left: 16px;
-            max-width: 320px;
             width: 100%;
         }
 
