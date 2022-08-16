@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
 import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-base";
+import { notNullOrUndefined } from "../../utils/null-checking.functions";
 
 @Component({
     selector: "dgp-inspector-input-item",
@@ -12,10 +13,19 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
 
             <dgp-spacer></dgp-spacer>
 
-            <dgp-input [metadata]="metadata"
-                       [disabled]="disabled"
-                       [model]="model"
-                       (modelChange)="setModel($event)"></dgp-input>
+            <div class="input-container">
+                <dgp-input [metadata]="metadata"
+                           [disabled]="disabled"
+                           [model]="model"
+                           (modelChange)="setModel($event)"></dgp-input>
+                <div *ngIf="hasMax()"
+                     class="input-info">
+                    <dgp-spacer></dgp-spacer>
+                    <div class="limits">
+                        {{model?.length || 0}}/{{metadata.max}}
+                    </div>
+                </div>
+            </div>
 
         </dgp-inspector-item>
     `,
@@ -23,6 +33,24 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
         :host {
             display: flex;
             flex-direction: column;
+            padding-top: 8px;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .input-info {
+            display: flex;
+            font-size: smaller;
+            opacity: 0.7;
+        }
+
+        dgp-input {
+            flex-grow: 1;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,4 +69,7 @@ export class DgpInspectorInputItemComponent extends DgpModelEditorComponentBase<
     @Input()
     matIconName: string;
 
+    hasMax() {
+        return notNullOrUndefined(this.metadata) && notNullOrUndefined(this.metadata.max);
+    }
 }

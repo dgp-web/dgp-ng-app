@@ -127,9 +127,24 @@
         font-size: 20px !important;
     }
 
-    dgp-inspector-item {
-        .mat-list-item-content {
-            align-items: flex-start;
+    dgp-inspector-input-item {
+
+        dgp-inspector-item {
+
+            mat-list-item {
+                mat-icon {
+                    margin-top: 6px;
+                }
+
+                .label {
+                    margin-top: 8px;
+                }
+            }
+
+
+            .mat-list-item-content {
+                align-items: flex-start !important;
+            }
         }
     }
 

@@ -28,14 +28,14 @@ import { AttributeMetadata } from "data-modeling";
         }
 
         mat-icon {
-            margin-top: 6px;
             margin-right: 16px;
             color: gray;
+            margin-top: 6px;
         }
 
         .label {
-            margin-top: 8px;
             font-size: smaller;
+            margin-top: 8px;
         }
 
         .description {

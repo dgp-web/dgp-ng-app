@@ -17,12 +17,6 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
 
                            [ngModel]="model"
                            (ngModelChange)="setModel($event)">
-                    <div class="input-info">
-                        <dgp-spacer></dgp-spacer>
-                        <div class="limits">
-                            {{metadata.min}}/{{metadata.max}}
-                        </div>
-                    </div>
 
                 </ng-container>
                 <ng-container *ngSwitchCase="'number'">
@@ -71,17 +65,10 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
             display: flex;
             flex-grow: 1;
         }
-
-
-        .input-info {
-            display: flex;
-            font-size: smaller;
-            opacity: 0.7;
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpInputComponent extends DgpModelEditorComponentBase<string | number | boolean> {
+export class DgpInputComponent extends DgpModelEditorComponentBase<any> {
     @Input()
     metadata: AttributeMetadata<any>;
 }
