@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { AttributeMetadata } from "data-modeling";
 
 export interface SampleItem {
     readonly sampleItemId: string;
@@ -19,6 +20,28 @@ export interface SampleItem {
                     <div class="panel-content">
                         A
                         <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+
+                        <dgp-input-field [model]="stringInputModel"
+                                         [metadata]="stringInputMetadata">
+
+                            <input [ngModel]="stringInputModel"
+                                   (ngModelChange)="stringInputModel = $event"
+                                   dgpInputMetadata
+                                   [metadata]="stringInputMetadata">
+
+                        </dgp-input-field>
+
+                        <dgp-input-field [model]="numberInputModel"
+                                         [metadata]="numberInputMetadata">
+
+                            <input [ngModel]="numberInputModel"
+                                   (ngModelChange)="numberInputModel = $event"
+                                   dgpInputMetadata
+                                   type="number"
+                                   [metadata]="numberInputMetadata">
+
+                        </dgp-input-field>
+
                     </div>
                 </ng-template>
             </dgp-split-panel-content>
@@ -112,6 +135,35 @@ export interface SampleItem {
 })
 export class SplitPanelLabsPageComponent {
 
+    stringInputModel: string;
+    stringInputMetadata: AttributeMetadata<string> = {
+        type: "string",
+        min: 4,
+        max: 64,
+        icon: "label",
+        label: "Title",
+        placeholder: "No title set",
+        description: "The name of this item in a very long description. This needs to break correctly.",
+        isRequired: true
+    };
+
+    numberInputModel: number = -20;
+    numberInputMetadata: AttributeMetadata<number> = {
+        type: "number",
+        min: -10,
+        max: 17,
+        icon: "list",
+        label: "Value",
+        description: "A demo for a numeric input"
+    };
+
+
+    booleanInputModel: number;
+    booleanInputMetadata: AttributeMetadata<boolean> = {
+        type: "boolean",
+        label: "On?",
+        icon: "info"
+    };
 
     items01: Array<SampleItem> = [
         {sampleItemId: "A", label: "A"},

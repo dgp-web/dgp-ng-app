@@ -140,6 +140,14 @@ export { hotReload } from "./hmr/hmr.actions";
 export { hmrReducer } from "./hmr/hmr.reducer";
 export { DgpNgApp } from "./hmr/hmr-app";
 
+// input
+export { DgpInputErrorInfoComponent } from "./input/components/input-error-info.component";
+export { DgpInputFieldComponent } from "./input/components/input-field.component";
+export { DgpInputHintComponent } from "./input/components/input-hint.component";
+export { DgpInputLengthInfoComponent } from "./input/components/input-length-info.component";
+export { DgpInputMetadataDirective } from "./input/directives/input-metadata.directive";
+export { DgpInputFieldModule } from "./input/input-field.module";
+
 // inspector
 export { InspectorComponent } from "./inspector/components/inspector.component";
 export { InspectorItemComponent } from "./inspector/components/inspector-item.component";

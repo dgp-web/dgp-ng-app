@@ -83,6 +83,7 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
 
     @Input()
     config = defaultConnectedScatterPlotConfig;
+    readonly config$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "config");
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
@@ -93,7 +94,8 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
         this.resolvedModel$,
         this.xAxis$,
         this.yAxis$,
-        this.controlLines$
+        this.controlLines$,
+        this.config$
     ]).pipe(
         debounceTime(0),
         map(combination => createConnectedScatterPlotScales({
@@ -103,7 +105,7 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
             ...combination[2],
             ...combination[3],
             controlLines: combination[4]
-        })),
+        }, combination[5])),
         shareReplay(1)
     );
 

@@ -161,6 +161,7 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
 
     @Input()
     config = defaultBoxPlotConfig;
+    readonly config$ = observeAttribute$(this as DgpBoxPlotComponent, "config");
 
     @Input()
     selectionMode: ChartSelectionMode = "None";
@@ -181,7 +182,8 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
         this.model$,
         this.yAxis$,
         this.xAxisTickFormat$,
-        this.controlLines$
+        this.controlLines$,
+        this.config$
     ]).pipe(
         debounceTime(0),
         map(combination => createBoxPlotScales({
@@ -191,7 +193,7 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
             ...combination[2],
             xAxisTickFormat: combination[3],
             controlLines: combination[4]
-        })),
+        }, combination[5])),
         shareReplay(1)
     );
 
