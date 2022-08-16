@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SplitPanelLabsPageComponent } from "./containers/split-panel-labs-page.component";
 import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
-import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpInputModule, DgpInspectorModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatCardModule } from "@angular/material/card";
@@ -26,7 +26,9 @@ import { DgpDragAndDropModule } from "../../../../../dgp-ng-drag-and-drop/src/li
         DgpSplitPanelModule,
         DgpDraggableModule,
         DgpDropzoneModule,
-        DgpDragAndDropModule
+        DgpDragAndDropModule,
+        DgpInputModule,
+        DgpInspectorModule
     ],
     declarations: [
         SplitPanelLabsPageComponent

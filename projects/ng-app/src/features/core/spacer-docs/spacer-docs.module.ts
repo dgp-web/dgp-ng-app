@@ -11,6 +11,9 @@ import { RouterModule } from "@angular/router";
         }]),
         DocsPageModule
     ],
+    exports: [
+        SpacerDocPageComponent
+    ],
     declarations: [
         SpacerDocPageComponent
     ]

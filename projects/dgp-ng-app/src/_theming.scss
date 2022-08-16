@@ -73,6 +73,26 @@
         background: mat.get-color-from-palette($primary) !important;
     }
 
+    .dgp-bg--accent {
+        background: mat.get-color-from-palette($accent) !important;
+    }
+
+    .dgp-bg--warn {
+        background: mat.get-color-from-palette($warn) !important;
+    }
+
+    .dgp-cl--primary {
+        color: mat.get-color-from-palette($primary) !important;
+    }
+
+    .dgp-cl--accent {
+        color: mat.get-color-from-palette($accent) !important;
+    }
+
+    .dgp-cl--warn {
+        color: mat.get-color-from-palette($warn) !important;
+    }
+
     mat-dialog-actions {
         display: flex;
         justify-content: flex-end;
@@ -105,6 +125,12 @@
         height: 20px !important;
         width: 20px !important;
         font-size: 20px !important;
+    }
+
+    dgp-inspector-item {
+        .mat-list-item-content {
+            align-items: flex-start;
+        }
     }
 
 }

@@ -8,6 +8,8 @@ import { AttributeMetadata } from "data-modeling";
             <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
             <div class="label">
                 {{ label || metadata?.label }}
+                <span *ngIf="metadata?.isRequired"
+                      class="dgp-cl--accent">*</span>
             </div>
             <dgp-spacer></dgp-spacer>
             <ng-content></ng-content>
@@ -26,11 +28,13 @@ import { AttributeMetadata } from "data-modeling";
         }
 
         mat-icon {
+            margin-top: 6px;
             margin-right: 16px;
             color: gray;
         }
 
         .label {
+            margin-top: 8px;
             font-size: smaller;
         }
 
