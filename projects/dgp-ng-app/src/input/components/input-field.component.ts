@@ -7,12 +7,16 @@ import { AttributeMetadata } from "data-modeling";
     template: `
         <dgp-inspector>
             <dgp-inspector-item [metadata]="metadata">
-                <div class="input-slot">
+                <div class="input-with-hint">
                     <ng-content></ng-content>
-                    <dgp-input-info [model]="model"
-                                    [metadata]="metadata"></dgp-input-info>
+                    <dgp-input-hint [model]="model"
+                                    [metadata]="metadata"></dgp-input-hint>
                 </div>
             </dgp-inspector-item>
+
+            <dgp-input-error-info [model]="model"
+                                  [metadata]="metadata"></dgp-input-error-info>
+
         </dgp-inspector>
     `,
     styles: [`
@@ -21,10 +25,12 @@ import { AttributeMetadata } from "data-modeling";
             flex-direction: column;
         }
 
-        .input-slot {
+        .input-with-hint {
             display: flex;
             flex-direction: column;
             margin-left: 16px;
+            max-width: 320px;
+            width: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -143,7 +143,7 @@ export { DgpNgApp } from "./hmr/hmr-app";
 // input
 export { DgpInputErrorInfoComponent } from "./input/components/input-error-info.component";
 export { DgpInputFieldComponent } from "./input/components/input-field.component";
-export { DgpInputInfoComponent } from "./input/components/input-info.component";
+export { DgpInputHintComponent } from "./input/components/input-hint.component";
 export { DgpInputLengthInfoComponent } from "./input/components/input-length-info.component";
 export { DgpInputMetadataDirective } from "./input/directives/input-metadata.directive";
 export { DgpInputFieldModule } from "./input/input-field.module";

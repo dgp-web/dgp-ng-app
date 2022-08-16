@@ -31,6 +31,16 @@ export interface SampleItem {
 
                         </dgp-input-field>
 
+                        <dgp-input-field [model]="numberInputModel"
+                                         [metadata]="numberInputMetadata">
+
+                            <input [ngModel]="numberInputModel"
+                                   (ngModelChange)="numberInputModel = $event"
+                                   dgpInputMetadata
+                                   [metadata]="numberInputMetadata">
+
+                        </dgp-input-field>
+
                     </div>
                 </ng-template>
             </dgp-split-panel-content>

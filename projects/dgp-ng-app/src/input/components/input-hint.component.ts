@@ -3,14 +3,12 @@ import { AttributeMetadata } from "data-modeling";
 import { DgpView } from "../../utils/view";
 
 @Component({
-    selector: "dgp-input-info",
+    selector: "dgp-input-hint",
     template: `
-        <dgp-input-error-info [model]="model"
-                              [metadata]="metadata"></dgp-input-error-info>
-
         <dgp-spacer></dgp-spacer>
 
-        <dgp-input-length-info [model]="model"
+        <dgp-input-length-info *ngIf="metadata?.type === 'string'"
+                               [model]="model"
                                [metadata]="metadata"></dgp-input-length-info>
     `,
     styles: [`
@@ -20,7 +18,7 @@ import { DgpView } from "../../utils/view";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DgpInputInfoComponent extends DgpView<any> {
+export class DgpInputHintComponent extends DgpView<any> {
 
     @Input()
     metadata: AttributeMetadata<any>;
