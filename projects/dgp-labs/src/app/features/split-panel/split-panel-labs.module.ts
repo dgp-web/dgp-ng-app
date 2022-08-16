@@ -9,6 +9,7 @@ import { MatCardModule } from "@angular/material/card";
 import { DgpDraggableModule } from "../../../../../dgp-ng-drag-and-drop/src/lib/draggable/draggable.module";
 import { DgpDropzoneModule } from "../../../../../dgp-ng-drag-and-drop/src/lib/drop-zone/dropzone.module";
 import { DgpDragAndDropModule } from "../../../../../dgp-ng-drag-and-drop/src/lib/data/drag-and-drop.module";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { DgpDragAndDropModule } from "../../../../../dgp-ng-drag-and-drop/src/li
         DgpDropzoneModule,
         DgpDragAndDropModule,
         DgpInputModule,
-        DgpInspectorModule
+        DgpInspectorModule,
+        FormsModule
     ],
     declarations: [
         SplitPanelLabsPageComponent

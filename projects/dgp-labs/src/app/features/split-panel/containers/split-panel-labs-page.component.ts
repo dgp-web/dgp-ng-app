@@ -23,15 +23,25 @@ export interface SampleItem {
 
                         <dgp-inspector>
 
-                            <dgp-inspector-input-item [model]="stringInputModel"
-                                                      (modelChange)="stringInputModel = $event"
-                                                      [metadata]="stringInputMetadata"></dgp-inspector-input-item>
+                            <dgp-inspector-item [metadata]="stringInputMetadata">
 
-                            <dgp-inspector-input-item [model]="numberInputModel"
-                                                      [metadata]="numberInputMetadata"></dgp-inspector-input-item>
+                                <input [ngModel]="stringInputModel"
+                                       (ngModelChange)="stringInputModel = $event"
+                                       dgpInputMetadata
+                                       [metadata]="stringInputMetadata">
 
-                            <dgp-inspector-input-item [model]="booleanInputModel"
-                                                      [metadata]="booleanInputMetadata"></dgp-inspector-input-item>
+                                <dgp-input-info [model]="stringInputModel"
+                                                [metadata]="stringInputMetadata"></dgp-input-info>
+
+                            </dgp-inspector-item>
+                            <!--
+
+                                                                                    <dgp-inspector-input-item [model]="numberInputModel"
+                                                                                                              [metadata]="numberInputMetadata"></dgp-inspector-input-item>
+
+                                                                                    <dgp-inspector-input-item [model]="booleanInputModel"
+                                                                                                              [metadata]="booleanInputMetadata"></dgp-inspector-input-item>
+                            -->
 
                         </dgp-inspector>
                     </div>

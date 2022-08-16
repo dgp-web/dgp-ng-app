@@ -5,6 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { DgpSpacerModule } from "../spacer/spacer.module";
 import { MatIconModule } from "@angular/material/icon";
+import { directives } from "./directives/directives";
 
 @NgModule({
     imports: [
@@ -15,10 +16,12 @@ import { MatIconModule } from "@angular/material/icon";
         MatIconModule
     ],
     declarations: [
-        ...components
+        ...components,
+        ...directives
     ],
     exports: [
-        ...components
+        ...components,
+        ...directives
     ]
 })
 export class DgpInputModule {
