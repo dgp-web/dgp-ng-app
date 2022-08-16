@@ -24,21 +24,14 @@ import { DgpView } from "../../utils/view";
 
             <dgp-spacer></dgp-spacer>
 
-            <div *ngIf="hasMax$ | async"
-                 class="limits">
-                {{model?.length || 0}}/{{metadata.max}}
-            </div>
+            <dgp-input-length-info *ngIf="hasMax$ | async"
+                                   [model]="model"
+                                   [metadata]="metadata"></dgp-input-length-info>
         </ng-container>
     `,
     styles: [`
         :host {
             display: flex;
-        }
-
-        .limits {
-            font-size: smaller;
-            opacity: 0.7;
-            margin-left: 8px;
         }
 
         dgp-input-field {
@@ -95,7 +88,7 @@ export class DgpInputInfoComponent extends DgpView<any> {
     readonly hasErrors$ = this.validationResult$.pipe(map(x => !x.isValid));
     readonly firstErrorMessage$ = this.validationResult$.pipe(map(x => x.errors?.length > 0 ? x.errors[0].message : null));
 
-    readonly hasMax$ = this.metadata$.pipe(map(x => x && notNullOrUndefined(x.max)));
+    readonly hasMax$ = this.metadata$.pipe(map(x => x && x.type === "string" && notNullOrUndefined(x.max)));
 
     readonly showInfo$ = combineLatest([
         this.hasErrors$,
