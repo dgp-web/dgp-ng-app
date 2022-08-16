@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { combineLatest } from "rxjs";
-import { map, shareReplay } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { ModelValidationResult } from "data-modeling/src/lib/models";
 import { AttributeMetadata, validateAttribute } from "data-modeling";
 import { DgpView } from "../../utils/view";
@@ -66,8 +66,7 @@ export class DgpInputErrorInfoComponent extends DgpView<any> {
                 modelId: "",
                 modelType: ""
             });
-        }),
-        shareReplay(1)
+        })
     );
 
     readonly hasErrors$ = this.validationResult$.pipe(map(x => !x.isValid));

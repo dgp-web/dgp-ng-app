@@ -37,6 +37,7 @@ export interface SampleItem {
                             <input [ngModel]="numberInputModel"
                                    (ngModelChange)="numberInputModel = $event"
                                    dgpInputMetadata
+                                   type="number"
                                    [metadata]="numberInputMetadata">
 
                         </dgp-input-field>
@@ -146,7 +147,7 @@ export class SplitPanelLabsPageComponent {
         isRequired: true
     };
 
-    numberInputModel: number;
+    numberInputModel: number = -20;
     numberInputMetadata: AttributeMetadata<number> = {
         type: "number",
         min: -10,

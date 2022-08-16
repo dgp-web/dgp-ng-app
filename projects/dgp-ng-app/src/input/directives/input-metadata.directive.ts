@@ -61,12 +61,6 @@ export class DgpInputMetadataDirective implements OnChanges {
                             this.metadata.step.toString()
                         );
                     }
-
-                    this.renderer.setAttribute(
-                        this.elementRef.nativeElement,
-                        "type",
-                        "number"
-                    );
                 }
 
             }
