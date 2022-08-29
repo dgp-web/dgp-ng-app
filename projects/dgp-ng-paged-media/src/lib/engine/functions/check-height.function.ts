@@ -7,5 +7,8 @@ export function checkHeight(payload: {
     const height = payload.height;
     const pageContentSize = payload.pageContentSize;
 
-    if (height > pageContentSize.height) throw Error("Item height exceeds page height. This is not allowed.");
+    if (height > pageContentSize.height) {
+        // throw Error("Item height exceeds page height. This is not allowed.");
+        console.error("Item height exceeds page height. This is not allowed.");
+    }
 }
