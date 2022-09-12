@@ -13,7 +13,7 @@
         "postdgp-ng-charts:build:prod": "cpx projects/dgp-ng-charts/src/lib/_styles.scss dist/dgp-ng-charts",
         "dgp-ng-charts:build:watch": "ng build --watch dgp-ng-charts",
         "dgp-ng-charts:test:prod": "ng test dgp-ng-app --code-coverage --no-watch",
-        "dgp-ng-charts:test": "ng test dgp-ng-charts",
+        "dgp-ng-charts:test": "ng test dgp-ng-charts --code-coverage",
         "dgp-ng-charts:publish": "npm publish dist/dgp-ng-charts",
         "dgp-ng-app:build:prod": "ng build --prod dgp-ng-app",
         "postdgp-ng-app:build:prod": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app",
