@@ -8,6 +8,19 @@ import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
 import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
 import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
 
+export function toReferenceTickLength() {
+
+    return (tickLabel: string) => {
+        let result = tickLabel;
+
+        while (result.includes(".") || result.includes(",")) {
+            result = result.replace(".", "").replace(",", "");
+        }
+
+        return result.length;
+    };
+}
+
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
     readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
@@ -75,7 +88,7 @@ export function createConnectedScatterPlotScales(payload: {
          * add additional values between the extrema to estimate this length
          */
         const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => yAxisTickFormat(x).length)
+            [yMin, yMax].map(x => yAxisTickFormat(x)).map(toReferenceTickLength())
         );
 
         const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
