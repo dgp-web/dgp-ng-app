@@ -20,11 +20,11 @@
 
 *[dgpChartBottomAxis] {
     g text {
-        text-anchor: start;
+        text-anchor: end;
     }
 
-    g:last-of-type text {
-        text-anchor: end;
+    g:first-of-type text {
+        text-anchor: start;
     }
 }
 
