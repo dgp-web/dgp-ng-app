@@ -3,23 +3,10 @@ import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../model
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { createCardinalYAxis, createYAxisScale, toReferenceTickLength } from "../../shared/functions";
 import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
 import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
 import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
-
-export function toReferenceTickLength() {
-
-    return (tickLabel: string) => {
-        let result = tickLabel;
-
-        while (result.includes(".") || result.includes(",")) {
-            result = result.replace(".", "").replace(",", "");
-        }
-
-        return result.length;
-    };
-}
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;

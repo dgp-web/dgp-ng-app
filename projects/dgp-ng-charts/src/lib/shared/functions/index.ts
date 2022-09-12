@@ -5,3 +5,4 @@ export { getLinearAxisTickValuesForStep } from "./get-linear-axis-tick-values-fo
 export { createCardinalYAxis } from "./create-cardinal-y-axis.function";
 export { createYAxisScale } from "./create-cardinal-y-axis-scale.function";
 export { getLowerLogTickNotationBoundary } from "./get-lower-log-tick-notation-boundary.function";
+export { toReferenceTickLength } from "./to-reference-tick-length.function";
