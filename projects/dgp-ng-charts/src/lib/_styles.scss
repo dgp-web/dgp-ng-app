@@ -19,7 +19,7 @@
 }
 
 *[dgpChartBottomAxis] {
-    g:first-of-type text {
+    g text {
         text-anchor: start;
     }
 
@@ -29,11 +29,7 @@
 }
 
 *[dgpChartLeftAxis] {
-    g:first-of-type text {
-        dominant-baseline: central;
-    }
-
-    g:last-of-type text {
+    g text {
         dominant-baseline: central;
     }
 }
