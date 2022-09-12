@@ -78,7 +78,7 @@ export function createConnectedScatterPlotScales(payload: {
             [yMin, yMax].map(x => yAxisTickFormat(x)).map(toReferenceTickLength())
         );
 
-        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
+        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * config.refTickCharWidth;
 
         marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
             ? config.margin.left
