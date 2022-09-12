@@ -8,5 +8,6 @@ export const defaultConnectedScatterPlotConfig: ConnectedScatterPlotConfig = {
         right: 1,
         left: 50,
         bottom: 20
-    }
+    },
+    refTickCharWidth: 10
 };

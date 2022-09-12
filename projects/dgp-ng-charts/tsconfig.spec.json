@@ -2,9 +2,10 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "../../out-tsc/spec",
+        "target": "es5",
         "types": [
             "jasmine",
-            "jquey",
+            "jquery",
             "node"
         ]
     },

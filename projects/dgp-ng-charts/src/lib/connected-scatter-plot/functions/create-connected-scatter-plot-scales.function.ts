@@ -3,7 +3,7 @@ import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../model
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { createCardinalYAxis, createYAxisScale, toReferenceTickLength } from "../../shared/functions";
 import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
 import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
 import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
@@ -75,10 +75,10 @@ export function createConnectedScatterPlotScales(payload: {
          * add additional values between the extrema to estimate this length
          */
         const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => yAxisTickFormat(x).length)
+            [yMin, yMax].map(x => yAxisTickFormat(x)).map(toReferenceTickLength())
         );
 
-        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
+        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * config.refTickCharWidth;
 
         marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
             ? config.margin.left

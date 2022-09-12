@@ -19,21 +19,17 @@
 }
 
 *[dgpChartBottomAxis] {
-    g:first-of-type text {
-        text-anchor: start;
+    g text {
+        text-anchor: end;
     }
 
-    g:last-of-type text {
-        text-anchor: end;
+    g:first-of-type text {
+        text-anchor: start;
     }
 }
 
 *[dgpChartLeftAxis] {
-    g:first-of-type text {
-        dominant-baseline: central;
-    }
-
-    g:last-of-type text {
+    g text {
         dominant-baseline: central;
     }
 }
