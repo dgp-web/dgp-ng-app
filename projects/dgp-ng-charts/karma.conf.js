@@ -20,7 +20,7 @@ module.exports = function (config) {
             dir: require('path').join(__dirname, '../../coverage/dgp-ng-charts'),
             subdir: '.',
             reporters: [
-                {type: 'text'},
+                {type: 'html'},
                 {type: 'text-summary'},
                 {type: 'cobertura'}
             ]
