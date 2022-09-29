@@ -199,6 +199,8 @@ export class ChartsLabsComponent {
         this.heatmapTiles = heatmapTiles;
         this.heatmapSegments = [{
             startX: 0, startY: 0, endX: 37, endY: 21
+        }, {
+            startX: 12, startY: 5, endX: 101, endY: 23
         }];
 
     }

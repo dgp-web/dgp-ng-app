@@ -92,9 +92,10 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
             const y1 = xAxis(segment.endY.toString());
 
 
-            ctx.fillStyle = "#66666666";
+            ctx.fillStyle = "transparent";
+            ctx.strokeStyle = "#ffffff";
 
-            ctx.fillRect(x0, y0, x1, y1);
+            ctx.strokeRect(x0, y0, x1, y1);
 
             ctx.stroke();
             ctx.closePath();
