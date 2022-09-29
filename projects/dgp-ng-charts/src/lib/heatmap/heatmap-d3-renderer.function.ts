@@ -80,6 +80,28 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
     });
 
+    if (payload.segments) {
+
+        payload.segments.forEach(segment => {
+
+            ctx.beginPath();
+
+            const x0 = xAxis(segment.startX.toString());
+            const x1 = xAxis(segment.endX.toString());
+            const y0 = xAxis(segment.startY.toString());
+            const y1 = xAxis(segment.endY.toString());
+
+
+            ctx.fillStyle = "#66666666";
+
+            ctx.fillRect(x0, y0, x1, y1);
+
+            ctx.stroke();
+            ctx.closePath();
+        });
+
+    }
+
     if (payload.selectionMode === "Brush") {
 
         const selectionPublisher = new Subject<HeatmapSelection>();

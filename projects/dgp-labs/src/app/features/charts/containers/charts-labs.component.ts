@@ -5,6 +5,7 @@ import {
     computeBoxFromValues,
     ExportChartConfig,
     FillPattern,
+    HeatmapSegment,
     HeatmapSelection,
     HeatmapTile,
     Shape
@@ -94,6 +95,7 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                              xAxisTitle="x axis"
                              selectionMode="Brush"
                              [exportConfig]="exportConfig"
+                             [segments]="heatmapSegments"
                              (selectionChange)="selectTiles($event)">
 
                     <ng-container right-legend>Right</ng-container>
@@ -170,6 +172,7 @@ export class ChartsLabsComponent {
     }];
 
     readonly heatmapTiles: ReadonlyArray<HeatmapTile>;
+    readonly heatmapSegments: ReadonlyArray<HeatmapSegment>;
 
     exportConfig: ExportChartConfig = {
         rightLegend: document.createElement("span")
@@ -194,6 +197,9 @@ export class ChartsLabsComponent {
         }
 
         this.heatmapTiles = heatmapTiles;
+        this.heatmapSegments = [{
+            startX: 0, startY: 0, endX: 37, endY: 21
+        }];
 
     }
 
