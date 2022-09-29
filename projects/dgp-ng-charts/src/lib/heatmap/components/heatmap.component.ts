@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as _ from "lodash";
 import { defaultDgpHeatmapConfig } from "../constants";
-import { ExportChartConfig, HeatmapSelection, HeatmapTile } from "../models";
+import { ExportChartConfig, HeatmapSegment, HeatmapSelection, HeatmapTile } from "../models";
 import { heatmapHybridRenderer } from "../heatmap-d3-renderer.function";
 import { ChartComponentBase } from "../../shared/chart.component-base";
+import { Many } from "data-modeling";
 
 @Component({
     selector: "dgp-heatmap",
@@ -107,10 +108,16 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
     @Input()
     exportConfig: ExportChartConfig;
+
     @Input()
     config = defaultDgpHeatmapConfig;
+
     @Output()
     readonly selectionChange = new EventEmitter<HeatmapSelection>();
+
+    @Input()
+    segments: Many<HeatmapSegment>;
+
     svgNode: Node;
 
     private selectionValue: HeatmapSelection = {};
@@ -140,6 +147,7 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
             config: this.config,
             nativeElement: this.chartElRef.nativeElement,
             selectionMode: this.selectionMode,
+            segments: this.segments,
             updateSelection: selection => this.selection = selection
         });
     }

@@ -1,5 +1,6 @@
 import { DrawD3ChartPayload } from "../shared/chart.component-base";
 import { ChartSelectionMode, SharedChartConfig } from "../shared/models";
+import { Many } from "data-modeling";
 
 export interface HeatmapDomainOverrides {
     readonly min?: number;
@@ -71,5 +72,14 @@ export interface HeatmapRendererPayload {
     readonly selectionMode: ChartSelectionMode;
     readonly selection: HeatmapSelection;
     readonly selectionFitter?: HeatmapSelectionFitter;
+    readonly segments?: Many<HeatmapSegment>;
     readonly updateSelection: (selection: HeatmapSelection) => void;
+}
+
+export interface HeatmapSegment {
+    readonly startX: number;
+    readonly endX: number;
+
+    readonly startY: number;
+    readonly endY: number;
 }
