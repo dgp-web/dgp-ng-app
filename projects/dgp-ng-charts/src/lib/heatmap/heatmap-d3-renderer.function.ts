@@ -1,12 +1,12 @@
 import * as d3 from "d3";
-import { ScaleBand } from "d3";
 import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
 import { isBrushed } from "../box-plot/functions";
 import { BrushCoordinates } from "../box-plot/models";
-import { HeatmapRendererPayload, HeatmapSegment, HeatmapSelection } from "./models";
+import { HeatmapRendererPayload, HeatmapSelection } from "./models";
+import { drawHeatmapSegmentOnCanvas } from "./functions/draw-heatmap-segment-on-canvas.function";
 
 
 export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
@@ -200,32 +200,3 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
 
 }
 
-export function drawHeatmapSegmentOnCanvas(payload: {
-    readonly ctx: CanvasRenderingContext2D;
-    readonly xAxis: ScaleBand<string>;
-    readonly yAxis: ScaleBand<string>;
-}) {
-
-    return (segment: HeatmapSegment) => {
-
-        const ctx = payload.ctx;
-        const xAxis = payload.xAxis;
-        const yAxis = payload.yAxis;
-
-        ctx.beginPath();
-
-        const xStart = xAxis(segment.xStart.toString());
-        const xEnd = xAxis(segment.xEnd.toString()) + xAxis.bandwidth();
-        const yStart = yAxis(segment.yStart.toString());
-        const yEnd = yAxis(segment.yEnd.toString()) + yAxis.bandwidth();
-
-        ctx.fillStyle = "transparent";
-        ctx.strokeStyle = segment.strokeColor || "#888888";
-
-        ctx.strokeRect(xStart, yStart, xEnd, yEnd);
-
-        ctx.stroke();
-        ctx.closePath();
-    };
-
-}
