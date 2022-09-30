@@ -15,17 +15,36 @@ export function drawHeatmapSegmentOnCanvas(payload: {
 
         ctx.beginPath();
 
-        const xStart = xAxis(segment.xStart.toString());
-        const xEnd = xAxis(segment.xEnd.toString()) + xAxis.bandwidth();
-        const yStart = yAxis(segment.yStart.toString());
-        const yEnd = yAxis(segment.yEnd.toString()) + yAxis.bandwidth();
-
         ctx.fillStyle = "transparent";
         ctx.strokeStyle = segment.strokeColor || "#888888";
 
-        ctx.strokeRect(xStart, yStart, xEnd, yEnd);
+        const xLineWidth = Math.max(yAxis.bandwidth() / 3, xAxis.bandwidth() / 3);
+        const yLineWidth = xLineWidth;
 
+        const xStart = xAxis(segment.xStart.toString());
+        const xEnd = xAxis(segment.xEnd.toString()) + xAxis.bandwidth();
+
+        const yStart = yAxis(segment.yStart.toString());
+        const yEnd = yAxis(segment.yEnd.toString()) + yAxis.bandwidth();
+
+        ctx.lineWidth = xLineWidth;
+        ctx.moveTo(xStart, yStart);
+        ctx.lineTo(xEnd, yStart);
         ctx.stroke();
+
+        ctx.moveTo(xStart, yEnd);
+        ctx.lineTo(xEnd, yEnd);
+        ctx.stroke();
+
+        ctx.lineWidth = yLineWidth;
+        ctx.moveTo(xStart, yStart);
+        ctx.lineTo(xStart, yEnd);
+        ctx.stroke();
+
+        ctx.moveTo(xEnd, yStart);
+        ctx.lineTo(xEnd, yEnd);
+        ctx.stroke();
+
         ctx.closePath();
     };
 
