@@ -18,7 +18,7 @@ export function drawHeatmapSegmentOnCanvas(payload: {
         ctx.fillStyle = "transparent";
         ctx.strokeStyle = segment.strokeColor || "#888888";
 
-        const xLineWidth = Math.max(yAxis.bandwidth() / 3, xAxis.bandwidth() / 3);
+        const xLineWidth = Math.max(Math.min(yAxis.bandwidth() / 3, xAxis.bandwidth() / 3), 1);
         const yLineWidth = xLineWidth;
 
         const xStart = xAxis(segment.xStart.toString());
