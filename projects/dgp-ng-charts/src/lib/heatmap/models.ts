@@ -77,9 +77,11 @@ export interface HeatmapRendererPayload {
 }
 
 export interface HeatmapSegment {
-    readonly startX: number;
-    readonly endX: number;
+    readonly xStart: number;
+    readonly xEnd: number;
 
-    readonly startY: number;
-    readonly endY: number;
+    readonly yStart: number;
+    readonly yEnd: number;
+
+    readonly strokeColor?: string;
 }

@@ -198,9 +198,11 @@ export class ChartsLabsComponent {
 
         this.heatmapTiles = heatmapTiles;
         this.heatmapSegments = [{
-            startX: 0, startY: 0, endX: 37, endY: 21
+            xStart: 0, yStart: 0, xEnd: 37, yEnd: 21,
+            strokeColor: "#ffffff"
         }, {
-            startX: 12, startY: 5, endX: 101, endY: 23
+            xStart: 12, yStart: 5, xEnd: 149, yEnd: 23,
+            strokeColor: "#ffffff"
         }];
 
     }

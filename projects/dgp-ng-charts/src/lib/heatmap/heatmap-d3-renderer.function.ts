@@ -1,11 +1,12 @@
 import * as d3 from "d3";
+import { ScaleBand } from "d3";
 import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
 import { isBrushed } from "../box-plot/functions";
 import { BrushCoordinates } from "../box-plot/models";
-import { HeatmapRendererPayload, HeatmapSelection } from "./models";
+import { HeatmapRendererPayload, HeatmapSegment, HeatmapSelection } from "./models";
 
 
 export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
@@ -81,26 +82,7 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
     });
 
     if (payload.segments) {
-
-        payload.segments.forEach(segment => {
-
-            ctx.beginPath();
-
-            const x0 = xAxis(segment.startX.toString());
-            const x1 = xAxis(segment.endX.toString());
-            const y0 = xAxis(segment.startY.toString());
-            const y1 = xAxis(segment.endY.toString());
-
-
-            ctx.fillStyle = "transparent";
-            ctx.strokeStyle = "#ffffff";
-
-            ctx.strokeRect(x0, y0, x1, y1);
-
-            ctx.stroke();
-            ctx.closePath();
-        });
-
+        payload.segments.forEach(drawHeatmapSegmentOnCanvas({ctx, xAxis, yAxis}));
     }
 
     if (payload.selectionMode === "Brush") {
@@ -215,5 +197,35 @@ export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
         });
 
     }
+
+}
+
+export function drawHeatmapSegmentOnCanvas(payload: {
+    readonly ctx: CanvasRenderingContext2D;
+    readonly xAxis: ScaleBand<string>;
+    readonly yAxis: ScaleBand<string>;
+}) {
+
+    return (segment: HeatmapSegment) => {
+
+        const ctx = payload.ctx;
+        const xAxis = payload.xAxis;
+        const yAxis = payload.yAxis;
+
+        ctx.beginPath();
+
+        const xStart = xAxis(segment.xStart.toString());
+        const xEnd = xAxis(segment.xEnd.toString()) + xAxis.bandwidth();
+        const yStart = yAxis(segment.yStart.toString());
+        const yEnd = yAxis(segment.yEnd.toString()) + yAxis.bandwidth();
+
+        ctx.fillStyle = "transparent";
+        ctx.strokeStyle = segment.strokeColor || "#888888";
+
+        ctx.strokeRect(xStart, yStart, xEnd, yEnd);
+
+        ctx.stroke();
+        ctx.closePath();
+    };
 
 }
