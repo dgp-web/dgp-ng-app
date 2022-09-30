@@ -8,41 +8,27 @@ import { HeatmapSegment } from "../models/heatmap-segment.model";
 import { HeatmapTile } from "../models/heatmap-tile.model";
 import { HeatmapSelection } from "../models/heatmap-selection.model";
 import { ExportChartConfig } from "../models/export-chart-config.model";
+import { Size } from "dgp-ng-app";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
     selector: "dgp-heatmap",
     template: `
-        <div class="chart"
-             #chartRef>
-            <div *ngIf="chartTitle"
-                 class="title">
-                {{ chartTitle }}
-            </div>
+        <dgp-chart [yAxisTitle]="yAxisTitle"
+                   [xAxisTitle]="xAxisTitle"
+                   [chartTitle]="chartTitle"
+                   (sizeChanged)="onResize($event)">
 
-            <div class="inner-container">
-                <div *ngIf="yAxisTitle"
-                     class="y-axis-label-container">
-                    <div class="y-axis-label">
-                        {{ yAxisTitle }}
-                    </div>
-                </div>
-                <div #chartElRef
-                     class="d3-hook"></div>
-                <div class="right-legend">
-                    <ng-content select="[right-legend]"></ng-content>
-                </div>
-            </div>
+            <ng-container right-legend>
+                <ng-content select="[right-legend]"></ng-content>
+            </ng-container>
 
-            <div *ngIf="xAxisTitle"
-                 class="x-axis-label">
-                {{ xAxisTitle }}
+            <div #chartElRef
+                 class="d3-hook"></div>
+            <div class="right-legend">
+                <ng-content select="[right-legend]"></ng-content>
             </div>
-
-            <div class="bottom-legend">
-                <ng-content select="[bottom-legend]"></ng-content>
-            </div>
-        </div>
-
+        </dgp-chart>
     `,
     styles: [`
         :host {
@@ -51,63 +37,21 @@ import { ExportChartConfig } from "../models/export-chart-config.model";
             font-size: smaller;
         }
 
-        .chart {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex-grow: 1;
-        }
-
-        .title {
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            margin: 16px;
-            word-break: break-all;
-        }
-
-        .inner-container {
-            display: flex;
-            flex-grow: 1;
-        }
-
-        .y-axis-label-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 40px;
-            max-width: 40px;
-        }
-
-        .y-axis-label {
-            transform: rotate(-90deg);
-            white-space: nowrap;
-        }
-
         .d3-hook {
             flex-grow: 1;
             height: 100%;
             position: relative;
         }
 
-        .x-axis-label {
-            min-height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .right-legend {
-        }
-
-        .bottom-legend {
-
         }
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> {
+
+    readonly size$ = new BehaviorSubject<Size>(null);
 
     @Input()
     exportConfig: ExportChartConfig;
@@ -153,6 +97,11 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
             segments: this.segments,
             updateSelection: selection => this.selection = selection
         });
+    }
+
+    onResize(size: Size) {
+        this.size$.next(size);
+        this.drawChartActionScheduler.next();
     }
 
 }

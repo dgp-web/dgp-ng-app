@@ -1,5 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from "@angular/core";
-import { notNullOrUndefined, ResizeSensor } from "dgp-ng-app";
+import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from "@angular/core";
 import * as d3 from "d3";
 import { from, Subscription, timer } from "rxjs";
 import { debounceTime, switchMap } from "rxjs/operators";
@@ -14,7 +13,7 @@ export interface DrawD3ChartPayload {
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements AfterViewInit, OnChanges, OnDestroy {
+export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements OnChanges, OnDestroy {
 
     @ViewChild("chartElRef", {static: false})
     chartElRef: ElementRef;
@@ -37,8 +36,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
     @Input()
     config: TConfig;
 
-    private resizeSensor: ResizeSensor;
-    private readonly drawChartActionScheduler = new EventEmitter();
+    protected readonly drawChartActionScheduler = new EventEmitter();
 
     private resizeSubscription: Subscription;
 
@@ -54,20 +52,14 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
 
     }
 
-    ngAfterViewInit(): void {
-        this.initResizeSensor();
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.model || changes.config || changes.selectionMode || changes.selection) {
             this.scheduleDrawChartAction();
         }
     }
 
-    ngOnDestroy(): void {
-        if (!this.resizeSubscription?.closed) {
-            this.resizeSubscription?.unsubscribe();
-        }
+    ngOnDestroy() {
+        if (!this.resizeSubscription?.closed) this.resizeSubscription?.unsubscribe();
     }
 
     protected scheduleDrawChartAction(): void {
@@ -75,16 +67,6 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
     }
 
     protected abstract drawD3Chart(payload: DrawD3ChartPayload): void;
-
-    private readonly onResize = () => this.scheduleDrawChartAction();
-
-    private initResizeSensor() {
-        if (notNullOrUndefined(this.resizeSensor) && notNullOrUndefined(this.onResize)) {
-            this.resizeSensor.disconnect();
-        }
-
-        this.resizeSensor = new ResizeSensor(this.elRef.nativeElement, this.onResize);
-    }
 
     private async drawChart(): Promise<void> {
 
