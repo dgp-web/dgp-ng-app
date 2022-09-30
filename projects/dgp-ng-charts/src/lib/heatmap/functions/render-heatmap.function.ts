@@ -3,13 +3,12 @@ import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
-import { isBrushed } from "../box-plot/functions";
-import { BrushCoordinates } from "../box-plot/models";
-import { HeatmapRendererPayload, HeatmapSelection } from "./models";
-import { drawHeatmapSegmentOnCanvas } from "./functions/draw-heatmap-segment-on-canvas.function";
+import { isBrushed } from "../../box-plot/functions";
+import { BrushCoordinates } from "../../box-plot/models";
+import { HeatmapRendererPayload, HeatmapSelection } from "../models";
+import { drawHeatmapSegmentOnCanvas } from "./draw-heatmap-segment-on-canvas.function";
 
-
-export function heatmapHybridRenderer(payload: HeatmapRendererPayload) {
+export function renderHeatmap(payload: HeatmapRendererPayload) {
 
     // Labels of row and columns
     const columnValues = _.sortBy(uniq(payload.model.map(x => x.x)));

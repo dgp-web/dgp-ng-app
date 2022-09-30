@@ -1,5 +1,5 @@
 import { ScaleBand } from "d3";
-import { HeatmapSegment } from "../models";
+import { HeatmapSegment } from "../models/heatmap-segment.model";
 
 export function drawHeatmapSegmentOnCanvas(payload: {
     readonly ctx: CanvasRenderingContext2D;

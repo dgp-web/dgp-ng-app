@@ -5,7 +5,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { BehaviorSubject } from "rxjs";
 import { filter } from "rxjs/operators";
 import { firstAsPromise } from "dgp-ng-app";
-import { InternalExportChartConfig } from "../../heatmap/models";
+import { InternalExportChartConfig } from "../../heatmap/models/internal-export-chart-config.model";
 
 @Component({
     selector: "dgp-export-chart-dialog",

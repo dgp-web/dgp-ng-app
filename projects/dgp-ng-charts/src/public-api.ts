@@ -277,3 +277,4 @@ export { TriangleRightDirective } from "./lib/shapes/directives/triangle-right.d
 export * from "./lib/stroke/constants";
 export * from "./lib/stroke/functions";
 export * from "./lib/stroke/models";
+

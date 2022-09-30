@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import html2canvas from "html2canvas";
-import { InternalExportChartConfig } from "../models";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Store } from "@ngrx/store";
 import { scheduleRequest } from "dgp-ng-app";
+import { InternalExportChartConfig } from "../models/internal-export-chart-config.model";
 
 
 @Component({

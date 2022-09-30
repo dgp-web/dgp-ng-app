@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {DgpModelEditorComponentBase} from "dgp-ng-app";
-import { HeatmapLegend } from "../models";
+import { HeatmapLegend } from "../models/heatmap-legend.model";
 
 @Component({
     selector: "dgp-heatmap-legend",

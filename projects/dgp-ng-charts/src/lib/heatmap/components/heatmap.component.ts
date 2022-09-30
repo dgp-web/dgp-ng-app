@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import * as _ from "lodash";
-import { defaultDgpHeatmapConfig } from "../constants";
-import { ExportChartConfig, HeatmapSegment, HeatmapSelection, HeatmapTile } from "../models";
-import { heatmapHybridRenderer } from "../heatmap-d3-renderer.function";
+import { defaultDgpHeatmapConfig } from "../constants/default-dgp-heatmap-config.constant";
+import { renderHeatmap } from "../functions/render-heatmap.function";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { Many } from "data-modeling";
+import { HeatmapSegment } from "../models/heatmap-segment.model";
+import { HeatmapTile } from "../models/heatmap-tile.model";
+import { HeatmapSelection } from "../models/heatmap-selection.model";
+import { ExportChartConfig } from "../models/export-chart-config.model";
 
 @Component({
     selector: "dgp-heatmap",
@@ -140,7 +143,7 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
     protected drawD3Chart(payload): void {
         this.svgNode = payload.svg.node().parentNode;
 
-        heatmapHybridRenderer({
+        renderHeatmap({
             drawD3ChartInfo: payload,
             model: this.model,
             selection: this.selection,
