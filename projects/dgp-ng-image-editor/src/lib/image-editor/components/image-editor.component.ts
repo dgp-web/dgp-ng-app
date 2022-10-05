@@ -133,6 +133,8 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     scaleY: number;
     readonly scaleY$ = observeAttribute$(this as DgpImageEditorComponent, "scaleY");
 
+    
+
     async setupFabric$() {
         if (this.model) {
             await this.tryCreateFabric();
