@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
-import { distinctUntilHashChanged, observeAttribute$ } from "dgp-ng-app";
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
+import { distinctUntilHashChanged, getHashCode, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay, switchMap } from "rxjs/operators";
@@ -11,6 +11,7 @@ import { tryDestroyCanvas$ } from "../../functions/try-destroy-canvas$.function"
 import { registerUpdateHandler } from "../../functions/register-update-handler.function";
 import { drawThingsOnCanvas$ } from "../../functions/draw-things-on-canvas.function";
 import { createCanvas } from "../../functions/create-canvas-function";
+import { Many } from "data-modeling";
 
 @Component({
     selector: "dgp-image-editor",
@@ -50,6 +51,9 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
     readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
     readonly disabled$ = observeAttribute$(this as DgpImageEditorComponent, "disabled");
 
+    @Output()
+    readonly regionsChange = new EventEmitter<Many<ImageRegion>>();
+
     constructor() {
         super();
 
@@ -72,6 +76,20 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
         ).subscribe();
     }
 
+    updateRegion(payload?: ImageRegion) {
+        const updatedRegions = this.regions.map(x => {
+            if (x.imageRegionId !== x.imageRegionId) return x;
+            return payload;
+        });
+        this.updateRegions(updatedRegions);
+    }
+
+    updateRegions(payload?: Many<ImageRegion>) {
+        if (getHashCode(payload) === getHashCode(this.regions)) return;
+
+        this.regions = payload;
+        this.regionsChange.emit(payload);
+    }
 
     async executeFabricLifecycle$() {
         await this.tryDestroyFabric$();
@@ -105,11 +123,11 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
     rectUpdateHandler = (e: fabric.IEvent) => {
         const rect = e.target as fabric.Rect;
-        const region = e.target.data as ImageRegion;
+        const imageRegion = e.target.data as ImageRegion;
         const canvas = e.target.canvas as fabric.Canvas;
 
-        console.log(region === this.regions[0]);
-
+        const updatedRegion = resolveImageRegion({imageRegion, rect, canvas});
+        this.updateRegion(updatedRegion);
     };
 
     private async tryDestroyFabric$() {
@@ -130,4 +148,46 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
 }
 
+
+export function resolveSizeValue(currentValue: number, referenceValue: number): number {
+    if (notNullOrUndefined(referenceValue) && currentValue > referenceValue) currentValue = referenceValue;
+    return currentValue / referenceValue;
+}
+
+export function resolvePositionValue(currentValue: number, referenceValue: number): number {
+    if (currentValue < 0) currentValue = 0;
+    return currentValue / referenceValue;
+}
+
+export function resolveImageRegion(payload: {
+    readonly imageRegion: ImageRegion;
+    readonly rect: fabric.Rect;
+    readonly canvas: fabric.Canvas;
+}): ImageRegion {
+    const imageRegion = payload.imageRegion;
+    const canvas = payload.canvas;
+    const boundingRect = payload.rect.getBoundingRect();
+
+    if (boundingRect.width > canvas?.getWidth()) {
+        boundingRect.width = canvas?.getWidth();
+    }
+
+    if (imageRegion.isNormalized) {
+        return {
+            ...imageRegion,
+            width: resolveSizeValue(boundingRect.width, canvas?.getWidth()),
+            height: resolveSizeValue(boundingRect.height, canvas?.getHeight()),
+            offsetX: resolvePositionValue(boundingRect.left, canvas?.getWidth()),
+            offsetY: resolvePositionValue(boundingRect.top, canvas?.getHeight())
+        };
+    } else {
+        return {
+            ...imageRegion,
+            width: boundingRect.width,
+            height: boundingRect.height,
+            offsetX: boundingRect.left,
+            offsetY: boundingRect.top
+        };
+    }
+}
 
