@@ -8,8 +8,9 @@ import { ImageConfigComponentBase } from "./image-config.component-base";
 import { createRect, getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
 import { ImageConfig, ImageRegion } from "../../models";
 import { Many } from "data-modeling";
-import { unregisterRectEvents } from "../../functions/unregister-rect-events.function";
+import { unregisterObjectEvents } from "../../functions/unregister-object-events.function";
 import { limitInteractionToContainer } from "../../functions/limit-interaction-to-container.function";
+import { defaultCanvasOptions } from "../../constants/default-canvas-options.constant";
 
 @Component({
     selector: "dgp-image-editor",
@@ -75,7 +76,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
     async setupFabric$() {
         if (this.src) {
-            await this.tryCreateFabric();
+            await this.tryCreateFabric$();
             return this.draw$();
         } else {
             return this.tryDestroyFabric$();
@@ -83,75 +84,26 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
     }
 
-    private draw$(): Promise<void> {
+    private async draw$(): Promise<void> {
         if (!this.currentFabricCanvas || !this.src) return Promise.resolve();
 
         this.unregisterListeners();
-        return this.drawThingsOntoCanvas$(this.src, this.currentFabricCanvas);
+
+        await drawThingsOntoCanvas$({
+            src: this.src,
+            canvas: this.currentFabricCanvas,
+            imageConfig: this as ImageConfig,
+            regions: this.regions
+        });
+
+        this.registerListeners();
     }
 
-    async drawThingsOntoCanvas$(
-        imageUrl: string,
-        canvas: fabric.Canvas
-    ): Promise<void> {
 
-        if (!isCanvasValid(canvas)) return;
-
-        const imageConfig = this as ImageConfig;
-        const regions = this.regions;
-
-        let image: fabric.Image;
-
-        try {
-            image = await getFabricImageFromUrl$(imageUrl);
-        } catch (e) {
-            console.error(e);
-            return Promise.resolve();
-        }
-
-        try {
-            await renderImageToCanvas$({canvas, image, imageConfig});
-        } catch (e) {
-            console.error(e);
-            return Promise.resolve();
-        }
-
-        if (regions) {
-
-            const rects = regions.map(region => {
-                let fabricRect: fabric.Rect;
-
-                fabricRect = createRect({region, canvas});
-
-                if (this.disabled) {
-                    fabricRect.selectable = false;
-                    fabricRect.hoverCursor = "default";
-                }
-
-                return fabricRect;
-            });
-
-            rects.forEach(rect => {
-                rect.on("modified", this.rectUpdateHandler);
-                if (isCanvasValid(canvas)) {
-                    canvas.add(rect);
-                }
-            });
-
-        }
-
-        if (isCanvasValid(canvas)) {
-            canvas.renderAll();
-        }
-    }
-
-    private async tryCreateFabric() {
+    private async tryCreateFabric$() {
         await this.tryDestroyFabric$();
 
-        this.currentFabricCanvas = new fabric.Canvas(this.canvasElement.nativeElement, {
-            selection: false,
-            renderOnAddRemove: true
-        });
+        this.currentFabricCanvas = new fabric.Canvas(this.canvasElement.nativeElement, defaultCanvasOptions);
 
         limitInteractionToContainer(this.currentFabricCanvas);
 
@@ -166,22 +118,80 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
         console.log(region);
 
-        /*      const updatedImageSegment = resolveImageSegment({rect, canvas, imageSegment});
-              this.setImageSegments(updatedImageSegment);*/
     };
 
     private async tryDestroyFabric$() {
-        this.unregisterListeners();
-        if (this.currentFabricCanvas) {
-            this.currentFabricCanvas.clear();
-            this.currentFabricCanvas.dispose();
-            this.currentFabricCanvas = null;
-        }
+        return tryDestroyCanvas$(this.currentFabricCanvas);
+    }
+
+    private registerListeners() {
+        this.currentFabricCanvas
+            .getObjects()
+            .forEach(registerUpdateHandler(this.rectUpdateHandler));
     }
 
     private unregisterListeners() {
-        this.rectsRef?.forEach(unregisterRectEvents);
+        this.currentFabricCanvas
+            .getObjects()
+            .forEach(unregisterObjectEvents);
     }
 
 }
 
+export function registerUpdateHandler(handler: (e: fabric.IEvent) => void) {
+    return (x: fabric.Object) => x.on("modified", handler);
+}
+
+async function tryDestroyCanvas$(canvas?: fabric.Canvas) {
+    if (!canvas) return;
+
+    canvas.getObjects().forEach(unregisterObjectEvents);
+    canvas.clear();
+    canvas.dispose();
+}
+
+export function toRectWith(canvas: fabric.Canvas) {
+    return (region: ImageRegion) => createRect({region, canvas});
+}
+
+export async function drawThingsOntoCanvas$(payload: {
+    readonly src: string;
+    readonly canvas: fabric.Canvas;
+    readonly imageConfig: ImageConfig;
+    readonly regions?: Many<ImageRegion>;
+}): Promise<void> {
+
+    const src = payload.src;
+    const canvas = payload.canvas;
+    const imageConfig = payload.imageConfig;
+    const regions = payload.regions;
+
+    if (!isCanvasValid(canvas)) return;
+
+    let image: fabric.Image;
+
+    try {
+        image = await getFabricImageFromUrl$(src);
+        await renderImageToCanvas$({canvas, image, imageConfig});
+    } catch (e) {
+        console.error(e);
+        return;
+    }
+
+    if (isCanvasValid(canvas)) {
+
+        if (regions) {
+            const rects = regions.map(toRectWith(canvas));
+            rects.forEach(tryAddTo(canvas));
+        }
+
+        canvas.renderAll();
+    }
+}
+
+export function tryAddTo(payload: fabric.Canvas) {
+    return (rect: fabric.Object) => {
+        if (!isCanvasValid(payload)) return;
+        payload.add(rect);
+    };
+}
