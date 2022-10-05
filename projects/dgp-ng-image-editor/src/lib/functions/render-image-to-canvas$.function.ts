@@ -23,6 +23,9 @@ export function renderImageToCanvas$(payload: {
         scaleY = 1;
     }
 
+    const top = imageConfig.offsetY || 0;
+    const left = imageConfig.offsetX || 0;
+
     return new Promise<void>(resolve => {
 
         if (isCanvasValid(canvas)) canvas.clear();
@@ -32,7 +35,9 @@ export function renderImageToCanvas$(payload: {
         }, {
             lockRotation: true,
             scaleX,
-            scaleY
+            scaleY,
+            top,
+            left
         });
 
     });
