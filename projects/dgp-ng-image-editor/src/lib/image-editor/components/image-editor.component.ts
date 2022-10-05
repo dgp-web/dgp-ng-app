@@ -32,7 +32,6 @@ import { defaultCanvasOptions } from "../../constants/default-canvas-options.con
 export class DgpImageEditorComponent extends ImageConfigComponentBase implements Image {
 
     private currentFabricCanvas: fabric.Canvas;
-    private rectsRef: Many<fabric.Rect>;
 
     @ViewChild("canvas", {static: true})
     readonly canvasElement: ElementRef;
