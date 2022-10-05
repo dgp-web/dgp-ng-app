@@ -105,6 +105,10 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     readonly canvasElement: ElementRef;
 
     @Input()
+    stretch: boolean;
+    readonly stretch$ = observeAttribute$(this as DgpImageEditorComponent, "stretch");
+
+    @Input()
     offsetX: number;
     readonly offsetX$ = observeAttribute$(this as DgpImageEditorComponent, "offsetX");
 
@@ -145,6 +149,7 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
 
         combineLatest([
             this.model$,
+            this.stretch$,
             this.offsetX$,
             this.offsetY$,
             this.rotateX$,
