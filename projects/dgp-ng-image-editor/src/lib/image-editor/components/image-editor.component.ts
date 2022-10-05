@@ -1,8 +1,18 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
-import { distinctUntilHashChanged, getHashCode, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from "@angular/core";
+import { getHashCode, notNullOrUndefined } from "dgp-ng-app";
 import { fabric } from "fabric";
-import { combineLatest } from "rxjs";
-import { debounceTime, shareReplay, switchMap } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { debounceTime, switchMap } from "rxjs/operators";
 import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
 import { ImageConfig, ImageRegion } from "../../models";
@@ -30,7 +40,7 @@ import { Many } from "data-modeling";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpImageEditorComponent extends ImageConfigComponentBase implements Image {
+export class DgpImageEditorComponent extends ImageConfigComponentBase implements Image, OnChanges {
 
     private currentFabricCanvas: fabric.Canvas;
 
@@ -39,41 +49,38 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
     @Input()
     src: string;
-    readonly src$ = observeAttribute$(this as DgpImageEditorComponent, "src");
-
-    readonly stretch$ = observeAttribute$(this as DgpImageEditorComponent, "stretch");
-    readonly offsetX$ = observeAttribute$(this as DgpImageEditorComponent, "offsetX");
-    readonly offsetY$ = observeAttribute$(this as DgpImageEditorComponent, "offsetY");
-    readonly rotationAngle$ = observeAttribute$(this as DgpImageEditorComponent, "rotationAngle");
-    readonly rotationAngleType$ = observeAttribute$(this as DgpImageEditorComponent, "rotationAngleType");
-    readonly scaleX$ = observeAttribute$(this as DgpImageEditorComponent, "scaleX");
-    readonly scaleY$ = observeAttribute$(this as DgpImageEditorComponent, "scaleY");
-    readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
-    readonly disabled$ = observeAttribute$(this as DgpImageEditorComponent, "disabled");
-
+  
     @Output()
     readonly regionsChange = new EventEmitter<Many<ImageRegion>>();
+
+    private readonly scheduler = new Subject();
 
     constructor() {
         super();
 
-        combineLatest([
-            this.src$,
-            this.stretch$,
-            this.offsetX$,
-            this.offsetY$,
-            this.rotationAngle$,
-            this.rotationAngleType$,
-            this.scaleX$,
-            this.scaleY$,
-            this.regions$,
-            this.disabled$
-        ]).pipe(
-            distinctUntilHashChanged(),
+        this.scheduler.pipe(
             debounceTime(250),
-            shareReplay(1),
             switchMap(() => this.executeFabricLifecycle$())
         ).subscribe();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+
+        if (
+            changes["src" as keyof DgpImageEditorComponent]
+            || changes["stretch" as keyof DgpImageEditorComponent]
+            || changes["offsetX" as keyof DgpImageEditorComponent]
+            || changes["offsetY" as keyof DgpImageEditorComponent]
+            || changes["rotationAngle" as keyof DgpImageEditorComponent]
+            || changes["rotationAngleType" as keyof DgpImageEditorComponent]
+            || changes["scaleX" as keyof DgpImageEditorComponent]
+            || changes["scaleY" as keyof DgpImageEditorComponent]
+            || changes["regions" as keyof DgpImageEditorComponent]
+            || changes["disabled" as keyof DgpImageEditorComponent]
+        ) {
+            this.scheduler.next();
+        }
+
     }
 
     updateRegion(payload?: ImageRegion) {
@@ -95,7 +102,6 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
         await this.tryDestroyFabric$();
 
         if (!this.src) return;
-
         await this.tryCreateFabric$();
         await this.draw$();
     }
