@@ -49,7 +49,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
     @Input()
     src: string;
-  
+
     @Output()
     readonly regionsChange = new EventEmitter<Many<ImageRegion>>();
 
@@ -78,6 +78,8 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             || changes["regions" as keyof DgpImageEditorComponent]
             || changes["disabled" as keyof DgpImageEditorComponent]
         ) {
+            // TODO: Investigate why changes trigger!
+
             this.scheduler.next();
         }
 

@@ -26,7 +26,8 @@ import { Many } from "data-modeling";
                                               [scaleY]="model.scaleY"
                                               [rotationAngle]="model.rotationAngle"
                                               [rotationAngleType]="model.rotationAngleType"
-                                              [regions]="regions"></dgp-image-editor>
+                                              [regions]="regions"
+                                              (regionsChange)="updateRegions($event)"></dgp-image-editor>
                         </ng-template>
                     </dgp-docking-layout-container>
                 </dgp-docking-layout-item>
@@ -60,4 +61,8 @@ export class ImageEditorLabsComponent extends DgpModelEditorComponentBase<ImageC
         offsetY: 0
     }];
 
+    updateRegions(payload: Many<ImageRegion>) {
+        this.regions = payload;
+        console.log(payload);
+    }
 }
