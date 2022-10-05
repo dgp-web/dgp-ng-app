@@ -6,6 +6,7 @@ import { debounceTime, shareReplay } from "rxjs/operators";
 import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
 import { getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
+import { ImageConfig } from "../../models";
 
 @Component({
     selector: "dgp-image-editor",
@@ -83,16 +84,17 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
 
         this.unregisterListeners();
-        return this.drawThingsOntoCanvas$(this.src, this.currentFabricCanvas, this.stretch);
+        return this.drawThingsOntoCanvas$(this.src, this.currentFabricCanvas);
     }
 
     async drawThingsOntoCanvas$(
         imageUrl: string,
-        canvas: fabric.Canvas,
-        stretch: boolean
+        canvas: fabric.Canvas
     ): Promise<void> {
 
         if (!isCanvasValid(canvas)) return;
+
+        const imageConfig: ImageConfig = this;
 
         let image: fabric.Image;
 
@@ -103,9 +105,8 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             return Promise.resolve();
         }
 
-        // TODO: control whether image should be stretched
         try {
-            await renderImageToCanvas$({canvas, image, stretch});
+            await renderImageToCanvas$({canvas, image, imageConfig});
         } catch (e) {
             console.error(e);
             return Promise.resolve();

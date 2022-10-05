@@ -1,20 +1,21 @@
 import { fabric } from "fabric";
 import { isCanvasValid } from "./is-canvas-valid.function";
+import { ImageConfig } from "../models";
 
 export function renderImageToCanvas$(payload: {
     readonly image: fabric.Image;
     readonly canvas: fabric.Canvas;
-    readonly stretch: boolean;
+    readonly imageConfig: ImageConfig;
 }): Promise<void> {
 
     const image = payload.image;
     const canvas = payload.canvas;
-    const stretch = payload.stretch;
+    const imageConfig = payload.imageConfig;
 
     let scaleX: number;
     let scaleY: number;
 
-    if (stretch) {
+    if (imageConfig.stretch) {
         scaleX = canvas.getWidth() / image.width;
         scaleY = canvas.getHeight() / image.height;
     } else {
