@@ -1,9 +1,8 @@
 import { Many } from "data-modeling";
-import { Transform } from "./transform.model";
 import { ImageRegion } from "./image-region.model";
+import { ImageConfig } from "./image-config.model";
 
-export interface Image extends Transform {
+export interface Image extends ImageConfig {
     readonly src?: string;
-    readonly stretch?: boolean;
     readonly regions?: Many<ImageRegion>;
 }

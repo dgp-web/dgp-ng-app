@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
-import { AngleType, ImageRegion } from "../../models";
+import { ImageRegion } from "../../models";
 import { distinctUntilHashChanged, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay } from "rxjs/operators";
-import { Many } from "data-modeling";
 import { Image } from "../../models/image.model";
+import { ImageConfigComponentBase } from "./image-config.component-base";
 
 export function isCanvasValid(canvas: fabric.Canvas) {
     return notNullOrUndefined(canvas)
@@ -110,7 +110,7 @@ export function createRect(payload: CreateRectPayload): fabric.Rect {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpImageEditorComponent implements Image {
+export class DgpImageEditorComponent extends ImageConfigComponentBase implements Image {
 
     private currentFabricCanvas: fabric.Canvas;
     private rectsRef: ReadonlyArray<fabric.Rect>;
@@ -122,55 +122,23 @@ export class DgpImageEditorComponent implements Image {
     src: string;
     readonly src$ = observeAttribute$(this as DgpImageEditorComponent, "src");
 
-    @Input()
-    stretch: boolean;
     readonly stretch$ = observeAttribute$(this as DgpImageEditorComponent, "stretch");
-
-    @Input()
-    offsetX: number;
     readonly offsetX$ = observeAttribute$(this as DgpImageEditorComponent, "offsetX");
-
-    @Input()
-    offsetY: number;
     readonly offsetY$ = observeAttribute$(this as DgpImageEditorComponent, "offsetY");
-
-    @Input()
-    rotateX: number;
-    readonly rotateX$ = observeAttribute$(this as DgpImageEditorComponent, "rotateX");
-
-    @Input()
-    rotateY: number;
-    readonly rotateY$ = observeAttribute$(this as DgpImageEditorComponent, "rotateY");
-
-    @Input()
-    rotationAngle: number;
     readonly rotationAngle$ = observeAttribute$(this as DgpImageEditorComponent, "rotationAngle");
-
-    @Input()
-    rotationAngleType: AngleType;
     readonly rotationAngleType$ = observeAttribute$(this as DgpImageEditorComponent, "rotationAngleType");
-
-    @Input()
-    scaleX: number;
     readonly scaleX$ = observeAttribute$(this as DgpImageEditorComponent, "scaleX");
-
-    @Input()
-    scaleY: number;
     readonly scaleY$ = observeAttribute$(this as DgpImageEditorComponent, "scaleY");
-
-    @Input()
-    regions: Many<ImageRegion>;
     readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
 
     constructor() {
+        super();
 
         combineLatest([
             this.src$,
             this.stretch$,
             this.offsetX$,
             this.offsetY$,
-            this.rotateX$,
-            this.rotateY$,
             this.rotationAngle$,
             this.rotationAngleType$,
             this.scaleX$,

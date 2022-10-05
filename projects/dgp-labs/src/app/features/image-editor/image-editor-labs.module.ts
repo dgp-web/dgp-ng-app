@@ -5,6 +5,7 @@ import { ImageEditorLabsComponent } from "./containers/image-editor-labs.compone
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
 import { DgpDockingLayoutModule } from "dgp-ng-docking-layout";
 import { DgpImageEditorModule } from "../../../../../dgp-ng-image-editor/src/lib/image-editor/image-editor.module";
+import { DgpImageConfigModule } from "../../../../../dgp-ng-image-editor/src/lib/image-config/image-config.module";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { DgpImageEditorModule } from "../../../../../dgp-ng-image-editor/src/lib
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpDockingLayoutModule,
-        DgpImageEditorModule
+        DgpImageEditorModule,
+        DgpImageConfigModule
     ],
     declarations: [
         ...containers

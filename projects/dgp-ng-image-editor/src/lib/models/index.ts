@@ -1,4 +1,5 @@
 export { AngleType } from "./angle-type.model";
+export { ImageConfig } from "./image-config.model";
 export { ImageRegion } from "./image-region.model";
 export { Offset } from "./offset.model";
 export { Rotate } from "./rotate.model";
