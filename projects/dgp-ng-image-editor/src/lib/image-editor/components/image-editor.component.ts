@@ -4,6 +4,7 @@ import { DgpModelEditorComponentBase, distinctUntilHashChanged, notNullOrUndefin
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay } from "rxjs/operators";
+import { Many } from "data-modeling";
 
 export function isCanvasValid(canvas: fabric.Canvas) {
     return notNullOrUndefined(canvas)
@@ -135,6 +136,10 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     scaleY: number;
     readonly scaleY$ = observeAttribute$(this as DgpImageEditorComponent, "scaleY");
 
+    @Input()
+    regions: Many<ImageRegion>;
+    readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
+    
     constructor() {
         super();
 
@@ -147,7 +152,8 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
             this.rotationAngle$,
             this.rotationAngleType$,
             this.scaleX$,
-            this.scaleY$
+            this.scaleY$,
+            this.regions$
         ]).pipe(
             distinctUntilHashChanged(),
             debounceTime(250),
