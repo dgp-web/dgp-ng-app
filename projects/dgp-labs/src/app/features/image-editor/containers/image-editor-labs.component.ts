@@ -17,7 +17,14 @@ import { DgpModelEditorComponentBase } from "dgp-ng-app";
                     <dgp-docking-layout-container label="Image">
                         <ng-template>
                             <dgp-image-editor [src]="src"
-                                              [stretch]="model.stretch"></dgp-image-editor>
+                                              [disabled]="disabled"
+                                              [stretch]="model.stretch"
+                                              [offsetX]="model.offsetX"
+                                              [offsetY]="model.offsetY"
+                                              [scaleX]="model.scaleX"
+                                              [scaleY]="model.scaleY"
+                                              [rotationAngle]="model.rotationAngle"
+                                              [rotationAngleType]="model.rotationAngleType"></dgp-image-editor>
                         </ng-template>
                     </dgp-docking-layout-container>
                 </dgp-docking-layout-item>
