@@ -26,6 +26,8 @@ export function renderImageToCanvas$(payload: {
     const top = imageConfig.offsetY || 0;
     const left = imageConfig.offsetX || 0;
     const angle = imageConfig.rotationAngle || 0;
+    const internalScaleX = imageConfig.scaleX || 1;
+    const internalScaleY = imageConfig.scaleY || 1;
 
     return new Promise<void>(resolve => {
 
@@ -35,6 +37,8 @@ export function renderImageToCanvas$(payload: {
             resolve();
 
             image.rotate(angle);
+            image.scaleX = internalScaleX;
+            image.scaleY = internalScaleY;
         }, {
             lockRotation: true,
             scaleX,
