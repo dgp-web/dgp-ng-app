@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { AngleType, ImageRegion, Transform } from "../../models";
-import { DgpModelEditorComponentBase, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { DgpModelEditorComponentBase, distinctUntilHashChanged, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
+import { debounceTime, shareReplay } from "rxjs/operators";
 
 export function isCanvasValid(canvas: fabric.Canvas) {
     return notNullOrUndefined(canvas)
@@ -138,8 +139,20 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
         super();
 
         combineLatest([
-            this.model$
-        ]).subscribe(combination => {
+            this.model$,
+            this.offsetX$,
+            this.offsetY$,
+            this.rotateX$,
+            this.rotateY$,
+            this.rotationAngle$,
+            this.rotationAngleType$,
+            this.scaleX$,
+            this.scaleY$
+        ]).pipe(
+            distinctUntilHashChanged(),
+            debounceTime(250),
+            shareReplay(1)
+        ).subscribe(combination => {
             this.setupFabric$().then();
         });
     }
