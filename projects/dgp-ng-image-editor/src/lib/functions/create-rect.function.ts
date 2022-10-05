@@ -2,12 +2,12 @@ import { fabric } from "fabric";
 import { ImageRegion } from "../models";
 
 export interface CreateRectPayload {
-    readonly imageRegion: ImageRegion;
+    readonly region: ImageRegion;
     readonly canvas: fabric.Canvas;
 }
 
 export function createRect(payload: CreateRectPayload): fabric.Rect {
-    const imageSegment = payload.imageRegion;
+    const region = payload.region;
     const canvas = payload.canvas;
 
     let referenceWidth = 1;
@@ -18,20 +18,20 @@ export function createRect(payload: CreateRectPayload): fabric.Rect {
          referenceHeight = canvas.getHeight();
      }
  */
-    const width = imageSegment.width * referenceWidth;
-    const height = imageSegment.height * referenceHeight;
-    const left = imageSegment.offsetX * referenceWidth;
-    const top = imageSegment.offsetY * referenceHeight;
+    const width = region.width * referenceWidth;
+    const height = region.height * referenceHeight;
+    const left = region.offsetX * referenceWidth;
+    const top = region.offsetY * referenceHeight;
 
     return new fabric.Rect({
         strokeWidth: 1,
-        stroke: "black",
+        stroke: "rgba(0,0,0,0)",
         fill: "rgba(0,0,0,0)",
         width,
         height,
         left,
         top,
-        data: imageSegment,
+        data: region,
         lockRotation: true,
         lockScalingFlip: true,
         lockSkewingX: true,

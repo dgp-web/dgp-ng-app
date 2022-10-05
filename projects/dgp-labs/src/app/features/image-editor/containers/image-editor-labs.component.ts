@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { ImageConfig } from "../../../../../../dgp-ng-image-editor/src/lib/models";
+import { ImageConfig, ImageRegion } from "../../../../../../dgp-ng-image-editor/src/lib/models";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { Many } from "data-modeling";
 
 @Component({
     selector: "dgp-image-editor-labs",
@@ -24,7 +25,8 @@ import { DgpModelEditorComponentBase } from "dgp-ng-app";
                                               [scaleX]="model.scaleX"
                                               [scaleY]="model.scaleY"
                                               [rotationAngle]="model.rotationAngle"
-                                              [rotationAngleType]="model.rotationAngleType"></dgp-image-editor>
+                                              [rotationAngleType]="model.rotationAngleType"
+                                              [regions]="regions"></dgp-image-editor>
                         </ng-template>
                     </dgp-docking-layout-container>
                 </dgp-docking-layout-item>
@@ -50,5 +52,12 @@ export class ImageEditorLabsComponent extends DgpModelEditorComponentBase<ImageC
     src = "/assets/github-logo.png";
 
     model = {} as ImageConfig;
+
+    regions: Many<ImageRegion> = [{
+        width: 15,
+        height: 15,
+        offsetX: 0,
+        offsetY: 0
+    }];
 
 }

@@ -5,8 +5,8 @@ import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay } from "rxjs/operators";
 import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
-import { getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
-import { ImageConfig } from "../../models";
+import { createRect, getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
+import { ImageConfig, ImageRegion } from "../../models";
 
 @Component({
     selector: "dgp-image-editor",
@@ -82,7 +82,6 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
     private draw$(): Promise<void> {
         if (!this.currentFabricCanvas || !this.src) return Promise.resolve();
 
-
         this.unregisterListeners();
         return this.drawThingsOntoCanvas$(this.src, this.currentFabricCanvas);
     }
@@ -95,6 +94,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
         if (!isCanvasValid(canvas)) return;
 
         const imageConfig: ImageConfig = this;
+        const regions = this.regions;
 
         let image: fabric.Image;
 
@@ -111,36 +111,37 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             console.error(e);
             return Promise.resolve();
         }
-        /*
-                const rects = imageSegments.map(imageSegment => {
-                    let fabricRect: fabric.Rect;
+        if (regions) {
 
-                    fabricRect = createRect({imageSegment, canvas});
+            const rects = regions.map(region => {
+                let fabricRect: fabric.Rect;
 
-                    if (!imageSegment.isVisible) {
-                        fabricRect = fabricRect.set({
-                            stroke: "",
-                            opacity: 0,
-                            selectable: false,
-                            hoverCursor: "default"
-                        });
-                    }
+                fabricRect = createRect({region, canvas});
 
-                    // Disables selection of segments when logged out
-                    if (this.disabled) {
-                        fabricRect.selectable = false;
-                        fabricRect.hoverCursor = "default";
-                    }
 
-                    return fabricRect;
-                });*/
-        /*
-
-                rects.forEach(rect => {
-                    rect.on("modified", this.rectUpdateHandler);
-                    if (isCanvasValid(canvas)) canvas.add(rect);
+                fabricRect = fabricRect.set({
+                    stroke: "",
+                    opacity: 0,
+                    selectable: false,
+                    hoverCursor: "default"
                 });
-        */
+
+
+                // Disables selection of segments when logged out
+                if (this.disabled) {
+                    fabricRect.selectable = false;
+                    fabricRect.hoverCursor = "default";
+                }
+
+                return fabricRect;
+            });
+
+            rects.forEach(rect => {
+                rect.on("modified", this.rectUpdateHandler);
+                if (isCanvasValid(canvas)) canvas.add(rect);
+            });
+
+        }
 
         if (isCanvasValid(canvas)) canvas.renderAll();
     }
@@ -156,17 +157,17 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
         this.currentFabricCanvas.renderAll();
     }
 
-    /*
 
-        rectUpdateHandler = (e: fabric.IEvent) => {
-            const rect = e.target as fabric.Rect;
-            const imageSegment = e.target.data as ImageSegment;
-            const canvas = e.target.canvas as fabric.Canvas;
+    rectUpdateHandler = (e: fabric.IEvent) => {
+        const rect = e.target as fabric.Rect;
+        const region = e.target.data as ImageRegion;
+        const canvas = e.target.canvas as fabric.Canvas;
 
-            const updatedImageSegment = resolveImageSegment({rect, canvas, imageSegment});
-            this.setImageSegments(updatedImageSegment);
-        }
-    */
+        console.log(region);
+
+        /*      const updatedImageSegment = resolveImageSegment({rect, canvas, imageSegment});
+              this.setImageSegments(updatedImageSegment);*/
+    };
 
     private tryDestroyFabric$() {
         this.unregisterListeners();
