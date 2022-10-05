@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                          [width]="80">
                     <dgp-docking-layout-container label="Image">
                         <ng-template>
-                            <dgp-image-editor [model]="src"></dgp-image-editor>
+                            <dgp-image-editor [src]="src"></dgp-image-editor>
                         </ng-template>
                     </dgp-docking-layout-container>
                 </dgp-docking-layout-item>

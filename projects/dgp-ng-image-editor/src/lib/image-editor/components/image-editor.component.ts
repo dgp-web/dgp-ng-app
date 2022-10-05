@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
-import { AngleType, ImageRegion, Transform } from "../../models";
-import { DgpModelEditorComponentBase, distinctUntilHashChanged, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { AngleType, ImageRegion } from "../../models";
+import { distinctUntilHashChanged, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay } from "rxjs/operators";
 import { Many } from "data-modeling";
+import { Image } from "../../models/image.model";
 
 export function isCanvasValid(canvas: fabric.Canvas) {
     return notNullOrUndefined(canvas)
@@ -18,18 +19,31 @@ export function getFabricImageFromUrl$(imageUrl: string): Promise<fabric.Image> 
 }
 
 export function renderImageToCanvas$(payload: {
-    readonly image: fabric.Image,
-    readonly canvas: fabric.Canvas
+    readonly image: fabric.Image;
+    readonly canvas: fabric.Canvas;
+    readonly stretch: boolean;
 }): Promise<void> {
 
-    const scaleX = payload.canvas.getWidth() / payload.image.width;
-    const scaleY = payload.canvas.getHeight() / payload.image.height;
+    const image = payload.image;
+    const canvas = payload.canvas;
+    const stretch = payload.stretch;
+
+    let scaleX: number;
+    let scaleY: number;
+
+    if (stretch) {
+        scaleX = canvas.getWidth() / image.width;
+        scaleY = canvas.getHeight() / image.height;
+    } else {
+        scaleX = 1;
+        scaleY = 1;
+    }
 
     return new Promise<void>(resolve => {
 
-        if (isCanvasValid(payload.canvas)) payload.canvas.clear();
+        if (isCanvasValid(canvas)) canvas.clear();
 
-        payload.canvas.setBackgroundImage(payload.image, () => {
+        canvas.setBackgroundImage(image, () => {
             resolve();
         }, {
             lockRotation: true,
@@ -96,13 +110,17 @@ export function createRect(payload: CreateRectPayload): fabric.Rect {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string> implements Transform {
+export class DgpImageEditorComponent implements Image {
 
     private currentFabricCanvas: fabric.Canvas;
     private rectsRef: ReadonlyArray<fabric.Rect>;
 
     @ViewChild("canvas", {static: true})
     readonly canvasElement: ElementRef;
+
+    @Input()
+    src: string;
+    readonly src$ = observeAttribute$(this as DgpImageEditorComponent, "src");
 
     @Input()
     stretch: boolean;
@@ -145,10 +163,9 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
 
     constructor() {
-        super();
 
         combineLatest([
-            this.model$,
+            this.src$,
             this.stretch$,
             this.offsetX$,
             this.offsetY$,
@@ -170,7 +187,7 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
 
 
     async setupFabric$() {
-        if (this.model) {
+        if (this.src) {
             await this.tryCreateFabric();
             return this.draw$();
         } else {
@@ -180,16 +197,17 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     }
 
     private draw$(): Promise<void> {
-        if (!this.currentFabricCanvas || !this.model) return Promise.resolve();
+        if (!this.currentFabricCanvas || !this.src) return Promise.resolve();
 
 
         this.unregisterListeners();
-        return this.drawThingsOntoCanvas$(this.model, this.currentFabricCanvas);
+        return this.drawThingsOntoCanvas$(this.src, this.currentFabricCanvas, this.stretch);
     }
 
     async drawThingsOntoCanvas$(
         imageUrl: string,
-        canvas: fabric.Canvas
+        canvas: fabric.Canvas,
+        stretch: boolean
     ): Promise<void> {
 
         if (!isCanvasValid(canvas)) return;
@@ -205,7 +223,7 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
 
         // TODO: control whether image should be stretched
         try {
-            await renderImageToCanvas$({canvas, image});
+            await renderImageToCanvas$({canvas, image, stretch});
         } catch (e) {
             console.error(e);
             return Promise.resolve();
