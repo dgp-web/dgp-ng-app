@@ -1,97 +1,11 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from "@angular/core";
-import { ImageRegion } from "../../models";
-import { distinctUntilHashChanged, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { distinctUntilHashChanged, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay } from "rxjs/operators";
 import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
-
-export function isCanvasValid(canvas: fabric.Canvas) {
-    return notNullOrUndefined(canvas)
-        && notNullOrUndefined(canvas.getContext());
-}
-
-export function getFabricImageFromUrl$(imageUrl: string): Promise<fabric.Image> {
-    return new Promise<fabric.Image>(resolve => {
-        fabric.Image.fromURL(imageUrl, image => resolve(image));
-    });
-}
-
-export function renderImageToCanvas$(payload: {
-    readonly image: fabric.Image;
-    readonly canvas: fabric.Canvas;
-    readonly stretch: boolean;
-}): Promise<void> {
-
-    const image = payload.image;
-    const canvas = payload.canvas;
-    const stretch = payload.stretch;
-
-    let scaleX: number;
-    let scaleY: number;
-
-    if (stretch) {
-        scaleX = canvas.getWidth() / image.width;
-        scaleY = canvas.getHeight() / image.height;
-    } else {
-        scaleX = 1;
-        scaleY = 1;
-    }
-
-    return new Promise<void>(resolve => {
-
-        if (isCanvasValid(canvas)) canvas.clear();
-
-        canvas.setBackgroundImage(image, () => {
-            resolve();
-        }, {
-            lockRotation: true,
-            scaleX,
-            scaleY
-        });
-
-    });
-
-}
-
-export interface CreateRectPayload {
-    readonly imageRegion: ImageRegion;
-    readonly canvas: fabric.Canvas;
-}
-
-export function createRect(payload: CreateRectPayload): fabric.Rect {
-    const imageSegment = payload.imageRegion;
-    const canvas = payload.canvas;
-
-    let referenceWidth = 1;
-    let referenceHeight = 1;
-
-    /* if (imageSegment.isNormalized) {
-         referenceWidth = canvas.getWidth();
-         referenceHeight = canvas.getHeight();
-     }
- */
-    const width = imageSegment.width * referenceWidth;
-    const height = imageSegment.height * referenceHeight;
-    const left = imageSegment.offsetX * referenceWidth;
-    const top = imageSegment.offsetY * referenceHeight;
-
-    return new fabric.Rect({
-        strokeWidth: 1,
-        stroke: "black",
-        fill: "rgba(0,0,0,0)",
-        width,
-        height,
-        left,
-        top,
-        data: imageSegment,
-        lockRotation: true,
-        lockScalingFlip: true,
-        lockSkewingX: true,
-        lockSkewingY: true
-    });
-}
+import { getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
 
 @Component({
     selector: "dgp-image-editor",
