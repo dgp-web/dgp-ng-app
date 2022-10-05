@@ -118,13 +118,13 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
                 fabricRect = createRect({region, canvas});
 
-
-                fabricRect = fabricRect.set({
-                    stroke: "",
-                    opacity: 0,
-                    selectable: false,
-                    hoverCursor: "default"
-                });
+                /*
+                                fabricRect = fabricRect.set({
+                                    stroke: "",
+                                    opacity: 0,
+                                    selectable: false,
+                                    hoverCursor: "default"
+                                });*/
 
 
                 // Disables selection of segments when logged out
@@ -138,12 +138,16 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
             rects.forEach(rect => {
                 rect.on("modified", this.rectUpdateHandler);
-                if (isCanvasValid(canvas)) canvas.add(rect);
+                if (isCanvasValid(canvas)) {
+                    canvas.add(rect);
+                }
             });
 
         }
 
-        if (isCanvasValid(canvas)) canvas.renderAll();
+        if (isCanvasValid(canvas)) {
+            canvas.renderAll();
+        }
     }
 
     private async tryCreateFabric() {
