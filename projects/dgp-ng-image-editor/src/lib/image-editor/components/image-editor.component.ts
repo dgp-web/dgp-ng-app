@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from
 import { AngleType, ImageRegion, Transform } from "../../models";
 import { DgpModelEditorComponentBase, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
+import { combineLatest } from "rxjs";
 
 export function isCanvasValid(canvas: fabric.Canvas) {
     return notNullOrUndefined(canvas)
@@ -50,11 +51,11 @@ export function createRect(payload: CreateRectPayload): fabric.Rect {
     let referenceWidth = 1;
     let referenceHeight = 1;
 
-   /* if (imageSegment.isNormalized) {
-        referenceWidth = canvas.getWidth();
-        referenceHeight = canvas.getHeight();
-    }
-*/
+    /* if (imageSegment.isNormalized) {
+         referenceWidth = canvas.getWidth();
+         referenceHeight = canvas.getHeight();
+     }
+ */
     const width = imageSegment.width * referenceWidth;
     const height = imageSegment.height * referenceHeight;
     const left = imageSegment.offsetX * referenceWidth;
@@ -133,7 +134,16 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     scaleY: number;
     readonly scaleY$ = observeAttribute$(this as DgpImageEditorComponent, "scaleY");
 
-    
+    constructor() {
+        super();
+
+        combineLatest([
+            this.model$
+        ]).subscribe(combination => {
+            this.setupFabric$().then();
+        });
+    }
+
 
     async setupFabric$() {
         if (this.model) {
@@ -175,36 +185,36 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
             console.error(e);
             return Promise.resolve();
         }
-/*
-        const rects = imageSegments.map(imageSegment => {
-            let fabricRect: fabric.Rect;
+        /*
+                const rects = imageSegments.map(imageSegment => {
+                    let fabricRect: fabric.Rect;
 
-            fabricRect = createRect({imageSegment, canvas});
+                    fabricRect = createRect({imageSegment, canvas});
 
-            if (!imageSegment.isVisible) {
-                fabricRect = fabricRect.set({
-                    stroke: "",
-                    opacity: 0,
-                    selectable: false,
-                    hoverCursor: "default"
+                    if (!imageSegment.isVisible) {
+                        fabricRect = fabricRect.set({
+                            stroke: "",
+                            opacity: 0,
+                            selectable: false,
+                            hoverCursor: "default"
+                        });
+                    }
+
+                    // Disables selection of segments when logged out
+                    if (this.disabled) {
+                        fabricRect.selectable = false;
+                        fabricRect.hoverCursor = "default";
+                    }
+
+                    return fabricRect;
+                });*/
+        /*
+
+                rects.forEach(rect => {
+                    rect.on("modified", this.rectUpdateHandler);
+                    if (isCanvasValid(canvas)) canvas.add(rect);
                 });
-            }
-
-            // Disables selection of segments when logged out
-            if (this.disabled) {
-                fabricRect.selectable = false;
-                fabricRect.hoverCursor = "default";
-            }
-
-            return fabricRect;
-        });*/
-/*
-
-        rects.forEach(rect => {
-            rect.on("modified", this.rectUpdateHandler);
-            if (isCanvasValid(canvas)) canvas.add(rect);
-        });
-*/
+        */
 
         if (isCanvasValid(canvas)) canvas.renderAll();
     }
@@ -219,17 +229,18 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
 
         this.currentFabricCanvas.renderAll();
     }
-/*
 
-    rectUpdateHandler = (e: fabric.IEvent) => {
-        const rect = e.target as fabric.Rect;
-        const imageSegment = e.target.data as ImageSegment;
-        const canvas = e.target.canvas as fabric.Canvas;
+    /*
 
-        const updatedImageSegment = resolveImageSegment({rect, canvas, imageSegment});
-        this.setImageSegments(updatedImageSegment);
-    }
-*/
+        rectUpdateHandler = (e: fabric.IEvent) => {
+            const rect = e.target as fabric.Rect;
+            const imageSegment = e.target.data as ImageSegment;
+            const canvas = e.target.canvas as fabric.Canvas;
+
+            const updatedImageSegment = resolveImageSegment({rect, canvas, imageSegment});
+            this.setImageSegments(updatedImageSegment);
+        }
+    */
 
     private tryDestroyFabric$() {
         this.unregisterListeners();

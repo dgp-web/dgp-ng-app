@@ -4,5 +4,6 @@
 
 export * from "./lib/models";
 
-export * from "./lib/image-editor/image-editor.module";
+export { DgpImageEditorModule } from "./lib/image-editor/image-editor.module";
+export { DgpImageEditorComponent } from "./lib/image-editor/components/image-editor.component";
 
