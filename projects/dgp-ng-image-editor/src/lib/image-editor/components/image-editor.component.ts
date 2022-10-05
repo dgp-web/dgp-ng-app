@@ -7,11 +7,10 @@ import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
 import { ImageConfig, ImageRegion } from "../../models";
 import { unregisterObjectEvents } from "../../functions/unregister-object-events.function";
-import { limitInteractionToContainer } from "../../functions/limit-interaction-to-container.function";
-import { defaultCanvasOptions } from "../../constants/default-canvas-options.constant";
 import { tryDestroyCanvas$ } from "../../functions/try-destroy-canvas$.function";
 import { registerUpdateHandler } from "../../functions/register-update-handler.function";
 import { drawThingsOnCanvas$ } from "../../functions/draw-things-on-canvas.function";
+import { createCanvas } from "../../functions/create-canvas-function";
 
 @Component({
     selector: "dgp-image-editor",
@@ -35,7 +34,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
     private currentFabricCanvas: fabric.Canvas;
 
     @ViewChild("canvas", {static: true})
-    readonly canvasElement: ElementRef;
+    readonly canvasElement: ElementRef<HTMLCanvasElement>;
 
     @Input()
     src: string;
@@ -69,19 +68,18 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             distinctUntilHashChanged(),
             debounceTime(250),
             shareReplay(1),
-            switchMap(() => this.setupFabric$())
+            switchMap(() => this.executeFabricLifecycle$())
         ).subscribe();
     }
 
 
-    async setupFabric$() {
-        if (this.src) {
-            await this.tryCreateFabric$();
-            return this.draw$();
-        } else {
-            return this.tryDestroyFabric$();
-        }
+    async executeFabricLifecycle$() {
+        await this.tryDestroyFabric$();
 
+        if (!this.src) return;
+
+        await this.tryCreateFabric$();
+        await this.draw$();
     }
 
     private async draw$(): Promise<void> {
@@ -101,13 +99,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
 
     private async tryCreateFabric$() {
-        await this.tryDestroyFabric$();
-
-        this.currentFabricCanvas = new fabric.Canvas(this.canvasElement.nativeElement, defaultCanvasOptions);
-
-        limitInteractionToContainer(this.currentFabricCanvas);
-
-        this.currentFabricCanvas.renderAll();
+        this.currentFabricCanvas = createCanvas(this.canvasElement.nativeElement);
     }
 
 
@@ -116,7 +108,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
         const region = e.target.data as ImageRegion;
         const canvas = e.target.canvas as fabric.Canvas;
 
-        console.log(region);
+        console.log(region === this.regions[0]);
 
     };
 
@@ -137,4 +129,5 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
     }
 
 }
+
 
