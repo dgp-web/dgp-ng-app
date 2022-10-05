@@ -139,7 +139,7 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
     @Input()
     regions: Many<ImageRegion>;
     readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
-    
+
     constructor() {
         super();
 
@@ -198,6 +198,7 @@ export class DgpImageEditorComponent extends DgpModelEditorComponentBase<string>
             return Promise.resolve();
         }
 
+        // TODO: control whether image should be stretched
         try {
             await renderImageToCanvas$({canvas, image});
         } catch (e) {
