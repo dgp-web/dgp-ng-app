@@ -47,6 +47,10 @@
                 "dist/dgp-ng-drag-and-drop/dgp-ng-drag-and-drop",
                 "dist/dgp-ng-drag-and-drop"
             ],
+            "dgp-ng-image-editor": [
+              "dist/dgp-ng-image-editor/dgp-ng-image-editor",
+              "dist/dgp-ng-image-editor"
+            ],
             "dgp-ng-paged-media": [
               "dist/dgp-ng-paged-media/dgp-ng-paged-media",
               "dist/dgp-ng-paged-media"
