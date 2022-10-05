@@ -8,6 +8,67 @@ import { ImageConfigComponentBase } from "./image-config.component-base";
 import { createRect, getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
 import { ImageConfig, ImageRegion } from "../../models";
 
+export function constrainRectScalingToContainer(event: fabric.IEvent) {
+    const rectRef = event.target as fabric.Rect;
+    const canvasRef = event.target.canvas as fabric.Canvas;
+
+    const topBound = 0;
+    const bottomBound = canvasRef.getHeight();
+    const leftBound = 0;
+    const rightBound = canvasRef.getWidth();
+
+    if (rectRef.left < leftBound) {
+        rectRef.left = leftBound;
+    }
+
+    if (rectRef.top < topBound) {
+        rectRef.top = topBound;
+    }
+
+    if (rectRef.left + rectRef.getScaledWidth() > rightBound) {
+        rectRef.left = rightBound - rectRef.getScaledWidth() > 0
+            ? rightBound - rectRef.getScaledWidth() : 0;
+    }
+
+    if (rectRef.top + rectRef.getScaledHeight() > bottomBound) {
+        rectRef.top = bottomBound - rectRef.getScaledHeight() > 0 ?
+            bottomBound - rectRef.getScaledHeight() : 0;
+    }
+}
+
+export function constrainRectMovingToContainer(e: fabric.IEvent) {
+    const rectRef = e.target as fabric.Rect;
+    const canvasRef = e.target.canvas as fabric.Canvas;
+
+    const boundingRect = rectRef.getBoundingRect();
+
+    const topBound = 0;
+    const bottomBound = canvasRef.getHeight();
+    const leftBound = 0;
+    const rightBound = canvasRef.getWidth();
+
+    if (rectRef.left < leftBound) {
+        rectRef.left = leftBound;
+    }
+
+    if (rectRef.top < topBound) {
+        rectRef.top = topBound;
+    }
+
+    if (rectRef.left + boundingRect.width > rightBound) {
+        rectRef.left = rightBound - boundingRect.width;
+    }
+
+    if (rectRef.top + boundingRect.height > bottomBound) {
+        rectRef.top = bottomBound - boundingRect.height;
+    }
+}
+
+export function limitInteractionToContainer(canvas: fabric.Canvas) {
+    canvas.on("object:moving", constrainRectMovingToContainer);
+    canvas.on("object:scaling", constrainRectScalingToContainer);
+}
+
 @Component({
     selector: "dgp-image-editor",
     template: `
@@ -157,6 +218,8 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             selection: false,
             renderOnAddRemove: true
         });
+
+        limitInteractionToContainer(this.currentFabricCanvas);
 
         this.currentFabricCanvas.renderAll();
     }

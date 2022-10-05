@@ -26,7 +26,7 @@ export function createRect(payload: CreateRectPayload): fabric.Rect {
     return new fabric.Rect({
         strokeWidth: 1,
         stroke: "rgba(0,0,0,255)",
-        fill: "rgba(0,0,0,255)",
+        fill: "rgba(0,0,0,0)",
         width,
         height,
         left,
