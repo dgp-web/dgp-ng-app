@@ -2,72 +2,14 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from
 import { distinctUntilHashChanged, observeAttribute$ } from "dgp-ng-app";
 import { fabric } from "fabric";
 import { combineLatest } from "rxjs";
-import { debounceTime, shareReplay } from "rxjs/operators";
+import { debounceTime, shareReplay, switchMap } from "rxjs/operators";
 import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
 import { createRect, getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
 import { ImageConfig, ImageRegion } from "../../models";
-
-export function constrainRectScalingToContainer(event: fabric.IEvent) {
-    const rectRef = event.target as fabric.Rect;
-    const canvasRef = event.target.canvas as fabric.Canvas;
-
-    const topBound = 0;
-    const bottomBound = canvasRef.getHeight();
-    const leftBound = 0;
-    const rightBound = canvasRef.getWidth();
-
-    if (rectRef.left < leftBound) {
-        rectRef.left = leftBound;
-    }
-
-    if (rectRef.top < topBound) {
-        rectRef.top = topBound;
-    }
-
-    if (rectRef.left + rectRef.getScaledWidth() > rightBound) {
-        rectRef.left = rightBound - rectRef.getScaledWidth() > 0
-            ? rightBound - rectRef.getScaledWidth() : 0;
-    }
-
-    if (rectRef.top + rectRef.getScaledHeight() > bottomBound) {
-        rectRef.top = bottomBound - rectRef.getScaledHeight() > 0 ?
-            bottomBound - rectRef.getScaledHeight() : 0;
-    }
-}
-
-export function constrainRectMovingToContainer(e: fabric.IEvent) {
-    const rectRef = e.target as fabric.Rect;
-    const canvasRef = e.target.canvas as fabric.Canvas;
-
-    const boundingRect = rectRef.getBoundingRect();
-
-    const topBound = 0;
-    const bottomBound = canvasRef.getHeight();
-    const leftBound = 0;
-    const rightBound = canvasRef.getWidth();
-
-    if (rectRef.left < leftBound) {
-        rectRef.left = leftBound;
-    }
-
-    if (rectRef.top < topBound) {
-        rectRef.top = topBound;
-    }
-
-    if (rectRef.left + boundingRect.width > rightBound) {
-        rectRef.left = rightBound - boundingRect.width;
-    }
-
-    if (rectRef.top + boundingRect.height > bottomBound) {
-        rectRef.top = bottomBound - boundingRect.height;
-    }
-}
-
-export function limitInteractionToContainer(canvas: fabric.Canvas) {
-    canvas.on("object:moving", constrainRectMovingToContainer);
-    canvas.on("object:scaling", constrainRectScalingToContainer);
-}
+import { Many } from "data-modeling";
+import { unregisterRectEvents } from "../../functions/unregister-rect-events.function";
+import { limitInteractionToContainer } from "../../functions/limit-interaction-to-container.function";
 
 @Component({
     selector: "dgp-image-editor",
@@ -89,7 +31,7 @@ export function limitInteractionToContainer(canvas: fabric.Canvas) {
 export class DgpImageEditorComponent extends ImageConfigComponentBase implements Image {
 
     private currentFabricCanvas: fabric.Canvas;
-    private rectsRef: ReadonlyArray<fabric.Rect>;
+    private rectsRef: Many<fabric.Rect>;
 
     @ViewChild("canvas", {static: true})
     readonly canvasElement: ElementRef;
@@ -106,6 +48,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
     readonly scaleX$ = observeAttribute$(this as DgpImageEditorComponent, "scaleX");
     readonly scaleY$ = observeAttribute$(this as DgpImageEditorComponent, "scaleY");
     readonly regions$ = observeAttribute$(this as DgpImageEditorComponent, "regions");
+    readonly disabled$ = observeAttribute$(this as DgpImageEditorComponent, "disabled");
 
     constructor() {
         super();
@@ -119,14 +62,14 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             this.rotationAngleType$,
             this.scaleX$,
             this.scaleY$,
-            this.regions$
+            this.regions$,
+            this.disabled$
         ]).pipe(
             distinctUntilHashChanged(),
             debounceTime(250),
-            shareReplay(1)
-        ).subscribe(combination => {
-            this.setupFabric$().then();
-        });
+            shareReplay(1),
+            switchMap(() => this.setupFabric$())
+        ).subscribe();
     }
 
 
@@ -154,7 +97,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
         if (!isCanvasValid(canvas)) return;
 
-        const imageConfig: ImageConfig = this;
+        const imageConfig = this as ImageConfig;
         const regions = this.regions;
 
         let image: fabric.Image;
@@ -172,6 +115,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
             console.error(e);
             return Promise.resolve();
         }
+
         if (regions) {
 
             const rects = regions.map(region => {
@@ -179,16 +123,6 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
                 fabricRect = createRect({region, canvas});
 
-                /*
-                                fabricRect = fabricRect.set({
-                                    stroke: "",
-                                    opacity: 0,
-                                    selectable: false,
-                                    hoverCursor: "default"
-                                });*/
-
-
-                // Disables selection of segments when logged out
                 if (this.disabled) {
                     fabricRect.selectable = false;
                     fabricRect.hoverCursor = "default";
@@ -236,19 +170,18 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
               this.setImageSegments(updatedImageSegment);*/
     };
 
-    private tryDestroyFabric$() {
+    private async tryDestroyFabric$() {
         this.unregisterListeners();
         if (this.currentFabricCanvas) {
             this.currentFabricCanvas.clear();
             this.currentFabricCanvas.dispose();
             this.currentFabricCanvas = null;
         }
-        return Promise.resolve();
     }
 
     private unregisterListeners() {
-        if (!this.rectsRef) return;
-        this.rectsRef.forEach(rect => rect.off("modified"));
+        this.rectsRef?.forEach(unregisterRectEvents);
     }
 
 }
+

@@ -1,29 +1,32 @@
 import { fabric } from "fabric";
 import { ImageRegion } from "../models";
+import { hiddenRectConfig } from "../constants/hidden-rect-config.constant";
 
 export interface CreateRectPayload {
     readonly region: ImageRegion;
     readonly canvas: fabric.Canvas;
+    readonly disabled?: boolean;
 }
 
 export function createRect(payload: CreateRectPayload): fabric.Rect {
     const region = payload.region;
+    const disabled = payload.disabled;
     const canvas = payload.canvas;
 
     let referenceWidth = 1;
     let referenceHeight = 1;
 
-    /* if (imageSegment.isNormalized) {
-         referenceWidth = canvas.getWidth();
-         referenceHeight = canvas.getHeight();
-     }
- */
+    if (region.isNormalized) {
+        referenceWidth = canvas.getWidth();
+        referenceHeight = canvas.getHeight();
+    }
+
     const width = region.width * referenceWidth;
     const height = region.height * referenceHeight;
     const left = region.offsetX * referenceWidth;
     const top = region.offsetY * referenceHeight;
 
-    return new fabric.Rect({
+    let fabricRect = new fabric.Rect({
         strokeWidth: 1,
         stroke: "rgba(0,0,0,255)",
         fill: "rgba(0,0,0,0)",
@@ -37,4 +40,15 @@ export function createRect(payload: CreateRectPayload): fabric.Rect {
         lockSkewingX: true,
         lockSkewingY: true
     });
+
+    if (region.isHidden) {
+        fabricRect = fabricRect.set(hiddenRectConfig);
+    }
+
+    if (disabled) {
+        fabricRect.selectable = false;
+        fabricRect.hoverCursor = "default";
+    }
+
+    return fabricRect;
 }
