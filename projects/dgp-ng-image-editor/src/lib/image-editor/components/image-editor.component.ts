@@ -5,12 +5,13 @@ import { combineLatest } from "rxjs";
 import { debounceTime, shareReplay, switchMap } from "rxjs/operators";
 import { Image } from "../../models/image.model";
 import { ImageConfigComponentBase } from "./image-config.component-base";
-import { createRect, getFabricImageFromUrl$, isCanvasValid, renderImageToCanvas$ } from "../../functions";
 import { ImageConfig, ImageRegion } from "../../models";
-import { Many } from "data-modeling";
 import { unregisterObjectEvents } from "../../functions/unregister-object-events.function";
 import { limitInteractionToContainer } from "../../functions/limit-interaction-to-container.function";
 import { defaultCanvasOptions } from "../../constants/default-canvas-options.constant";
+import { tryDestroyCanvas$ } from "../../functions/try-destroy-canvas$.function";
+import { registerUpdateHandler } from "../../functions/register-update-handler.function";
+import { drawThingsOnCanvas$ } from "../../functions/draw-things-on-canvas.function";
 
 @Component({
     selector: "dgp-image-editor",
@@ -88,7 +89,7 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
         this.unregisterListeners();
 
-        await drawThingsOntoCanvas$({
+        await drawThingsOnCanvas$({
             src: this.src,
             canvas: this.currentFabricCanvas,
             imageConfig: this as ImageConfig,
@@ -137,60 +138,3 @@ export class DgpImageEditorComponent extends ImageConfigComponentBase implements
 
 }
 
-export function registerUpdateHandler(handler: (e: fabric.IEvent) => void) {
-    return (x: fabric.Object) => x.on("modified", handler);
-}
-
-async function tryDestroyCanvas$(canvas?: fabric.Canvas) {
-    if (!canvas) return;
-
-    canvas.getObjects().forEach(unregisterObjectEvents);
-    canvas.clear();
-    canvas.dispose();
-}
-
-export function toRectWith(canvas: fabric.Canvas) {
-    return (region: ImageRegion) => createRect({region, canvas});
-}
-
-export async function drawThingsOntoCanvas$(payload: {
-    readonly src: string;
-    readonly canvas: fabric.Canvas;
-    readonly imageConfig: ImageConfig;
-    readonly regions?: Many<ImageRegion>;
-}): Promise<void> {
-
-    const src = payload.src;
-    const canvas = payload.canvas;
-    const imageConfig = payload.imageConfig;
-    const regions = payload.regions;
-
-    if (!isCanvasValid(canvas)) return;
-
-    let image: fabric.Image;
-
-    try {
-        image = await getFabricImageFromUrl$(src);
-        await renderImageToCanvas$({canvas, image, imageConfig});
-    } catch (e) {
-        console.error(e);
-        return;
-    }
-
-    if (isCanvasValid(canvas)) {
-
-        if (regions) {
-            const rects = regions.map(toRectWith(canvas));
-            rects.forEach(tryAddTo(canvas));
-        }
-
-        canvas.renderAll();
-    }
-}
-
-export function tryAddTo(payload: fabric.Canvas) {
-    return (rect: fabric.Object) => {
-        if (!isCanvasValid(payload)) return;
-        payload.add(rect);
-    };
-}

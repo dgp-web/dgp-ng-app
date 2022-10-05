@@ -59,6 +59,12 @@ import { imageConfigMetadata } from "../../constants";
         </dgp-input-field>
     `,
     styles: [`
+        :host {
+            display: block;
+            min-width: 420px;
+            overflow: auto;
+        }
+
         mat-slide-toggle {
             align-self: end;
         }
