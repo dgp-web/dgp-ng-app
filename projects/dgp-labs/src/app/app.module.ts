@@ -28,6 +28,7 @@ import { ChartsLabsModule } from "./features/charts/charts-labs.module";
 import { ActionContextLabsModule } from "./features/action-context/charts-labs.module";
 import { MatListModule } from "@angular/material/list";
 import { DgpDataExportLabsModule } from "./features/data-export/data-export-labs.module";
+import { ImageEditorLabsModule } from "./features/image-editor/image-editor-labs.module";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -122,7 +123,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         ActionContextLabsModule,
         DgpHamburgerMenuModule,
         MatListModule,
-        DgpDataExportLabsModule
+        DgpDataExportLabsModule,
+        ImageEditorLabsModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

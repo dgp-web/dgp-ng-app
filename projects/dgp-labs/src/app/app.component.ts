@@ -56,6 +56,13 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                                               route="/charts/heatmap"
                                               matIconName="view_module"></dgp-hamburger-menu-entry>
 
+                    <h3 mat-subheader>Image editor</h3>
+
+                    <dgp-hamburger-menu-entry label="Image editor"
+                                              route="/image-editor"
+                                              matIconName="image"></dgp-hamburger-menu-entry>
+
+
                 </dgp-hamburger-menu-entries>
             </dgp-hamburger-menu>
 
