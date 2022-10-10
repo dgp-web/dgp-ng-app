@@ -86,23 +86,61 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         ctx.lineWidth = 1.5;
 
                         /**
-                         * Draw some antenna
+                         * Draw upper antenna
                          */
-                        const x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        let x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2;
-
-                        const x2 = x1;
-
-                        const y1 = this.scales.yAxisScale(box.quantiles.min);
-                        const y2 = this.scales.yAxisScale(box.quantiles.lower);
+                        let x2 = x1;
+                        let y1 = this.scales.yAxisScale(box.quantiles.min);
+                        let y2 = this.scales.yAxisScale(box.quantiles.lower);
 
                         ctx.beginPath();
                         ctx.moveTo(x1, y1);
                         ctx.lineTo(x2, y2);
                         ctx.stroke();
 
+                        /**
+                         * Draw lower antenna
+                         */
+                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2;
+                        x2 = x1;
+                        y1 = this.scales.yAxisScale(box.quantiles.upper);
+                        y2 = this.scales.yAxisScale(box.quantiles.max);
+
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+
+                        /**
+                         * Upper whisker
+                         */
 
 
+                        /**
+                         * Lower whisker
+                         */
+
+
+                        /**
+                         * Median whisker
+                         */
+
+
+                        /**
+                         * Main box
+                         */
+                        const x = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId);
+                        const y = this.scales.yAxisScale(box.quantiles.upper);
+                        const height = Math.abs(
+                            (this.scales.yAxisScale(box.quantiles.lower) - this.scales.yAxisScale(box.quantiles.upper))
+                        );
+                        const width = this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth();
+
+                        ctx.beginPath();
+                        ctx.rect(x, y, width, height);
+                        ctx.stroke();
                     });
                 });
 
