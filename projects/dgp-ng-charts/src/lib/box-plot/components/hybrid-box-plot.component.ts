@@ -14,25 +14,24 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                       [showDataAreaOutline]="showDataAreaOutline"
                       [scales]="scales"
                       [config]="config"
-                      [size]="size">
+                      [size]="size"></dgp-svg-plot>
 
-            <dgp-box-plot-data-canvas *ngIf="scales"
-                                      [scales]="scales"
-                                      [config]="config"
-                                      [model]="model"
-                                      [controlLines]="controlLines"
-                                      [size]="size"
-                                      [showOutlierTooltips]="showOutlierTooltips"></dgp-box-plot-data-canvas>
+        <dgp-box-plot-data-canvas *ngIf="scales"
+                                  [scales]="scales"
+                                  [config]="config"
+                                  [model]="model"
+                                  [controlLines]="controlLines"
+                                  [size]="size"
+                                  [showOutlierTooltips]="showOutlierTooltips"></dgp-box-plot-data-canvas>
 
-            <!-- <div *ngIf="showOutlierTooltips && hoverEvent$.value"
-                  class="tooltip"
-                  [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
-                  [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
-                 {{getCurrentTooltip()}}
-             </div>-->
+        <!-- <div *ngIf="showOutlierTooltips && hoverEvent$.value"
+              class="tooltip"
+              [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
+              [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
+             {{getCurrentTooltip()}}
+         </div>-->
 
 
-        </dgp-svg-plot>
     `,
     styles: [`
         :host {

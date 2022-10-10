@@ -1,9 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from "@angular/core";
 import { combineLatest, Subscription } from "rxjs";
-import { AxisScales } from "../../shared/models";
 import { observeAttribute$, Size } from "dgp-ng-app";
-import { BoxGroup, BoxPlotConfig, BoxPlotControlLine } from "../models";
+import { BoxGroup, BoxPlotConfig, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { debounceTime } from "rxjs/operators";
+import { mapStrokeToArray } from "../../stroke/functions";
 
 @Component({
     selector: "dgp-box-plot-data-canvas",
@@ -41,7 +41,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
     showOutlierTooltips: boolean;
 
     @Input()
-    scales: AxisScales;
+    scales: BoxPlotScales;
     readonly scales$ = observeAttribute$(this as DgpBoxPlotDataCanvasComponent, "scales");
 
     @Input()
@@ -80,15 +80,54 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
             if (model) {
 
                 model.forEach(group => {
-                    group.boxes.forEach(series => {
-                        ctx.fillStyle = series.colorHex;
-                        ctx.strokeStyle = series.colorHex;
+                    group.boxes.forEach(box => {
+                        ctx.fillStyle = box.colorHex;
+                        ctx.strokeStyle = box.colorHex;
                         ctx.lineWidth = 1.5;
+
+                        /**
+                         * Draw some antenna
+                         */
+                        const x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2;
+
+                        const x2 = x1;
+
+                        const y1 = this.scales.yAxisScale(box.quantiles.min);
+                        const y2 = this.scales.yAxisScale(box.quantiles.lower);
+
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+
 
 
                     });
                 });
 
+            }
+
+            if (controlLines) {
+                controlLines.forEach(controlLine => {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1.5;
+
+
+                    const y = this.scales.yAxisScale(controlLine.value);
+                    const x0 = this.scales.xAxisScale.range()[0];
+                    const x1 = this.scales.xAxisScale.range()[1];
+
+
+                    ctx.strokeStyle = controlLine.colorHex;
+                    const stroke = mapStrokeToArray(controlLine.stroke);
+                    ctx.setLineDash(stroke);
+
+                    ctx.moveTo(x0, y);
+                    ctx.lineTo(x1, y);
+                    ctx.stroke();
+
+                });
             }
 
         });
