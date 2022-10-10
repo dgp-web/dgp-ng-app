@@ -116,17 +116,46 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         /**
                          * Upper whisker
                          */
+                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.25;
+                        x2 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.75;
+                        y1 = this.scales.yAxisScale(box.quantiles.max);
+                        y2 = this.scales.yAxisScale(box.quantiles.max);
 
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
 
                         /**
                          * Lower whisker
                          */
+                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.25;
+                        x2 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.75;
+                        y1 = this.scales.yAxisScale(box.quantiles.min);
+                        y2 = this.scales.yAxisScale(box.quantiles.min);
 
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
 
                         /**
                          * Median whisker
                          */
+                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId);
+                        x2 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth();
+                        y1 = this.scales.yAxisScale(box.quantiles.median);
+                        y2 = this.scales.yAxisScale(box.quantiles.median);
 
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
 
                         /**
                          * Main box
@@ -141,6 +170,10 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         ctx.beginPath();
                         ctx.rect(x, y, width, height);
                         ctx.stroke();
+
+                        ctx.globalAlpha = 0.07;
+                        ctx.fill();
+                        ctx.globalAlpha = 1;
                     });
                 });
 
