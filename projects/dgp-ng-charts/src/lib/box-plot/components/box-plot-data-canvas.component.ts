@@ -176,6 +176,10 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         ctx.globalAlpha = 0.33;
                         ctx.fill();
                         ctx.globalAlpha = 1;
+
+                        box.outliers?.forEach((outlier, outlierIndex) => {
+                            // TODO
+                        });
                     });
                 });
 
