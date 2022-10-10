@@ -26,6 +26,7 @@ export * from "./lib/box-plot/constants";
 export * from "./lib/box-plot/functions";
 export { DgpBoxPlotModule } from "./lib/box-plot/box-plot.module";
 export { DgpBoxPlotComponent } from "./lib/box-plot/components/box-plot.component";
+export { DgpBoxPlotDataCanvasComponent } from "./lib/box-plot/components/box-plot-data-canvas.component";
 export { DgpHybridBoxPlotComponent } from "./lib/box-plot/components/hybrid-box-plot.component";
 export { DgpSVGBoxPlotComponent } from "./lib/box-plot/components/svg-box-plot.component";
 export { BoxPlotBoxFillPatternDirective } from "./lib/box-plot/directives/box-plot-box-fill-pattern.directive";

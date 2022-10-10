@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
+    BoxPlotRenderer,
     BoxPlotSelection,
     BoxValues,
     computeBoxFromValues,
@@ -60,6 +61,7 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                               [showYAxisGridLines]="false"
                               [showOutlierTooltips]="false"
                               yAxisMax="17"
+                              [renderer]="boxPlotRenderer"
                               [autoResize]="false"></dgp-box-plot>
 
                 <dgp-box-plot [yAxisScaleType]="axisScaleTypeEnum.Logarithmic"
@@ -138,6 +140,8 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartsLabsComponent {
+
+    readonly boxPlotRenderer = BoxPlotRenderer.Hybrid;
 
     readonly axisScaleTypeEnum = ScaleType;
     fillPattern = FillPattern.All;

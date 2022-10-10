@@ -23,8 +23,6 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                 <ng-content select="[right-legend]"></ng-content>
             </ng-container>
 
-            <!-- TODO: <dgp-hybrid-box-plot> -->
-
             <dgp-svg-box-plot *ngIf="renderer === rendererEnum.SVG"
                               [showXAxisGridLines]="showXAxisGridLines"
                               [showYAxisGridLines]="showYAxisGridLines"
@@ -35,6 +33,17 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                               [model]="model$ | async"
                               [scales]="scales$ | async"
                               [size]="size$ | async"></dgp-svg-box-plot>
+
+            <dgp-hybrid-box-plot *ngIf="renderer === rendererEnum.Hybrid"
+                                 [showXAxisGridLines]="showXAxisGridLines"
+                                 [showYAxisGridLines]="showYAxisGridLines"
+                                 [showOutlierTooltips]="showOutlierTooltips"
+                                 [showDataAreaOutline]="showDataAreaOutline"
+                                 [controlLines]="controlLines"
+                                 [config]="config"
+                                 [model]="model$ | async"
+                                 [scales]="scales$ | async"
+                                 [size]="size$ | async"></dgp-hybrid-box-plot>
 
 
         </dgp-chart>
