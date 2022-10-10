@@ -85,10 +85,12 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         ctx.strokeStyle = box.colorHex;
                         ctx.lineWidth = 1.5;
 
+                        const groupX = this.scales.xAxisScale(group.boxGroupId);
+
                         /**
                          * Draw upper antenna
                          */
-                        let x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        let x1 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2;
                         let x2 = x1;
                         let y1 = this.scales.yAxisScale(box.quantiles.min);
@@ -102,7 +104,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         /**
                          * Draw lower antenna
                          */
-                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        x1 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2;
                         x2 = x1;
                         y1 = this.scales.yAxisScale(box.quantiles.upper);
@@ -116,9 +118,9 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         /**
                          * Upper whisker
                          */
-                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        x1 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.25;
-                        x2 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        x2 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.75;
                         y1 = this.scales.yAxisScale(box.quantiles.max);
                         y2 = this.scales.yAxisScale(box.quantiles.max);
@@ -131,9 +133,9 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         /**
                          * Lower whisker
                          */
-                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        x1 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.25;
-                        x2 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        x2 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() * 0.75;
                         y1 = this.scales.yAxisScale(box.quantiles.min);
                         y2 = this.scales.yAxisScale(box.quantiles.min);
@@ -146,8 +148,8 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         /**
                          * Median whisker
                          */
-                        x1 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId);
-                        x2 = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                        x1 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId);
+                        x2 = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
                             + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth();
                         y1 = this.scales.yAxisScale(box.quantiles.median);
                         y2 = this.scales.yAxisScale(box.quantiles.median);
@@ -160,7 +162,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         /**
                          * Main box
                          */
-                        const x = this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId);
+                        const x = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId);
                         const y = this.scales.yAxisScale(box.quantiles.upper);
                         const height = Math.abs(
                             (this.scales.yAxisScale(box.quantiles.lower) - this.scales.yAxisScale(box.quantiles.upper))
@@ -171,7 +173,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         ctx.rect(x, y, width, height);
                         ctx.stroke();
 
-                        ctx.globalAlpha = 0.07;
+                        ctx.globalAlpha = 0.33;
                         ctx.fill();
                         ctx.globalAlpha = 1;
                     });
