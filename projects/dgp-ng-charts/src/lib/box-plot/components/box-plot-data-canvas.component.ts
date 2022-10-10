@@ -4,6 +4,9 @@ import { observeAttribute$, Size } from "dgp-ng-app";
 import { BoxGroup, BoxPlotConfig, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
+import { Shape } from "../../shapes/models";
+import { computePointsForShape } from "../../connected-scatter-plot/functions/compute-points-for-shape.function";
+import { getJitter } from "../functions";
 
 @Component({
     selector: "dgp-box-plot-data-canvas",
@@ -178,7 +181,60 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                         ctx.globalAlpha = 1;
 
                         box.outliers?.forEach((outlier, outlierIndex) => {
-                            // TODO
+                            ctx.beginPath();
+
+                            switch (box.outlierShape) {
+                                default:
+                                case Shape.Circle:
+                                    const centerX = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                                        + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2
+                                        + getJitter(box.boxId + outlier, this.config);
+                                    const centerY = this.scales.yAxisScale(outlier);
+
+                                    ctx.beginPath();
+                                    ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI, false);
+                                    break;
+                                case Shape.Rectangle:
+                                    const xOutlier = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                                        + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2
+                                        + getJitter(box.boxId + outlier, this.config);
+                                    const yOutlier = this.scales.yAxisScale(outlier) - 4;
+
+                                    ctx.beginPath();
+                                    ctx.rect(xOutlier, yOutlier, 8, 8);
+                                    break;
+                                case Shape.Star:
+                                case Shape.Cross:
+                                case Shape.Triangle:
+                                case Shape.TriangleLeft:
+                                case Shape.TriangleDown:
+                                case Shape.TriangleRight:
+                                case Shape.Rhombus:
+                                    const size = 10;
+                                    const halfSize = size / 2;
+
+                                    const points = computePointsForShape({
+                                        shape: box.outlierShape,
+                                        width: size,
+                                        height: size
+                                    });
+
+                                    points.forEach((point, index) => {
+
+
+                                        const xOutlier1 = groupX + this.scales.yAxisScale(outlier) + point[0] - halfSize;
+                                        // const xOutlier1 = this.scales.xAxisScale(dot.x) + point[0] - halfSize;
+                                        const yOutlier1 = this.scales.yAxisScale(outlier) + point[1] - halfSize;
+
+                                        ctx.lineTo(xOutlier1, yOutlier1);
+                                    });
+                                    break;
+                            }
+
+
+                            ctx.fill();
+                            ctx.stroke();
+
                         });
                     });
                 });

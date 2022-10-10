@@ -60,7 +60,6 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                               [showXAxisGridLines]="false"
                               [showYAxisGridLines]="false"
                               [showOutlierTooltips]="false"
-                              yAxisMax="17"
                               [renderer]="boxPlotRenderer"
                               [autoResize]="false"></dgp-box-plot>
 
