@@ -58,6 +58,43 @@
         }
     }
 
+    .--compact {
+        dgp-inspector-item {
+            mat-list-item {
+                min-height: 40px;
+            }
+
+            .mat-list-item-content {
+                padding: 0 8px;
+                min-height: 40px;
+            }
+
+            .description {
+                margin-left: 34px;
+                margin-right: 8px;
+                margin-top: 4px;
+                margin-bottom: 8px;
+            }
+
+            .info {
+                height: 40px;
+
+                mat-icon {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+
+                    margin-right: 8px;
+                }
+            }
+
+            .content {
+                margin-left: 26px;
+            }
+        }
+
+    }
+
 }
 
 @mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {

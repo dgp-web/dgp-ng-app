@@ -35,13 +35,13 @@ import { AttributeMetadata } from "data-modeling";
                         <dgp-docking-layout-container label="Main tab"
                                                       id="Main tab">
                             <ng-template>
-                                <dgp-inspector>
+                                <dgp-inspector class="--compact">
                                     <dgp-inspector-item [metadata]="metadata"
                                                         [responsive]="true">
                                         This is the content of this item.
                                     </dgp-inspector-item>
                                     <dgp-inspector-item label="Direct label"
-                                                        matIconName="warn"
+                                                        matIconName="label"
                                                         description="Everything can be!"
                                                         [responsive]="true">
                                         <input [value]="'The input has a very long value.'"
