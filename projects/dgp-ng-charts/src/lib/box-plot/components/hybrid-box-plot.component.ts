@@ -24,7 +24,8 @@ import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
                                   [model]="model"
                                   [controlLines]="controlLines"
                                   [size]="size"
-                                  [showOutlierTooltips]="showOutlierTooltips"></dgp-box-plot-data-canvas>
+                                  [showOutlierTooltips]="showOutlierTooltips"
+                                  (outlierHovered)="showTooltip($event)"></dgp-box-plot-data-canvas>
 
         <div *ngIf="showOutlierTooltips && hoverEvent$.value"
              class="tooltip"
