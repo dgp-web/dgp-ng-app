@@ -1,12 +1,24 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+    ViewChild
+} from "@angular/core";
 import { combineLatest, Subscription } from "rxjs";
-import { observeAttribute$, Size } from "dgp-ng-app";
-import { BoxGroup, BoxPlotConfig, BoxPlotControlLine, BoxPlotScales } from "../models";
+import { notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
+import { Box, BoxGroup, BoxPlotConfig, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../../connected-scatter-plot/functions/compute-points-for-shape.function";
 import { getJitter } from "../functions";
+import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
+import { ScaleType } from "../../shared/models";
 
 @Component({
     selector: "dgp-box-plot-data-canvas",
@@ -61,6 +73,9 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
     @Input()
     controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly controlLines$ = observeAttribute$(this as DgpBoxPlotDataCanvasComponent, "controlLines");
+
+    @Output()
+    readonly outlierHovered = new EventEmitter<OutlierHoverEvent>();
 
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;
@@ -275,7 +290,71 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
         if (!this.showOutlierTooltips) return;
         if (!this.model) return;
 
-        // TODO
+
+        const pointerX = e.clientX;
+        const pointerY = e.clientY;
+
+        const canvasBoundingClient = this.canvasElementRef.nativeElement.getBoundingClientRect();
+        const yRange = this.scales.yAxisScale.range();
+        const yDomain = this.scales.yAxisScale.domain();
+
+
+        const absoluteY = pointerY - canvasBoundingClient.y;
+        const yRelativeDistance = (absoluteY - yRange[0]) / (yRange[1] - yRange[0]);
+        let yDomainDistance: number;
+        let yTolerance: number;
+        let lowerYBoundary: number;
+        let upperYBoundary: number;
+
+        if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Linear) {
+            yDomainDistance = yDomain[1] - yDomain[0];
+            const yDomainValue = yDomain[0] + yRelativeDistance * yDomainDistance;
+            yTolerance = Math.abs(yDomainDistance * 0.005);
+            lowerYBoundary = yDomainValue - yTolerance;
+            upperYBoundary = yDomainValue + yTolerance;
+        } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Logarithmic) {
+            yDomainDistance = Math.log10(yDomain[1]) - Math.log10(yDomain[0]);
+            lowerYBoundary = Math.pow(10,
+                Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance + yDomainDistance * yRelativeDistance * 0.005
+            );
+            upperYBoundary = Math.pow(10,
+                Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
+            );
+        }
+
+        let outlierIndex: number;
+        let box: Box;
+        let boxGroup: BoxGroup;
+
+        this.model.forEach(xGroup => {
+            xGroup.boxes.forEach(xSeries => {
+
+                xSeries.outliers.forEach((outlier, xOutlierIndex) => {
+                    if (outlier >= lowerYBoundary && outlier <= upperYBoundary) {
+
+                        outlierIndex = xOutlierIndex;
+                        box = xSeries;
+                        boxGroup = xGroup;
+
+                    }
+                });
+
+            });
+        });
+
+
+        if (notNullOrUndefined(outlierIndex)) {
+            this.outlierHovered.emit({
+                outlierIndex,
+                box,
+                boxGroup,
+                absoluteDomXPx: pointerX,
+                absoluteDomYPx: pointerY
+            });
+        } else {
+            this.outlierHovered.emit(null);
+        }
+
 
     }
 }
