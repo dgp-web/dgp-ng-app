@@ -29,7 +29,6 @@ import { AttributeMetadata } from "data-modeling";
         .input-with-hint {
             display: flex;
             flex-direction: column;
-            margin-left: 16px;
             max-width: 320px;
             width: 100%;
         }

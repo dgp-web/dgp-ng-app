@@ -8,6 +8,7 @@ import { CommonModule } from "@angular/common";
 import { DgpInspectorModule } from "../../../../../dgp-ng-app/src/inspector/inspector.module";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ScrollingModule as ExperimentalScrollingModule } from "@angular/cdk-experimental/scrolling";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { ScrollingModule as ExperimentalScrollingModule } from "@angular/cdk-exp
         DgpInspectorModule,
         ScrollingModule,
         ExperimentalScrollingModule,
-        DgpInputFieldModule
+        DgpInputFieldModule,
+        FormsModule
     ],
     declarations: [
         DockingLayoutLabsPageComponent

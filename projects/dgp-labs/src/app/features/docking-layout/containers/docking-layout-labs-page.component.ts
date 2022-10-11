@@ -55,6 +55,15 @@ import { AttributeMetadata } from "data-modeling";
                                     Test
                                 </dgp-input-field>
 
+                                <dgp-input-field class="--compact"
+                                                 [metadata]="metadata"
+                                                 [model]="model"
+                                                 [responsive]="true">
+                                    <input [(ngModel)]="model"
+                                           dgpInputMetadata
+                                           [metadata]="metadata">
+                                </dgp-input-field>
+
                             </ng-template>
                         </dgp-docking-layout-container>
                         <dgp-docking-layout-container label="Secondary tab"
@@ -103,8 +112,14 @@ export class DockingLayoutLabsPageComponent {
     readonly metadata: AttributeMetadata<string> = {
         label: "Label",
         icon: "info",
-        description: `This is a description that is displayed below the item.`
+        description: `This is a description that is displayed below the item.`,
+        hint: "Test",
+        type: "string",
+        min: 4,
+        max: 16
     };
+
+    model = "model value";
 
     readonly selectedItemId$ = interval(1000).pipe(
         map(x => {
