@@ -6,7 +6,8 @@ import { AttributeMetadata } from "data-modeling";
     selector: "dgp-input-field",
     template: `
         <dgp-inspector>
-            <dgp-inspector-item [metadata]="metadata">
+            <dgp-inspector-item [metadata]="metadata"
+                                [responsive]="responsive">
                 <div class="input-with-hint">
                     <ng-content></ng-content>
                     <dgp-input-hint [model]="model"
@@ -39,5 +40,8 @@ export class DgpInputFieldComponent extends DgpView<any> {
 
     @Input()
     metadata: AttributeMetadata<any>;
+
+    @Input()
+    responsive: boolean;
 
 }

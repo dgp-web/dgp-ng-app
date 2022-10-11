@@ -48,6 +48,13 @@ import { AttributeMetadata } from "data-modeling";
                                                style="width:100%;">
                                     </dgp-inspector-item>
                                 </dgp-inspector>
+
+                                <dgp-input-field class="--compact"
+                                                 [metadata]="metadata"
+                                                 [responsive]="true">
+                                    Test
+                                </dgp-input-field>
+
                             </ng-template>
                         </dgp-docking-layout-container>
                         <dgp-docking-layout-container label="Secondary tab"
