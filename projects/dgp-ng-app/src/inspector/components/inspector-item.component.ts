@@ -39,12 +39,12 @@ import { AttributeMetadata } from "data-modeling";
         mat-icon {
             margin-right: 16px;
             color: gray;
-            margin-top: 6px;
+            /*margin-top: 6px;*/
         }
 
         .label {
             font-size: smaller;
-            margin-top: 8px;
+            /*margin-top: 8px;*/
             flex-shrink: 0;
         }
 

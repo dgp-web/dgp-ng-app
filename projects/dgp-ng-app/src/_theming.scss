@@ -189,12 +189,17 @@
                 align-items: flex-start !important;
 
                 .label {
-                    margin-top: 8px;
+                    // margin-top: 8px;
                 }
 
                 mat-icon {
-                    margin-top: 6px;
+                    // margin-top: 6px;
                 }
+
+                .content {
+                    padding-top: 8px;
+                }
+
             }
         }
     }
