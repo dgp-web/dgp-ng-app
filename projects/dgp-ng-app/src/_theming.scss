@@ -31,6 +31,12 @@
         background: mat.get-color-from-palette($accent, 300) !important;
     }
 
+    dgp-inspector-item.--responsive {
+        .mat-list-item-content {
+            flex-wrap: wrap;
+        }
+    }
+
     .dgp-list-item.--selected {
         border-left-color: mat.get-color-from-palette($primary, 300);
         border-left-width: 4px;

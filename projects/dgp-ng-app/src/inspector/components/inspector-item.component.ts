@@ -1,29 +1,38 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
 
 @Component({
     selector: "dgp-inspector-item",
     template: `
         <mat-list-item>
-            <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
-            <div class="label">
-                {{ label || metadata?.label }}
-                <span *ngIf="metadata?.isRequired"
-                      class="dgp-cl--accent">*</span>
+            <div class="info">
+                <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
+                <div class="label">
+                    {{ label || metadata?.label }}
+                    <span *ngIf="metadata?.isRequired"
+                          class="dgp-cl--accent">*</span>
+                </div>
             </div>
             <dgp-spacer></dgp-spacer>
-            <ng-content></ng-content>
+            <div class="content">
+                <ng-content></ng-content>
+            </div>
         </mat-list-item>
 
         <p *ngIf="description || metadata?.description"
            class="description">{{description || metadata?.description}}</p>
     `,
     styles: [`
-
         mat-list-item {
             height: auto !important;
             min-height: 48px;
             display: flex !important;
+            align-items: center;
+        }
+
+        .info {
+            display: flex;
+            height: 48px;
             align-items: center;
         }
 
@@ -39,9 +48,18 @@ import { AttributeMetadata } from "data-modeling";
             flex-shrink: 0;
         }
 
+        .content {
+            margin-left: 40px;
+            display: flex;
+            flex-grow: 1;
+            max-width: 320px;
+            width: 100%;
+        }
+
         .description {
             margin-left: 58px;
-            margin-right: 58px;
+            margin-right: 16px;
+            margin-top: 8px;
             font-size: smaller;
             opacity: 0.7;
         }
@@ -61,5 +79,9 @@ export class InspectorItemComponent {
 
     @Input()
     matIconName: string;
+
+    @HostBinding("class.--responsive")
+    @Input()
+    responsive: boolean;
 
 }
