@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+    ViewChild
+} from "@angular/core";
 import { combineLatest, Subscription } from "rxjs";
 import { observeAttribute$, Size } from "dgp-ng-app";
 import { BoxGroup, BoxPlotConfig, BoxPlotControlLine, BoxPlotScales } from "../models";
@@ -7,6 +17,8 @@ import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../../connected-scatter-plot/functions/compute-points-for-shape.function";
 import { getJitter } from "../functions";
+import { DotHoverEvent } from "../../connected-scatter-plot/models";
+import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
 
 @Component({
     selector: "dgp-box-plot-data-canvas",
@@ -61,6 +73,9 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
     @Input()
     controlLines?: ReadonlyArray<BoxPlotControlLine>;
     readonly controlLines$ = observeAttribute$(this as DgpBoxPlotDataCanvasComponent, "controlLines");
+
+    @Output()
+    readonly outlierHovered = new EventEmitter<OutlierHoverEvent>();
 
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;

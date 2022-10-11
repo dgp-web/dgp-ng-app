@@ -5,6 +5,8 @@ import { notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { defaultBoxPlotConfig, trackByBoxGroupId, trackByBoxId, trackByBoxOutlierKey, trackByBoxPlotControlLineId } from "../constants";
 import { ChartSelectionMode } from "../../shared/models";
 import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-format.model";
+import { BehaviorSubject } from "rxjs";
+import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
 
 @Component({
     selector: "dgp-hybrid-box-plot",
@@ -24,12 +26,12 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                   [size]="size"
                                   [showOutlierTooltips]="showOutlierTooltips"></dgp-box-plot-data-canvas>
 
-        <!-- <div *ngIf="showOutlierTooltips && hoverEvent$.value"
-              class="tooltip"
-              [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
-              [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
-             {{getCurrentTooltip()}}
-         </div>-->
+        <div *ngIf="showOutlierTooltips && hoverEvent$.value"
+             class="tooltip"
+             [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
+             [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
+            {{getCurrentOutlierTooltip()}}
+        </div>
 
 
     `,
@@ -109,6 +111,15 @@ export class DgpHybridBoxPlotComponent extends DgpCardinalYAxisChartComponentBas
     @Input()
     scales: BoxPlotScales;
 
+    readonly hoverEvent$ = new BehaviorSubject<OutlierHoverEvent>(null);
+
+    getCurrentOutlierTooltip() {
+        return this.getOutlierTooltip(
+            this.hoverEvent$.value.box,
+            this.hoverEvent$.value.outlierIndex
+        );
+    }
+
     getOutlierTooltip(box: Box, outlierIndex: number): string {
         let result = "";
 
@@ -121,4 +132,7 @@ export class DgpHybridBoxPlotComponent extends DgpCardinalYAxisChartComponentBas
         return result;
     }
 
+    showTooltip(payload: OutlierHoverEvent) {
+        this.hoverEvent$.next(payload);
+    }
 }
