@@ -52,7 +52,7 @@ import { AttributeMetadata } from "data-modeling";
             margin-left: 40px;
             display: flex;
             flex-grow: 1;
-            max-width: 320px;
+            max-width: 240px;
             width: 100%;
         }
 
