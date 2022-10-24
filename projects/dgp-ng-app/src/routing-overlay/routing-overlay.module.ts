@@ -17,9 +17,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     ],
     declarations: [
         RoutingOverlayComponent
-    ],
-    entryComponents: [
-        RoutingOverlayComponent
     ]
 })
 export class DgpRoutingOverlayModule {
