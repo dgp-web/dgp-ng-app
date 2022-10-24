@@ -38,9 +38,6 @@ import { DgpChartModule } from "../chart/chart.module";
         HeatmapComponent,
         HeatmapLegendComponent,
         ExportChartDialogComponent
-    ],
-    entryComponents: [
-        ExportChartDialogComponent
     ]
 })
 export class DgpHeatmapModule {

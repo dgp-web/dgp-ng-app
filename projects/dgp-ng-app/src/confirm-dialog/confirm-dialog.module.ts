@@ -15,9 +15,6 @@ import { MatIconModule } from "@angular/material/icon";
     ],
     exports: [
         DgpConfirmDialogComponent
-    ],
-    entryComponents: [
-        DgpConfirmDialogComponent
     ]
 })
 export class DgpConfirmDialogModule {
