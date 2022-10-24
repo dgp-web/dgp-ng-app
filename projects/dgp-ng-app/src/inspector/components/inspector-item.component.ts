@@ -53,6 +53,7 @@ import { AttributeMetadata } from "data-modeling";
             display: flex;
             flex-grow: 1;
             justify-content: flex-end;
+            width: 100%;
         }
 
         .description {
