@@ -14,7 +14,8 @@ import { AttributeMetadata } from "data-modeling";
                 </div>
             </div>
             <dgp-spacer></dgp-spacer>
-            <div class="content">
+            <div class="content"
+                 [style.max-width]="maxWidth">
                 <ng-content></ng-content>
             </div>
         </mat-list-item>
@@ -34,26 +35,24 @@ import { AttributeMetadata } from "data-modeling";
             display: flex;
             height: 48px;
             align-items: center;
+            min-width: 96px;
+            margin-right: 16px;
         }
 
         mat-icon {
             margin-right: 16px;
             color: gray;
-            /*margin-top: 6px;*/
         }
 
         .label {
             font-size: smaller;
-            /*margin-top: 8px;*/
             flex-shrink: 0;
         }
 
         .content {
-            margin-left: 40px;
             display: flex;
             flex-grow: 1;
-            max-width: 240px;
-            width: 100%;
+            justify-content: flex-end;
         }
 
         .description {
@@ -67,6 +66,9 @@ import { AttributeMetadata } from "data-modeling";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectorItemComponent {
+
+    @Input()
+    maxWidth = "240px";
 
     @Input()
     metadata: AttributeMetadata<any>;
