@@ -37,6 +37,7 @@ import { DgpPlotComponentBase } from "./plot.component-base";
             display: flex;
             flex-direction: column;
             height: 100%;
+            width: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
