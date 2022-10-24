@@ -150,8 +150,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Grid lines"
-                                                matIconName="border_vertical"
-                                                [responsive]="true">
+                                                matIconName="border_vertical">
                                 <mat-slide-toggle [disabled]="disabled"
                                                   [ngModel]="model.showXAxisGridLines"
                                                   (ngModelChange)="setShowXAxisGridLines($event)"></mat-slide-toggle>
@@ -213,8 +212,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Grid lines"
-                                                matIconName="border_horizontal"
-                                                [responsive]="true">
+                                                matIconName="border_horizontal">
                                 <mat-slide-toggle [disabled]="disabled"
                                                   [ngModel]="model.showYAxisGridLines"
                                                   (ngModelChange)="setShowYAxisGridLines($event)"></mat-slide-toggle>
@@ -258,16 +256,14 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="scatter_plot"
-                                                    label="Show vertices"
-                                                    [responsive]="true">
+                                                    label="Show vertices">
                                     <mat-slide-toggle [disabled]="disabled"
                                                       [ngModel]="showVertices(selectedDataGroup)"
                                                       (ngModelChange)="updateSelectedGroupShowVertices($event)"></mat-slide-toggle>
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="show_chart"
-                                                    label="Show edges"
-                                                    [responsive]="true">
+                                                    label="Show edges">
                                     <mat-slide-toggle [disabled]="disabled"
                                                       [ngModel]="showEdges(selectedDataGroup)"
                                                       (ngModelChange)="updateSelectedGroupShowEdges($event)"></mat-slide-toggle>
@@ -343,7 +339,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
         }
 
         dgp-shape-select {
-            width: 200px;
+            width: 100%;
         }
 
         input, select, textarea {
