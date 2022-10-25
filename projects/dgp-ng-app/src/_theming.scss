@@ -31,6 +31,12 @@
         background: mat.get-color-from-palette($accent, 300) !important;
     }
 
+    mat-list-item.--responsive {
+        .mat-list-item-content {
+            flex-wrap: wrap;
+        }
+    }
+
     .dgp-list-item.--selected {
         border-left-color: mat.get-color-from-palette($primary, 300);
         border-left-width: 4px;
@@ -50,6 +56,50 @@
         &:hover {
             background-color: mat.get-color-from-palette($accent, 300);
         }
+    }
+
+    .--compact {
+        dgp-inspector-item {
+            mat-list-item {
+                min-height: 40px;
+            }
+
+            .mat-list-item-content {
+                padding: 0 8px;
+                min-height: 40px;
+            }
+
+            .description {
+                margin-left: 34px;
+                margin-right: 8px;
+                margin-top: 4px;
+                margin-bottom: 8px;
+            }
+
+            .info {
+                height: 40px;
+
+                mat-icon {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+
+                    margin-right: 8px;
+                }
+            }
+
+            .content {
+                margin-left: 26px;
+            }
+        }
+
+        dgp-input-error-info {
+            .host {
+                margin-left: 34px;
+                margin-right: 8px;
+            }
+        }
+
     }
 
 }
@@ -139,12 +189,17 @@
                 align-items: flex-start !important;
 
                 .label {
-                    margin-top: 8px;
+                    // margin-top: 8px;
                 }
 
                 mat-icon {
-                    margin-top: 6px;
+                    // margin-top: 6px;
                 }
+
+                .content {
+                    padding-top: 8px;
+                }
+
             }
         }
     }

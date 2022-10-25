@@ -24,6 +24,10 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
             border-bottom-style: solid;
             border-bottom-color: gray;
         }
+
+        h3[mat-subheader] {
+            height: 32px;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

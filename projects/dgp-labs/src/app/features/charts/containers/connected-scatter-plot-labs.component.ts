@@ -69,33 +69,29 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             <dgp-split-panel-content [size]="20">
                 <ng-template>
 
-                    <dgp-inspector class="--dynamic-form-fields">
+                    <dgp-inspector class="--dynamic-form-fields"
+                                   [responsive]="true">
                         <dgp-inspector-section label="General"
                                                matIconName="info">
                             <dgp-inspector-item label="Renderer"
                                                 matIconName="label">
-                                <mat-form-field class="ml-32px">
-                                    <mat-select [disabled]="disabled"
-                                                [ngModel]="renderer"
-                                                (ngModelChange)="updateRenderer($event)">
-                                        <mat-option [value]="rendererEnum.SVG">
-                                            SVG
-                                        </mat-option>
-                                        <mat-option [value]="rendererEnum.Hybrid">
-                                            Hybrid
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <select [disabled]="disabled"
+                                        [ngModel]="renderer"
+                                        (ngModelChange)="updateRenderer($event)">
+                                    <option [ngValue]="rendererEnum.SVG">
+                                        SVG
+                                    </option>
+                                    <option [ngValue]="rendererEnum.Hybrid">
+                                        Hybrid
+                                    </option>
+                                </select>
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Chart title"
                                                 matIconName="label">
-                                <mat-form-field class="ml-32px">
-                                    <textarea matInput
-                                              [disabled]="disabled"
+                                    <textarea [disabled]="disabled"
                                               [ngModel]="model.chartTitle"
                                               (ngModelChange)="updateChartTitle($event)"></textarea>
-                                </mat-form-field>
                             </dgp-inspector-item>
                         </dgp-inspector-section>
 
@@ -104,61 +100,47 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                             <dgp-inspector-item label="Title"
                                                 matIconName="label">
-                                <mat-form-field class="ml-32px">
-                                    <textarea matInput
-                                              [disabled]="disabled"
+                                    <textarea [disabled]="disabled"
                                               [ngModel]="model.xAxisTitle"
                                               (ngModelChange)="updateXAxisTitle($event)"></textarea>
-                                </mat-form-field>
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Scale"
                                                 matIconName="linear_scale">
-                                <mat-form-field class="ml-32px">
-                                    <mat-select [disabled]="disabled"
-                                                [ngModel]="model.xAxisScaleType"
-                                                (ngModelChange)="updateXAxisScaleType($event)">
-                                        <mat-option [value]="scaleTypeEnum.Linear">
-                                            Linear
-                                        </mat-option>
-                                        <mat-option [value]="scaleTypeEnum.Logarithmic">
-                                            Logarithmic
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <select [disabled]="disabled"
+                                        [ngModel]="model.xAxisScaleType"
+                                        (ngModelChange)="updateXAxisScaleType($event)">
+                                    <option [ngValue]="scaleTypeEnum.Linear">
+                                        Linear
+                                    </option>
+                                    <option [ngValue]="scaleTypeEnum.Logarithmic">
+                                        Logarithmic
+                                    </option>
+                                </select>
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Max"
                                                 matIconName="maximize">
-                                <mat-form-field class="ml-32px">
-                                    <input matInput
-                                           type="number"
-                                           [disabled]="disabled"
-                                           [ngModel]="model.xAxisMax"
-                                           (ngModelChange)="setXAxisMax($event)">
-                                </mat-form-field>
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.xAxisMax"
+                                       (ngModelChange)="setXAxisMax($event)">
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Min"
                                                 matIconName="minimize">
-                                <mat-form-field class="ml-32px">
-                                    <input matInput
-                                           type="number"
-                                           [disabled]="disabled"
-                                           [ngModel]="model.xAxisMin"
-                                           (ngModelChange)="setXAxisMin($event)">
-                                </mat-form-field>
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.xAxisMin"
+                                       (ngModelChange)="setXAxisMin($event)">
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Ticks"
                                                 matIconName="pin">
-                                <mat-form-field class="ml-32px">
-                                    <input matInput
-                                           type="number"
-                                           [disabled]="disabled"
-                                           [ngModel]="model.xAxisStep"
-                                           (ngModelChange)="setXAxisStep($event)">
-                                </mat-form-field>
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.xAxisStep"
+                                       (ngModelChange)="setXAxisStep($event)">
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Grid lines"
@@ -174,62 +156,48 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                matIconName="border_left">
                             <dgp-inspector-item label="Title"
                                                 matIconName="label">
-                                <mat-form-field class="ml-32px">
-                                    <textarea matInput
-                                              [disabled]="disabled"
+                                    <textarea [disabled]="disabled"
                                               [ngModel]="model.yAxisTitle"
                                               (ngModelChange)="updateYAxisTitle($event)"></textarea>
-                                </mat-form-field>
                             </dgp-inspector-item>
 
 
                             <dgp-inspector-item label="Scale"
                                                 matIconName="linear_scale">
-                                <mat-form-field class="ml-32px">
-                                    <mat-select [disabled]="disabled"
-                                                [ngModel]="model.yAxisScaleType"
-                                                (ngModelChange)="updateYAxisScaleType($event)">
-                                        <mat-option [value]="scaleTypeEnum.Linear">
-                                            Linear
-                                        </mat-option>
-                                        <mat-option [value]="scaleTypeEnum.Logarithmic">
-                                            Logarithmic
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <select [disabled]="disabled"
+                                        [ngModel]="model.yAxisScaleType"
+                                        (ngModelChange)="updateYAxisScaleType($event)">
+                                    <option [ngValue]="scaleTypeEnum.Linear">
+                                        Linear
+                                    </option>
+                                    <option [ngValue]="scaleTypeEnum.Logarithmic">
+                                        Logarithmic
+                                    </option>
+                                </select>
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Max"
                                                 matIconName="maximize">
-                                <mat-form-field class="ml-32px">
-                                    <input matInput
-                                           type="number"
-                                           [disabled]="disabled"
-                                           [ngModel]="model.yAxisMax"
-                                           (ngModelChange)="setYAxisMax($event)">
-                                </mat-form-field>
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.yAxisMax"
+                                       (ngModelChange)="setYAxisMax($event)">
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Min"
                                                 matIconName="minimize">
-                                <mat-form-field class="ml-32px">
-                                    <input matInput
-                                           type="number"
-                                           [disabled]="disabled"
-                                           [ngModel]="model.yAxisMin"
-                                           (ngModelChange)="setYAxisMin($event)">
-                                </mat-form-field>
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.yAxisMin"
+                                       (ngModelChange)="setYAxisMin($event)">
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Ticks"
                                                 matIconName="pin">
-                                <mat-form-field class="ml-32px">
-                                    <input matInput
-                                           type="number"
-                                           [disabled]="disabled"
-                                           [ngModel]="model.yAxisStep"
-                                           (ngModelChange)="setYAxisTicks($event)">
-                                </mat-form-field>
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.yAxisStep"
+                                       (ngModelChange)="setYAxisTicks($event)">
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Grid lines"
@@ -246,51 +214,43 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                             <dgp-inspector-item matIconName="stacked_line_chart"
                                                 label="Group">
-                                <mat-form-field class="ml-32px">
-                                    <mat-select [ngModel]="selectedDataGroupId$ | async"
-                                                (ngModelChange)="selectDataGroupId($event)"
-                                                [disabled]="disabled">
-                                        <mat-option *ngFor="let group of model.model; let i = index"
-                                                    [value]="group.connectedScatterGroupId">
-                                            Group: {{i + 1}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <select [ngModel]="selectedDataGroupId$ | async"
+                                        (ngModelChange)="selectDataGroupId($event)"
+                                        [disabled]="disabled">
+                                    <option *ngFor="let group of model.model; let i = index"
+                                            [ngValue]="group.connectedScatterGroupId">
+                                        Group: {{i + 1}}
+                                    </option>
+                                </select>
                             </dgp-inspector-item>
 
                             <ng-container *ngIf="selectedDataGroup$ | async as selectedDataGroup">
 
                                 <dgp-inspector-item label="Shape"
                                                     matIconName="category">
-                                    <dgp-shape-select class="ml-32px"
-                                                      [model]="selectedDataGroup.shape"
+                                    <dgp-shape-select [model]="selectedDataGroup.shape"
                                                       [disabled]="disabled"
                                                       (modelChange)="updateSelectedGroupShape($event)"></dgp-shape-select>
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="palette"
                                                     label="Color">
-                                    <mat-form-field class="ml-32px">
-                                        <input matInput
-                                               type="color"
-                                               [ngModel]="selectedDataGroup.colorHex"
-                                               [disabled]="disabled"
-                                               (ngModelChange)="updateSelectedGroupColorHex($event)">
-                                    </mat-form-field>
+                                    <input type="color"
+                                           [ngModel]="selectedDataGroup.colorHex"
+                                           [disabled]="disabled"
+                                           (ngModelChange)="updateSelectedGroupColorHex($event)">
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="scatter_plot"
                                                     label="Show vertices">
-                                    <mat-slide-toggle class="ml-32px"
-                                                      [disabled]="disabled"
+                                    <mat-slide-toggle [disabled]="disabled"
                                                       [ngModel]="showVertices(selectedDataGroup)"
                                                       (ngModelChange)="updateSelectedGroupShowVertices($event)"></mat-slide-toggle>
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="show_chart"
                                                     label="Show edges">
-                                    <mat-slide-toggle class="ml-32px"
-                                                      [disabled]="disabled"
+                                    <mat-slide-toggle [disabled]="disabled"
                                                       [ngModel]="showEdges(selectedDataGroup)"
                                                       (ngModelChange)="updateSelectedGroupShowEdges($event)"></mat-slide-toggle>
                                 </dgp-inspector-item>
@@ -304,50 +264,39 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                             <dgp-inspector-item matIconName="horizontal_rule"
                                                 label="Selected line">
-                                <mat-form-field class="ml-32px">
-                                    <mat-select [disabled]="disabled"
-                                                [ngModel]="selectedControlLineId$ | async"
-                                                (ngModelChange)="selectControlLine($event)">
-                                        <mat-option *ngFor="let controlLine of model.controlLines"
-                                                    [value]="controlLine.connectedScatterPlotControlLineId">
-                                            {{controlLine.label}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <select [disabled]="disabled"
+                                        [ngModel]="selectedControlLineId$ | async"
+                                        (ngModelChange)="selectControlLine($event)">
+                                    <option *ngFor="let controlLine of model.controlLines"
+                                            [ngValue]="controlLine.connectedScatterPlotControlLineId">
+                                        {{controlLine.label}}
+                                    </option>
+                                </select>
                             </dgp-inspector-item>
 
 
                             <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
                                 <dgp-inspector-item matIconName="label"
                                                     label="Label">
-                                    <mat-form-field class="ml-32px">
-                                        <input matInput
-                                               [ngModel]="selectedControlLine.label"
-                                               [disabled]="disabled"
-                                               (ngModelChange)="updateSelectedControlLineLabel($event)">
-                                    </mat-form-field>
+                                    <input [ngModel]="selectedControlLine.label"
+                                           [disabled]="disabled"
+                                           (ngModelChange)="updateSelectedControlLineLabel($event)">
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="pin"
                                                     label="Value">
-                                    <mat-form-field class="ml-32px">
-                                        <input matInput
-                                               type="number"
-                                               [ngModel]="selectedControlLine.value"
-                                               [disabled]="disabled"
-                                               (ngModelChange)="updateSelectedControlLineValue($event)">
-                                    </mat-form-field>
+                                    <input type="number"
+                                           [ngModel]="selectedControlLine.value"
+                                           [disabled]="disabled"
+                                           (ngModelChange)="updateSelectedControlLineValue($event)">
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="palette"
                                                     label="Color">
-                                    <mat-form-field class="ml-32px">
-                                        <input matInput
-                                               type="color"
-                                               [ngModel]="selectedControlLine.colorHex"
-                                               [disabled]="disabled"
-                                               (ngModelChange)="updateSelectedControlLineColorHex($event)">
-                                    </mat-form-field>
+                                    <input type="color"
+                                           [ngModel]="selectedControlLine.colorHex"
+                                           [disabled]="disabled"
+                                           (ngModelChange)="updateSelectedControlLineColorHex($event)">
                                 </dgp-inspector-item>
 
                             </ng-container>
@@ -371,16 +320,25 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             overflow: auto;
         }
 
-        textarea {
-            height: 20px;
-        }
-
         dgp-shape-select {
-            width: 200px;
+            width: 100%;
         }
 
-        .ml-32px {
-            margin-left: 32px;
+        input, select, textarea {
+            width: 100%;
+            background: transparent;
+            color: inherit;
+            border: none;
+            border-bottom: 1px solid dimgray;
+            font-size: smaller;
+        }
+
+        textarea {
+            height: 32px;
+        }
+
+        option {
+            color: black;
         }
 
     `],
