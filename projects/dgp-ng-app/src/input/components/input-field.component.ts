@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { DgpView } from "../../utils/view";
 import { AttributeMetadata } from "data-modeling";
+import { InspectorService } from "../../inspector/components/inspector.component";
+import { observeAttribute$ } from "../../utils/observe-input";
 
 @Component({
     selector: "dgp-input-field",
@@ -34,6 +36,9 @@ import { AttributeMetadata } from "data-modeling";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        InspectorService
+    ]
 })
 export class DgpInputFieldComponent extends DgpView<any> {
 
@@ -42,5 +47,17 @@ export class DgpInputFieldComponent extends DgpView<any> {
 
     @Input()
     responsive: boolean;
+
+    private readonly responsive$ = observeAttribute$(this as DgpInputFieldComponent, "responsive");
+
+    constructor(
+        private readonly service: InspectorService
+    ) {
+        super();
+
+        this.responsive$.subscribe(responsive => {
+            this.service.responsive$.next(responsive);
+        });
+    }
 
 }

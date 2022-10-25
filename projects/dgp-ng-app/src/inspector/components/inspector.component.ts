@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Injectable, Input } from "@angular/core";
+import { observeAttribute$ } from "../../utils/observe-input";
+import { BehaviorSubject } from "rxjs";
+
+@Injectable()
+export class InspectorService {
+
+    readonly responsive$ = new BehaviorSubject<boolean>(null);
+
+}
 
 @Component({
     selector: "dgp-inspector",
@@ -18,7 +27,23 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        InspectorService
+    ]
 })
 export class InspectorComponent {
+
+    @Input()
+    responsive: boolean;
+
+    private readonly responsive$ = observeAttribute$(this as InspectorComponent, "responsive");
+
+    constructor(
+        private readonly service: InspectorService
+    ) {
+        this.responsive$.subscribe(responsive => {
+            this.service.responsive$.next(responsive);
+        });
+    }
 
 }

@@ -69,12 +69,12 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             <dgp-split-panel-content [size]="20">
                 <ng-template>
 
-                    <dgp-inspector class="--dynamic-form-fields">
+                    <dgp-inspector class="--dynamic-form-fields"
+                                   [responsive]="true">
                         <dgp-inspector-section label="General"
                                                matIconName="info">
                             <dgp-inspector-item label="Renderer"
-                                                matIconName="label"
-                                                [responsive]="true">
+                                                matIconName="label">
                                 <select [disabled]="disabled"
                                         [ngModel]="renderer"
                                         (ngModelChange)="updateRenderer($event)">
@@ -88,8 +88,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Chart title"
-                                                matIconName="label"
-                                                [responsive]="true">
+                                                matIconName="label">
                                     <textarea [disabled]="disabled"
                                               [ngModel]="model.chartTitle"
                                               (ngModelChange)="updateChartTitle($event)"></textarea>
@@ -100,16 +99,14 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                matIconName="border_bottom">
 
                             <dgp-inspector-item label="Title"
-                                                matIconName="label"
-                                                [responsive]="true">
+                                                matIconName="label">
                                     <textarea [disabled]="disabled"
                                               [ngModel]="model.xAxisTitle"
                                               (ngModelChange)="updateXAxisTitle($event)"></textarea>
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Scale"
-                                                matIconName="linear_scale"
-                                                [responsive]="true">
+                                                matIconName="linear_scale">
                                 <select [disabled]="disabled"
                                         [ngModel]="model.xAxisScaleType"
                                         (ngModelChange)="updateXAxisScaleType($event)">
@@ -123,8 +120,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Max"
-                                                matIconName="maximize"
-                                                [responsive]="true">
+                                                matIconName="maximize">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.xAxisMax"
@@ -132,8 +128,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Min"
-                                                matIconName="minimize"
-                                                [responsive]="true">
+                                                matIconName="minimize">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.xAxisMin"
@@ -141,8 +136,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Ticks"
-                                                matIconName="pin"
-                                                [responsive]="true">
+                                                matIconName="pin">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.xAxisStep"
@@ -161,8 +155,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                         <dgp-inspector-section label="y axis"
                                                matIconName="border_left">
                             <dgp-inspector-item label="Title"
-                                                matIconName="label"
-                                                [responsive]="true">
+                                                matIconName="label">
                                     <textarea [disabled]="disabled"
                                               [ngModel]="model.yAxisTitle"
                                               (ngModelChange)="updateYAxisTitle($event)"></textarea>
@@ -170,8 +163,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
 
                             <dgp-inspector-item label="Scale"
-                                                matIconName="linear_scale"
-                                                [responsive]="true">
+                                                matIconName="linear_scale">
                                 <select [disabled]="disabled"
                                         [ngModel]="model.yAxisScaleType"
                                         (ngModelChange)="updateYAxisScaleType($event)">
@@ -185,8 +177,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Max"
-                                                matIconName="maximize"
-                                                [responsive]="true">
+                                                matIconName="maximize">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.yAxisMax"
@@ -194,8 +185,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Min"
-                                                matIconName="minimize"
-                                                [responsive]="true">
+                                                matIconName="minimize">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.yAxisMin"
@@ -203,8 +193,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
 
                             <dgp-inspector-item label="Ticks"
-                                                matIconName="pin"
-                                                [responsive]="true">
+                                                matIconName="pin">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.yAxisStep"
@@ -224,8 +213,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                label="Data groups">
 
                             <dgp-inspector-item matIconName="stacked_line_chart"
-                                                label="Group"
-                                                [responsive]="true">
+                                                label="Group">
                                 <select [ngModel]="selectedDataGroupId$ | async"
                                         (ngModelChange)="selectDataGroupId($event)"
                                         [disabled]="disabled">
@@ -239,16 +227,14 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             <ng-container *ngIf="selectedDataGroup$ | async as selectedDataGroup">
 
                                 <dgp-inspector-item label="Shape"
-                                                    matIconName="category"
-                                                    [responsive]="true">
+                                                    matIconName="category">
                                     <dgp-shape-select [model]="selectedDataGroup.shape"
                                                       [disabled]="disabled"
                                                       (modelChange)="updateSelectedGroupShape($event)"></dgp-shape-select>
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="palette"
-                                                    label="Color"
-                                                    [responsive]="true">
+                                                    label="Color">
                                     <input type="color"
                                            [ngModel]="selectedDataGroup.colorHex"
                                            [disabled]="disabled"
@@ -277,8 +263,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                matIconName="vertical_distribute">
 
                             <dgp-inspector-item matIconName="horizontal_rule"
-                                                label="Selected line"
-                                                [responsive]="true">
+                                                label="Selected line">
                                 <select [disabled]="disabled"
                                         [ngModel]="selectedControlLineId$ | async"
                                         (ngModelChange)="selectControlLine($event)">
@@ -292,16 +277,14 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                             <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
                                 <dgp-inspector-item matIconName="label"
-                                                    label="Label"
-                                                    [responsive]="true">
+                                                    label="Label">
                                     <input [ngModel]="selectedControlLine.label"
                                            [disabled]="disabled"
                                            (ngModelChange)="updateSelectedControlLineLabel($event)">
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="pin"
-                                                    label="Value"
-                                                    [responsive]="true">
+                                                    label="Value">
                                     <input type="number"
                                            [ngModel]="selectedControlLine.value"
                                            [disabled]="disabled"
@@ -309,8 +292,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item matIconName="palette"
-                                                    label="Color"
-                                                    [responsive]="true">
+                                                    label="Color">
                                     <input type="color"
                                            [ngModel]="selectedControlLine.colorHex"
                                            [disabled]="disabled"

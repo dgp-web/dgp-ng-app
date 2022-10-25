@@ -1,10 +1,15 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
+import { InspectorService } from "./inspector.component";
+import { combineLatest } from "rxjs";
+import { observeAttribute$ } from "../../utils/observe-input";
+import { map } from "rxjs/operators";
+import { notNullOrUndefined } from "../../utils/null-checking.functions";
 
 @Component({
     selector: "dgp-inspector-item",
     template: `
-        <mat-list-item>
+        <mat-list-item [class.--responsive]="responsive$ | async">
             <div class="info">
                 <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
                 <div class="label">
@@ -88,8 +93,27 @@ export class InspectorItemComponent {
     @Input()
     matIconName: string;
 
-    @HostBinding("class.--responsive")
     @Input()
     responsive: boolean;
+
+    readonly responsive$ = combineLatest([
+        observeAttribute$(this as InspectorItemComponent, "responsive"),
+        this.service.responsive$
+    ]).pipe(
+        map(combination => {
+
+            const ownResponsiveSettings = combination[0];
+            const parentResponsiveSettings = combination[1];
+
+            if (notNullOrUndefined(ownResponsiveSettings)) return ownResponsiveSettings;
+            return parentResponsiveSettings;
+
+        })
+    );
+
+    constructor(
+        private readonly service: InspectorService
+    ) {
+    }
 
 }

@@ -31,7 +31,7 @@
         background: mat.get-color-from-palette($accent, 300) !important;
     }
 
-    dgp-inspector-item.--responsive {
+    mat-list-item.--responsive {
         .mat-list-item-content {
             flex-wrap: wrap;
         }
