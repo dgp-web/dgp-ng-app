@@ -14,7 +14,7 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
                 <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
                 <div class="label">
                     {{ label || metadata?.label }}
-                    <span *ngIf="metadata?.isRequired"
+                    <span *ngIf="required || metadata?.isRequired"
                           class="dgp-cl--accent">*</span>
                 </div>
             </div>
@@ -92,6 +92,9 @@ export class InspectorItemComponent {
 
     @Input()
     matIconName: string;
+
+    @Input()
+    required: boolean;
 
     @Input()
     responsive: boolean;
