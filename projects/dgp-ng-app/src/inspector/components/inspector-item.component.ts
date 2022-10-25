@@ -24,16 +24,21 @@ import { AttributeMetadata } from "data-modeling";
            class="description">{{description || metadata?.description}}</p>
     `,
     styles: [`
+        :host {
+            margin-bottom: 8px;
+            display: flex;
+        }
+
         mat-list-item {
             height: auto !important;
-            min-height: 48px;
+            min-height: 32px;
             display: flex !important;
             align-items: center;
         }
 
         .info {
             display: flex;
-            height: 48px;
+            height: 32px;
             align-items: center;
             min-width: 96px;
             margin-right: 16px;
