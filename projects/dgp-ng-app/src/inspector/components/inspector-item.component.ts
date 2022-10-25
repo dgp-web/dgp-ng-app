@@ -27,6 +27,7 @@ import { AttributeMetadata } from "data-modeling";
         :host {
             margin-bottom: 8px;
             display: flex;
+            flex-direction: column;
         }
 
         mat-list-item {
@@ -57,7 +58,6 @@ import { AttributeMetadata } from "data-modeling";
         .content {
             display: flex;
             flex-grow: 1;
-            justify-content: flex-end;
             width: 100%;
         }
 

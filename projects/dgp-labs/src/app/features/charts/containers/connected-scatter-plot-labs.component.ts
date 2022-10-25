@@ -348,6 +348,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             color: inherit;
             border: none;
             border-bottom: 1px solid dimgray;
+            font-size: smaller;
         }
 
         textarea {
