@@ -1,4 +1,4 @@
-import { TestBed, TestBedStatic } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 import { StoreModule } from "@ngrx/store";
 import { DgpAuthenticationModule } from "./authentication.module";
 import { AuthenticationApiClient } from "./api-clients/authentication.api-client";
@@ -24,29 +24,29 @@ export class TestInitializationService implements InitializationService<TestUser
     }
 }
 
-export function configureAuthenticationTestingModule(): TestBedStatic {
+export function configureAuthenticationTestingModule(): TestBed {
     return TestBed.configureTestingModule({
-    imports: [
-        RouterTestingModule,
-        StoreModule.forRoot({}, {
-            runtimeChecks: {
-                strictActionImmutability: true,
-                strictActionSerializability: true,
-                strictStateImmutability: true,
-                strictStateSerializability: true
-            }
-        }),
-        DgpAuthenticationModule.forRoot({
-            authenticationApiClientProvider: {
-                provide: AuthenticationApiClient,
-                useClass: TestAuthenticationApiClient
-            },
-            initializationServiceProvider: {
-                provide: InitializationService,
-                useClass: TestInitializationService
-            }
-        })
-    ],
-    teardown: { destroyAfterEach: false }
-});
+        imports: [
+            RouterTestingModule,
+            StoreModule.forRoot({}, {
+                runtimeChecks: {
+                    strictActionImmutability: true,
+                    strictActionSerializability: true,
+                    strictStateImmutability: true,
+                    strictStateSerializability: true
+                }
+            }),
+            DgpAuthenticationModule.forRoot({
+                authenticationApiClientProvider: {
+                    provide: AuthenticationApiClient,
+                    useClass: TestAuthenticationApiClient
+                },
+                initializationServiceProvider: {
+                    provide: InitializationService,
+                    useClass: TestInitializationService
+                }
+            })
+        ],
+        teardown: {destroyAfterEach: false}
+    });
 }
