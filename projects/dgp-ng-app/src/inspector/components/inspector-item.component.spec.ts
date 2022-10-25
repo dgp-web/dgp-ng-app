@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DgpInspectorModule } from "../inspector.module";
 import { InspectorItemComponent } from "./inspector-item.component";
+import { InspectorService } from "./inspector.component";
 
 describe(InspectorItemComponent.name, () => {
 
@@ -12,6 +13,9 @@ describe(InspectorItemComponent.name, () => {
         const testBed = TestBed.configureTestingModule({
             imports: [
                 DgpInspectorModule
+            ],
+            providers: [
+                InspectorService
             ]
         });
         await testBed.compileComponents();
