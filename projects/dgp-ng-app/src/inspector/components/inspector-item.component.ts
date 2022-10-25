@@ -50,7 +50,7 @@ import { AttributeMetadata } from "data-modeling";
 })
 export class InspectorItemComponent {
 
-    @Input()
+    @Input() 
     metadata: AttributeMetadata<any>;
 
     @Input()
