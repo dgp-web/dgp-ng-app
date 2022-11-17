@@ -66,7 +66,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
         ctx.beginPath();
 
-        ctx.fillStyle = notNullOrUndefined(tile.value)
+        ctx.fillStyle = notNullOrUndefined(tile.value) && !isNaN(tile.value)
             ? colorScale(tile.value) as any
             : "transparent";
         ctx.fillRect(
