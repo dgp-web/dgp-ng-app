@@ -20,20 +20,20 @@ import { coreFeatures } from "../constants/core-features.constant";
                                               label="Home"
                                               matIconName="home"></dgp-hamburger-menu-entry>
 
-                    <h2 mat-subheader>Core</h2>
+                    <dgp-inspector-section label="Core">
+                        <dgp-hamburger-menu-entry *ngFor="let feature of coreFeatures$ | async"
+                                                  [route]="feature.route"
+                                                  [label]="feature.label"
+                                                  [matIconName]="feature.matIconName"></dgp-hamburger-menu-entry>
+                    </dgp-inspector-section>
 
-                    <dgp-hamburger-menu-entry *ngFor="let feature of coreFeatures$ | async"
-                                              [route]="feature.route"
-                                              [label]="feature.label"
-                                              [matIconName]="feature.matIconName"></dgp-hamburger-menu-entry>
+                    <dgp-inspector-section label="Charts">
 
-                    <h2 mat-subheader>Charts</h2>
-
-                    <dgp-hamburger-menu-entry *ngFor="let feature of chartFeatures$ | async"
-                                              [route]="feature.route"
-                                              [label]="feature.label"
-                                              [matIconName]="feature.matIconName"></dgp-hamburger-menu-entry>
-
+                        <dgp-hamburger-menu-entry *ngFor="let feature of chartFeatures$ | async"
+                                                  [route]="feature.route"
+                                                  [label]="feature.label"
+                                                  [matIconName]="feature.matIconName"></dgp-hamburger-menu-entry>
+                    </dgp-inspector-section>
                 </dgp-hamburger-menu-entries>
 
                 <dgp-dark-mode-toggle></dgp-dark-mode-toggle>

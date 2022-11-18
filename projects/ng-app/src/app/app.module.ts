@@ -13,7 +13,7 @@ import {
     authenticationStoreFeature,
     defaultBroadcastConfig,
     DgpAuthenticationModule,
-    DgpBroadcastStoreModule,
+    DgpBroadcastStoreModule, DgpInspectorModule,
     DgpNgApp,
     DgpNgAppModule,
     setBroadcastChannelDataId
@@ -90,7 +90,8 @@ import {DocsDocsModule} from "../features/docs/docs-docs.module";
         ChartDocsModule,
         DragAndDropDocsModule,
         DockingLayoutDocsModule,
-        DocsDocsModule
+        DocsDocsModule,
+        DgpInspectorModule
     ],
     declarations: [
         AppComponent
