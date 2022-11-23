@@ -1,57 +1,58 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": "./",
-        "outDir": "./dist/out-tsc",
-        "sourceMap": true,
-        "declaration": false,
-        "downlevelIteration": true,
-        "experimentalDecorators": true,
-        "module": "ES2020",
-        "moduleResolution": "node",
-        "importHelpers": true,
-        "target": "es2020",
-        "typeRoots": [
-            "node_modules/@types"
+      "baseUrl": "./",
+      "outDir": "./dist/out-tsc",
+      "sourceMap": true,
+      "declaration": false,
+      "downlevelIteration": true,
+      "experimentalDecorators": true,
+      "module": "ES2020",
+      "moduleResolution": "node",
+      "importHelpers": true,
+      "target": "ES2022",
+      "typeRoots": [
+        "node_modules/@types"
+      ],
+      "lib": [
+        "es2018",
+        "dom"
+      ],
+      "paths": {
+        "dgp-ng-app": [
+          "dist/dgp-ng-app"
         ],
-        "lib": [
-            "es2018",
-            "dom"
+        "dgp-ng-app/*": [
+          "dist/dgp-ng-app/*"
         ],
-        "paths": {
-            "dgp-ng-app": [
-                "dist/dgp-ng-app"
-            ],
-            "dgp-ng-app/*": [
-                "dist/dgp-ng-app/*"
-            ],
-            "dgp-ng-docs": [
-                "dist/dgp-ng-docs"
-            ],
-            "dgp-ng-data-export": [
-              "dist/dgp-ng-data-export/dgp-ng-data-export",
-              "dist/dgp-ng-data-export"
-            ],
-            "dgp-ng-docs/*": [
-                "dist/dgp-ng-docs/*"
-            ],
-            "dgp-ng-docking-layout": [
-                "dist/dgp-ng-docking-layout/dgp-ng-docking-layout",
-                "dist/dgp-ng-docking-layout"
-            ],
-            "dgp-ng-charts": [
-                "dist/dgp-ng-charts/dgp-ng-charts",
-                "dist/dgp-ng-charts"
-            ],
-            "dgp-ng-drag-and-drop": [
-                "dist/dgp-ng-drag-and-drop/dgp-ng-drag-and-drop",
-                "dist/dgp-ng-drag-and-drop"
-            ],
-            "dgp-ng-paged-media": [
-              "dist/dgp-ng-paged-media/dgp-ng-paged-media",
-              "dist/dgp-ng-paged-media"
-            ]
-        }
+        "dgp-ng-docs": [
+          "dist/dgp-ng-docs"
+        ],
+        "dgp-ng-data-export": [
+          "dist/dgp-ng-data-export/dgp-ng-data-export",
+          "dist/dgp-ng-data-export"
+        ],
+        "dgp-ng-docs/*": [
+          "dist/dgp-ng-docs/*"
+        ],
+        "dgp-ng-docking-layout": [
+          "dist/dgp-ng-docking-layout/dgp-ng-docking-layout",
+          "dist/dgp-ng-docking-layout"
+        ],
+        "dgp-ng-charts": [
+          "dist/dgp-ng-charts/dgp-ng-charts",
+          "dist/dgp-ng-charts"
+        ],
+        "dgp-ng-drag-and-drop": [
+          "dist/dgp-ng-drag-and-drop/dgp-ng-drag-and-drop",
+          "dist/dgp-ng-drag-and-drop"
+        ],
+        "dgp-ng-paged-media": [
+          "dist/dgp-ng-paged-media/dgp-ng-paged-media",
+          "dist/dgp-ng-paged-media"
+        ]
+      },
+      "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,

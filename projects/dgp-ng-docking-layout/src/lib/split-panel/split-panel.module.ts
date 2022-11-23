@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { MatCardModule } from "@angular/material/card";
+import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
 import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout";
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 import { SplitPanelComponent } from "./split-panel.component";

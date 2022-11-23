@@ -61,7 +61,7 @@ import {DocsDocsModule} from "../features/docs/docs-docs.module";
         }, {
             path: "**",
             redirectTo: "/home"
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
 
         UiSharedModule,
 

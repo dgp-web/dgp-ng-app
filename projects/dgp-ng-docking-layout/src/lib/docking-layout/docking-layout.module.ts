@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { FactoryProvider, InjectionToken, NgModule } from "@angular/core";
-import { MatCardModule } from "@angular/material/card";
+import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
 import { ItemContainerComponent } from "../custom-goldenlayout/components/item-container.component";
 import { RowOrColumnComponent } from "../custom-goldenlayout/components/row-or-column.component";
 import { StackComponent } from "../custom-goldenlayout/components/stack.component";

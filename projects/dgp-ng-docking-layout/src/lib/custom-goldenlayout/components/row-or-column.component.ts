@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Directive, Inject } from "@angular/core";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ItemConfiguration } from "../types";
+import { ITEM_CONFIG, ItemConfiguration } from "../types";
 import { LayoutManagerUtilities } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { SplitterComponent } from "./splitter.component";
@@ -24,9 +24,9 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
     constructor(
-        isColumn: boolean,
+        @Inject("IsColumn") isColumn: boolean,
         public layoutManager: DockingLayoutService,
-        config: ItemConfiguration,
+        @Inject(ITEM_CONFIG) config: ItemConfiguration,
         parent: AbstractContentItemComponent
     ) {
         super(layoutManager, config, parent);

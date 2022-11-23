@@ -11,7 +11,7 @@ import {
 import { ActionContextLabsPageComponent } from "./containers/action-context-labs-page.component";
 import { CommonModule } from "@angular/common";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { MatIconModule } from "@angular/material/icon";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ScrollingModule as ExperimentalScrollingModule } from "@angular/cdk-experimental/scrolling";
@@ -23,7 +23,7 @@ import { DgpResizeSensorModule } from "../../../../../dgp-ng-app/src/resize-sens
         RouterModule.forRoot([{
             path: "action-context",
             component: ActionContextLabsPageComponent
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpActionContextModule,

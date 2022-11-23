@@ -3,9 +3,9 @@ import { RouterModule } from "@angular/router";
 import * as containers from "./containers";
 import { DocsPageModule } from "../../shared";
 import { CommonModule } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { MatIconModule } from "@angular/material/icon";
-import { MatListModule } from "@angular/material/list";
+import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
 import { DgpEmptyStateModule } from "dgp-ng-app";
 import { RoutingOverlayResolver } from "./resolver";
 

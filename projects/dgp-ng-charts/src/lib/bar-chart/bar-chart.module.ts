@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
+import { MatLegacyTooltipModule as MatTooltipModule } from "@angular/material/legacy-tooltip";
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from "@angular/common";
 import { DgpResizeSensorModule, DgpSpacerModule, SafePipeModule } from "dgp-ng-app";
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatLegacyDialogModule as MatDialogModule } from "@angular/material/legacy-dialog";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { DgpChartContainerModule } from "../chart-container/chart-container.module";
 import { DgpHeatmapModule } from "../heatmap/heatmap.module";

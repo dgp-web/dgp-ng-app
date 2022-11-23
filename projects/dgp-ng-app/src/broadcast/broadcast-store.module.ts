@@ -1,7 +1,7 @@
 import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
 import { ActionReducerMap, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatLegacySnackBarModule as MatSnackBarModule } from "@angular/material/legacy-snack-bar";
 import { broadcastReducer, BroadcastState, broadcastStoreFeature } from "./store";
 import { broadcastStoreProvider } from "./broadcast-store.decorator";
 import { broadcastChannelServiceProvider } from "./services/broadcast-channel.service";
