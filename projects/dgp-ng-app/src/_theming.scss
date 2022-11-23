@@ -131,6 +131,7 @@
         @include mat.all-legacy-component-colors($app-dark-theme);
         @include mat.all-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
+
         mat-hint {
             color: white;
         }
@@ -261,9 +262,15 @@ dgp-inspector-section {
 }
 
 .dgp-routing-overlay-dialog-panel {
-    mat-dialog-container {
+    mat-dialog-container, cdk-dialog-container {
         background: transparent !important;
         box-shadow: none !important;
+        --mdc-dialog-container-color: transparent !important;
+
+        .mdc-dialog__surface {
+            box-shadow: none !important;
+        }
+
     }
 }
 

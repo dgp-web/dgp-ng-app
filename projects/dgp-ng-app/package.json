@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app",
-    "version": "15.1.0",
+    "version": "15.1.1",
     "license": "MIT",
     "description": "Building blocks for Angular apps",
     "keywords": [
@@ -21,21 +21,16 @@
         "tslib": "^2"
     },
     "peerDependencies": {
-        "@angular/animations": "^14",
-        "@angular/cdk": "14",
-        "@angular/cdk-experimental": "^14",
-        "@angular/common": "^14",
-        "@angular/core": "^14",
-        "@angular/forms": "^14",
-        "@angular/material": "^14",
-        "@angular/router": "^14",
+        "@angular/core": "^15",
+        "@angular/common": "^15",
+        "@angular/cdk": "15",
+        "@angular/cdk-experimental": "^15",
+        "@angular/material": "^15",
         "@angularclass/hmr": "^2",
         "@ngrx/store": "^14",
-        "@ngrx/store-devtools": "^14",
         "@ngrx/effects": "^14",
         "@types/lodash": "^4",
         "entity-store": "^2",
-        "lodash": "4",
-        "rxjs": "^6"
+        "lodash": "4"
     }
 }
