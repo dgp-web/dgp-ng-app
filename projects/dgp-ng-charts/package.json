@@ -5,8 +5,8 @@
         "tslib": "^2"
     },
     "peerDependencies": {
-        "@angular/common": "^14",
-        "@angular/core": "^14",
+        "@angular/common": "^15",
+        "@angular/core": "^15",
         "@types/d3": "^5",
         "d3": "^5"
     }
