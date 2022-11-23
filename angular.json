@@ -38,7 +38,13 @@
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/ng-app/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "buildOptimizer": false,
+                        "optimization": false,
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "sourceMap": true,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
