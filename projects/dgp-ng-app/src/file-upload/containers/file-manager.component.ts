@@ -11,7 +11,7 @@ import {
     isRemoveFilesDisabled
 } from "../selectors";
 import { getFileItemsFromFileList } from "../functions";
-import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { FileItem } from "../../file-viewer/models";
 import { DgpContainer } from "../../utils/container.component-base";
 

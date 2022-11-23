@@ -27,6 +27,9 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                                             label="Primary color">
                             <mat-form-field>
                                 <input matInput>
+                                <mat-hint align="end">
+                                    0/4
+                                </mat-hint>
                             </mat-form-field>
                         </dgp-inspector-item>
 

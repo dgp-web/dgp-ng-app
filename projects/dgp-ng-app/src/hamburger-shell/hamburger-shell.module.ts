@@ -9,9 +9,9 @@ import { hamburgerShellStoreFeature } from "./models";
 import { HamburgerShellComponent } from "./components/hamburger-shell.component";
 import { HamburgerShellEffects } from "./effects";
 import { RouterModule } from "@angular/router";
-import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
+import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { MatLegacyProgressBarModule as MatProgressBarModule } from "@angular/material/legacy-progress-bar";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { hamburgerShellReducer } from "./reducers";
 

@@ -117,7 +117,7 @@ import * as _ from "lodash";
 
                                     <mat-form-field>
                                         <mat-label>
-                                            First name
+                                            Last name
                                         </mat-label>
                                         <input #lastNameInput
                                                matInput
