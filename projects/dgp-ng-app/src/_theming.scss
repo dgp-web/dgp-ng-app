@@ -112,13 +112,15 @@
         color: (
             primary: mat.define-palette($primary),
             accent: mat.define-palette($accent)
-        )
+        ),
+        density: -2
     ));
     $app-dark-theme: mat.define-dark-theme((
         color: (
             primary: mat.define-palette($primary),
             accent: mat.define-palette($accent)
-        )
+        ),
+        density: -2
     ));
     /* TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
     @include mat.all-legacy-component-themes($app-theme);
@@ -131,6 +133,7 @@
         @include mat.all-legacy-component-colors($app-dark-theme);
         @include mat.all-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
+
         mat-hint {
             color: white;
         }
@@ -261,9 +264,15 @@ dgp-inspector-section {
 }
 
 .dgp-routing-overlay-dialog-panel {
-    mat-dialog-container {
+    mat-dialog-container, cdk-dialog-container {
         background: transparent !important;
         box-shadow: none !important;
+        --mdc-dialog-container-color: transparent !important;
+
+        .mdc-dialog__surface {
+            box-shadow: none !important;
+        }
+
     }
 }
 
