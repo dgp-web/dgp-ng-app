@@ -13,12 +13,12 @@ import {
 import { DocsModule } from "dgp-ng-docs";
 import { containers } from "./containers/containers";
 import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
+import { MatLegacyFormFieldModule as MatFormFieldModule } from "@angular/material/legacy-form-field";
+import { MatLegacyInputModule as MatInputModule } from "@angular/material/legacy-input";
 import { FormsModule } from "@angular/forms";
-import { MatSelectModule } from "@angular/material/select";
+import { MatLegacySelectModule as MatSelectModule } from "@angular/material/legacy-select";
 import { CommonModule } from "@angular/common";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
 
 @NgModule({
     imports: [

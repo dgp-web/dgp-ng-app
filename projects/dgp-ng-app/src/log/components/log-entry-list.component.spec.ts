@@ -4,7 +4,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { Store, StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { DgpEmptyStateModule } from "../../empty-state/empty-state.module";
-import { MatListModule } from "@angular/material/list";
+import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
 import { CommonModule } from "@angular/common";
 import { logStoreFeature } from "../models";
 import { LOG_STORE_REDUCER, logStoreReducerProvider } from "../log.module";
