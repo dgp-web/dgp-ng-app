@@ -108,14 +108,24 @@
 
     @include dgp-normalize();
 
-    $app-theme: mat.define-light-theme($primary, $accent, $warn);
-    $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
+    $app-theme: mat.define-light-theme((
+        color: (
+            primary: mat.define-palette($primary),
+            accent: mat.define-palette($accent)
+        )
+    ));
+    $app-dark-theme: mat.define-dark-theme((
+        color: (
+            primary: mat.define-palette($primary),
+            accent: mat.define-palette($accent)
+        )
+    ));
 
     @include mat.all-legacy-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
 
     .dark-theme {
-        @include mat.all-legacy-component-themes($app-dark-theme);
+        @include mat.all-legacy-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
 
