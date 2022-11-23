@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } from "@angular/core";
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import html2canvas from "html2canvas";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { BehaviorSubject } from "rxjs";
 import { filter } from "rxjs/operators";
 import { firstAsPromise } from "dgp-ng-app";

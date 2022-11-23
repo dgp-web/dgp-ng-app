@@ -120,13 +120,20 @@
             accent: mat.define-palette($accent)
         )
     ));
-
+    /* TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
     @include mat.all-legacy-component-themes($app-theme);
+
+    @include mat.all-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
 
     .dark-theme {
+        /* TODO(mdc-migration): Remove all-legacy-component-colors once all legacy components are migrated*/
         @include mat.all-legacy-component-colors($app-dark-theme);
+        @include mat.all-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
+        mat-hint {
+            color: white;
+        }
     }
 
     .dgp-bg--primary {

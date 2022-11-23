@@ -11,7 +11,7 @@ import { addLogEntry, logError } from "./actions";
 import { Severity } from "./models";
 import { logStore } from "./reducers";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarRef as MatSnackBarRef, LegacySimpleSnackBar as SimpleSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from "@angular/material/snack-bar";
 
 describe(LogEffects.name, () => {
 
