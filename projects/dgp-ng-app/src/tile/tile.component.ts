@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
 @Component({
     selector: "dgp-tile",
@@ -43,6 +43,11 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
         </a>
     `,
     styles: [`
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
         .container {
             display: flex;
             flex-direction: column;
