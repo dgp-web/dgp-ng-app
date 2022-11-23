@@ -25,7 +25,7 @@ import { FormsModule } from "@angular/forms";
         RouterModule.forRoot([{
             path: "split-panel",
             component: SplitPanelLabsPageComponent
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
         DragDropModule,
