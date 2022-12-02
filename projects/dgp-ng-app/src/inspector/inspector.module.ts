@@ -6,7 +6,7 @@ import { InspectorItemComponent } from "./components/inspector-item.component";
 import { InspectorSectionComponent } from "./components/inspector-section.component";
 import { InspectorComponent } from "./components/inspector.component";
 import { DgpExpansionToggleModule } from "../expansion-toggle/expansion-toggle.module";
-import { MatLegacyListModule } from "@angular/material/legacy-list";
+import { MatListModule } from "@angular/material/list";
 
 const components = [
     InspectorComponent,
@@ -17,7 +17,7 @@ const components = [
 @NgModule({
     imports: [
         CommonModule,
-        MatLegacyListModule,
+        MatListModule,
         DgpSpacerModule,
         MatIconModule,
         DgpExpansionToggleModule
