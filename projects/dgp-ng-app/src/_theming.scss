@@ -31,8 +31,12 @@
         background: mat.get-color-from-palette($accent, 300) !important;
     }
 
+    .mat-mdc-list-item-unscoped-content {
+        display: flex;
+    }
+
     mat-list-item.--responsive {
-        .mat-list-item-content {
+        .mat-list-item-content, .mat-mdc-list-item-unscoped-content {
             flex-wrap: wrap;
         }
     }
