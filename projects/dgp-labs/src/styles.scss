@@ -22,7 +22,7 @@
 @include mat.legacy-core();
 @include mat.core();
 
-$app-primary: mat.define-palette(mat.$cyan-palette, 800, 900);
+$app-primary: mat.define-palette(mat.$light-green-palette);
 $app-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);

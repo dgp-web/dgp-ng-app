@@ -11,8 +11,8 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
     template: `
         <mat-list-item [class.--responsive]="responsive$ | async">
             <div class="info">
-                <mat-icon class="mat-icon--small">{{matIconName || metadata?.icon}}</mat-icon>
-                <div class="label">
+                <mat-icon class="mat-icon--small dgp-cl--primary">{{matIconName || metadata?.icon}}</mat-icon>
+                <div class="label dgp-cl--primary">
                     {{ label || metadata?.label }}
                     <span *ngIf="required || metadata?.isRequired"
                           class="dgp-cl--accent">*</span>
@@ -49,12 +49,11 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
             height: 32px;
             align-items: center;
             min-width: 96px;
-            margin-right: 16px;
         }
 
         mat-icon {
             margin-right: 8px;
-            color: gray;
+            opacity: 0.7;
         }
 
         .label {
@@ -66,12 +65,13 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
             display: flex;
             flex-grow: 1;
             width: 100%;
+            margin-left: 28px;
         }
 
         .description {
             margin-left: 36px;
             margin-right: 8px;
-            margin-top: 8px;
+            margin-top: 0px;
             margin-bottom: 0;
             font-size: smaller;
             opacity: 0.7;

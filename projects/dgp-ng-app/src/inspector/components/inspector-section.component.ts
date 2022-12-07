@@ -5,9 +5,11 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
     template: `
         <h3 class="label-item"
             mat-subheader>
+            <span class="label">
             {{ label }}
+            </span>
             <mat-icon style="margin-left: 8px;"
-                      class="mat-icon--small">{{matIconName}}</mat-icon>
+                      class="section-icon mat-icon--small">{{matIconName}}</mat-icon>
             <dgp-spacer></dgp-spacer>
             <ng-content select="[actions]"></ng-content>
             <dgp-expansion-toggle *ngIf="expandable"
@@ -33,7 +35,12 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
             margin: 0;
             padding-left: 12px;
         }
+
+        dgp-expansion-toggle, .section-icon, .label {
+            opacity: 0.7;
+        }
     `],
+
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectorSectionComponent {
