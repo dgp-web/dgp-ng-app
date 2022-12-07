@@ -48,26 +48,50 @@ export class InspectorService {
         InspectorService
     ]
 })
-export class InspectorComponent {
-
-    @Input()
-    responsive: boolean;
+export class InspectorComponent implements InspectorConfig {
 
     @Input()
     fieldLabelThemeColor: ThemePalette;
 
-    private readonly responsive$ = observeAttribute$(this as InspectorComponent, "responsive");
+    @Input()
+    maxContentWidth: string;
+
+    @Input()
+    showFieldDescriptions: boolean | "onHover";
+
+    @Input()
+    showFieldIcons: boolean;
+
+    @Input()
+    responsive: boolean;
+
     private readonly fieldLabelThemeColor$ = observeAttribute$(this as InspectorComponent, "fieldLabelThemeColor");
+    private readonly maxContentWidth$ = observeAttribute$(this as InspectorComponent, "maxContentWidth");
+    private readonly responsive$ = observeAttribute$(this as InspectorComponent, "responsive");
+    private readonly showFieldDescriptions$ = observeAttribute$(this as InspectorComponent, "showFieldDescriptions");
+    private readonly showFieldIcons$ = observeAttribute$(this as InspectorComponent, "showFieldIcons");
 
     constructor(
         private readonly service: InspectorService
     ) {
+        this.fieldLabelThemeColor$.subscribe(fieldLabelThemeColor => {
+            this.service.updateConfig({fieldLabelThemeColor});
+        });
+
+        this.maxContentWidth$.subscribe(maxContentWidth => {
+            this.service.updateConfig({maxContentWidth});
+        });
+
         this.responsive$.subscribe(responsive => {
             this.service.updateConfig({responsive});
         });
 
-        this.fieldLabelThemeColor$.subscribe(fieldLabelThemeColor => {
-            this.service.updateConfig({fieldLabelThemeColor});
+        this.showFieldDescriptions$.subscribe(showFieldDescriptions => {
+            this.service.updateConfig({showFieldDescriptions});
+        });
+
+        this.showFieldIcons$.subscribe(showFieldIcons => {
+            this.service.updateConfig({showFieldIcons});
         });
     }
 

@@ -71,7 +71,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
 
                     <dgp-inspector class="--dynamic-form-fields"
                                    [responsive]="true"
-                                   [fieldLabelThemeColor]="'primary'">
+                                   [fieldLabelThemeColor]="'primary'"
+                                   [showFieldDescriptions]="'onHover'"
+                                   [showFieldIcons]="false">
                         <dgp-inspector-section label="General"
                                                matIconName="info">
                             <dgp-inspector-item label="Renderer"
