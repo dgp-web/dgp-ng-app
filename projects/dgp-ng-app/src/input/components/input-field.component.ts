@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { DgpView } from "../../utils/view";
 import { AttributeMetadata } from "data-modeling";
-import { InspectorService } from "../../inspector/components/inspector.component";
 import { observeAttribute$ } from "../../utils/observe-input";
 import { InspectorConfig } from "../../inspector/models/inspector-config.model";
 import { ThemePalette } from "@angular/material/core";
+import { InspectorService } from "../../inspector/services/inspector.service";
 
 @Component({
     selector: "dgp-input-field",

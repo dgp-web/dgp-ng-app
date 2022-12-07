@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
-import { InspectorService } from "./inspector.component";
 import { combineLatest } from "rxjs";
 import { observeAttribute$ } from "../../utils/observe-input";
 import { map } from "rxjs/operators";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
 import { ThemePalette } from "@angular/material/core";
+import { InspectorService } from "../services/inspector.service";
 
 export function toOwnOrParentSettings<T>(payload: [T, T]) {
     const ownSettings = payload[0];
