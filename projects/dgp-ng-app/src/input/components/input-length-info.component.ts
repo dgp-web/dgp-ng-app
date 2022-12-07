@@ -16,6 +16,7 @@ import { observeAttribute$ } from "../../utils/observe-input";
             font-size: smaller;
             opacity: 0.7;
             margin-left: 8px;
+            line-height: 1.5;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

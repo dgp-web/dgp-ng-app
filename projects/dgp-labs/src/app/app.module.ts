@@ -9,6 +9,7 @@ import {
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
     DgpHamburgerShellModule,
+    DgpInspectorModule,
     DgpRequestStoreModule,
     DgpRoutingOverlayModule,
     DgpThemeSwitcherModule,
@@ -122,7 +123,11 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         ActionContextLabsModule,
         DgpHamburgerMenuModule,
         MatListModule,
-        DgpDataExportLabsModule
+        DgpDataExportLabsModule,
+        DgpInspectorModule.forRoot({
+            fieldLabelThemeColor: "primary",
+            showFieldDescriptions: "onHover"
+        })
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

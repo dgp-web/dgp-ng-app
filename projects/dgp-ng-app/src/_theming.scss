@@ -194,11 +194,9 @@
     dgp-input-field {
         dgp-inspector-item {
             mat-list-item {
-                padding-bottom: 8px !important;
-                padding-top: 8px !important;
             }
 
-            .mat-list-item-content {
+            .mdc-list-item__content {
                 align-items: flex-start !important;
 
                 .label {
