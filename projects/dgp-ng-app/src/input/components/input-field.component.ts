@@ -56,7 +56,7 @@ export class DgpInputFieldComponent extends DgpView<any> {
         super();
 
         this.responsive$.subscribe(responsive => {
-            this.service.responsive$.next(responsive);
+            this.service.updateConfig({responsive});
         });
     }
 

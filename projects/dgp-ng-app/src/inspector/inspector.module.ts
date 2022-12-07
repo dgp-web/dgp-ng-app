@@ -7,6 +7,8 @@ import { InspectorSectionComponent } from "./components/inspector-section.compon
 import { InspectorComponent } from "./components/inspector.component";
 import { DgpExpansionToggleModule } from "../expansion-toggle/expansion-toggle.module";
 import { MatListModule } from "@angular/material/list";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { DgpNegatePipeModule } from "../negate/negate-pipe.module";
 
 const components = [
     InspectorComponent,
@@ -20,7 +22,9 @@ const components = [
         MatListModule,
         DgpSpacerModule,
         MatIconModule,
-        DgpExpansionToggleModule
+        DgpExpansionToggleModule,
+        MatTooltipModule,
+        DgpNegatePipeModule
     ],
     declarations: [
         ...components

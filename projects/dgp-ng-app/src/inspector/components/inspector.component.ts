@@ -1,11 +1,27 @@
 import { ChangeDetectionStrategy, Component, Injectable, Input } from "@angular/core";
 import { observeAttribute$ } from "../../utils/observe-input";
 import { BehaviorSubject } from "rxjs";
+import { InspectorConfig } from "../models/inspector-config.model";
+import { inspectorDefaultConfig } from "../constants";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class InspectorService {
 
-    readonly responsive$ = new BehaviorSubject<boolean>(null);
+    readonly config$ = new BehaviorSubject<InspectorConfig>(inspectorDefaultConfig);
+
+    readonly fieldLabelThemeColor$ = this.config$.pipe(map(x => x.fieldLabelThemeColor));
+    readonly maxContentWidth$ = this.config$.pipe(map(x => x.maxContentWidth));
+    readonly responsive$ = this.config$.pipe(map(x => x.responsive));
+    readonly showFieldDescriptions$ = this.config$.pipe(map(x => x.showFieldDescriptions));
+    readonly showFieldIcons$ = this.config$.pipe(map(x => x.showFieldIcons));
+
+    updateConfig(payload: Partial<InspectorConfig>) {
+        this.config$.next({
+            ...this.config$.value,
+            ...payload
+        });
+    }
 
 }
 
@@ -42,7 +58,7 @@ export class InspectorComponent {
         private readonly service: InspectorService
     ) {
         this.responsive$.subscribe(responsive => {
-            this.service.responsive$.next(responsive);
+            this.service.updateConfig({responsive});
         });
     }
 

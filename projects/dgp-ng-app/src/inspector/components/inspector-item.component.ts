@@ -7,11 +7,15 @@ import { map } from "rxjs/operators";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
 import { ThemePalette } from "@angular/material/core";
 
+
 @Component({
     selector: "dgp-inspector-item",
     template: `
         <mat-list-item [class.--responsive]="responsive$ | async">
-            <div class="info">
+            <div class="info"
+                 [matTooltip]="description || metadata?.description"
+                 matTooltipPosition="above"
+                 [matTooltipDisabled]="description || metadata?.description && showDescription && showDescription === 'onHover' | negate">
                 <mat-icon *ngIf="showIcon"
                           class="mat-icon--small"
                           [color]="labelThemeColor">
@@ -34,7 +38,7 @@ import { ThemePalette } from "@angular/material/core";
             </div>
         </mat-list-item>
 
-        <p *ngIf="description || metadata?.description"
+        <p *ngIf="description || metadata?.description && showDescription && showDescription !== 'onHover'"
            class="description"
            [class.description-icon-margin]="showIcon">
             {{description || metadata?.description}}
@@ -126,6 +130,9 @@ export class InspectorItemComponent {
 
     @Input()
     showIcon = true;
+
+    @Input()
+    showDescription: boolean | "onHover" = true;
 
     readonly responsive$ = combineLatest([
         observeAttribute$(this as InspectorItemComponent, "responsive"),

@@ -5,11 +5,6 @@ export interface InspectorConfig {
     readonly fieldLabelThemeColor: ThemePalette;
     readonly showFieldIcons: boolean;
     readonly maxContentWidth: string;
+    readonly showFieldDescriptions: boolean | "onHover";
 }
 
-export const inspectorDefaultConfig: InspectorConfig = {
-    responsive: true,
-    showFieldIcons: true,
-    fieldLabelThemeColor: undefined,
-    maxContentWidth: "240px"
-};
