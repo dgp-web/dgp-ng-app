@@ -31,6 +31,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
             align-items: center;
             font-size: smaller;
             margin: 0;
+            padding-left: 8px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
