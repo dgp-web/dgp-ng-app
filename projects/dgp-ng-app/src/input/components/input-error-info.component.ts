@@ -23,8 +23,8 @@ import { observeAttribute$ } from "../../utils/observe-input";
     styles: [`
         .host {
             display: inline-flex;
-            margin-left: 58px;
-            margin-right: 58px;
+            margin-left: 36px;
+            margin-right: 8px;
             font-size: smaller;
             opacity: 0.7;
         }
@@ -38,6 +38,7 @@ import { observeAttribute$ } from "../../utils/observe-input";
             align-items: center;
             justify-content: center;
             margin-right: 4px;
+            flex-shrink: 0;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

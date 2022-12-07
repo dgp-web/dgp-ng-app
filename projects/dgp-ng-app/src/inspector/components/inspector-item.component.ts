@@ -139,7 +139,7 @@ export class InspectorItemComponent {
     labelThemeColor: ThemePalette;
 
     @Input()
-    showIcon;
+    showIcon: boolean;
 
     @Input()
     showDescription: boolean | "onHover";

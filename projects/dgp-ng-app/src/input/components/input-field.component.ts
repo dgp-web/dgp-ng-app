@@ -5,13 +5,13 @@ import { observeAttribute$ } from "../../utils/observe-input";
 import { InspectorConfig } from "../../inspector/models/inspector-config.model";
 import { ThemePalette } from "@angular/material/core";
 import { InspectorService } from "../../inspector/services/inspector.service";
+import { filter } from "rxjs/operators";
 
 @Component({
     selector: "dgp-input-field",
     template: `
-        <dgp-inspector>
-            <dgp-inspector-item [metadata]="metadata"
-                                [responsive]="responsive">
+        <mat-list>
+            <dgp-inspector-item [metadata]="metadata">
                 <div class="input-with-hint">
                     <ng-content></ng-content>
                     <dgp-input-hint [model]="model"
@@ -22,12 +22,14 @@ import { InspectorService } from "../../inspector/services/inspector.service";
             <dgp-input-error-info [model]="model"
                                   [metadata]="metadata"></dgp-input-error-info>
 
-        </dgp-inspector>
+        </mat-list>
     `,
     styles: [`
         :host {
             display: flex;
             flex-direction: column;
+            padding: 0;
+            overflow: auto;
         }
 
         .input-with-hint {
@@ -35,6 +37,11 @@ import { InspectorService } from "../../inspector/services/inspector.service";
             flex-direction: column;
             max-width: 320px;
             width: 100%;
+        }
+
+
+        mat-list {
+            padding: 0;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,23 +80,23 @@ export class DgpInputFieldComponent extends DgpView<any> implements InspectorCon
     ) {
         super();
 
-        this.fieldLabelThemeColor$.subscribe(fieldLabelThemeColor => {
+        this.fieldLabelThemeColor$.pipe(filter(x => x !== undefined)).subscribe(fieldLabelThemeColor => {
             this.service.updateConfig({fieldLabelThemeColor});
         });
 
-        this.maxContentWidth$.subscribe(maxContentWidth => {
+        this.maxContentWidth$.pipe(filter(x => x !== undefined)).subscribe(maxContentWidth => {
             this.service.updateConfig({maxContentWidth});
         });
 
-        this.responsive$.subscribe(responsive => {
+        this.responsive$.pipe(filter(x => x !== undefined)).subscribe(responsive => {
             this.service.updateConfig({responsive});
         });
 
-        this.showFieldDescriptions$.subscribe(showFieldDescriptions => {
+        this.showFieldDescriptions$.pipe(filter(x => x !== undefined)).subscribe(showFieldDescriptions => {
             this.service.updateConfig({showFieldDescriptions});
         });
 
-        this.showFieldIcons$.subscribe(showFieldIcons => {
+        this.showFieldIcons$.pipe(filter(x => x !== undefined)).subscribe(showFieldIcons => {
             this.service.updateConfig({showFieldIcons});
         });
     }

@@ -3,6 +3,7 @@ import { observeAttribute$ } from "../../utils/observe-input";
 import { InspectorConfig } from "../models/inspector-config.model";
 import { ThemePalette } from "@angular/material/core";
 import { InspectorService } from "../services/inspector.service";
+import { filter } from "rxjs/operators";
 
 @Component({
     selector: "dgp-inspector",
@@ -52,23 +53,23 @@ export class InspectorComponent implements InspectorConfig {
     constructor(
         private readonly service: InspectorService
     ) {
-        this.fieldLabelThemeColor$.subscribe(fieldLabelThemeColor => {
+        this.fieldLabelThemeColor$.pipe(filter(x => x !== undefined)).subscribe(fieldLabelThemeColor => {
             this.service.updateConfig({fieldLabelThemeColor});
         });
 
-        this.maxContentWidth$.subscribe(maxContentWidth => {
+        this.maxContentWidth$.pipe(filter(x => x !== undefined)).subscribe(maxContentWidth => {
             this.service.updateConfig({maxContentWidth});
         });
 
-        this.responsive$.subscribe(responsive => {
+        this.responsive$.pipe(filter(x => x !== undefined)).subscribe(responsive => {
             this.service.updateConfig({responsive});
         });
 
-        this.showFieldDescriptions$.subscribe(showFieldDescriptions => {
+        this.showFieldDescriptions$.pipe(filter(x => x !== undefined)).subscribe(showFieldDescriptions => {
             this.service.updateConfig({showFieldDescriptions});
         });
 
-        this.showFieldIcons$.subscribe(showFieldIcons => {
+        this.showFieldIcons$.pipe(filter(x => x !== undefined)).subscribe(showFieldIcons => {
             this.service.updateConfig({showFieldIcons});
         });
     }

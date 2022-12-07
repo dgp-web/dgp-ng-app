@@ -7,6 +7,7 @@ import { DgpSpacerModule } from "../spacer/spacer.module";
 import { MatIconModule } from "@angular/material/icon";
 import { directives } from "./directives/directives";
 import { DgpInspectorModule } from "../inspector/inspector.module";
+import { MatListModule } from "@angular/material/list";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { DgpInspectorModule } from "../inspector/inspector.module";
         MatSlideToggleModule,
         DgpSpacerModule,
         MatIconModule,
-        DgpInspectorModule
+        DgpInspectorModule,
+        MatListModule
     ],
     declarations: [
         ...components,
