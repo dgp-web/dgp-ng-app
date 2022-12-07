@@ -21,7 +21,7 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
         <mat-list-item [class.--responsive]="responsive$ | async">
             <div class="info"
                  [matTooltip]="description || metadata?.description"
-                 matTooltipPosition="above"
+                 matTooltipPosition="left"
                  [matTooltipDisabled]="hasHoverDescription$ | async | negate">
                 <mat-icon *ngIf="showIcon$ | async"
                           class="mat-icon--small"
@@ -136,13 +136,13 @@ export class InspectorItemComponent {
     responsive: boolean;
 
     @Input()
-    labelThemeColor: ThemePalette = undefined;
+    labelThemeColor: ThemePalette;
 
     @Input()
-    showIcon = true;
+    showIcon;
 
     @Input()
-    showDescription: boolean | "onHover" = true;
+    showDescription: boolean | "onHover";
 
     readonly responsive$ = combineLatest([
         observeAttribute$(this as InspectorItemComponent, "responsive"),
