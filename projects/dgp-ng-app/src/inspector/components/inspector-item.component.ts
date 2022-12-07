@@ -12,7 +12,8 @@ import { ThemePalette } from "@angular/material/core";
     template: `
         <mat-list-item [class.--responsive]="responsive$ | async">
             <div class="info">
-                <mat-icon class="mat-icon--small"
+                <mat-icon *ngIf="showIcon"
+                          class="mat-icon--small"
                           [color]="labelThemeColor">
                     {{matIconName || metadata?.icon}}
                 </mat-icon>
@@ -27,13 +28,17 @@ import { ThemePalette } from "@angular/material/core";
             </div>
             <dgp-spacer></dgp-spacer>
             <div class="content"
+                 [class.content-icon-margin]="showIcon"
                  [style.max-width]="maxWidth">
                 <ng-content></ng-content>
             </div>
         </mat-list-item>
 
         <p *ngIf="description || metadata?.description"
-           class="description">{{description || metadata?.description}}</p>
+           class="description"
+           [class.description-icon-margin]="showIcon">
+            {{description || metadata?.description}}
+        </p>
     `,
     styles: [`
         :host {
@@ -72,16 +77,23 @@ import { ThemePalette } from "@angular/material/core";
             display: flex;
             flex-grow: 1;
             width: 100%;
+        }
+
+        .content-icon-margin {
             margin-left: 28px;
         }
 
         .description {
-            margin-left: 36px;
             margin-right: 8px;
-            margin-top: 0px;
+            margin-top: 0;
             margin-bottom: 0;
             font-size: smaller;
             opacity: 0.7;
+            margin-left: 8px;
+        }
+
+        .description-icon-margin {
+            margin-left: 36px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -111,6 +123,9 @@ export class InspectorItemComponent {
 
     @Input()
     labelThemeColor: ThemePalette = undefined;
+
+    @Input()
+    showIcon = true;
 
     readonly responsive$ = combineLatest([
         observeAttribute$(this as InspectorItemComponent, "responsive"),
