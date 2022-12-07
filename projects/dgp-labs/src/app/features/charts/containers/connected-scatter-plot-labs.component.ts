@@ -70,7 +70,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                 <ng-template>
 
                     <dgp-inspector class="--dynamic-form-fields"
-                                   [responsive]="true">
+                                   [responsive]="true"
+                                   [fieldLabelThemeColor]="'primary'">
                         <dgp-inspector-section label="General"
                                                matIconName="info">
                             <dgp-inspector-item label="Renderer"

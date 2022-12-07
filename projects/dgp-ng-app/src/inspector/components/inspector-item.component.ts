@@ -25,13 +25,13 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
                  [matTooltipDisabled]="hasHoverDescription$ | async | negate">
                 <mat-icon *ngIf="showIcon$ | async"
                           class="mat-icon--small"
-                          [color]="labelThemeColor">
+                          [color]="labelThemeColor$ | async">
                     {{matIconName || metadata?.icon}}
                 </mat-icon>
                 <div class="label"
-                     [class.dgp-cl--primary]="labelThemeColor === 'primary'"
-                     [class.dgp-cl--accent]="labelThemeColor === 'accent'"
-                     [class.dgp-cl--warn]="labelThemeColor === 'warn'">
+                     [class.dgp-cl--primary]="(labelThemeColor$ | async) === 'primary'"
+                     [class.dgp-cl--accent]="(labelThemeColor$ | async) === 'accent'"
+                     [class.dgp-cl--warn]="(labelThemeColor$ | async) === 'warn'">
                     {{ label || metadata?.label }}
                     <span *ngIf="required || metadata?.isRequired"
                           class="dgp-cl--accent">*</span>
@@ -190,6 +190,11 @@ export class InspectorItemComponent {
     readonly maxContentWidth$ = combineLatest([
         observeAttribute$(this as InspectorItemComponent, "maxContentWidth"),
         this.service.maxContentWidth$
+    ]).pipe(map(toOwnOrParentSettings));
+
+    readonly labelThemeColor$ = combineLatest([
+        observeAttribute$(this as InspectorItemComponent, "labelThemeColor"),
+        this.service.fieldLabelThemeColor$
     ]).pipe(map(toOwnOrParentSettings));
 
 

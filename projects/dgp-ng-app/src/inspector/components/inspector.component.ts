@@ -4,6 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { InspectorConfig } from "../models/inspector-config.model";
 import { inspectorDefaultConfig } from "../constants";
 import { map } from "rxjs/operators";
+import { ThemePalette } from "@angular/material/core";
 
 @Injectable()
 export class InspectorService {
@@ -52,13 +53,21 @@ export class InspectorComponent {
     @Input()
     responsive: boolean;
 
+    @Input()
+    fieldLabelThemeColor: ThemePalette;
+
     private readonly responsive$ = observeAttribute$(this as InspectorComponent, "responsive");
+    private readonly fieldLabelThemeColor$ = observeAttribute$(this as InspectorComponent, "fieldLabelThemeColor");
 
     constructor(
         private readonly service: InspectorService
     ) {
         this.responsive$.subscribe(responsive => {
             this.service.updateConfig({responsive});
+        });
+
+        this.fieldLabelThemeColor$.subscribe(fieldLabelThemeColor => {
+            this.service.updateConfig({fieldLabelThemeColor});
         });
     }
 
