@@ -5,14 +5,21 @@ import { combineLatest } from "rxjs";
 import { observeAttribute$ } from "../../utils/observe-input";
 import { map } from "rxjs/operators";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
+import { ThemePalette } from "@angular/material/core";
 
 @Component({
     selector: "dgp-inspector-item",
     template: `
         <mat-list-item [class.--responsive]="responsive$ | async">
             <div class="info">
-                <mat-icon class="mat-icon--small dgp-cl--primary">{{matIconName || metadata?.icon}}</mat-icon>
-                <div class="label dgp-cl--primary">
+                <mat-icon class="mat-icon--small"
+                          [color]="labelThemeColor">
+                    {{matIconName || metadata?.icon}}
+                </mat-icon>
+                <div class="label"
+                     [class.dgp-cl--primary]="labelThemeColor === 'primary'"
+                     [class.dgp-cl--accent]="labelThemeColor === 'accent'"
+                     [class.dgp-cl--warn]="labelThemeColor === 'warn'">
                     {{ label || metadata?.label }}
                     <span *ngIf="required || metadata?.isRequired"
                           class="dgp-cl--accent">*</span>
@@ -101,6 +108,9 @@ export class InspectorItemComponent {
 
     @Input()
     responsive: boolean;
+
+    @Input()
+    labelThemeColor: ThemePalette = undefined;
 
     readonly responsive$ = combineLatest([
         observeAttribute$(this as InspectorItemComponent, "responsive"),
