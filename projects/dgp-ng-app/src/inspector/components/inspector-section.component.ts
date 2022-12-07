@@ -27,6 +27,8 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
         h3[mat-subheader] {
             height: 32px;
+            display: flex;
+            align-items: center;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -7,12 +7,12 @@ import { HamburgerMenuEntryComponent } from "./hamburger-menu-entry.component";
 import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from "@angular/common";
-import { MatLegacyListModule } from "@angular/material/legacy-list";
+import { MatListModule } from "@angular/material/list";
 
 @NgModule({
     imports: [
         MatToolbarModule,
-        MatLegacyListModule,
+        MatListModule,
         RouterModule,
         MatIconModule,
         CommonModule

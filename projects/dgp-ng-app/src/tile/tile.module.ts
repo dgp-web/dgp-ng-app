@@ -5,12 +5,12 @@ import { MatRippleModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
 import { MatDividerModule } from "@angular/material/divider";
 import { CommonModule } from "@angular/common";
-import { MatLegacyCardModule } from "@angular/material/legacy-card";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
     imports: [
         RouterModule,
-        MatLegacyCardModule,
+        MatCardModule,
         MatRippleModule,
         MatIconModule,
         MatDividerModule,

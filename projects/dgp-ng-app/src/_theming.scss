@@ -31,8 +31,12 @@
         background: mat.get-color-from-palette($accent, 300) !important;
     }
 
+    .mat-mdc-list-item-unscoped-content {
+        display: flex;
+    }
+
     mat-list-item.--responsive {
-        .mat-list-item-content {
+        .mat-list-item-content, .mat-mdc-list-item-unscoped-content {
             flex-wrap: wrap;
         }
     }
@@ -52,10 +56,6 @@
         border-left-width: 4px;
         border-left-style: solid;
         pointer-events: none;
-
-        &:hover {
-            background-color: mat.get-color-from-palette($accent, 300);
-        }
     }
 
     .--compact {
@@ -120,15 +120,10 @@
             accent: mat.define-palette($accent)
         )
     ));
-    /* TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated*/
-    @include mat.all-legacy-component-themes($app-theme);
-
     @include mat.all-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
 
     .dark-theme {
-        /* TODO(mdc-migration): Remove all-legacy-component-colors once all legacy components are migrated*/
-        @include mat.all-legacy-component-colors($app-dark-theme);
         @include mat.all-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
 

@@ -15,17 +15,17 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
     styles: [`
         :host {
             display: flex;
-            height: 32px;
-            width: 32px;
+            height: 48px;
+            width: 48px;
             justify-content: center;
             align-items: center;
         }
 
         button {
             display: flex;
-            height: 32px;
-            width: 32px;
-            line-height: 32px;
+            height: 48px;
+            width: 48px;
+            line-height: 48px;
             justify-content: center;
             align-items: center;
         }

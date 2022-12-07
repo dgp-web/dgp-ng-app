@@ -6,8 +6,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
         <a *ngIf="route"
            [routerLink]="route"
            class="container">
-            <mat-card matRipple
-                      class="tile-card">
+            <mat-card class="tile-card">
                 <mat-card-content class="description">
                     <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
                     <div class="label">
@@ -26,8 +25,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
            [attr.href]="externalLink"
            target="_blank"
            class="container">
-            <mat-card matRipple
-                      class="tile-card">
+            <mat-card class="tile-card">
                 <mat-card-content class="description">
                     <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
                     <div class="label">
