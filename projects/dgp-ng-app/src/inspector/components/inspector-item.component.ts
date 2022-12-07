@@ -11,7 +11,7 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
     template: `
         <mat-list-item [class.--responsive]="responsive$ | async">
             <div class="info">
-                <mat-icon>{{matIconName || metadata?.icon}}</mat-icon>
+                <mat-icon class="mat-icon--small">{{matIconName || metadata?.icon}}</mat-icon>
                 <div class="label">
                     {{ label || metadata?.label }}
                     <span *ngIf="required || metadata?.isRequired"
@@ -40,6 +40,8 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
             min-height: 32px;
             display: flex !important;
             align-items: center;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
         }
 
         .info {
@@ -51,7 +53,7 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
         }
 
         mat-icon {
-            margin-right: 16px;
+            margin-right: 8px;
             color: gray;
         }
 
