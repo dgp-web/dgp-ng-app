@@ -7,6 +7,13 @@ import { map } from "rxjs/operators";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
 import { ThemePalette } from "@angular/material/core";
 
+export function toOwnOrParentSettings<T>(payload: [T, T]) {
+    const ownSettings = payload[0];
+    const otherSettings = payload[1];
+
+    if (notNullOrUndefined(ownSettings)) return ownSettings;
+    return otherSettings;
+}
 
 @Component({
     selector: "dgp-inspector-item",
@@ -15,8 +22,8 @@ import { ThemePalette } from "@angular/material/core";
             <div class="info"
                  [matTooltip]="description || metadata?.description"
                  matTooltipPosition="above"
-                 [matTooltipDisabled]="description || metadata?.description && showDescription && showDescription === 'onHover' | negate">
-                <mat-icon *ngIf="showIcon"
+                 [matTooltipDisabled]="hasHoverDescription$ | async | negate">
+                <mat-icon *ngIf="showIcon$ | async"
                           class="mat-icon--small"
                           [color]="labelThemeColor">
                     {{matIconName || metadata?.icon}}
@@ -32,15 +39,15 @@ import { ThemePalette } from "@angular/material/core";
             </div>
             <dgp-spacer></dgp-spacer>
             <div class="content"
-                 [class.content-icon-margin]="showIcon"
-                 [style.max-width]="maxWidth">
+                 [class.content-icon-margin]="showIcon$ | async"
+                 [style.max-width]="maxContentWidth$ | async">
                 <ng-content></ng-content>
             </div>
         </mat-list-item>
 
-        <p *ngIf="description || metadata?.description && showDescription && showDescription !== 'onHover'"
+        <p *ngIf="hasPermanentDescription$ | async"
            class="description"
-           [class.description-icon-margin]="showIcon">
+           [class.description-icon-margin]="showIcon$ | async">
             {{description || metadata?.description}}
         </p>
     `,
@@ -105,16 +112,19 @@ import { ThemePalette } from "@angular/material/core";
 export class InspectorItemComponent {
 
     @Input()
-    maxWidth = "240px";
+    maxContentWidth = "240px";
 
     @Input()
     metadata: AttributeMetadata<any>;
+    readonly metadata$ = observeAttribute$(this as InspectorItemComponent, "metadata");
 
     @Input()
     label: string;
 
     @Input()
     description: string;
+    readonly description$ = observeAttribute$(this as InspectorItemComponent, "description");
+    readonly metadataDescription$ = this.metadata$.pipe(map(x => x?.description));
 
     @Input()
     matIconName: string;
@@ -137,17 +147,51 @@ export class InspectorItemComponent {
     readonly responsive$ = combineLatest([
         observeAttribute$(this as InspectorItemComponent, "responsive"),
         this.service.responsive$
+    ]).pipe(map(toOwnOrParentSettings));
+
+    readonly showDescription$ = combineLatest([
+        observeAttribute$(this as InspectorItemComponent, "showDescription"),
+        this.service.showFieldDescriptions$
+    ]).pipe(map(toOwnOrParentSettings));
+
+    readonly showIcon$ = combineLatest([
+        observeAttribute$(this as InspectorItemComponent, "showIcon"),
+        this.service.showFieldIcons$
+    ]).pipe(map(toOwnOrParentSettings));
+
+    readonly hasHoverDescription$ = combineLatest([
+        this.description$,
+        this.metadataDescription$,
+        this.showDescription$
     ]).pipe(
         map(combination => {
+            const description = combination[0];
+            const metadataDescription = combination[1];
+            const showDescription = combination[2];
 
-            const ownResponsiveSettings = combination[0];
-            const parentResponsiveSettings = combination[1];
-
-            if (notNullOrUndefined(ownResponsiveSettings)) return ownResponsiveSettings;
-            return parentResponsiveSettings;
-
+            return (description || metadataDescription) && showDescription && showDescription === "onHover";
         })
     );
+
+    readonly hasPermanentDescription$ = combineLatest([
+        this.description$,
+        this.metadataDescription$,
+        this.showDescription$
+    ]).pipe(
+        map(combination => {
+            const description = combination[0];
+            const metadataDescription = combination[1];
+            const showDescription = combination[2];
+
+            return (description || metadataDescription) && showDescription && showDescription !== "onHover";
+        })
+    );
+
+    readonly maxContentWidth$ = combineLatest([
+        observeAttribute$(this as InspectorItemComponent, "maxContentWidth"),
+        this.service.maxContentWidth$
+    ]).pipe(map(toOwnOrParentSettings));
+
 
     constructor(
         private readonly service: InspectorService
