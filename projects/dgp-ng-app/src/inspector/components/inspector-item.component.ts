@@ -69,9 +69,10 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
         }
 
         .description {
-            margin-left: 58px;
-            margin-right: 16px;
+            margin-left: 36px;
+            margin-right: 8px;
             margin-top: 8px;
+            margin-bottom: 0;
             font-size: smaller;
             opacity: 0.7;
         }
