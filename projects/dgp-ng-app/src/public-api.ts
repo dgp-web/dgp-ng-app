@@ -153,6 +153,9 @@ export { InspectorComponent } from "./inspector/components/inspector.component";
 export { InspectorItemComponent } from "./inspector/components/inspector-item.component";
 export { InspectorSectionComponent } from "./inspector/components/inspector-section.component";
 export { DgpInspectorModule } from "./inspector/inspector.module";
+export * from "./inspector/models";
+export * from "./inspector/constants";
+export * from "./inspector/functions";
 
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";

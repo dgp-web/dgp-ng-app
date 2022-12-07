@@ -1,8 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable, Optional } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { InspectorConfig } from "../models/inspector-config.model";
-import { inspectorDefaultConfig } from "../constants";
+import { DEFAULT_INSPECTOR_CONFIG, inspectorDefaultConfig } from "../constants";
 import { map } from "rxjs/operators";
+import { notNullOrUndefined } from "../../utils/null-checking.functions";
 
 @Injectable()
 export class InspectorService {
@@ -14,6 +15,14 @@ export class InspectorService {
     readonly responsive$ = this.config$.pipe(map(x => x.responsive));
     readonly showFieldDescriptions$ = this.config$.pipe(map(x => x.showFieldDescriptions));
     readonly showFieldIcons$ = this.config$.pipe(map(x => x.showFieldIcons));
+
+    constructor(
+        @Optional()
+        @Inject(DEFAULT_INSPECTOR_CONFIG)
+            payload: InspectorConfig
+    ) {
+        if (notNullOrUndefined(payload)) this.config$.next(payload);
+    }
 
     updateConfig(payload: Partial<InspectorConfig>) {
         this.config$.next({

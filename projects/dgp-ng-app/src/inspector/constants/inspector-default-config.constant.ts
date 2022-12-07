@@ -7,3 +7,5 @@ export const inspectorDefaultConfig: InspectorConfig = {
     maxContentWidth: "240px",
     showFieldDescriptions: true
 };
+
+
