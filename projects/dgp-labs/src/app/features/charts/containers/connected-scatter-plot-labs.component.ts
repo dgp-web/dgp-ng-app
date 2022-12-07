@@ -69,11 +69,10 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
             <dgp-split-panel-content [size]="20">
                 <ng-template>
 
-                    <dgp-inspector class="--dynamic-form-fields"
-                                   [responsive]="true"
+                    <dgp-inspector [responsive]="true"
                                    [fieldLabelThemeColor]="'primary'"
                                    [showFieldDescriptions]="'onHover'"
-                                   [showFieldIcons]="false">
+                                   [showFieldIcons]="true">
                         <dgp-inspector-section label="General"
                                                matIconName="info">
                             <dgp-inspector-item label="Renderer"
