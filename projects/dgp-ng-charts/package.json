@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-charts",
-    "version": "15.1.1",
+    "version": "15.2.0",
     "dependencies": {
         "tslib": "^2"
     },
