@@ -8,7 +8,7 @@ import {
     defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
-    DgpHamburgerShellModule,
+    DgpHamburgerShellModule, DgpInspectorModule,
     DgpRequestStoreModule,
     DgpRoutingOverlayModule,
     DgpThemeSwitcherModule,
@@ -86,7 +86,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
     declarations: [
         AppComponent
     ],
-    imports: [ 
+    imports: [
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule.forRoot([{
@@ -122,7 +122,12 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         ActionContextLabsModule,
         DgpHamburgerMenuModule,
         MatListModule,
-        DgpDataExportLabsModule
+        DgpDataExportLabsModule,
+        DgpInspectorModule.forRoot({
+            showFieldIcons: true,
+            showFieldDescriptions: true,
+            responsive: true
+        })
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

@@ -63,8 +63,6 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
             min-height: 32px;
             display: flex !important;
             align-items: center;
-            padding-left: 8px !important;
-            padding-right: 8px !important;
         }
 
         .info {
@@ -104,7 +102,7 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
         }
 
         .description-icon-margin {
-            margin-left: 36px;
+            margin-left: 44px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
