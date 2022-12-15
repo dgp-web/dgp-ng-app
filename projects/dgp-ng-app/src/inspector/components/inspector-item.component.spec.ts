@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DgpInspectorModule } from "../inspector.module";
 import { InspectorItemComponent } from "./inspector-item.component";
-import { InspectorService } from "./inspector.component";
+import { InspectorService } from "../services/inspector.service";
 
 describe(InspectorItemComponent.name, () => {
 
