@@ -86,7 +86,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
     declarations: [
         AppComponent
     ],
-    imports: [
+    imports: [ 
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule.forRoot([{
