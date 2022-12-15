@@ -149,9 +149,13 @@ export { DgpInputMetadataDirective } from "./input/directives/input-metadata.dir
 export { DgpInputFieldModule } from "./input/input-field.module";
 
 // inspector
+export * from "./inspector/models";
+export * from "./inspector/constants";
+export * from "./inspector/functions";
 export { InspectorComponent } from "./inspector/components/inspector.component";
 export { InspectorItemComponent } from "./inspector/components/inspector-item.component";
 export { InspectorSectionComponent } from "./inspector/components/inspector-section.component";
+export { InspectorService } from "./inspector/services/inspector.service";
 export { DgpInspectorModule } from "./inspector/inspector.module";
 
 // log
