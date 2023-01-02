@@ -66,14 +66,14 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
                 </dgp-inspector-item>
 
                 <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.maxContentWidth">
-                    <mat-form-field>
-                        <input matInput
-                               type="number"
-                               [ngModel]="maxContentWidth$ | async"
-                               (ngModelChange)="updateMaxContentWidth($event)"
-                               [min]="96"
-                               [step]="1">
-                    </mat-form-field>
+                    <dgp-spacer></dgp-spacer>
+                    <mat-slider [ngModel]="maxContentWidth$ | async"
+                                (ngModelChange)="updateMaxContentWidth($event)"
+                                [thumbLabel]="true"
+                                [min]="160"
+                                [max]="480"
+                                [step]="1"
+                                style="width: 160px;"></mat-slider>
                 </dgp-inspector-item>
 
             </dgp-inspector-section>

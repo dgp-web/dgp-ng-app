@@ -8,6 +8,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
 import { containers } from "./containers/containers";
+import { MatSliderModule } from "@angular/material/slider";
+import { DgpSpacerModule } from "../spacer/spacer.module";
 
 @NgModule({
     imports: [
@@ -18,7 +20,9 @@ import { containers } from "./containers/containers";
         MatFormFieldModule,
         MatSelectModule,
         AsyncPipe,
-        MatInputModule
+        MatInputModule,
+        MatSliderModule,
+        DgpSpacerModule
     ],
     declarations: [
         ...components,
