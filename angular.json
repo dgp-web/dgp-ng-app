@@ -146,7 +146,7 @@
                     "options": {
                         "main": "projects/dgp-ng-app/src/test.ts",
                         "progress": false,
-                        "codeCoverage": true,
+                        "codeCoverage": false,
                         "tsConfig": "projects/dgp-ng-app/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-app/karma.conf.js"
                     }
