@@ -11,9 +11,11 @@ import { DarkModeToggleComponent } from "./components/dark-mode-toggle.component
 import {
     defaultThemeSwitcherConfig,
     THEME_SWITCHER_CONFIG,
-    ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature
+    ThemeSwitcherConfig,
+    ThemeSwitcherState,
+    themeSwitcherStoreFeature
 } from "./models";
-import { setIsDarkModeActive } from "./actions";
+import { setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { isNullOrUndefined } from "../utils/null-checking.functions";
 
@@ -73,6 +75,12 @@ export class DgpThemeSwitcherModule {
         if (!isNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
             this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
+        }
+
+        const dgpInspectorConfigJSON = localStorage.getItem("dgpInspectorConfig");
+        if (!isNullOrUndefined(dgpInspectorConfigJSON)) {
+            const inspectorConfig = JSON.parse(dgpInspectorConfigJSON);
+            this.store.dispatch(updateCurrentInspectorConfig({inspectorConfig}));
         }
     }
 

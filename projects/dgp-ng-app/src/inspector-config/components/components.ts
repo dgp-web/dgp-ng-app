@@ -1,5 +1,5 @@
-import { DgpInspectorConfigComponent } from "./inspector-config.component";
+import { DgpInspectorConfigFormComponent } from "./inspector-config-form.component";
 
 export const components = [
-    DgpInspectorConfigComponent
+    DgpInspectorConfigFormComponent
 ];

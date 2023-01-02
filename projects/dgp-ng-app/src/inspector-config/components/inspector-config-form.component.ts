@@ -7,7 +7,7 @@ import { notNullOrUndefined } from "../../utils/null-checking.functions";
 import { inspectorConfigMetadata } from "../../inspector/constants";
 
 @Component({
-    selector: "dgp-inspector-config",
+    selector: "dgp-inspector-config-form",
     template: `
         <dgp-inspector *ngIf="model"
                        [fieldLabelThemeColor]="model.fieldLabelThemeColor"
@@ -88,7 +88,7 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpInspectorConfigComponent extends DgpModelEditorComponentBase<InspectorConfig> {
+export class DgpInspectorConfigFormComponent extends DgpModelEditorComponentBase<InspectorConfig> {
 
     readonly inspectorConfigMetadata = inspectorConfigMetadata;
 

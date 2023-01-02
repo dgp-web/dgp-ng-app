@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { DgpInspectorConfigComponent } from "../inspector-config.component";
+import { DgpInspectorConfigFormComponent } from "../inspector-config-form.component";
 import { DgpInspectorConfigModule } from "../../inspector-config.module";
 
-describe(DgpInspectorConfigComponent.name, () => {
+describe(DgpInspectorConfigFormComponent.name, () => {
 
-    let fixture: ComponentFixture<DgpInspectorConfigComponent>;
-    let component: DgpInspectorConfigComponent;
+    let fixture: ComponentFixture<DgpInspectorConfigFormComponent>;
+    let component: DgpInspectorConfigFormComponent;
 
     beforeEach(waitForAsync(async () => {
 
@@ -16,7 +16,7 @@ describe(DgpInspectorConfigComponent.name, () => {
         });
         await testBed.compileComponents();
 
-        fixture = testBed.createComponent(DgpInspectorConfigComponent);
+        fixture = testBed.createComponent(DgpInspectorConfigFormComponent);
         component = fixture.componentInstance;
 
     }));
