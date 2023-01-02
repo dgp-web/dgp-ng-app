@@ -17,7 +17,7 @@ module.exports = function (config) {
             clearContext: false, // leave Jasmine Spec Runner output visible in browser
         },
         coverageReporter: {
-            dir: require('path').join(__dirname, '../../coverage/dgp-ng-charts'),
+            dir: require('path').join(__dirname, '../../dist/coverage/dgp-ng-charts'),
             subdir: '.',
             reporters: [
                 {type: 'html'},

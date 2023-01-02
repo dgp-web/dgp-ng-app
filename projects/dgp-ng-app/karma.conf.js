@@ -55,6 +55,6 @@ module.exports = function (config) {
             suppressSkipped: true,
             showSpecTiming: false,
             failFast: false
-        },
+        }
     });
 };
