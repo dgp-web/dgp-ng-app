@@ -1,50 +1,10 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-base";
 import { InspectorConfig } from "../../inspector/models";
-import { ModelMetadata } from "data-modeling";
 import { ThemePalette } from "@angular/material/core";
 import { map } from "rxjs/operators";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
-
-export const inspectorConfigMetadata: ModelMetadata<InspectorConfig> = {
-    attributes: {
-        fieldLabelThemeColor: {
-            label: "Label color",
-            icon: "label",
-            description: `Theme color of data labels.`,
-            type: "string",
-            defaultValue: undefined
-        },
-        maxContentWidth: {
-            label: "Content width",
-            icon: "space_bar",
-            description: `Space reserved for displayed values.`,
-            type: "string",
-            defaultValue: "240px"
-        },
-        responsive: {
-            label: "Responsive",
-            icon: "repartition",
-            description: `Display values below labels if there's little space`,
-            type: "boolean",
-            defaultValue: true
-        },
-        showFieldDescriptions: {
-            label: "Descriptions",
-            icon: "description",
-            description: `Whether and where to display descriptions.`,
-            type: "boolean",
-            defaultValue: true
-        },
-        showFieldIcons: {
-            label: "Icons",
-            icon: "category",
-            description: `Display icons for data fields.`,
-            type: "boolean",
-            defaultValue: true
-        }
-    }
-};
+import { inspectorConfigMetadata } from "../../inspector/constants";
 
 @Component({
     selector: "dgp-inspector-config",
