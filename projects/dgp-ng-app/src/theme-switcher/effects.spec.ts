@@ -2,7 +2,7 @@ import { TestBed, waitForAsync } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
 import { EffectsMetadata, EffectsModule, getEffectsMetadata } from "@ngrx/effects";
 import { ThemeSwitcherEffects } from "./effects";
-import { ThemeSwitcherState, themeSwitcherStoreFeature } from "./models";
+import { defaultThemeSwitcherConfig, THEME_SWITCHER_CONFIG, ThemeSwitcherState, themeSwitcherStoreFeature } from "./models";
 import { themeSwitcherReducer } from "./reducers";
 
 describe(ThemeSwitcherEffects.name, () => {
@@ -26,7 +26,11 @@ describe(ThemeSwitcherEffects.name, () => {
                     }
                 }),
                 EffectsModule.forRoot([ThemeSwitcherEffects])
-            ]
+            ],
+            providers: [{
+                provide: THEME_SWITCHER_CONFIG,
+                useValue: defaultThemeSwitcherConfig
+            }]
         })
             .compileComponents();
 
