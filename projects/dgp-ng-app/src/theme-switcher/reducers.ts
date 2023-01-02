@@ -1,9 +1,11 @@
 import { createReducer, on } from "@ngrx/store";
-import { setIsDarkModeActive, toggleDarkMode } from "./actions";
+import { setIsDarkModeActive, toggleDarkMode, updateCurrentInspectorConfig } from "./actions";
 import { ThemeSwitcherState } from "./models";
+import { inspectorDefaultConfig } from "../inspector/constants";
 
 export const initialThemeSwitcherState: ThemeSwitcherState = {
-    useDarkMode: true
+    useDarkMode: true,
+    inspector: inspectorDefaultConfig
 };
 
 export const themeSwitcherReducer = createReducer(initialThemeSwitcherState,
@@ -17,6 +19,15 @@ export const themeSwitcherReducer = createReducer(initialThemeSwitcherState,
         return {
             ...state,
             useDarkMode: !state.useDarkMode
+        };
+    }),
+    on(updateCurrentInspectorConfig, (state, action) => {
+        return {
+            ...state,
+            inspector: {
+                ...state.inspector,
+                ...action.inspectorConfig
+            }
         };
     })
 );

@@ -1,4 +1,4 @@
-import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
+import { FactoryProvider, Inject, InjectionToken, ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActionReducer, Store, StoreModule } from "@ngrx/store";
@@ -11,11 +11,13 @@ import { DarkModeToggleComponent } from "./components/dark-mode-toggle.component
 import {
     defaultThemeSwitcherConfig,
     THEME_SWITCHER_CONFIG,
-    ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature
+    ThemeSwitcherConfig,
+    ThemeSwitcherState,
+    themeSwitcherStoreFeature
 } from "./models";
-import { setIsDarkModeActive } from "./actions";
+import { setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { isNullOrUndefined } from "../utils/null-checking.functions";
+import { notNullOrUndefined } from "../utils/null-checking.functions";
 
 export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");
 
@@ -67,13 +69,24 @@ export class DgpThemeSwitcherModule {
     }
 
     constructor(
-        private readonly store: Store<ThemeSwitcherState>
+        private readonly store: Store<ThemeSwitcherState>,
+        @Inject(THEME_SWITCHER_CONFIG)
+        private readonly themeSwitcherConfig: ThemeSwitcherConfig
     ) {
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
-        if (!isNullOrUndefined(isDarkModeActiveJSON)) {
+        if (notNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
             this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
         }
+
+        if (themeSwitcherConfig.components.includes("inspector")) {
+            const dgpInspectorConfigJSON = localStorage.getItem("dgpInspectorConfig");
+            if (notNullOrUndefined(dgpInspectorConfigJSON)) {
+                const inspectorConfig = JSON.parse(dgpInspectorConfigJSON);
+                this.store.dispatch(updateCurrentInspectorConfig({inspectorConfig}));
+            }
+        }
+
     }
 
 

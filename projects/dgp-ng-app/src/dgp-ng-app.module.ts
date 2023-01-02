@@ -10,6 +10,7 @@ import { DgpLogModule } from "./log/log.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { DgpHamburgerMenuModule } from "./hamburger-shell/components/hamburger-menu/hamburger-menu.module";
+import { defaultThemeSwitcherConfig } from "./theme-switcher/models";
 
 export interface DgpNgAppConfig<TAppState> {
     readonly appReducer: ActionReducerMap<TAppState>;
@@ -30,7 +31,10 @@ export const APP_REDUCER = new InjectionToken<ActionReducerMap<any>>("AppReducer
         EffectsModule.forRoot([]),
 
         DgpHamburgerShellModule.forRoot(),
-        DgpThemeSwitcherModule.forRoot(),
+        DgpThemeSwitcherModule.forRoot({
+            ...defaultThemeSwitcherConfig,
+            components: ["inspector"]
+        }),
         DgpHamburgerMenuModule,
         DgpLogModule,
         DgpRequestStoreModule,

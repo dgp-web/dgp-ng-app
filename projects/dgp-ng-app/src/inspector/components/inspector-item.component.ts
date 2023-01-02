@@ -98,7 +98,7 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
             margin-bottom: 0;
             font-size: smaller;
             opacity: 0.7;
-            margin-left: 8px;
+            margin-left: 16px;
         }
 
         .description-icon-margin {

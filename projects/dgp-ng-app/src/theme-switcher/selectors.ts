@@ -10,3 +10,7 @@ export const isDarkModeActiveSelector = createSelector(
 );
 
 export const isDarkModeActive = isDarkModeActiveSelector;
+
+export const getCurrentInspectorConfig = createSelector(
+    themeSwitcherFeatureSelector, x => x.inspector
+);

@@ -4,6 +4,9 @@ import { InspectorConfig } from "../models/inspector-config.model";
 import { DEFAULT_INSPECTOR_CONFIG, inspectorDefaultConfig } from "../constants";
 import { map } from "rxjs/operators";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
+import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig, ThemeSwitcherState } from "../../theme-switcher/models";
+import { Store } from "@ngrx/store";
+import { getCurrentInspectorConfig } from "../../theme-switcher/selectors";
 
 @Injectable()
 export class InspectorService {
@@ -19,9 +22,17 @@ export class InspectorService {
     constructor(
         @Optional()
         @Inject(DEFAULT_INSPECTOR_CONFIG)
-            payload: InspectorConfig
+        private readonly payload: InspectorConfig,
+        @Optional()
+        @Inject(THEME_SWITCHER_CONFIG)
+        private readonly themeSwitcherConfig: ThemeSwitcherConfig,
+        private readonly store: Store<ThemeSwitcherState>
     ) {
         if (notNullOrUndefined(payload)) this.config$.next(payload);
+
+        if (themeSwitcherConfig?.components.includes("inspector")) {
+            this.store.select(getCurrentInspectorConfig).subscribe(this.config$);
+        }
     }
 
     updateConfig(payload: Partial<InspectorConfig>) {
