@@ -19,8 +19,9 @@ module.exports = function (config) {
             dir: require('path').join(__dirname, '../../dist/coverage/dgp-ng-drag-and-drop'),
             subdir: '.',
             reporters: [
-                {type: 'text'},
-                {type: 'text-summary'}
+                {type: 'html'},
+                {type: 'text-summary'},
+                {type: 'cobertura'}
             ]
         },
         reporters: ['spec'],
