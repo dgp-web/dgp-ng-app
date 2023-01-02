@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install npm packages
+      run: npm ci --loglevel=error
+
+    - name: Test dgp-ng-app
+      run: npm run dgp-ng-app:test:prod
+
+    - name: Code Coverage Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+          filename: dist/coverage/dgp-ng-app/cobertura-coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '10 20'
+
+    - name: Build dgp-ng-app
+      run: npm run dgp-ng-app:build:prod
+
+    - name: Build dgp-ng-docs
+      run: npm run dgp-ng-docs:build:prod
+
+    - name: Build dgp-ng-docking-layout
+      run: npm run dgp-ng-docking-layout:build:prod
+
+    - name: Build dgp-ng-drag-and-drop
+      run: npm run dgp-ng-drag-and-drop:build:prod
+
+    - name: Build dgp-ng-charts
+      run: npm run dgp-ng-charts:build:prod
+
+    - name: Build dgp-ng-paged-media
+      run: npm run dgp-ng-paged-media:build:prod
+
+    - name: build dgp-labs
+      run: npm run dgp-labs:build:prod
+
+    - name: Publish dgp-labs to firebase
+      run: npm run dgp-labs:publish
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
