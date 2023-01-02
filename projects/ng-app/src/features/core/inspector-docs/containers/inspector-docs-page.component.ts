@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { InspectorConfig, inspectorDefaultConfig } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-inspector-docs-page",
@@ -20,8 +19,7 @@ import { InspectorConfig, inspectorDefaultConfig } from "dgp-ng-app";
 
                 <dgp-docs-section-title>Demo</dgp-docs-section-title>
 
-                <dgp-inspector-config [model]="inspectorConfig"
-                                      (modelChange)="updateInspectorConfig($event)"></dgp-inspector-config>
+                <dgp-inspector-config></dgp-inspector-config>
 
                 <dgp-inspector>
                     <dgp-inspector-section matIconName="color_lens"
@@ -57,9 +55,4 @@ import { InspectorConfig, inspectorDefaultConfig } from "dgp-ng-app";
 })
 export class InspectorDocsPageComponent {
 
-    inspectorConfig = inspectorDefaultConfig;
-
-    updateInspectorConfig(payload: InspectorConfig) {
-        this.inspectorConfig = payload;
-    }
 }

@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { first, switchMap, tap } from "rxjs/operators";
+import { first, skip, switchMap, tap } from "rxjs/operators";
 import { select, Store } from "@ngrx/store";
-import { toggleDarkMode, updateCurrentInspectorConfig } from "./actions";
+import { toggleDarkMode } from "./actions";
 import { getCurrentInspectorConfig, isDarkModeActiveSelector } from "./selectors";
 import { ThemeSwitcherState } from "./models";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
 import { DgpContainer } from "../utils/container.component-base";
+import { distinctUntilHashChanged } from "../utils/distinct-until-hash-changed.function";
 
 @Injectable()
 export class ThemeSwitcherEffects extends DgpContainer<ThemeSwitcherState> {
@@ -26,17 +27,11 @@ export class ThemeSwitcherEffects extends DgpContainer<ThemeSwitcherState> {
         })
     ), withoutDispatch);
 
-    readonly updateCurrentInspectorConfig$ = createEffect(() => this.actions$.pipe(
-        ofType(updateCurrentInspectorConfig),
-        switchMap(() => {
-
-            return this.select(getCurrentInspectorConfig).pipe(
-                first(),
-                tap(inspectorConfig => {
-                    localStorage.setItem("dgpInspectorConfig", JSON.stringify(inspectorConfig));
-                })
-            );
-
+    readonly updateCurrentInspectorConfig$ = createEffect(() => this.select(getCurrentInspectorConfig).pipe(
+        skip(1),
+        distinctUntilHashChanged(),
+        tap(inspectorConfig => {
+            localStorage.setItem("dgpInspectorConfig", JSON.stringify(inspectorConfig));
         })
     ), withoutDispatch);
 

@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
+import { containers } from "./containers/containers";
 
 @NgModule({
     imports: [
@@ -20,10 +21,12 @@ import { MatInputModule } from "@angular/material/input";
         MatInputModule
     ],
     declarations: [
-        ...components
+        ...components,
+        ...containers
     ],
     exports: [
-        ...components
+        ...components,
+        ...containers
     ]
 })
 export class DgpInspectorConfigModule {

@@ -17,7 +17,7 @@ import {
 } from "./models";
 import { setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { isNullOrUndefined } from "../utils/null-checking.functions";
+import { notNullOrUndefined } from "../utils/null-checking.functions";
 
 export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");
 
@@ -72,13 +72,13 @@ export class DgpThemeSwitcherModule {
         private readonly store: Store<ThemeSwitcherState>
     ) {
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
-        if (!isNullOrUndefined(isDarkModeActiveJSON)) {
+        if (notNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
             this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
         }
 
         const dgpInspectorConfigJSON = localStorage.getItem("dgpInspectorConfig");
-        if (!isNullOrUndefined(dgpInspectorConfigJSON)) {
+        if (notNullOrUndefined(dgpInspectorConfigJSON)) {
             const inspectorConfig = JSON.parse(dgpInspectorConfigJSON);
             this.store.dispatch(updateCurrentInspectorConfig({inspectorConfig}));
         }
