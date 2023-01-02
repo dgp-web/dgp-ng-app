@@ -22,7 +22,7 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
                     <mat-form-field>
                         <mat-select [ngModel]="model.responsive"
                                     (ngModelChange)="updateResponsive($event)">
-                            <mat-option [value]="false">No</mat-option>
+                            <mat-option [value]="false">No</mat-option> 
                             <mat-option [value]="true">Yes</mat-option>
                         </mat-select>
                     </mat-form-field>
