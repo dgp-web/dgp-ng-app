@@ -3,6 +3,8 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
 import { InspectorConfig } from "../../inspector/models";
 import { ModelMetadata } from "data-modeling";
 import { ThemePalette } from "@angular/material/core";
+import { map } from "rxjs/operators";
+import { notNullOrUndefined } from "../../utils/null-checking.functions";
 
 export const inspectorConfigMetadata: ModelMetadata<InspectorConfig> = {
     attributes: {
@@ -14,7 +16,7 @@ export const inspectorConfigMetadata: ModelMetadata<InspectorConfig> = {
             defaultValue: undefined
         },
         maxContentWidth: {
-            label: "Maximal content width",
+            label: "Content width",
             icon: "space_bar",
             description: `Space reserved for displayed values.`,
             type: "string",
@@ -28,14 +30,14 @@ export const inspectorConfigMetadata: ModelMetadata<InspectorConfig> = {
             defaultValue: true
         },
         showFieldDescriptions: {
-            label: "Show descriptions",
+            label: "Descriptions",
             icon: "description",
             description: `Whether and where to display descriptions.`,
             type: "boolean",
             defaultValue: true
         },
         showFieldIcons: {
-            label: "Show icons",
+            label: "Icons",
             icon: "category",
             description: `Display icons for data fields.`,
             type: "boolean",
@@ -104,7 +106,14 @@ export const inspectorConfigMetadata: ModelMetadata<InspectorConfig> = {
                 </dgp-inspector-item>
 
                 <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.maxContentWidth">
-
+                    <mat-form-field>
+                        <input matInput
+                               type="number"
+                               [ngModel]="maxContentWidth$ | async"
+                               (ngModelChange)="updateMaxContentWidth($event)"
+                               [min]="96"
+                               [step]="1">
+                    </mat-form-field>
                 </dgp-inspector-item>
 
             </dgp-inspector-section>
@@ -123,6 +132,13 @@ export class DgpInspectorConfigComponent extends DgpModelEditorComponentBase<Ins
 
     readonly inspectorConfigMetadata = inspectorConfigMetadata;
 
+    readonly maxContentWidth$ = this.model$.pipe(
+        map(model => {
+            if (!model) return null;
+            return +model.maxContentWidth.replace("px", "");
+        })
+    );
+
     updateShowFieldDescription(showFieldDescriptions: boolean | "onHover") {
         this.updateModel({showFieldDescriptions});
     }
@@ -137,6 +153,14 @@ export class DgpInspectorConfigComponent extends DgpModelEditorComponentBase<Ins
 
     updateFieldLabelThemeColor(fieldLabelThemeColor: ThemePalette) {
         this.updateModel({fieldLabelThemeColor});
+    }
+
+    updateMaxContentWidth(maxContentWidth: number) {
+        let maxContentWidthString: string;
+
+        if (notNullOrUndefined(maxContentWidth)) maxContentWidthString = maxContentWidth + "px";
+
+        this.updateModel({maxContentWidth: maxContentWidthString});
     }
 
 }
