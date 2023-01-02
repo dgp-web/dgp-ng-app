@@ -158,6 +158,10 @@ export { InspectorSectionComponent } from "./inspector/components/inspector-sect
 export { InspectorService } from "./inspector/services/inspector.service";
 export { DgpInspectorModule } from "./inspector/inspector.module";
 
+// inspector-config
+export { DgpInspectorConfigComponent } from "./inspector-config/components/inspector-config.component";
+export { DgpInspectorConfigModule } from "./inspector-config/inspector-config.module";
+
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
 export { LogEntry, Severity } from "./log/models";

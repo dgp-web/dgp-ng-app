@@ -110,7 +110,7 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
 export class InspectorItemComponent {
 
     @Input()
-    maxContentWidth = "240px";
+    maxContentWidth: string;
 
     @Input()
     metadata: AttributeMetadata<any>;
