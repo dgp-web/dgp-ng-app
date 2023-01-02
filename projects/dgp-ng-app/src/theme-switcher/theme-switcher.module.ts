@@ -1,4 +1,4 @@
-import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
+import { FactoryProvider, Inject, InjectionToken, ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActionReducer, Store, StoreModule } from "@ngrx/store";
@@ -69,7 +69,9 @@ export class DgpThemeSwitcherModule {
     }
 
     constructor(
-        private readonly store: Store<ThemeSwitcherState>
+        private readonly store: Store<ThemeSwitcherState>,
+        @Inject(THEME_SWITCHER_CONFIG)
+        private readonly themeSwitcherConfig: ThemeSwitcherConfig
     ) {
         const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
         if (notNullOrUndefined(isDarkModeActiveJSON)) {
@@ -77,11 +79,14 @@ export class DgpThemeSwitcherModule {
             this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
         }
 
-        const dgpInspectorConfigJSON = localStorage.getItem("dgpInspectorConfig");
-        if (notNullOrUndefined(dgpInspectorConfigJSON)) {
-            const inspectorConfig = JSON.parse(dgpInspectorConfigJSON);
-            this.store.dispatch(updateCurrentInspectorConfig({inspectorConfig}));
+        if (themeSwitcherConfig.components.includes("inspector")) {
+            const dgpInspectorConfigJSON = localStorage.getItem("dgpInspectorConfig");
+            if (notNullOrUndefined(dgpInspectorConfigJSON)) {
+                const inspectorConfig = JSON.parse(dgpInspectorConfigJSON);
+                this.store.dispatch(updateCurrentInspectorConfig({inspectorConfig}));
+            }
         }
+
     }
 
 
