@@ -5,12 +5,12 @@ import { SafePipeModule } from "dgp-ng-app";
 
 
 @NgModule({
-    declarations: [
-        ...components
-    ],
     imports: [
         CommonModule,
         SafePipeModule
+    ],
+    declarations: [
+        ...components
     ],
     exports: [
         ...components
