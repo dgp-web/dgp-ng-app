@@ -5,8 +5,8 @@
 
 @include mat.core();
 
-$app-primary: mat.define-palette(mat.$light-green-palette, 800, 900);
-$app-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+$app-primary: mat.define-palette(mat.$light-green-palette);
+$app-accent: mat.define-palette(mat.$green-palette);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);
 
