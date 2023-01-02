@@ -46,7 +46,7 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
                 <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.showFieldIcons">
                     <mat-form-field>
                         <mat-select [ngModel]="model.showFieldIcons"
-                                    (ngModelChange)="updateShowFieldDescription($event)">
+                                    (ngModelChange)="updateShowFieldIcons($event)">
                             <mat-option [value]="false">No</mat-option>
                             <mat-option [value]="true">Yes</mat-option>
                         </mat-select>

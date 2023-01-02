@@ -160,6 +160,7 @@ export { DgpInspectorModule } from "./inspector/inspector.module";
 
 // inspector-config
 export { DgpInspectorConfigFormComponent } from "./inspector-config/components/inspector-config-form.component";
+export { DgpInspectorConfigComponent } from "./inspector-config/containers/inspector-config.component";
 export { DgpInspectorConfigModule } from "./inspector-config/inspector-config.module";
 
 // log
