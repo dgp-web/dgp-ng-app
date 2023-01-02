@@ -1,13 +1,14 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { first, skip, switchMap, tap } from "rxjs/operators";
+import { filter, first, skip, switchMap, tap } from "rxjs/operators";
 import { select, Store } from "@ngrx/store";
 import { toggleDarkMode } from "./actions";
 import { getCurrentInspectorConfig, isDarkModeActiveSelector } from "./selectors";
-import { ThemeSwitcherState } from "./models";
+import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig, ThemeSwitcherState } from "./models";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
 import { DgpContainer } from "../utils/container.component-base";
 import { distinctUntilHashChanged } from "../utils/distinct-until-hash-changed.function";
+import { of } from "rxjs";
 
 @Injectable()
 export class ThemeSwitcherEffects extends DgpContainer<ThemeSwitcherState> {
@@ -27,17 +28,22 @@ export class ThemeSwitcherEffects extends DgpContainer<ThemeSwitcherState> {
         })
     ), withoutDispatch);
 
-    readonly updateCurrentInspectorConfig$ = createEffect(() => this.select(getCurrentInspectorConfig).pipe(
-        skip(1),
-        distinctUntilHashChanged(),
-        tap(inspectorConfig => {
-            localStorage.setItem("dgpInspectorConfig", JSON.stringify(inspectorConfig));
-        })
+    readonly updateCurrentInspectorConfig$ = createEffect(() => of(this.themeSwitcherConfig).pipe(
+        filter(x => x.components.includes("inspector")),
+        switchMap(() => this.select(getCurrentInspectorConfig).pipe(
+            skip(1),
+            distinctUntilHashChanged(),
+            tap(inspectorConfig => {
+                localStorage.setItem("dgpInspectorConfig", JSON.stringify(inspectorConfig));
+            })
+        ))
     ), withoutDispatch);
 
     constructor(
         private readonly actions$: Actions,
         protected readonly store: Store<ThemeSwitcherState>,
+        @Inject(THEME_SWITCHER_CONFIG)
+        private readonly themeSwitcherConfig: ThemeSwitcherConfig
     ) {
         super(store);
     }
