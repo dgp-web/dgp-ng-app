@@ -68,24 +68,6 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
             height: 100%;
             overflow: auto;
         }
-
-        input, select, textarea {
-            width: 100%;
-            background: transparent;
-            color: inherit;
-            border: none;
-            border-bottom: 1px solid dimgray;
-            font-size: smaller;
-        }
-
-        textarea {
-            height: 32px;
-        }
-
-        option {
-            color: black;
-        }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

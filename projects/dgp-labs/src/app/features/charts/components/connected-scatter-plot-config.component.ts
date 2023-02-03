@@ -1,14 +1,7 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
-import {
-    ConnectedScatterGroup,
-    ConnectedScatterPlot,
-    ConnectedScatterPlotControlLine,
-    ConnectedScatterPlotRenderer,
-    ScaleType, Shape
-} from "dgp-ng-charts";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
 import { connectedScatterPlotMetadata } from "../../../constants/connected-scatter-plot/connected-scatter-plot-metadata.constant";
-import { cardinalXAxisMetadata } from "../../../constants/connected-scatter-plot/cardinal-x-axis-metadata.constant";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
@@ -36,58 +29,13 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                 </dgp-inspector-item>
             </dgp-inspector-section>
 
-            <dgp-inspector-section [metadata]="xAxisMetadata">
+        </dgp-inspector>
 
-                <dgp-inspector-item label="Title"
-                                    matIconName="label">
-                                    <textarea [disabled]="disabled"
-                                              [ngModel]="model.xAxisTitle"
-                                              (ngModelChange)="updateXAxisTitle($event)"></textarea>
-                </dgp-inspector-item>
+        <dgp-cardinal-x-axis-config [model]="model"
+                                    (modelChange)="setModel($event)"
+                                    [disabled]="disabled"></dgp-cardinal-x-axis-config>
 
-                <dgp-inspector-item label="Scale"
-                                    matIconName="linear_scale">
-                    <select [disabled]="disabled"
-                            [ngModel]="model.xAxisScaleType"
-                            (ngModelChange)="updateXAxisScaleType($event)">
-                        <option [ngValue]="scaleTypeEnum.Linear">
-                            Linear
-                        </option>
-                        <option [ngValue]="scaleTypeEnum.Logarithmic">
-                            Logarithmic
-                        </option>
-                    </select>
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.xAxisMax">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.xAxisMax"
-                           (ngModelChange)="setXAxisMax($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.xAxisMin">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.xAxisMin"
-                           (ngModelChange)="setXAxisMin($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.xAxisStep">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.xAxisStep"
-                           (ngModelChange)="setXAxisStep($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item label="Grid lines"
-                                    matIconName="border_vertical">
-                    <mat-slide-toggle [disabled]="disabled"
-                                      [ngModel]="model.showXAxisGridLines"
-                                      (ngModelChange)="setShowXAxisGridLines($event)"></mat-slide-toggle>
-                </dgp-inspector-item>
-
-            </dgp-inspector-section>
+        <dgp-inspector>
 
             <dgp-inspector-section label="y axis"
                                    matIconName="border_left">
@@ -243,35 +191,12 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
             height: 100%;
             overflow: auto;
         }
-
-        dgp-shape-select {
-            width: 100%;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            background: transparent;
-            color: inherit;
-            border: none;
-            border-bottom: 1px solid dimgray;
-            font-size: smaller;
-        }
-
-        textarea {
-            height: 32px;
-        }
-
-        option {
-            color: black;
-        }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 
     readonly cspMetadata = connectedScatterPlotMetadata;
-    readonly xAxisMetadata = cardinalXAxisMetadata;
 
     readonly scaleTypeEnum = ScaleType;
     readonly selectedControlLineId$ = new BehaviorSubject<string>(null);
@@ -303,21 +228,8 @@ export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponent
         this.updateModel({chartTitle});
     }
 
-    updateXAxisTitle(xAxisTitle: string) {
-        this.updateModel({xAxisTitle});
-    }
-
-
     updateYAxisTitle(yAxisTitle: string) {
         this.updateModel({yAxisTitle});
-    }
-
-    setXAxisMin(xAxisMin: number) {
-        this.updateModel({xAxisMin});
-    }
-
-    setXAxisMax(xAxisMax: number) {
-        this.updateModel({xAxisMax});
     }
 
     setYAxisMin(yAxisMin: number) {
@@ -332,16 +244,8 @@ export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponent
         this.updateModel({yAxisScaleType});
     }
 
-    updateXAxisScaleType(xAxisScaleType: ScaleType) {
-        this.updateModel({xAxisScaleType});
-    }
-
     setShowYAxisGridLines(showYAxisGridLines: boolean) {
         this.updateModel({showYAxisGridLines});
-    }
-
-    setShowXAxisGridLines(showXAxisGridLines: boolean) {
-        this.updateModel({showXAxisGridLines});
     }
 
     selectControlLine(controlLineId: string) {
@@ -395,10 +299,6 @@ export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponent
 
     updateSelectedGroupColorHex(colorHex: any) {
         this.updateSelectedGroup({colorHex});
-    }
-
-    setXAxisStep(xAxisStep: number) {
-        this.updateModel({xAxisStep});
     }
 
     setYAxisTicks(yAxisStep: number) {

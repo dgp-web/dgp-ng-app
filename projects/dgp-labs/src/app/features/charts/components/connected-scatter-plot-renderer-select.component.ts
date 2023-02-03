@@ -17,7 +17,9 @@ import { ConnectedScatterPlotRenderer } from "dgp-ng-charts";
         </select>
     `,
     styles: [`
-
+        :host {
+            width: 100%;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
