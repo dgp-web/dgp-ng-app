@@ -225,7 +225,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, 
                                     const yOutlier = this.scales.yAxisScale(outlier) - 4;
 
                                     const w = dotSize - 2;
-                                    const h = width;
+                                    const h = w;
 
                                     ctx.beginPath();
                                     ctx.rect(xOutlier, yOutlier, w, h);

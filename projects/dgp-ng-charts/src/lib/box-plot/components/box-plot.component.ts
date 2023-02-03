@@ -95,7 +95,7 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     readonly xAxisTickFormat$ = observeAttribute$(this as DgpBoxPlotComponent, "xAxisTickFormat");
 
     @Input()
-    dotSize: number;
+    dotSize = 10;
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();

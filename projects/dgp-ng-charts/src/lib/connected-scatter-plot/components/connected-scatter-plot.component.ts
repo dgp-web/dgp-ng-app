@@ -88,7 +88,7 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
     readonly config$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "config");
 
     @Input()
-    dotSize: number;
+    dotSize = 10;
 
     readonly size$ = new BehaviorSubject<Size>(null);
 

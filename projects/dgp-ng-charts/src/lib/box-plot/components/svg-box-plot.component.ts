@@ -90,7 +90,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                    [box]="box"
                                    [value]="value"
                                    dgpDot
-                                   [model]="box.outlierShape">
+                                   [model]="box.outlierShape"
+                                   [dotSize]="dotSize">
                                 </g>
                                 <ng-template #noTooltip>
                                     <g dgpBoxPlotOutlier
@@ -99,7 +100,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                        [box]="box"
                                        [value]="value"
                                        dgpDot
-                                       [model]="box.outlierShape">
+                                       [model]="box.outlierShape"
+                                       [dotSize]="dotSize">
                                     </g>
                                 </ng-template>
 
