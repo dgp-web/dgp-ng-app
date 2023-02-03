@@ -126,10 +126,12 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                         ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
                                         break;
                                     case Shape.Rectangle:
-                                        const x = this.scales.xAxisScale(dot.x) - 4;
-                                        const y = this.scales.yAxisScale(dot.y) - 4;
                                         const width = dotSize - 2;
                                         const height = width;
+                                        const xOffset = width / 2;
+                                        const yOffset = height / 2;
+                                        const x = this.scales.xAxisScale(dot.x) - xOffset;
+                                        const y = this.scales.yAxisScale(dot.y) - yOffset;
 
                                         ctx.beginPath();
                                         ctx.rect(x, y, width, height);
