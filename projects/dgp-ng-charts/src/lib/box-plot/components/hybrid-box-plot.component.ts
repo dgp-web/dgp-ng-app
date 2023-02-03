@@ -24,6 +24,7 @@ import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
                                   [model]="model"
                                   [controlLines]="controlLines"
                                   [size]="size"
+                                  [dotSize]="dotSize"
                                   [showOutlierTooltips]="showOutlierTooltips"
                                   (outlierHovered)="showTooltip($event)"></dgp-box-plot-data-canvas>
 
@@ -83,6 +84,9 @@ export class DgpHybridBoxPlotComponent extends DgpCardinalYAxisChartComponentBas
 
     @Input()
     autoResize = true;
+
+    @Input()
+    dotSize: number;
 
     @Input()
     model: ReadonlyArray<BoxGroup>;

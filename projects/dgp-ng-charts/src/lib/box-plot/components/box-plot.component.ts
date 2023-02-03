@@ -30,6 +30,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                               [showDataAreaOutline]="showDataAreaOutline"
                               [controlLines]="controlLines"
                               [config]="config"
+                              [dotSize]="dotSize"
                               [model]="model$ | async"
                               [scales]="scales$ | async"
                               [size]="size$ | async"></dgp-svg-box-plot>
@@ -41,6 +42,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                  [showDataAreaOutline]="showDataAreaOutline"
                                  [controlLines]="controlLines"
                                  [config]="config"
+                                 [dotSize]="dotSize"
                                  [model]="model$ | async"
                                  [scales]="scales$ | async"
                                  [size]="size$ | async"></dgp-hybrid-box-plot>
@@ -91,6 +93,9 @@ export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase impl
     @Input()
     xAxisTickFormat?: CardinalAxisTickFormat;
     readonly xAxisTickFormat$ = observeAttribute$(this as DgpBoxPlotComponent, "xAxisTickFormat");
+
+    @Input()
+    dotSize: number;
 
     @Output()
     readonly selectionChange = new EventEmitter<BoxPlotSelection>();

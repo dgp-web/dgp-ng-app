@@ -165,6 +165,9 @@ export class DgpSVGBoxPlotComponent extends DgpCardinalYAxisChartComponentBase i
     @Input()
     scales: BoxPlotScales;
 
+    @Input()
+    dotSize: number;
+
     getOutlierTooltip(box: Box, outlierIndex: number): string {
         let result = "";
 

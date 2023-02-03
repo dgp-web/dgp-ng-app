@@ -19,6 +19,7 @@ import { computePointsForShape } from "../../connected-scatter-plot/functions/co
 import { getJitter } from "../functions";
 import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
 import { ScaleType } from "../../shared/models";
+import { DotConfig } from "../../connected-scatter-plot/models";
 
 @Component({
     selector: "dgp-box-plot-data-canvas",
@@ -45,7 +46,7 @@ import { ScaleType } from "../../shared/models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
+export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, DotConfig {
 
     @ViewChild("canvas", {read: ElementRef})
     canvasElementRef: ElementRef<HTMLCanvasElement>;
@@ -77,6 +78,11 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
     @Output()
     readonly outlierHovered = new EventEmitter<OutlierHoverEvent>();
 
+    @Input()
+    dotSize: number;
+    readonly dotSize$ = observeAttribute$(this as DgpBoxPlotDataCanvasComponent, "dotSize");
+
+
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;
         const ctx = canvas.getContext("2d");
@@ -85,7 +91,8 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
             this.model$,
             this.controlLines$,
             this.size$,
-            this.scales$
+            this.scales$,
+            this.dotSize$
         ]).pipe(
             debounceTime(50)
         ).subscribe(combination => {
@@ -94,6 +101,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
 
             const model = combination[0];
             const controlLines = combination[1];
+            const dotSize = combination[4] || 10;
 
             if (model) {
 
@@ -205,9 +213,10 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                                         + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2
                                         + getJitter(box.boxId + outlier, this.config);
                                     const centerY = this.scales.yAxisScale(outlier);
+                                    const radius = dotSize / 2;
 
                                     ctx.beginPath();
-                                    ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI, false);
+                                    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
                                     break;
                                 case Shape.Rectangle:
                                     const xOutlier = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
@@ -215,8 +224,11 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                                         + getJitter(box.boxId + outlier, this.config);
                                     const yOutlier = this.scales.yAxisScale(outlier) - 4;
 
+                                    const w = dotSize - 2;
+                                    const h = width;
+
                                     ctx.beginPath();
-                                    ctx.rect(xOutlier, yOutlier, 8, 8);
+                                    ctx.rect(xOutlier, yOutlier, w, h);
                                     break;
                                 case Shape.Star:
                                 case Shape.Cross:
@@ -225,7 +237,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
                                 case Shape.TriangleDown:
                                 case Shape.TriangleRight:
                                 case Shape.Rhombus:
-                                    const size = 10;
+                                    const size = dotSize;
                                     const halfSize = size / 2;
 
                                     const points = computePointsForShape({
