@@ -90,7 +90,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                    [box]="box"
                                    [value]="value"
                                    dgpDot
-                                   [model]="box.outlierShape">
+                                   [model]="box.outlierShape"
+                                   [dotSize]="dotSize">
                                 </g>
                                 <ng-template #noTooltip>
                                     <g dgpBoxPlotOutlier
@@ -99,7 +100,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                                        [box]="box"
                                        [value]="value"
                                        dgpDot
-                                       [model]="box.outlierShape">
+                                       [model]="box.outlierShape"
+                                       [dotSize]="dotSize">
                                     </g>
                                 </ng-template>
 
@@ -164,6 +166,9 @@ export class DgpSVGBoxPlotComponent extends DgpCardinalYAxisChartComponentBase i
 
     @Input()
     scales: BoxPlotScales;
+
+    @Input()
+    dotSize: number;
 
     getOutlierTooltip(box: Box, outlierIndex: number): string {
         let result = "";

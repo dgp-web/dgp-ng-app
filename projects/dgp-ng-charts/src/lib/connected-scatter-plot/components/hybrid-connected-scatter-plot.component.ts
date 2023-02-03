@@ -36,6 +36,7 @@ import { BehaviorSubject } from "rxjs";
                                                 [controlLines]="controlLines"
                                                 [size]="size"
                                                 [showDotTooltips]="showDotTooltips"
+                                                [dotSize]="dotSize"
                                                 (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
 
         <div *ngIf="showDotTooltips && hoverEvent$.value"
@@ -87,6 +88,9 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
 
     @Input()
     showDotTooltips = true;
+
+    @Input()
+    dotSize: number;
 
     @Input()
     model: readonly ConnectedScatterGroup[];

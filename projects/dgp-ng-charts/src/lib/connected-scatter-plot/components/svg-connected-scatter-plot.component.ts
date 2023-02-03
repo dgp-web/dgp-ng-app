@@ -48,7 +48,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                                    [series]="series"
                                    [scales]="scales"
                                    dgpDot
-                                   [model]="series.shape">
+                                   [model]="series.shape"
+                                   [dotSize]="dotSize">
                                 </g>
 
                                 <ng-template #noTooltip>
@@ -57,7 +58,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                                        [series]="series"
                                        [scales]="scales"
                                        dgpDot
-                                       [model]="series.shape">
+                                       [model]="series.shape"
+                                       [dotSize]="dotSize">
                                     </g>
                                 </ng-template>
 
@@ -89,6 +91,9 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
 
     @Input()
     showDotTooltips = true;
+
+    @Input()
+    dotSize: number;
 
     @Input()
     model: readonly ConnectedScatterGroup[];

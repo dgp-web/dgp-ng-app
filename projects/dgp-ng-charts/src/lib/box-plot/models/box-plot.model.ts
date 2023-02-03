@@ -1,8 +1,9 @@
 import { CardinalYAxis, Chart } from "../../shared/models";
 import { BoxGroup } from "./box-group.model";
 import { BoxPlotControlLine } from "./box-plot-control-line.model";
+import { DotConfig } from "../../connected-scatter-plot/models";
 
-export interface BoxPlot extends Chart, CardinalYAxis {
+export interface BoxPlot extends Chart, CardinalYAxis, DotConfig {
     readonly model: ReadonlyArray<BoxGroup>;
 
     readonly xAxisTickFormat?: (x: string) => string;
