@@ -35,60 +35,11 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                                     (modelChange)="setModel($event)"
                                     [disabled]="disabled"></dgp-cardinal-x-axis-config>
 
+        <dgp-cardinal-y-axis-config [model]="model"
+                                    (modelChange)="setModel($event)"
+                                    [disabled]="disabled"></dgp-cardinal-y-axis-config>
+
         <dgp-inspector>
-
-            <dgp-inspector-section label="y axis"
-                                   matIconName="border_left">
-                <dgp-inspector-item label="Title"
-                                    matIconName="label">
-                                    <textarea [disabled]="disabled"
-                                              [ngModel]="model.yAxisTitle"
-                                              (ngModelChange)="updateYAxisTitle($event)"></textarea>
-                </dgp-inspector-item>
-
-                <dgp-inspector-item label="Scale"
-                                    matIconName="linear_scale">
-                    <select [disabled]="disabled"
-                            [ngModel]="model.yAxisScaleType"
-                            (ngModelChange)="updateYAxisScaleType($event)">
-                        <option [ngValue]="scaleTypeEnum.Linear">
-                            Linear
-                        </option>
-                        <option [ngValue]="scaleTypeEnum.Logarithmic">
-                            Logarithmic
-                        </option>
-                    </select>
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.yAxisMax">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.yAxisMax"
-                           (ngModelChange)="setYAxisMax($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.yAxisMin">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.yAxisMin"
-                           (ngModelChange)="setYAxisMin($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.yAxisStep">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.yAxisStep"
-                           (ngModelChange)="setYAxisTicks($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item label="Grid lines"
-                                    matIconName="border_horizontal">
-                    <mat-slide-toggle [disabled]="disabled"
-                                      [ngModel]="model.showYAxisGridLines"
-                                      (ngModelChange)="setShowYAxisGridLines($event)"></mat-slide-toggle>
-                </dgp-inspector-item>
-
-            </dgp-inspector-section>
 
             <dgp-inspector-section matIconName="storage"
                                    label="Data groups">
