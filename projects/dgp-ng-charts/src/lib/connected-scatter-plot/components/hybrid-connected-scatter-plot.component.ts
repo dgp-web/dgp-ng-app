@@ -89,6 +89,9 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
     showDotTooltips = true;
 
     @Input()
+    dotSize: number;
+
+    @Input()
     model: readonly ConnectedScatterGroup[];
     readonly model$ = observeAttribute$(this as DgpHybridConnectedScatterPlotComponent, "model");
 

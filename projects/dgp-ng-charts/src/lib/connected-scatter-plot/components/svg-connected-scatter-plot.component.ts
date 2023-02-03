@@ -91,6 +91,9 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
     showDotTooltips = true;
 
     @Input()
+    dotSize: number;
+
+    @Input()
     model: readonly ConnectedScatterGroup[];
     readonly model$ = observeAttribute$(this as DgpSvgConnectedScatterPlotComponent, "model");
 

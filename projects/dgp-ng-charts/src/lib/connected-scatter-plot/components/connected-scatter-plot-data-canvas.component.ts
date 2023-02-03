@@ -81,6 +81,10 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     @Output()
     readonly dotHovered = new EventEmitter<DotHoverEvent>();
 
+    @Input()
+    dotSize: number;
+    readonly dotSize$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "dotSize");
+
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;
         const ctx = canvas.getContext("2d");
@@ -89,7 +93,8 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             this.model$,
             this.controlLines$,
             this.size$,
-            this.scales$
+            this.scales$,
+            this.dotSize$
         ]).pipe(
             debounceTime(50)
         ).subscribe(combination => {
@@ -97,6 +102,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
             const model = combination[0];
             const controlLines = combination[1];
+            const dotSize = combination[4] || 10;
 
             if (model) {
                 model.forEach(group => {
@@ -114,16 +120,19 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                     case Shape.Circle:
                                         const centerX = this.scales.xAxisScale(dot.x);
                                         const centerY = this.scales.yAxisScale(dot.y);
+                                        const radius = dotSize / 2;
 
                                         ctx.beginPath();
-                                        ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI, false);
+                                        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
                                         break;
                                     case Shape.Rectangle:
                                         const x = this.scales.xAxisScale(dot.x) - 4;
                                         const y = this.scales.yAxisScale(dot.y) - 4;
+                                        const width = dotSize - 2;
+                                        const height = width;
 
                                         ctx.beginPath();
-                                        ctx.rect(x, y, 8, 8);
+                                        ctx.rect(x, y, width, height);
                                         break;
                                     case Shape.Star:
                                     case Shape.Cross:
@@ -132,7 +141,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                     case Shape.TriangleDown:
                                     case Shape.TriangleRight:
                                     case Shape.Rhombus:
-                                        const size = 10;
+                                        const size = dotSize;
                                         const halfSize = size / 2;
 
                                         const points = computePointsForShape({
