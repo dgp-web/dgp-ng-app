@@ -36,6 +36,7 @@ import { BehaviorSubject } from "rxjs";
                                                 [controlLines]="controlLines"
                                                 [size]="size"
                                                 [showDotTooltips]="showDotTooltips"
+                                                [dotSize]="dotSize"
                                                 (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
 
         <div *ngIf="showDotTooltips && hoverEvent$.value"

@@ -28,7 +28,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
     showYAxisGridLines: true,
     showXAxisGridLines: true,
     yAxisScaleType: ScaleType.Linear,
-    xAxisScaleType: ScaleType.Logarithmic
+    xAxisScaleType: ScaleType.Logarithmic,
+    dotSize: 10
 };
 
 @Component({
@@ -60,7 +61,8 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [yAxisMax]="model.yAxisMax"
                                                 [yAxisStep]="model.yAxisStep"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
-                                                [controlLines]="model.controlLines"></dgp-connected-scatter-plot>
+                                                [controlLines]="model.controlLines"
+                                                [dotSize]="model.dotSize"></dgp-connected-scatter-plot>
 
 
                 </ng-template>
@@ -93,6 +95,15 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                     <textarea [disabled]="disabled"
                                               [ngModel]="model.chartTitle"
                                               (ngModelChange)="updateChartTitle($event)"></textarea>
+                            </dgp-inspector-item>
+
+
+                            <dgp-inspector-item label="Dot size"
+                                                matIconName="label">
+                                <input type="number"
+                                       [disabled]="disabled"
+                                       [ngModel]="model.dotSize"
+                                       (ngModelChange)="setDotSize($event)">
                             </dgp-inspector-item>
                         </dgp-inspector-section>
 
@@ -501,4 +512,9 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     showEdges(selectedDataGroup: ConnectedScatterGroup) {
         return isNullOrUndefined(selectedDataGroup.showEdges) || selectedDataGroup.showEdges;
     }
+
+    setDotSize(dotSize: number) {
+        this.updateModel({dotSize});
+    }
+
 }
