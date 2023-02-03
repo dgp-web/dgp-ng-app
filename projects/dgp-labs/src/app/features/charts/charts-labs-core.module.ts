@@ -19,6 +19,7 @@ import { FormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { CommonModule } from "@angular/common";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { components } from "./components/components";
 
 @NgModule({
     imports: [
@@ -43,9 +44,11 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
         MatSlideToggleModule
     ],
     declarations: [
+        ...components,
         ...containers
     ],
     exports: [
+        ...components,
         ...containers
     ]
 })
