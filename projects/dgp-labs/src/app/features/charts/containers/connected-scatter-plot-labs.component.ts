@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
 import {
+    CardinalYAxis,
     ConnectedScatterGroup,
     ConnectedScatterPlot,
     ConnectedScatterPlotControlLine,
@@ -12,6 +13,8 @@ import {
 } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
+import { ModelMetadata } from "data-modeling";
+import { CardinalXAxis } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
 
 export const testConnectScatterPlot: ConnectedScatterPlot = {
     model: testConnectedScatterGroups,
@@ -32,12 +35,63 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
     dotSize: 10
 };
 
+export const cardinalXAxisMetadata: ModelMetadata<CardinalXAxis> = {
+    label: "X axis",
+    icon: "border_bottom",
+    attributes: {
+        xAxisMin: {
+            label: "Min",
+            icon: "minimize"
+        },
+        xAxisMax: {
+            label: "Max",
+            icon: "maximize"
+        },
+        xAxisStep: {
+            label: "Ticks",
+            icon: "pin"
+        }
+    }
+};
+
+export const cardinalYAxisMetadata: ModelMetadata<CardinalYAxis> = {
+    label: "Y axis",
+    icon: "border_left",
+    attributes: {
+        yAxisMin: {
+            label: "Min",
+            icon: "minimize"
+        },
+        yAxisMax: {
+            label: "Max",
+            icon: "maximize"
+        },
+        yAxisStep: {
+            label: "Ticks",
+            icon: "pin"
+        }
+    }
+};
+
+export const connectedScatterPlotMetadata: ModelMetadata<ConnectedScatterPlot> = {
+    label: "Connected scatter plot",
+
+    attributes: {
+        ...cardinalXAxisMetadata.attributes,
+        ...cardinalYAxisMetadata.attributes,
+        chartTitle: {
+            label: "Chart title",
+            icon: "label"
+        },
+    }
+};
+
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
     template: `
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            Connected scatter plot
+            {{cspMetadata.label}}
         </dgp-page-header>
 
         <dgp-split-panel orientation="horizontal">
@@ -63,8 +117,6 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"
                                                 [dotSize]="model.dotSize"></dgp-connected-scatter-plot>
-
-
                 </ng-template>
 
             </dgp-split-panel-content>
@@ -90,8 +142,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </select>
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Chart title"
-                                                matIconName="label">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.chartTitle">
                                     <textarea [disabled]="disabled"
                                               [ngModel]="model.chartTitle"
                                               (ngModelChange)="updateChartTitle($event)"></textarea>
@@ -107,8 +158,7 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                             </dgp-inspector-item>
                         </dgp-inspector-section>
 
-                        <dgp-inspector-section label="x axis"
-                                               matIconName="border_bottom">
+                        <dgp-inspector-section [metadata]="xAxisMetadata">
 
                             <dgp-inspector-item label="Title"
                                                 matIconName="label">
@@ -131,24 +181,21 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </select>
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Max"
-                                                matIconName="maximize">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.xAxisMax">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.xAxisMax"
                                        (ngModelChange)="setXAxisMax($event)">
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Min"
-                                                matIconName="minimize">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.xAxisMin">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.xAxisMin"
                                        (ngModelChange)="setXAxisMin($event)">
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Ticks"
-                                                matIconName="pin">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.xAxisStep">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.xAxisStep"
@@ -188,24 +235,21 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
                                 </select>
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Max"
-                                                matIconName="maximize">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.yAxisMax">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.yAxisMax"
                                        (ngModelChange)="setYAxisMax($event)">
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Min"
-                                                matIconName="minimize">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.yAxisMin">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.yAxisMin"
                                        (ngModelChange)="setYAxisMin($event)">
                             </dgp-inspector-item>
 
-                            <dgp-inspector-item label="Ticks"
-                                                matIconName="pin">
+                            <dgp-inspector-item [metadata]="cspMetadata.attributes.yAxisStep">
                                 <input type="number"
                                        [disabled]="disabled"
                                        [ngModel]="model.yAxisStep"
@@ -357,6 +401,9 @@ export const testConnectScatterPlot: ConnectedScatterPlot = {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
+
+    readonly cspMetadata = connectedScatterPlotMetadata;
+    readonly xAxisMetadata = cardinalXAxisMetadata;
 
     readonly rendererEnum = ConnectedScatterPlotRenderer;
     renderer = ConnectedScatterPlotRenderer.Hybrid;
