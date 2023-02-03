@@ -1,90 +1,18 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
 import {
-    CardinalYAxis,
     ConnectedScatterGroup,
     ConnectedScatterPlot,
     ConnectedScatterPlotControlLine,
     ConnectedScatterPlotRenderer,
     ScaleType,
-    Shape,
-    Stroke
+    Shape
 } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
-import { ModelMetadata } from "data-modeling";
-import { CardinalXAxis } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
-
-export const testConnectScatterPlot: ConnectedScatterPlot = {
-    model: testConnectedScatterGroups,
-    xAxisTitle: "x-axis title",
-    yAxisTitle: "y-axis title",
-    chartTitle: "Chart title",
-    controlLines: [{
-        label: "Upper limit",
-        colorHex: "#666666",
-        connectedScatterPlotControlLineId: "upperLimit",
-        value: 7,
-        stroke: Stroke.Dashed
-    }],
-    showYAxisGridLines: true,
-    showXAxisGridLines: true,
-    yAxisScaleType: ScaleType.Linear,
-    xAxisScaleType: ScaleType.Logarithmic,
-    dotSize: 10
-};
-
-export const cardinalXAxisMetadata: ModelMetadata<CardinalXAxis> = {
-    label: "X axis",
-    icon: "border_bottom",
-    attributes: {
-        xAxisMin: {
-            label: "Min",
-            icon: "minimize"
-        },
-        xAxisMax: {
-            label: "Max",
-            icon: "maximize"
-        },
-        xAxisStep: {
-            label: "Ticks",
-            icon: "pin"
-        }
-    }
-};
-
-export const cardinalYAxisMetadata: ModelMetadata<CardinalYAxis> = {
-    label: "Y axis",
-    icon: "border_left",
-    attributes: {
-        yAxisMin: {
-            label: "Min",
-            icon: "minimize"
-        },
-        yAxisMax: {
-            label: "Max",
-            icon: "maximize"
-        },
-        yAxisStep: {
-            label: "Ticks",
-            icon: "pin"
-        }
-    }
-};
-
-export const connectedScatterPlotMetadata: ModelMetadata<ConnectedScatterPlot> = {
-    label: "Connected scatter plot",
-
-    attributes: {
-        ...cardinalXAxisMetadata.attributes,
-        ...cardinalYAxisMetadata.attributes,
-        chartTitle: {
-            label: "Chart title",
-            icon: "label"
-        },
-    }
-};
+import { cardinalXAxisMetadata } from "../../../constants/connected-scatter-plot/cardinal-x-axis-metadata.constant";
+import { connectedScatterPlotMetadata } from "../../../constants/connected-scatter-plot/connected-scatter-plot-metadata.constant";
+import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -220,7 +148,6 @@ export const connectedScatterPlotMetadata: ModelMetadata<ConnectedScatterPlot> =
                                               (ngModelChange)="updateYAxisTitle($event)"></textarea>
                             </dgp-inspector-item>
 
-
                             <dgp-inspector-item label="Scale"
                                                 matIconName="linear_scale">
                                 <select [disabled]="disabled"
@@ -332,23 +259,20 @@ export const connectedScatterPlotMetadata: ModelMetadata<ConnectedScatterPlot> =
 
 
                             <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
-                                <dgp-inspector-item matIconName="label"
-                                                    label="Label">
+                                <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.label">
                                     <input [ngModel]="selectedControlLine.label"
                                            [disabled]="disabled"
                                            (ngModelChange)="updateSelectedControlLineLabel($event)">
                                 </dgp-inspector-item>
 
-                                <dgp-inspector-item matIconName="pin"
-                                                    label="Value">
+                                <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.value">
                                     <input type="number"
                                            [ngModel]="selectedControlLine.value"
                                            [disabled]="disabled"
                                            (ngModelChange)="updateSelectedControlLineValue($event)">
                                 </dgp-inspector-item>
 
-                                <dgp-inspector-item matIconName="palette"
-                                                    label="Color">
+                                <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.colorHex">
                                     <input type="color"
                                            [ngModel]="selectedControlLine.colorHex"
                                            [disabled]="disabled"
@@ -431,7 +355,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     constructor() {
         super();
 
-        this.model = testConnectScatterPlot;
+        this.model = testConnectedScatterPlot;
     }
 
     updateChartTitle(chartTitle: string) {
