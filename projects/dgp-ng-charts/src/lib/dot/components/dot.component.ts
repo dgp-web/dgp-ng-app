@@ -9,34 +9,52 @@ import { DotConfig } from "../../connected-scatter-plot/models";
         <ng-container [ngSwitch]="model">
             <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
                         *ngSwitchDefault
-                        dgpCircle></svg:circle>
+                        dgpCircle
+                        [width]="dotSize"></svg:circle>
             <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
                         *ngSwitchCase="shapeEnum.Circle"
-                        dgpCircle></svg:circle>
+                        dgpCircle
+                        [width]="dotSize"></svg:circle>
             <svg:rect xmlns:svg="http://www.w3.org/2000/svg"
                       *ngSwitchCase="shapeEnum.Rectangle"
-                      dgpRectangle></svg:rect>
+                      dgpRectangle
+                      [width]="dotSize-2"
+                      [height]="dotSize-2"></svg:rect>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.Rhombus"
-                         dgpRhombus></svg:polygon>
+                         dgpRhombus
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.Star"
-                         dgpStar></svg:polygon>
+                         dgpStar
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.Cross"
-                         dgpCross></svg:polygon>
+                         dgpCross
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.Triangle"
-                         dgpTriangle></svg:polygon>
+                         dgpTriangle
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.TriangleDown"
-                         dgpTriangleDown></svg:polygon>
+                         dgpTriangleDown
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.TriangleRight"
-                         dgpTriangleRight></svg:polygon>
+                         dgpTriangleRight
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
                          *ngSwitchCase="shapeEnum.TriangleLeft"
-                         dgpTriangleLeft></svg:polygon>
+                         dgpTriangleLeft
+                         [width]="dotSize"
+                         [height]="dotSize"></svg:polygon>
         </ng-container>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
