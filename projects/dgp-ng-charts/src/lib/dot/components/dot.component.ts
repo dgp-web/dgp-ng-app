@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { DgpView } from "dgp-ng-app";
 import { Shape } from "../../shapes/models";
+import { DotConfig } from "../../connected-scatter-plot/models";
 
 @Component({
     selector: "[dgpDot]",
@@ -40,6 +41,10 @@ import { Shape } from "../../shapes/models";
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DgpDotComponent extends DgpView<Shape> {
+export class DgpDotComponent extends DgpView<Shape> implements DotConfig {
     readonly shapeEnum = Shape;
+
+    @Input()
+    dotSize: number;
+
 }
