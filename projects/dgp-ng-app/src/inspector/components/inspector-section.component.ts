@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { AttributeMetadata } from "data-modeling";
 
 @Component({
     selector: "dgp-inspector-section",
@@ -6,10 +7,12 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
         <h3 class="label-item"
             mat-subheader>
             <span class="label">
-            {{ label }}
+            {{ label || metadata?.label }}
             </span>
             <mat-icon style="margin-left: 8px;"
-                      class="section-icon mat-icon--small">{{matIconName}}</mat-icon>
+                      class="section-icon mat-icon--small">
+                {{matIconName || metadata?.icon}}
+            </mat-icon>
             <dgp-spacer></dgp-spacer>
             <ng-content select="[actions]"></ng-content>
             <dgp-expansion-toggle *ngIf="expandable"
@@ -56,6 +59,9 @@ export class InspectorSectionComponent {
 
     @Input()
     expandable = true;
+
+    @Input()
+    metadata: AttributeMetadata<any>;
 
     updateExpanded(expanded: boolean) {
         this.expanded = expanded;

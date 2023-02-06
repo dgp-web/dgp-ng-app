@@ -28,3 +28,24 @@ $app-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400);
     }
 }
 */
+
+input, select, textarea {
+    width: 100%;
+    background: transparent;
+    color: inherit;
+    border: none;
+    border-bottom: 1px solid dimgray;
+    font-size: smaller;
+}
+
+textarea {
+    height: 32px;
+}
+
+option {
+    color: black;
+}
+
+dgp-shape-select {
+    width: 100%;
+}
