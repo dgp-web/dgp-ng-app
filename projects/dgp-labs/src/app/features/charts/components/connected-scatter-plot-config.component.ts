@@ -56,38 +56,11 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                     </select>
                 </dgp-inspector-item>
 
-                <ng-container *ngIf="selectedDataGroup$ | async as selectedDataGroup">
-
-                    <dgp-inspector-item label="Shape"
-                                        matIconName="category">
-                        <dgp-shape-select [model]="selectedDataGroup.shape"
-                                          [disabled]="disabled"
-                                          (modelChange)="updateSelectedGroupShape($event)"></dgp-shape-select>
-                    </dgp-inspector-item>
-
-                    <dgp-inspector-item matIconName="palette"
-                                        label="Color">
-                        <input type="color"
-                               [ngModel]="selectedDataGroup.colorHex"
-                               [disabled]="disabled"
-                               (ngModelChange)="updateSelectedGroupColorHex($event)">
-                    </dgp-inspector-item>
-
-                    <dgp-inspector-item matIconName="scatter_plot"
-                                        label="Show vertices">
-                        <mat-slide-toggle [disabled]="disabled"
-                                          [ngModel]="showVertices(selectedDataGroup)"
-                                          (ngModelChange)="updateSelectedGroupShowVertices($event)"></mat-slide-toggle>
-                    </dgp-inspector-item>
-
-                    <dgp-inspector-item matIconName="show_chart"
-                                        label="Show edges">
-                        <mat-slide-toggle [disabled]="disabled"
-                                          [ngModel]="showEdges(selectedDataGroup)"
-                                          (ngModelChange)="updateSelectedGroupShowEdges($event)"></mat-slide-toggle>
-                    </dgp-inspector-item>
-
-                </ng-container>
+                <dgp-connected-scatter-group-form
+                        *ngIf="selectedDataGroup$ | async as selectedDataGroup"
+                        [model]="selectedDataGroup"
+                        (modelChange)="updateSelectedGroup(selectedDataGroup)"
+                        [disabled]="disabled"></dgp-connected-scatter-group-form>
 
             </dgp-inspector-section>
 
@@ -106,7 +79,7 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                     </select>
                 </dgp-inspector-item>
 
-
+                <!-- dgp-control-line-form -->
                 <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
                     <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.label">
                         <input [ngModel]="selectedControlLine.label"
