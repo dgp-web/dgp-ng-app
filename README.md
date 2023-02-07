@@ -34,10 +34,12 @@ Building the applications
 ````
 npm run docs-app:build:prod
 npm run dgp-labs:build:prod
+npm run dgp-ng-paged-media-labs:build:prod
 ````
 
 There are development versions of most tasks.
 Usually you should build all libraries once and then
+
 - run their build task in watch mode
 - run the build task of the needed application in serve mode
 
