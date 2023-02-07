@@ -16,6 +16,7 @@ import { filter } from "rxjs/operators";
         :host {
             padding: 0;
             overflow: auto;
+            flex-shrink: 0;
         }
 
         mat-list {
