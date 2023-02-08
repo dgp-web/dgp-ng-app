@@ -10,13 +10,10 @@ import {
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
-import { MatDialogRef } from "@angular/material/dialog";
-import {
-    computeTableCellEditorSizes,
-    getDialogPositionFromTableCellEditorSizes
-} from "../functions";
+import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "../functions";
+import { DgpTableCellEditorService } from "../service/table-cell-editor.service";
 
 @Component({
     selector: "dgp-table-cell",
@@ -82,17 +79,20 @@ export class DgpTableCellComponent {
     scrollParentSelector: string;
 
     @ContentChild(DgpTableCelLEditorDirective, {
-    read: TemplateRef
-})
+        read: TemplateRef
+    })
     editorTemplate: TemplateRef<any>;
 
     @ViewChild("triggerButton", {
-    read: ElementRef
-}) buttonElRef: ElementRef;
+        read: ElementRef
+    }) buttonElRef: ElementRef;
 
     private dialogRef: MatDialogRef<any>;
 
-    constructor(private readonly matDialog: MatDialog) {
+    constructor(
+        private readonly matDialog: MatDialog,
+        private readonly service: DgpTableCellEditorService
+    ) {
     }
 
     async openCellEditorDialog() {
@@ -116,6 +116,7 @@ export class DgpTableCellComponent {
             position,
             backdropClass: "mat-dialog-no-backdrop",
         });
+        this.service.cacheCurrentEditor(this.dialogRef);
 
         await this.dialogRef.afterClosed().toPromise();
 
