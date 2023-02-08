@@ -203,6 +203,7 @@ export { DgpSpacerModule } from "./spacer/spacer.module";
 // table-cell
 export { DgpTableCellComponent } from "./table-cell-editor/components/table-cell.component";
 export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/table-cell-editor.directive";
+export { DgpTableCellEditorService } from "./table-cell-editor/service/table-cell-editor.service";
 export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
