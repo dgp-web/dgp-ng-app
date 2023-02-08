@@ -14,13 +14,12 @@ export class DgpTableCellEditorService {
 
     closeCurrentEditor() {
         if (!this.currentEditor) {
-
+            console.warn("DgpTableCellEditorService.closeCurrentEditor has been called but no editor is currently open.");
         } else {
             this.currentEditor.close();
+            this.currentEditor = null;
         }
 
-        this.currentEditor?.close();
-        this.currentEditor = null;
     }
 
 }
