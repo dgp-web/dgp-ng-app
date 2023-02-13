@@ -1,5 +1,7 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
+import { verticalClassName } from "../constants/vertical-class-name.constant";
+import { horizontalClassName } from "../constants/horizontal-class-name.constant";
 
 export class SplitterComponent {
 
@@ -37,12 +39,12 @@ export class SplitterComponent {
         if (this.isVertical) {
             dragHandle.css("top", -handleExcessPos);
             dragHandle.css("height", this.size + handleExcessSize);
-            element.addClass("lm_vertical");
+            element.addClass(verticalClassName);
             element.height(this.size);
         } else {
             dragHandle.css("left", -handleExcessPos);
             dragHandle.css("width", this.size + handleExcessSize);
-            element.addClass("lm_horizontal");
+            element.addClass(horizontalClassName);
             element.width(this.size);
         }
 
