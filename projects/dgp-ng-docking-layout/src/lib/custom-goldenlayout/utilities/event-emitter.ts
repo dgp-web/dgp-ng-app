@@ -3,17 +3,7 @@ import { KVS } from "entity-store";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
 import { Callback } from "../models/events/callback.model";
 import { CallbackHandle } from "../models/events/callback-handle.model";
-
-/**
- * The name of the event that's triggered for every other event
- *
- * usage
- *
- * myEmitter.on( eventEmitterFactory.ALL_EVENT, function( eventName, argsArray ){
- * 	//do stuff
- * });
- */
-export const ALL_EVENT = "__all";
+import { ALL_EVENT } from "../constants/all-event.constant";
 
 /**
  * A generic and very fast EventEmitter
@@ -45,29 +35,29 @@ export class EventEmitter extends RxComponent {
      * Emit an event and notify listeners
      */
     emit<TEvent extends GoldenLayoutEvent = any>(sEvent: TEvent[0], x?: TEvent[1]) {
-        // tslint:disable-next-line:one-variable-per-declaration
-        let i, ctx, args;
+        let context: any;
+        let args: any;
 
         args = Array.prototype.slice.call(arguments, 1);
 
-        let subs = this.subscriptionKVS[sEvent];
+        let subscriptions = this.subscriptionKVS[sEvent];
 
-        if (subs) {
-            subs = subs.slice();
-            for (i = 0; i < subs.length; i++) {
-                ctx = subs[i].context || {};
-                subs[i].callback.apply(ctx, args);
-            }
+        if (subscriptions) {
+            subscriptions = subscriptions.slice();
+            subscriptions.forEach(subscription => {
+                context = subscription.context || {};
+                subscription.callback.apply(context, args);
+            });
         }
 
         args.unshift(sEvent);
 
-        const allEventSubs = this.subscriptionKVS[ALL_EVENT].slice();
+        const eventHandles = this.subscriptionKVS[ALL_EVENT].slice();
 
-        for (i = 0; i < allEventSubs.length; i++) {
-            ctx = allEventSubs[i].context || {};
-            allEventSubs[i].callback.apply(ctx, args);
-        }
+        eventHandles.forEach(eventHandle => {
+            context = eventHandle.context || {};
+            eventHandle.callback.apply(context, args);
+        });
     }
 
     /**

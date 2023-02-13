@@ -1,9 +1,10 @@
 import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
-import { ALL_EVENT, BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
+import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { Area, AreaSides } from "../models/area.model";
+import { ALL_EVENT } from "../constants/all-event.constant";
 
 /**
  * this is the baseclass that all content items inherit from.

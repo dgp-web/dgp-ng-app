@@ -20,3 +20,4 @@ export { findArea } from "./functions/areas/find-area.function";
 export { AreaService } from "./services/area.service";
 export { Callback } from "./models/events/callback.model";
 export { CallbackHandle } from "./models/events/callback-handle.model";
+export { ALL_EVENT } from "./constants/all-event.constant";
