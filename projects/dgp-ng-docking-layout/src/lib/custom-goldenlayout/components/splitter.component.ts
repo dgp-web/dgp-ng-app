@@ -3,9 +3,9 @@ import { DragListenerDirective } from "./drag-listener.directive";
 
 export class SplitterComponent {
 
-    _dragListener: DragListenerDirective;
+    readonly dragListener: DragListenerDirective;
     private readonly grabSize: number;
-    private readonly element: JQuery;
+    readonly element: JQuery;
 
     constructor(
         private readonly isVertical: boolean,
@@ -15,7 +15,7 @@ export class SplitterComponent {
         this.grabSize = grabSize < size ? size : grabSize;
 
         this.element = this.createElement();
-        this._dragListener = new DragListenerDirective(this.element);
+        this.dragListener = new DragListenerDirective(this.element);
     }
 
     _$destroy() {
