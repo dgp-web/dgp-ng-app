@@ -11,11 +11,11 @@ import { SplitterComponent } from "./splitter.component";
 export class RowOrColumnComponentBase extends AbstractContentItemComponent {
 
     public readonly element: any;
-    public readonly _splitterSize: number;
-    public readonly _splitterGrabSize: any;
+    public readonly splitterSize: number;
+    public readonly splitterGrabSize: any;
     public readonly _isColumn: boolean;
     public readonly _dimension: string;
-    public readonly _splitter: SplitterComponent[];
+    public readonly splitters = new Array<SplitterComponent>();
 
     public childElementContainer: any;
     public _splitterPosition: any;
@@ -38,11 +38,10 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             dockingLayoutViewMap.rowOrColumn.render({isColumn})
         );
         this.childElementContainer = this.element;
-        this._splitterSize = layoutManager.config.dimensions.borderWidth;
-        this._splitterGrabSize = layoutManager.config.dimensions.borderGrabWidth;
+        this.splitterSize = layoutManager.config.dimensions.borderWidth;
+        this.splitterGrabSize = layoutManager.config.dimensions.borderGrabWidth;
         this._isColumn = isColumn;
         this._dimension = isColumn ? "height" : "width";
-        this._splitter = [];
         this._splitterPosition = null;
         this._splitterMinPosition = null;
         this._splitterMaxPosition = null;
@@ -115,9 +114,9 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
          * Remove the splitter before the item or after if the item happens
          * to be the first in the row/column
          */
-        if (this._splitter[splitterIndex]) {
-            this._splitter[splitterIndex]._$destroy();
-            this._splitter.splice(splitterIndex, 1);
+        if (this.splitters[splitterIndex]) {
+            this.splitters[splitterIndex]._$destroy();
+            this.splitters.splice(splitterIndex, 1);
         }
 
         /**
@@ -218,7 +217,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      */
     private calculateAbsoluteSizes() {
         let i,
-            totalSplitterSize = (this.contentItems.length - 1) * this._splitterSize,
+            totalSplitterSize = (this.contentItems.length - 1) * this.splitterSize,
             totalWidth = this.element.width(),
             totalHeight = this.element.height(),
             totalAssigned = 0,
@@ -414,7 +413,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * What it doesn't do though is to append the splitter to the DOM
      */
     private createSplitter(index: number): SplitterComponent {
-        let splitter = new SplitterComponent(this._isColumn, this._splitterSize, this._splitterGrabSize);
+        let splitter = new SplitterComponent(this._isColumn, this.splitterSize, this.splitterGrabSize);
 
         const dragSub = splitter
             .dragListener
@@ -426,18 +425,18 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         const splitterDragStartSubscription = splitter
             .dragListener
             .dragStart$
-            .subscribe(x => this._onSplitterDragStart(splitter));
+            .subscribe(x => this.onSplitterDragStart(splitter));
 
         this.subscriptions.push(splitterDragStartSubscription);
 
         const splitterDragStopSubscription = splitter
             .dragListener
             .dragStop$
-            .subscribe(() => this._onSplitterDragStop(splitter));
+            .subscribe(() => this.onSplitterDragStop(splitter));
 
         this.subscriptions.push(splitterDragStopSubscription);
 
-        this._splitter.splice(index, 0, splitter);
+        this.splitters.splice(index, 0, splitter);
         return splitter;
     }
 
@@ -449,8 +448,8 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      *
      * @returns {Object} A map of contentItems that the splitter affects
      */
-    _getItemsForSplitter(splitter: SplitterComponent) {
-        const index = this.layoutManagerUtilities.indexOf(splitter, this._splitter);
+    private getItemsForSplitter(splitter: SplitterComponent) {
+        const index = this.layoutManagerUtilities.indexOf(splitter, this.splitters);
 
         return {
             before: this.contentItems[index],
@@ -478,9 +477,9 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * Invoked when a splitter's dragListener fires dragStart. Calculates the splitters
      * movement area once (so that it doesn't need calculating on every mousemove event)
      */
-    _onSplitterDragStart(splitter: SplitterComponent): void {
+    private onSplitterDragStart(splitter: SplitterComponent): void {
 
-        const items = this._getItemsForSplitter(splitter),
+        const items = this.getItemsForSplitter(splitter),
             minSize = this.layoutManager.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
 
         const beforeMinDim = this._getMinimumDimensions(items.before.config.content);
@@ -516,9 +515,9 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * and applies the new sizes to the elements before and after the splitter and their children
      * on the next animation frame
      */
-    _onSplitterDragStop(splitter: SplitterComponent): void {
+    private onSplitterDragStop(splitter: SplitterComponent): void {
 
-        const items = this._getItemsForSplitter(splitter),
+        const items = this.getItemsForSplitter(splitter),
             sizeBefore = items.before.element[this._dimension](),
             sizeAfter = items.after.element[this._dimension](),
             splitterPositionInRange = (this._splitterPosition + sizeBefore) / (sizeBefore + sizeAfter),
