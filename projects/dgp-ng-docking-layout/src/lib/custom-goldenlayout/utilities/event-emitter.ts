@@ -1,7 +1,11 @@
-import { LayoutManagerUtilities } from "./layout-manager.utilities";
 import { RxComponent } from "../../common/app";
 import { KVS } from "entity-store";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
+
+export interface CallbackHandle {
+    readonly fn: any;
+    readonly ctx?: any;
+}
 
 /**
  * The name of the event that's triggered for every other event
@@ -26,7 +30,7 @@ export const ALL_EVENT = "__all";
  */
 export class EventEmitter extends RxComponent {
 
-    private readonly subscriptionKVS: KVS<any> = {
+    private readonly subscriptionKVS: KVS<Array<CallbackHandle>> = {
         [ALL_EVENT]: []
     };
 
@@ -43,11 +47,7 @@ export class EventEmitter extends RxComponent {
     /**
      * Listen for events
      */
-    on(sEvent, fCallback, oContext?) {
-        if (!new LayoutManagerUtilities().isFunction(fCallback)) {
-            throw new Error("Tried to listen to event " + sEvent + " with non-function callback " + fCallback);
-        }
-
+    on(sEvent: string, fCallback, oContext?) {
         if (!this.subscriptionKVS[sEvent]) {
             this.subscriptionKVS[sEvent] = [];
         }
