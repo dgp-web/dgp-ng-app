@@ -1,11 +1,8 @@
 import { RxComponent } from "../../common/app";
 import { KVS } from "entity-store";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
-
-export interface CallbackHandle {
-    readonly fn: any;
-    readonly ctx?: any;
-}
+import { Callback } from "../models/events/callback.model";
+import { CallbackHandle } from "../models/events/callback-handle.model";
 
 /**
  * The name of the event that's triggered for every other event
@@ -34,25 +31,14 @@ export class EventEmitter extends RxComponent {
         [ALL_EVENT]: []
     };
 
-    /**
-     * Alias for unbind
-     */
     off = this.unbind;
 
-    /**
-     * Alias for emit
-     */
     trigger = this.emit;
 
-    /**
-     * Listen for events
-     */
-    on(sEvent: string, fCallback, oContext?) {
-        if (!this.subscriptionKVS[sEvent]) {
-            this.subscriptionKVS[sEvent] = [];
-        }
+    on(event: string, callback: Callback, context?: any) {
+        if (!this.subscriptionKVS[event]) this.subscriptionKVS[event] = [];
 
-        this.subscriptionKVS[sEvent].push({fn: fCallback, ctx: oContext});
+        this.subscriptionKVS[event].push({callback, context});
     }
 
     /**
@@ -69,8 +55,8 @@ export class EventEmitter extends RxComponent {
         if (subs) {
             subs = subs.slice();
             for (i = 0; i < subs.length; i++) {
-                ctx = subs[i].ctx || {};
-                subs[i].fn.apply(ctx, args);
+                ctx = subs[i].context || {};
+                subs[i].callback.apply(ctx, args);
             }
         }
 
@@ -79,35 +65,27 @@ export class EventEmitter extends RxComponent {
         const allEventSubs = this.subscriptionKVS[ALL_EVENT].slice();
 
         for (i = 0; i < allEventSubs.length; i++) {
-            ctx = allEventSubs[i].ctx || {};
-            allEventSubs[i].fn.apply(ctx, args);
+            ctx = allEventSubs[i].context || {};
+            allEventSubs[i].callback.apply(ctx, args);
         }
     }
 
     /**
      * Removes a listener for an event, or all listeners if no callback and context is provided.
      */
-    unbind(sEvent, fCallback, oContext) {
-        if (!this.subscriptionKVS[sEvent]) {
-            throw new Error("No subscribtions to unsubscribe for event " + sEvent);
-        }
+    unbind(event: string, callback: Callback, context: any) {
+        let i: number;
+        let bUnbound = false;
 
-        // tslint:disable-next-line:one-variable-per-declaration
-        let i, bUnbound = false;
-
-        for (i = 0; i < this.subscriptionKVS[sEvent].length; i++) {
+        for (i = 0; i < this.subscriptionKVS[event].length; i++) {
             if
             (
-                (!fCallback || this.subscriptionKVS[sEvent][i].fn === fCallback) &&
-                (!oContext || oContext === this.subscriptionKVS[sEvent][i].ctx)
+                (!callback || this.subscriptionKVS[event][i].callback === callback) &&
+                (!context || context === this.subscriptionKVS[event][i].context)
             ) {
-                this.subscriptionKVS[sEvent].splice(i, 1);
+                this.subscriptionKVS[event].splice(i, 1);
                 bUnbound = true;
             }
-        }
-
-        if (bUnbound === false) {
-            throw new Error("Nothing to unbind for " + sEvent);
         }
     }
 
