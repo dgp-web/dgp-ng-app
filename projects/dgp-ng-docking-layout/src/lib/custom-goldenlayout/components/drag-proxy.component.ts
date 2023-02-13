@@ -4,7 +4,8 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { $x } from "../../jquery-extensions";
 import { DockingLayoutService } from "../docking-layout.service";
 import { EventEmitter } from "../utilities/event-emitter";
-import { DragEvent, DragListenerDirective } from "./drag-listener.directive";
+import { DragListenerDirective } from "./drag-listener.directive";
+import { DragEvent } from "../models/drag-event.model";
 
 /**
  * This class creates a temporary container

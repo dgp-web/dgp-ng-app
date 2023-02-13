@@ -1,11 +1,10 @@
-import { EventEmitter, Output, Directive } from "@angular/core";
+import { Directive, EventEmitter, Output } from "@angular/core";
 import { Vector2, Vector2Utils } from "../../common/models";
 import { $x } from "../../jquery-extensions";
-
-export interface DragEvent extends Vector2 {
-    event: any;
-}
-
+import { draggingClassName } from "../constants/dragging-class-name.constant";
+import { createPassiveEventListenerOptions } from "../functions/create-passive-event-listener-options.function";
+import { DragEvent } from "../models/drag-event.model";
+import { createCoordinates } from "../functions/create-coordinates.function";
 
 /*@Directive({
     selector: "dgp-drag-listener"
@@ -13,88 +12,53 @@ export interface DragEvent extends Vector2 {
 @Directive()
 export class DragListenerDirective {
 
-    constructor(element: any) {
-        this.element = element[0];
-        this.$element = $(element);
-        this.$document = $(document);
-        this.$body = $(document.body);
+    @Output()
+    readonly dragStart$ = new EventEmitter<Vector2>();
+    @Output()
+    readonly dragStop$ = new EventEmitter<{}>();
+    @Output()
+    readonly drag$ = new EventEmitter<DragEvent>();
 
-        this.element.addEventListener("touchstart", this.onMouseDown, {passive: true});
-        this.element.addEventListener("mousedown", this.onMouseDown, {passive: true});
-
-    }
-
-    @Output() dragStart$ = new EventEmitter<Vector2>();
-    @Output() dragStop$ = new EventEmitter<{}>();
-    @Output() drag$ = new EventEmitter<DragEvent>();
-
-    private element: any;
-    private $element: JQuery;
-    private $document: any;
+    private element: HTMLElement;
     private $body: any;
-    private timeout: any;
+    private timeout: number;
 
-    /**
-     * The delay after which to start the drag in milliseconds
-     */
-    private delay = 200;
+    private readonly delay = 200;
+    private readonly distance = 10;
 
-    /**
-     * The distance the mouse needs to be moved to qualify as a drag
-     */
-    private distance = 10; // TODO - works better with delay only
-
-    private coordinates: Vector2 = {
-        x: 0, y: 0
-    };
-
-    private originalCoordinates: Vector2 = {
-        x: 0, y: 0
-    };
+    private coordinates = createCoordinates();
+    private originalCoordinates = createCoordinates();
 
     private isDragging = false;
 
-    on: any;
+    constructor(
+        private readonly $element: JQuery<HTMLElement>
+    ) {
+        this.element = $element[0];
+        this.$body = $(document.body);
 
-    destroy() {
-        this.element.removeEventListener("touchstart", this.onMouseDown);
-        this.element.removeEventListener("mousedown", this.onMouseDown);
-
-        document.removeEventListener("mouseup", this.onMouseUp);
-        document.removeEventListener("touchend", this.onMouseUp);
-
-        this.$element = null;
-        this.$document = null;
-        this.$body = null;
+        this.element.addEventListener("mousedown", this.onMouseDown, createPassiveEventListenerOptions());
     }
 
-    onMouseDown = (e) => {
+    destroy() {
+        this.element.removeEventListener("mousedown", this.onMouseDown);
+        document.removeEventListener("mouseup", this.onMouseUp);
+    }
 
+    onMouseDown = (e: MouseEvent) => {
         if (e.button === 0 || e.type === "touchstart") {
             this.originalCoordinates = $x.getPointerCoordinates(e);
 
-            document.addEventListener("mousemove", this.onMouseMove, {
-                passive: true
-            });
-            document.addEventListener("touchmove", this.onMouseMove, {
-                passive: true
-            });
-
-            document.addEventListener("mouseup", this.onMouseUp, {
-                passive: true
-            });
-            document.addEventListener("touchend", this.onMouseUp, {
-                passive: true
-            });
-
+            document.addEventListener("mousemove", this.onMouseMove, createPassiveEventListenerOptions());
+            document.addEventListener("mouseup", this.onMouseUp, createPassiveEventListenerOptions());
             this.timeout = setTimeout(() => this.startDragging(), this.delay);
         }
     };
 
-    onMouseMove = (e) => {
+    onMouseMove = (event: MouseEvent) => {
         if (this.timeout != null) {
 
-            const coordinates = $x.getPointerCoordinates(e);
+            const coordinates = $x.getPointerCoordinates(event);
 
             this.coordinates = Vector2Utils.subtract(coordinates, this.originalCoordinates);
 
@@ -111,7 +75,9 @@ export class DragListenerDirective {
             if (this.isDragging) {
                 this.dragStart$.emit(this.coordinates);
                 this.drag$.emit({
-                    x: this.coordinates.x, y: this.coordinates.y, event: e
+                    x: this.coordinates.x,
+                    y: this.coordinates.y,
+                    event
                 });
 
             }
@@ -121,15 +87,11 @@ export class DragListenerDirective {
     onMouseUp = () => {
         if (this.timeout != null) {
             clearTimeout(this.timeout);
-            this.$body.removeClass("lm_dragging");
-            this.$element.removeClass("lm_dragging");
-            this.$document.find("iframe").css("pointer-events", "");
+            this.$body.removeClass(draggingClassName);
+            this.$element.removeClass(draggingClassName);
 
             document.removeEventListener("mousemove", this.onMouseMove);
-            document.removeEventListener("touchmove", this.onMouseMove);
-
             document.removeEventListener("mouseup", this.onMouseUp);
-            document.removeEventListener("touchend", this.onMouseUp);
 
             if (this.isDragging === true) {
                 this.isDragging = false;
@@ -140,9 +102,8 @@ export class DragListenerDirective {
 
     private startDragging(): void {
         this.isDragging = true;
-        this.$body.addClass("lm_dragging");
-        this.$element.addClass("lm_dragging");
-        this.$document.find("iframe").css("pointer-events", "none");
+        this.$body.addClass(draggingClassName);
+        this.$element.addClass(draggingClassName);
 
         this.dragStart$.emit(this.originalCoordinates);
     }
