@@ -16,8 +16,8 @@ export class ComponentRegistry {
         return this.components[componentKey];
     }
 
-    registerComponent(componentKey: string, constructor: ComponentConstructor) {
-        this.components[componentKey] = constructor;
+    registerComponent(componentKey: string | string[], constructor: ComponentConstructor) {
+        this.components[componentKey as string] = constructor;
     }
 
 }

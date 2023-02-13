@@ -1,4 +1,4 @@
-import { EventEmitter, Output, Directive } from "@angular/core";
+import { Directive, EventEmitter, Output } from "@angular/core";
 import { Vector2, Vector2Utils } from "../../common/models";
 import { $x } from "../../jquery-extensions";
 
@@ -24,19 +24,19 @@ export class DragListenerDirective {
 
     }
 
-    @Output() dragStart$ = new EventEmitter<Vector2>();
-    @Output() dragStop$ = new EventEmitter<{}>();
-    @Output() drag$ = new EventEmitter<DragEvent>();
+    @Output()
+    readonly dragStart$ = new EventEmitter<Vector2>();
+    @Output()
+    readonly dragStop$ = new EventEmitter<{}>();
+    @Output()
+    readonly drag$ = new EventEmitter<DragEvent>();
 
     private element: any;
     private $element: JQuery;
     private $document: any;
     private $body: any;
-    private timeout: any;
+    private timeout: number;
 
-    /**
-     * The delay after which to start the drag in milliseconds
-     */
     private delay = 200;
 
     /**
@@ -68,7 +68,7 @@ export class DragListenerDirective {
         this.$body = null;
     }
 
-    onMouseDown = (e) => {
+    onMouseDown = (e: MouseEvent) => {
 
         if (e.button === 0 || e.type === "touchstart") {
             this.originalCoordinates = $x.getPointerCoordinates(e);
@@ -91,7 +91,7 @@ export class DragListenerDirective {
         }
     };
 
-    onMouseMove = (e) => {
+    onMouseMove = (e: MouseEvent) => {
         if (this.timeout != null) {
 
             const coordinates = $x.getPointerCoordinates(e);
