@@ -13,16 +13,6 @@ export interface DragEvent extends Vector2 {
 @Directive()
 export class DragListenerDirective {
 
-    constructor(element: any) {
-        this.element = element[0];
-        this.$element = $(element);
-        this.$body = $(document.body);
-
-        this.element.addEventListener("touchstart", this.onMouseDown, {passive: true});
-        this.element.addEventListener("mousedown", this.onMouseDown, {passive: true});
-
-    }
-
     @Output()
     readonly dragStart$ = new EventEmitter<Vector2>();
     @Output()
@@ -35,12 +25,8 @@ export class DragListenerDirective {
     private $body: any;
     private timeout: number;
 
-    private delay = 200;
-
-    /**
-     * The distance the mouse needs to be moved to qualify as a drag
-     */
-    private distance = 10; // TODO - works better with delay only
+    private readonly delay = 200;
+    private readonly distance = 10;
 
     private coordinates: Vector2 = {
         x: 0, y: 0
@@ -54,12 +40,17 @@ export class DragListenerDirective {
 
     on: any;
 
-    destroy() {
-        this.element.removeEventListener("touchstart", this.onMouseDown);
-        this.element.removeEventListener("mousedown", this.onMouseDown);
+    constructor(element: HTMLElement | JQuery<HTMLElement>) {
+        this.element = element[0];
+        this.$element = $(element);
+        this.$body = $(document.body);
 
+        this.element.addEventListener("mousedown", this.onMouseDown, {passive: true});
+    }
+
+    destroy() {
+        this.element.removeEventListener("mousedown", this.onMouseDown);
         document.removeEventListener("mouseup", this.onMouseUp);
-        document.removeEventListener("touchend", this.onMouseUp);
 
         this.$element = null;
         this.$body = null;
@@ -100,7 +91,9 @@ export class DragListenerDirective {
             if (this.isDragging) {
                 this.dragStart$.emit(this.coordinates);
                 this.drag$.emit({
-                    x: this.coordinates.x, y: this.coordinates.y, event: e
+                    x: this.coordinates.x,
+                    y: this.coordinates.y,
+                    event: e
                 });
 
             }
@@ -114,7 +107,6 @@ export class DragListenerDirective {
             this.$element.removeClass(draggingClassName);
 
             document.removeEventListener("mousemove", this.onMouseMove);
-
             document.removeEventListener("mouseup", this.onMouseUp);
 
             if (this.isDragging === true) {
