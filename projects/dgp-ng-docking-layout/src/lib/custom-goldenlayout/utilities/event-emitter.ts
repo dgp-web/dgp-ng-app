@@ -26,7 +26,7 @@ export const ALL_EVENT = "__all";
  */
 export class EventEmitter extends RxComponent {
 
-    mSubscriptions: KVS<any> = {
+    private readonly subscriptionKVS: KVS<any> = {
         [ALL_EVENT]: []
     };
 
@@ -48,23 +48,23 @@ export class EventEmitter extends RxComponent {
             throw new Error("Tried to listen to event " + sEvent + " with non-function callback " + fCallback);
         }
 
-        if (!this.mSubscriptions[sEvent]) {
-            this.mSubscriptions[sEvent] = [];
+        if (!this.subscriptionKVS[sEvent]) {
+            this.subscriptionKVS[sEvent] = [];
         }
 
-        this.mSubscriptions[sEvent].push({fn: fCallback, ctx: oContext});
+        this.subscriptionKVS[sEvent].push({fn: fCallback, ctx: oContext});
     }
 
     /**
      * Emit an event and notify listeners
      */
-    emit<TEvent extends GoldenLayoutEvent= any>(sEvent: TEvent[0], x?: TEvent[1]) {
+    emit<TEvent extends GoldenLayoutEvent = any>(sEvent: TEvent[0], x?: TEvent[1]) {
         // tslint:disable-next-line:one-variable-per-declaration
         let i, ctx, args;
 
         args = Array.prototype.slice.call(arguments, 1);
 
-        let subs = this.mSubscriptions[sEvent];
+        let subs = this.subscriptionKVS[sEvent];
 
         if (subs) {
             subs = subs.slice();
@@ -76,7 +76,7 @@ export class EventEmitter extends RxComponent {
 
         args.unshift(sEvent);
 
-        const allEventSubs = this.mSubscriptions[ALL_EVENT].slice();
+        const allEventSubs = this.subscriptionKVS[ALL_EVENT].slice();
 
         for (i = 0; i < allEventSubs.length; i++) {
             ctx = allEventSubs[i].ctx || {};
@@ -88,20 +88,20 @@ export class EventEmitter extends RxComponent {
      * Removes a listener for an event, or all listeners if no callback and context is provided.
      */
     unbind(sEvent, fCallback, oContext) {
-        if (!this.mSubscriptions[sEvent]) {
+        if (!this.subscriptionKVS[sEvent]) {
             throw new Error("No subscribtions to unsubscribe for event " + sEvent);
         }
 
         // tslint:disable-next-line:one-variable-per-declaration
         let i, bUnbound = false;
 
-        for (i = 0; i < this.mSubscriptions[sEvent].length; i++) {
+        for (i = 0; i < this.subscriptionKVS[sEvent].length; i++) {
             if
             (
-                (!fCallback || this.mSubscriptions[sEvent][i].fn === fCallback) &&
-                (!oContext || oContext === this.mSubscriptions[sEvent][i].ctx)
+                (!fCallback || this.subscriptionKVS[sEvent][i].fn === fCallback) &&
+                (!oContext || oContext === this.subscriptionKVS[sEvent][i].ctx)
             ) {
-                this.mSubscriptions[sEvent].splice(i, 1);
+                this.subscriptionKVS[sEvent].splice(i, 1);
                 bUnbound = true;
             }
         }

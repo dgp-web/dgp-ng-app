@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
  */
 export class RxComponent {
 
-    protected subscriptions: Subscription[] = [];
+    protected subscriptions = new Array<Subscription>();
 
     unsubscribe(): void {
         this.subscriptions
