@@ -16,7 +16,6 @@ export class DragListenerDirective {
     constructor(element: any) {
         this.element = element[0];
         this.$element = $(element);
-        this.$document = $(document);
         this.$body = $(document.body);
 
         this.element.addEventListener("touchstart", this.onMouseDown, {passive: true});
@@ -33,7 +32,6 @@ export class DragListenerDirective {
 
     private element: any;
     private $element: JQuery;
-    private $document: any;
     private $body: any;
     private timeout: number;
 
@@ -64,7 +62,6 @@ export class DragListenerDirective {
         document.removeEventListener("touchend", this.onMouseUp);
 
         this.$element = null;
-        this.$document = null;
         this.$body = null;
     }
 
@@ -123,7 +120,6 @@ export class DragListenerDirective {
             clearTimeout(this.timeout);
             this.$body.removeClass("lm_dragging");
             this.$element.removeClass("lm_dragging");
-            this.$document.find("iframe").css("pointer-events", "");
 
             document.removeEventListener("mousemove", this.onMouseMove);
             document.removeEventListener("touchmove", this.onMouseMove);
@@ -142,7 +138,6 @@ export class DragListenerDirective {
         this.isDragging = true;
         this.$body.addClass("lm_dragging");
         this.$element.addClass("lm_dragging");
-        this.$document.find("iframe").css("pointer-events", "none");
 
         this.dragStart$.emit(this.originalCoordinates);
     }
