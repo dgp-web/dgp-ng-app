@@ -1,4 +1,4 @@
 import { KVS } from "entity-store";
-import { ComponentConstructor } from "../services/component-registry";
+import { ComponentConstructor } from "./component-constructor.model";
 
 export type ComponentKVS = KVS<ComponentConstructor>;
