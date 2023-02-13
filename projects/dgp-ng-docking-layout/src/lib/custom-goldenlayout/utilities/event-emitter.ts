@@ -24,13 +24,9 @@ export class EventEmitter extends RxComponent {
 
     on(event: string, callback: Callback, context?: any) {
         if (!this.subscriptionKVS[event]) this.subscriptionKVS[event] = [];
-
         this.subscriptionKVS[event].push({callback, context});
     }
 
-    /**
-     * Emit an event and notify listeners
-     */
     emit<TEvent extends GoldenLayoutEvent = any>(sEvent: TEvent[0], x?: TEvent[1]) {
         let context: any;
         let args: any;
@@ -62,16 +58,13 @@ export class EventEmitter extends RxComponent {
      */
     unbind(event: string, callback: Callback, context: any) {
         let i: number;
-        let bUnbound = false;
 
         for (i = 0; i < this.subscriptionKVS[event].length; i++) {
-            if
-            (
+            if (
                 (!callback || this.subscriptionKVS[event][i].callback === callback) &&
                 (!context || context === this.subscriptionKVS[event][i].context)
             ) {
                 this.subscriptionKVS[event].splice(i, 1);
-                bUnbound = true;
             }
         }
     }
