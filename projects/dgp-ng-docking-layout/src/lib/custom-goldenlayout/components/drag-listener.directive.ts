@@ -73,17 +73,9 @@ export class DragListenerDirective {
             document.addEventListener("mousemove", this.onMouseMove, {
                 passive: true
             });
-            document.addEventListener("touchmove", this.onMouseMove, {
-                passive: true
-            });
-
             document.addEventListener("mouseup", this.onMouseUp, {
                 passive: true
             });
-            document.addEventListener("touchend", this.onMouseUp, {
-                passive: true
-            });
-
             this.timeout = setTimeout(() => this.startDragging(), this.delay);
         }
     };
@@ -122,10 +114,8 @@ export class DragListenerDirective {
             this.$element.removeClass("lm_dragging");
 
             document.removeEventListener("mousemove", this.onMouseMove);
-            document.removeEventListener("touchmove", this.onMouseMove);
 
             document.removeEventListener("mouseup", this.onMouseUp);
-            document.removeEventListener("touchend", this.onMouseUp);
 
             if (this.isDragging === true) {
                 this.isDragging = false;
