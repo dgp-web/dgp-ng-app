@@ -1,9 +1,8 @@
 import { RxComponent } from "../../common/app";
-import { KVS } from "entity-store";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
 import { Callback } from "../models/events/callback.model";
-import { CallbackHandle } from "../models/events/callback-handle.model";
 import { ALL_EVENT } from "../constants/all-event.constant";
+import { createEventSubscriptionKVS } from "../functions/create-event-subscription-kvs.function";
 
 /**
  * A generic and very fast EventEmitter
@@ -17,9 +16,7 @@ import { ALL_EVENT } from "../constants/all-event.constant";
  */
 export class EventEmitter extends RxComponent {
 
-    private readonly subscriptionKVS: KVS<Array<CallbackHandle>> = {
-        [ALL_EVENT]: []
-    };
+    private readonly subscriptionKVS = createEventSubscriptionKVS();
 
     off = this.unbind;
 
