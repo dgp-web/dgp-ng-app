@@ -18,10 +18,6 @@ export class SplitterComponent {
         this._dragListener = new DragListenerDirective(this.element);
     }
 
-    on(event, callback, context) {
-
-    }
-
     _$destroy() {
         this.element.remove();
     }
