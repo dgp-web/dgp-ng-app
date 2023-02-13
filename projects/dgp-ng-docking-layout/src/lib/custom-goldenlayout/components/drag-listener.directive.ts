@@ -45,8 +45,6 @@ export class DragListenerDirective {
     destroy() {
         this.element.removeEventListener("mousedown", this.onMouseDown);
         document.removeEventListener("mouseup", this.onMouseUp);
-
-        this.$body = null;
     }
 
     onMouseDown = (e: MouseEvent) => {
