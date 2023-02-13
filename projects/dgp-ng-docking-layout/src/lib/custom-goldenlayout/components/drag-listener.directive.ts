@@ -1,11 +1,11 @@
 import { Directive, EventEmitter, Output } from "@angular/core";
 import { Vector2, Vector2Utils } from "../../common/models";
 import { $x } from "../../jquery-extensions";
+import { draggingClassName } from "../constants/dragging-class-name.constant";
 
 export interface DragEvent extends Vector2 {
     event: any;
 }
-
 
 /*@Directive({
     selector: "dgp-drag-listener"
@@ -110,8 +110,8 @@ export class DragListenerDirective {
     onMouseUp = () => {
         if (this.timeout != null) {
             clearTimeout(this.timeout);
-            this.$body.removeClass("lm_dragging");
-            this.$element.removeClass("lm_dragging");
+            this.$body.removeClass(draggingClassName);
+            this.$element.removeClass(draggingClassName);
 
             document.removeEventListener("mousemove", this.onMouseMove);
 
@@ -126,8 +126,8 @@ export class DragListenerDirective {
 
     private startDragging(): void {
         this.isDragging = true;
-        this.$body.addClass("lm_dragging");
-        this.$element.addClass("lm_dragging");
+        this.$body.addClass(draggingClassName);
+        this.$element.addClass(draggingClassName);
 
         this.dragStart$.emit(this.originalCoordinates);
     }
