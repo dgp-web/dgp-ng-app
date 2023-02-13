@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { ConfigurationError } from "../types";
 import { ComponentDefinition, ContainerDefinition } from "../utilities/models";
-import { KVS } from "entity-store";
+import { ComponentKVS } from "../models/component-kvs.model";
 
 export type ComponentConstructor = <T = any>(container: ContainerDefinition, component: ComponentDefinition<T>) => void;
-export type ComponentKVS = KVS<ComponentConstructor>;
 
 @Injectable()
 export class ComponentRegistry {
