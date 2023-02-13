@@ -19,7 +19,7 @@ export class SplitterComponent {
     }
 
     on(event, callback, context) {
-        this._dragListener.on(event, callback, context);
+
     }
 
     _$destroy() {

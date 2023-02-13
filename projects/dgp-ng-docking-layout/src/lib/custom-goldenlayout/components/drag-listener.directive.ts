@@ -31,8 +31,6 @@ export class DragListenerDirective {
 
     private isDragging = false;
 
-    on: any;
-
     constructor(
         private readonly $element: JQuery<HTMLElement>
     ) {
