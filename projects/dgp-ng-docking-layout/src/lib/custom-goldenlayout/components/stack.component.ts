@@ -7,6 +7,7 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { sides } from "../constants/sides.constant";
 
 @Component({
     selector: "dgp-stack",
@@ -532,7 +533,7 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
     _setupHeaderPosition() {
-        const side = ["right", "left", "bottom"].indexOf(this._header.show) >= 0 && this._header.show;
+        const side = sides.indexOf(this._header.show) >= 0 && this._header.show;
         this.header.element.toggle(!!this._header.show);
         this._side = side;
         this._sided = ["right", "left"].indexOf(this._side) >= 0;
@@ -554,3 +555,4 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
 }
+
