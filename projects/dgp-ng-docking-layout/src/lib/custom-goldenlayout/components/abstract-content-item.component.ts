@@ -219,55 +219,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * Checks whether a provided id is present
-     */
-    hasId(id: string) {
-        if (!this.config.id) {
-            return false;
-        } else if (typeof this.config.id === "string") {
-            return this.config.id === id;
-        } else if (this.config.id instanceof Array) {
-            return new LayoutManagerUtilities().indexOf(id, this.config.id) !== -1;
-        }
-    }
-
-    /**
-     * Adds an id. Adds it as a string if the component doesn't
-     * have an id yet or creates/uses an array
-     *
-     */
-    addId(id: string) {
-        if (this.hasId(id)) {
-            return;
-        }
-
-        if (!this.config.id) {
-            this.config.id = id;
-        } else if (typeof this.config.id === "string") {
-            this.config.id = [this.config.id, id];
-        } else if (this.config.id instanceof Array) {
-            this.config.id.push(id);
-        }
-    }
-
-    /**
-     * Removes an existing id. Throws an error
-     * if the id is not present
-     */
-    removeId(id: string) {
-        if (!this.hasId(id)) {
-            throw new Error("Id not found");
-        }
-
-        if (typeof this.config.id === "string") {
-            delete this.config.id;
-        } else if (this.config.id instanceof Array) {
-            const index = new LayoutManagerUtilities().indexOf(id, this.config.id);
-            this.config.id.splice(index, 1);
-        }
-    }
-
     /****************************************
      * SELECTOR
      ****************************************/
@@ -286,17 +237,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         next(this);
         return result;
-    }
-
-    getItemsById(id: string) {
-        return this.getItemsByFilter(function (item) {
-            if (item.config.id instanceof Array) {
-                return new LayoutManagerUtilities()
-                    .indexOf(id, item.config.id) !== -1;
-            } else {
-                return item.config.id === id;
-            }
-        });
     }
 
     getItemsByType(type: string) {
