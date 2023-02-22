@@ -9,6 +9,7 @@ import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../constants/sides.constant";
 import { Side } from "../models/side.model";
+import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
 
 export enum DropSegment {
     Header = "header",
@@ -19,9 +20,16 @@ export enum DropSegment {
     Right = "right"
 }
 
+export interface Area {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+}
+
 export interface Dimensions {
-    hoverArea: any;
-    highlightArea: any;
+    hoverArea: Area;
+    highlightArea: Area;
 }
 
 export interface ContentAreaDimensions {
@@ -165,7 +173,7 @@ export class StackComponent extends AbstractContentItemComponent {
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
         this._$validateClosability();
-        this.emitBubblingEvent("stateChanged");
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
     removeChild(contentItem, keepChild) {
@@ -181,7 +189,7 @@ export class StackComponent extends AbstractContentItemComponent {
         }
 
         this._$validateClosability();
-        this.emitBubblingEvent("stateChanged");
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
 
