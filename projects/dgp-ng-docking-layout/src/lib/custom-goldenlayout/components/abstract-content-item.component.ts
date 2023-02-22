@@ -20,7 +20,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     _side: Side;
     _sided: boolean;
     _header: any;
-    // _setupHeaderPosition: any;
 
     contentItems: AbstractContentItemComponent[] = [];
 

@@ -8,6 +8,7 @@ import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../constants/sides.constant";
+import { Side } from "../models/side.model";
 
 @Component({
     selector: "dgp-stack",
@@ -536,13 +537,13 @@ export class StackComponent extends AbstractContentItemComponent {
         const side = sides.indexOf(this._header.show) >= 0 && this._header.show;
         this.header.element.toggle(!!this._header.show);
         this._side = side;
-        this._sided = ["right", "left"].indexOf(this._side) >= 0;
+        this._sided = [Side.Right, Side.Left].indexOf(this._side) >= 0;
         this.element.removeClass("lm_left lm_right lm_bottom");
         if (this._side) {
             this.element.addClass("lm_" + this._side);
         }
         if (this.element.find(".lm_header").length && this.childElementContainer) {
-            const headerPosition = ["right", "bottom"].indexOf(this._side) >= 0 ? "before" : "after";
+            const headerPosition = [Side.Right, Side.Bottom].indexOf(this._side) >= 0 ? "before" : "after";
             this.header.element[headerPosition](this.childElementContainer);
             this.callDownwards("setSize");
         }
