@@ -357,18 +357,8 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this._contentAreaDimensions = {
             header: {
-                hoverArea: {
-                    x1: headerArea.x1,
-                    y1: headerArea.y1,
-                    x2: headerArea.x2,
-                    y2: headerArea.y2
-                },
-                highlightArea: {
-                    x1: headerArea.x1,
-                    y1: headerArea.y1,
-                    x2: headerArea.x2,
-                    y2: headerArea.y2
-                }
+                hoverArea: headerArea,
+                highlightArea: headerArea
             }
         };
 
@@ -386,18 +376,8 @@ export class StackComponent extends AbstractContentItemComponent {
         if (this.contentItems.length === 0) {
 
             this._contentAreaDimensions.body = {
-                hoverArea: {
-                    x1: contentArea.x1,
-                    y1: contentArea.y1,
-                    x2: contentArea.x2,
-                    y2: contentArea.y2
-                },
-                highlightArea: {
-                    x1: contentArea.x1,
-                    y1: contentArea.y1,
-                    x2: contentArea.x2,
-                    y2: contentArea.y2
-                }
+                hoverArea: contentArea,
+                highlightArea: contentArea
             };
 
             return getArea.call(this, this.element);
@@ -405,61 +385,49 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this._contentAreaDimensions.left = {
             hoverArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.25,
-                y2: contentArea.y2
+                ...contentArea,
+                x2: contentArea.x1 + contentWidth * 0.25
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.5,
-                y2: contentArea.y2
+                ...contentArea,
+                x2: contentArea.x1 + contentWidth * 0.5
             }
         };
 
         this._contentAreaDimensions.top = {
             hoverArea: {
+                ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.25,
-                y1: contentArea.y1,
                 x2: contentArea.x1 + contentWidth * 0.75,
                 y2: contentArea.y1 + contentHeight * 0.5
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
+                ...contentArea,
                 y2: contentArea.y1 + contentHeight * 0.5
             }
         };
 
         this._contentAreaDimensions.right = {
             hoverArea: {
-                x1: contentArea.x1 + contentWidth * 0.75,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                x1: contentArea.x1 + contentWidth * 0.75
             },
             highlightArea: {
-                x1: contentArea.x1 + contentWidth * 0.5,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                x1: contentArea.x1 + contentWidth * 0.5
             }
         };
 
         this._contentAreaDimensions.bottom = {
             hoverArea: {
+                ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.25,
                 y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x1 + contentWidth * 0.75,
-                y2: contentArea.y2
+                x2: contentArea.x1 + contentWidth * 0.75
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                y1: contentArea.y1 + contentHeight * 0.5
             }
         };
 
