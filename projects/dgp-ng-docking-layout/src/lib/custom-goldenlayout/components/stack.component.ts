@@ -40,7 +40,6 @@ export interface ContentAreaDimensions {
 })
 export class StackComponent extends AbstractContentItemComponent {
     private _activeContentItem: any;
-    private _dropZones: any;
     private _dropSegment: keyof ContentAreaDimensions;
     private _contentAreaDimensions: ContentAreaDimensions;
     private _dropIndex: number;
@@ -77,7 +76,6 @@ export class StackComponent extends AbstractContentItemComponent {
             Object.assign(this._header, config.content[0].header);
         }
 
-        this._dropZones = {};
         this._dropSegment = null;
         this._contentAreaDimensions = null;
         this._dropIndex = null;
