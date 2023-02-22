@@ -39,11 +39,11 @@ export interface ContentAreaDimensions {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StackComponent extends AbstractContentItemComponent {
-    _activeContentItem: any;
-    _dropZones: any;
-    _dropSegment: DropSegment;
-    _contentAreaDimensions: ContentAreaDimensions;
-    _dropIndex: number;
+    private _activeContentItem: any;
+    private _dropZones: any;
+    private _dropSegment: keyof ContentAreaDimensions;
+    private _contentAreaDimensions: ContentAreaDimensions;
+    private _dropIndex: number;
     header: HeaderComponent;
 
     subscription: Subscription;
@@ -572,7 +572,7 @@ export class StackComponent extends AbstractContentItemComponent {
         }
     }
 
-    _highlightBodyDropZone(segment) {
+    _highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
         const highlightArea = this._contentAreaDimensions[segment].highlightArea;
         this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
         this._dropSegment = segment;
