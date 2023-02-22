@@ -13,11 +13,9 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
 
     width: number;
     height: number;
-    title: string;
     isHidden: boolean;
-    _config: any;
-    _element: any;
-    _contentElement: any;
+    _element: JQuery<HTMLElement>;
+    private readonly _contentElement: JQuery<HTMLElement>;
 
     constructor(@Inject(ITEM_CONFIG)
                 readonly config: ItemConfiguration,
@@ -26,7 +24,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
                 readonly layoutManager: DockingLayoutService) {
         super(layoutManager, config, parent);
 
-        this.title = config.id as string;
         this._element = $(
             dockingLayoutViewMap.itemContainer.render()
         );
