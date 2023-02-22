@@ -17,7 +17,7 @@ import { ALL_EVENT } from "../constants/all-event.constant";
 export abstract class AbstractContentItemComponent extends EventEmitter {
 
     _side: any;
-    _sided: any;
+    _sided: boolean;
     _header: any;
     // _setupHeaderPosition: any;
 

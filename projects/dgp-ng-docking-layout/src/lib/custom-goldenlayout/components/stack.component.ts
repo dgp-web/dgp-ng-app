@@ -20,7 +20,6 @@ export class StackComponent extends AbstractContentItemComponent {
     _contentAreaDimensions: any;
     _dropIndex: number;
     header: HeaderComponent;
-    _sided: any;
     _side: any;
 
     subscription: Subscription;
