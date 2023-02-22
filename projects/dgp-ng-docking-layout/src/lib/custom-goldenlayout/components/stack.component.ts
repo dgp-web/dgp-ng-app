@@ -10,6 +10,15 @@ import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../constants/sides.constant";
 import { Side } from "../models/side.model";
 
+export enum DropSegment {
+    Header = "header",
+    Body = "body",
+    Top = "top",
+    Bottom = "bottom",
+    Left = "left",
+    Right = "right"
+}
+
 @Component({
     selector: "dgp-stack",
     template: ``,
@@ -18,7 +27,7 @@ import { Side } from "../models/side.model";
 export class StackComponent extends AbstractContentItemComponent {
     _activeContentItem: any;
     _dropZones: any;
-    _dropSegment: any;
+    _dropSegment: DropSegment;
     _contentAreaDimensions: any;
     _dropIndex: number;
     header: HeaderComponent;
@@ -231,7 +240,7 @@ export class StackComponent extends AbstractContentItemComponent {
          * The item was dropped on the header area. Just add it as a child of this stack and
          * get the hell out of this logic
          */
-        if (this._dropSegment === "header") {
+        if (this._dropSegment === DropSegment.Header) {
             this._resetHeaderDropZone();
             this.addChild(contentItem, this._dropIndex);
             return;
@@ -240,7 +249,7 @@ export class StackComponent extends AbstractContentItemComponent {
         /*
          * The stack is empty. Let's just add the element.
          */
-        if (this._dropSegment === "body") {
+        if (this._dropSegment === DropSegment.Body) {
             this.addChild(contentItem);
             return;
         }
@@ -249,9 +258,9 @@ export class StackComponent extends AbstractContentItemComponent {
          * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
          * aggregate some conditions to make the if statements later on more readable
          */
-        let isVertical = this._dropSegment === "top" || this._dropSegment === "bottom",
-            isHorizontal = this._dropSegment === "left" || this._dropSegment === "right",
-            insertBefore = this._dropSegment === "top" || this._dropSegment === "left",
+        let isVertical = this._dropSegment === DropSegment.Top || this._dropSegment === DropSegment.Bottom,
+            isHorizontal = this._dropSegment === DropSegment.Left || this._dropSegment === DropSegment.Right,
+            insertBefore = this._dropSegment === DropSegment.Top || this._dropSegment === DropSegment.Left,
             hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow),
             type: ItemType = isVertical ? "column" : "row",
             dimension = isVertical ? "height" : "width",
@@ -313,7 +322,7 @@ export class StackComponent extends AbstractContentItemComponent {
             if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
 
                 if (segment === "header") {
-                    this._dropSegment = "header";
+                    this._dropSegment = DropSegment.Header;
                     this._highlightHeaderDropZone(this._sided ? y : x);
                 } else {
                     this._resetHeaderDropZone();
