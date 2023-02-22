@@ -261,10 +261,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.dropTargetIndicator.highlightArea(area);
     }
 
-    _$onDrop(contentItem: AbstractContentItemComponent, area?) {
-        this.addChild(contentItem);
-    }
-
     _$hide() {
         this._callOnActiveComponents("hide");
         this.element.hide();
