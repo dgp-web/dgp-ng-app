@@ -47,16 +47,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         super();
 
         this.config = {...itemDefaultConfig, ...config};
-
         this.on(ALL_EVENT, this.propagateEvent, this);
-
         if (config.content) this.createContentItems(config);
-    }
-
-    /**
-     * Set the size of the component and its children, called recursively
-     */
-    setSize(width?: number, height?: number): void {
     }
 
     /**
@@ -322,10 +314,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * @package private
      */
     _$init(): void {
-        let i;
-        this.setSize();
-
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
         }
 
