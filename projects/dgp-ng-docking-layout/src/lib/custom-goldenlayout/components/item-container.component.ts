@@ -82,13 +82,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     }
 
     /**
-     * Set's the components title
-     */
-    setTitle(title: string) {
-        this.parent.setTitle(title);
-    }
-
-    /**
      * Set's the containers size. Called by the container's component.
      * To set the size programmatically from within the container please
      * use the public setSize method

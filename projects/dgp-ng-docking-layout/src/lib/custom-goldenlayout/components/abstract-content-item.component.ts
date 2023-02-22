@@ -354,9 +354,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     close(): void {
     }
 
-    setTitle(title: string): void {
-    }
-
     //noinspection TsLint
     /**
      * Private method, creates all content items for this node at initialisation time
