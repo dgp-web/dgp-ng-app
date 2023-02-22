@@ -19,6 +19,20 @@ export enum DropSegment {
     Right = "right"
 }
 
+export interface Dimensions {
+    hoverArea: any;
+    highlightArea: any;
+}
+
+export interface ContentAreaDimensions {
+    header: Dimensions;
+    body?: Dimensions;
+    top?: Dimensions;
+    left?: Dimensions;
+    right?: Dimensions;
+    bottom?: Dimensions;
+}
+
 @Component({
     selector: "dgp-stack",
     template: ``,
@@ -28,7 +42,7 @@ export class StackComponent extends AbstractContentItemComponent {
     _activeContentItem: any;
     _dropZones: any;
     _dropSegment: DropSegment;
-    _contentAreaDimensions: any;
+    _contentAreaDimensions: ContentAreaDimensions;
     _dropIndex: number;
     header: HeaderComponent;
 
