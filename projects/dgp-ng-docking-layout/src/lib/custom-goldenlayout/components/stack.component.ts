@@ -47,7 +47,7 @@ export interface ContentAreaDimensions {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StackComponent extends AbstractContentItemComponent {
-    private _activeContentItem: any;
+    private _activeContentItem: AbstractContentItemComponent;
     private _dropSegment: keyof ContentAreaDimensions;
     private _contentAreaDimensions: ContentAreaDimensions;
     private _dropIndex: number;
