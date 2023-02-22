@@ -35,6 +35,14 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
     }
 
     /**
+     * Get the inner DOM element the container's content
+     * is intended to live in
+     */
+    getElement() {
+        return this._contentElement;
+    }
+
+    /**
      * Hide the container. Notifies the containers content first
      * and then hides the DOM node. If the container is already hidden
      * this should have no effect
