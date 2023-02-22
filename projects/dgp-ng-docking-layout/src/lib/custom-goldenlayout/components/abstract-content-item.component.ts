@@ -351,9 +351,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.emit(name, event);
     }
 
-    _setupHeaderPosition() {
-    }
-
     close(): void {
     }
 

@@ -172,7 +172,6 @@ export class HeaderComponent extends EventEmitter {
         }
         if (position !== undefined && this.parent._header.show !== position) {
             this.parent._header.show = position;
-            this.parent._setupHeaderPosition();
         }
         return previous;
     }
