@@ -6,6 +6,7 @@ import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-conf
 import { Area, AreaSides } from "../models/area.model";
 import { ALL_EVENT } from "../constants/all-event.constant";
 import { Side } from "../models/side.model";
+import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -35,7 +36,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     childElementContainer: any;
 
     pendingEventPropagations = {};
-    throttledEvents = ["stateChanged"];
+    throttledEvents = [stateChangedEventType];
     type: ItemType;
 
     protected constructor(
