@@ -3,6 +3,10 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration } from "../types";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { hideEventType } from "../constants/hide-event-type.constant";
+import { showEventType } from "../constants/show-event-type.constant";
+import { shownEventType } from "../constants/shown-event-type.constant";
+import { resizeEventType } from "./resize-event-type.constant";
 
 @Component({
     selector: "dgp-item-container",
@@ -45,7 +49,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      * this should have no effect
      */
     hide() {
-        this.emit("hide");
+        this.emit(hideEventType);
         this.isHidden = true;
         this._element.hide();
     }
@@ -56,12 +60,12 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      * If the container is already visible this has no effect.
      */
     show() {
-        this.emit("show");
+        this.emit(showEventType);
         this.isHidden = false;
         this._element.show();
         // call shown only if the container has a valid size
         if (this.height !== 0 || this.width !== 0) {
-            this.emit("shown");
+            this.emit(shownEventType);
         }
     }
 
@@ -79,7 +83,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
             const vdelta = cl.offsetHeight - cl.clientHeight;
             this._contentElement.width(this.width - hdelta)
                 .height(this.height - vdelta);
-            this.emit("resize");
+            this.emit(resizeEventType);
         }
     }
 
