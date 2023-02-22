@@ -5,6 +5,7 @@ import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilitie
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { Area, AreaSides } from "../models/area.model";
 import { ALL_EVENT } from "../constants/all-event.constant";
+import { Side } from "../models/side.model";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -16,7 +17,7 @@ import { ALL_EVENT } from "../constants/all-event.constant";
 // tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractContentItemComponent extends EventEmitter {
 
-    _side: any;
+    _side: Side;
     _sided: boolean;
     _header: any;
     // _setupHeaderPosition: any;
