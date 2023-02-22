@@ -68,19 +68,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
         }
     }
 
-
-    /**
-     * Closes the container if it is closable. Can be called by
-     * both the component within at as well as the contentItem containing
-     * it. Emits a close event before the container itself is closed.
-     */
-    close() {
-        if (this._config.isClosable) {
-            this.emit("close");
-            this.parent.close();
-        }
-    }
-
     /**
      * Set's the containers size. Called by the container's component.
      * To set the size programmatically from within the container please
