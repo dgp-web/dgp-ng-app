@@ -116,7 +116,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
             const dimension = area.side[0] === "x" ? "width" : "height";
             const insertBefore = area.side[1] === "2";
             const column: AbstractContentItemComponent = this.contentItems[0];
-            if (!(column.isRow || column.isColumn) || column.type !== type) { // TODO: move this type here
+            if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
                 const rowOrColumn = this.layoutManager.createContentItem({type}, this);
                 this.replaceChild(column, rowOrColumn);
                 rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);

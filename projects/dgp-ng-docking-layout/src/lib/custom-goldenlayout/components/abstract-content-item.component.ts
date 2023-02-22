@@ -1,6 +1,6 @@
 import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
+import { ItemConfiguration, itemDefaultConfig } from "../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { Area, AreaSides } from "../models/area.model";
@@ -34,11 +34,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     isComponent = false;
 
     element: JQuery;
-    childElementContainer: any;
+    childElementContainer: JQuery;
 
     pendingEventPropagations = {};
     throttledEvents = [stateChangedEventType];
-    type: ItemType;
 
     protected constructor(
         protected readonly layoutManager: DockingLayoutService,
@@ -47,20 +46,11 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     ) {
         super();
 
-        this.type = config.type;
-        this.contentItems = [];
-
-        this.config = {
-            ...itemDefaultConfig,
-            ...config
-        };
+        this.config = {...itemDefaultConfig, ...config};
 
         this.on(ALL_EVENT, this.propagateEvent, this);
 
-        if (config.content) {
-            this.createContentItems(config);
-        }
-
+        if (config.content) this.createContentItems(config);
     }
 
     /**
@@ -72,8 +62,11 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Calls a method recursively downwards on the tree
      */
-    callDownwards(functionName: string, functionArguments?: any[], bottomUp?: boolean, skipSelf?: boolean) {
-        let i;
+    callDownwards(functionName: string,
+                  functionArguments?: any[],
+                  bottomUp?: boolean,
+                  skipSelf?: boolean) {
+        let i: number;
 
         if (bottomUp !== true && skipSelf !== true) {
             this[functionName].apply(this, functionArguments || []);
@@ -327,10 +320,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * Its behaviour depends on the content item
      *
      * @package private
-     *
-     * @returns {void}
      */
-    _$init() {
+    _$init(): void {
         let i;
         this.setSize();
 
@@ -340,7 +331,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         this.isInitialised = true;
         this.emitBubblingEvent(itemCreatedEventType);
-        this.emitBubblingEvent(this.type + "Created");
+        this.emitBubblingEvent(this.config.type + "Created");
     }
 
     /**
