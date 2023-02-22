@@ -17,7 +17,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
 
     width: number;
     height: number;
-    isHidden: boolean;
     _element: JQuery<HTMLElement>;
     private readonly _contentElement: JQuery<HTMLElement>;
 
@@ -50,7 +49,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      */
     hide() {
         this.emit(hideEventType);
-        this.isHidden = true;
         this._element.hide();
     }
 
@@ -61,7 +59,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
      */
     show() {
         this.emit(showEventType);
-        this.isHidden = false;
         this._element.show();
         // call shown only if the container has a valid size
         if (this.height !== 0 || this.width !== 0) {
