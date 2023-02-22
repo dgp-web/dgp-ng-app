@@ -7,6 +7,7 @@ import { Area, AreaSides } from "../models/area.model";
 import { ALL_EVENT } from "../constants/all-event.constant";
 import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
+import { itemCreatedEventType } from "../constants/item-created-event-type.constant";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -338,7 +339,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
 
         this.isInitialised = true;
-        this.emitBubblingEvent("itemCreated");
+        this.emitBubblingEvent(itemCreatedEventType);
         this.emitBubblingEvent(this.type + "Created");
     }
 
