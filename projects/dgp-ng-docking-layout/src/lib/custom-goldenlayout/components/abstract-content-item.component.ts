@@ -58,12 +58,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
                   functionArguments?: any[],
                   bottomUp?: boolean,
                   skipSelf?: boolean) {
-        let i: number;
-
         if (bottomUp !== true && skipSelf !== true) {
             this[functionName].apply(this, functionArguments || []);
         }
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
         }
         if (bottomUp === true && skipSelf !== true) {
@@ -80,13 +78,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
          * Get the position of the item that's to be removed within all content items this node contains
          */
         const index = this.contentItems.indexOf(contentItem);
-
-        /*
-         * Make sure the content item to be removed is actually a child of this item
-         */
-        if (index === -1) {
-            throw new Error("Can't remove child item. Unknown content item");
-        }
 
         /**
          * Call ._$destroy on the content item. this also calls ._$destroy on all its children
