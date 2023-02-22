@@ -10,6 +10,7 @@ import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../constants/sides.constant";
 import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
+import { AreaSides } from "../models/area.model";
 
 export enum DropSegment {
     Header = "header",
@@ -20,16 +21,9 @@ export enum DropSegment {
     Right = "right"
 }
 
-export interface Area {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-}
-
 export interface Dimensions {
-    hoverArea: Area;
-    highlightArea: Area;
+    hoverArea: AreaSides;
+    highlightArea: AreaSides;
 }
 
 export interface ContentAreaDimensions {
@@ -231,13 +225,13 @@ export class StackComponent extends AbstractContentItemComponent {
      * It was dropped on either the stacks header or the top, right, bottom or left bit of the content area
      * (which one of those is stored in this._dropSegment). Now, if the user has dropped on the header the case
      * is relatively clear: We add the item to the existing stack... job done (might be good to have
-     * tab reordering at some point, but lets not sweat it right now)
+     * tab reordering at some point, but let's not sweat it right now)
      *
      * If the item was dropped on the content part things are a bit more complicated. If it was dropped on either the
      * top or bottom region we need to create a new column and place the items accordingly.
      * Unless, of course if the stack is already within a column... in which case we want
      * to add the newly created item to the existing column...
-     * either prepend or append it, depending on wether its top or bottom.
+     * either prepend or append it, depending on whether its top or bottom.
      *
      * Same thing for rows and left / right drop segments... so in total there are 9 things that can potentially happen
      * (left, top, right, bottom) * is child of the right parent (row, column) + header drop
