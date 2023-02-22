@@ -49,7 +49,7 @@ export interface ContentAreaDimensions {
 export class StackComponent extends AbstractContentItemComponent {
     private _activeContentItem: AbstractContentItemComponent;
     private _dropSegment: keyof ContentAreaDimensions;
-    private _contentAreaDimensions: ContentAreaDimensions;
+    _contentAreaDimensions: ContentAreaDimensions;
     private _dropIndex: number;
     header: HeaderComponent;
 
@@ -207,9 +207,7 @@ export class StackComponent extends AbstractContentItemComponent {
         isClosable = this.header._isClosable();
 
         for (i = 0, len = this.contentItems.length; i < len; i++) {
-            if (!isClosable) {
-                break;
-            }
+            if (!isClosable) break;
 
             isClosable = this.contentItems[i].config.isClosable;
         }
@@ -244,7 +242,7 @@ export class StackComponent extends AbstractContentItemComponent {
      * Same thing for rows and left / right drop segments... so in total there are 9 things that can potentially happen
      * (left, top, right, bottom) * is child of the right parent (row, column) + header drop
      */
-    _$onDrop(contentItem) {
+    _$onDrop(contentItem: AbstractContentItemComponent) {
 
         /*
          * The item was dropped on the header area. Just add it as a child of this stack and

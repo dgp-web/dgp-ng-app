@@ -4,6 +4,7 @@ import { getAllContentItems } from "../functions/content-item/get-all-content-it
 import { createRootItemAreas } from "../functions/areas/create-content-root-item-areas.function";
 import { findArea } from "../functions/areas/find-area.function";
 import { Injectable } from "@angular/core";
+import { StackComponent } from "../components/stack.component";
 
 @Injectable({
     providedIn: "root"
@@ -33,9 +34,7 @@ export class AreaService {
 
         for (i = 0; i < allContentItems.length; i++) {
 
-            if (!(allContentItems[i].isStack)) {
-                continue;
-            }
+            if (!(allContentItems[i].isStack)) continue;
 
             area = allContentItems[i]._$getArea();
 
@@ -46,7 +45,7 @@ export class AreaService {
                 this.itemAreas.push(area);
                 const header: any = {};
                 Object.assign(header, area);
-                Object.assign(header, (area.contentItem as any)._contentAreaDimensions.header.highlightArea); // TODO: Investigate typing
+                Object.assign(header, (area.contentItem as StackComponent)._contentAreaDimensions.header.highlightArea);
                 header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
                 this.itemAreas.push(header);
             }
