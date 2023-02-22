@@ -111,11 +111,9 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
     _$init() {
-        let i, initialItem;
+        if (this.isInitialised === true) return;
 
-        if (this.isInitialised === true) {
-            return;
-        }
+        let i, initialItem;
 
         super._$init();
 
@@ -126,10 +124,6 @@ export class StackComponent extends AbstractContentItemComponent {
 
         if (this.contentItems.length > 0) {
             initialItem = this.contentItems[this.config.activeItemIndex || 0];
-
-            if (!initialItem) {
-                throw new Error("Configured activeItemIndex out of bounds");
-            }
             this.setActiveContentItem(initialItem);
         }
 
@@ -144,10 +138,6 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
     setActiveContentItem(contentItem) {
-        if (new LayoutManagerUtilities().indexOf(contentItem, this.contentItems) === -1) {
-            throw new Error("contentItem is not a child of this stack");
-        }
-
         if (this._activeContentItem !== null) {
             this._activeContentItem._$hide();
         }
