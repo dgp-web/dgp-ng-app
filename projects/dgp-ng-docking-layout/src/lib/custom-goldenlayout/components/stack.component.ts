@@ -468,7 +468,7 @@ export class StackComponent extends AbstractContentItemComponent {
         return getArea.call(this, this.element);
     }
 
-    _highlightHeaderDropZone(x) {
+    private _highlightHeaderDropZone(x) {
         let i,
             tabElement,
             tabsLength = this.header.tabs.length,
@@ -550,11 +550,11 @@ export class StackComponent extends AbstractContentItemComponent {
         });
     }
 
-    _resetHeaderDropZone() {
+    private _resetHeaderDropZone() {
         this.layoutManager.tabDropPlaceholder.remove();
     }
 
-    _setupHeaderPosition() {
+    private _setupHeaderPosition() {
         const side = sides.indexOf(this._header.show) >= 0 && this._header.show;
         this.header.element.toggle(!!this._header.show);
         this._side = side;
@@ -570,7 +570,7 @@ export class StackComponent extends AbstractContentItemComponent {
         }
     }
 
-    _highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
+    private _highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
         const highlightArea = this._contentAreaDimensions[segment].highlightArea;
         this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
         this._dropSegment = segment;
