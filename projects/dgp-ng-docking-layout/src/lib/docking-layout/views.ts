@@ -98,14 +98,7 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
         render() {
             return `
                 <li class="lm_tab nav-item">
-                    <a class="lm_title nav-link">
-                    <button type="button"
-                            class="close"
-                            aria-label="Close"
-                            style="cursor:pointer;margin-left:16px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </a>
+                    <a class="lm_title nav-link"></a>
                 </li>
             `;
         }

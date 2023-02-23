@@ -23,12 +23,10 @@ export class TabComponent {
     contentItem: AbstractContentItemComponent;
     element: any;
     private titleElement: any;
-    private closeElement: any;
     private isActive: any;
     private _layoutManager: any;
     private _dragListener: DragListenerDirective;
     private _onTabClickFn: any;
-    private _onCloseClickFn: any;
     private rawElement: any;
 
     constructor(header, contentItem) {
@@ -40,8 +38,6 @@ export class TabComponent {
         );
         this.rawElement = this.element[0];
         this.titleElement = this.element.find(".lm_title");
-        this.closeElement = this.element.find(".close");
-        this.closeElement[contentItem.config.isClosable ? "show" : "hide"]();
         this.isActive = false;
 
         this.setTitle(contentItem.config.title);
@@ -62,7 +58,6 @@ export class TabComponent {
         }
 
         this._onTabClickFn = (x) => this._onTabClick(x);
-        this._onCloseClickFn = (x) => this._onCloseClick(x);
 
         this.rawElement.addEventListener("mousedown", this._onTabClickFn, {
             passive: true
@@ -70,13 +65,6 @@ export class TabComponent {
         this.rawElement.addEventListener("touchstart", this._onTabClickFn, {
             passive: true
         });
-
-        if (this.contentItem.config.isClosable) {
-            this.closeElement.on("click touchstart", this._onCloseClickFn);
-            this.closeElement.on("mousedown", this._onCloseMousedown);
-        } else {
-            this.closeElement.remove();
-        }
 
         (this.contentItem as any).tab = this;
         this.contentItem.emit("tab", this);
@@ -135,7 +123,6 @@ export class TabComponent {
         this.rawElement.removeEventListener("mousedown", this._onTabClickFn);
         this.rawElement.removeEventListener("touchstart", this._onTabClickFn);
 
-        this.closeElement.off("click touchstart", this._onCloseClickFn);
         if (this._dragListener) {
             this.contentItem.off("destroy", this._dragListener.destroy, this._dragListener);
             this._dragListener = null;
