@@ -244,6 +244,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     /**
      * Returns the area the component currently occupies in the format
+     * TODO: This should belong to Root and Stack only
      */
     getArea(element?: JQuery): Area {
         element = element || this.element;
@@ -258,7 +259,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
             x2: offset.left + width,
             y2: offset.top + height,
             surface: width * height,
-            contentItem: this
+            contentItem: this as any
         };
     }
 

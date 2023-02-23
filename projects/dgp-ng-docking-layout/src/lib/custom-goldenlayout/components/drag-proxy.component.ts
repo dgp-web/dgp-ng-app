@@ -6,6 +6,7 @@ import { DockingLayoutService } from "../docking-layout.service";
 import { EventEmitter } from "../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../models/drag-event.model";
+import { Area } from "../models/area.model";
 
 /**
  * This class creates a temporary container
@@ -14,7 +15,7 @@ import { DragEvent } from "../models/drag-event.model";
  */
 export class DragProxy extends EventEmitter {
 
-    _area = null;
+    _area: Area = null;
     _lastValidArea = null;
     $element;
     _sided;

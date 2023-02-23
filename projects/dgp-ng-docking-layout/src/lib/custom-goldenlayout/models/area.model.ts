@@ -1,4 +1,4 @@
-import { AbstractContentItemComponent } from "../components/abstract-content-item.component";
+import { DropTarget } from "./drop-target.model";
 
 export interface AreaSides {
     readonly x1: number | string;
@@ -14,5 +14,5 @@ export interface AreaSize extends AreaSides {
 export interface Area extends AreaSize {
     readonly surface: number;
     readonly side?: keyof AreaSides;
-    readonly contentItem: AbstractContentItemComponent;
+    readonly contentItem: DropTarget;
 }
