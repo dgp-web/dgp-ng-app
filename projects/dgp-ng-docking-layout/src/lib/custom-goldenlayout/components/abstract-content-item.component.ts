@@ -11,6 +11,8 @@ import { itemCreatedEventType } from "../constants/item-created-event-type.const
 import { beforeItemDestroyedEventType } from "../constants/before-item-destroyed-event-type.constant";
 import { itemDestroyedEventType } from "../constants/item-destroyed-event-type.constant";
 import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
+import { Many } from "data-modeling";
+import { StackComponent } from "./stack.component";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -200,38 +202,8 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     /****************************************
-     * SELECTOR
-     ****************************************/
-    getItemsByFilter(filter) {
-        const result = [];
-        const next = function (contentItem) {
-            for (let i = 0; i < contentItem.contentItems.length; i++) {
-
-                if (filter(contentItem.contentItems[i]) === true) {
-                    result.push(contentItem.contentItems[i]);
-                }
-
-                next(contentItem.contentItems[i]);
-            }
-        };
-
-        next(this);
-        return result;
-    }
-
-    getItemsByType(type: string) {
-        return this._$getItemsByProperty("type", type);
-    }
-
-    /****************************************
      * PACKAGE PRIVATE
      ****************************************/
-    _$getItemsByProperty(key: string, value) {
-        return this.getItemsByFilter(function (item) {
-            return item[key] === value;
-        });
-    }
-
     //noinspection TsLint
     _$setParent(parent: AbstractContentItemComponent) {
         this.parent = parent;
@@ -254,7 +226,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     private callOnActiveComponents(methodName: string) {
-        const stacks = this.getItemsByType("stack");
+        const stacks = this.contentItems.filter(x => x.config.type === "stack") as unknown as Many<StackComponent>;
 
         for (let i = 0; i < stacks.length; i++) {
             let activeContentItem = stacks[i].getActiveContentItem();
