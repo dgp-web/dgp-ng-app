@@ -326,7 +326,6 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
     /**
      * Returns the area the component currently occupies in the format
-     * TODO: This should belong to Root and Stack only
      */
     private getAreaInternal(element?: JQuery): Area {
         element = element || this.element;
@@ -345,7 +344,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         };
     }
 
-    getArea() {
+    getArea(): Area {
         if (this.element.is(":visible") === false) {
             return null;
         }
