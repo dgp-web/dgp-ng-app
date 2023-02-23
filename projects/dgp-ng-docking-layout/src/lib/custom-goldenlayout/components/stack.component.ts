@@ -12,6 +12,10 @@ import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
 import { DropSegment } from "../models/drop-segment.model";
 import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
+import { lmLeftClassName } from "../constants/lm-left-class-name.constant";
+import { lmHeaderClassName } from "../constants/lm-header-class-name.constant";
+import { lmBottomClassName } from "../constants/lm-bottom-class-name.constant";
+import { lmRightClassName } from "../constants/lm-right-class-name.constant";
 
 @Component({
     selector: "dgp-stack",
@@ -87,7 +91,7 @@ export class StackComponent extends AbstractContentItemComponent {
                 .height(contentHeight);
         }
         this.emit("resize");
-        this.emitBubblingEvent("stateChanged");
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
     _$init() {
@@ -495,11 +499,11 @@ export class StackComponent extends AbstractContentItemComponent {
         this.header.element.toggle(!!this._header.show);
         this._side = side;
         this._sided = [Side.Right, Side.Left].indexOf(this._side) >= 0;
-        this.element.removeClass("lm_left lm_right lm_bottom");
+        this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
         }
-        if (this.element.find(".lm_header").length && this.childElementContainer) {
+        if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
             const headerPosition = [Side.Right, Side.Bottom].indexOf(this._side) >= 0 ? "before" : "after";
             this.header.element[headerPosition](this.childElementContainer);
             this.callDownwards("setSize");
