@@ -11,7 +11,6 @@ import { itemCreatedEventType } from "../constants/item-created-event-type.const
 import { beforeItemDestroyedEventType } from "../constants/before-item-destroyed-event-type.constant";
 import { itemDestroyedEventType } from "../constants/item-destroyed-event-type.constant";
 import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
-import { Many } from "data-modeling";
 import { StackComponent } from "./stack.component";
 
 /**
@@ -225,16 +224,11 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.updateSize();
     }
 
-    private callOnActiveComponents(methodName: string) {
-        const stacks = this.contentItems.filter(x => x.config.type === "stack") as unknown as Many<StackComponent>;
-
-        for (let i = 0; i < stacks.length; i++) {
-            let activeContentItem = stacks[i].getActiveContentItem();
-
-            if (activeContentItem && activeContentItem.isComponent) {
-                activeContentItem.container[methodName]();
-            }
-        }
+    private callOnActiveComponents(methodName: string): void {
+        this.contentItems.filter(x => x.config.type === "stack")
+            .map(x => x as StackComponent)
+            .map(stack => stack.getActiveContentItem())
+            .forEach(component => component[methodName]());
     }
 
     /**
