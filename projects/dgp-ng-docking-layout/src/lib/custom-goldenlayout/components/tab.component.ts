@@ -5,6 +5,8 @@ import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
+import { activeClassName } from "../constants/active-class-name.constant";
+import { bootstrapActiveClassName } from "../constants/bootstrap-active-class-name.constant";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -67,18 +69,17 @@ export class TabComponent {
         this.isActive = isActive;
 
         if (isActive) {
-            this.element.addClass("lm_active");
+            this.element.addClass(activeClassName);
         } else {
-            this.element.removeClass("lm_active");
+            this.element.removeClass(activeClassName);
         }
 
-        // modified
         if (isActive) {
             this.element.find("a")
-                .addClass("active");
+                .addClass(bootstrapActiveClassName);
         } else {
             this.element.find("a")
-                .removeClass("active");
+                .removeClass(bootstrapActiveClassName);
         }
     }
 
@@ -117,3 +118,4 @@ export class TabComponent {
     }
 
 }
+
