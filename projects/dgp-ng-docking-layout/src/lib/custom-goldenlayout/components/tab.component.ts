@@ -6,12 +6,6 @@ import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
-export abstract class JQueryComponent {
-
-    private readonly element: JQuery;
-
-}
-
 /**
  * Represents an individual tab within a Stack's header
  */
@@ -19,20 +13,19 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
-    private header: any;
-    contentItem: AbstractContentItemComponent;
-    element: any;
-    private titleElement: any;
-    private isActive: any;
+    element: JQuery<HTMLElement>;
+    private titleElement: JQuery<HTMLElement>;
+    private isActive: boolean;
     private _layoutManager: any;
     private _dragListener: DragListenerDirective;
     private _onTabClickFn: any;
-    private rawElement: any;
+    private rawElement: HTMLElement;
 
-    constructor(header, contentItem) {
+    constructor(
+        private readonly header: any,
+        readonly contentItem: AbstractContentItemComponent
+    ) {
 
-        this.header = header;
-        this.contentItem = contentItem;
         this.element = $(
             dockingLayoutViewMap.tab.render()
         );
@@ -81,17 +74,16 @@ export class TabComponent {
      * its title attribute to a pure text representation (without
      * html tags) of the same string.
      */
-    setTitle(title) {
+    setTitle(title: string) {
         this.element.attr("title", stripHtmlTags(title));
         this.titleElement.append(title);
-        // this.titleElement.html( title );
     }
 
     /**
      * Sets this tab's active state. To programmatically
      * switch tabs, use header.setActiveContentItem( item ) instead.
      */
-    setActive(isActive) {
+    setActive(isActive: boolean) {
         if (isActive === this.isActive) {
             return;
         }
@@ -113,9 +105,6 @@ export class TabComponent {
         }
     }
 
-    /**
-     * Destroys the tab
-     */
     destroy() {
 
         this.subscriptions.forEach(x => x.unsubscribe());
@@ -130,9 +119,6 @@ export class TabComponent {
         this.element.remove();
     }
 
-    /**
-     * Callback for the DragListener
-     */
     _onDragStart(coordinates: Vector2) {
         // tslint:disable-next-line:no-unused-expression
         new DragProxy(
@@ -144,39 +130,13 @@ export class TabComponent {
         );
     }
 
-    /**
-     * Callback when the tab is clicked
-     */
     _onTabClick(event) {
-        // left mouse button or tap
         if (event.button === 0 || event.type === "touchstart") {
             const activeContentItem = this.header.parent.getActiveContentItem();
             if (this.contentItem !== activeContentItem) {
                 this.header.parent.setActiveContentItem(this.contentItem);
             }
-
-            // middle mouse button
-        } else if (event.button === 1 && this.contentItem.config.isClosable) {
-            this._onCloseClick(event);
         }
-    }
-
-    /**
-     * Callback when the tab's close button is
-     * clicked
-     */
-    _onCloseClick(event) {
-        event.stopPropagation();
-        this.header.parent.removeChild(this.contentItem);
-    }
-
-
-    /**
-     * Callback to capture tab close button mousedown
-     * to prevent tab from activating.
-     */
-    _onCloseMousedown(event) {
-        event.stopPropagation();
     }
 
 }
