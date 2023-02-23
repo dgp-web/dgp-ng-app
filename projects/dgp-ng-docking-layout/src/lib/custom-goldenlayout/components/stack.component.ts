@@ -16,6 +16,8 @@ import { lmLeftClassName } from "../constants/lm-left-class-name.constant";
 import { lmHeaderClassName } from "../constants/lm-header-class-name.constant";
 import { lmBottomClassName } from "../constants/lm-bottom-class-name.constant";
 import { lmRightClassName } from "../constants/lm-right-class-name.constant";
+import { resizeEventType } from "../constants/resize-event-type.constant";
+import { activeContentItemChangedEventType } from "../constants/active-content-item-changed-event-type.constant";
 
 @Component({
     selector: "dgp-stack",
@@ -92,7 +94,7 @@ export class StackComponent extends AbstractContentItemComponent {
             this.contentItems[i].element.width(contentWidth)
                 .height(contentHeight);
         }
-        this.emit("resize");
+        this.emit(resizeEventType);
         this.emitBubblingEvent(stateChangedEventType);
     }
 
@@ -131,9 +133,9 @@ export class StackComponent extends AbstractContentItemComponent {
         this.activeContentItem = contentItem;
         this.header.setActiveContentItem(contentItem);
         contentItem._$show();
-        this.emit("activeContentItemChanged", contentItem);
-        this.layoutManager.emit("activeContentItemChanged", contentItem);
-        this.emitBubblingEvent("stateChanged");
+        this.emit(activeContentItemChangedEventType, contentItem);
+        this.layoutManager.emit(activeContentItemChangedEventType, contentItem);
+        this.emitBubblingEvent(stateChangedEventType);
 
         if ((this.config as StackConfiguration).onSelectedItemChange) {
             (this.config as StackConfiguration).onSelectedItemChange(contentItem.config.id);
