@@ -6,6 +6,7 @@ import { findArea } from "../functions/areas/find-area.function";
 import { Injectable } from "@angular/core";
 import { StackComponent } from "../components/stack.component";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { Mutable } from "data-modeling";
 
 @Injectable({
     providedIn: "root"
@@ -35,11 +36,11 @@ export class AreaService {
                         itemAreas = itemAreas.concat(area);
                     } else {
                         itemAreas.push(area);
-                        const header: any = {};
+                        const header: Partial<Mutable<Area>> = {};
                         Object.assign(header, area);
                         Object.assign(header, (area.contentItem as StackComponent).contentAreaDimensions.header.highlightArea);
-                        header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
-                        itemAreas.push(header);
+                        header.surface = (+header.x2 - +header.x1) * (+header.y2 - +header.y1);
+                        itemAreas.push(header as Area);
                     }
                 });
 
