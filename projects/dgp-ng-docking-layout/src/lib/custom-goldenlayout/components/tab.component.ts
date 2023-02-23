@@ -22,7 +22,7 @@ export class TabComponent {
     private readonly dockingLayoutService = this.contentItem.layoutManager;
     private isActive = false;
     private dragListener: DragListenerDirective;
-    private readonly onTabClickFn: (event) => void;
+    private readonly onTabClickFn = (x) => this.onTabClick(x);
 
     constructor(
         private readonly header: HeaderComponent,
@@ -40,8 +40,6 @@ export class TabComponent {
             this.subscriptions.push(dragStartSubscription);
             this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
         }
-
-        this.onTabClickFn = (x) => this.onTabClick(x);
 
         this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
             passive: true
