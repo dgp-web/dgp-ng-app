@@ -127,7 +127,7 @@ export class TabComponent {
     /**
      * Destroys the tab
      */
-    _$destroy() {
+    destroy() {
 
         this.subscriptions.forEach(x => x.unsubscribe());
 

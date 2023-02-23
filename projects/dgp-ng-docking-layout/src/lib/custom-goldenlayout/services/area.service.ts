@@ -27,7 +27,7 @@ export class AreaService {
          * will used for every gap in the layout, e.g. splitters
          */
         if (allContentItems.length === 1) {
-            this.itemAreas.push(root._$getArea());
+            this.itemAreas.push(root.getArea());
             return;
         }
         this.itemAreas = createRootItemAreas(root);
@@ -36,7 +36,7 @@ export class AreaService {
 
             if (!(allContentItems[i].isStack)) continue;
 
-            area = allContentItems[i]._$getArea();
+            area = allContentItems[i].getArea();
 
             if (area === null) {
             } else if (area instanceof Array) {

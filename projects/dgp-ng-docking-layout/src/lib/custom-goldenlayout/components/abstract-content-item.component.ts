@@ -84,10 +84,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         const index = this.contentItems.indexOf(contentItem);
 
         /**
-         * Call ._$destroy on the content item. this also calls ._$destroy on all its children
+         * Call .destroy on the content item. this also calls .destroy on all its children
          */
         if (keepChild !== true) {
-            this.contentItems[index]._$destroy();
+            this.contentItems[index].destroy();
         }
 
         /**
@@ -134,7 +134,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         contentItem.parent = this;
 
         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem._$init();
+            contentItem.init();
         }
     }
 
@@ -142,7 +142,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * Replaces oldChild with newChild. this used to use jQuery.replaceWith... which for
      * some reason removes all event listeners, so isn't really an option.
      */
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, _$destroyOldChild?: boolean) {
+    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, destroyOldChild?: boolean) {
 
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;
@@ -152,9 +152,9 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         /*
          * Optionally destroy the old content item
          */
-        if (_$destroyOldChild === true) {
+        if (destroyOldChild === true) {
             oldChild.parent = null;
-            oldChild._$destroy();
+            oldChild.destroy();
         }
 
         /*
@@ -172,7 +172,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            newChild._$init();
+            newChild.init();
         }
 
         this.callDownwards("setSize");
@@ -212,13 +212,13 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.dropTargetIndicator.highlightArea(area);
     }
 
-    _$hide() {
+    hide() {
         this.callOnActiveComponents("hide");
         this.element.hide();
         this.layoutManager.updateSize();
     }
 
-    _$show() {
+    show() {
         this.callOnActiveComponents("show");
         this.element.show();
         this.layoutManager.updateSize();
@@ -234,10 +234,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Destroys this item ands its children
      */
-    _$destroy() {
+    destroy() {
         this.unsubscribe();
         this.emitBubblingEvent(beforeItemDestroyedEventType);
-        this.callDownwards("_$destroy", [], true, true);
+        this.callDownwards("destroy", [], true, true);
         this.element.remove();
         this.emitBubblingEvent(itemDestroyedEventType);
     }
@@ -245,7 +245,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     /**
      * Returns the area the component currently occupies in the format
      */
-    _$getArea(element?: JQuery): Area {
+    getArea(element?: JQuery): Area {
         element = element || this.element;
 
         const offset = element.offset(),
@@ -271,7 +271,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      *
      * @package private
      */
-    _$init(): void {
+    init(): void {
         for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
         }

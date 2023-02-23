@@ -113,7 +113,7 @@ export class HeaderComponent extends EventEmitter {
     removeTab(contentItem) {
         for (let i = 0; i < this.tabs.length; i++) {
             if (this.tabs[i].contentItem === contentItem) {
-                this.tabs[i]._$destroy();
+                this.tabs[i].destroy();
                 this.tabs.splice(i, 1);
                 return;
             }
@@ -200,11 +200,11 @@ export class HeaderComponent extends EventEmitter {
      *
      * @returns {void}
      */
-    _$destroy() {
+    destroy() {
         this.emit("destroy", this);
 
         for (let i = 0; i < this.tabs.length; i++) {
-            this.tabs[i]._$destroy();
+            this.tabs[i].destroy();
         }
         $(document)
             .off("mouseup", this.hideAdditionalTabsDropdown);

@@ -20,7 +20,7 @@ export class SplitterComponent {
         this.dragListener = new DragListenerDirective(this.element);
     }
 
-    _$destroy() {
+    destroy() {
         this.element.remove();
     }
 

@@ -99,16 +99,16 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         this.emitBubblingEvent(stateChangedEventType);
     }
 
-    _$init() {
+    init() {
         if (this.isInitialised === true) return;
 
         let i, initialItem;
 
-        super._$init();
+        super.init();
 
         for (i = 0; i < this.contentItems.length; i++) {
             this.header.createTab(this.contentItems[i]);
-            this.contentItems[i]._$hide();
+            this.contentItems[i].hide();
         }
 
         if (this.contentItems.length > 0) {
@@ -128,12 +128,12 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
     setActiveContentItem(contentItem: AbstractContentItemComponent) {
         if (this.activeContentItem !== null) {
-            this.activeContentItem._$hide();
+            this.activeContentItem.hide();
         }
 
         this.activeContentItem = contentItem;
         this.header.setActiveContentItem(contentItem);
-        contentItem._$show();
+        contentItem.show();
         this.emit(activeContentItemChangedEventType, contentItem);
         this.layoutManager.emit(activeContentItemChangedEventType, contentItem);
         this.emitBubblingEvent(stateChangedEventType);
@@ -196,9 +196,9 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         this.header._$setClosable(isClosable);
     }
 
-    _$destroy() {
-        super._$destroy();
-        this.header._$destroy();
+    destroy() {
+        super.destroy();
+        this.header.destroy();
 
         if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
             this.subscription.unsubscribe();
@@ -265,7 +265,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
-            stack._$init();
+            stack.init();
             stack.addChild(contentItem);
             contentItem = stack;
         }
@@ -324,12 +324,12 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
     }
 
-    _$getArea() {
+    getArea() {
         if (this.element.is(":visible") === false) {
             return null;
         }
 
-        const getArea = super._$getArea,
+        const getArea = super.getArea,
             headerArea = getArea.call(this, this.header.element),
             contentArea = getArea.call(this, this.childElementContainer),
             contentWidth = contentArea.x2 - contentArea.x1,

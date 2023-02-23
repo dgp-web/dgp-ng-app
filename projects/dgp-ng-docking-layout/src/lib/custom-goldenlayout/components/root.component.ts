@@ -56,7 +56,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         this._containerElement = this.containerElement;
         this._containerElement.append(this.element);
 
-        this.callDownwards("_$init");
+        this.callDownwards("init");
 
         this.layoutManager.registerInitialization();
     }
@@ -105,7 +105,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
-            stack._$init();
+            stack.init();
             stack.addChild(contentItem);
             contentItem = stack;
         }

@@ -112,7 +112,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
          * to be the first in the row/column
          */
         if (this.splitters[splitterIndex]) {
-            this.splitters[splitterIndex]._$destroy();
+            this.splitters[splitterIndex].destroy();
             this.splitters.splice(splitterIndex, 1);
         }
 
@@ -166,17 +166,17 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * in between them
      *
      * @package private
-     * @override AbstractContentItem._$init
+     * @override AbstractContentItem.init
      * @returns {void}
      */
-    _$init(): void {
+    init(): void {
         if (this.isInitialised === true) {
             return;
         }
 
         let i;
 
-        AbstractContentItemComponent.prototype._$init.call(this);
+        AbstractContentItemComponent.prototype.init.call(this);
 
         for (i = 0; i < this.contentItems.length - 1; i++) {
             this.contentItems[i].element.after(this.createSplitter(i).element);
