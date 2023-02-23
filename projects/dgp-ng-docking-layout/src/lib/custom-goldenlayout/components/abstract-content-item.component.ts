@@ -8,6 +8,9 @@ import { ALL_EVENT } from "../constants/all-event.constant";
 import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
 import { itemCreatedEventType } from "../constants/item-created-event-type.constant";
+import { beforeItemDestroyedEventType } from "../constants/before-item-destroyed-event-type.constant";
+import { itemDestroyedEventType } from "../constants/item-destroyed-event-type.constant";
+import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -267,10 +270,10 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      */
     _$destroy() {
         this.unsubscribe();
-        this.emitBubblingEvent("beforeItemDestroyed");
+        this.emitBubblingEvent(beforeItemDestroyedEventType);
         this.callDownwards("_$destroy", [], true, true);
         this.element.remove();
-        this.emitBubblingEvent("itemDestroyed");
+        this.emitBubblingEvent(itemDestroyedEventType);
     }
 
     /**
@@ -309,7 +312,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         this.isInitialised = true;
         this.emitBubblingEvent(itemCreatedEventType);
-        this.emitBubblingEvent(this.config.type + "Created");
+        this.emitBubblingEvent(createItemTypeCreatedEventType(this.config.type));
     }
 
     /**
