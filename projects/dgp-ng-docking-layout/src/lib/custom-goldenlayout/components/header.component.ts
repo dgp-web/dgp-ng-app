@@ -11,7 +11,7 @@ export class HeaderComponent extends EventEmitter {
 
     readonly element: any;
     readonly rawElement: any;
-    readonly tabs: any;
+    readonly tabs: Array<TabComponent>;
     activeContentItem: any;
     private layoutManager: any;
     private tabsContainer: any;
@@ -70,7 +70,7 @@ export class HeaderComponent extends EventEmitter {
      *
      * @returns {void}
      */
-    createTab(contentItem, index?: number) {
+    createTab(contentItem: AbstractContentItemComponent, index?: number): void {
         let tab, i;
 
         // If there's already a tab relating to the

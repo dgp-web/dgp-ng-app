@@ -19,8 +19,8 @@ export class TabComponent {
     private subscriptions: Subscription[] = [];
 
     private header: any;
-    private contentItem: any;
-    private element: any;
+    contentItem: any;
+     element: any;
     private titleElement: any;
     private closeElement: any;
     private isActive: any;
