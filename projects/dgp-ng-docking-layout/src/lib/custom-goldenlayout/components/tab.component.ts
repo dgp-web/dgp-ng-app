@@ -4,6 +4,7 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { DockingLayoutService } from "../docking-layout.service";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -14,9 +15,9 @@ export class TabComponent {
 
     element: JQuery<HTMLElement>;
     private isActive: boolean;
-    private _layoutManager: any;
-    private _dragListener: DragListenerDirective;
-    private _onTabClickFn: any;
+    private readonly dockingLayoutService: DockingLayoutService;
+    private dragListener: DragListenerDirective;
+    private readonly onTabClickFn: (event) => void;
     private rawElement: HTMLElement;
 
     constructor(
@@ -32,26 +33,26 @@ export class TabComponent {
         this.rawElement = this.element[0];
         this.isActive = false;
 
-        this._layoutManager = this.contentItem.layoutManager;
+        this.dockingLayoutService = this.contentItem.layoutManager;
 
         if (
-            this._layoutManager.config.settings.reorderEnabled === true &&
+            this.dockingLayoutService.config.settings.reorderEnabled === true &&
             contentItem.config.reorderEnabled === true
         ) {
-            this._dragListener = new DragListenerDirective(this.element);
-            const dragStartSubscription = this._dragListener
+            this.dragListener = new DragListenerDirective(this.element);
+            const dragStartSubscription = this.dragListener
                 .dragStart$
-                .subscribe(x => this._onDragStart(x));
+                .subscribe(x => this.onDragStart(x));
             this.subscriptions.push(dragStartSubscription);
-            this.contentItem.on("destroy", this._dragListener.destroy, this._dragListener);
+            this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
         }
 
-        this._onTabClickFn = (x) => this._onTabClick(x);
+        this.onTabClickFn = (x) => this.onTabClick(x);
 
-        this.rawElement.addEventListener("mousedown", this._onTabClickFn, {
+        this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
             passive: true
         });
-        this.rawElement.addEventListener("touchstart", this._onTabClickFn, {
+        this.rawElement.addEventListener("touchstart", this.onTabClickFn, {
             passive: true
         });
 
@@ -70,9 +71,7 @@ export class TabComponent {
      * switch tabs, use header.setActiveContentItem( item ) instead.
      */
     setActive(isActive: boolean) {
-        if (isActive === this.isActive) {
-            return;
-        }
+        if (isActive === this.isActive) return;
         this.isActive = isActive;
 
         if (isActive) {
@@ -95,28 +94,28 @@ export class TabComponent {
 
         this.subscriptions.forEach(x => x.unsubscribe());
 
-        this.rawElement.removeEventListener("mousedown", this._onTabClickFn);
-        this.rawElement.removeEventListener("touchstart", this._onTabClickFn);
+        this.rawElement.removeEventListener("mousedown", this.onTabClickFn);
+        this.rawElement.removeEventListener("touchstart", this.onTabClickFn);
 
-        if (this._dragListener) {
-            this.contentItem.off("destroy", this._dragListener.destroy, this._dragListener);
-            this._dragListener = null;
+        if (this.dragListener) {
+            this.contentItem.off("destroy", this.dragListener.destroy, this.dragListener);
+            this.dragListener = null;
         }
         this.element.remove();
     }
 
-    _onDragStart(coordinates: Vector2) {
+    onDragStart(coordinates: Vector2) {
         // tslint:disable-next-line:no-unused-expression
         new DragProxy(
             coordinates,
-            this._dragListener,
-            this._layoutManager,
+            this.dragListener,
+            this.dockingLayoutService,
             this.contentItem,
             this.header.parent
         );
     }
 
-    _onTabClick(event) {
+    onTabClick(event) {
         if (event.button === 0 || event.type === "touchstart") {
             const activeContentItem = this.header.parent.getActiveContentItem();
             if (this.contentItem !== activeContentItem) {
