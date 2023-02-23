@@ -114,7 +114,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             initialItem = this.contentItems[this.config.activeItemIndex || 0];
             this.setActiveContentItem(initialItem);
         }
-
+ 
         if (notNullOrUndefined((this.config as StackConfiguration).publishSelectedItemChange$)) {
             this.subscription = (this.config as StackConfiguration).publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
