@@ -4,6 +4,7 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { HeaderComponent } from "./header.component";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -24,7 +25,7 @@ export class TabComponent {
     private readonly onTabClickFn: (event) => void;
 
     constructor(
-        private readonly header: any,
+        private readonly header: HeaderComponent,
         readonly contentItem: AbstractContentItemComponent
     ) {
 

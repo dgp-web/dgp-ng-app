@@ -3,6 +3,7 @@ import { EventEmitter } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderButtonComponent } from "./header-button.component";
 import { TabComponent } from "./tab.component";
+import { StackComponent } from "./stack.component";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -17,7 +18,7 @@ export class HeaderComponent extends EventEmitter {
     private tabsContainer: any;
     private tabDropdownContainer: any;
     private controlsContainer: any;
-    private parent: AbstractContentItemComponent;
+    parent: StackComponent;
     private closeButton: any;
     private tabDropdownButton: any;
     private readonly hideAdditionalTabsDropdown: any;
