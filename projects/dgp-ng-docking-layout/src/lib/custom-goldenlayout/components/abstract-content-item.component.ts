@@ -243,27 +243,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     /**
-     * Returns the area the component currently occupies in the format
-     * TODO: This should belong to Root and Stack only
-     */
-    getArea(element?: JQuery): Area {
-        element = element || this.element;
-
-        const offset = element.offset(),
-            width = element.width(),
-            height = element.height();
-
-        return {
-            x1: offset.left,
-            y1: offset.top,
-            x2: offset.left + width,
-            y2: offset.top + height,
-            surface: width * height,
-            contentItem: this as any
-        };
-    }
-
-    /**
      * The tree of content items is created in two steps: First all content items are instantiated,
      * then init is called recursively from top to bottem. this is the basic init function,
      * it can be used, extended or overwritten by the content items

@@ -135,4 +135,21 @@ export class RootComponent extends AbstractContentItemComponent implements After
         }
     }
 
+     getArea(element?: JQuery): Area {
+        element = element || this.element;
+
+        const offset = element.offset(),
+            width = element.width(),
+            height = element.height();
+
+        return {
+            x1: offset.left,
+            y1: offset.top,
+            x2: offset.left + width,
+            y2: offset.top + height,
+            surface: width * height,
+            contentItem: this as any
+        };
+    }
+
 }

@@ -19,7 +19,7 @@ import { lmRightClassName } from "../constants/lm-right-class-name.constant";
 import { resizeEventType } from "../constants/resize-event-type.constant";
 import { activeContentItemChangedEventType } from "../constants/active-content-item-changed-event-type.constant";
 import { DropTarget } from "../models/drop-target.model";
-import { AreaSides } from "../models/area.model";
+import { Area, AreaSides } from "../models/area.model";
 import { GlComponent } from "./component.component";
 
 @Component({
@@ -324,12 +324,33 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
     }
 
+    /**
+     * Returns the area the component currently occupies in the format
+     * TODO: This should belong to Root and Stack only
+     */
+    private getAreaInternal(element?: JQuery): Area {
+        element = element || this.element;
+
+        const offset = element.offset(),
+            width = element.width(),
+            height = element.height();
+
+        return {
+            x1: offset.left,
+            y1: offset.top,
+            x2: offset.left + width,
+            y2: offset.top + height,
+            surface: width * height,
+            contentItem: this as any
+        };
+    }
+
     getArea() {
         if (this.element.is(":visible") === false) {
             return null;
         }
 
-        const getArea = super.getArea,
+        const getArea = this.getAreaInternal,
             headerArea = getArea.call(this, this.header.element),
             contentArea = getArea.call(this, this.childElementContainer),
             contentWidth = contentArea.x2 - contentArea.x1,

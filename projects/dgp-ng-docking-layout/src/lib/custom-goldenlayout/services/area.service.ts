@@ -36,7 +36,9 @@ export class AreaService {
 
             if (!(allContentItems[i].isStack)) continue;
 
-            area = allContentItems[i].getArea();
+            const stack = allContentItems[i] as StackComponent;
+
+            area = stack.getArea();
 
             if (area === null) {
             } else if (area instanceof Array) {
