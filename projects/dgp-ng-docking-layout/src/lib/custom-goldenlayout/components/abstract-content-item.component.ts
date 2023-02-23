@@ -239,24 +239,22 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     _$hide() {
-        this._callOnActiveComponents("hide");
+        this.callOnActiveComponents("hide");
         this.element.hide();
         this.layoutManager.updateSize();
     }
 
     _$show() {
-        this._callOnActiveComponents("show");
+        this.callOnActiveComponents("show");
         this.element.show();
         this.layoutManager.updateSize();
     }
 
-    _callOnActiveComponents(methodName: string) {
+    private callOnActiveComponents(methodName: string) {
         const stacks = this.getItemsByType("stack");
-        let activeContentItem;
-        let i;
 
-        for (i = 0; i < stacks.length; i++) {
-            activeContentItem = stacks[i].getActiveContentItem();
+        for (let i = 0; i < stacks.length; i++) {
+            let activeContentItem = stacks[i].getActiveContentItem();
 
             if (activeContentItem && activeContentItem.isComponent) {
                 activeContentItem.container[methodName]();

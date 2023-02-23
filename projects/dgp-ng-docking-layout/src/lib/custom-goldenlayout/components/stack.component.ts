@@ -20,6 +20,7 @@ import { resizeEventType } from "../constants/resize-event-type.constant";
 import { activeContentItemChangedEventType } from "../constants/active-content-item-changed-event-type.constant";
 import { DropTarget } from "../models/drop-target.model";
 import { AreaSides } from "../models/area.model";
+import { GlComponent } from "./component.component";
 
 @Component({
     selector: "dgp-stack",
@@ -114,7 +115,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             initialItem = this.contentItems[this.config.activeItemIndex || 0];
             this.setActiveContentItem(initialItem);
         }
- 
+
         if (notNullOrUndefined((this.config as StackConfiguration).publishSelectedItemChange$)) {
             this.subscription = (this.config as StackConfiguration).publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
@@ -142,7 +143,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
     }
 
-    getActiveContentItem() {
+    getActiveContentItem(): GlComponent {
         return this.header.activeContentItem;
     }
 
