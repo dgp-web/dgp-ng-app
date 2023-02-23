@@ -10,8 +10,9 @@ import {
     InjectionToken
 } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
-import { AreaSides } from "../models/area.model";
+import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
+import { DropTarget } from "../models/drop-target.model";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -26,7 +27,7 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends AbstractContentItemComponent implements AfterViewInit {
+export class RootComponent extends AbstractContentItemComponent implements AfterViewInit, DropTarget {
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -96,7 +97,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         super.highlightDropZone(x, y, area);
     }
 
-    _$onDrop(contentItem, area) {
+    _$onDrop(contentItem: AbstractContentItemComponent, area: Area) {
         let stack;
 
         if (contentItem.isComponent) {

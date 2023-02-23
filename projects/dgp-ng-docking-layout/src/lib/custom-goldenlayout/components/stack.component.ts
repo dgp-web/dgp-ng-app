@@ -18,13 +18,14 @@ import { lmBottomClassName } from "../constants/lm-bottom-class-name.constant";
 import { lmRightClassName } from "../constants/lm-right-class-name.constant";
 import { resizeEventType } from "../constants/resize-event-type.constant";
 import { activeContentItemChangedEventType } from "../constants/active-content-item-changed-event-type.constant";
+import { DropTarget } from "../models/drop-target.model";
 
 @Component({
     selector: "dgp-stack",
     template: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StackComponent extends AbstractContentItemComponent {
+export class StackComponent extends AbstractContentItemComponent implements DropTarget {
     private activeContentItem: AbstractContentItemComponent;
     private dropSegment: keyof ContentAreaDimensions;
     private dropIndex: number;
