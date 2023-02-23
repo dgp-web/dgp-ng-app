@@ -4,6 +4,7 @@ import { Vector2 } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
 export abstract class JQueryComponent {
 
@@ -19,8 +20,8 @@ export class TabComponent {
     private subscriptions: Subscription[] = [];
 
     private header: any;
-    contentItem: any;
-     element: any;
+    contentItem: AbstractContentItemComponent;
+    element: any;
     private titleElement: any;
     private closeElement: any;
     private isActive: any;
@@ -77,13 +78,13 @@ export class TabComponent {
             this.closeElement.remove();
         }
 
-        this.contentItem.tab = this;
+        (this.contentItem as any).tab = this;
         this.contentItem.emit("tab", this);
         this.contentItem.layoutManager.emit("tabCreated", this);
 
         if (this.contentItem.isComponent) {
-            this.contentItem.container.tab = this;
-            this.contentItem.container.emit("tab", this);
+            (this.contentItem as any).container.tab = this;
+            (this.contentItem as any).container.emit("tab", this);
         }
     }
 
@@ -146,9 +147,6 @@ export class TabComponent {
      * Callback for the DragListener
      */
     _onDragStart(coordinates: Vector2) {
-        if (this.contentItem.parent.isMaximised === true) {
-            this.contentItem.parent.toggleMaximise();
-        }
         // tslint:disable-next-line:no-unused-expression
         new DragProxy(
             coordinates,

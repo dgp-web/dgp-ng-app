@@ -3,7 +3,7 @@ import { DockingLayoutService } from "../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig } from "../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
-import { Area, AreaSides } from "../models/area.model";
+import { AreaSides } from "../models/area.model";
 import { ALL_EVENT } from "../constants/all-event.constant";
 import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
@@ -44,7 +44,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     throttledEvents = [stateChangedEventType];
 
     protected constructor(
-        protected readonly layoutManager: DockingLayoutService,
+        readonly layoutManager: DockingLayoutService,
         readonly config: ItemConfiguration,
         public parent: AbstractContentItemComponent
     ) {
