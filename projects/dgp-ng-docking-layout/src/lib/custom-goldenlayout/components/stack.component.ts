@@ -23,10 +23,12 @@ import { lmRightClassName } from "../constants/lm-right-class-name.constant";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StackComponent extends AbstractContentItemComponent {
-    private _activeContentItem: AbstractContentItemComponent;
-    private _dropSegment: keyof ContentAreaDimensions;
+    private activeContentItem: AbstractContentItemComponent;
+    private dropSegment: keyof ContentAreaDimensions;
+    private dropIndex: number;
+
     _contentAreaDimensions: ContentAreaDimensions;
-    private _dropIndex: number;
+
     header: HeaderComponent;
 
     subscription: Subscription;
@@ -43,7 +45,7 @@ export class StackComponent extends AbstractContentItemComponent {
         this.element = $(
             dockingLayoutViewMap.stack.render()
         );
-        this._activeContentItem = null;
+        this.activeContentItem = null;
         const cfg = dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
             show: cfg.settings.hasHeaders === true && config.hasHeaders !== false,
@@ -60,9 +62,9 @@ export class StackComponent extends AbstractContentItemComponent {
             Object.assign(this._header, config.content[0].header);
         }
 
-        this._dropSegment = null;
+        this.dropSegment = null;
         this._contentAreaDimensions = null;
-        this._dropIndex = null;
+        this.dropIndex = null;
 
         this.isStack = true;
 
@@ -73,7 +75,7 @@ export class StackComponent extends AbstractContentItemComponent {
 
         this.element.append(this.header.element);
         this.element.append(this.childElementContainer);
-        this._setupHeaderPosition();
+        this.setupHeaderPosition();
         this._$validateClosability();
 
     }
@@ -122,11 +124,11 @@ export class StackComponent extends AbstractContentItemComponent {
     }
 
     setActiveContentItem(contentItem) {
-        if (this._activeContentItem !== null) {
-            this._activeContentItem._$hide();
+        if (this.activeContentItem !== null) {
+            this.activeContentItem._$hide();
         }
 
-        this._activeContentItem = contentItem;
+        this.activeContentItem = contentItem;
         this.header.setActiveContentItem(contentItem);
         contentItem._$show();
         this.emit("activeContentItemChanged", contentItem);
@@ -160,7 +162,7 @@ export class StackComponent extends AbstractContentItemComponent {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)]);
             } else {
-                this._activeContentItem = null;
+                this.activeContentItem = null;
             }
         }
 
@@ -205,7 +207,7 @@ export class StackComponent extends AbstractContentItemComponent {
      * Ok, this one is going to be the tricky one: The user has dropped {contentItem} onto this stack.
      *
      * It was dropped on either the stacks header or the top, right, bottom or left bit of the content area
-     * (which one of those is stored in this._dropSegment). Now, if the user has dropped on the header the case
+     * (which one of those is stored in this.dropSegment). Now, if the user has dropped on the header the case
      * is relatively clear: We add the item to the existing stack... job done (might be good to have
      * tab reordering at some point, but let's not sweat it right now)
      *
@@ -224,16 +226,16 @@ export class StackComponent extends AbstractContentItemComponent {
          * The item was dropped on the header area. Just add it as a child of this stack and
          * get the hell out of this logic
          */
-        if (this._dropSegment === DropSegment.Header) {
-            this._resetHeaderDropZone();
-            this.addChild(contentItem, this._dropIndex);
+        if (this.dropSegment === DropSegment.Header) {
+            this.resetHeaderDropZone();
+            this.addChild(contentItem, this.dropIndex);
             return;
         }
 
         /*
          * The stack is empty. Let's just add the element.
          */
-        if (this._dropSegment === DropSegment.Body) {
+        if (this.dropSegment === DropSegment.Body) {
             this.addChild(contentItem);
             return;
         }
@@ -242,9 +244,9 @@ export class StackComponent extends AbstractContentItemComponent {
          * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
          * aggregate some conditions to make the if statements later on more readable
          */
-        let isVertical = this._dropSegment === DropSegment.Top || this._dropSegment === DropSegment.Bottom,
-            isHorizontal = this._dropSegment === DropSegment.Left || this._dropSegment === DropSegment.Right,
-            insertBefore = this._dropSegment === DropSegment.Top || this._dropSegment === DropSegment.Left,
+        let isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom,
+            isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right,
+            insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left,
             hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow),
             type: ItemType = isVertical ? "column" : "row",
             dimension = isVertical ? "height" : "width",
@@ -305,11 +307,11 @@ export class StackComponent extends AbstractContentItemComponent {
 
             if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
 
-                if (segment === "header") {
-                    this._dropSegment = DropSegment.Header;
-                    this._highlightHeaderDropZone(this._sided ? y : x);
+                if (segment === DropSegment.Header) {
+                    this.dropSegment = DropSegment.Header;
+                    this.highlightHeaderDropZone(this._sided ? y : x);
                 } else {
-                    this._resetHeaderDropZone();
+                    this.resetHeaderDropZone();
                     this._highlightBodyDropZone(segment);
                 }
 
@@ -340,7 +342,7 @@ export class StackComponent extends AbstractContentItemComponent {
          * If this Stack is a parent to rows, columns or other stacks only its
          * header is a valid dropzone.
          */
-        if (this._activeContentItem && this._activeContentItem.isComponent === false) {
+        if (this.activeContentItem && this.activeContentItem.isComponent === false) {
             return headerArea;
         }
 
@@ -408,7 +410,7 @@ export class StackComponent extends AbstractContentItemComponent {
         return getArea.call(this, this.element);
     }
 
-    private _highlightHeaderDropZone(x) {
+    private highlightHeaderDropZone(x: number) {
         let i,
             tabElement,
             tabsLength = this.header.tabs.length,
@@ -462,10 +464,10 @@ export class StackComponent extends AbstractContentItemComponent {
         halfX = tabLeft + tabWidth / 2;
 
         if (x < halfX) {
-            this._dropIndex = i;
+            this.dropIndex = i;
             tabElement.before(this.layoutManager.tabDropPlaceholder.$element);
         } else {
-            this._dropIndex = Math.min(i + 1, tabsLength);
+            this.dropIndex = Math.min(i + 1, tabsLength);
             tabElement.after(this.layoutManager.tabDropPlaceholder.$element);
         }
 
@@ -490,11 +492,11 @@ export class StackComponent extends AbstractContentItemComponent {
         });
     }
 
-    private _resetHeaderDropZone() {
+    private resetHeaderDropZone() {
         this.layoutManager.tabDropPlaceholder.remove();
     }
 
-    private _setupHeaderPosition() {
+    private setupHeaderPosition() {
         const side = sides.indexOf(this._header.show) >= 0 && this._header.show;
         this.header.element.toggle(!!this._header.show);
         this._side = side;
@@ -513,7 +515,7 @@ export class StackComponent extends AbstractContentItemComponent {
     private _highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
         const highlightArea = this._contentAreaDimensions[segment].highlightArea;
         this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
-        this._dropSegment = segment;
+        this.dropSegment = segment;
     }
 
 }
