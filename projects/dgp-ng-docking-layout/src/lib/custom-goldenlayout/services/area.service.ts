@@ -45,7 +45,7 @@ export class AreaService {
                 this.itemAreas.push(area);
                 const header: any = {};
                 Object.assign(header, area);
-                Object.assign(header, (area.contentItem as StackComponent)._contentAreaDimensions.header.highlightArea);
+                Object.assign(header, (area.contentItem as StackComponent).contentAreaDimensions.header.highlightArea);
                 header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
                 this.itemAreas.push(header);
             }

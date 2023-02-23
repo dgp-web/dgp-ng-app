@@ -19,6 +19,7 @@ import { lmRightClassName } from "../constants/lm-right-class-name.constant";
 import { resizeEventType } from "../constants/resize-event-type.constant";
 import { activeContentItemChangedEventType } from "../constants/active-content-item-changed-event-type.constant";
 import { DropTarget } from "../models/drop-target.model";
+import { AreaSides } from "../models/area.model";
 
 @Component({
     selector: "dgp-stack",
@@ -29,12 +30,10 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     private activeContentItem: AbstractContentItemComponent;
     private dropSegment: keyof ContentAreaDimensions;
     private dropIndex: number;
+    private subscription: Subscription;
+    private header: HeaderComponent;
 
-    _contentAreaDimensions: ContentAreaDimensions;
-
-    header: HeaderComponent;
-
-    subscription: Subscription;
+    contentAreaDimensions: ContentAreaDimensions;
 
     constructor(
         dockingLayoutService: DockingLayoutService,
@@ -66,7 +65,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
 
         this.dropSegment = null;
-        this._contentAreaDimensions = null;
+        this.contentAreaDimensions = null;
         this.dropIndex = null;
 
         this.isStack = true;
@@ -303,10 +302,11 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
      * otherwise indicate which segment of the body the dragged item would be dropped on
      */
     highlightDropZone(x, y) {
-        let segment, area;
+        let segment: keyof ContentAreaDimensions;
+        let area: AreaSides;
 
-        for (segment in this._contentAreaDimensions) {
-            area = this._contentAreaDimensions[segment].hoverArea;
+        for (segment in this.contentAreaDimensions) {
+            area = this.contentAreaDimensions[segment].hoverArea;
 
             if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
 
@@ -315,7 +315,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
                     this.highlightHeaderDropZone(this._sided ? y : x);
                 } else {
                     this.resetHeaderDropZone();
-                    this._highlightBodyDropZone(segment);
+                    this.highlightBodyDropZone(segment);
                 }
 
                 return;
@@ -334,7 +334,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
 
-        this._contentAreaDimensions = {
+        this.contentAreaDimensions = {
             header: {
                 hoverArea: headerArea,
                 highlightArea: headerArea
@@ -354,7 +354,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
          */
         if (this.contentItems.length === 0) {
 
-            this._contentAreaDimensions.body = {
+            this.contentAreaDimensions.body = {
                 hoverArea: contentArea,
                 highlightArea: contentArea
             };
@@ -362,7 +362,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             return getArea.call(this, this.element);
         }
 
-        this._contentAreaDimensions.left = {
+        this.contentAreaDimensions.left = {
             hoverArea: {
                 ...contentArea,
                 x2: contentArea.x1 + contentWidth * 0.25
@@ -373,7 +373,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             }
         };
 
-        this._contentAreaDimensions.top = {
+        this.contentAreaDimensions.top = {
             hoverArea: {
                 ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.25,
@@ -386,7 +386,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             }
         };
 
-        this._contentAreaDimensions.right = {
+        this.contentAreaDimensions.right = {
             hoverArea: {
                 ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.75
@@ -397,7 +397,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             }
         };
 
-        this._contentAreaDimensions.bottom = {
+        this.contentAreaDimensions.bottom = {
             hoverArea: {
                 ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.25,
@@ -515,8 +515,8 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
     }
 
-    private _highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
-        const highlightArea = this._contentAreaDimensions[segment].highlightArea;
+    private highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
+        const highlightArea = this.contentAreaDimensions[segment].highlightArea;
         this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
         this.dropSegment = segment;
     }
