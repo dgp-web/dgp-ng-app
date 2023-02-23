@@ -1,5 +1,4 @@
 import { Subscription } from "rxjs";
-import { stripHtmlTags } from "../../common/functions";
 import { Vector2 } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
@@ -14,7 +13,6 @@ export class TabComponent {
     private subscriptions: Subscription[] = [];
 
     element: JQuery<HTMLElement>;
-    private titleElement: JQuery<HTMLElement>;
     private isActive: boolean;
     private _layoutManager: any;
     private _dragListener: DragListenerDirective;
@@ -27,14 +25,12 @@ export class TabComponent {
     ) {
 
         this.element = $(
-            dockingLayoutViewMap.tab.render()
+            dockingLayoutViewMap.tab.render({
+                title: contentItem.config.title
+            })
         );
         this.rawElement = this.element[0];
-        this.titleElement = this.element.find(".lm_title");
         this.isActive = false;
-
-        this.setTitle(contentItem.config.title);
-        this.contentItem.on("titleChanged", this.setTitle, this);
 
         this._layoutManager = this.contentItem.layoutManager;
 
@@ -67,16 +63,6 @@ export class TabComponent {
             (this.contentItem as any).container.tab = this;
             (this.contentItem as any).container.emit("tab", this);
         }
-    }
-
-    /**
-     * Sets the tab's title to the provided string and sets
-     * its title attribute to a pure text representation (without
-     * html tags) of the same string.
-     */
-    setTitle(title: string) {
-        this.element.attr("title", stripHtmlTags(title));
-        this.titleElement.append(title);
     }
 
     /**

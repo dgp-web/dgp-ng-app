@@ -1,6 +1,6 @@
 import { DockingLayoutViewModels, HeaderButtonViewModel, ViewMap } from "./models";
 
-export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
+export const dockingLayoutViewMap = {
     dragHandle: {
         render() {
             return `
@@ -95,10 +95,12 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
         }
     },
     tab: {
-        render() {
+        render(model: {
+            readonly title: string;
+        }) {
             return `
                 <li class="lm_tab nav-item">
-                    <a class="lm_title nav-link"></a>
+                    <a class="lm_title nav-link">${model.title}</a>
                 </li>
             `;
         }
