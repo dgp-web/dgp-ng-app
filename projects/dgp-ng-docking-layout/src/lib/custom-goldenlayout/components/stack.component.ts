@@ -125,7 +125,7 @@ export class StackComponent extends AbstractContentItemComponent {
 
     }
 
-    setActiveContentItem(contentItem) {
+    setActiveContentItem(contentItem: AbstractContentItemComponent) {
         if (this.activeContentItem !== null) {
             this.activeContentItem._$hide();
         }
