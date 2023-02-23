@@ -4,7 +4,6 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { DockingLayoutService } from "../docking-layout.service";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -13,27 +12,21 @@ export class TabComponent {
 
     private subscriptions: Subscription[] = [];
 
-    element: JQuery<HTMLElement>;
-    private isActive: boolean;
-    private readonly dockingLayoutService: DockingLayoutService;
+    readonly element = $(
+        dockingLayoutViewMap.tab.render({
+            title: this.contentItem.config.title
+        })
+    );
+    private rawElement = this.element[0];
+    private readonly dockingLayoutService = this.contentItem.layoutManager;
+    private isActive = false;
     private dragListener: DragListenerDirective;
     private readonly onTabClickFn: (event) => void;
-    private rawElement: HTMLElement;
 
     constructor(
         private readonly header: any,
         readonly contentItem: AbstractContentItemComponent
     ) {
-
-        this.element = $(
-            dockingLayoutViewMap.tab.render({
-                title: contentItem.config.title
-            })
-        );
-        this.rawElement = this.element[0];
-        this.isActive = false;
-
-        this.dockingLayoutService = this.contentItem.layoutManager;
 
         if (
             this.dockingLayoutService.config.settings.reorderEnabled === true &&
