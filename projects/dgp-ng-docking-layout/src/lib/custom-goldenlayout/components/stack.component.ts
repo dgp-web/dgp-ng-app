@@ -10,30 +10,8 @@ import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../constants/sides.constant";
 import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
-import { AreaSides } from "../models/area.model";
-
-export enum DropSegment {
-    Header = "header",
-    Body = "body",
-    Top = "top",
-    Bottom = "bottom",
-    Left = "left",
-    Right = "right"
-}
-
-export interface Dimensions {
-    hoverArea: AreaSides;
-    highlightArea: AreaSides;
-}
-
-export interface ContentAreaDimensions {
-    header: Dimensions;
-    body?: Dimensions;
-    top?: Dimensions;
-    left?: Dimensions;
-    right?: Dimensions;
-    bottom?: Dimensions;
-}
+import { DropSegment } from "../models/drop-segment.model";
+import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
 
 @Component({
     selector: "dgp-stack",
