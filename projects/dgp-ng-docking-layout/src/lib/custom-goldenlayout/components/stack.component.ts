@@ -8,7 +8,6 @@ import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../constants/sides.constant";
-import { Side } from "../models/side.model";
 import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
 import { DropSegment } from "../models/drop-segment.model";
 import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
@@ -524,13 +523,13 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         const side = sides.indexOf(this._header.show) >= 0 && this._header.show;
         this.header.element.toggle(!!this._header.show);
         this._side = side;
-        this._sided = [Side.Right, Side.Left].indexOf(this._side) >= 0;
+        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side) >= 0;
         this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
         }
         if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
-            const headerPosition = [Side.Right, Side.Bottom].indexOf(this._side) >= 0 ? "before" : "after";
+            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side) >= 0 ? "before" : "after";
             this.header.element[headerPosition](this.childElementContainer);
             this.callDownwards("setSize");
         }

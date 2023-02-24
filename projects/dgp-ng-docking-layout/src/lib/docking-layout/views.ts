@@ -1,4 +1,4 @@
-import { DockingLayoutViewModels, HeaderButtonViewModel, ViewMap } from "./models";
+import { DockingLayoutViewModels, HeaderButtonViewModel } from "./models";
 
 export const dockingLayoutViewMap = {
     dragHandle: {
@@ -9,7 +9,9 @@ export const dockingLayoutViewMap = {
         }
     },
     dragProxy: {
-        render() {
+        render(model: {
+            readonly draggedItem: HTMLElement
+        }) {
             return `
                 <div class="lm_dragProxy">
                     <div class="lm_header card-header"
@@ -20,7 +22,7 @@ export const dockingLayoutViewMap = {
                                 <i class="lm_right"></i></li>
                         </ul>
                     </div>
-                    <div class="lm_content"></div>
+                    <div class="lm_content">${model.draggedItem.innerHTML}</div>
                 </div>
             `;
         }

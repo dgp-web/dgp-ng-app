@@ -28,7 +28,7 @@ export class TabComponent {
 
     constructor(
         private readonly header: HeaderComponent,
-        readonly contentItem: AbstractContentItemComponent
+        public contentItem: AbstractContentItemComponent
     ) {
 
         if (

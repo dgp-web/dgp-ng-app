@@ -7,6 +7,7 @@ import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../models/drag-event.model";
 import { Area } from "../models/area.model";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { DropSegment } from "../models/drop-segment.model";
 
 /**
  * This class creates a temporary container
@@ -28,7 +29,7 @@ export class DragProxy extends EventEmitter {
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
-                private readonly contentItem: any,
+                private readonly contentItem: AbstractContentItemComponent,
                 private readonly originalParent: AbstractContentItemComponent) {
         super();
 
@@ -44,12 +45,14 @@ export class DragProxy extends EventEmitter {
 
         this.subscriptions.push(dragStopSubscription);
 
-        this.$element = $(dockingLayoutViewMap.dragProxy.render());
+        this.$element = $(dockingLayoutViewMap.dragProxy.render({
+            draggedItem: contentItem.element[0]
+        }));
 
         if (originalParent && originalParent._side) {
             this._sided = originalParent._sided;
             this.$element.addClass("lm_" + originalParent._side);
-            if (["right", "bottom"].indexOf(originalParent._side) >= 0) {
+            if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side) >= 0) {
                 this.$element.find(".lm_content")
                     .after(this.$element.find(".lm_header"));
             }
@@ -57,7 +60,6 @@ export class DragProxy extends EventEmitter {
 
         $x.position(this.$element, coordinates);
         this.childElementContainer = this.$element.find(".lm_content");
-        this.childElementContainer.append(contentItem.element);
 
         this.updateTree();
         this.layoutManager.calculateItemAreas();
@@ -171,7 +173,7 @@ export class DragProxy extends EventEmitter {
             this.contentItem.parent.removeChild(this.contentItem, true);
         }
 
-        this.contentItem._$setParent(this);
+        this.contentItem._$setParent(this as any);
     }
 
     /**

@@ -12,6 +12,7 @@ import { beforeItemDestroyedEventType } from "../constants/event-types/before-it
 import { itemDestroyedEventType } from "../constants/event-types/item-destroyed-event-type.constant";
 import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
 import { StackComponent } from "./stack.component";
+import { DropSegment } from "../models/drop-segment.model";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -23,7 +24,7 @@ import { StackComponent } from "./stack.component";
 // tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractContentItemComponent extends EventEmitter {
 
-    _side: Side;
+    _side: DropSegment;
     _sided: boolean;
     _header: any;
 
