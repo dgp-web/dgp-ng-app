@@ -1,4 +1,3 @@
-import { stripHtmlTags } from "../../common/functions";
 import { Vector2, Vector2Utils } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { $x } from "../../jquery-extensions";
@@ -7,6 +6,7 @@ import { EventEmitter } from "../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../models/drag-event.model";
 import { Area } from "../models/area.model";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
 /**
  * This class creates a temporary container
@@ -29,7 +29,7 @@ export class DragProxy extends EventEmitter {
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
                 private readonly contentItem: any,
-                private readonly originalParent: any) {
+                private readonly originalParent: AbstractContentItemComponent) {
         super();
 
         const dragSub = this.dragListener
@@ -56,10 +56,6 @@ export class DragProxy extends EventEmitter {
         }
 
         $x.position(this.$element, coordinates);
-        this.$element.find(".lm_tab")
-            .attr("title", stripHtmlTags(this.contentItem.config.label));
-        this.$element.find(".lm_title")
-            .html(this.contentItem.config.label);
         this.childElementContainer = this.$element.find(".lm_content");
         this.childElementContainer.append(contentItem.element);
 
