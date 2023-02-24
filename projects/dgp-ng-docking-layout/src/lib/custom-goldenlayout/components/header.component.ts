@@ -4,6 +4,7 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { HeaderButtonComponent } from "./header-button.component";
 import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
+import { DropSegment } from "../models/drop-segment.model";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -169,7 +170,7 @@ export class HeaderComponent extends EventEmitter {
     position(position) {
         let previous = this.parent._header.show;
         if (previous && !this.parent._side) {
-            previous = "top";
+            previous = DropSegment.Top;
         }
         if (position !== undefined && this.parent._header.show !== position) {
             this.parent._header.show = position;

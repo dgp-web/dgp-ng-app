@@ -52,7 +52,7 @@ export class DragProxy extends EventEmitter {
         if (originalParent && originalParent._side) {
             this._sided = originalParent._sided;
             this.$element.addClass("lm_" + originalParent._side);
-            if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side) >= 0) {
+            if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
                 this.$element.find(".lm_content")
                     .after(this.$element.find(".lm_header"));
             }

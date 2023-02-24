@@ -27,13 +27,14 @@ import { GlComponent } from "./component.component";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StackComponent extends AbstractContentItemComponent implements DropTarget {
-    private activeContentItem: AbstractContentItemComponent;
-    private dropSegment: keyof ContentAreaDimensions;
-    private dropIndex: number;
+    private activeContentItem: AbstractContentItemComponent = null;
+    private dropSegment: keyof ContentAreaDimensions = null;
+    private dropIndex: number = null;
     private subscription: Subscription;
-    private header: HeaderComponent;
+    private headerComponent: HeaderComponent;
 
-    contentAreaDimensions: ContentAreaDimensions;
+    contentAreaDimensions: ContentAreaDimensions = null;
+    isStack = true;
 
     constructor(
         dockingLayoutService: DockingLayoutService,
@@ -44,10 +45,8 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     ) {
         super(dockingLayoutService, config, parent);
 
-        this.element = $(
-            dockingLayoutViewMap.stack.render()
-        );
-        this.activeContentItem = null;
+
+        this.headerComponent = new HeaderComponent(dockingLayoutService, this);
         const cfg = dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
             show: cfg.settings.hasHeaders === true && config.hasHeaders !== false,
@@ -64,19 +63,16 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             Object.assign(this._header, config.content[0].header);
         }
 
-        this.dropSegment = null;
-        this.contentAreaDimensions = null;
-        this.dropIndex = null;
-
-        this.isStack = true;
 
         this.childElementContainer = $(
             dockingLayoutViewMap.stackContent.render()
         );
-        this.header = new HeaderComponent(dockingLayoutService, this);
 
-        this.element.append(this.header.element);
+        // TODO: allow passing dynamic content into the stack so we can work with HTML elements
+        this.element = $(dockingLayoutViewMap.stack.render());
+        this.element.append(this.headerComponent.element);
         this.element.append(this.childElementContainer);
+
         this.setupHeaderPosition();
         this._$validateClosability();
 
@@ -106,7 +102,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         super.init();
 
         for (i = 0; i < this.contentItems.length; i++) {
-            this.header.createTab(this.contentItems[i]);
+            this.headerComponent.createTab(this.contentItems[i]);
             this.contentItems[i].hide();
         }
 
@@ -131,7 +127,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
 
         this.activeContentItem = contentItem;
-        this.header.setActiveContentItem(contentItem);
+        this.headerComponent.setActiveContentItem(contentItem);
         contentItem.show();
         this.emit(activeContentItemChangedEventType, contentItem);
         this.layoutManager.emit(activeContentItemChangedEventType, contentItem);
@@ -143,13 +139,13 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     }
 
     getActiveContentItem(): GlComponent {
-        return this.header.activeContentItem;
+        return this.headerComponent.activeContentItem;
     }
 
     addChild(contentItem: AbstractContentItemComponent, index?) {
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
-        this.header.createTab(contentItem, index);
+        this.headerComponent.createTab(contentItem, index);
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
         this._$validateClosability();
@@ -159,8 +155,8 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     removeChild(contentItem, keepChild) {
         const index = new LayoutManagerUtilities().indexOf(contentItem, this.contentItems);
         super.removeChild(contentItem, keepChild);
-        this.header.removeTab(contentItem);
-        if (this.header.activeContentItem === contentItem) {
+        this.headerComponent.removeTab(contentItem);
+        if (this.headerComponent.activeContentItem === contentItem) {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)]);
             } else {
@@ -184,7 +180,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             len,
             i;
 
-        isClosable = this.header._isClosable();
+        isClosable = this.headerComponent._isClosable();
 
         for (i = 0, len = this.contentItems.length; i < len; i++) {
             if (!isClosable) break;
@@ -192,12 +188,12 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             isClosable = this.contentItems[i].config.isClosable;
         }
 
-        this.header._$setClosable(isClosable);
+        this.headerComponent._$setClosable(isClosable);
     }
 
     destroy() {
         super.destroy();
-        this.header.destroy();
+        this.headerComponent.destroy();
 
         if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
             this.subscription.unsubscribe();
@@ -349,7 +345,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         }
 
         const getArea = this.getAreaInternal,
-            headerArea = getArea.call(this, this.header.element),
+            headerArea = getArea.call(this, this.headerComponent.element),
             contentArea = getArea.call(this, this.childElementContainer),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
@@ -436,7 +432,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     private highlightHeaderDropZone(x: number) {
         let i,
             tabElement,
-            tabsLength = this.header.tabs.length,
+            tabsLength = this.headerComponent.tabs.length,
             isAboveTab = false,
             tabTop,
             tabLeft,
@@ -449,20 +445,20 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
         // Empty stack
         if (tabsLength === 0) {
-            headerOffset = this.header.element.offset();
+            headerOffset = this.headerComponent.element.offset();
 
             this.layoutManager.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
                 x2: headerOffset.left + 100,
-                y1: headerOffset.top + this.header.element.height() - 20,
-                y2: headerOffset.top + this.header.element.height()
+                y1: headerOffset.top + this.headerComponent.element.height() - 20,
+                y2: headerOffset.top + this.headerComponent.element.height()
             });
 
             return;
         }
 
         for (i = 0; i < tabsLength; i++) {
-            tabElement = this.header.tabs[i].element;
+            tabElement = this.headerComponent.tabs[i].element;
             offset = tabElement.offset();
             if (this._sided) {
                 tabLeft = offset.top;
@@ -520,17 +516,17 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     }
 
     private setupHeaderPosition() {
-        const side = sides.indexOf(this._header.show) >= 0 && this._header.show;
-        this.header.element.toggle(!!this._header.show);
+        const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
+        this.headerComponent.element.toggle(!!this._header.show);
         this._side = side;
-        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side) >= 0;
+        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
         this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
         }
         if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
-            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side) >= 0 ? "before" : "after";
-            this.header.element[headerPosition](this.childElementContainer);
+            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
+            this.headerComponent.element[headerPosition](this.childElementContainer);
             this.callDownwards("setSize");
         }
     }
