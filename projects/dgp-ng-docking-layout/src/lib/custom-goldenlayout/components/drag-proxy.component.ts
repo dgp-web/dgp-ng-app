@@ -16,16 +16,26 @@ import { DropSegment } from "../models/drop-segment.model";
  */
 export class DragProxy extends EventEmitter {
 
-    private area: Area = null;
-    private lastValidArea: Area = null;
-    private sided: boolean;
+    private readonly sided: boolean;
 
-    $element: JQuery<HTMLElement>;
-    childElementContainer: JQuery<HTMLElement>;
+    private readonly offset = this.layoutManager.container.offset();
+    private readonly min: Vector2 = {
+        x: this.offset.left,
+        y: this.offset.top
+    };
+    private readonly max: Vector2 = {
+        x: this.layoutManager.container.width() + this.min.x,
+        y: this.layoutManager.container.height() + this.min.y
+    };
+    private readonly element = $(dockingLayoutViewMap.dragProxy.render({
+        draggedItem: this.contentItem.element[0]
+    }));
 
-    private min: Vector2;
-    private max: Vector2;
+    private area: Area;
+    private lastValidArea: Area;
     private size: Vector2;
+
+    childElementContainer: JQuery<HTMLElement>;
 
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
@@ -46,43 +56,28 @@ export class DragProxy extends EventEmitter {
 
         this.subscriptions.push(dragStopSubscription);
 
-        this.$element = $(dockingLayoutViewMap.dragProxy.render({
-            draggedItem: contentItem.element[0]
-        }));
-
         if (originalParent && originalParent._side) {
             this.sided = originalParent._sided;
-            this.$element.addClass("lm_" + originalParent._side);
+            this.element.addClass("lm_" + originalParent._side);
             if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
-                this.$element.find(".lm_content")
-                    .after(this.$element.find(".lm_header"));
+                this.element.find(".lm_content")
+                    .after(this.element.find(".lm_header"));
             }
         }
 
-        $x.position(this.$element, coordinates);
-        this.childElementContainer = this.$element.find(".lm_content");
+        $x.position(this.element, coordinates);
+        this.childElementContainer = this.element.find(".lm_content");
 
         this.updateTree();
         this.layoutManager.calculateItemAreas();
         this.setDimensions();
 
         $(document.body)
-            .append(this.$element);
-
-        const offset = this.layoutManager.container.offset();
-
-        this.min = {
-            x: offset.left, y: offset.top
-        };
-
-        this.max = {
-            x: this.layoutManager.container.width() + this.min.x,
-            y: this.layoutManager.container.height() + this.min.y
-        };
+            .append(this.element);
 
         this.size = {
-            x: this.$element.width(),
-            y: this.$element.height(),
+            x: this.element.width(),
+            y: this.element.height(),
         };
 
         this.setDropPosition(coordinates);
@@ -109,7 +104,7 @@ export class DragProxy extends EventEmitter {
      * Sets the target position, highlighting the appropriate area
      */
     private setDropPosition(coordinates: Vector2) {
-        this.$element.css({left: coordinates.x, top: coordinates.y});
+        this.element.css({left: coordinates.x, top: coordinates.y});
         this.area = this.layoutManager.getArea(coordinates.x, coordinates.y);
 
         if (this.area !== null) {
@@ -155,7 +150,7 @@ export class DragProxy extends EventEmitter {
             this.contentItem.destroy();
         }
 
-        this.$element.remove();
+        this.element.remove();
 
         this.layoutManager.emit("itemDropped", this.contentItem);
 
@@ -186,7 +181,7 @@ export class DragProxy extends EventEmitter {
         let width = dimensions.dragProxyWidth;
         let height = dimensions.dragProxyHeight;
 
-        $x.size(this.$element, {x: width, y: height});
+        $x.size(this.element, {x: width, y: height});
 
         width -= (this.sided ? dimensions.headerHeight : 0);
         height -= (!this.sided ? dimensions.headerHeight : 0);
