@@ -4,12 +4,12 @@ import { ItemConfiguration, itemDefaultConfig } from "../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { AreaSides } from "../models/area.model";
-import { ALL_EVENT } from "../constants/all-event.constant";
+import { ALL_EVENT } from "../constants/event-types/all-event.constant";
 import { Side } from "../models/side.model";
-import { stateChangedEventType } from "../constants/state-changed-event-type.constant";
-import { itemCreatedEventType } from "../constants/item-created-event-type.constant";
-import { beforeItemDestroyedEventType } from "../constants/before-item-destroyed-event-type.constant";
-import { itemDestroyedEventType } from "../constants/item-destroyed-event-type.constant";
+import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
+import { itemCreatedEventType } from "../constants/event-types/item-created-event-type.constant";
+import { beforeItemDestroyedEventType } from "../constants/event-types/before-item-destroyed-event-type.constant";
+import { itemDestroyedEventType } from "../constants/event-types/item-destroyed-event-type.constant";
 import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
 import { StackComponent } from "./stack.component";
 

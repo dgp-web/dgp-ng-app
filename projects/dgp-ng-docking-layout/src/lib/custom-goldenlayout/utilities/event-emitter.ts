@@ -1,7 +1,7 @@
 import { RxComponent } from "../../common/app";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
 import { Callback } from "../models/events/callback.model";
-import { ALL_EVENT } from "../constants/all-event.constant";
+import { ALL_EVENT } from "../constants/event-types/all-event.constant";
 import { createEventSubscriptionKVS } from "../functions/create-event-subscription-kvs.function";
 
 /**

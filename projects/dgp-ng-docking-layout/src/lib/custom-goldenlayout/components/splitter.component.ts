@@ -1,7 +1,7 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
-import { verticalClassName } from "../constants/vertical-class-name.constant";
-import { horizontalClassName } from "../constants/horizontal-class-name.constant";
+import { verticalClassName } from "../constants/class-names/vertical-class-name.constant";
+import { horizontalClassName } from "../constants/class-names/horizontal-class-name.constant";
 
 export class SplitterComponent {
 

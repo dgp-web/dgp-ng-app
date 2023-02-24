@@ -1,5 +1,5 @@
 import { EventEmitter } from "./event-emitter";
-import { ALL_EVENT } from "../constants/all-event.constant";
+import { ALL_EVENT } from "../constants/event-types/all-event.constant";
 
 
 

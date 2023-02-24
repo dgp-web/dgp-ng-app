@@ -3,9 +3,9 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration } from "../types";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { hideEventType } from "../constants/hide-event-type.constant";
-import { showEventType } from "../constants/show-event-type.constant";
-import { shownEventType } from "../constants/shown-event-type.constant";
+import { hideEventType } from "../constants/event-types/hide-event-type.constant";
+import { showEventType } from "../constants/event-types/show-event-type.constant";
+import { shownEventType } from "../constants/event-types/shown-event-type.constant";
 import { resizeEventType } from "./resize-event-type.constant";
 
 @Component({

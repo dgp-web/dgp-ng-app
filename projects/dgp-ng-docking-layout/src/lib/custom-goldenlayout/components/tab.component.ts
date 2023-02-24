@@ -6,7 +6,7 @@ import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
 import { activeClassName } from "../constants/active-class-name.constant";
-import { bootstrapActiveClassName } from "../constants/bootstrap-active-class-name.constant";
+import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -24,7 +24,7 @@ export class TabComponent {
     private readonly dockingLayoutService = this.contentItem.layoutManager;
     private isActive = false;
     private dragListener: DragListenerDirective;
-    private readonly onTabClickFn = (x) => this.onTabClick(x);
+    private readonly onTabClickFn = () => this.onTabClick();
 
     constructor(
         private readonly header: HeaderComponent,
@@ -44,9 +44,6 @@ export class TabComponent {
         }
 
         this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
-            passive: true
-        });
-        this.rawElement.addEventListener("touchstart", this.onTabClickFn, {
             passive: true
         });
 
@@ -70,14 +67,10 @@ export class TabComponent {
 
         if (isActive) {
             this.element.addClass(activeClassName);
-        } else {
-            this.element.removeClass(activeClassName);
-        }
-
-        if (isActive) {
             this.element.find("a")
                 .addClass(bootstrapActiveClassName);
         } else {
+            this.element.removeClass(activeClassName);
             this.element.find("a")
                 .removeClass(bootstrapActiveClassName);
         }
@@ -88,7 +81,6 @@ export class TabComponent {
         this.subscriptions.forEach(x => x.unsubscribe());
 
         this.rawElement.removeEventListener("mousedown", this.onTabClickFn);
-        this.rawElement.removeEventListener("touchstart", this.onTabClickFn);
 
         if (this.dragListener) {
             this.contentItem.off("destroy", this.dragListener.destroy, this.dragListener);
@@ -108,13 +100,11 @@ export class TabComponent {
         );
     }
 
-    onTabClick(event) {
-        if (event.button === 0 || event.type === "touchstart") {
-            const activeContentItem = this.header.parent.getActiveContentItem();
-            if (this.contentItem !== activeContentItem) {
-                this.header.parent.setActiveContentItem(this.contentItem);
-            }
-        }
+    onTabClick() {
+        const activeContentItem = this.header.parent.getActiveContentItem();
+        if (this.contentItem === activeContentItem) return;
+
+        this.header.parent.setActiveContentItem(this.contentItem);
     }
 
 }
