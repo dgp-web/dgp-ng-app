@@ -8,6 +8,8 @@ import { DragEvent } from "../models/drag-event.model";
 import { Area } from "../models/area.model";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { DropSegment } from "../models/drop-segment.model";
+import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
+import { lmContentClassName } from "../constants/class-names/lm-content-class-name.constant";
 
 /**
  * This class creates a temporary container
@@ -60,13 +62,13 @@ export class DragProxy extends EventEmitter {
             this.sided = originalParent._sided;
             this.element.addClass("lm_" + originalParent._side);
             if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
-                this.element.find(".lm_content")
-                    .after(this.element.find(".lm_header"));
+                this.element.find("." + lmContentClassName)
+                    .after(this.element.find("." + lmHeaderClassName));
             }
         }
 
         $x.position(this.element, coordinates);
-        this.childElementContainer = this.element.find(".lm_content");
+        this.childElementContainer = this.element.find("." + lmContentClassName);
 
         this.updateTree();
         this.layoutManager.calculateItemAreas();
