@@ -16,11 +16,12 @@ import { DropSegment } from "../models/drop-segment.model";
  */
 export class DragProxy extends EventEmitter {
 
-    _area: Area = null;
-    _lastValidArea = null;
-    $element;
-    _sided;
-    childElementContainer;
+    private area: Area = null;
+    private lastValidArea: Area = null;
+    private sided: boolean;
+
+    $element: JQuery<HTMLElement>;
+    childElementContainer: JQuery<HTMLElement>;
 
     private min: Vector2;
     private max: Vector2;
@@ -50,7 +51,7 @@ export class DragProxy extends EventEmitter {
         }));
 
         if (originalParent && originalParent._side) {
-            this._sided = originalParent._sided;
+            this.sided = originalParent._sided;
             this.$element.addClass("lm_" + originalParent._side);
             if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
                 this.$element.find(".lm_content")
@@ -109,11 +110,11 @@ export class DragProxy extends EventEmitter {
      */
     private setDropPosition(coordinates: Vector2) {
         this.$element.css({left: coordinates.x, top: coordinates.y});
-        this._area = this.layoutManager.getArea(coordinates.x, coordinates.y);
+        this.area = this.layoutManager.getArea(coordinates.x, coordinates.y);
 
-        if (this._area !== null) {
-            this._lastValidArea = this._area;
-            this._area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this._area);
+        if (this.area !== null) {
+            this.lastValidArea = this.area;
+            this.area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this.area);
         }
     }
 
@@ -127,15 +128,15 @@ export class DragProxy extends EventEmitter {
         /*
          * Valid drop area found
          */
-        if (this._area !== null) {
-            this._area.contentItem._$onDrop(this.contentItem, this._area);
+        if (this.area !== null) {
+            this.area.contentItem._$onDrop(this.contentItem, this.area);
 
             /**
              * No valid drop area available at present, but one has been found before.
              * Use it
              */
-        } else if (this._lastValidArea !== null) {
-            this._lastValidArea.contentItem._$onDrop(this.contentItem, this._lastValidArea);
+        } else if (this.lastValidArea !== null) {
+            this.lastValidArea.contentItem._$onDrop(this.contentItem, this.lastValidArea);
 
             /**
              * No valid drop area found during the duration of the drag. Return
@@ -187,8 +188,8 @@ export class DragProxy extends EventEmitter {
 
         $x.size(this.$element, {x: width, y: height});
 
-        width -= (this._sided ? dimensions.headerHeight : 0);
-        height -= (!this._sided ? dimensions.headerHeight : 0);
+        width -= (this.sided ? dimensions.headerHeight : 0);
+        height -= (!this.sided ? dimensions.headerHeight : 0);
 
         $x.size(this.childElementContainer, {x: width, y: height});
         $x.size(this.contentItem.element, {x: width, y: height});
