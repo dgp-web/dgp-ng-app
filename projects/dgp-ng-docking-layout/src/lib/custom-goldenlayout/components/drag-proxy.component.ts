@@ -10,6 +10,7 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { DropSegment } from "../models/drop-segment.model";
 import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
 import { lmContentClassName } from "../constants/class-names/lm-content-class-name.constant";
+import { itemDroppedEventType } from "../constants/event-types/item-dropped-event-type.constant";
 
 /**
  * This class creates a temporary container
@@ -154,7 +155,7 @@ export class DragProxy extends EventEmitter {
 
         this.element.remove();
 
-        this.layoutManager.emit("itemDropped", this.contentItem);
+        this.layoutManager.emit(itemDroppedEventType, this.contentItem);
 
         this.layoutManager.updateSize();
     };
