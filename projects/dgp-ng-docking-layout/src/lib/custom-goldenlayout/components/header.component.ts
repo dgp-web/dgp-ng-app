@@ -17,31 +17,31 @@ export class HeaderComponent extends EventEmitter {
     readonly rawElement: HTMLElement;
     readonly tabs: Array<TabComponent>;
     activeContentItem: any;
-    private layoutManager: DockingLayoutService;
     private tabsContainer: JQuery<HTMLElement>;
     private tabDropdownContainer: JQuery<HTMLElement>;
     private controlsContainer: JQuery<HTMLElement>;
-    parent: StackComponent;
     private closeButton: any;
     private tabDropdownButton: any;
     private readonly hideAdditionalTabsDropdown: any;
     private _lastVisibleTabIndex: number;
     private readonly _tabControlOffset: any;
 
-    constructor(layoutManager, parent) {
+    constructor(
+        private readonly layoutManager: DockingLayoutService,
+        readonly parent: StackComponent
+    ) {
         super();
 
-        this.layoutManager = layoutManager;
         this.element = $(dockingLayoutViewMap.header.render());
         this.rawElement = this.element[0];
 
         if (this.layoutManager.config.settings.selectionEnabled === true) {
             this.element.addClass("lm_selectable");
 
-            this.rawElement.addEventListener("click", (x) => this._onHeaderClick(x), {
+            this.rawElement.addEventListener("click", (x) => this.onHeaderClick(x), {
                 passive: true
             });
-            this.rawElement.addEventListener("touchstart", (x) => this._onHeaderClick(x), {
+            this.rawElement.addEventListener("touchstart", (x) => this.onHeaderClick(x), {
                 passive: true
             });
 
@@ -51,7 +51,6 @@ export class HeaderComponent extends EventEmitter {
         this.tabDropdownContainer = this.element.find(".lm_tabdropdown_list");
         this.tabDropdownContainer.hide();
         this.controlsContainer = this.element.find(".lm_controls");
-        this.parent = parent;
         this.parent.on("resize", this.updateTabSizes, this);
         this.tabs = [];
         this.activeContentItem = null;
@@ -63,7 +62,7 @@ export class HeaderComponent extends EventEmitter {
 
         this._lastVisibleTabIndex = -1;
         this._tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
-        this._createControls();
+        this.createControls();
     }
 
     /**
@@ -104,12 +103,8 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Finds a tab based on the contentItem its associated with and removes it.
-     *
-     * @param    {lm.item.AbstractContentItem} contentItem
-     *
-     * @returns {void}
      */
-    removeTab(contentItem) {
+    removeTab(contentItem: AbstractContentItemComponent): void {
         for (let i = 0; i < this.tabs.length; i++) {
             if (this.tabs[i].contentItem === contentItem) {
                 this.tabs[i].destroy();
@@ -117,17 +112,13 @@ export class HeaderComponent extends EventEmitter {
                 return;
             }
         }
-
-        throw new Error("contentItem is not controlled by this header");
     }
 
     /**
      * The programmatical equivalent of clicking a Tab.
-     *
-     * @param {lm.item.AbstractContentItem} contentItem
      */
-    setActiveContentItem(contentItem) {
-        let i, j, isActive, activeTab;
+    setActiveContentItem(contentItem: AbstractContentItemComponent) {
+        let i: number, j: number, isActive: boolean, activeTab: TabComponent;
 
         for (i = 0; i < this.tabs.length; i++) {
             isActive = this.tabs[i].contentItem === contentItem;
@@ -184,7 +175,7 @@ export class HeaderComponent extends EventEmitter {
      * @returns {Boolean} Whether the action was successful
      */
     _$setClosable(isClosable) {
-        if (this.closeButton && this._isClosable()) {
+        if (this.closeButton && this.isClosable()) {
             this.closeButton.element[isClosable ? "show" : "hide"]();
             return true;
         }
@@ -223,23 +214,17 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Creates the popout, maximise and close buttons in the header's top right corner
-     *
-     * @returns {void}
      */
-    _createControls() {
+    private createControls(): void {
         let closeStack,
-            label,
-            maximiseLabel,
-            minimiseLabel,
-            maximise,
-            maximiseButton,
-            tabDropdownLabel,
+            label: string,
+            tabDropdownLabel: string,
             showTabDropdown;
 
         /**
          * Dropdown to show additional tabs.
          */
-        showTabDropdown = () => this._showAdditionalTabsDropdown();
+        showTabDropdown = () => this.showAdditionalTabsDropdown();
         tabDropdownLabel = this.layoutManager.config.labels.tabDropdown;
         this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, "lm_tabdropdown", showTabDropdown);
         this.tabDropdownButton.element.hide();
@@ -248,7 +233,7 @@ export class HeaderComponent extends EventEmitter {
         /**
          * Close button
          */
-        if (this._isClosable()) {
+        if (this.isClosable()) {
             closeStack = () => this.parent.remove();
             label = this._getHeaderSetting("close");
             this.closeButton = new HeaderButtonComponent(this, label, "lm_close", closeStack);
@@ -257,40 +242,30 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Shows drop down for additional tabs when there are too many to display.
-     *
-     * @returns {void}
      */
-    _showAdditionalTabsDropdown() {
+    private showAdditionalTabsDropdown(): void {
         this.tabDropdownContainer.show();
     }
 
     /**
      * Hides drop down for additional tabs when there are too many to display.
-     *
-     * @returns {void}
      */
-    _hideAdditionalTabsDropdown() {
+    _hideAdditionalTabsDropdown(): void {
         this.tabDropdownContainer.hide();
     }
 
     /**
      * Checks whether the header is closable based on the parent config and
      * the global config.
-     *
-     * @returns {Boolean} Whether the header is closable.
      */
-    _isClosable() {
+    isClosable(): boolean {
         return this.parent.config.isClosable && this.layoutManager.config.settings.showCloseIcon;
     }
 
     /**
      * Invoked when the header's background is clicked (not it's tabs or controls)
-     *
-     * @param    {jQuery DOM event} event
-     *
-     * @returns {void}
      */
-    _onHeaderClick(event) {
+    private onHeaderClick(event: Event): void {
         if (event.target === this.element[0]) {
             this.parent.select();
         }

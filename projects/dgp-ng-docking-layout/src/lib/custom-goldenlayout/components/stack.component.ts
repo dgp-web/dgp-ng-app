@@ -180,7 +180,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             len,
             i;
 
-        isClosable = this.headerComponent._isClosable();
+        isClosable = this.headerComponent.isClosable();
 
         for (i = 0, len = this.contentItems.length; i < len; i++) {
             if (!isClosable) break;
