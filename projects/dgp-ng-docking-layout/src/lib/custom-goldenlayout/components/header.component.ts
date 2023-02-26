@@ -7,6 +7,11 @@ import { StackComponent } from "./stack.component";
 import { DropSegment } from "../models/drop-segment.model";
 import { DockingLayoutService } from "../docking-layout.service";
 import { widthOrHeight } from "../functions/width-or-height.function";
+import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
+import { tabsClassName } from "../constants/class-names/tabs-class-name.constant";
+import { tabDropdownListClassName } from "../constants/class-names/tabs-dropdown-list-class-name.constant";
+import { controlsClassName } from "../constants/class-names/controls-class-name.constant";
+import { selectableClassName } from "../constants/class-names/selectable-class-name.constant";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -36,7 +41,7 @@ export class HeaderComponent extends EventEmitter {
         this.rawElement = this.element[0];
 
         if (this.layoutManager.config.settings.selectionEnabled === true) {
-            this.element.addClass("lm_selectable");
+            this.element.addClass(selectableClassName);
 
             this.rawElement.addEventListener("click", (x) => this.onHeaderClick(x), {
                 passive: true
@@ -47,10 +52,10 @@ export class HeaderComponent extends EventEmitter {
 
         }
 
-        this.tabsContainer = this.element.find(".lm_tabs");
-        this.tabDropdownContainer = this.element.find(".lm_tabdropdown_list");
+        this.tabsContainer = this.element.find("." + tabsClassName);
+        this.tabDropdownContainer = this.element.find("." + tabDropdownListClassName);
         this.tabDropdownContainer.hide();
-        this.controlsContainer = this.element.find(".lm_controls");
+        this.controlsContainer = this.element.find("." + controlsClassName);
         this.parent.on("resize", this.updateTabSizes, this);
         this.tabs = [];
         this.activeContentItem = null;
@@ -145,7 +150,7 @@ export class HeaderComponent extends EventEmitter {
         }
 
         this.updateTabSizes();
-        this.parent.emitBubblingEvent("stateChanged");
+        this.parent.emitBubblingEvent(stateChangedEventType);
     }
 
     /**
@@ -185,12 +190,8 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Destroys the entire header
-     *
-     * @package private
-     *
-     * @returns {void}
      */
-    destroy() {
+    destroy(): void {
         this.emit("destroy", this);
 
         for (let i = 0; i < this.tabs.length; i++) {
@@ -203,10 +204,8 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * get settings from header
-     *
-     * @returns {string} when exists
      */
-    _getHeaderSetting(name) {
+    _getHeaderSetting(name: string): string {
         if (name in this.parent._header) {
             return this.parent._header[name];
         }
