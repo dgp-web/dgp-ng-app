@@ -6,6 +6,7 @@ import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
 import { DropSegment } from "../models/drop-segment.model";
 import { DockingLayoutService } from "../docking-layout.service";
+import { widthOrHeight } from "../functions/width-or-height.function";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -304,11 +305,8 @@ export class HeaderComponent extends EventEmitter {
         // Show the menu based on function argument
         this.tabDropdownButton.element.toggle(showTabMenu === true);
 
-        const size = function (val) {
-            return val ? "width" : "height";
-        };
-        this.element.css(size(!this.parent._sided), "");
-        this.element[size(this.parent._sided)](this.layoutManager.config.dimensions.headerHeight);
+        this.element.css(widthOrHeight(!this.parent._sided), "");
+        this.element[widthOrHeight(this.parent._sided)](this.layoutManager.config.dimensions.headerHeight);
         let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
@@ -398,3 +396,4 @@ export class HeaderComponent extends EventEmitter {
     }
 
 }
+
