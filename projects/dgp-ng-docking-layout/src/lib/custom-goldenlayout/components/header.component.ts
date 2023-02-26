@@ -18,18 +18,18 @@ import { selectableClassName } from "../constants/class-names/selectable-class-n
  */
 export class HeaderComponent extends EventEmitter {
 
-    readonly element: JQuery<HTMLElement>;
-    readonly rawElement: HTMLElement;
-    readonly tabs: Array<TabComponent>;
+    readonly element = $(dockingLayoutViewMap.header.render());
+    readonly rawElement = this.element[0];
+    readonly tabs = new Array<TabComponent>();
     activeContentItem: any;
-    private tabsContainer: JQuery<HTMLElement>;
-    private tabDropdownContainer: JQuery<HTMLElement>;
-    private controlsContainer: JQuery<HTMLElement>;
+    private tabsContainer = this.element.find("." + tabsClassName);
+    private tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
+    private controlsContainer = this.element.find("." + controlsClassName);
     private closeButton: any;
     private tabDropdownButton: any;
     private readonly hideAdditionalTabsDropdown: any;
-    private _lastVisibleTabIndex: number;
-    private readonly _tabControlOffset: any;
+    private _lastVisibleTabIndex = -1;
+    private readonly _tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
 
     constructor(
         private readonly layoutManager: DockingLayoutService,
@@ -37,36 +37,18 @@ export class HeaderComponent extends EventEmitter {
     ) {
         super();
 
-        this.element = $(dockingLayoutViewMap.header.render());
-        this.rawElement = this.element[0];
-
         if (this.layoutManager.config.settings.selectionEnabled === true) {
             this.element.addClass(selectableClassName);
 
             this.rawElement.addEventListener("click", (x) => this.onHeaderClick(x), {
                 passive: true
             });
-            this.rawElement.addEventListener("touchstart", (x) => this.onHeaderClick(x), {
-                passive: true
-            });
-
         }
 
-        this.tabsContainer = this.element.find("." + tabsClassName);
-        this.tabDropdownContainer = this.element.find("." + tabDropdownListClassName);
-        this.tabDropdownContainer.hide();
-        this.controlsContainer = this.element.find("." + controlsClassName);
         this.parent.on("resize", this.updateTabSizes, this);
-        this.tabs = [];
-        this.activeContentItem = null;
-        this.closeButton = null;
-        this.tabDropdownButton = null;
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
-        $(document)
-            .mouseup(this.hideAdditionalTabsDropdown);
+        $(document).mouseup(this.hideAdditionalTabsDropdown);
 
-        this._lastVisibleTabIndex = -1;
-        this._tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
         this.createControls();
     }
 
@@ -173,13 +155,8 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Programmatically set closability.
-     *
-     * @package private
-     * @param {Boolean} isClosable Whether to enable/disable closability.
-     *
-     * @returns {Boolean} Whether the action was successful
      */
-    _$setClosable(isClosable) {
+    _$setClosable(isClosable: boolean): boolean {
         if (this.closeButton && this.isClosable()) {
             this.closeButton.element[isClosable ? "show" : "hide"]();
             return true;
@@ -193,12 +170,8 @@ export class HeaderComponent extends EventEmitter {
      */
     destroy(): void {
         this.emit("destroy", this);
-
-        for (let i = 0; i < this.tabs.length; i++) {
-            this.tabs[i].destroy();
-        }
-        $(document)
-            .off("mouseup", this.hideAdditionalTabsDropdown);
+        this.tabs.forEach(tab => tab.destroy());
+        $(document).off("mouseup", this.hideAdditionalTabsDropdown);
         this.element.remove();
     }
 
@@ -215,10 +188,10 @@ export class HeaderComponent extends EventEmitter {
      * Creates the popout, maximise and close buttons in the header's top right corner
      */
     private createControls(): void {
-        let closeStack,
+        let closeStack: () => void,
             label: string,
             tabDropdownLabel: string,
-            showTabDropdown;
+            showTabDropdown: () => void;
 
         /**
          * Dropdown to show additional tabs.
