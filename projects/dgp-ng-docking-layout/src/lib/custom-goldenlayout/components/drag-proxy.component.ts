@@ -94,13 +94,10 @@ export class DragProxy extends EventEmitter {
      * current drop area
      */
     private onDrag = (dragEvent: DragEvent) => {
-
         const coordinates = $x.getPointerCoordinates(dragEvent.event);
         const isWithinContainer = Vector2Utils.isWithinRectangle(coordinates, this.min, this.max);
 
-        if (!isWithinContainer && this.layoutManager.config.settings.constrainDragToContainer === true) {
-            return;
-        }
+        if (!isWithinContainer && this.layoutManager.config.settings.constrainDragToContainer === true) return;
 
         this.setDropPosition(coordinates);
     };
@@ -156,9 +153,7 @@ export class DragProxy extends EventEmitter {
         }
 
         this.element.remove();
-
         this.layoutManager.emit(itemDroppedEventType, this.contentItem);
-
         this.layoutManager.updateSize();
     };
 
