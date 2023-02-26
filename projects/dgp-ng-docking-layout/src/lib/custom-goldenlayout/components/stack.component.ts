@@ -74,7 +74,6 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         this.element.append(this.childElementContainer);
 
         this.setupHeaderPosition();
-        this._$validateClosability();
 
     }
 
@@ -148,7 +147,6 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         this.headerComponent.createTab(contentItem, index);
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
-        this._$validateClosability();
         this.emitBubblingEvent(stateChangedEventType);
     }
 
@@ -164,29 +162,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
             }
         }
 
-        this._$validateClosability();
         this.emitBubblingEvent(stateChangedEventType);
-    }
-
-
-    /**
-     * Validates that the stack is still closable or not. If a stack is able
-     * to close, but has a non closable component added to it, the stack is no
-     * longer closable until all components are closable.
-     */
-    _$validateClosability() {
-        let contentItem,
-            isClosable,
-            len,
-            i;
-
-        isClosable = this.headerComponent.isClosable();
-
-        for (i = 0, len = this.contentItems.length; i < len; i++) {
-            if (!isClosable) break;
-
-            isClosable = this.contentItems[i].config.isClosable;
-        }
     }
 
     destroy() {
