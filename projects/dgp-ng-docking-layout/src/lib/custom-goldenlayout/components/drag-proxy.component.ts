@@ -11,6 +11,7 @@ import { DropSegment } from "../models/drop-segment.model";
 import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
 import { lmContentClassName } from "../constants/class-names/lm-content-class-name.constant";
 import { itemDroppedEventType } from "../constants/event-types/item-dropped-event-type.constant";
+import { createDropSegmentClassName } from "../functions/create-drop-segment-class-name.function";
 
 /**
  * This class creates a temporary container
@@ -61,7 +62,8 @@ export class DragProxy extends EventEmitter {
 
         if (originalParent && originalParent._side) {
             this.sided = originalParent._sided;
-            this.element.addClass("lm_" + originalParent._side);
+
+            this.element.addClass(createDropSegmentClassName(originalParent._side as DropSegment));
             if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
                 this.element.find("." + lmContentClassName)
                     .after(this.element.find("." + lmHeaderClassName));
