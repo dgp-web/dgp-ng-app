@@ -5,20 +5,21 @@ import { HeaderButtonComponent } from "./header-button.component";
 import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
 import { DropSegment } from "../models/drop-segment.model";
+import { DockingLayoutService } from "../docking-layout.service";
 
 /**
  * This class represents a header above a Stack ContentItem.
  */
 export class HeaderComponent extends EventEmitter {
 
-    readonly element: any;
-    readonly rawElement: any;
+    readonly element: JQuery<HTMLElement>;
+    readonly rawElement: HTMLElement;
     readonly tabs: Array<TabComponent>;
     activeContentItem: any;
-    private layoutManager: any;
-    private tabsContainer: any;
-    private tabDropdownContainer: any;
-    private controlsContainer: any;
+    private layoutManager: DockingLayoutService;
+    private tabsContainer: JQuery<HTMLElement>;
+    private tabDropdownContainer: JQuery<HTMLElement>;
+    private controlsContainer: JQuery<HTMLElement>;
     parent: StackComponent;
     private closeButton: any;
     private tabDropdownButton: any;
@@ -50,7 +51,7 @@ export class HeaderComponent extends EventEmitter {
         this.tabDropdownContainer.hide();
         this.controlsContainer = this.element.find(".lm_controls");
         this.parent = parent;
-        this.parent.on("resize", this._updateTabSizes, this);
+        this.parent.on("resize", this.updateTabSizes, this);
         this.tabs = [];
         this.activeContentItem = null;
         this.closeButton = null;
@@ -66,18 +67,13 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Creates a new tab and associates it with a contentItem
-     *
-     * @param    {lm.item.AbstractContentItem} contentItem
-     * @param    {Integer} index The position of the tab
-     *
-     * @returns {void}
      */
     createTab(contentItem: AbstractContentItemComponent, index?: number): void {
-        let tab, i;
+        let tab: TabComponent;
 
         // If there's already a tab relating to the
         // content item, don't do anything
-        for (i = 0; i < this.tabs.length; i++) {
+        for (let i = 0; i < this.tabs.length; i++) {
             if (this.tabs[i].contentItem === contentItem) {
                 return;
             }
@@ -102,7 +98,7 @@ export class HeaderComponent extends EventEmitter {
         }
 
         this.tabs.splice(index, 0, tab);
-        this._updateTabSizes();
+        this.updateTabSizes();
     }
 
     /**
@@ -156,7 +152,7 @@ export class HeaderComponent extends EventEmitter {
             }
         }
 
-        this._updateTabSizes();
+        this.updateTabSizes();
         this.parent.emitBubblingEvent("stateChanged");
     }
 
@@ -301,13 +297,9 @@ export class HeaderComponent extends EventEmitter {
 
     /**
      * Pushes the tabs to the tab dropdown if the available space is not sufficient
-     *
-     * @returns {void}
      */
-    _updateTabSizes(showTabMenu?) {
-        if (this.tabs.length === 0) {
-            return;
-        }
+    private updateTabSizes(showTabMenu?: boolean): void {
+        if (this.tabs.length === 0) return;
 
         // Show the menu based on function argument
         this.tabDropdownButton.element.toggle(showTabMenu === true);
@@ -320,12 +312,12 @@ export class HeaderComponent extends EventEmitter {
         let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
-            tabElement,
-            i,
-            j,
-            marginLeft,
+            tabElement: JQuery<HTMLElement>,
+            i: number,
+            j: number,
+            marginLeft: string,
             overlap = 0,
-            tabWidth,
+            tabWidth: number,
             tabOverlapAllowance = this.layoutManager.config.settings.tabOverlapAllowance,
             tabOverlapAllowanceExceeded = false,
             activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
@@ -391,7 +383,7 @@ export class HeaderComponent extends EventEmitter {
                         this.tabDropdownContainer.append(tabElement);
                     } else {
                         // We now know the tab menu must be shown, so we have to recalculate everything.
-                        this._updateTabSizes(true);
+                        this.updateTabSizes(true);
                         return;
                     }
                 }
