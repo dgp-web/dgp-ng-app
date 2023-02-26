@@ -187,8 +187,6 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
             isClosable = this.contentItems[i].config.isClosable;
         }
-
-        this.headerComponent._$setClosable(isClosable);
     }
 
     destroy() {

@@ -25,7 +25,6 @@ export class HeaderComponent extends EventEmitter {
     private tabsContainer = this.element.find("." + tabsClassName);
     private tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
     private controlsContainer = this.element.find("." + controlsClassName);
-    private closeButton: any;
     private tabDropdownButton: any;
     private readonly hideAdditionalTabsDropdown: any;
     private _lastVisibleTabIndex = -1;
@@ -154,18 +153,6 @@ export class HeaderComponent extends EventEmitter {
     }
 
     /**
-     * Programmatically set closability.
-     */
-    _$setClosable(isClosable: boolean): boolean {
-        if (this.closeButton && this.isClosable()) {
-            this.closeButton.element[isClosable ? "show" : "hide"]();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Destroys the entire header
      */
     destroy(): void {
@@ -176,21 +163,10 @@ export class HeaderComponent extends EventEmitter {
     }
 
     /**
-     * get settings from header
-     */
-    _getHeaderSetting(name: string): string {
-        if (name in this.parent._header) {
-            return this.parent._header[name];
-        }
-    }
-
-    /**
      * Creates the popout, maximise and close buttons in the header's top right corner
      */
     private createControls(): void {
-        let closeStack: () => void,
-            label: string,
-            tabDropdownLabel: string,
+        let tabDropdownLabel: string,
             showTabDropdown: () => void;
 
         /**
@@ -201,15 +177,6 @@ export class HeaderComponent extends EventEmitter {
         this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, "lm_tabdropdown", showTabDropdown);
         this.tabDropdownButton.element.hide();
 
-
-        /**
-         * Close button
-         */
-        if (this.isClosable()) {
-            closeStack = () => this.parent.remove();
-            label = this._getHeaderSetting("close");
-            this.closeButton = new HeaderButtonComponent(this, label, "lm_close", closeStack);
-        }
     }
 
     /**
