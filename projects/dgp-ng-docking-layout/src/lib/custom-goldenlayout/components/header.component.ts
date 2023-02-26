@@ -12,6 +12,7 @@ import { tabsClassName } from "../constants/class-names/tabs-class-name.constant
 import { tabDropdownListClassName } from "../constants/class-names/tabs-dropdown-list-class-name.constant";
 import { controlsClassName } from "../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../constants/class-names/selectable-class-name.constant";
+import { tabDropdownLabelClassName } from "../constants/class-names/tab-dropdown-label-class-name.constant";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -152,9 +153,6 @@ export class HeaderComponent extends EventEmitter {
         return previous;
     }
 
-    /**
-     * Destroys the entire header
-     */
     destroy(): void {
         this.emit("destroy", this);
         this.tabs.forEach(tab => tab.destroy());
@@ -174,7 +172,7 @@ export class HeaderComponent extends EventEmitter {
          */
         showTabDropdown = () => this.showAdditionalTabsDropdown();
         tabDropdownLabel = this.layoutManager.config.labels.tabDropdown;
-        this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, "lm_tabdropdown", showTabDropdown);
+        this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, tabDropdownLabelClassName, showTabDropdown);
         this.tabDropdownButton.element.hide();
 
     }
