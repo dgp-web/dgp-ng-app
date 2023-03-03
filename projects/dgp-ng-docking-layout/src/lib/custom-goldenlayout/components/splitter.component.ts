@@ -17,7 +17,8 @@ export class SplitterComponent {
         this.grabSize = grabSize < size ? size : grabSize;
 
         this.element = this.createElement();
-        this.dragListener = new DragListenerDirective(this.element);
+        this.dragListener = new DragListenerDirective();
+        this.dragListener.initOutsideOfAngular(this.element);
     }
 
     destroy() {

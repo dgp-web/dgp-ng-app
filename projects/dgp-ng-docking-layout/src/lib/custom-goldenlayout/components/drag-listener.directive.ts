@@ -6,10 +6,9 @@ import { createPassiveEventListenerOptions } from "../functions/create-passive-e
 import { DragEvent } from "../models/drag-event.model";
 import { createCoordinates } from "../functions/create-coordinates.function";
 
-/*@Directive({
+@Directive({
     selector: "dgp-drag-listener"
-})*/
-@Directive()
+})
 export class DragListenerDirective {
 
     @Output()
@@ -30,14 +29,15 @@ export class DragListenerDirective {
     private originalCoordinates = createCoordinates();
 
     private isDragging = false;
+    private $element: JQuery<HTMLElement>;
 
-    constructor(
-        private readonly $element: JQuery<HTMLElement>
-    ) {
+    initOutsideOfAngular($element: JQuery<HTMLElement>) {
+        this.$element = $element;
         this.element = $element[0];
         this.$body = $(document.body);
 
         this.element.addEventListener("mousedown", this.onMouseDown, createPassiveEventListenerOptions());
+
     }
 
     destroy() {

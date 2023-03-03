@@ -55,7 +55,8 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
             this.dockingLayoutService.config.settings.reorderEnabled === true &&
             contentItem.config.reorderEnabled === true
         ) {
-            this.dragListener = new DragListenerDirective(this.element);
+            this.dragListener = new DragListenerDirective();
+            this.dragListener.initOutsideOfAngular(this.element);
             const dragStartSubscription = this.dragListener
                 .dragStart$
                 .subscribe(x => this.onDragStart(x));
