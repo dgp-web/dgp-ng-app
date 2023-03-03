@@ -88,6 +88,10 @@ export class HeaderComponent extends EventEmitter {
         this.tabs.splice(index, 0, tab);
         this.updateTabSizes();
 
+        /**
+         * Register to Angular outputs
+         */
+
         tab.selected.subscribe(x => {
             if (x === this.parent.getActiveContentItem()) return;
             this.parent.setActiveContentItem(x);
