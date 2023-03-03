@@ -1,15 +1,17 @@
 import { Subscription } from "rxjs";
 import { Vector2 } from "../../common/models";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { activeClassName } from "../constants/active-class-name.constant";
 import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
-import { Component, EventEmitter, Inject, InjectionToken, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Inject, InjectionToken, Output } from "@angular/core";
 import { tabCreatedEventType } from "../constants/event-types/tab-created-event-type.constant";
 import { tabEventType } from "../constants/tab-created-event-type.constant";
 import { destroyEventType } from "../constants/event-types/destroy-event-type.constant";
 import { DragStartEvent } from "../models/drag-start-event.model";
+import { DgpView } from "dgp-ng-app";
+import { ComponentConfiguration } from "../types";
+import { DockingLayoutService } from "../docking-layout.service";
 
 export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComponent");
 
@@ -18,19 +20,18 @@ export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComp
  */
 @Component({
     selector: "dgp-gl-tab",
-    template: ``
+    template: `
+        <li class="lm_tab nav-item">
+            <a class="lm_title nav-link">{{model?.title}}</a>
+        </li>
+    `
 })
-export class TabComponent {
+export class TabComponent extends DgpView<ComponentConfiguration> {
 
     private subscriptions: Subscription[] = [];
 
-    readonly element = $(
-        dockingLayoutViewMap.tab.render({
-            title: this.contentItem.config.title
-        })
-    );
-    private rawElement = this.element[0];
-    private readonly dockingLayoutService = this.contentItem.layoutManager;
+    private rawElement = this.elementRef.nativeElement;
+    element = $(this.rawElement);
     private isActive = false;
     private dragListener: DragListenerDirective;
 
@@ -40,12 +41,14 @@ export class TabComponent {
     @Output()
     readonly dragStart = new EventEmitter<DragStartEvent>();
 
-    private readonly onTabClickFn = () => this.onTabClick();
-
     constructor(
         @Inject(TAB_CONTENT_ITEM_COMPONENT)
-        public contentItem: AbstractContentItemComponent
+        public contentItem: AbstractContentItemComponent,
+        private readonly elementRef: ElementRef,
+        private readonly dockingLayoutService: DockingLayoutService,
     ) {
+        super();
+        this.model = contentItem.config as ComponentConfiguration;
 
         if (
             this.dockingLayoutService.config.settings.reorderEnabled === true &&
@@ -58,10 +61,6 @@ export class TabComponent {
             this.subscriptions.push(dragStartSubscription);
             this.contentItem.on(destroyEventType, this.dragListener.destroy, this.dragListener);
         }
-
-        this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
-            passive: true
-        });
 
         (this.contentItem as any).tab = this;
         this.contentItem.emit(tabEventType, this);
@@ -96,12 +95,11 @@ export class TabComponent {
 
         this.subscriptions.forEach(x => x.unsubscribe());
 
-        this.rawElement.removeEventListener("mousedown", this.onTabClickFn);
-
         if (this.dragListener) {
             this.contentItem.off(destroyEventType, this.dragListener.destroy, this.dragListener);
             this.dragListener = null;
         }
+
         this.element.remove();
     }
 
@@ -113,6 +111,7 @@ export class TabComponent {
         });
     }
 
+    @HostListener("click")
     onTabClick() {
         this.selected.emit(this.contentItem);
     }

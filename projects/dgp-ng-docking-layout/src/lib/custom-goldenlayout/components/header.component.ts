@@ -77,8 +77,7 @@ export class HeaderComponent extends EventEmitter {
             parent: rootInjector
         });
 
-        // tab = vcRef.createComponent(TabComponent, {injector}).instance;
-        tab = new TabComponent(contentItem);
+        tab = vcRef.createComponent(TabComponent, {injector}).instance;
 
         /**
          * Register to Angular outputs
