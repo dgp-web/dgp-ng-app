@@ -2,18 +2,7 @@ import { Vector2 } from "../../common/models";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { activeClassName } from "../constants/active-class-name.constant";
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostBinding,
-    HostListener,
-    Inject,
-    InjectionToken,
-    Input,
-    Output,
-    ViewChild
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostBinding, HostListener, InjectionToken, Input, Output, ViewChild } from "@angular/core";
 import { DragStartEvent } from "../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
 import { ComponentConfiguration } from "../types";
@@ -31,7 +20,7 @@ export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComp
             (dragStart$)="onDragStart($event)"
             class="lm_tab nav-item">
             <a class="lm_title nav-link"
-               [class.active]="isActive">{{model?.title}}</a>
+               [class.active]="isActive">{{label}}</a>
         </li>
     `
 })
@@ -53,26 +42,28 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
     @Input()
     isActive: boolean;
 
+    @Input()
+    tabId: string;
+
+    @Input()
+    label: string;
+
     constructor(
-        @Inject(TAB_CONTENT_ITEM_COMPONENT)
-        public contentItem: AbstractContentItemComponent,
         private readonly elementRef: ElementRef
     ) {
         super();
-        this.model = contentItem.config as ComponentConfiguration;
     }
 
     onDragStart(coordinates: Vector2) {
         this.dragStart.emit({
             coordinates,
-            dragListener: this.dragListener,
-            contentItem: this.contentItem
+            dragListener: this.dragListener
         });
     }
 
     @HostListener("click")
     onTabClick() {
-        this.selected.emit(this.contentItem);
+        this.selected.emit();
     }
 
 }

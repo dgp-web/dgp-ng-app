@@ -64,7 +64,7 @@ export class HeaderComponent extends EventEmitter {
         // If there's already a tab relating to the
         // content item, don't do anything
         for (let i = 0; i < this.tabs.length; i++) {
-            if (this.tabs[i].contentItem === contentItem) {
+            if (this.tabs[i].tabId === contentItem.config.id) {
                 return;
             }
         }
@@ -81,14 +81,16 @@ export class HeaderComponent extends EventEmitter {
         const tabRef = vcRef.createComponent(TabComponent, {injector});
         this.tabRefs.push(tabRef);
         tab = tabRef.instance;
+        tab.tabId = contentItem.config.id;
+        tab.label = contentItem.config.title;
 
         /**
          * Register to Angular outputs
          */
 
-        tab.selected.subscribe(x => {
-            if (x === this.parent.getActiveContentItem()) return;
-            this.parent.setActiveContentItem(x);
+        tab.selected.subscribe(() => {
+            if (contentItem === this.parent.getActiveContentItem()) return;
+            this.parent.setActiveContentItem(contentItem);
         });
 
         tab.dragStart.subscribe(x => {
@@ -98,7 +100,7 @@ export class HeaderComponent extends EventEmitter {
                 x.coordinates,
                 x.dragListener,
                 this.layoutManager,
-                x.contentItem,
+                contentItem,
                 this.parent
             );
         });
@@ -129,7 +131,7 @@ export class HeaderComponent extends EventEmitter {
      */
     removeTab(contentItem: AbstractContentItemComponent): void {
         for (let i = 0; i < this.tabs.length; i++) {
-            if (this.tabs[i].contentItem === contentItem) {
+            if (this.tabs[i].tabId === contentItem.config.id) {
                 this.tabRefs[i].destroy();
                 this.tabRefs.splice(i, 1);
                 this.tabs.splice(i, 1);
@@ -145,7 +147,7 @@ export class HeaderComponent extends EventEmitter {
         let i: number, j: number, isActive: boolean, activeTab: TabComponent;
 
         for (i = 0; i < this.tabs.length; i++) {
-            isActive = this.tabs[i].contentItem === contentItem;
+            isActive = this.tabs[i].tabId === contentItem.config.id;
             this.tabs[i].isActive = isActive;
             if (isActive === true) {
                 this.activeContentItem = contentItem;
