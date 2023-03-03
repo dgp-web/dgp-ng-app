@@ -8,7 +8,9 @@ export { RowOrColumnComponent } from "./lib/custom-goldenlayout/components/row-o
 export { RowComponent } from "./lib/custom-goldenlayout/components/row.component";
 export { ColumnComponent } from "./lib/custom-goldenlayout/components/column.component";
 export { RootComponent } from "./lib/custom-goldenlayout/components/root.component";
+export { TabComponent } from "./lib/custom-goldenlayout/components/tab.component";
 export { GlComponent } from "./lib/custom-goldenlayout/components/component.component";
+export { DragListenerDirective } from "./lib/custom-goldenlayout/components/drag-listener.directive";
 export { DropTargetIndicatorComponent } from "./lib/custom-goldenlayout/components/drop-target-indicator.component";
 export { TabDropPlaceholderComponent } from "./lib/custom-goldenlayout/components/tab-drop-placeholder.component";
 export { StackComponent } from "./lib/custom-goldenlayout/components/stack.component";

@@ -7,23 +7,34 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { sides } from "../constants/sides.constant";
+import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
+import { DropSegment } from "../models/drop-segment.model";
+import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
+import { lmLeftClassName } from "../constants/class-names/lm-left-class-name.constant";
+import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
+import { lmBottomClassName } from "../constants/class-names/lm-bottom-class-name.constant";
+import { lmRightClassName } from "../constants/class-names/lm-right-class-name.constant";
+import { resizeEventType } from "../constants/event-types/resize-event-type.constant";
+import { activeContentItemChangedEventType } from "../constants/event-types/active-content-item-changed-event-type.constant";
+import { DropTarget } from "../models/drop-target.model";
+import { Area, AreaSides } from "../models/area.model";
+import { GlComponent } from "./component.component";
 
 @Component({
     selector: "dgp-stack",
     template: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StackComponent extends AbstractContentItemComponent {
-    _activeContentItem: any;
-    _dropZones: any;
-    _dropSegment: any;
-    _contentAreaDimensions: any;
-    _dropIndex: number;
-    header: HeaderComponent;
-    _sided: any;
-    _side: any;
+export class StackComponent extends AbstractContentItemComponent implements DropTarget {
+    private activeContentItem: AbstractContentItemComponent = null;
+    private dropSegment: keyof ContentAreaDimensions = null;
+    private dropIndex: number = null;
+    private subscription: Subscription;
+    private headerComponent: HeaderComponent;
 
-    subscription: Subscription;
+    contentAreaDimensions: ContentAreaDimensions = null;
+    isStack = true;
 
     constructor(
         dockingLayoutService: DockingLayoutService,
@@ -34,10 +45,8 @@ export class StackComponent extends AbstractContentItemComponent {
     ) {
         super(dockingLayoutService, config, parent);
 
-        this.element = $(
-            dockingLayoutViewMap.stack.render()
-        );
-        this._activeContentItem = null;
+
+        this.headerComponent = new HeaderComponent(dockingLayoutService, this);
         const cfg = dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
             show: cfg.settings.hasHeaders === true && config.hasHeaders !== false,
@@ -54,22 +63,17 @@ export class StackComponent extends AbstractContentItemComponent {
             Object.assign(this._header, config.content[0].header);
         }
 
-        this._dropZones = {};
-        this._dropSegment = null;
-        this._contentAreaDimensions = null;
-        this._dropIndex = null;
-
-        this.isStack = true;
 
         this.childElementContainer = $(
             dockingLayoutViewMap.stackContent.render()
         );
-        this.header = new HeaderComponent(dockingLayoutService, this);
 
-        this.element.append(this.header.element);
+        // TODO: allow passing dynamic content into the stack so we can work with HTML elements
+        this.element = $(dockingLayoutViewMap.stack.render());
+        this.element.append(this.headerComponent.element);
         this.element.append(this.childElementContainer);
-        this._setupHeaderPosition();
-        this._$validateClosability();
+
+        this.setupHeaderPosition();
 
     }
 
@@ -85,30 +89,24 @@ export class StackComponent extends AbstractContentItemComponent {
             this.contentItems[i].element.width(contentWidth)
                 .height(contentHeight);
         }
-        this.emit("resize");
-        this.emitBubblingEvent("stateChanged");
+        this.emit(resizeEventType);
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
-    _$init() {
+    init() {
+        if (this.isInitialised === true) return;
+
         let i, initialItem;
 
-        if (this.isInitialised === true) {
-            return;
-        }
-
-        super._$init();
+        super.init();
 
         for (i = 0; i < this.contentItems.length; i++) {
-            this.header.createTab(this.contentItems[i]);
-            this.contentItems[i]._$hide();
+            this.headerComponent.createTab(this.contentItems[i]);
+            this.contentItems[i].hide();
         }
 
         if (this.contentItems.length > 0) {
             initialItem = this.contentItems[this.config.activeItemIndex || 0];
-
-            if (!initialItem) {
-                throw new Error("Configured activeItemIndex out of bounds");
-            }
             this.setActiveContentItem(initialItem);
         }
 
@@ -122,85 +120,54 @@ export class StackComponent extends AbstractContentItemComponent {
 
     }
 
-    setActiveContentItem(contentItem) {
-        if (new LayoutManagerUtilities().indexOf(contentItem, this.contentItems) === -1) {
-            throw new Error("contentItem is not a child of this stack");
+    setActiveContentItem(contentItem: AbstractContentItemComponent) {
+        if (this.activeContentItem !== null) {
+            this.activeContentItem.hide();
         }
 
-        if (this._activeContentItem !== null) {
-            this._activeContentItem._$hide();
-        }
-
-        this._activeContentItem = contentItem;
-        this.header.setActiveContentItem(contentItem);
-        contentItem._$show();
-        this.emit("activeContentItemChanged", contentItem);
-        this.layoutManager.emit("activeContentItemChanged", contentItem);
-        this.emitBubblingEvent("stateChanged");
+        this.activeContentItem = contentItem;
+        this.headerComponent.setActiveContentItem(contentItem);
+        contentItem.show();
+        this.emit(activeContentItemChangedEventType, contentItem);
+        this.layoutManager.emit(activeContentItemChangedEventType, contentItem);
+        this.emitBubblingEvent(stateChangedEventType);
 
         if ((this.config as StackConfiguration).onSelectedItemChange) {
             (this.config as StackConfiguration).onSelectedItemChange(contentItem.config.id);
         }
     }
 
-    getActiveContentItem() {
-        return this.header.activeContentItem;
+    getActiveContentItem(): GlComponent {
+        return this.headerComponent.activeContentItem;
     }
 
     addChild(contentItem: AbstractContentItemComponent, index?) {
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
-        this.header.createTab(contentItem, index);
+        this.headerComponent.createTab(contentItem, index);
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
-        this._$validateClosability();
-        this.emitBubblingEvent("stateChanged");
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
     removeChild(contentItem, keepChild) {
         const index = new LayoutManagerUtilities().indexOf(contentItem, this.contentItems);
         super.removeChild(contentItem, keepChild);
-        this.header.removeTab(contentItem);
-        if (this.header.activeContentItem === contentItem) {
+        this.headerComponent.removeTab(contentItem);
+        if (this.headerComponent.activeContentItem === contentItem) {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)]);
             } else {
-                this._activeContentItem = null;
+                this.activeContentItem = null;
             }
         }
 
-        this._$validateClosability();
-        this.emitBubblingEvent("stateChanged");
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
-
-    /**
-     * Validates that the stack is still closable or not. If a stack is able
-     * to close, but has a non closable component added to it, the stack is no
-     * longer closable until all components are closable.
-     */
-    _$validateClosability() {
-        let contentItem,
-            isClosable,
-            len,
-            i;
-
-        isClosable = this.header._isClosable();
-
-        for (i = 0, len = this.contentItems.length; i < len; i++) {
-            if (!isClosable) {
-                break;
-            }
-
-            isClosable = this.contentItems[i].config.isClosable;
-        }
-
-        this.header._$setClosable(isClosable);
-    }
-
-    _$destroy() {
-        super._$destroy();
-        this.header._$destroy();
+    destroy() {
+        super.destroy();
+        this.headerComponent.destroy();
 
         if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
             this.subscription.unsubscribe();
@@ -212,35 +179,35 @@ export class StackComponent extends AbstractContentItemComponent {
      * Ok, this one is going to be the tricky one: The user has dropped {contentItem} onto this stack.
      *
      * It was dropped on either the stacks header or the top, right, bottom or left bit of the content area
-     * (which one of those is stored in this._dropSegment). Now, if the user has dropped on the header the case
+     * (which one of those is stored in this.dropSegment). Now, if the user has dropped on the header the case
      * is relatively clear: We add the item to the existing stack... job done (might be good to have
-     * tab reordering at some point, but lets not sweat it right now)
+     * tab reordering at some point, but let's not sweat it right now)
      *
      * If the item was dropped on the content part things are a bit more complicated. If it was dropped on either the
      * top or bottom region we need to create a new column and place the items accordingly.
      * Unless, of course if the stack is already within a column... in which case we want
      * to add the newly created item to the existing column...
-     * either prepend or append it, depending on wether its top or bottom.
+     * either prepend or append it, depending on whether its top or bottom.
      *
      * Same thing for rows and left / right drop segments... so in total there are 9 things that can potentially happen
      * (left, top, right, bottom) * is child of the right parent (row, column) + header drop
      */
-    _$onDrop(contentItem) {
+    _$onDrop(contentItem: AbstractContentItemComponent) {
 
         /*
          * The item was dropped on the header area. Just add it as a child of this stack and
          * get the hell out of this logic
          */
-        if (this._dropSegment === "header") {
-            this._resetHeaderDropZone();
-            this.addChild(contentItem, this._dropIndex);
+        if (this.dropSegment === DropSegment.Header) {
+            this.resetHeaderDropZone();
+            this.addChild(contentItem, this.dropIndex);
             return;
         }
 
         /*
          * The stack is empty. Let's just add the element.
          */
-        if (this._dropSegment === "body") {
+        if (this.dropSegment === DropSegment.Body) {
             this.addChild(contentItem);
             return;
         }
@@ -249,9 +216,9 @@ export class StackComponent extends AbstractContentItemComponent {
          * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
          * aggregate some conditions to make the if statements later on more readable
          */
-        let isVertical = this._dropSegment === "top" || this._dropSegment === "bottom",
-            isHorizontal = this._dropSegment === "left" || this._dropSegment === "right",
-            insertBefore = this._dropSegment === "top" || this._dropSegment === "left",
+        let isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom,
+            isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right,
+            insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left,
             hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow),
             type: ItemType = isVertical ? "column" : "row",
             dimension = isVertical ? "height" : "width",
@@ -267,7 +234,7 @@ export class StackComponent extends AbstractContentItemComponent {
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
-            stack._$init();
+            stack.init();
             stack.addChild(contentItem);
             contentItem = stack;
         }
@@ -305,19 +272,20 @@ export class StackComponent extends AbstractContentItemComponent {
      * otherwise indicate which segment of the body the dragged item would be dropped on
      */
     highlightDropZone(x, y) {
-        let segment, area;
+        let segment: keyof ContentAreaDimensions;
+        let area: AreaSides;
 
-        for (segment in this._contentAreaDimensions) {
-            area = this._contentAreaDimensions[segment].hoverArea;
+        for (segment in this.contentAreaDimensions) {
+            area = this.contentAreaDimensions[segment].hoverArea;
 
             if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
 
-                if (segment === "header") {
-                    this._dropSegment = "header";
-                    this._highlightHeaderDropZone(this._sided ? y : x);
+                if (segment === DropSegment.Header) {
+                    this.dropSegment = DropSegment.Header;
+                    this.highlightHeaderDropZone(this._sided ? y : x);
                 } else {
-                    this._resetHeaderDropZone();
-                    this._highlightBodyDropZone(segment);
+                    this.resetHeaderDropZone();
+                    this.highlightBodyDropZone(segment);
                 }
 
                 return;
@@ -325,31 +293,41 @@ export class StackComponent extends AbstractContentItemComponent {
         }
     }
 
-    _$getArea() {
+    /**
+     * Returns the area the component currently occupies in the format
+     */
+    private getAreaInternal(element?: JQuery): Area {
+        element = element || this.element;
+
+        const offset = element.offset(),
+            width = element.width(),
+            height = element.height();
+
+        return {
+            x1: offset.left,
+            y1: offset.top,
+            x2: offset.left + width,
+            y2: offset.top + height,
+            surface: width * height,
+            contentItem: this as any
+        };
+    }
+
+    getArea(): Area {
         if (this.element.is(":visible") === false) {
             return null;
         }
 
-        const getArea = super._$getArea,
-            headerArea = getArea.call(this, this.header.element),
+        const getArea = this.getAreaInternal,
+            headerArea = getArea.call(this, this.headerComponent.element),
             contentArea = getArea.call(this, this.childElementContainer),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
 
-        this._contentAreaDimensions = {
+        this.contentAreaDimensions = {
             header: {
-                hoverArea: {
-                    x1: headerArea.x1,
-                    y1: headerArea.y1,
-                    x2: headerArea.x2,
-                    y2: headerArea.y2
-                },
-                highlightArea: {
-                    x1: headerArea.x1,
-                    y1: headerArea.y1,
-                    x2: headerArea.x2,
-                    y2: headerArea.y2
-                }
+                hoverArea: headerArea,
+                highlightArea: headerArea
             }
         };
 
@@ -357,7 +335,7 @@ export class StackComponent extends AbstractContentItemComponent {
          * If this Stack is a parent to rows, columns or other stacks only its
          * header is a valid dropzone.
          */
-        if (this._activeContentItem && this._activeContentItem.isComponent === false) {
+        if (this.activeContentItem && this.activeContentItem.isComponent === false) {
             return headerArea;
         }
 
@@ -366,91 +344,69 @@ export class StackComponent extends AbstractContentItemComponent {
          */
         if (this.contentItems.length === 0) {
 
-            this._contentAreaDimensions.body = {
-                hoverArea: {
-                    x1: contentArea.x1,
-                    y1: contentArea.y1,
-                    x2: contentArea.x2,
-                    y2: contentArea.y2
-                },
-                highlightArea: {
-                    x1: contentArea.x1,
-                    y1: contentArea.y1,
-                    x2: contentArea.x2,
-                    y2: contentArea.y2
-                }
+            this.contentAreaDimensions.body = {
+                hoverArea: contentArea,
+                highlightArea: contentArea
             };
 
             return getArea.call(this, this.element);
         }
 
-        this._contentAreaDimensions.left = {
+        this.contentAreaDimensions.left = {
             hoverArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.25,
-                y2: contentArea.y2
+                ...contentArea,
+                x2: contentArea.x1 + contentWidth * 0.25
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x1 + contentWidth * 0.5,
-                y2: contentArea.y2
+                ...contentArea,
+                x2: contentArea.x1 + contentWidth * 0.5
             }
         };
 
-        this._contentAreaDimensions.top = {
+        this.contentAreaDimensions.top = {
             hoverArea: {
+                ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.25,
-                y1: contentArea.y1,
                 x2: contentArea.x1 + contentWidth * 0.75,
                 y2: contentArea.y1 + contentHeight * 0.5
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
+                ...contentArea,
                 y2: contentArea.y1 + contentHeight * 0.5
             }
         };
 
-        this._contentAreaDimensions.right = {
+        this.contentAreaDimensions.right = {
             hoverArea: {
-                x1: contentArea.x1 + contentWidth * 0.75,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                x1: contentArea.x1 + contentWidth * 0.75
             },
             highlightArea: {
-                x1: contentArea.x1 + contentWidth * 0.5,
-                y1: contentArea.y1,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                x1: contentArea.x1 + contentWidth * 0.5
             }
         };
 
-        this._contentAreaDimensions.bottom = {
+        this.contentAreaDimensions.bottom = {
             hoverArea: {
+                ...contentArea,
                 x1: contentArea.x1 + contentWidth * 0.25,
                 y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x1 + contentWidth * 0.75,
-                y2: contentArea.y2
+                x2: contentArea.x1 + contentWidth * 0.75
             },
             highlightArea: {
-                x1: contentArea.x1,
-                y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x2,
-                y2: contentArea.y2
+                ...contentArea,
+                y1: contentArea.y1 + contentHeight * 0.5
             }
         };
 
         return getArea.call(this, this.element);
     }
 
-    _highlightHeaderDropZone(x) {
+    private highlightHeaderDropZone(x: number) {
         let i,
             tabElement,
-            tabsLength = this.header.tabs.length,
+            tabsLength = this.headerComponent.tabs.length,
             isAboveTab = false,
             tabTop,
             tabLeft,
@@ -463,20 +419,20 @@ export class StackComponent extends AbstractContentItemComponent {
 
         // Empty stack
         if (tabsLength === 0) {
-            headerOffset = this.header.element.offset();
+            headerOffset = this.headerComponent.element.offset();
 
             this.layoutManager.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
                 x2: headerOffset.left + 100,
-                y1: headerOffset.top + this.header.element.height() - 20,
-                y2: headerOffset.top + this.header.element.height()
+                y1: headerOffset.top + this.headerComponent.element.height() - 20,
+                y2: headerOffset.top + this.headerComponent.element.height()
             });
 
             return;
         }
 
         for (i = 0; i < tabsLength; i++) {
-            tabElement = this.header.tabs[i].element;
+            tabElement = this.headerComponent.tabs[i].element;
             offset = tabElement.offset();
             if (this._sided) {
                 tabLeft = offset.top;
@@ -501,10 +457,10 @@ export class StackComponent extends AbstractContentItemComponent {
         halfX = tabLeft + tabWidth / 2;
 
         if (x < halfX) {
-            this._dropIndex = i;
+            this.dropIndex = i;
             tabElement.before(this.layoutManager.tabDropPlaceholder.$element);
         } else {
-            this._dropIndex = Math.min(i + 1, tabsLength);
+            this.dropIndex = Math.min(i + 1, tabsLength);
             tabElement.after(this.layoutManager.tabDropPlaceholder.$element);
         }
 
@@ -529,30 +485,31 @@ export class StackComponent extends AbstractContentItemComponent {
         });
     }
 
-    _resetHeaderDropZone() {
+    private resetHeaderDropZone() {
         this.layoutManager.tabDropPlaceholder.remove();
     }
 
-    _setupHeaderPosition() {
-        const side = ["right", "left", "bottom"].indexOf(this._header.show) >= 0 && this._header.show;
-        this.header.element.toggle(!!this._header.show);
+    private setupHeaderPosition() {
+        const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
+        this.headerComponent.element.toggle(!!this._header.show);
         this._side = side;
-        this._sided = ["right", "left"].indexOf(this._side) >= 0;
-        this.element.removeClass("lm_left lm_right lm_bottom");
+        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
+        this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
         }
-        if (this.element.find(".lm_header").length && this.childElementContainer) {
-            const headerPosition = ["right", "bottom"].indexOf(this._side) >= 0 ? "before" : "after";
-            this.header.element[headerPosition](this.childElementContainer);
+        if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
+            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
+            this.headerComponent.element[headerPosition](this.childElementContainer);
             this.callDownwards("setSize");
         }
     }
 
-    _highlightBodyDropZone(segment) {
-        const highlightArea = this._contentAreaDimensions[segment].highlightArea;
+    private highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
+        const highlightArea = this.contentAreaDimensions[segment].highlightArea;
         this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
-        this._dropSegment = segment;
+        this.dropSegment = segment;
     }
 
 }
+

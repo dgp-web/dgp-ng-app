@@ -1,10 +1,17 @@
 import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ItemConfiguration, itemDefaultConfig, ItemType } from "../types";
+import { HeaderConfig, ItemConfiguration, itemDefaultConfig } from "../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
 import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
-import { Area, AreaSides } from "../models/area.model";
-import { ALL_EVENT } from "../constants/all-event.constant";
+import { AreaSides } from "../models/area.model";
+import { ALL_EVENT } from "../constants/event-types/all-event.constant";
+import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
+import { itemCreatedEventType } from "../constants/event-types/item-created-event-type.constant";
+import { beforeItemDestroyedEventType } from "../constants/event-types/before-item-destroyed-event-type.constant";
+import { itemDestroyedEventType } from "../constants/event-types/item-destroyed-event-type.constant";
+import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
+import { StackComponent } from "./stack.component";
+import { DropSegment } from "../models/drop-segment.model";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -16,10 +23,9 @@ import { ALL_EVENT } from "../constants/all-event.constant";
 // tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractContentItemComponent extends EventEmitter {
 
-    _side: any;
-    _sided: any;
-    _header: any;
-    // _setupHeaderPosition: any;
+    _side: boolean | DropSegment;
+    _sided: boolean;
+    _header: HeaderConfig;
 
     contentItems: AbstractContentItemComponent[] = [];
 
@@ -32,51 +38,34 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     isComponent = false;
 
     element: JQuery;
-    childElementContainer: any;
+    childElementContainer: JQuery;
 
     pendingEventPropagations = {};
-    throttledEvents = ["stateChanged"];
-    type: ItemType;
+    throttledEvents = [stateChangedEventType];
 
     protected constructor(
-        protected readonly layoutManager: DockingLayoutService,
+        readonly layoutManager: DockingLayoutService,
         readonly config: ItemConfiguration,
         public parent: AbstractContentItemComponent
     ) {
         super();
 
-        this.type = config.type;
-        this.contentItems = [];
-
-        this.config = {
-            ...itemDefaultConfig,
-            ...config
-        };
-
+        this.config = {...itemDefaultConfig, ...config};
         this.on(ALL_EVENT, this.propagateEvent, this);
-
-        if (config.content) {
-            this.createContentItems(config);
-        }
-
-    }
-
-    /**
-     * Set the size of the component and its children, called recursively
-     */
-    setSize(width?: number, height?: number): void {
+        if (config.content) this.createContentItems(config);
     }
 
     /**
      * Calls a method recursively downwards on the tree
      */
-    callDownwards(functionName: string, functionArguments?: any[], bottomUp?: boolean, skipSelf?: boolean) {
-        let i;
-
+    callDownwards(functionName: string,
+                  functionArguments?: any[],
+                  bottomUp?: boolean,
+                  skipSelf?: boolean) {
         if (bottomUp !== true && skipSelf !== true) {
             this[functionName].apply(this, functionArguments || []);
         }
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
         }
         if (bottomUp === true && skipSelf !== true) {
@@ -94,18 +83,11 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
          */
         const index = this.contentItems.indexOf(contentItem);
 
-        /*
-         * Make sure the content item to be removed is actually a child of this item
-         */
-        if (index === -1) {
-            throw new Error("Can't remove child item. Unknown content item");
-        }
-
         /**
-         * Call ._$destroy on the content item. this also calls ._$destroy on all its children
+         * Call .destroy on the content item. this also calls .destroy on all its children
          */
         if (keepChild !== true) {
-            this.contentItems[index]._$destroy();
+            this.contentItems[index].destroy();
         }
 
         /**
@@ -152,7 +134,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         contentItem.parent = this;
 
         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem._$init();
+            contentItem.init();
         }
     }
 
@@ -160,23 +142,19 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * Replaces oldChild with newChild. this used to use jQuery.replaceWith... which for
      * some reason removes all event listeners, so isn't really an option.
      */
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, _$destroyOldChild?: boolean) {
+    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, destroyOldChild?: boolean) {
 
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;
-
-        if (index === -1) {
-            throw new Error("Can't replace child. oldChild is not child of this");
-        }
 
         parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
 
         /*
          * Optionally destroy the old content item
          */
-        if (_$destroyOldChild === true) {
+        if (destroyOldChild === true) {
             oldChild.parent = null;
-            oldChild._$destroy();
+            oldChild.destroy();
         }
 
         /*
@@ -194,7 +172,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
         // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            newChild._$init();
+            newChild.init();
         }
 
         this.callDownwards("setSize");
@@ -222,99 +200,9 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * Checks whether a provided id is present
-     */
-    hasId(id: string) {
-        if (!this.config.id) {
-            return false;
-        } else if (typeof this.config.id === "string") {
-            return this.config.id === id;
-        } else if (this.config.id instanceof Array) {
-            return new LayoutManagerUtilities().indexOf(id, this.config.id) !== -1;
-        }
-    }
-
-    /**
-     * Adds an id. Adds it as a string if the component doesn't
-     * have an id yet or creates/uses an array
-     *
-     */
-    addId(id: string) {
-        if (this.hasId(id)) {
-            return;
-        }
-
-        if (!this.config.id) {
-            this.config.id = id;
-        } else if (typeof this.config.id === "string") {
-            this.config.id = [this.config.id, id];
-        } else if (this.config.id instanceof Array) {
-            this.config.id.push(id);
-        }
-    }
-
-    /**
-     * Removes an existing id. Throws an error
-     * if the id is not present
-     */
-    removeId(id: string) {
-        if (!this.hasId(id)) {
-            throw new Error("Id not found");
-        }
-
-        if (typeof this.config.id === "string") {
-            delete this.config.id;
-        } else if (this.config.id instanceof Array) {
-            const index = new LayoutManagerUtilities().indexOf(id, this.config.id);
-            this.config.id.splice(index, 1);
-        }
-    }
-
-    /****************************************
-     * SELECTOR
-     ****************************************/
-    getItemsByFilter(filter) {
-        const result = [];
-        const next = function (contentItem) {
-            for (let i = 0; i < contentItem.contentItems.length; i++) {
-
-                if (filter(contentItem.contentItems[i]) === true) {
-                    result.push(contentItem.contentItems[i]);
-                }
-
-                next(contentItem.contentItems[i]);
-            }
-        };
-
-        next(this);
-        return result;
-    }
-
-    getItemsById(id: string) {
-        return this.getItemsByFilter(function (item) {
-            if (item.config.id instanceof Array) {
-                return new LayoutManagerUtilities()
-                    .indexOf(id, item.config.id) !== -1;
-            } else {
-                return item.config.id === id;
-            }
-        });
-    }
-
-    getItemsByType(type: string) {
-        return this._$getItemsByProperty("type", type);
-    }
-
     /****************************************
      * PACKAGE PRIVATE
      ****************************************/
-    _$getItemsByProperty(key: string, value) {
-        return this.getItemsByFilter(function (item) {
-            return item[key] === value;
-        });
-    }
-
     //noinspection TsLint
     _$setParent(parent: AbstractContentItemComponent) {
         this.parent = parent;
@@ -324,65 +212,34 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.layoutManager.dropTargetIndicator.highlightArea(area);
     }
 
-    _$onDrop(contentItem: AbstractContentItemComponent, area?) {
-        this.addChild(contentItem);
-    }
-
-    _$hide() {
-        this._callOnActiveComponents("hide");
+    hide() {
+        this.callOnActiveComponents("hide");
         this.element.hide();
         this.layoutManager.updateSize();
     }
 
-    _$show() {
-        this._callOnActiveComponents("show");
+    show() {
+        this.callOnActiveComponents("show");
         this.element.show();
         this.layoutManager.updateSize();
     }
 
-    _callOnActiveComponents(methodName: string) {
-        const stacks = this.getItemsByType("stack");
-        let activeContentItem;
-        let i;
-
-        for (i = 0; i < stacks.length; i++) {
-            activeContentItem = stacks[i].getActiveContentItem();
-
-            if (activeContentItem && activeContentItem.isComponent) {
-                activeContentItem.container[methodName]();
-            }
-        }
+    private callOnActiveComponents(methodName: string): void {
+        this.contentItems.filter(x => x.config.type === "stack")
+            .map(x => x as StackComponent)
+            .map(stack => stack.getActiveContentItem())
+            .forEach(component => component[methodName]());
     }
 
     /**
      * Destroys this item ands its children
      */
-    _$destroy() {
+    destroy() {
         this.unsubscribe();
-        this.emitBubblingEvent("beforeItemDestroyed");
-        this.callDownwards("_$destroy", [], true, true);
+        this.emitBubblingEvent(beforeItemDestroyedEventType);
+        this.callDownwards("destroy", [], true, true);
         this.element.remove();
-        this.emitBubblingEvent("itemDestroyed");
-    }
-
-    /**
-     * Returns the area the component currently occupies in the format
-     */
-    _$getArea(element?: JQuery): Area {
-        element = element || this.element;
-
-        const offset = element.offset(),
-            width = element.width(),
-            height = element.height();
-
-        return {
-            x1: offset.left,
-            y1: offset.top,
-            x2: offset.left + width,
-            y2: offset.top + height,
-            surface: width * height,
-            contentItem: this
-        };
+        this.emitBubblingEvent(itemDestroyedEventType);
     }
 
     /**
@@ -393,20 +250,15 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * Its behaviour depends on the content item
      *
      * @package private
-     *
-     * @returns {void}
      */
-    _$init() {
-        let i;
-        this.setSize();
-
-        for (i = 0; i < this.contentItems.length; i++) {
+    init(): void {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
         }
 
         this.isInitialised = true;
-        this.emitBubblingEvent("itemCreated");
-        this.emitBubblingEvent(this.type + "Created");
+        this.emitBubblingEvent(itemCreatedEventType);
+        this.emitBubblingEvent(createItemTypeCreatedEventType(this.config.type));
     }
 
     /**
@@ -415,15 +267,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     emitBubblingEvent(name: string) {
         const event = new BubblingEvent(name, this);
         this.emit(name, event);
-    }
-
-    _setupHeaderPosition() {
-    }
-
-    close(): void {
-    }
-
-    setTitle(title: string): void {
     }
 
     //noinspection TsLint

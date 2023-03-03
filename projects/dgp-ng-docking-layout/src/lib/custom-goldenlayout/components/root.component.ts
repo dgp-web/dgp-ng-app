@@ -10,8 +10,9 @@ import {
     InjectionToken
 } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
-import { AreaSides } from "../models/area.model";
+import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
+import { DropTarget } from "../models/drop-target.model";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -26,7 +27,7 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends AbstractContentItemComponent implements AfterViewInit {
+export class RootComponent extends AbstractContentItemComponent implements AfterViewInit, DropTarget {
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -55,7 +56,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         this._containerElement = this.containerElement;
         this._containerElement.append(this.element);
 
-        this.callDownwards("_$init");
+        this.callDownwards("init");
 
         this.layoutManager.registerInitialization();
     }
@@ -96,7 +97,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         super.highlightDropZone(x, y, area);
     }
 
-    _$onDrop(contentItem, area) {
+    _$onDrop(contentItem: AbstractContentItemComponent, area: Area) {
         let stack;
 
         if (contentItem.isComponent) {
@@ -104,7 +105,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
-            stack._$init();
+            stack.init();
             stack.addChild(contentItem);
             contentItem = stack;
         }
@@ -116,7 +117,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
             const dimension = area.side[0] === "x" ? "width" : "height";
             const insertBefore = area.side[1] === "2";
             const column: AbstractContentItemComponent = this.contentItems[0];
-            if (!(column.isRow || column.isColumn) || column.type !== type) { // TODO: move this type here
+            if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
                 const rowOrColumn = this.layoutManager.createContentItem({type}, this);
                 this.replaceChild(column, rowOrColumn);
                 rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
@@ -132,6 +133,23 @@ export class RootComponent extends AbstractContentItemComponent implements After
                 column.callDownwards("setSize");
             }
         }
+    }
+
+     getArea(element?: JQuery): Area {
+        element = element || this.element;
+
+        const offset = element.offset(),
+            width = element.width(),
+            height = element.height();
+
+        return {
+            x1: offset.left,
+            y1: offset.top,
+            x2: offset.left + width,
+            y2: offset.top + height,
+            surface: width * height,
+            contentItem: this as any
+        };
     }
 
 }

@@ -1,7 +1,8 @@
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
-import { verticalClassName } from "../constants/vertical-class-name.constant";
-import { horizontalClassName } from "../constants/horizontal-class-name.constant";
+import { verticalClassName } from "../constants/class-names/vertical-class-name.constant";
+import { horizontalClassName } from "../constants/class-names/horizontal-class-name.constant";
+import { DockingLayoutService } from "../docking-layout.service";
 
 export class SplitterComponent {
 
@@ -10,6 +11,7 @@ export class SplitterComponent {
     readonly element: JQuery;
 
     constructor(
+        private readonly dockingLayoutService: DockingLayoutService,
         private readonly isVertical: boolean,
         private readonly size: number,
         grabSize: number
@@ -17,10 +19,12 @@ export class SplitterComponent {
         this.grabSize = grabSize < size ? size : grabSize;
 
         this.element = this.createElement();
-        this.dragListener = new DragListenerDirective(this.element);
+
+        this.dragListener = new DragListenerDirective();
+        this.dragListener.initProgrammatically(this.element);
     }
 
-    _$destroy() {
+    destroy() {
         this.element.remove();
     }
 

@@ -57,29 +57,29 @@ export class GlComponent extends AbstractContentItemComponent {
         }
     }
 
-    _$init() {
-        super._$init();
+    init() {
+        super.init();
         this.container.emit("open");
     }
 
-    _$hide() {
+    hide() {
         this.container.hide();
-        super._$hide();
+        super.hide();
     }
 
-    _$show() {
+    show() {
         this.container.show();
-        super._$show();
+        super.show();
     }
 
-    _$shown() {
+    shown() {
         this.container.shown();
-        // super._$shown();
+        // super.shown();
     }
 
-    _$destroy() {
+    destroy() {
         this.container.emit("destroy", this);
-        super._$destroy();
+        super.destroy();
     }
 
     /**
@@ -87,7 +87,7 @@ export class GlComponent extends AbstractContentItemComponent {
      *
      * @returns null
      */
-    _$getArea() {
+    getArea() {
         return null;
     }
 

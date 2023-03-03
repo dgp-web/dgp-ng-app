@@ -4,6 +4,9 @@ import { getAllContentItems } from "../functions/content-item/get-all-content-it
 import { createRootItemAreas } from "../functions/areas/create-content-root-item-areas.function";
 import { findArea } from "../functions/areas/find-area.function";
 import { Injectable } from "@angular/core";
+import { StackComponent } from "../components/stack.component";
+import { notNullOrUndefined } from "dgp-ng-app";
+import { Mutable } from "data-modeling";
 
 @Injectable({
     providedIn: "root"
@@ -13,44 +16,38 @@ export class AreaService {
     private itemAreas: Array<Area>;
 
     calculateItemAreas(root: RootComponent): void {
-        let i: number;
-        let area: Area;
         const allContentItems = getAllContentItems(root);
-        this.itemAreas = [];
+        let itemAreas: Array<Area>;
 
-        /**
-         * If the last item is dragged out, highlight the entire container size to
-         * allow to re-drop it. allContentItems[ 0 ] === this.root at this point
-         *
-         * Don't include root into the possible drop areas though otherwise since it
-         * will used for every gap in the layout, e.g. splitters
-         */
         if (allContentItems.length === 1) {
-            this.itemAreas.push(root._$getArea());
-            return;
+            itemAreas = [root.getArea()];
+        } else {
+
+            itemAreas = createRootItemAreas(root);
+
+            allContentItems
+                .filter(x => x.isStack)
+                .map(x => x as StackComponent)
+                .map(x => x.getArea())
+                .filter(notNullOrUndefined)
+                .forEach(area => {
+
+                    if (area instanceof Array) {
+                        itemAreas = itemAreas.concat(area);
+                    } else {
+                        itemAreas.push(area);
+                        const header: Partial<Mutable<Area>> = {};
+                        Object.assign(header, area);
+                        Object.assign(header, (area.contentItem as StackComponent).contentAreaDimensions.header.highlightArea);
+                        header.surface = (+header.x2 - +header.x1) * (+header.y2 - +header.y1);
+                        itemAreas.push(header as Area);
+                    }
+                });
+
         }
-        this.itemAreas = createRootItemAreas(root);
 
-        for (i = 0; i < allContentItems.length; i++) {
 
-            if (!(allContentItems[i].isStack)) {
-                continue;
-            }
-
-            area = allContentItems[i]._$getArea();
-
-            if (area === null) {
-            } else if (area instanceof Array) {
-                this.itemAreas = this.itemAreas.concat(area);
-            } else {
-                this.itemAreas.push(area);
-                const header: any = {};
-                Object.assign(header, area);
-                Object.assign(header, (area.contentItem as any)._contentAreaDimensions.header.highlightArea); // TODO: Investigate typing
-                header.surface = (header.x2 - header.x1) * (header.y2 - header.y1);
-                this.itemAreas.push(header);
-            }
-        }
+        this.itemAreas = itemAreas;
     }
 
     getArea(x: number, y: number): Area {

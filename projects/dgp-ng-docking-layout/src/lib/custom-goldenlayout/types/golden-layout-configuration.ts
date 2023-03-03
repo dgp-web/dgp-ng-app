@@ -1,7 +1,16 @@
 import { InjectionToken, TemplateRef } from "@angular/core";
 import { Subject } from "rxjs";
+import { DropSegment } from "../models/drop-segment.model";
 
 export type ItemType = "row" | "column" | "stack" | "component" | "root";
+
+export interface HeaderConfig {
+    show: boolean | DropSegment;
+    popout: string;
+    maximise: string;
+    close: string;
+    minimise: string;
+}
 
 export interface LayoutConfiguration {
     readonly settings?: {
@@ -41,7 +50,7 @@ export interface LayoutConfiguration {
 
 export interface ItemConfiguration {
     type?: ItemType;
-    id?: string | string[];
+    id?: string;
     width?: number;
     height?: number;
     isClosable?: boolean;

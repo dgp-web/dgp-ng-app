@@ -1,7 +1,7 @@
 import { RxComponent } from "../../common/app";
 import { GoldenLayoutEvent } from "../models/events/golden-layout-event.model";
 import { Callback } from "../models/events/callback.model";
-import { ALL_EVENT } from "../constants/all-event.constant";
+import { ALL_EVENT } from "../constants/event-types/all-event.constant";
 import { createEventSubscriptionKVS } from "../functions/create-event-subscription-kvs.function";
 
 /**
@@ -59,7 +59,7 @@ export class EventEmitter extends RxComponent {
     unbind(event: string, callback: Callback, context: any) {
         let i: number;
 
-        for (i = 0; i < this.subscriptionKVS[event].length; i++) {
+        for (i = 0; i < this.subscriptionKVS[event]?.length; i++) {
             if (
                 (!callback || this.subscriptionKVS[event][i].callback === callback) &&
                 (!context || context === this.subscriptionKVS[event][i].context)

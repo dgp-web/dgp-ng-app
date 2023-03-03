@@ -1,4 +1,3 @@
-import { stripHtmlTags } from "../../common/functions";
 import { Vector2, Vector2Utils } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { $x } from "../../jquery-extensions";
@@ -6,6 +5,13 @@ import { DockingLayoutService } from "../docking-layout.service";
 import { EventEmitter } from "../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../models/drag-event.model";
+import { Area } from "../models/area.model";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { DropSegment } from "../models/drop-segment.model";
+import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
+import { lmContentClassName } from "../constants/class-names/lm-content-class-name.constant";
+import { itemDroppedEventType } from "../constants/event-types/item-dropped-event-type.constant";
+import { createDropSegmentClassName } from "../functions/create-drop-segment-class-name.function";
 
 /**
  * This class creates a temporary container
@@ -14,21 +20,32 @@ import { DragEvent } from "../models/drag-event.model";
  */
 export class DragProxy extends EventEmitter {
 
-    _area = null;
-    _lastValidArea = null;
-    $element;
-    _sided;
-    childElementContainer;
+    private readonly sided: boolean;
 
-    private min: Vector2;
-    private max: Vector2;
+    private readonly offset = this.layoutManager.container.offset();
+    private readonly min: Vector2 = {
+        x: this.offset.left,
+        y: this.offset.top
+    };
+    private readonly max: Vector2 = {
+        x: this.layoutManager.container.width() + this.min.x,
+        y: this.layoutManager.container.height() + this.min.y
+    };
+    private readonly element = $(dockingLayoutViewMap.dragProxy.render({
+        draggedItem: this.contentItem.element[0]
+    }));
+
+    private area: Area;
+    private lastValidArea: Area;
     private size: Vector2;
+
+    childElementContainer: JQuery<HTMLElement>;
 
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
-                private readonly contentItem: any,
-                private readonly originalParent: any) {
+                private readonly contentItem: AbstractContentItemComponent,
+                private readonly originalParent: AbstractContentItemComponent) {
         super();
 
         const dragSub = this.dragListener
@@ -43,46 +60,29 @@ export class DragProxy extends EventEmitter {
 
         this.subscriptions.push(dragStopSubscription);
 
-        this.$element = $(dockingLayoutViewMap.dragProxy.render());
-
         if (originalParent && originalParent._side) {
-            this._sided = originalParent._sided;
-            this.$element.addClass("lm_" + originalParent._side);
-            if (["right", "bottom"].indexOf(originalParent._side) >= 0) {
-                this.$element.find(".lm_content")
-                    .after(this.$element.find(".lm_header"));
+            this.sided = originalParent._sided;
+            this.element.addClass(createDropSegmentClassName(originalParent._side as DropSegment));
+            if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
+                const content = this.element.find("." + lmContentClassName);
+                const header = this.element.find("." + lmHeaderClassName);
+                content.after(header);
             }
         }
 
-        $x.position(this.$element, coordinates);
-        this.$element.find(".lm_tab")
-            .attr("title", stripHtmlTags(this.contentItem.config.label));
-        this.$element.find(".lm_title")
-            .html(this.contentItem.config.label);
-        this.childElementContainer = this.$element.find(".lm_content");
-        this.childElementContainer.append(contentItem.element);
+        $x.position(this.element, coordinates);
+        this.childElementContainer = this.element.find("." + lmContentClassName);
 
         this.updateTree();
         this.layoutManager.calculateItemAreas();
         this.setDimensions();
 
         $(document.body)
-            .append(this.$element);
-
-        const offset = this.layoutManager.container.offset();
-
-        this.min = {
-            x: offset.left, y: offset.top
-        };
-
-        this.max = {
-            x: this.layoutManager.container.width() + this.min.x,
-            y: this.layoutManager.container.height() + this.min.y
-        };
+            .append(this.element);
 
         this.size = {
-            x: this.$element.width(),
-            y: this.$element.height(),
+            x: this.element.width(),
+            y: this.element.height(),
         };
 
         this.setDropPosition(coordinates);
@@ -94,13 +94,10 @@ export class DragProxy extends EventEmitter {
      * current drop area
      */
     private onDrag = (dragEvent: DragEvent) => {
-
         const coordinates = $x.getPointerCoordinates(dragEvent.event);
         const isWithinContainer = Vector2Utils.isWithinRectangle(coordinates, this.min, this.max);
 
-        if (!isWithinContainer && this.layoutManager.config.settings.constrainDragToContainer === true) {
-            return;
-        }
+        if (!isWithinContainer && this.layoutManager.config.settings.constrainDragToContainer === true) return;
 
         this.setDropPosition(coordinates);
     };
@@ -109,12 +106,12 @@ export class DragProxy extends EventEmitter {
      * Sets the target position, highlighting the appropriate area
      */
     private setDropPosition(coordinates: Vector2) {
-        this.$element.css({left: coordinates.x, top: coordinates.y});
-        this._area = this.layoutManager.getArea(coordinates.x, coordinates.y);
+        this.element.css({left: coordinates.x, top: coordinates.y});
+        this.area = this.layoutManager.getArea(coordinates.x, coordinates.y);
 
-        if (this._area !== null) {
-            this._lastValidArea = this._area;
-            this._area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this._area);
+        if (this.area !== null) {
+            this.lastValidArea = this.area;
+            this.area.contentItem.highlightDropZone(coordinates.x, coordinates.y, this.area);
         }
     }
 
@@ -128,15 +125,15 @@ export class DragProxy extends EventEmitter {
         /*
          * Valid drop area found
          */
-        if (this._area !== null) {
-            this._area.contentItem._$onDrop(this.contentItem, this._area);
+        if (this.area !== null) {
+            this.area.contentItem._$onDrop(this.contentItem, this.area);
 
             /**
              * No valid drop area available at present, but one has been found before.
              * Use it
              */
-        } else if (this._lastValidArea !== null) {
-            this._lastValidArea.contentItem._$onDrop(this.contentItem, this._lastValidArea);
+        } else if (this.lastValidArea !== null) {
+            this.lastValidArea.contentItem._$onDrop(this.contentItem, this.lastValidArea);
 
             /**
              * No valid drop area found during the duration of the drag. Return
@@ -152,13 +149,11 @@ export class DragProxy extends EventEmitter {
              * content item.
              */
         } else {
-            this.contentItem._$destroy();
+            this.contentItem.destroy();
         }
 
-        this.$element.remove();
-
-        this.layoutManager.emit("itemDropped", this.contentItem);
-
+        this.element.remove();
+        this.layoutManager.emit(itemDroppedEventType, this.contentItem);
         this.layoutManager.updateSize();
     };
 
@@ -174,7 +169,7 @@ export class DragProxy extends EventEmitter {
             this.contentItem.parent.removeChild(this.contentItem, true);
         }
 
-        this.contentItem._$setParent(this);
+        this.contentItem._$setParent(this as any);
     }
 
     /**
@@ -186,15 +181,15 @@ export class DragProxy extends EventEmitter {
         let width = dimensions.dragProxyWidth;
         let height = dimensions.dragProxyHeight;
 
-        $x.size(this.$element, {x: width, y: height});
+        $x.size(this.element, {x: width, y: height});
 
-        width -= (this._sided ? dimensions.headerHeight : 0);
-        height -= (!this._sided ? dimensions.headerHeight : 0);
+        width -= (this.sided ? dimensions.headerHeight : 0);
+        height -= (!this.sided ? dimensions.headerHeight : 0);
 
         $x.size(this.childElementContainer, {x: width, y: height});
         $x.size(this.contentItem.element, {x: width, y: height});
 
-        this.contentItem.callDownwards("_$show");
+        this.contentItem.callDownwards("show");
         this.contentItem.callDownwards("setSize");
     }
 

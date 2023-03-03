@@ -48,6 +48,14 @@ export class DockingLayoutService extends EventEmitter {
         super();
     }
 
+    getViewContainerRef() {
+        return this.viewContainerRef;
+    }
+
+    getInjector() {
+        return this.injector;
+    }
+
     createDockingLayout(config: LayoutConfiguration,
                         viewContainerRef: ViewContainerRef) {
 
@@ -121,7 +129,7 @@ export class DockingLayoutService extends EventEmitter {
 
     destroy() {
         if (this.isInitialised === false) return;
-        this.root.callDownwards("_$destroy", [], true);
+        this.root.callDownwards("destroy", [], true);
         this.root.contentItems = [];
         this.eventHub.destroy();
     }

@@ -1,6 +1,6 @@
-import { DockingLayoutViewModels, HeaderButtonViewModel, ViewMap } from "./models";
+import { DockingLayoutViewModels, HeaderButtonViewModel } from "./models";
 
-export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
+export const dockingLayoutViewMap = {
     dragHandle: {
         render() {
             return `
@@ -9,7 +9,9 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
         }
     },
     dragProxy: {
-        render() {
+        render(model: {
+            readonly draggedItem: HTMLElement
+        }) {
             return `
                 <div class="lm_dragProxy">
                     <div class="lm_header card-header"
@@ -20,7 +22,7 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
                                 <i class="lm_right"></i></li>
                         </ul>
                     </div>
-                    <div class="lm_content"></div>
+                    <div class="lm_content">${model.draggedItem.innerHTML}</div>
                 </div>
             `;
         }
@@ -95,17 +97,12 @@ export const dockingLayoutViewMap: ViewMap<DockingLayoutViewModels> = {
         }
     },
     tab: {
-        render() {
+        render(model: {
+            readonly title: string;
+        }) {
             return `
                 <li class="lm_tab nav-item">
-                    <a class="lm_title nav-link">
-                    <button type="button"
-                            class="close"
-                            aria-label="Close"
-                            style="cursor:pointer;margin-left:16px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </a>
+                    <a class="lm_title nav-link">${model.title}</a>
                 </li>
             `;
         }
