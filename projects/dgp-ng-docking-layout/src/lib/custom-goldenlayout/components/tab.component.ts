@@ -2,16 +2,21 @@ import { Subscription } from "rxjs";
 import { Vector2 } from "../../common/models";
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DragListenerDirective } from "./drag-listener.directive";
-import { DragProxy } from "./drag-proxy.component";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { HeaderComponent } from "./header.component";
 import { activeClassName } from "../constants/active-class-name.constant";
 import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
-import { EventEmitter, Output } from "@angular/core";
+import { Directive, EventEmitter, Output } from "@angular/core";
+
+export interface DragStartEvent {
+    readonly coordinates: Vector2;
+    readonly contentItem: AbstractContentItemComponent;
+    readonly dragListener: DragListenerDirective;
+}
 
 /**
  * Represents an individual tab within a Stack's header
  */
+@Directive()
 export class TabComponent {
 
     private subscriptions: Subscription[] = [];
@@ -29,11 +34,12 @@ export class TabComponent {
     @Output()
     readonly selected = new EventEmitter<AbstractContentItemComponent>();
 
+    @Output()
+    readonly dragStart = new EventEmitter<DragStartEvent>();
+
     private readonly onTabClickFn = () => this.onTabClick();
 
     constructor(
-        // TODO: break this dependency
-        private readonly header: HeaderComponent,
         public contentItem: AbstractContentItemComponent
     ) {
 
@@ -96,14 +102,11 @@ export class TabComponent {
     }
 
     onDragStart(coordinates: Vector2) {
-        // tslint:disable-next-line:no-unused-expression
-        new DragProxy(
+        this.dragStart.emit({
             coordinates,
-            this.dragListener,
-            this.dockingLayoutService,
-            this.contentItem,
-            this.header.parent
-        );
+            dragListener: this.dragListener,
+            contentItem: this.contentItem
+        });
     }
 
     onTabClick() {

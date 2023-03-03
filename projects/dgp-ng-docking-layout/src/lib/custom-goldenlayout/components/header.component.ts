@@ -13,6 +13,7 @@ import { tabDropdownListClassName } from "../constants/class-names/tabs-dropdown
 import { controlsClassName } from "../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../constants/class-names/selectable-class-name.constant";
 import { tabDropdownLabelClassName } from "../constants/class-names/tab-dropdown-label-class-name.constant";
+import { DragProxy } from "./drag-proxy.component";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -66,7 +67,7 @@ export class HeaderComponent extends EventEmitter {
             }
         }
 
-        tab = new TabComponent(this, contentItem);
+        tab = new TabComponent(contentItem);
 
         if (this.tabs.length === 0) {
             this.tabs.push(tab);
@@ -90,6 +91,16 @@ export class HeaderComponent extends EventEmitter {
         tab.selected.subscribe(x => {
             if (x === this.parent.getActiveContentItem()) return;
             this.parent.setActiveContentItem(x);
+        });
+
+        tab.dragStart.subscribe(x => {
+            return new DragProxy(
+                x.coordinates,
+                x.dragListener,
+                this.layoutManager,
+                x.contentItem,
+                this.parent
+            );
         });
     }
 
