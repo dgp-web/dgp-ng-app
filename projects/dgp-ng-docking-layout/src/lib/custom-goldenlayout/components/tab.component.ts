@@ -106,7 +106,6 @@ export class TabComponent {
     }
 
     onDragStart(coordinates: Vector2) {
-        console.log("test");
         this.dragStart.emit({
             coordinates,
             dragListener: this.dragListener,

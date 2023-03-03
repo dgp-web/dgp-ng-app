@@ -67,7 +67,6 @@ export class HeaderComponent extends EventEmitter {
                 return;
             }
         }
-
         const vcRef = this.layoutManager.getViewContainerRef();
         const rootInjector = this.layoutManager.getInjector();
         const injector = Injector.create({
@@ -80,6 +79,25 @@ export class HeaderComponent extends EventEmitter {
 
         // tab = vcRef.createComponent(TabComponent, {injector}).instance;
         tab = new TabComponent(contentItem);
+
+        /**
+         * Register to Angular outputs
+         */
+
+        tab.selected.subscribe(x => {
+            if (x === this.parent.getActiveContentItem()) return;
+            this.parent.setActiveContentItem(x);
+        });
+
+        tab.dragStart.subscribe(x => {
+            return new DragProxy(
+                x.coordinates,
+                x.dragListener,
+                this.layoutManager,
+                x.contentItem,
+                this.parent
+            );
+        });
 
         if (this.tabs.length === 0) {
             this.tabs.push(tab);
@@ -100,24 +118,6 @@ export class HeaderComponent extends EventEmitter {
         this.tabs.splice(index, 0, tab);
         this.updateTabSizes();
 
-        /**
-         * Register to Angular outputs
-         */
-
-        tab.selected.subscribe(x => {
-            if (x === this.parent.getActiveContentItem()) return;
-            this.parent.setActiveContentItem(x);
-        });
-
-        tab.dragStart.subscribe(x => {
-            return new DragProxy(
-                x.coordinates,
-                x.dragListener,
-                this.layoutManager,
-                x.contentItem,
-                this.parent
-            );
-        });
     }
 
     /**
