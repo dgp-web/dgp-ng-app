@@ -410,7 +410,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * What it doesn't do though is to append the splitter to the DOM
      */
     private createSplitter(index: number): SplitterComponent {
-        let splitter = new SplitterComponent(this._isColumn, this.splitterSize, this.splitterGrabSize);
+        let splitter = new SplitterComponent(this.layoutManager, this._isColumn, this.splitterSize, this.splitterGrabSize);
 
         const dragSub = splitter
             .dragListener

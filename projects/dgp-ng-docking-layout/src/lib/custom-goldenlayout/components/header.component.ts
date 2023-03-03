@@ -89,6 +89,8 @@ export class HeaderComponent extends EventEmitter {
         });
 
         tab.dragStart.subscribe(x => {
+            if (!x.dragListener) return;
+
             return new DragProxy(
                 x.coordinates,
                 x.dragListener,
