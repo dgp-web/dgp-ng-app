@@ -14,7 +14,7 @@ import { controlsClassName } from "../constants/class-names/controls-class-name.
 import { selectableClassName } from "../constants/class-names/selectable-class-name.constant";
 import { tabDropdownLabelClassName } from "../constants/class-names/tab-dropdown-label-class-name.constant";
 import { DragProxy } from "./drag-proxy.component";
-import { Injector } from "@angular/core";
+import { ComponentRef, Injector } from "@angular/core";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -24,6 +24,7 @@ export class HeaderComponent extends EventEmitter {
     readonly element = $(dockingLayoutViewMap.header.render());
     readonly rawElement = this.element[0];
     readonly tabs = new Array<TabComponent>();
+    readonly tabRefs = new Array<ComponentRef<TabComponent>>();
     activeContentItem: any;
     private tabsContainer = this.element.find("." + tabsClassName);
     private tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
@@ -77,7 +78,9 @@ export class HeaderComponent extends EventEmitter {
             parent: rootInjector
         });
 
-        tab = vcRef.createComponent(TabComponent, {injector}).instance;
+        const tabRef = vcRef.createComponent(TabComponent, {injector});
+        this.tabRefs.push(tabRef);
+        tab = tabRef.instance;
 
         /**
          * Register to Angular outputs
@@ -127,7 +130,8 @@ export class HeaderComponent extends EventEmitter {
     removeTab(contentItem: AbstractContentItemComponent): void {
         for (let i = 0; i < this.tabs.length; i++) {
             if (this.tabs[i].contentItem === contentItem) {
-                this.tabs[i].destroy();
+                this.tabRefs[i].destroy();
+                this.tabRefs.splice(i, 1);
                 this.tabs.splice(i, 1);
                 return;
             }
@@ -188,7 +192,7 @@ export class HeaderComponent extends EventEmitter {
 
     destroy(): void {
         this.emit("destroy", this);
-        this.tabs.forEach(tab => tab.destroy());
+        this.tabRefs.forEach(tab => tab.destroy());
         $(document).off("mouseup", this.hideAdditionalTabsDropdown);
         this.element.remove();
     }

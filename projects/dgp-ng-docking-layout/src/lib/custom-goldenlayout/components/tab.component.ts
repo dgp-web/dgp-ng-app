@@ -1,4 +1,3 @@
-import { Subscription } from "rxjs";
 import { Vector2 } from "../../common/models";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
@@ -15,7 +14,6 @@ import {
     Output,
     ViewChild
 } from "@angular/core";
-import { destroyEventType } from "../constants/event-types/destroy-event-type.constant";
 import { DragStartEvent } from "../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
 import { ComponentConfiguration } from "../types";
@@ -38,8 +36,6 @@ export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComp
     `
 })
 export class TabComponent extends DgpView<ComponentConfiguration> {
-
-    private subscriptions: Subscription[] = [];
 
     private rawElement = this.elementRef.nativeElement;
     element = $(this.rawElement);
@@ -64,18 +60,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
     ) {
         super();
         this.model = contentItem.config as ComponentConfiguration;
-    }
-
-    destroy() {
-
-        this.subscriptions.forEach(x => x.unsubscribe());
-
-        if (this.dragListener) {
-            this.contentItem.off(destroyEventType, this.dragListener.destroy, this.dragListener);
-            this.dragListener = null;
-        }
-
-        this.element.remove();
     }
 
     onDragStart(coordinates: Vector2) {
