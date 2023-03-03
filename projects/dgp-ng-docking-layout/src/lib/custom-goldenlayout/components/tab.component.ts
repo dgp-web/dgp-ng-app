@@ -2,12 +2,10 @@ import { Vector2 } from "../../common/models";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { activeClassName } from "../constants/active-class-name.constant";
-import { Component, ElementRef, EventEmitter, HostBinding, HostListener, InjectionToken, Input, Output, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, ViewChild } from "@angular/core";
 import { DragStartEvent } from "../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
 import { ComponentConfiguration } from "../types";
-
-export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComponent");
 
 /**
  * Represents an individual tab within a Stack's header
@@ -27,7 +25,7 @@ export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComp
 export class TabComponent extends DgpView<ComponentConfiguration> {
 
     private rawElement = this.elementRef.nativeElement;
-    element = $(this.rawElement);
+    readonly element = $(this.rawElement);
 
     @ViewChild("dragListenerHost", {read: DragListenerDirective})
     private dragListener: DragListenerDirective;
