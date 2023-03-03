@@ -7,6 +7,7 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { HeaderComponent } from "./header.component";
 import { activeClassName } from "../constants/active-class-name.constant";
 import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
+import { EventEmitter, Output } from "@angular/core";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -24,9 +25,14 @@ export class TabComponent {
     private readonly dockingLayoutService = this.contentItem.layoutManager;
     private isActive = false;
     private dragListener: DragListenerDirective;
+
+    @Output()
+    readonly selected = new EventEmitter<AbstractContentItemComponent>();
+
     private readonly onTabClickFn = () => this.onTabClick();
 
     constructor(
+        // TODO: break this dependency
         private readonly header: HeaderComponent,
         public contentItem: AbstractContentItemComponent
     ) {
@@ -101,10 +107,7 @@ export class TabComponent {
     }
 
     onTabClick() {
-        const activeContentItem = this.header.parent.getActiveContentItem();
-        if (this.contentItem === activeContentItem) return;
-
-        this.header.parent.setActiveContentItem(this.contentItem);
+        this.selected.emit(this.contentItem);
     }
 
 }
