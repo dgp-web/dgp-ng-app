@@ -5,16 +5,21 @@ import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { activeClassName } from "../constants/active-class-name.constant";
 import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
-import { Directive, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, Inject, InjectionToken, Output } from "@angular/core";
 import { tabCreatedEventType } from "../constants/event-types/tab-created-event-type.constant";
 import { tabEventType } from "../constants/tab-created-event-type.constant";
 import { destroyEventType } from "../constants/event-types/destroy-event-type.constant";
 import { DragStartEvent } from "../models/drag-start-event.model";
 
+export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComponent");
+
 /**
  * Represents an individual tab within a Stack's header
  */
-@Directive()
+@Component({
+    selector: "dgp-gl-tab",
+    template: ``
+})
 export class TabComponent {
 
     private subscriptions: Subscription[] = [];
@@ -38,6 +43,7 @@ export class TabComponent {
     private readonly onTabClickFn = () => this.onTabClick();
 
     constructor(
+        @Inject(TAB_CONTENT_ITEM_COMPONENT)
         public contentItem: AbstractContentItemComponent
     ) {
 
@@ -100,6 +106,7 @@ export class TabComponent {
     }
 
     onDragStart(coordinates: Vector2) {
+        console.log("test");
         this.dragStart.emit({
             coordinates,
             dragListener: this.dragListener,

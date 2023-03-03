@@ -48,6 +48,14 @@ export class DockingLayoutService extends EventEmitter {
         super();
     }
 
+    getViewContainerRef() {
+        return this.viewContainerRef;
+    }
+
+    getInjector() {
+        return this.injector;
+    }
+
     createDockingLayout(config: LayoutConfiguration,
                         viewContainerRef: ViewContainerRef) {
 

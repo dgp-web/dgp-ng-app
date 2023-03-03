@@ -2,7 +2,7 @@ import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { EventEmitter } from "../utilities";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { HeaderButtonComponent } from "./header-button.component";
-import { TabComponent } from "./tab.component";
+import { TAB_CONTENT_ITEM_COMPONENT, TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
 import { DropSegment } from "../models/drop-segment.model";
 import { DockingLayoutService } from "../docking-layout.service";
@@ -14,6 +14,7 @@ import { controlsClassName } from "../constants/class-names/controls-class-name.
 import { selectableClassName } from "../constants/class-names/selectable-class-name.constant";
 import { tabDropdownLabelClassName } from "../constants/class-names/tab-dropdown-label-class-name.constant";
 import { DragProxy } from "./drag-proxy.component";
+import { Injector } from "@angular/core";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -67,6 +68,17 @@ export class HeaderComponent extends EventEmitter {
             }
         }
 
+        const vcRef = this.layoutManager.getViewContainerRef();
+        const rootInjector = this.layoutManager.getInjector();
+        const injector = Injector.create({
+            providers: [{
+                provide: TAB_CONTENT_ITEM_COMPONENT,
+                useValue: contentItem
+            }],
+            parent: rootInjector
+        });
+
+        // tab = vcRef.createComponent(TabComponent, {injector}).instance;
         tab = new TabComponent(contentItem);
 
         if (this.tabs.length === 0) {
