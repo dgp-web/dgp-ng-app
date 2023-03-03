@@ -4,8 +4,6 @@ import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { activeClassName } from "../constants/active-class-name.constant";
 import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Inject, InjectionToken, Input, Output } from "@angular/core";
-import { tabCreatedEventType } from "../constants/event-types/tab-created-event-type.constant";
-import { tabEventType } from "../constants/tab-created-event-type.constant";
 import { destroyEventType } from "../constants/event-types/destroy-event-type.constant";
 import { DragStartEvent } from "../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
@@ -64,9 +62,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
             this.subscriptions.push(dragStartSubscription);
             this.contentItem.on(destroyEventType, this.dragListener.destroy, this.dragListener);
         }
-
-        this.contentItem.emit(tabEventType, this);
-        this.contentItem.layoutManager.emit(tabCreatedEventType, this);
     }
 
     destroy() {
