@@ -65,7 +65,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
             this.contentItem.on(destroyEventType, this.dragListener.destroy, this.dragListener);
         }
 
-        (this.contentItem as any).tab = this;
         this.contentItem.emit(tabEventType, this);
         this.contentItem.layoutManager.emit(tabCreatedEventType, this);
     }
