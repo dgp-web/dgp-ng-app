@@ -3,8 +3,7 @@ import { Vector2 } from "../../common/models";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 import { activeClassName } from "../constants/active-class-name.constant";
-import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
-import { Component, ElementRef, EventEmitter, HostListener, Inject, InjectionToken, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Inject, InjectionToken, Input, Output } from "@angular/core";
 import { tabCreatedEventType } from "../constants/event-types/tab-created-event-type.constant";
 import { tabEventType } from "../constants/tab-created-event-type.constant";
 import { destroyEventType } from "../constants/event-types/destroy-event-type.constant";
@@ -22,7 +21,8 @@ export const TAB_CONTENT_ITEM_COMPONENT = new InjectionToken("tabContentItemComp
     selector: "dgp-gl-tab",
     template: `
         <li class="lm_tab nav-item">
-            <a class="lm_title nav-link">{{model?.title}}</a>
+            <a class="lm_title nav-link"
+               [class.active]="isActive">{{model?.title}}</a>
         </li>
     `
 })
@@ -32,7 +32,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
 
     private rawElement = this.elementRef.nativeElement;
     element = $(this.rawElement);
-    private isActive = false;
     private dragListener: DragListenerDirective;
 
     @Output()
@@ -40,6 +39,10 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
 
     @Output()
     readonly dragStart = new EventEmitter<DragStartEvent>();
+
+    @HostBinding("." + activeClassName)
+    @Input()
+    isActive: boolean;
 
     constructor(
         @Inject(TAB_CONTENT_ITEM_COMPONENT)
@@ -65,30 +68,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
         (this.contentItem as any).tab = this;
         this.contentItem.emit(tabEventType, this);
         this.contentItem.layoutManager.emit(tabCreatedEventType, this);
-
-        if (this.contentItem.isComponent) {
-            (this.contentItem as any).container.tab = this;
-            (this.contentItem as any).container.emit(tabEventType, this);
-        }
-    }
-
-    /**
-     * Sets this tab's active state. To programmatically
-     * switch tabs, use header.setActiveContentItem( item ) instead.
-     */
-    setActive(isActive: boolean) {
-        if (isActive === this.isActive) return;
-        this.isActive = isActive;
-
-        if (isActive) {
-            this.element.addClass(activeClassName);
-            this.element.find("a")
-                .addClass(bootstrapActiveClassName);
-        } else {
-            this.element.removeClass(activeClassName);
-            this.element.find("a")
-                .removeClass(bootstrapActiveClassName);
-        }
     }
 
     destroy() {

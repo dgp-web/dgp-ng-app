@@ -140,7 +140,7 @@ export class HeaderComponent extends EventEmitter {
 
         for (i = 0; i < this.tabs.length; i++) {
             isActive = this.tabs[i].contentItem === contentItem;
-            this.tabs[i].setActive(isActive);
+            this.tabs[i].isActive = isActive;
             if (isActive === true) {
                 this.activeContentItem = contentItem;
                 this.parent.config.activeItemIndex = i;
