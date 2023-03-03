@@ -6,12 +6,10 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 import { activeClassName } from "../constants/active-class-name.constant";
 import { bootstrapActiveClassName } from "../constants/class-names/bootstrap-active-class-name.constant";
 import { Directive, EventEmitter, Output } from "@angular/core";
-
-export interface DragStartEvent {
-    readonly coordinates: Vector2;
-    readonly contentItem: AbstractContentItemComponent;
-    readonly dragListener: DragListenerDirective;
-}
+import { tabCreatedEventType } from "../constants/event-types/tab-created-event-type.constant";
+import { tabEventType } from "../constants/tab-created-event-type.constant";
+import { destroyEventType } from "../constants/event-types/destroy-event-type.constant";
+import { DragStartEvent } from "../models/drag-start-event.model";
 
 /**
  * Represents an individual tab within a Stack's header
@@ -52,7 +50,7 @@ export class TabComponent {
                 .dragStart$
                 .subscribe(x => this.onDragStart(x));
             this.subscriptions.push(dragStartSubscription);
-            this.contentItem.on("destroy", this.dragListener.destroy, this.dragListener);
+            this.contentItem.on(destroyEventType, this.dragListener.destroy, this.dragListener);
         }
 
         this.rawElement.addEventListener("mousedown", this.onTabClickFn, {
@@ -60,12 +58,12 @@ export class TabComponent {
         });
 
         (this.contentItem as any).tab = this;
-        this.contentItem.emit("tab", this);
-        this.contentItem.layoutManager.emit("tabCreated", this);
+        this.contentItem.emit(tabEventType, this);
+        this.contentItem.layoutManager.emit(tabCreatedEventType, this);
 
         if (this.contentItem.isComponent) {
             (this.contentItem as any).container.tab = this;
-            (this.contentItem as any).container.emit("tab", this);
+            (this.contentItem as any).container.emit(tabEventType, this);
         }
     }
 
@@ -95,7 +93,7 @@ export class TabComponent {
         this.rawElement.removeEventListener("mousedown", this.onTabClickFn);
 
         if (this.dragListener) {
-            this.contentItem.off("destroy", this.dragListener.destroy, this.dragListener);
+            this.contentItem.off(destroyEventType, this.dragListener.destroy, this.dragListener);
             this.dragListener = null;
         }
         this.element.remove();
