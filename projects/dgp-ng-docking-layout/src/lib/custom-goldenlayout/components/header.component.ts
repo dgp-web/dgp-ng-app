@@ -74,6 +74,7 @@ export class HeaderComponent extends EventEmitter {
         tab = tabRef.instance;
         tab.tabId = contentItem.config.id;
         tab.label = contentItem.config.title;
+        tabRef.changeDetectorRef.markForCheck();
 
         /**
          * Register to Angular outputs
