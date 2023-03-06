@@ -29,7 +29,6 @@ export class HeaderComponent extends EventEmitter {
     private tabsContainer = this.element.find("." + tabsClassName);
     private tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
     private controlsContainer = this.element.find("." + controlsClassName);
-    private tabDropdownButton: any;
     private readonly hideAdditionalTabsDropdown: any;
     private _lastVisibleTabIndex = -1;
     private readonly _tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
@@ -225,9 +224,6 @@ export class HeaderComponent extends EventEmitter {
      */
     private updateTabSizes(showTabMenu?: boolean): void {
         if (this.tabs.length === 0) return;
-
-        // Show the menu based on function argument
-        this.tabDropdownButton.element.toggle(showTabMenu === true);
 
         this.element.css(widthOrHeight(!this.parent._sided), "");
         this.element[widthOrHeight(this.parent._sided)](this.layoutManager.config.dimensions.headerHeight);
