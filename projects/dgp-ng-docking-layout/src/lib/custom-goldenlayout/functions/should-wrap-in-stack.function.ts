@@ -1,6 +1,6 @@
 import { ItemConfiguration } from "../types";
-import { AbstractContentItemComponent } from "../components/abstract-content-item.component";
-import { StackComponent } from "../components/stack.component";
+import { AbstractContentItemComponent } from "../components/shared/abstract-content-item.component";
+import { StackComponent } from "../components/tabs/stack.component";
 
 export function shouldWrapInStack(payload: {
     readonly itemConfig: ItemConfiguration;
@@ -10,4 +10,4 @@ export function shouldWrapInStack(payload: {
         !(payload.parentItem instanceof StackComponent) &&
         !!payload.parentItem;
 }
- 
+

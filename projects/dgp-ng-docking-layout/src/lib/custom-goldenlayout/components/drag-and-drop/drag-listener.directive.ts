@@ -1,10 +1,10 @@
 import { Directive, ElementRef, EventEmitter, Output } from "@angular/core";
-import { Vector2, Vector2Utils } from "../../common/models";
-import { $x } from "../../jquery-extensions";
-import { draggingClassName } from "../constants/class-names/dragging-class-name.constant";
-import { createPassiveEventListenerOptions } from "../functions/create-passive-event-listener-options.function";
-import { DragEvent } from "../models/drag-event.model";
-import { createCoordinates } from "../functions/create-coordinates.function";
+import { Vector2, Vector2Utils } from "../../../common/models";
+import { $x } from "../../../jquery-extensions";
+import { draggingClassName } from "../../constants/class-names/dragging-class-name.constant";
+import { createPassiveEventListenerOptions } from "../../functions/create-passive-event-listener-options.function";
+import { DragEvent } from "../../models/drag-event.model";
+import { createCoordinates } from "../../functions/create-coordinates.function";
 import { notNullOrUndefined } from "dgp-ng-app";
 
 @Directive({

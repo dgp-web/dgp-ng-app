@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { DockingLayoutService } from "../docking-layout.service";
-import { ItemConfiguration } from "../types";
-import { LayoutManagerUtilities } from "../utilities";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { SplitterComponent } from "./splitter.component";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { ItemConfiguration } from "../../types";
+import { LayoutManagerUtilities } from "../../utilities";
+import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
+import { SplitterComponent } from "../resize/splitter.component";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix

@@ -1,17 +1,17 @@
 import { Directive } from "@angular/core";
-import { DockingLayoutService } from "../docking-layout.service";
-import { HeaderConfig, ItemConfiguration, itemDefaultConfig } from "../types";
-import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
-import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
-import { AreaSides } from "../models/area.model";
-import { ALL_EVENT } from "../constants/event-types/all-event.constant";
-import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
-import { itemCreatedEventType } from "../constants/event-types/item-created-event-type.constant";
-import { beforeItemDestroyedEventType } from "../constants/event-types/before-item-destroyed-event-type.constant";
-import { itemDestroyedEventType } from "../constants/event-types/item-destroyed-event-type.constant";
-import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
-import { StackComponent } from "./stack.component";
-import { DropSegment } from "../models/drop-segment.model";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { HeaderConfig, ItemConfiguration, itemDefaultConfig } from "../../types";
+import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { goldenLayoutEngineConfig } from "../../constants/golden-layout-engine-config.constant";
+import { AreaSides } from "../../models/area.model";
+import { ALL_EVENT } from "../../constants/event-types/all-event.constant";
+import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
+import { itemCreatedEventType } from "../../constants/event-types/item-created-event-type.constant";
+import { beforeItemDestroyedEventType } from "../../constants/event-types/before-item-destroyed-event-type.constant";
+import { itemDestroyedEventType } from "../../constants/event-types/item-destroyed-event-type.constant";
+import { createItemTypeCreatedEventType } from "../../functions/create-item-type-created-event-type.function";
+import { StackComponent } from "../tabs/stack.component";
+import { DropSegment } from "../../models/drop-segment.model";
 
 /**
  * this is the baseclass that all content items inherit from.

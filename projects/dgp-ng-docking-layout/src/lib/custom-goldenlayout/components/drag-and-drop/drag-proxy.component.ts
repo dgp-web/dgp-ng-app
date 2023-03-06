@@ -1,17 +1,17 @@
-import { Vector2, Vector2Utils } from "../../common/models";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { $x } from "../../jquery-extensions";
-import { DockingLayoutService } from "../docking-layout.service";
-import { EventEmitter } from "../utilities/event-emitter";
+import { Vector2, Vector2Utils } from "../../../common/models";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { $x } from "../../../jquery-extensions";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { EventEmitter } from "../../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
-import { DragEvent } from "../models/drag-event.model";
-import { Area } from "../models/area.model";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { DropSegment } from "../models/drop-segment.model";
-import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
-import { lmContentClassName } from "../constants/class-names/lm-content-class-name.constant";
-import { itemDroppedEventType } from "../constants/event-types/item-dropped-event-type.constant";
-import { createDropSegmentClassName } from "../functions/create-drop-segment-class-name.function";
+import { DragEvent } from "../../models/drag-event.model";
+import { Area } from "../../models/area.model";
+import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
+import { DropSegment } from "../../models/drop-segment.model";
+import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
+import { lmContentClassName } from "../../constants/class-names/lm-content-class-name.constant";
+import { itemDroppedEventType } from "../../constants/event-types/item-dropped-event-type.constant";
+import { createDropSegmentClassName } from "../../functions/create-drop-segment-class-name.function";
 
 /**
  * This class creates a temporary container

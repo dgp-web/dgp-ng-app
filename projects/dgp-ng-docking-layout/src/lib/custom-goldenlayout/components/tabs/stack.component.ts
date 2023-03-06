@@ -1,25 +1,25 @@
 import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../types";
-import { LayoutManagerUtilities } from "../utilities";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { ITEM_CONFIG, ItemConfiguration, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
+import { LayoutManagerUtilities } from "../../utilities";
+import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { sides } from "../constants/sides.constant";
-import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
-import { DropSegment } from "../models/drop-segment.model";
-import { ContentAreaDimensions } from "../models/content-area-dimensions.model";
-import { lmLeftClassName } from "../constants/class-names/lm-left-class-name.constant";
-import { lmHeaderClassName } from "../constants/class-names/lm-header-class-name.constant";
-import { lmBottomClassName } from "../constants/class-names/lm-bottom-class-name.constant";
-import { lmRightClassName } from "../constants/class-names/lm-right-class-name.constant";
-import { resizeEventType } from "../constants/event-types/resize-event-type.constant";
-import { activeContentItemChangedEventType } from "../constants/event-types/active-content-item-changed-event-type.constant";
-import { DropTarget } from "../models/drop-target.model";
-import { Area, AreaSides } from "../models/area.model";
-import { GlComponent } from "./component.component";
+import { sides } from "../../constants/sides.constant";
+import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
+import { DropSegment } from "../../models/drop-segment.model";
+import { ContentAreaDimensions } from "../../models/content-area-dimensions.model";
+import { lmLeftClassName } from "../../constants/class-names/lm-left-class-name.constant";
+import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
+import { lmBottomClassName } from "../../constants/class-names/lm-bottom-class-name.constant";
+import { lmRightClassName } from "../../constants/class-names/lm-right-class-name.constant";
+import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
+import { activeContentItemChangedEventType } from "../../constants/event-types/active-content-item-changed-event-type.constant";
+import { DropTarget } from "../../models/drop-target.model";
+import { Area, AreaSides } from "../../models/area.model";
+import { GlComponent } from "../component.component";
 
 @Component({
     selector: "dgp-stack",
