@@ -15,6 +15,8 @@ import { selectableClassName } from "../../constants/class-names/selectable-clas
 import { tabDropdownLabelClassName } from "../../constants/class-names/tab-dropdown-label-class-name.constant";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { ComponentRef } from "@angular/core";
+import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
+import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -48,7 +50,7 @@ export class HeaderComponent extends EventEmitter {
             });
         }
 
-        this.parent.on("resize", this.updateTabSizes, this);
+        this.parent.on(resizeEventType, this.updateTabSizes, this);
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
         $(document).mouseup(this.hideAdditionalTabsDropdown);
 
@@ -185,7 +187,7 @@ export class HeaderComponent extends EventEmitter {
     }
 
     destroy(): void {
-        this.emit("destroy", this);
+        this.emit(destroyEventType, this);
         this.tabRefs.forEach(tab => tab.destroy());
         $(document).off("mouseup", this.hideAdditionalTabsDropdown);
         this.element.remove();
