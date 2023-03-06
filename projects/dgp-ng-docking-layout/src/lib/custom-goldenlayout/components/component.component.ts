@@ -1,4 +1,4 @@
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import { ItemContainerComponent } from "./item-container.component";
 import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";

@@ -1,4 +1,4 @@
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import {
     AfterViewInit,
     ChangeDetectionStrategy,

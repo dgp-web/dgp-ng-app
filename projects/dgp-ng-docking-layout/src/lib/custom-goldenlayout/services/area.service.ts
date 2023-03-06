@@ -4,7 +4,7 @@ import { getAllContentItems } from "../functions/content-item/get-all-content-it
 import { createRootItemAreas } from "../functions/areas/create-content-root-item-areas.function";
 import { findArea } from "../functions/areas/find-area.function";
 import { Injectable } from "@angular/core";
-import { StackComponent } from "../components/stack.component";
+import { StackComponent } from "../components/tabs/stack.component";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { Mutable } from "data-modeling";
 

@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Renderer2 } from "@angular/core";
-import { AreaSides } from "../models/area.model";
+import { AreaSides } from "../../models/area.model";
 
 @Component({
     selector: "dgp-drop-target-indicator",

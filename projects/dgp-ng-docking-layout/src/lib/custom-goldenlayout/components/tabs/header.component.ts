@@ -1,19 +1,19 @@
-import { dockingLayoutViewMap } from "../../docking-layout/views";
-import { EventEmitter } from "../utilities";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { EventEmitter } from "../../utilities";
+import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { HeaderButtonComponent } from "./header-button.component";
 import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
-import { DropSegment } from "../models/drop-segment.model";
-import { DockingLayoutService } from "../docking-layout.service";
-import { widthOrHeight } from "../functions/width-or-height.function";
-import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
-import { tabsClassName } from "../constants/class-names/tabs-class-name.constant";
-import { tabDropdownListClassName } from "../constants/class-names/tabs-dropdown-list-class-name.constant";
-import { controlsClassName } from "../constants/class-names/controls-class-name.constant";
-import { selectableClassName } from "../constants/class-names/selectable-class-name.constant";
-import { tabDropdownLabelClassName } from "../constants/class-names/tab-dropdown-label-class-name.constant";
-import { DragProxy } from "./drag-proxy.component";
+import { DropSegment } from "../../models/drop-segment.model";
+import { DockingLayoutService } from "../../docking-layout.service";
+import { widthOrHeight } from "../../functions/width-or-height.function";
+import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
+import { tabsClassName } from "../../constants/class-names/tabs-class-name.constant";
+import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
+import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
+import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
+import { tabDropdownLabelClassName } from "../../constants/class-names/tab-dropdown-label-class-name.constant";
+import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { ComponentRef } from "@angular/core";
 
 /**

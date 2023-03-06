@@ -4,16 +4,16 @@
 
 export * from "./lib/common";
 export * from "./lib/custom-goldenlayout";
-export { RowOrColumnComponent } from "./lib/custom-goldenlayout/components/row-or-column.component";
-export { RowComponent } from "./lib/custom-goldenlayout/components/row.component";
-export { ColumnComponent } from "./lib/custom-goldenlayout/components/column.component";
+export { RowOrColumnComponent } from "./lib/custom-goldenlayout/components/grid/row-or-column.component";
+export { RowComponent } from "./lib/custom-goldenlayout/components/grid/row.component";
+export { ColumnComponent } from "./lib/custom-goldenlayout/components/grid/column.component";
 export { RootComponent } from "./lib/custom-goldenlayout/components/root.component";
-export { TabComponent } from "./lib/custom-goldenlayout/components/tab.component";
+export { TabComponent } from "./lib/custom-goldenlayout/components/tabs/tab.component";
 export { GlComponent } from "./lib/custom-goldenlayout/components/component.component";
-export { DragListenerDirective } from "./lib/custom-goldenlayout/components/drag-listener.directive";
-export { DropTargetIndicatorComponent } from "./lib/custom-goldenlayout/components/drop-target-indicator.component";
-export { TabDropPlaceholderComponent } from "./lib/custom-goldenlayout/components/tab-drop-placeholder.component";
-export { StackComponent } from "./lib/custom-goldenlayout/components/stack.component";
+export { DragListenerDirective } from "./lib/custom-goldenlayout/components/drag-and-drop/drag-listener.directive";
+export { DropTargetIndicatorComponent } from "./lib/custom-goldenlayout/components/drag-and-drop/drop-target-indicator.component";
+export { TabDropPlaceholderComponent } from "./lib/custom-goldenlayout/components/tabs/tab-drop-placeholder.component";
+export { StackComponent } from "./lib/custom-goldenlayout/components/tabs/stack.component";
 export { ItemContainerComponent } from "./lib/custom-goldenlayout/components/item-container.component";
 export { DockingLayoutContainerComponent } from "./lib/docking-layout/components/docking-layout-container.component";
 export { DockingLayoutItemComponent } from "./lib/docking-layout/components/docking-layout-item.component";

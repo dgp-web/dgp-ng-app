@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/c
 import { dockingLayoutViewMap } from "../../docking-layout/views";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration } from "../types";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
+import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import { hideEventType } from "../constants/event-types/hide-event-type.constant";
 import { showEventType } from "../constants/event-types/show-event-type.constant";
 import { shownEventType } from "../constants/event-types/shown-event-type.constant";
-import { resizeEventType } from "./resize-event-type.constant";
+import { resizeEventType } from "../constants/event-types/resize-event-type.constant";
 
 @Component({
     selector: "dgp-item-container",

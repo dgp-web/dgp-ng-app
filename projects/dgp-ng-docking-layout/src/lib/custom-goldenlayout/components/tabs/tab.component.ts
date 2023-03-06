@@ -1,11 +1,11 @@
-import { Vector2 } from "../../common/models";
-import { DragListenerDirective } from "./drag-listener.directive";
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { activeClassName } from "../constants/active-class-name.constant";
+import { Vector2 } from "../../../common/models";
+import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
+import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
+import { activeClassName } from "../../constants/active-class-name.constant";
 import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, ViewChild } from "@angular/core";
-import { DragStartEvent } from "../models/drag-start-event.model";
+import { DragStartEvent } from "../../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
-import { ComponentConfiguration } from "../types";
+import { ComponentConfiguration } from "../../types";
 
 /**
  * Represents an individual tab within a Stack's header

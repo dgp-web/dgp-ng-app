@@ -1,4 +1,4 @@
-import { AbstractContentItemComponent } from "../../components/abstract-content-item.component";
+import { AbstractContentItemComponent } from "../../components/shared/abstract-content-item.component";
 import { Many } from "data-modeling";
 
 export function getAllContentItems(payload: AbstractContentItemComponent): Many<AbstractContentItemComponent> {
