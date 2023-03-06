@@ -1,5 +1,5 @@
 import { AbstractContentItemComponent } from "./components/shared/abstract-content-item.component";
-import { ItemContainerComponent } from "./components/item-container.component";
+import { ItemContainerComponent } from "./components/grid/item-container.component";
 import { StackComponent } from "./components/tabs/stack.component";
 
 export function addChildContentItemsToContainer(container: ItemContainerComponent, node: AbstractContentItemComponent) {

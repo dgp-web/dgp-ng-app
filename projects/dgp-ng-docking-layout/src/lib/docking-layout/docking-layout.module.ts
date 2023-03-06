@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { FactoryProvider, InjectionToken, NgModule } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
-import { ItemContainerComponent } from "../custom-goldenlayout/components/item-container.component";
+import { ItemContainerComponent } from "../custom-goldenlayout/components/grid/item-container.component";
 import { RowOrColumnComponent } from "../custom-goldenlayout/components/grid/row-or-column.component";
 import { StackComponent } from "../custom-goldenlayout/components/tabs/stack.component";
 import { DockingLayoutService } from "../custom-goldenlayout/docking-layout.service";

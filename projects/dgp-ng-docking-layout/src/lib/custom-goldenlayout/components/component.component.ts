@@ -1,5 +1,5 @@
 import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
-import { ItemContainerComponent } from "./item-container.component";
+import { ItemContainerComponent } from "./grid/item-container.component";
 import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";

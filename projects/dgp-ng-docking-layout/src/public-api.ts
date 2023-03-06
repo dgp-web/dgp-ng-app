@@ -14,7 +14,7 @@ export { DragListenerDirective } from "./lib/custom-goldenlayout/components/drag
 export { DropTargetIndicatorComponent } from "./lib/custom-goldenlayout/components/drag-and-drop/drop-target-indicator.component";
 export { TabDropPlaceholderComponent } from "./lib/custom-goldenlayout/components/tabs/tab-drop-placeholder.component";
 export { StackComponent } from "./lib/custom-goldenlayout/components/tabs/stack.component";
-export { ItemContainerComponent } from "./lib/custom-goldenlayout/components/item-container.component";
+export { ItemContainerComponent } from "./lib/custom-goldenlayout/components/grid/item-container.component";
 export { DockingLayoutContainerComponent } from "./lib/docking-layout/components/docking-layout-container.component";
 export { DockingLayoutItemComponent } from "./lib/docking-layout/components/docking-layout-item.component";
 export { DockingLayoutComponent } from "./lib/docking-layout/components/docking-layout.component";
