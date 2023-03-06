@@ -27,6 +27,14 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                            [ngModel]="model.dotSize"
                            (ngModelChange)="setDotSize($event)">
                 </dgp-inspector-item>
+
+                <dgp-inspector-item label="Line width"
+                                    matIconName="label">
+                    <input type="number"
+                           [disabled]="disabled"
+                           [ngModel]="model.lineWidth"
+                           (ngModelChange)="setLineWidth($event)">
+                </dgp-inspector-item>
             </dgp-inspector-section>
 
         </dgp-inspector>
@@ -57,10 +65,10 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                 </dgp-inspector-item>
 
                 <dgp-connected-scatter-group-form
-                        *ngIf="selectedDataGroup$ | async as selectedDataGroup"
-                        [model]="selectedDataGroup"
-                        (modelChange)="updateSelectedGroup(selectedDataGroup)"
-                        [disabled]="disabled"></dgp-connected-scatter-group-form>
+                    *ngIf="selectedDataGroup$ | async as selectedDataGroup"
+                    [model]="selectedDataGroup"
+                    (modelChange)="updateSelectedGroup(selectedDataGroup)"
+                    [disabled]="disabled"></dgp-connected-scatter-group-form>
 
             </dgp-inspector-section>
 
@@ -249,4 +257,7 @@ export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponent
         this.updateModel({dotSize});
     }
 
+    setLineWidth(lineWidth: number) {
+        this.updateModel({lineWidth});
+    }
 }

@@ -34,7 +34,8 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                                                 [yAxisStep]="model.yAxisStep"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"
-                                                [dotSize]="model.dotSize"></dgp-connected-scatter-plot>
+                                                [dotSize]="model.dotSize"
+                                                [lineWidth]="model.lineWidth"></dgp-connected-scatter-plot>
                 </ng-template>
 
             </dgp-split-panel-content>

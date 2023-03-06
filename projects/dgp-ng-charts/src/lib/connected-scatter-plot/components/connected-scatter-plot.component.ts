@@ -44,7 +44,8 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                                [showDotTooltips]="showDotTooltips"
                                                [showDataAreaOutline]="showDataAreaOutline"
                                                [config]="config"
-                                               [dotSize]="dotSize"></dgp-hybrid-connected-scatter-plot>
+                                               [dotSize]="dotSize"
+                                               [lineWidth]="lineWidth"></dgp-hybrid-connected-scatter-plot>
 
         </dgp-chart>
     `,
@@ -89,6 +90,9 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
 
     @Input()
     dotSize = 10;
+
+    @Input()
+    lineWidth = 1.5;
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
