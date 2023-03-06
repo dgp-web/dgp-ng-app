@@ -1,7 +1,6 @@
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { EventEmitter } from "../../utilities";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
-import { HeaderButtonComponent } from "./header-button.component";
 import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
 import { DropSegment } from "../../models/drop-segment.model";
@@ -12,7 +11,6 @@ import { tabsClassName } from "../../constants/class-names/tabs-class-name.const
 import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
-import { tabDropdownLabelClassName } from "../../constants/class-names/tab-dropdown-label-class-name.constant";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { ComponentRef } from "@angular/core";
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
@@ -53,8 +51,6 @@ export class HeaderComponent extends EventEmitter {
         this.parent.on(resizeEventType, this.updateTabSizes, this);
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
         $(document).mouseup(this.hideAdditionalTabsDropdown);
-
-        this.createControls();
     }
 
     /**
@@ -191,23 +187,6 @@ export class HeaderComponent extends EventEmitter {
         this.tabRefs.forEach(tab => tab.destroy());
         $(document).off("mouseup", this.hideAdditionalTabsDropdown);
         this.element.remove();
-    }
-
-    /**
-     * Creates the popout, maximise and close buttons in the header's top right corner
-     */
-    private createControls(): void {
-        let tabDropdownLabel: string,
-            showTabDropdown: () => void;
-
-        /**
-         * Dropdown to show additional tabs.
-         */
-        showTabDropdown = () => this.showAdditionalTabsDropdown();
-        tabDropdownLabel = this.layoutManager.config.labels.tabDropdown;
-        this.tabDropdownButton = new HeaderButtonComponent(this, tabDropdownLabel, tabDropdownLabelClassName, showTabDropdown);
-        this.tabDropdownButton.element.hide();
-
     }
 
     /**

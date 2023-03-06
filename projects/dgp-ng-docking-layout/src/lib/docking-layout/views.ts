@@ -1,4 +1,4 @@
-import { DockingLayoutViewModels, HeaderButtonViewModel } from "./models";
+import { DockingLayoutViewModels } from "./models";
 
 export const dockingLayoutViewMap = {
     dragHandle: {
@@ -45,13 +45,6 @@ export const dockingLayoutViewMap = {
             `;
         }
     },
-    headerButton: {
-        render(model: HeaderButtonViewModel) {
-            return `
-               <li class="${model.cssClass}" title="${model.label}"></li>
-            `;
-        }
-    },
     itemContainer: {
         render() {
             return `
@@ -93,17 +86,6 @@ export const dockingLayoutViewMap = {
         render() {
             return `
                 <div class="lm_items card-body" style="padding: 0;"></div>
-            `;
-        }
-    },
-    tab: {
-        render(model: {
-            readonly title: string;
-        }) {
-            return `
-                <li class="lm_tab nav-item">
-                    <a class="lm_title nav-link">${model.title}</a>
-                </li>
             `;
         }
     },
