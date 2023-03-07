@@ -8,6 +8,16 @@ import { BoxPlot, BoxPlotConfig } from "dgp-ng-charts";
         <dgp-cardinal-y-axis-config [model]="model"
                                     (modelChange)="setModel($event)"
                                     [disabled]="disabled"></dgp-cardinal-y-axis-config>
+
+        <dgp-inspector>
+            <dgp-inspector-section>
+                <dgp-inspector-item label="Jitter width">
+                    <input type="number"
+                           [ngModel]="config.jitterWidth"
+                           (ngModelChange)="updateJitterWidth($event)">
+                </dgp-inspector-item>
+            </dgp-inspector-section>
+        </dgp-inspector>
     `,
     styles: [`
 
@@ -22,10 +32,16 @@ export class BoxPlotConfigFormComponent extends DgpModelEditorComponentBase<BoxP
     @Output()
     readonly configChange = new EventEmitter<BoxPlotConfig>();
 
-    updateConfig(config: BoxPlotConfig) {
-        this.config = config;
-        this.configChange.emit(config);
+    updateConfig(config: Partial<BoxPlotConfig>) {
+        this.config = {
+            ...this.config,
+            ...config
+        };
+        this.configChange.emit(this.config);
     }
 
+    updateJitterWidth(jitterWidth?: number) {
+        this.updateConfig({jitterWidth});
+    }
 
 }
