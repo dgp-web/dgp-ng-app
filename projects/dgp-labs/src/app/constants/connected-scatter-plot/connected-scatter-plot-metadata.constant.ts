@@ -16,6 +16,10 @@ export const connectedScatterPlotMetadata: ModelMetadata<ConnectedScatterPlot> =
         },
         controlLines: {
             item: cspControlLineMetadata
+        },
+        lineWidth: {
+            isRequired: false,
+            defaultValue: 1.5
         }
     }
 };
