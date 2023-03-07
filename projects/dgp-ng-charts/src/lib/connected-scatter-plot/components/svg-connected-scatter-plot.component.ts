@@ -27,6 +27,7 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                           *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
                           dgpConnectedScatterPlotControlLine
                           [scales]="scales"
+                          [lineWidth]="lineWidth"
                           [connectedScatterPlotControlLine]="controlLine"></svg:line>
 
                 <svg:g xmlns:svg="http://www.w3.org/2000/svg"
@@ -36,7 +37,8 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
                         <path *ngIf="series.showEdges"
                               dgpLineChartLine
                               [series]="series"
-                              [scales]="scales"></path>
+                              [scales]="scales"
+                              [lineWidth]="lineWidth"></path>
 
                         <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
                             <ng-container *ngIf="series.showVertices">
@@ -94,6 +96,9 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
 
     @Input()
     dotSize: number;
+
+    @Input()
+    lineWidth = 1.5;
 
     @Input()
     model: readonly ConnectedScatterGroup[];

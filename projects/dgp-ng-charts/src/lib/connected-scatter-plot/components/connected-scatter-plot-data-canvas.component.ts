@@ -85,6 +85,10 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     dotSize: number;
     readonly dotSize$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "dotSize");
 
+    @Input()
+    lineWidth: number;
+    readonly lineWidth$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "lineWidth");
+
     ngAfterViewInit(): void {
         const canvas = this.canvasElementRef.nativeElement;
         const ctx = canvas.getContext("2d");
@@ -94,7 +98,8 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             this.controlLines$,
             this.size$,
             this.scales$,
-            this.dotSize$
+            this.dotSize$,
+            this.lineWidth$,
         ]).pipe(
             debounceTime(50)
         ).subscribe(combination => {
@@ -103,13 +108,14 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             const model = combination[0];
             const controlLines = combination[1];
             const dotSize = combination[4] || 10;
+            const lineWidth = combination[5] || 1.5;
 
             if (model) {
                 model.forEach(group => {
                     group.series.forEach(series => {
                         ctx.fillStyle = series.colorHex;
                         ctx.strokeStyle = series.colorHex;
-                        ctx.lineWidth = 1.5;
+                        ctx.lineWidth = lineWidth;
 
                         if (series.showVertices) {
                             series.dots.forEach(dot => {
@@ -170,7 +176,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
                         if (series.showEdges) {
                             ctx.beginPath();
-                            ctx.lineWidth = 1.5;
+                            ctx.lineWidth = lineWidth;
                             const stroke = mapStrokeToArray(series.stroke);
                             ctx.setLineDash(stroke);
                             series.dots.forEach((dot, index) => {
@@ -195,7 +201,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             if (controlLines) {
                 controlLines.forEach(controlLine => {
                     ctx.beginPath();
-                    ctx.lineWidth = 1.5;
+                    ctx.lineWidth = lineWidth;
 
 
                     const y = this.scales.yAxisScale(controlLine.value);

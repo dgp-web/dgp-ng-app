@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
-import { connectedScatterPlotMetadata } from "../../../constants/connected-scatter-plot/connected-scatter-plot-metadata.constant";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
+import {
+    connectedScatterPlotMetadata
+} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 
 @Component({
     selector: "dgp-connected-scatter-plot-config",
@@ -26,6 +28,14 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                            [disabled]="disabled"
                            [ngModel]="model.dotSize"
                            (ngModelChange)="setDotSize($event)">
+                </dgp-inspector-item>
+
+                <dgp-inspector-item label="Line width"
+                                    matIconName="label">
+                    <input type="number"
+                           [disabled]="disabled"
+                           [ngModel]="model.lineWidth"
+                           (ngModelChange)="setLineWidth($event)">
                 </dgp-inspector-item>
             </dgp-inspector-section>
 
@@ -57,10 +67,10 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                 </dgp-inspector-item>
 
                 <dgp-connected-scatter-group-form
-                        *ngIf="selectedDataGroup$ | async as selectedDataGroup"
-                        [model]="selectedDataGroup"
-                        (modelChange)="updateSelectedGroup(selectedDataGroup)"
-                        [disabled]="disabled"></dgp-connected-scatter-group-form>
+                    *ngIf="selectedDataGroup$ | async as selectedDataGroup"
+                    [model]="selectedDataGroup"
+                    (modelChange)="updateSelectedGroup(selectedDataGroup)"
+                    [disabled]="disabled"></dgp-connected-scatter-group-form>
 
             </dgp-inspector-section>
 
@@ -249,4 +259,7 @@ export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponent
         this.updateModel({dotSize});
     }
 
+    setLineWidth(lineWidth: number) {
+        this.updateModel({lineWidth});
+    }
 }

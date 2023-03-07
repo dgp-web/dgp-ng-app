@@ -32,7 +32,8 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                             [showDotTooltips]="showDotTooltips"
                                             [showDataAreaOutline]="showDataAreaOutline"
                                             [config]="config"
-                                            [dotSize]="dotSize"></dgp-svg-connected-scatter-plot>
+                                            [dotSize]="dotSize"
+                                            [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-svg-connected-scatter-plot>
 
             <dgp-hybrid-connected-scatter-plot *ngIf="renderer === rendererEnum.Hybrid"
                                                [size]="size$ | async"
@@ -44,7 +45,8 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                                [showDotTooltips]="showDotTooltips"
                                                [showDataAreaOutline]="showDataAreaOutline"
                                                [config]="config"
-                                               [dotSize]="dotSize"></dgp-hybrid-connected-scatter-plot>
+                                               [dotSize]="dotSize"
+                                               [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-hybrid-connected-scatter-plot>
 
         </dgp-chart>
     `,
@@ -89,6 +91,9 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
 
     @Input()
     dotSize = 10;
+
+    @Input()
+    lineWidth = 1.5;
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
