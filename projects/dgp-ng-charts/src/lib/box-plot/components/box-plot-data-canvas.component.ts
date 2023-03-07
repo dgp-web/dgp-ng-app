@@ -341,7 +341,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, 
         this.model.forEach(xGroup => {
             xGroup.boxes.forEach(xSeries => {
 
-                xSeries.outliers.forEach((outlier, xOutlierIndex) => {
+                xSeries.outliers?.forEach((outlier, xOutlierIndex) => {
                     if (outlier >= lowerYBoundary && outlier <= upperYBoundary) {
 
                         outlierIndex = xOutlierIndex;

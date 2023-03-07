@@ -19,7 +19,7 @@ export function createBoxPlotScales(payload: {
     const valuesForExtremumComputation = payload.boxGroups.reduce((previousValue, currentValue) => {
 
         currentValue.boxes.forEach(box => {
-            box.outliers.forEach(outlier => previousValue.push(outlier));
+            box.outliers?.forEach(outlier => previousValue.push(outlier));
             const quantiles = [
                 box.quantiles.max,
                 box.quantiles.upper,

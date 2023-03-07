@@ -10,7 +10,22 @@ export const boxPlotMetadata: ModelMetadata<BoxPlot> = {
 };
 
 export const testBoxPlot: BoxPlot = {
-    model: []
+    model: [{
+        boxGroupId: "boxGroup01",
+        label: "Box group 01",
+        boxes: [{
+            boxGroupId: "boxGroup01",
+            boxId: "box01",
+            colorHex: "#ff0000",
+            quantiles: {
+                max: 13,
+                upper: 10,
+                median: 1,
+                lower: -13,
+                min: -17
+            }
+        }]
+    }]
 };
 
 
