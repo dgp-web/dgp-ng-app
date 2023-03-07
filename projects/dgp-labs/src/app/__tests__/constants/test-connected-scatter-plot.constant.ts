@@ -17,5 +17,6 @@ export const testConnectedScatterPlot: ConnectedScatterPlot = {
     showXAxisGridLines: true,
     yAxisScaleType: ScaleType.Linear,
     xAxisScaleType: ScaleType.Logarithmic,
-    dotSize: 10
+    dotSize: 10,
+    lineWidth: 1.5
 };

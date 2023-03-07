@@ -12,13 +12,16 @@ export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
     @Input()
     scales: ConnectedScatterPlotScales;
 
+    @Input()
+    lineWidth = 1.5;
+
     constructor(private readonly elementRef: ElementRef,
                 private readonly renderer: Renderer2) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
 
-        if (changes.scales || changes.connectedScatterPlotControlLine) {
+        if (changes.scales || changes.connectedScatterPlotControlLine || changes.lineWidth) {
 
             const y = this.scales.yAxisScale(this.connectedScatterPlotControlLine.value);
             const xAxisRange = this.scales.xAxisScale.range();
@@ -30,6 +33,7 @@ export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.connectedScatterPlotControlLine.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.connectedScatterPlotControlLine.stroke));
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", this.lineWidth.toString());
 
         }
 

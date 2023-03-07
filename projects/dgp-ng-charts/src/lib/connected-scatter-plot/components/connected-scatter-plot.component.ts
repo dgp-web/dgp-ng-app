@@ -32,7 +32,8 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                             [showDotTooltips]="showDotTooltips"
                                             [showDataAreaOutline]="showDataAreaOutline"
                                             [config]="config"
-                                            [dotSize]="dotSize"></dgp-svg-connected-scatter-plot>
+                                            [dotSize]="dotSize"
+                                            [lineWidth]="lineWidth"></dgp-svg-connected-scatter-plot>
 
             <dgp-hybrid-connected-scatter-plot *ngIf="renderer === rendererEnum.Hybrid"
                                                [size]="size$ | async"
