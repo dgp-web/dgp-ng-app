@@ -11,7 +11,8 @@ import { BoxPlot, BoxPlotConfig } from "dgp-ng-charts";
 
         <dgp-inspector>
             <dgp-inspector-section>
-                <dgp-inspector-item label="Jitter width">
+                <dgp-inspector-item label="Jitter width"
+                                    matIconName="grain">
                     <input type="number"
                            [ngModel]="config.jitterWidth"
                            (ngModelChange)="updateJitterWidth($event)">

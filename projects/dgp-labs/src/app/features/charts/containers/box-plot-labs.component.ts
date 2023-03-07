@@ -23,7 +23,18 @@ export const testBoxPlot: BoxPlot = {
                 median: 1,
                 lower: -13,
                 min: -17
-            }
+            },
+            outliers: [
+                15,
+                16,
+                17,
+                18,
+                19,
+                -17.5,
+                -18,
+                -19,
+                -20
+            ]
         }]
     }],
     yAxisMax: 20,
