@@ -209,7 +209,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, 
                             switch (box.outlierShape) {
                                 default:
                                 case Shape.Circle:
-                                    const centerX = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                                    const centerX = x
                                         + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2
                                         + getJitter(box.boxId + outlier, this.config);
                                     const centerY = this.scales.yAxisScale(outlier);
@@ -219,7 +219,7 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, 
                                     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
                                     break;
                                 case Shape.Rectangle:
-                                    const xOutlier = groupX + this.scales.xAxisSubgroupKVS[group.boxGroupId](box.boxId)
+                                    const xOutlier = x
                                         + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2
                                         + getJitter(box.boxId + outlier, this.config);
                                     const yOutlier = this.scales.yAxisScale(outlier) - 4;
@@ -247,10 +247,10 @@ export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, 
                                     });
 
                                     points.forEach((point, index) => {
-
-
-                                        const xOutlier1 = groupX + this.scales.yAxisScale(outlier) + point[0] - halfSize;
-                                        // const xOutlier1 = this.scales.xAxisScale(dot.x) + point[0] - halfSize;
+                                        
+                                        const xOutlier1 = x + point[0] - halfSize
+                                            + this.scales.xAxisSubgroupKVS[group.boxGroupId].bandwidth() / 2
+                                            + getJitter(box.boxId + outlier, this.config);
                                         const yOutlier1 = this.scales.yAxisScale(outlier) + point[1] - halfSize;
 
                                         ctx.lineTo(xOutlier1, yOutlier1);
