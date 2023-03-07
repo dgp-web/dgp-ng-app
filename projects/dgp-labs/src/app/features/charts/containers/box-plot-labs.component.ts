@@ -46,7 +46,10 @@ export const testBoxPlot: BoxPlot = {
                     <dgp-box-plot [model]="model.model"
                                   [renderer]="renderer"
                                   [yAxisMin]="model.yAxisMin"
-                                  [yAxisMax]="model.yAxisMax"></dgp-box-plot>
+                                  [yAxisMax]="model.yAxisMax"
+                                  [yAxisStep]="model.yAxisStep"
+                                  [yAxisTitle]="model.yAxisTitle"
+                                  [showYAxisGridLines]="model.showYAxisGridLines"></dgp-box-plot>
                 </ng-template>
             </dgp-split-panel-content>
 
