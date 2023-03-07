@@ -51,7 +51,10 @@ export const testBoxPlot: BoxPlot = {
             </dgp-split-panel-content>
 
             <dgp-split-panel-content [size]="20">
-                <ng-template></ng-template>
+                <ng-template>
+                    <dgp-box-plot-config-form [model]="model"
+                                              (modelChange)="setModel($event)"></dgp-box-plot-config-form>
+                </ng-template>
             </dgp-split-panel-content>
 
         </dgp-split-panel>
