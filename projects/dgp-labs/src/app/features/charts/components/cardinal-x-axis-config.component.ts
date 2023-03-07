@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { CardinalXAxis, ScaleType } from "dgp-ng-charts";
-import { cardinalXAxisMetadata } from "../../../constants/connected-scatter-plot/cardinal-x-axis-metadata.constant";
+import {
+    cardinalXAxisMetadata
+} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/cardinal-x-axis-metadata.constant";
 
 @Component({
     selector: "dgp-cardinal-x-axis-config",

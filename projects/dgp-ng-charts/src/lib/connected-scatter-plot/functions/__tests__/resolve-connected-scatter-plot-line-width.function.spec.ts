@@ -1,7 +1,5 @@
 import { resolveConnectedScatterPlotLineWidth } from "../resolve-connected-scatter-plot-line-width.function";
-import {
-    connectedScatterPlotMetadata
-} from "../../../../../../dgp-labs/src/app/constants/connected-scatter-plot/connected-scatter-plot-metadata.constant";
+import { connectedScatterPlotMetadata } from "../../constants/connected-scatter-plot-metadata.constant";
 
 describe(resolveConnectedScatterPlotLineWidth.name, () => {
 

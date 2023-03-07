@@ -1,4 +1,6 @@
-import { connectedScatterPlotMetadata } from "../connected-scatter-plot-metadata.constant";
+import {
+    connectedScatterPlotMetadata
+} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 
 describe("connectedScatterPlotMetadata", () => {
 
