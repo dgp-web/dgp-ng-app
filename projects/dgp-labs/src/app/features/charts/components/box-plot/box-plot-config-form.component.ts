@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { BoxPlot } from "dgp-ng-charts";
+import { BoxPlot, BoxPlotConfig } from "dgp-ng-charts";
 
 @Component({
     selector: "dgp-box-plot-config-form",
@@ -15,5 +15,17 @@ import { BoxPlot } from "dgp-ng-charts";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoxPlotConfigFormComponent extends DgpModelEditorComponentBase<BoxPlot> {
+
+    @Input()
+    config: BoxPlotConfig;
+
+    @Output()
+    readonly configChange = new EventEmitter<BoxPlotConfig>();
+
+    updateConfig(config: BoxPlotConfig) {
+        this.config = config;
+        this.configChange.emit(config);
+    }
+
 
 }

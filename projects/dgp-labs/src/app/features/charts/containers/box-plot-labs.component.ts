@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ModelMetadata } from "data-modeling";
-import { BoxPlot, BoxPlotRenderer } from "dgp-ng-charts";
+import { BoxPlot, BoxPlotConfig, BoxPlotRenderer, defaultBoxPlotConfig } from "dgp-ng-charts";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 
 export const boxPlotMetadata: ModelMetadata<BoxPlot> = {
@@ -56,7 +56,9 @@ export const testBoxPlot: BoxPlot = {
             <dgp-split-panel-content [size]="20">
                 <ng-template>
                     <dgp-box-plot-config-form [model]="model"
-                                              (modelChange)="setModel($event)"></dgp-box-plot-config-form>
+                                              (modelChange)="setModel($event)"
+                                              [config]="config"
+                                              (configChange)="updateConfig($event)"></dgp-box-plot-config-form>
                 </ng-template>
             </dgp-split-panel-content>
 
@@ -80,6 +82,11 @@ export class BoxPlotLabsComponent extends DgpModelEditorComponentBase<BoxPlot> {
 
     renderer = BoxPlotRenderer.Hybrid;
     model = testBoxPlot;
+    config = defaultBoxPlotConfig;
+
+    updateConfig(payload: BoxPlotConfig) {
+        this.config = payload;
+    }
 
     updateRenderer(renderer: BoxPlotRenderer) {
         this.renderer = renderer;
