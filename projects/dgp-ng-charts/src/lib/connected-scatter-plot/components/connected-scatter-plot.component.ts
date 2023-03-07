@@ -33,7 +33,7 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                             [showDataAreaOutline]="showDataAreaOutline"
                                             [config]="config"
                                             [dotSize]="dotSize"
-                                            [lineWidth]="lineWidth"></dgp-svg-connected-scatter-plot>
+                                            [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-svg-connected-scatter-plot>
 
             <dgp-hybrid-connected-scatter-plot *ngIf="renderer === rendererEnum.Hybrid"
                                                [size]="size$ | async"
@@ -46,7 +46,7 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                                [showDataAreaOutline]="showDataAreaOutline"
                                                [config]="config"
                                                [dotSize]="dotSize"
-                                               [lineWidth]="lineWidth"></dgp-hybrid-connected-scatter-plot>
+                                               [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-hybrid-connected-scatter-plot>
 
         </dgp-chart>
     `,
