@@ -56,19 +56,15 @@ export class HeaderComponent extends EventEmitter {
      * Creates a new tab and associates it with a contentItem
      */
     createTab(contentItem: AbstractContentItemComponent, index?: number): void {
-        let tab: TabComponent;
+        /**
+         * If there's already a tab relating to the content item, don't do anything
+         */
+        if (this.tabs.some(x => x.tabId === contentItem.config.id)) return;
 
-        // If there's already a tab relating to the
-        // content item, don't do anything
-        for (let i = 0; i < this.tabs.length; i++) {
-            if (this.tabs[i].tabId === contentItem.config.id) {
-                return;
-            }
-        }
         const vcRef = this.layoutManager.getViewContainerRef();
         const tabRef = vcRef.createComponent(TabComponent);
         this.tabRefs.push(tabRef);
-        tab = tabRef.instance;
+        let tab = tabRef.instance;
         tab.tabId = contentItem.config.id;
         tab.label = contentItem.config.title;
         tabRef.changeDetectorRef.markForCheck();
@@ -133,11 +129,10 @@ export class HeaderComponent extends EventEmitter {
      * The programmatical equivalent of clicking a Tab.
      */
     setActiveContentItem(contentItem: AbstractContentItemComponent) {
-        let i: number, j: number, isActive: boolean, activeTab: TabComponent;
-
-        for (i = 0; i < this.tabs.length; i++) {
-            isActive = this.tabs[i].tabId === contentItem.config.id;
+        for (let i = 0; i < this.tabs.length; i++) {
+            let isActive = this.tabs[i].tabId === contentItem.config.id;
             this.tabs[i].isActive = isActive;
+
             if (isActive === true) {
                 this.activeContentItem = contentItem;
                 this.parent.config.activeItemIndex = i;
@@ -150,8 +145,8 @@ export class HeaderComponent extends EventEmitter {
              * This will make sure the most used tabs stay visible.
              */
             if (this._lastVisibleTabIndex !== -1 && this.parent.config.activeItemIndex > this._lastVisibleTabIndex) {
-                activeTab = this.tabs[this.parent.config.activeItemIndex];
-                for (j = this.parent.config.activeItemIndex; j > 0; j--) {
+                let activeTab = this.tabs[this.parent.config.activeItemIndex];
+                for (let j = this.parent.config.activeItemIndex; j > 0; j--) {
                     this.tabs[j] = this.tabs[j - 1];
                 }
                 this.tabs[0] = activeTab;
@@ -162,15 +157,16 @@ export class HeaderComponent extends EventEmitter {
         this.updateTabSizes();
         this.parent.emitBubblingEvent(stateChangedEventType);
     }
+/*
 
-    /**
+    /!**
      * Programmatically operate with header position.
      *
      * @param {string} position one of ('top','left','right','bottom') to set or empty to get it.
      *
      * @returns {string} previous header position
-     */
-    position(position) {
+     *!/
+    position(position): boolean | DropSegment {
         let previous = this.parent._header.show;
         if (previous && !this.parent._side) {
             previous = DropSegment.Top;
@@ -180,6 +176,7 @@ export class HeaderComponent extends EventEmitter {
         }
         return previous;
     }
+*/
 
     destroy(): void {
         this.emit(destroyEventType, this);
