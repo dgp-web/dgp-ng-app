@@ -173,14 +173,6 @@ export class HeaderComponent extends EventEmitter {
     }
 
     /**
-     * Checks whether the header is closable based on the parent config and
-     * the global config.
-     */
-    isClosable(): boolean {
-        return this.parent.config.isClosable && this.layoutManager.config.settings.showCloseIcon;
-    }
-
-    /**
      * Invoked when the header's background is clicked (not it's tabs or controls)
      */
     private onHeaderClick(event: Event): void {
