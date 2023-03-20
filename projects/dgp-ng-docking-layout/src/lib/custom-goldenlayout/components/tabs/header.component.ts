@@ -11,14 +11,23 @@ import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropd
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
-import { ComponentRef } from "@angular/core";
+import { Component, ComponentRef } from "@angular/core";
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 
 /**
  * This class represents a header above a Stack ContentItem.
  */
-
+@Component({
+    selector: "dgp-gl-header",
+    template: `
+        <!-- <div class="lm_header card-header">
+             <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+             <ul class="lm_controls"></ul>
+             <ul class="lm_tabdropdown_list"></ul>
+         </div>-->
+    `
+})
 export class HeaderComponent extends EventEmitter {
 
     readonly element = $(dockingLayoutViewMap.header.render());

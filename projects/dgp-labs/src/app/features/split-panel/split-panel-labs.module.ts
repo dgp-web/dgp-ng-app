@@ -20,7 +20,6 @@ import { FormsModule } from "@angular/forms";
 @NgModule({
     imports: [
         CommonModule,
-        DgpSplitPanelModule,
         DgpThemeSwitcherModule,
         RouterModule.forRoot([{
             path: "split-panel",
