@@ -11,9 +11,10 @@ import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropd
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
-import { Component, ComponentRef } from "@angular/core";
+import { Component, ComponentRef, Inject } from "@angular/core";
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
+import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -44,6 +45,7 @@ export class HeaderComponent extends EventEmitter {
 
     constructor(
         private readonly layoutManager: DockingLayoutService,
+        @Inject(PARENT_STACK_COMPONENT_REF)
         readonly parent: StackComponent
     ) {
         super();

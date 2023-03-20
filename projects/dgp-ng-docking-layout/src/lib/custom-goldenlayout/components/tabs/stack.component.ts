@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, Injector } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
@@ -20,6 +20,7 @@ import { activeContentItemChangedEventType } from "../../constants/event-types/a
 import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
+import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
 
 @Component({
     selector: "dgp-stack",
@@ -45,8 +46,21 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     ) {
         super(dockingLayoutService, config, parent);
 
+        const vcRef = dockingLayoutService.getViewContainerRef();
+        const rootInjector = dockingLayoutService.getInjector();
 
-        this.headerComponent = new HeaderComponent(dockingLayoutService, this);
+        const injector = Injector.create({
+            providers: [{
+                provide: PARENT_STACK_COMPONENT_REF,
+                useValue: this
+            }],
+            parent: rootInjector
+        });
+
+        const headerComponentRef = vcRef.createComponent(HeaderComponent, {injector});
+        this.headerComponent = headerComponentRef.instance;
+
+        // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
         const cfg = dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
             show: cfg.settings.hasHeaders === true && config.hasHeaders !== false,
