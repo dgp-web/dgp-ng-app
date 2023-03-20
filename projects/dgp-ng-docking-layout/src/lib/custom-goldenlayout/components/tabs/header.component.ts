@@ -11,7 +11,7 @@ import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropd
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
-import { Component, ComponentRef, Inject } from "@angular/core";
+import { AfterViewInit, Component, ComponentRef, Inject } from "@angular/core";
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
@@ -29,16 +29,16 @@ import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-compone
          </div>-->
     `
 })
-export class HeaderComponent extends EventEmitter {
+export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
     readonly element = $(dockingLayoutViewMap.header.render());
     readonly rawElement = this.element[0];
     readonly tabs = new Array<TabComponent>();
     readonly tabRefs = new Array<ComponentRef<TabComponent>>();
     activeContentItem: any;
-    private tabsContainer = this.element.find("." + tabsClassName);
-    private tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
-    private controlsContainer = this.element.find("." + controlsClassName);
+    private tabsContainer: JQuery<HTMLElement>;
+    private tabDropdownContainer: JQuery<HTMLElement>;
+    private controlsContainer: JQuery<HTMLElement>;
     private readonly hideAdditionalTabsDropdown: any;
     private lastVisibleTabIndex = -1;
     private readonly _tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
@@ -61,6 +61,12 @@ export class HeaderComponent extends EventEmitter {
         this.parent.on(resizeEventType, this.updateTabSizes, this);
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
         $(document).mouseup(this.hideAdditionalTabsDropdown);
+    }
+
+    ngAfterViewInit(): void {
+        this.tabsContainer = this.element.find("." + tabsClassName);
+        this.tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
+        this.controlsContainer = this.element.find("." + controlsClassName);
     }
 
     /**

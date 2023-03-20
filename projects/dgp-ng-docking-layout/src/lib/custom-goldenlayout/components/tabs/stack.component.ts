@@ -59,6 +59,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
         const headerComponentRef = vcRef.createComponent(HeaderComponent, {injector});
         this.headerComponent = headerComponentRef.instance;
+        this.headerComponent.ngAfterViewInit();
 
         // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
         const cfg = dockingLayoutService.config;
