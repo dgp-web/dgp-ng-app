@@ -3,7 +3,6 @@ import { EventEmitter } from "../../utilities";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
-import { DropSegment } from "../../models/drop-segment.model";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { widthOrHeight } from "../../functions/width-or-height.function";
 import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
@@ -157,26 +156,6 @@ export class HeaderComponent extends EventEmitter {
         this.updateTabSizes();
         this.parent.emitBubblingEvent(stateChangedEventType);
     }
-/*
-
-    /!**
-     * Programmatically operate with header position.
-     *
-     * @param {string} position one of ('top','left','right','bottom') to set or empty to get it.
-     *
-     * @returns {string} previous header position
-     *!/
-    position(position): boolean | DropSegment {
-        let previous = this.parent._header.show;
-        if (previous && !this.parent._side) {
-            previous = DropSegment.Top;
-        }
-        if (position !== undefined && this.parent._header.show !== position) {
-            this.parent._header.show = position;
-        }
-        return previous;
-    }
-*/
 
     destroy(): void {
         this.emit(destroyEventType, this);
@@ -185,12 +164,6 @@ export class HeaderComponent extends EventEmitter {
         this.element.remove();
     }
 
-    /**
-     * Shows drop down for additional tabs when there are too many to display.
-     */
-    private showAdditionalTabsDropdown(): void {
-        this.tabDropdownContainer.show();
-    }
 
     /**
      * Hides drop down for additional tabs when there are too many to display.
