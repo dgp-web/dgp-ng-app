@@ -18,6 +18,7 @@ import { destroyEventType } from "../../constants/event-types/destroy-event-type
 /**
  * This class represents a header above a Stack ContentItem.
  */
+
 export class HeaderComponent extends EventEmitter {
 
     readonly element = $(dockingLayoutViewMap.header.render());
@@ -29,7 +30,7 @@ export class HeaderComponent extends EventEmitter {
     private tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
     private controlsContainer = this.element.find("." + controlsClassName);
     private readonly hideAdditionalTabsDropdown: any;
-    private _lastVisibleTabIndex = -1;
+    private lastVisibleTabIndex = -1;
     private readonly _tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
 
     constructor(
@@ -143,7 +144,7 @@ export class HeaderComponent extends EventEmitter {
              * If the tab selected was in the dropdown, move everything down one to make way for this one to be the first.
              * This will make sure the most used tabs stay visible.
              */
-            if (this._lastVisibleTabIndex !== -1 && this.parent.config.activeItemIndex > this._lastVisibleTabIndex) {
+            if (this.lastVisibleTabIndex !== -1 && this.parent.config.activeItemIndex > this.lastVisibleTabIndex) {
                 let activeTab = this.tabs[this.parent.config.activeItemIndex];
                 for (let j = this.parent.config.activeItemIndex; j > 0; j--) {
                     this.tabs[j] = this.tabs[j - 1];
@@ -205,7 +206,7 @@ export class HeaderComponent extends EventEmitter {
         if (this.parent._sided) {
             availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight() - this._tabControlOffset;
         }
-        this._lastVisibleTabIndex = -1;
+        this.lastVisibleTabIndex = -1;
 
         for (i = 0; i < this.tabs.length; i++) {
             tabElement = this.tabs[i].element;
@@ -244,7 +245,7 @@ export class HeaderComponent extends EventEmitter {
                             marginLeft = (j !== activeIndex && j !== 0) ? "-" + overlap + "px" : "";
                             this.tabs[j].element.css({"z-index": i - j, "margin-left": marginLeft});
                         }
-                        this._lastVisibleTabIndex = i;
+                        this.lastVisibleTabIndex = i;
                         this.tabsContainer.append(tabElement);
                     } else {
                         tabOverlapAllowanceExceeded = true;
@@ -269,7 +270,7 @@ export class HeaderComponent extends EventEmitter {
                 }
 
             } else {
-                this._lastVisibleTabIndex = i;
+                this.lastVisibleTabIndex = i;
                 tabElement.css({"z-index": "auto", "margin-left": ""});
                 this.tabsContainer.append(tabElement);
             }
