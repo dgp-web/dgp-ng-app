@@ -48,7 +48,6 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
     @HostBinding("class.lm_item")
     readonly bindings = true;
 
-    readonly isRoot = true;
     readonly type = "root";
     public element: JQuery;
     public childElementContainer: JQuery<HTMLElement>;
@@ -79,16 +78,14 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
         this.dockingLayoutService.registerInitialization();
     }
 
-    addChild(contentItem, index) {
+    addChild(contentItem: AbstractContentItemComponent) {
         if (this.contentItems.length > 0) {
             throw new Error("Root node can only have a single child");
         }
 
         this.childElementContainer.append(contentItem.element);
 
-        if (index === undefined) {
-            index = this.contentItems.length;
-        }
+        const index = this.contentItems.length;
 
         this.contentItems.splice(index, 0, contentItem);
 
@@ -144,7 +141,7 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
         }
 
         if (!this.contentItems.length) {
-            this.addChild(contentItem, null);
+            this.addChild(contentItem);
         } else {
             const type = area.side[0] === "x" ? "row" : "column";
             const dimension = area.side[0] === "x" ? "width" : "height";
