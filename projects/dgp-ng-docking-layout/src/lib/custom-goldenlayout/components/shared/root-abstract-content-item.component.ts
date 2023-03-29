@@ -12,7 +12,7 @@ import { itemDestroyedEventType } from "../../constants/event-types/item-destroy
 import { createItemTypeCreatedEventType } from "../../functions/create-item-type-created-event-type.function";
 import { StackComponent } from "../tabs/stack.component";
 import { DropSegment } from "../../models/drop-segment.model";
-import { RootAbstractContentItemComponent } from "./root-abstract-content-item.component";
+import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -22,7 +22,7 @@ import { RootAbstractContentItemComponent } from "./root-abstract-content-item.c
  */
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class AbstractContentItemComponent extends EventEmitter {
+export abstract class RootAbstractContentItemComponent extends EventEmitter {
 
     _side: boolean | DropSegment;
     _sided: boolean;
@@ -46,8 +46,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     protected constructor(
         readonly dockingLayoutService: DockingLayoutService,
-        readonly config: ItemConfiguration,
-        public parent: AbstractContentItemComponent | RootAbstractContentItemComponent
+        readonly config: ItemConfiguration
     ) {
         super();
 
@@ -107,11 +106,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
 
-            /**
-             * If this was the last content item, remove this node as well
-             */
-        } else if (!(this.isRoot) && this.config.isClosable === true) {
-            this.parent.removeChild(this);
         }
     }
 
@@ -179,14 +173,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.callDownwards("setSize");
     }
 
-    /**
-     * Convenience method.
-     * Shorthand for this.parent.removeChild( this )
-     */
-    remove() {
-        this.parent.removeChild(this);
-    }
-
     select() {
         if (this.dockingLayoutService.selectedItem !== this) {
             this.dockingLayoutService.selectItem(this, true);
@@ -199,14 +185,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
             this.dockingLayoutService.selectedItem = null;
             this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
-    }
-
-    /****************************************
-     * PACKAGE PRIVATE
-     ****************************************/
-    //noinspection TsLint
-    _$setParent(parent: AbstractContentItemComponent) {
-        this.parent = parent;
     }
 
     highlightDropZone(x: number, y: number, area: AreaSides) {
@@ -294,11 +272,9 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
              * propagate the bubbling event from the top level of the substree directly
              * to the layoutManager
              */
-            if (this.isRoot === false && this.parent) {
-                this.parent.emit.apply(this.parent, Array.prototype.slice.call(arguments, 0));
-            } else {
-                this.scheduleEventPropagationToLayoutManager(name, event);
-            }
+
+            this.scheduleEventPropagationToLayoutManager(name, event);
+
         }
     }
 

@@ -18,6 +18,7 @@ import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
+import { RootAbstractContentItemComponent } from "./components/shared/root-abstract-content-item.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -25,7 +26,7 @@ import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placehol
 @Injectable()
 export class DockingLayoutService extends EventEmitter {
 
-    selectedItem: AbstractContentItemComponent;
+    selectedItem: AbstractContentItemComponent | RootAbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery; // TODO: Could / should be AbstractContentItemComponent according to RootComponent
     dropTargetIndicator: DropTargetIndicatorComponent;
@@ -109,7 +110,7 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
+    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent | RootAbstractContentItemComponent): AbstractContentItemComponent {
 
         if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
 
@@ -136,7 +137,7 @@ export class DockingLayoutService extends EventEmitter {
         this.eventHub.destroy();
     }
 
-    selectItem(item: AbstractContentItemComponent, silent: boolean) {
+    selectItem(item: AbstractContentItemComponent | RootAbstractContentItemComponent, silent: boolean) {
 
         if (item === this.selectedItem) return;
 
@@ -146,7 +147,7 @@ export class DockingLayoutService extends EventEmitter {
 
         this.selectedItem = item;
 
-        this.emit<SelectionChangedEvent>("selectionChanged", item);
+        this.emit<SelectionChangedEvent>("selectionChanged", item as any);
     }
 
     private createRootComponent(config: LayoutConfiguration): void {

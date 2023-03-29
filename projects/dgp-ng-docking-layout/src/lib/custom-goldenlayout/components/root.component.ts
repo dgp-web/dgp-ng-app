@@ -15,6 +15,7 @@ import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration } from "../types";
 import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
+import { RootAbstractContentItemComponent } from "./shared/root-abstract-content-item.component";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -29,7 +30,7 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends AbstractContentItemComponent implements AfterViewInit, DropTarget {
+export class RootComponent extends RootAbstractContentItemComponent implements AfterViewInit, DropTarget {
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -48,7 +49,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
     ) {
-        super(dockingLayoutService, config, containerElement as unknown as AbstractContentItemComponent);
+        super(dockingLayoutService, config);
     }
 
     ngAfterViewInit() {
