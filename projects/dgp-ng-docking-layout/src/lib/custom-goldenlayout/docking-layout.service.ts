@@ -18,7 +18,6 @@ import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
-import { RootAbstractContentItemComponent } from "./components/shared/root-abstract-content-item.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -26,7 +25,7 @@ import { RootAbstractContentItemComponent } from "./components/shared/root-abstr
 @Injectable()
 export class DockingLayoutService extends EventEmitter {
 
-    selectedItem: AbstractContentItemComponent | RootAbstractContentItemComponent;
+    selectedItem: AbstractContentItemComponent | RootComponent;
     config: LayoutConfiguration;
     container: JQuery; // TODO: Could / should be AbstractContentItemComponent according to RootComponent
     dropTargetIndicator: DropTargetIndicatorComponent;
@@ -110,7 +109,7 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent | RootAbstractContentItemComponent): AbstractContentItemComponent {
+    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent | RootComponent): AbstractContentItemComponent {
 
         if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
 
@@ -137,7 +136,7 @@ export class DockingLayoutService extends EventEmitter {
         this.eventHub.destroy();
     }
 
-    selectItem(item: AbstractContentItemComponent | RootAbstractContentItemComponent, silent: boolean) {
+    selectItem(item: AbstractContentItemComponent | RootComponent, silent: boolean) {
 
         if (item === this.selectedItem) return;
 

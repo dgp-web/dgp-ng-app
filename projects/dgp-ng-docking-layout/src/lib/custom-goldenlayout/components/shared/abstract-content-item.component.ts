@@ -12,7 +12,7 @@ import { itemDestroyedEventType } from "../../constants/event-types/item-destroy
 import { createItemTypeCreatedEventType } from "../../functions/create-item-type-created-event-type.function";
 import { StackComponent } from "../tabs/stack.component";
 import { DropSegment } from "../../models/drop-segment.model";
-import { RootAbstractContentItemComponent } from "./root-abstract-content-item.component";
+import { RootComponent } from "../root.component";
 
 /**
  * this is the baseclass that all content items inherit from.
@@ -47,7 +47,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     protected constructor(
         readonly dockingLayoutService: DockingLayoutService,
         readonly config: ItemConfiguration,
-        public parent: AbstractContentItemComponent | RootAbstractContentItemComponent
+        public parent: AbstractContentItemComponent | RootComponent
     ) {
         super();
 

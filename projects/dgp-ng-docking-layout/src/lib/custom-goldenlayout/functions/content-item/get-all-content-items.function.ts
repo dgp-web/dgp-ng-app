@@ -1,8 +1,8 @@
 import { AbstractContentItemComponent } from "../../components/shared/abstract-content-item.component";
 import { Many } from "data-modeling";
-import { RootAbstractContentItemComponent } from "../../components/shared/root-abstract-content-item.component";
+import { RootComponent } from "../../components/root.component";
 
-export function getAllContentItems(payload: RootAbstractContentItemComponent): Many<AbstractContentItemComponent> {
+export function getAllContentItems(payload: RootComponent): Many<AbstractContentItemComponent> {
     const allContentItems = new Array<AbstractContentItemComponent>();
 
     const addChildren = function (contentItem) {
