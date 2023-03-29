@@ -59,23 +59,6 @@ export class RootComponent implements AfterViewInit, DropTarget {
         this.dockingLayoutService.registerInitialization();
     }
 
-    addChild(contentItem: AbstractContentItemComponent) {
-        if (this.contentItems.length > 0) throw new Error("Root node can only have a single child");
-
-        this.element.append(contentItem.element);
-
-        this.contentItems.push(contentItem);
-
-        if (this.config.content === undefined) this.config.content = [];
-
-        this.config.content.push(contentItem.config);
-        contentItem.parent = this;
-
-        if (this.isInitialised && contentItem.isInitialised === false) contentItem.init();
-
-        this.setSize();
-    }
-
     setSize(width?: number, height?: number) {
         if (isNullOrUndefined(this.element)) return;
 
@@ -112,30 +95,27 @@ export class RootComponent implements AfterViewInit, DropTarget {
             contentItem = stack;
         }
 
-        if (!this.contentItems.length) {
-            this.addChild(contentItem);
-        } else {
-            const type = area.side[0] === "x" ? "row" : "column";
-            const dimension = area.side[0] === "x" ? "width" : "height";
-            const insertBefore = area.side[1] === "2";
-            const column: AbstractContentItemComponent = this.contentItems[0];
+        const type = area.side[0] === "x" ? "row" : "column";
+        const dimension = area.side[0] === "x" ? "width" : "height";
+        const insertBefore = area.side[1] === "2";
+        const column: AbstractContentItemComponent = this.contentItems[0];
 
-            if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
-                const rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
-                this.replaceChild(column, rowOrColumn);
-                rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
-                rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
-                column.config[dimension] = 50;
-                contentItem.config[dimension] = 50;
-                rowOrColumn.callDownwards("setSize");
-            } else {
-                const sibbling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
-                column.addChild(contentItem, insertBefore ? 0 : undefined, true);
-                sibbling.config[dimension] *= 0.5;
-                contentItem.config[dimension] = sibbling.config[dimension];
-                column.callDownwards("setSize");
-            }
+        if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
+            const rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
+            this.replaceChild(column, rowOrColumn);
+            rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
+            rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
+            column.config[dimension] = 50;
+            contentItem.config[dimension] = 50;
+            rowOrColumn.callDownwards("setSize");
+        } else {
+            const sibbling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
+            column.addChild(contentItem, insertBefore ? 0 : undefined, true);
+            sibbling.config[dimension] *= 0.5;
+            contentItem.config[dimension] = sibbling.config[dimension];
+            column.callDownwards("setSize");
         }
+
     }
 
     getArea(element?: JQuery): Area {

@@ -295,7 +295,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
              * to the layoutManager
              */
             if (this.isRoot === false && this.parent) {
-                this.parent.emit.apply(this.parent, Array.prototype.slice.call(arguments, 0));
+                (this.parent as AbstractContentItemComponent).emit?.apply(this.parent, Array.prototype.slice.call(arguments, 0));
             } else {
                 this.scheduleEventPropagationToLayoutManager(name, event);
             }

@@ -69,15 +69,6 @@ export class DockingLayoutService extends EventEmitter {
         this.config = createLayoutConfig(config);
         this.dropTargetIndicator = null;
         this.tabDropPlaceholder = viewContainerRef.createComponent(TabDropPlaceholderComponent).instance;
-
-        /*this.on("stateChanged", (x) => {
-            console.log(x);
-            try {
-                console.log(this.toConfig(this.root));
-            } catch (e) {
-                console.error(e);
-            }
-        });*/
     }
 
     getComponent = x => this.componentRegistry.getComponent(x);
