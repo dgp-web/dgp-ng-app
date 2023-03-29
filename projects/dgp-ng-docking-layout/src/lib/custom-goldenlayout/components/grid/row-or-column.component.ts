@@ -416,7 +416,8 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
 
         splitter.isVertical = this._isColumn;
         splitter.size = this.splitterSize;
-        splitter.grabSize = this.splitterGrabSize;
+        splitter.size = this.splitterSize;
+        splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
         splitter.ngAfterViewInit();
 
