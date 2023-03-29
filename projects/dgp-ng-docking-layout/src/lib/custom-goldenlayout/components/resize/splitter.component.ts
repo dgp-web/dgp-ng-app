@@ -2,26 +2,38 @@ import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { verticalClassName } from "../../constants/class-names/vertical-class-name.constant";
 import { horizontalClassName } from "../../constants/class-names/horizontal-class-name.constant";
-import { DockingLayoutService } from "../../docking-layout.service";
-import { Component, Inject, InjectionToken, Input } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, Input } from "@angular/core";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 
-export const IS_SPLITTER_VERTICAL = new InjectionToken<boolean>("isSplitterVertical");
-export const SPLITTER_SIZE = new InjectionToken<number>("splitterSize");
-export const SPLITTER_GRAB_SIZE = new InjectionToken<number>("splitterGrabSize");
-
 @Component({
     selector: "dgp-gl-splitter",
     template: `
-        <!--<div class="lm_drag_handle"></div>
-        <div class="lm_splitter"></div>-->
+        <ng-container *ngIf="isVertical">
+            TEST
+            <div class="lm_splitter lm_horizontal"
+                 [style.height.px]="size">
+                <div class="lm_drag_handle"
+                     [style.top.px]="handleExcessPos$ | async"
+                     [style.height.px]="handleSize$ | async"></div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!isVertical">
+            TEST 01
+            <div class="lm_splitter lm_vertical"
+                 [style.widh.px]="size">
+                <div class="lm_drag_handle"
+                     [style.left.px]="handleExcessPos$ | async"
+                     [style.width.px]="handleSize$ | async"></div>
+            </div>
+        </ng-container>
     `
 })
-export class SplitterComponent {
+export class SplitterComponent implements AfterViewInit {
 
-    readonly dragListener: DragListenerDirective;
+    dragListener: DragListenerDirective;
 
     @Input()
     size: number;
@@ -38,7 +50,7 @@ export class SplitterComponent {
 
     readonly handleExcessSize$ = combineLatest([
         this.size$,
-        this.grabSize$
+        this.grabSize$,
     ]).pipe(
         map(combination => {
 
@@ -47,7 +59,7 @@ export class SplitterComponent {
 
             if (isNullOrUndefined(size) || isNullOrUndefined(grabSize)) return null;
 
-            return grabSize - size;
+            return -(grabSize - size);
 
         })
     );
@@ -61,23 +73,39 @@ export class SplitterComponent {
         })
     );
 
-    readonly element: JQuery;
+    readonly handleSize$ = combineLatest([
+        this.size$,
+        this.handleExcessSize$
+    ]).pipe(
+        map(combination => {
+            return combination[0] + combination[1];
+        })
+    );
+
+    readonly element = $(this.elementRef.nativeElement);
 
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
-        @Inject(IS_SPLITTER_VERTICAL) isVertical: boolean,
-        @Inject(SPLITTER_SIZE) size: number,
-        @Inject(SPLITTER_GRAB_SIZE) grabSize: number
+        private readonly elementRef: ElementRef<HTMLElement>,
+        /*        @Inject(IS_SPLITTER_VERTICAL) isVertical: boolean,
+                @Inject(SPLITTER_SIZE) size: number,
+                @Inject(SPLITTER_GRAB_SIZE) grabSize: number*/
     ) {
-        this.size = size;
-        this.grabSize = grabSize < size ? size : grabSize;
-        this.isVertical = isVertical;
+        /*        this.size = size;
+                this.grabSize = grabSize < size ? size : grabSize;
+                this.isVertical = isVertical;*/
+        /*
 
-        this.element = this.createElement();
+                this.element = this.createElement();
 
+                this.dragListener = new DragListenerDirective();
+                this.dragListener.initProgrammatically(this.element);
+        */
+
+    }
+
+    ngAfterViewInit(): void {
         this.dragListener = new DragListenerDirective();
         this.dragListener.initProgrammatically(this.element);
-
     }
 
     destroy() {
@@ -110,4 +138,5 @@ export class SplitterComponent {
 
         return element;
     }
+
 }
