@@ -30,7 +30,7 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
 })
 export class RootComponent implements AfterViewInit, DropTarget {
 
-    contentItems: AbstractContentItemComponent[] = [];
+    readonly contentItems = this.config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
 
     isInitialised = false;
 
@@ -50,7 +50,6 @@ export class RootComponent implements AfterViewInit, DropTarget {
         private readonly elRef: ElementRef
     ) {
         this.config = {...itemDefaultConfig, ...config};
-        if (config.content) this.createContentItems(config);
     }
 
     ngAfterViewInit() {
@@ -183,7 +182,7 @@ export class RootComponent implements AfterViewInit, DropTarget {
         this.contentItems[index] = newChild;
         newChild.parent = this;
 
-        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
+        if (newChild.parent.isInitialised && newChild.isInitialised === false) {
             newChild.init();
         }
 
@@ -196,15 +195,11 @@ export class RootComponent implements AfterViewInit, DropTarget {
     }
 
     init(): void {
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.element.append(this.contentItems[i].element);
-        }
+        this.contentItems.forEach(contentItem => {
+            this.element.append(contentItem.element);
+        });
 
         this.isInitialised = true;
-    }
-
-    private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
 }

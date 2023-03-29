@@ -126,7 +126,6 @@ export class DockingLayoutService extends EventEmitter {
     destroy() {
         if (this.isInitialised === false) return;
         this.root.callDownwards("destroy", [], true);
-        this.root.contentItems = [];
         this.eventHub.destroy();
     }
 
