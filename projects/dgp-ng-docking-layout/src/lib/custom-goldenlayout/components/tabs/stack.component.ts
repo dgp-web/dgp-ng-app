@@ -42,7 +42,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         @Inject(ITEM_CONFIG)
             config: ItemConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-            parent: AbstractContentItemComponent
+        readonly parent: AbstractContentItemComponent
     ) {
         super(dockingLayoutService, config, parent);
 

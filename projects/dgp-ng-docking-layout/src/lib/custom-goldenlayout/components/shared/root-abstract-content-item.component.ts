@@ -1,6 +1,6 @@
 import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { HeaderConfig, ItemConfiguration, itemDefaultConfig } from "../../types";
+import { ItemConfiguration, itemDefaultConfig } from "../../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { goldenLayoutEngineConfig } from "../../constants/golden-layout-engine-config.constant";
 import { AreaSides } from "../../models/area.model";
@@ -10,8 +10,6 @@ import { itemCreatedEventType } from "../../constants/event-types/item-created-e
 import { beforeItemDestroyedEventType } from "../../constants/event-types/before-item-destroyed-event-type.constant";
 import { itemDestroyedEventType } from "../../constants/event-types/item-destroyed-event-type.constant";
 import { createItemTypeCreatedEventType } from "../../functions/create-item-type-created-event-type.function";
-import { StackComponent } from "../tabs/stack.component";
-import { DropSegment } from "../../models/drop-segment.model";
 import { AbstractContentItemComponent } from "./abstract-content-item.component";
 
 /**
@@ -24,19 +22,9 @@ import { AbstractContentItemComponent } from "./abstract-content-item.component"
 // tslint:disable-next-line:directive-class-suffix
 export abstract class RootAbstractContentItemComponent extends EventEmitter {
 
-    _side: boolean | DropSegment;
-    _sided: boolean;
-    _header: HeaderConfig;
-
     contentItems: AbstractContentItemComponent[] = [];
 
     isInitialised = false;
-    isMaximised = false;
-    isRoot = false;
-    isRow = false;
-    isColumn = false;
-    isStack = false;
-    isComponent = false;
 
     element: JQuery;
     childElementContainer: JQuery;
@@ -158,13 +146,6 @@ export abstract class RootAbstractContentItemComponent extends EventEmitter {
         this.contentItems[index] = newChild;
         newChild.parent = this;
 
-        /*
-         * Update tab reference
-         */
-        if (this.isStack) {
-            (this as any).header.tabs[index].contentItem = newChild;
-        }
-
         // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
             newChild.init();
@@ -189,25 +170,6 @@ export abstract class RootAbstractContentItemComponent extends EventEmitter {
 
     highlightDropZone(x: number, y: number, area: AreaSides) {
         this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
-    }
-
-    hide() {
-        this.callOnActiveComponents("hide");
-        this.element.hide();
-        this.dockingLayoutService.updateSize();
-    }
-
-    show() {
-        this.callOnActiveComponents("show");
-        this.element.show();
-        this.dockingLayoutService.updateSize();
-    }
-
-    private callOnActiveComponents(methodName: string): void {
-        this.contentItems.filter(x => x.config.type === "stack")
-            .map(x => x as StackComponent)
-            .map(stack => stack.getActiveContentItem())
-            .forEach(component => component[methodName]());
     }
 
     /**
@@ -248,7 +210,6 @@ export abstract class RootAbstractContentItemComponent extends EventEmitter {
         this.emit(name, event);
     }
 
-    //noinspection TsLint
     /**
      * Private method, creates all content items for this node at initialisation time
      * PLEASE NOTE, please see addChild for adding contentItems add runtime
