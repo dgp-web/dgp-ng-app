@@ -25,7 +25,7 @@ import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placehol
 @Injectable()
 export class DockingLayoutService extends EventEmitter {
 
-    selectedItem: AbstractContentItemComponent | RootComponent;
+    selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery; // TODO: Could / should be AbstractContentItemComponent according to RootComponent
     dropTargetIndicator: DropTargetIndicatorComponent;
@@ -109,7 +109,10 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent | RootComponent): AbstractContentItemComponent {
+    createContentItem(
+        itemConfig: ItemConfiguration,
+        parentItem: AbstractContentItemComponent | RootComponent
+    ): AbstractContentItemComponent {
 
         if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
 
@@ -136,7 +139,7 @@ export class DockingLayoutService extends EventEmitter {
         this.eventHub.destroy();
     }
 
-    selectItem(item: AbstractContentItemComponent | RootComponent, silent: boolean) {
+    selectItem(item: AbstractContentItemComponent, silent: boolean) {
 
         if (item === this.selectedItem) return;
 

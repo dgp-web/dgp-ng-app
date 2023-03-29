@@ -17,7 +17,6 @@ import { ItemConfiguration, itemDefaultConfig } from "../types";
 import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
 import { ALL_EVENT } from "../constants/event-types/all-event.constant";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
-import { goldenLayoutEngineConfig } from "../constants/golden-layout-engine-config.constant";
 import { beforeItemDestroyedEventType } from "../constants/event-types/before-item-destroyed-event-type.constant";
 import { itemDestroyedEventType } from "../constants/event-types/item-destroyed-event-type.constant";
 import { itemCreatedEventType } from "../constants/event-types/item-created-event-type.constant";
@@ -49,8 +48,7 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
     readonly bindings = true;
 
     readonly type = "root";
-    public element: JQuery;
-    public childElementContainer: JQuery<HTMLElement>;
+    readonly element = $(this.elRef.nativeElement);
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
@@ -69,36 +67,25 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
     }
 
     ngAfterViewInit() {
-        this.element = $(this.elRef.nativeElement);
-        this.childElementContainer = this.element;
         this.containerElement.append(this.element);
-
         this.callDownwards("init");
-
         this.dockingLayoutService.registerInitialization();
     }
 
     addChild(contentItem: AbstractContentItemComponent) {
-        if (this.contentItems.length > 0) {
-            throw new Error("Root node can only have a single child");
-        }
+        if (this.contentItems.length > 0) throw new Error("Root node can only have a single child");
 
-        this.childElementContainer.append(contentItem.element);
+        this.element.append(contentItem.element);
 
-        const index = this.contentItems.length;
+        this.contentItems.push(contentItem);
 
-        this.contentItems.splice(index, 0, contentItem);
+        if (this.config.content === undefined) this.config.content = [];
 
-        if (this.config.content === undefined) {
-            this.config.content = [];
-        }
-
-        this.config.content.splice(index, 0, contentItem.config);
+        this.config.content.push(contentItem.config);
         contentItem.parent = this;
 
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem.init();
-        }
+        if (this.isInitialised && contentItem.isInitialised === false) contentItem.init();
+
         this.setSize();
 
         this.emitBubblingEvent(stateChangedEventType);
@@ -147,6 +134,7 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
             const dimension = area.side[0] === "x" ? "width" : "height";
             const insertBefore = area.side[1] === "2";
             const column: AbstractContentItemComponent = this.contentItems[0];
+
             if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
                 const rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
                 this.replaceChild(column, rowOrColumn);
@@ -178,7 +166,7 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
             x2: offset.left + width,
             y2: offset.top + height,
             surface: width * height,
-            contentItem: this as any
+            contentItem: this
         };
     }
 
@@ -237,20 +225,6 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
         this.callDownwards("setSize");
     }
 
-    select() {
-        if (this.dockingLayoutService.selectedItem !== this) {
-            this.dockingLayoutService.selectItem(this, true);
-            this.element.addClass(goldenLayoutEngineConfig.cssClasses.selected);
-        }
-    }
-
-    deselect() {
-        if (this.dockingLayoutService.selectedItem === this) {
-            this.dockingLayoutService.selectedItem = null;
-            this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
-        }
-    }
-
     destroy() {
         this.unsubscribe();
         this.emitBubblingEvent(beforeItemDestroyedEventType);
@@ -261,7 +235,7 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
 
     init(): void {
         for (let i = 0; i < this.contentItems.length; i++) {
-            this.childElementContainer.append(this.contentItems[i].element);
+            this.element.append(this.contentItems[i].element);
         }
 
         this.isInitialised = true;
