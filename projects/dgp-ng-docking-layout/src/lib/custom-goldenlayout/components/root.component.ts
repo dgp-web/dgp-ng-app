@@ -14,13 +14,6 @@ import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration, itemDefaultConfig } from "../types";
-import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
-import { ALL_EVENT } from "../constants/event-types/all-event.constant";
-import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
-import { beforeItemDestroyedEventType } from "../constants/event-types/before-item-destroyed-event-type.constant";
-import { itemDestroyedEventType } from "../constants/event-types/item-destroyed-event-type.constant";
-import { itemCreatedEventType } from "../constants/event-types/item-created-event-type.constant";
-import { createItemTypeCreatedEventType } from "../functions/create-item-type-created-event-type.function";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -35,14 +28,11 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends EventEmitter implements AfterViewInit, DropTarget {
+export class RootComponent implements AfterViewInit, DropTarget {
 
     contentItems: AbstractContentItemComponent[] = [];
 
     isInitialised = false;
-
-    pendingEventPropagations = {};
-    throttledEvents = [stateChangedEventType];
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -59,10 +49,7 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
         private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
     ) {
-        super();
-
         this.config = {...itemDefaultConfig, ...config};
-        this.on(ALL_EVENT, this.propagateEvent, this);
         if (config.content) this.createContentItems(config);
     }
 
@@ -87,8 +74,6 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
         if (this.isInitialised && contentItem.isInitialised === false) contentItem.init();
 
         this.setSize();
-
-        this.emitBubblingEvent(stateChangedEventType);
     }
 
     setSize(width?: number, height?: number) {
@@ -226,11 +211,8 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
     }
 
     destroy() {
-        this.unsubscribe();
-        this.emitBubblingEvent(beforeItemDestroyedEventType);
         this.callDownwards("destroy", [], true, true);
         this.element.remove();
-        this.emitBubblingEvent(itemDestroyedEventType);
     }
 
     init(): void {
@@ -239,41 +221,10 @@ export class RootComponent extends EventEmitter implements AfterViewInit, DropTa
         }
 
         this.isInitialised = true;
-        this.emitBubblingEvent(itemCreatedEventType);
-        this.emitBubblingEvent(createItemTypeCreatedEventType(this.config.type));
-    }
-
-    emitBubblingEvent(name: string) {
-        const event = new BubblingEvent(name, this);
-        this.emit(name, event);
     }
 
     private createContentItems(config: ItemConfiguration) {
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
-    private propagateEvent(name: string, event: BubblingEvent) {
-        if (event instanceof BubblingEvent &&
-            event.isPropagationStopped === false &&
-            this.isInitialised === true) {
-            this.scheduleEventPropagationToLayoutManager(name, event);
-        }
-    }
-
-    private scheduleEventPropagationToLayoutManager(name: string, event) {
-        if (new LayoutManagerUtilities().indexOf(name, this.throttledEvents) === -1) {
-            this.dockingLayoutService.emit(name, event.origin);
-        } else {
-            if (this.pendingEventPropagations[name] !== true) {
-                this.pendingEventPropagations[name] = true;
-                new LayoutManagerUtilities().animFrame(() => this.propagateEventToLayoutManager(name, event));
-            }
-        }
-
-    }
-
-    private propagateEventToLayoutManager(name: string, event) {
-        this.pendingEventPropagations[name] = false;
-        this.dockingLayoutService.emit(name, event);
-    }
 }
