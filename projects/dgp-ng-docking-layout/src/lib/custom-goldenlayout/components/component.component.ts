@@ -22,15 +22,15 @@ export class GlComponent extends AbstractContentItemComponent {
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
-        public layoutManager: DockingLayoutService,
+        public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
         public config: any,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: AbstractContentItemComponent
     ) {
-        super(layoutManager, config, parent);
+        super(dockingLayoutService, config, parent);
 
-        let ComponentConstructor = layoutManager.getComponent(this.config.id),
+        let ComponentConstructor = dockingLayoutService.getComponent(this.config.id),
             componentConfig = $.extend(true, {}, this.config.componentState || {});
 
         componentConfig.componentName = this.config.id;
@@ -41,7 +41,7 @@ export class GlComponent extends AbstractContentItemComponent {
         }
 
         this.isComponent = true;
-        this.container = new ItemContainerComponent(this.config, this, layoutManager);
+        this.container = new ItemContainerComponent(this.config, this, dockingLayoutService);
         this.instance = ComponentConstructor(this.container, componentConfig);
         this.element = this.container._element;
     }

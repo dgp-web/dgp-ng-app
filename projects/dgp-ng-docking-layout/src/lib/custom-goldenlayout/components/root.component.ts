@@ -13,6 +13,8 @@ import { DockingLayoutService } from "../docking-layout.service";
 import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
+import { ItemConfiguration } from "../types";
+import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -35,30 +37,28 @@ export class RootComponent extends AbstractContentItemComponent implements After
     readonly isRoot = true;
     readonly type = "root";
     public element: JQuery;
-    public childElementContainer: any;
-    public _containerElement: any;
+    public childElementContainer: JQuery<HTMLElement>;
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
-        public layoutManager: DockingLayoutService,
+        readonly dockingLayoutService: DockingLayoutService,
         @Inject(ROOT_CONFIG)
-        public config,
+        readonly config: ItemConfiguration,
         @Inject(ROOT_CONTAINER_ELEMENT)
-        public containerElement,
+        private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
     ) {
-        super(layoutManager, config, containerElement);
+        super(dockingLayoutService, config, containerElement as unknown as AbstractContentItemComponent);
     }
 
     ngAfterViewInit() {
         this.element = $(this.elRef.nativeElement);
         this.childElementContainer = this.element;
-        this._containerElement = this.containerElement;
-        this._containerElement.append(this.element);
+        this.containerElement.append(this.element);
 
         this.callDownwards("init");
 
-        this.layoutManager.registerInitialization();
+        this.dockingLayoutService.registerInitialization();
     }
 
     addChild(contentItem) {
@@ -71,14 +71,14 @@ export class RootComponent extends AbstractContentItemComponent implements After
         super.addChild(contentItem);
         this.setSize();
 
-        this.emitBubblingEvent("stateChanged");
+        this.emitBubblingEvent(stateChangedEventType);
     }
 
     setSize(width?: number, height?: number) {
         if (isNullOrUndefined(this.element)) return;
 
-        width = (typeof width === "undefined") ? this._containerElement.width() : width;
-        height = (typeof height === "undefined") ? this._containerElement.height() : height;
+        width = (typeof width === "undefined") ? this.containerElement.width() : width;
+        height = (typeof height === "undefined") ? this.containerElement.height() : height;
 
         this.element.width(width);
         this.element.height(height);
@@ -93,7 +93,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
     }
 
     highlightDropZone(x, y, area: AreaSides) {
-        this.layoutManager.tabDropPlaceholder.remove();
+        this.dockingLayoutService.tabDropPlaceholder.remove();
         super.highlightDropZone(x, y, area);
     }
 
@@ -101,7 +101,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         let stack;
 
         if (contentItem.isComponent) {
-            stack = this.layoutManager.createContentItem({
+            stack = this.dockingLayoutService.createContentItem({
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
@@ -118,7 +118,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
             const insertBefore = area.side[1] === "2";
             const column: AbstractContentItemComponent = this.contentItems[0];
             if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
-                const rowOrColumn = this.layoutManager.createContentItem({type}, this);
+                const rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
                 this.replaceChild(column, rowOrColumn);
                 rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
                 rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
@@ -135,7 +135,7 @@ export class RootComponent extends AbstractContentItemComponent implements After
         }
     }
 
-     getArea(element?: JQuery): Area {
+    getArea(element?: JQuery): Area {
         element = element || this.element;
 
         const offset = element.offset(),

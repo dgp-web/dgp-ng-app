@@ -24,8 +24,8 @@ export class ItemContainerComponent extends AbstractContentItemComponent {
                 readonly config: ItemConfiguration,
                 @Optional()
                 readonly parent: AbstractContentItemComponent,
-                readonly layoutManager: DockingLayoutService) {
-        super(layoutManager, config, parent);
+                readonly dockingLayoutService: DockingLayoutService) {
+        super(dockingLayoutService, config, parent);
 
         this._element = $(
             dockingLayoutViewMap.itemContainer.render()

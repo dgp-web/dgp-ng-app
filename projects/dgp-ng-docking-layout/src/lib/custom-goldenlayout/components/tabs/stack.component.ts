@@ -93,7 +93,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
     }
 
     setSize() {
-        const headerSize = this._header.show ? this.layoutManager.config.dimensions.headerHeight : 0;
+        const headerSize = this._header.show ? this.dockingLayoutService.config.dimensions.headerHeight : 0;
         const contentWidth = this.element.width() - (this._sided ? headerSize : 0);
         const contentHeight = this.element.height() - (!this._sided ? headerSize : 0);
 
@@ -144,7 +144,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         this.headerComponent.setActiveContentItem(contentItem);
         contentItem.show();
         this.emit(activeContentItemChangedEventType, contentItem);
-        this.layoutManager.emit(activeContentItemChangedEventType, contentItem);
+        this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
         this.emitBubblingEvent(stateChangedEventType);
 
         if ((this.config as StackConfiguration).onSelectedItemChange) {
@@ -245,7 +245,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
          * The content item can be either a component or a stack. If it is a component, wrap it into a stack
          */
         if (contentItem.isComponent) {
-            stack = this.layoutManager.createContentItem({
+            stack = this.dockingLayoutService.createContentItem({
                 type: "stack",
                 header: contentItem.config.header || {}
             }, this);
@@ -270,7 +270,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
              */
         } else {
             type = isVertical ? "column" : "row";
-            rowOrColumn = this.layoutManager.createContentItem({type}, this);
+            rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
             this.parent.replaceChild(this, rowOrColumn);
 
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
@@ -436,7 +436,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
         if (tabsLength === 0) {
             headerOffset = this.headerComponent.element.offset();
 
-            this.layoutManager.dropTargetIndicator.highlightArea({
+            this.dockingLayoutService.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
                 x2: headerOffset.left + 100,
                 y1: headerOffset.top + this.headerComponent.element.height() - 20,
@@ -473,35 +473,35 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
         if (x < halfX) {
             this.dropIndex = i;
-            tabElement.before(this.layoutManager.tabDropPlaceholder.$element);
+            tabElement.before(this.dockingLayoutService.tabDropPlaceholder.$element);
         } else {
             this.dropIndex = Math.min(i + 1, tabsLength);
-            tabElement.after(this.layoutManager.tabDropPlaceholder.$element);
+            tabElement.after(this.dockingLayoutService.tabDropPlaceholder.$element);
         }
 
 
         if (this._sided) {
-            placeHolderTop = this.layoutManager.tabDropPlaceholder.offset().top;
-            this.layoutManager.dropTargetIndicator.highlightArea({
+            placeHolderTop = this.dockingLayoutService.tabDropPlaceholder.offset().top;
+            this.dockingLayoutService.dropTargetIndicator.highlightArea({
                 x1: tabTop,
                 x2: tabTop + tabElement.innerHeight(),
                 y1: placeHolderTop,
-                y2: placeHolderTop + this.layoutManager.tabDropPlaceholder.width()
+                y2: placeHolderTop + this.dockingLayoutService.tabDropPlaceholder.width()
             });
             return;
         }
-        placeHolderLeft = this.layoutManager.tabDropPlaceholder.offset().left;
+        placeHolderLeft = this.dockingLayoutService.tabDropPlaceholder.offset().left;
 
-        this.layoutManager.dropTargetIndicator.highlightArea({
+        this.dockingLayoutService.dropTargetIndicator.highlightArea({
             x1: placeHolderLeft,
-            x2: placeHolderLeft + this.layoutManager.tabDropPlaceholder.width(),
+            x2: placeHolderLeft + this.dockingLayoutService.tabDropPlaceholder.width(),
             y1: tabTop,
             y2: tabTop + tabElement.innerHeight()
         });
     }
 
     private resetHeaderDropZone() {
-        this.layoutManager.tabDropPlaceholder.remove();
+        this.dockingLayoutService.tabDropPlaceholder.remove();
     }
 
     private setupHeaderPosition() {
@@ -522,7 +522,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
     private highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
         const highlightArea = this.contentAreaDimensions[segment].highlightArea;
-        this.layoutManager.dropTargetIndicator.highlightArea(highlightArea);
+        this.dockingLayoutService.dropTargetIndicator.highlightArea(highlightArea);
         this.dropSegment = segment;
     }
 

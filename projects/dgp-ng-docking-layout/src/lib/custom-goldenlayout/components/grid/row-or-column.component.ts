@@ -25,11 +25,11 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
 
     constructor(
         isColumn: boolean,
-        public layoutManager: DockingLayoutService,
+        public dockingLayoutService: DockingLayoutService,
         config: ItemConfiguration,
         parent: AbstractContentItemComponent
     ) {
-        super(layoutManager, config, parent);
+        super(dockingLayoutService, config, parent);
 
         this.isRow = !isColumn;
         this.isColumn = isColumn;
@@ -38,8 +38,8 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             dockingLayoutViewMap.rowOrColumn.render({isColumn})
         );
         this.childElementContainer = this.element;
-        this.splitterSize = layoutManager.config.dimensions.borderWidth;
-        this.splitterGrabSize = layoutManager.config.dimensions.borderGrabWidth;
+        this.splitterSize = dockingLayoutService.config.dimensions.borderWidth;
+        this.splitterGrabSize = dockingLayoutService.config.dimensions.borderGrabWidth;
         this._isColumn = isColumn;
         this._dimension = isColumn ? "height" : "width";
     }
@@ -329,7 +329,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * @returns {}
      */
     private respectMinItemWidth() {
-        const minItemWidth = this.layoutManager.config.dimensions ? (this.layoutManager.config.dimensions.minItemWidth || 0) : 0;
+        const minItemWidth = this.dockingLayoutService.config.dimensions ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0) : 0;
         let sizeData = null;
         const entriesOverMin = [];
         let totalOverMin = 0;
@@ -410,7 +410,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * What it doesn't do though is to append the splitter to the DOM
      */
     private createSplitter(index: number): SplitterComponent {
-        const vcRef = this.layoutManager.getViewContainerRef();
+        const vcRef = this.dockingLayoutService.getViewContainerRef();
         const splitterComponentRef = vcRef.createComponent(SplitterComponent);
         const splitter = splitterComponentRef.instance;
 
@@ -487,7 +487,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     private onSplitterDragStart(splitter: SplitterComponent): void {
 
         const items = this.getItemsForSplitter(splitter),
-            minSize = this.layoutManager.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
+            minSize = this.dockingLayoutService.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
 
         const beforeMinDim = this._getMinimumDimensions(items.before.config.content);
         const beforeMinSize = this._isColumn ? beforeMinDim.vertical : beforeMinDim.horizontal;

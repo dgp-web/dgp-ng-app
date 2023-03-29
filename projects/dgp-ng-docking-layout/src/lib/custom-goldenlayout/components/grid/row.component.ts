@@ -12,13 +12,13 @@ import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../typ
 export class RowComponent extends RowOrColumnComponentBase {
 
     constructor(
-        public layoutManager: DockingLayoutService,
+        public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
             config: ItemConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
             parent: AbstractContentItemComponent
     ) {
-        super(false, layoutManager, config, parent);
+        super(false, dockingLayoutService, config, parent);
     }
 
 }

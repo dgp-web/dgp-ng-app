@@ -20,13 +20,6 @@ export const dockingLayoutViewMap = {
             `;
         }
     },
-    dropTargetIndicator: {
-        render() {
-            return `
-                <div class="dgp-drop-target-indicator"><div class="lm_inner"></div></div>
-            `;
-        }
-    },
     header: {
         render() {
             return `

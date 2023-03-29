@@ -12,13 +12,13 @@ import { DockingLayoutService } from "../../docking-layout.service";
 export class ColumnComponent extends RowOrColumnComponentBase {
 
     constructor(
-        public layoutManager: DockingLayoutService,
+        public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
             config: ItemConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
             parent: AbstractContentItemComponent
     ) {
-        super(true, layoutManager, config, parent);
+        super(true, dockingLayoutService, config, parent);
     }
 
 }

@@ -27,7 +27,7 @@ export class DockingLayoutService extends EventEmitter {
 
     selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
-    container: JQuery;
+    container: JQuery; // TODO: Could / should be AbstractContentItemComponent according to RootComponent
     dropTargetIndicator: DropTargetIndicatorComponent;
     tabDropPlaceholder: TabDropPlaceholderComponent;
 
@@ -83,7 +83,9 @@ export class DockingLayoutService extends EventEmitter {
     getComponent = x => this.componentRegistry.getComponent(x);
 
     init() {
-        this.dropTargetIndicator = this.viewContainerRef.createComponent(DropTargetIndicatorComponent).instance;
+        const dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
+        dropTargetIndicatorComponentRef.changeDetectorRef.markForCheck();
+        this.dropTargetIndicator = dropTargetIndicatorComponentRef.instance;
         this.updateSize();
         this.createRootComponent(this.config);
     }
@@ -158,7 +160,9 @@ export class DockingLayoutService extends EventEmitter {
             }],
             parent: this.injector
         });
-        this.root = this.viewContainerRef.createComponent(RootComponent, {injector}).instance;
+        const rootComponentRef = this.viewContainerRef.createComponent(RootComponent, {injector});
+        rootComponentRef.changeDetectorRef.markForCheck();
+        this.root = rootComponentRef.instance;
     }
 
     getArea(x: number, y: number): Area {

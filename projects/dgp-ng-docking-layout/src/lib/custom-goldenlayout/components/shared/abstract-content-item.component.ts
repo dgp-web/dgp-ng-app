@@ -44,7 +44,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     throttledEvents = [stateChangedEventType];
 
     protected constructor(
-        readonly layoutManager: DockingLayoutService,
+        readonly dockingLayoutService: DockingLayoutService,
         readonly config: ItemConfiguration,
         public parent: AbstractContentItemComponent
     ) {
@@ -187,15 +187,15 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     select() {
-        if (this.layoutManager.selectedItem !== this) {
-            this.layoutManager.selectItem(this, true);
+        if (this.dockingLayoutService.selectedItem !== this) {
+            this.dockingLayoutService.selectItem(this, true);
             this.element.addClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
     }
 
     deselect() {
-        if (this.layoutManager.selectedItem === this) {
-            this.layoutManager.selectedItem = null;
+        if (this.dockingLayoutService.selectedItem === this) {
+            this.dockingLayoutService.selectedItem = null;
             this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
         }
     }
@@ -209,19 +209,19 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     }
 
     highlightDropZone(x: number, y: number, area: AreaSides) {
-        this.layoutManager.dropTargetIndicator.highlightArea(area);
+        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
     }
 
     hide() {
         this.callOnActiveComponents("hide");
         this.element.hide();
-        this.layoutManager.updateSize();
+        this.dockingLayoutService.updateSize();
     }
 
     show() {
         this.callOnActiveComponents("show");
         this.element.show();
-        this.layoutManager.updateSize();
+        this.dockingLayoutService.updateSize();
     }
 
     private callOnActiveComponents(methodName: string): void {
@@ -275,7 +275,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      * PLEASE NOTE, please see addChild for adding contentItems add runtime
      */
     private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.layoutManager.createContentItem(x, this));
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
     /**
@@ -308,7 +308,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      */
     private scheduleEventPropagationToLayoutManager(name: string, event) {
         if (new LayoutManagerUtilities().indexOf(name, this.throttledEvents) === -1) {
-            this.layoutManager.emit(name, event.origin);
+            this.dockingLayoutService.emit(name, event.origin);
         } else {
             if (this.pendingEventPropagations[name] !== true) {
                 this.pendingEventPropagations[name] = true;
@@ -323,7 +323,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
      */
     private propagateEventToLayoutManager(name: string, event) {
         this.pendingEventPropagations[name] = false;
-        this.layoutManager.emit(name, event);
+        this.dockingLayoutService.emit(name, event);
     }
 }
 
