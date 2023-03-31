@@ -1,39 +1,49 @@
-import { ChangeDetectionStrategy, Component, Inject, Optional } from "@angular/core";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, Optional } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration } from "../../types";
+import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../types";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { hideEventType } from "../../constants/event-types/hide-event-type.constant";
 import { showEventType } from "../../constants/event-types/show-event-type.constant";
 import { shownEventType } from "../../constants/event-types/shown-event-type.constant";
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
+import { dockingLayoutViewMap } from "../../../docking-layout/views";
 
 @Component({
     selector: "dgp-item-container",
-    template: ``,
+    template: `
+        <!-- <div class="lm_item_container">
+             <div class="lm_content"></div>
+         </div>-->
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemContainerComponent extends AbstractContentItemComponent {
+export class ItemContainerComponent extends AbstractContentItemComponent implements AfterViewInit {
 
     width: number;
     height: number;
-    _element: JQuery<HTMLElement>;
-    private readonly _contentElement: JQuery<HTMLElement>;
+    // _element = $(this.elementRef.nativeElement);
+    _element: JQuery;
+    private _contentElement: JQuery<HTMLElement>;
 
     constructor(@Inject(ITEM_CONFIG)
                 readonly config: ItemConfiguration,
                 @Optional()
+                @Inject(PARENT_ITEM_COMPONENT)
                 readonly parent: AbstractContentItemComponent,
-                readonly dockingLayoutService: DockingLayoutService) {
+                readonly dockingLayoutService: DockingLayoutService,
+                readonly elementRef: ElementRef<HTMLElement>
+    ) {
         super(dockingLayoutService, config, parent);
-
-        this._element = $(
+        this._element = $(this.elementRef.nativeElement).append(
             dockingLayoutViewMap.itemContainer.render()
         );
-
         this._contentElement = this._element.find(".lm_content");
     }
 
+    ngAfterViewInit(): void {
+    }
+
+    // noinspection JSUnusedGlobalSymbols
     /**
      * Get the inner DOM element the container's content
      * is intended to live in
