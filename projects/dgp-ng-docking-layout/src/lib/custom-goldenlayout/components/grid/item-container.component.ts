@@ -21,7 +21,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
 
     width: number;
     height: number;
-    // _element = $(this.elementRef.nativeElement);
     _element: JQuery;
     private _contentElement: JQuery<HTMLElement>;
 

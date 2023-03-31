@@ -4,11 +4,6 @@ import { ChangeDetectionStrategy, Component, forwardRef, Inject, Injector } from
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 
-/**
- * @param {[type]} layoutManager [description]
- * @param {[type]} config      [description]
- * @param {[type]} parent        [description]
- */
 @Component({
     selector: "dgp-gl-component",
     template: ``,
@@ -16,9 +11,9 @@ import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 })
 export class GlComponent extends AbstractContentItemComponent {
     componentName: any;
-    public container: any;
+    public container: ItemContainerComponent;
     public instance: any;
-    public element: any;
+    public element: JQuery<HTMLElement>;
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
@@ -89,23 +84,9 @@ export class GlComponent extends AbstractContentItemComponent {
         super.show();
     }
 
-    shown() {
-        this.container.shown();
-        // super.shown();
-    }
-
     destroy() {
         this.container.emit("destroy", this);
         super.destroy();
-    }
-
-    /**
-     * Dragging onto a component directly is not an option
-     *
-     * @returns null
-     */
-    getArea() {
-        return null;
     }
 
 }
