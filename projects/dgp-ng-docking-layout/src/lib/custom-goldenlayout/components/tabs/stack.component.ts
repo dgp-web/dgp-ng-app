@@ -10,13 +10,12 @@ import {
     PARENT_ITEM_COMPONENT,
     StackConfiguration
 } from "../../types";
-import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
-import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
 import { DropSegment } from "../../models/drop-segment.model";
 import { ContentAreaDimensions } from "../../models/content-area-dimensions.model";
 import { lmLeftClassName } from "../../constants/class-names/lm-left-class-name.constant";
@@ -29,12 +28,6 @@ import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
-import { goldenLayoutEngineConfig } from "../../constants/golden-layout-engine-config.constant";
-import { ALL_EVENT } from "../../constants/event-types/all-event.constant";
-import { itemCreatedEventType } from "../../constants/event-types/item-created-event-type.constant";
-import { beforeItemDestroyedEventType } from "../../constants/event-types/before-item-destroyed-event-type.constant";
-import { itemDestroyedEventType } from "../../constants/event-types/item-destroyed-event-type.constant";
-import { createItemTypeCreatedEventType } from "../../functions/create-item-type-created-event-type.function";
 import { RootComponent } from "../root.component";
 
 @Directive()
@@ -50,9 +43,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
     element: JQuery;
     childElementContainer: JQuery;
 
-    pendingEventPropagations = {};
-    throttledEvents = [stateChangedEventType];
-
     isInitialised = false;
 
     protected constructor(
@@ -63,7 +53,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         super();
 
         this.config = {...itemDefaultConfig, ...config};
-        this.on(ALL_EVENT, this.propagateEvent, this);
         if (config.content) this.createContentItems(config);
     }
 
@@ -122,32 +111,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         this.parent.removeChild(this as any);
     }
 
-    select() {
-        if (this.dockingLayoutService.selectedItem !== this as any) {
-            this.dockingLayoutService.selectItem(this as any, true);
-            this.element.addClass(goldenLayoutEngineConfig.cssClasses.selected);
-        }
-    }
-
-    deselect() {
-        if (this.dockingLayoutService.selectedItem === this as any) {
-            this.dockingLayoutService.selectedItem = null;
-            this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
-        }
-    }
-
-    /****************************************
-     * PACKAGE PRIVATE
-     ****************************************/
-    //noinspection TsLint
-    _$setParent(parent: AbstractContentItemComponent) {
-        this.parent = parent;
-    }
-
-    highlightDropZone(x: number, y: number, area: AreaSides) {
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
-    }
-
     hide() {
         this.callOnActiveComponents("hide");
         this.element.hide();
@@ -166,10 +129,8 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
 
     destroy() {
         this.unsubscribe();
-        this.emitBubblingEvent(beforeItemDestroyedEventType);
         this.callDownwards("destroy", [], true, true);
         this.element.remove();
-        this.emitBubblingEvent(itemDestroyedEventType);
     }
 
     init(): void {
@@ -178,47 +139,12 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         }
 
         this.isInitialised = true;
-        this.emitBubblingEvent(itemCreatedEventType);
-        this.emitBubblingEvent(createItemTypeCreatedEventType(this.config.type));
-    }
-
-    emitBubblingEvent(name: string) {
-        const event = new BubblingEvent(name, this);
-        this.emit(name, event);
     }
 
     private createContentItems(config: ItemConfiguration) {
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
     }
 
-    private propagateEvent(name: string, event: BubblingEvent) {
-        if (event instanceof BubblingEvent &&
-            event.isPropagationStopped === false &&
-            this.isInitialised === true) {
-
-            if (this.parent) {
-                (this.parent as AbstractContentItemComponent).emit?.apply(this.parent, Array.prototype.slice.call(arguments, 0));
-            } else {
-                this.scheduleEventPropagationToLayoutManager(name, event);
-            }
-        }
-    }
-
-    private scheduleEventPropagationToLayoutManager(name: string, event) {
-        if (new LayoutManagerUtilities().indexOf(name, this.throttledEvents) === -1) {
-            this.dockingLayoutService.emit(name, event.origin);
-        } else {
-            if (this.pendingEventPropagations[name] !== true) {
-                this.pendingEventPropagations[name] = true;
-                new LayoutManagerUtilities().animFrame(() => this.propagateEventToLayoutManager(name, event));
-            }
-        }
-    }
-
-    private propagateEventToLayoutManager(name: string, event) {
-        this.pendingEventPropagations[name] = false;
-        this.dockingLayoutService.emit(name, event);
-    }
 }
 
 
@@ -304,7 +230,6 @@ export class StackComponent extends StackAbstractContentItemComponent implements
                 .height(contentHeight);
         }
         this.emit(resizeEventType);
-        this.emitBubblingEvent(stateChangedEventType);
     }
 
     init() {
@@ -344,7 +269,6 @@ export class StackComponent extends StackAbstractContentItemComponent implements
         contentItem.show();
         this.emit(activeContentItemChangedEventType, contentItem);
         this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
-        this.emitBubblingEvent(stateChangedEventType);
 
         if ((this.config as StackConfiguration).onSelectedItemChange) {
             (this.config as StackConfiguration).onSelectedItemChange(contentItem.config.id);
@@ -361,7 +285,6 @@ export class StackComponent extends StackAbstractContentItemComponent implements
         this.headerComponent.createTab(contentItem, index);
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
-        this.emitBubblingEvent(stateChangedEventType);
     }
 
     removeChild(contentItem, keepChild) {
@@ -375,8 +298,6 @@ export class StackComponent extends StackAbstractContentItemComponent implements
                 this.activeContentItem = null;
             }
         }
-
-        this.emitBubblingEvent(stateChangedEventType);
     }
 
     destroy() {
@@ -388,24 +309,6 @@ export class StackComponent extends StackAbstractContentItemComponent implements
         }
     }
 
-
-    /**
-     * Ok, this one is going to be the tricky one: The user has dropped {contentItem} onto this stack.
-     *
-     * It was dropped on either the stacks header or the top, right, bottom or left bit of the content area
-     * (which one of those is stored in this.dropSegment). Now, if the user has dropped on the header the case
-     * is relatively clear: We add the item to the existing stack... job done (might be good to have
-     * tab reordering at some point, but let's not sweat it right now)
-     *
-     * If the item was dropped on the content part things are a bit more complicated. If it was dropped on either the
-     * top or bottom region we need to create a new column and place the items accordingly.
-     * Unless, of course if the stack is already within a column... in which case we want
-     * to add the newly created item to the existing column...
-     * either prepend or append it, depending on whether its top or bottom.
-     *
-     * Same thing for rows and left / right drop segments... so in total there are 9 things that can potentially happen
-     * (left, top, right, bottom) * is child of the right parent (row, column) + header drop
-     */
     _$onDrop(contentItem: GlComponent) {
 
         /*

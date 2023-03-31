@@ -5,7 +5,6 @@ import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { widthOrHeight } from "../../functions/width-or-height.function";
-import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
 import { tabsClassName } from "../../constants/class-names/tabs-class-name.constant";
 import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
@@ -53,10 +52,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
         if (this.layoutManager.config.settings.selectionEnabled === true) {
             this.element.addClass(selectableClassName);
-
-            this.rawElement.addEventListener("click", (x) => this.onHeaderClick(x), {
-                passive: true
-            });
         }
 
         this.parent.on(resizeEventType, this.updateTabSizes, this);
@@ -173,7 +168,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         }
 
         this.updateTabSizes();
-        this.parent.emitBubblingEvent(stateChangedEventType);
     }
 
     destroy(): void {
@@ -189,15 +183,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
      */
     _hideAdditionalTabsDropdown(): void {
         this.tabDropdownContainer.hide();
-    }
-
-    /**
-     * Invoked when the header's background is clicked (not it's tabs or controls)
-     */
-    private onHeaderClick(event: Event): void {
-        if (event.target === this.element[0]) {
-            this.parent.select();
-        }
     }
 
     /**
