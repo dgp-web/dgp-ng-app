@@ -51,17 +51,15 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
     _sided: boolean;
     _header: HeaderConfig;
 
-    contentItems: AbstractContentItemComponent[] = [];
-
-    isInitialised = false;
-    isRoot = false;
-    isStack = false;
+    contentItems: GlComponent[] = [];
 
     element: JQuery;
     childElementContainer: JQuery;
 
     pendingEventPropagations = {};
     throttledEvents = [stateChangedEventType];
+
+    isInitialised = false;
 
     protected constructor(
         readonly dockingLayoutService: DockingLayoutService,
@@ -96,7 +94,7 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
     /**
      * Removes a child node (and its children) from the tree
      */
-    removeChild(contentItem: AbstractContentItemComponent, keepChild?: boolean) {
+    removeChild(contentItem: GlComponent, keepChild?: boolean) {
 
         /*
          * Get the position of the item that's to be removed within all content items this node contains
@@ -129,7 +127,7 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
             /**
              * If this was the last content item, remove this node as well
              */
-        } else if (!(this.isRoot) && this.config.isClosable === true) {
+        } else if (this.config.isClosable === true) {
             this.parent.removeChild(this as any);
         }
     }
@@ -139,7 +137,7 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
      * The responsibility for the actual DOM manipulations lies
      * with the concrete item
      */
-    addChild(contentItem: AbstractContentItemComponent, index?: number, foo?: boolean) {
+    addChild(contentItem: GlComponent, index?: number, foo?: boolean) {
         if (index === undefined) {
             index = this.contentItems.length;
         }
@@ -158,50 +156,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * Replaces oldChild with newChild. this used to use jQuery.replaceWith... which for
-     * some reason removes all event listeners, so isn't really an option.
-     */
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, destroyOldChild?: boolean) {
-
-        const index = this.contentItems.indexOf(oldChild);
-        const parentNode = oldChild.element[0].parentNode;
-
-        parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
-
-        /*
-         * Optionally destroy the old content item
-         */
-        if (destroyOldChild === true) {
-            oldChild.parent = null;
-            oldChild.destroy();
-        }
-
-        /*
-         * Wire the new contentItem into the tree
-         */
-        this.contentItems[index] = newChild;
-        newChild.parent = this as any;
-
-        /*
-         * Update tab reference
-         */
-        if (this.isStack) {
-            (this as any).header.tabs[index].contentItem = newChild;
-        }
-
-        // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
-        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            newChild.init();
-        }
-
-        this.callDownwards("setSize");
-    }
-
-    /**
-     * Convenience method.
-     * Shorthand for this.parent.removeChild( this )
-     */
     remove() {
         this.parent.removeChild(this as any);
     }
@@ -245,10 +199,7 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
     }
 
     private callOnActiveComponents(methodName: string): void {
-        this.contentItems.filter(x => x.config.type === "stack")
-            .map(x => x as unknown as StackComponent)
-            .map(stack => stack.getActiveContentItem())
-            .forEach(component => component[methodName]());
+        (this as any).getActiveContentItem()[methodName]();
     }
 
     /**
@@ -295,7 +246,7 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
      * PLEASE NOTE, please see addChild for adding contentItems add runtime
      */
     private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any));
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
     }
 
     /**
@@ -313,7 +264,7 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
              * propagate the bubbling event from the top level of the substree directly
              * to the layoutManager
              */
-            if (this.isRoot === false && this.parent) {
+            if (this.parent) {
                 (this.parent as AbstractContentItemComponent).emit?.apply(this.parent, Array.prototype.slice.call(arguments, 0));
             } else {
                 this.scheduleEventPropagationToLayoutManager(name, event);
@@ -481,7 +432,7 @@ export class StackComponent extends StackAbstractContentItemComponent implements
         return this.headerComponent.activeContentItem;
     }
 
-    addChild(contentItem: AbstractContentItemComponent, index?) {
+    addChild(contentItem: GlComponent, index?) {
         super.addChild(contentItem, index);
         this.childElementContainer.append(contentItem.element);
         this.headerComponent.createTab(contentItem, index);
@@ -532,7 +483,7 @@ export class StackComponent extends StackAbstractContentItemComponent implements
      * Same thing for rows and left / right drop segments... so in total there are 9 things that can potentially happen
      * (left, top, right, bottom) * is child of the right parent (row, column) + header drop
      */
-    _$onDrop(contentItem: AbstractContentItemComponent) {
+    _$onDrop(contentItem: GlComponent) {
 
         /*
          * The item was dropped on the header area. Just add it as a child of this stack and
