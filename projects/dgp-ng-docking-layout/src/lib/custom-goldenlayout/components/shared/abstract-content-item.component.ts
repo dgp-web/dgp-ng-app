@@ -180,20 +180,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.parent.removeChild(this);
     }
 
-    select() {
-        if (this.dockingLayoutService.selectedItem !== this) {
-            this.dockingLayoutService.selectItem(this, true);
-            this.element.addClass(goldenLayoutEngineConfig.cssClasses.selected);
-        }
-    }
-
-    deselect() {
-        if (this.dockingLayoutService.selectedItem === this) {
-            this.dockingLayoutService.selectedItem = null;
-            this.element.removeClass(goldenLayoutEngineConfig.cssClasses.selected);
-        }
-    }
-
     /****************************************
      * PACKAGE PRIVATE
      ****************************************/

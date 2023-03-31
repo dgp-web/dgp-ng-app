@@ -16,8 +16,6 @@ import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import { InitializedEvent } from "./models/events/initialized-event.model";
-import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
-import { notNullOrUndefined } from "dgp-ng-app";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
@@ -34,7 +32,6 @@ import { GlComponent } from "./components/component.component";
 @Injectable()
 export class DockingLayoutService extends EventEmitter {
 
-    selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery; // TODO: Could / should be AbstractContentItemComponent according to RootComponent
     dropTargetIndicator: DropTargetIndicatorComponent;
@@ -138,19 +135,6 @@ export class DockingLayoutService extends EventEmitter {
         if (this.isInitialised === false) return;
         this.root.callDownwards("destroy", [], true);
         this.eventHub.destroy();
-    }
-
-    selectItem(item: AbstractContentItemComponent, silent: boolean) {
-
-        if (item === this.selectedItem) return;
-
-        if (notNullOrUndefined(this.selectedItem)) this.selectedItem.deselect();
-
-        if (item && silent !== true) item.select();
-
-        this.selectedItem = item;
-
-        this.emit<SelectionChangedEvent>("selectionChanged", item);
     }
 
     private createRootComponent(config: LayoutConfiguration): void {
