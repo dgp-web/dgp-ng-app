@@ -1,12 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, Injector, Optional } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, Optional } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../types";
+import { ComponentConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../../types";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { hideEventType } from "../../constants/event-types/hide-event-type.constant";
 import { showEventType } from "../../constants/event-types/show-event-type.constant";
 import { shownEventType } from "../../constants/event-types/shown-event-type.constant";
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { ComponentDefinition } from "../../utilities/models";
 
 @Component({
     selector: "dgp-item-container",
@@ -25,7 +26,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
     private _contentElement: JQuery<HTMLElement>;
 
     constructor(@Inject(ITEM_CONFIG)
-                readonly config: any,
+                readonly config: ComponentConfiguration,
                 @Optional()
                 @Inject(PARENT_ITEM_COMPONENT)
                 readonly parent: AbstractContentItemComponent,
@@ -39,17 +40,16 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
         this._contentElement = this._element.find(".lm_content");
 
 
-        let ComponentConstructor = dockingLayoutService.getComponent(this.config.id),
-            componentConfig = $.extend(true, {}, this.config.componentState || {});
+        let ComponentConstructor = dockingLayoutService.getComponent(this.config.id);
+        const componentConfig = $.extend(true, {}, this.config.componentState || {}) as ComponentDefinition;
 
         componentConfig.componentName = this.config.id;
-        // this.componentName = this.config.id;
 
-        if (this.config.label === "") {
-            this.config.label = this.config.id;
+        if (this.config.title === "") {
+            this.config.title = this.config.id;
         }
 
-        const component = ComponentConstructor(this, componentConfig);
+        ComponentConstructor(this, componentConfig);
 
     }
 
