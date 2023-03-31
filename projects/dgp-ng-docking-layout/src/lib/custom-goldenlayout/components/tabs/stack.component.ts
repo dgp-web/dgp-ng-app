@@ -37,12 +37,6 @@ import { itemDestroyedEventType } from "../../constants/event-types/item-destroy
 import { createItemTypeCreatedEventType } from "../../functions/create-item-type-created-event-type.function";
 import { RootComponent } from "../root.component";
 
-/**
- * this is the baseclass that all content items inherit from.
- * Most methods provide a subset of what the sub-classes do.
- *
- * It also provides a number of functions for tree traversal
- */
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export abstract class StackAbstractContentItemComponent extends EventEmitter {
@@ -73,9 +67,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         if (config.content) this.createContentItems(config);
     }
 
-    /**
-     * Calls a method recursively downwards on the tree
-     */
     callDownwards(functionName: string,
                   functionArguments?: any[],
                   bottomUp?: boolean,
@@ -91,52 +82,23 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * Removes a child node (and its children) from the tree
-     */
     removeChild(contentItem: GlComponent, keepChild?: boolean) {
-
-        /*
-         * Get the position of the item that's to be removed within all content items this node contains
-         */
         const index = this.contentItems.indexOf(contentItem);
 
-        /**
-         * Call .destroy on the content item. this also calls .destroy on all its children
-         */
         if (keepChild !== true) {
             this.contentItems[index].destroy();
         }
 
-        /**
-         * Remove the content item from this nodes array of children
-         */
         this.contentItems.splice(index, 1);
-
-        /**
-         * Remove the item from the configuration
-         */
         this.config.content.splice(index, 1);
 
-        /**
-         * If this node still contains other content items, adjust their size
-         */
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
-
-            /**
-             * If this was the last content item, remove this node as well
-             */
         } else if (this.config.isClosable === true) {
             this.parent.removeChild(this as any);
         }
     }
 
-    /**
-     * Sets up the tree structure for the newly added child
-     * The responsibility for the actual DOM manipulations lies
-     * with the concrete item
-     */
     addChild(contentItem: GlComponent, index?: number, foo?: boolean) {
         if (index === undefined) {
             index = this.contentItems.length;
@@ -202,9 +164,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         (this as any).getActiveContentItem()[methodName]();
     }
 
-    /**
-     * Destroys this item ands its children
-     */
     destroy() {
         this.unsubscribe();
         this.emitBubblingEvent(beforeItemDestroyedEventType);
@@ -213,15 +172,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         this.emitBubblingEvent(itemDestroyedEventType);
     }
 
-    /**
-     * The tree of content items is created in two steps: First all content items are instantiated,
-     * then init is called recursively from top to bottem. this is the basic init function,
-     * it can be used, extended or overwritten by the content items
-     *
-     * Its behaviour depends on the content item
-     *
-     * @package private
-     */
     init(): void {
         for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
@@ -232,38 +182,20 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         this.emitBubblingEvent(createItemTypeCreatedEventType(this.config.type));
     }
 
-    /**
-     * Emit an event that bubbles up the item tree.
-     */
     emitBubblingEvent(name: string) {
         const event = new BubblingEvent(name, this);
         this.emit(name, event);
     }
 
-    //noinspection TsLint
-    /**
-     * Private method, creates all content items for this node at initialisation time
-     * PLEASE NOTE, please see addChild for adding contentItems add runtime
-     */
     private createContentItems(config: ItemConfiguration) {
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
     }
 
-    /**
-     * Called for every event on the item tree. Decides whether the event is a bubbling
-     * event and propagates it to its parent
-     */
     private propagateEvent(name: string, event: BubblingEvent) {
         if (event instanceof BubblingEvent &&
             event.isPropagationStopped === false &&
             this.isInitialised === true) {
 
-            /**
-             * In some cases (e.g. if an element is created from a DragSource) it
-             * doesn't have a parent and is not below root. If that's the case
-             * propagate the bubbling event from the top level of the substree directly
-             * to the layoutManager
-             */
             if (this.parent) {
                 (this.parent as AbstractContentItemComponent).emit?.apply(this.parent, Array.prototype.slice.call(arguments, 0));
             } else {
@@ -272,11 +204,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * All raw events bubble up to the root element. Some events that
-     * are propagated to - and emitted by - the layoutManager however are
-     * only string-based, batched and sanitized to make them more usable
-     */
     private scheduleEventPropagationToLayoutManager(name: string, event) {
         if (new LayoutManagerUtilities().indexOf(name, this.throttledEvents) === -1) {
             this.dockingLayoutService.emit(name, event.origin);
@@ -286,12 +213,8 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
                 new LayoutManagerUtilities().animFrame(() => this.propagateEventToLayoutManager(name, event));
             }
         }
-
     }
 
-    /**
-     * Callback for events scheduled by _scheduleEventPropagationToLayoutManager
-     */
     private propagateEventToLayoutManager(name: string, event) {
         this.pendingEventPropagations[name] = false;
         this.dockingLayoutService.emit(name, event);
