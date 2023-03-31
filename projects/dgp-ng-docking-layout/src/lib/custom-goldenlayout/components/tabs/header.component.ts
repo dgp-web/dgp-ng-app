@@ -1,6 +1,5 @@
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { EventEmitter } from "../../utilities";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { TabComponent } from "./tab.component";
 import { StackComponent } from "./stack.component";
 import { DockingLayoutService } from "../../docking-layout.service";
@@ -14,6 +13,7 @@ import { AfterViewInit, Component, ComponentRef, ElementRef, Inject } from "@ang
 import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
+import { GlComponent } from "../component.component";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -68,7 +68,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * Creates a new tab and associates it with a contentItem
      */
-    createTab(contentItem: AbstractContentItemComponent, index?: number): void {
+    createTab(contentItem: GlComponent, index?: number): void {
         /**
          * If there's already a tab relating to the content item, don't do anything
          */
@@ -127,7 +127,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * Finds a tab based on the contentItem its associated with and removes it.
      */
-    removeTab(contentItem: AbstractContentItemComponent): void {
+    removeTab(contentItem: GlComponent): void {
         for (let i = 0; i < this.tabs.length; i++) {
             if (this.tabs[i].tabId === contentItem.config.id) {
                 this.tabRefs[i].destroy();
@@ -141,7 +141,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * The programmatical equivalent of clicking a Tab.
      */
-    setActiveContentItem(contentItem: AbstractContentItemComponent) {
+    setActiveContentItem(contentItem: GlComponent) {
         for (let i = 0; i < this.tabs.length; i++) {
             let isActive = this.tabs[i].tabId === contentItem.config.id;
             this.tabs[i].isActive = isActive;

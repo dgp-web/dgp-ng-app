@@ -17,11 +17,12 @@ import { AreaSides } from "../models/area.model";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlComponent extends EventEmitter {
+
     private container: ItemContainerComponent;
     isComponent = true;
     isInitialised = false;
     element: JQuery;
-    
+
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
         public dockingLayoutService: DockingLayoutService,

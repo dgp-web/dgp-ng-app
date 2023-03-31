@@ -1,15 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Injector } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import {
-    HeaderConfig,
-    ITEM_CONFIG,
-    ItemConfiguration,
-    itemDefaultConfig,
-    ItemType,
-    PARENT_ITEM_COMPONENT,
-    StackConfiguration
-} from "../../types";
+import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
 import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
@@ -48,7 +40,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
 
     isInitialised = false;
 
-    private activeContentItem: AbstractContentItemComponent = null;
+    private activeContentItem: GlComponent = null;
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
@@ -177,8 +169,8 @@ export class StackComponent extends EventEmitter implements DropTarget {
         this.getActiveContentItem()[methodName]();
     }
 
-    private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as any);
+    private createContentItems(config: StackConfiguration) {
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
     setSize() {
@@ -228,7 +220,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
 
     }
 
-    setActiveContentItem(contentItem: AbstractContentItemComponent) {
+    setActiveContentItem(contentItem: GlComponent) {
         if (this.activeContentItem !== null) {
             this.activeContentItem.hide();
         }
@@ -239,8 +231,8 @@ export class StackComponent extends EventEmitter implements DropTarget {
         this.emit(activeContentItemChangedEventType, contentItem);
         this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
 
-        if ((this.config as StackConfiguration).onSelectedItemChange) {
-            (this.config as StackConfiguration).onSelectedItemChange(contentItem.config.id);
+        if (this.config.onSelectedItemChange) {
+            this.config.onSelectedItemChange(contentItem.config.id);
         }
     }
 
@@ -271,7 +263,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         this.callDownwards("setSize");
     }
 
-    removeChild(contentItem, keepChild) {
+    removeChild(contentItem: GlComponent, keepChild) {
         let index = this.contentItems.indexOf(contentItem);
 
         if (keepChild !== true) {

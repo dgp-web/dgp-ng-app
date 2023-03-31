@@ -97,10 +97,10 @@ export class RootComponent implements AfterViewInit, DropTarget {
         const type = area.side[0] === "x" ? "row" : "column";
         const dimension = area.side[0] === "x" ? "width" : "height";
         const insertBefore = area.side[1] === "2";
-        const column: AbstractContentItemComponent = this.contentItems[0];
+        const column = this.contentItems[0] as AbstractContentItemComponent;
 
         if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
-            const rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
+            const rowOrColumn: AbstractContentItemComponent = this.dockingLayoutService.createContentItem({type}, this);
             this.replaceChild(column, rowOrColumn);
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
             rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);

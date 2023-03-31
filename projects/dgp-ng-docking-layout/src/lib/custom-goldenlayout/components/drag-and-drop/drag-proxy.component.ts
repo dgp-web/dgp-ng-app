@@ -12,6 +12,7 @@ import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-n
 import { lmContentClassName } from "../../constants/class-names/lm-content-class-name.constant";
 import { itemDroppedEventType } from "../../constants/event-types/item-dropped-event-type.constant";
 import { createDropSegmentClassName } from "../../functions/create-drop-segment-class-name.function";
+import { GlComponent } from "../component.component";
 
 /**
  * This class creates a temporary container
@@ -44,7 +45,7 @@ export class DragProxy extends EventEmitter {
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
-                private readonly contentItem: AbstractContentItemComponent,
+                private readonly contentItem: AbstractContentItemComponent | GlComponent,
                 private readonly originalParent: AbstractContentItemComponent) {
         super();
 
@@ -141,7 +142,7 @@ export class DragProxy extends EventEmitter {
              * (Which is not the case if the drag had been initiated by createDragSource)
              */
         } else if (this.originalParent) {
-            this.originalParent.addChild(this.contentItem);
+            this.originalParent.addChild(this.contentItem as any);
 
             /**
              * The drag didn't ultimately end up with adding the content item to
@@ -166,7 +167,7 @@ export class DragProxy extends EventEmitter {
          * parent is null if the drag had been initiated by a external drag source
          */
         if (this.contentItem.parent) {
-            this.contentItem.parent.removeChild(this.contentItem, true);
+            this.contentItem.parent.removeChild(this.contentItem as any, true);
         }
 
         this.contentItem._$setParent(this as any);

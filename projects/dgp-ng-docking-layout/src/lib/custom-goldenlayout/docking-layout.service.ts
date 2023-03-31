@@ -109,10 +109,10 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    createContentItem(
+    createContentItem<T extends AbstractContentItemComponent | RootComponent | StackComponent | GlComponent>(
         itemConfig: ItemConfiguration,
         parentItem: AbstractContentItemComponent | RootComponent | StackComponent | GlComponent
-    ): AbstractContentItemComponent {
+    ): T {
 
         if (shouldWrapInStack({itemConfig, parentItem: parentItem as AbstractContentItemComponent})) {
             itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
