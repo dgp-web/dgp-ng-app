@@ -1,16 +1,8 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ContentChildren,
-    EventEmitter,
-    Input,
-    Output,
-    QueryList
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from "@angular/core";
 import { DockingLayoutContainerComponent } from "./docking-layout-container.component";
 import {
     ColumnConfiguration,
+    ComponentConfiguration,
     RowConfiguration,
     SelectedItemChange,
     StackConfiguration
@@ -90,7 +82,7 @@ export class DockingLayoutItemComponent implements AfterViewInit {
         const content = [
             ...items,
             ...containers
-        ];
+        ] as ComponentConfiguration[];
 
         if (this.type === "stack") {
 

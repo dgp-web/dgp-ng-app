@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Injector } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ITEM_CONFIG, ItemConfiguration, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
+import { ITEM_CONFIG, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
@@ -39,8 +39,7 @@ export class StackComponent extends AbstractContentItemComponent implements Drop
 
     constructor(
         dockingLayoutService: DockingLayoutService,
-        @Inject(ITEM_CONFIG)
-            config: ItemConfiguration,
+        @Inject(ITEM_CONFIG) config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         readonly parent: AbstractContentItemComponent
     ) {

@@ -84,7 +84,7 @@ export interface StackConfiguration extends ItemConfiguration {
     activeItemIndex?: number;
     activeItemId?: string;
 
-    content: ItemConfiguration[];
+    content: ComponentConfiguration[];
     onSelectedItemChange?: (id: string) => void;
     publishSelectedItemChange$?: Subject<SelectedItemChange>;
 }

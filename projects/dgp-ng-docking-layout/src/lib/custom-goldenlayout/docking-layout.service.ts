@@ -1,6 +1,13 @@
 import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
-import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
+import {
+    ComponentConfiguration,
+    ITEM_CONFIG,
+    ItemConfiguration,
+    LayoutConfiguration,
+    PARENT_ITEM_COMPONENT,
+    StackConfiguration
+} from "./types";
 import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
 import { AbstractContentItemComponent } from "./components/shared/abstract-content-item.component";
@@ -105,7 +112,9 @@ export class DockingLayoutService extends EventEmitter {
         parentItem: AbstractContentItemComponent | RootComponent
     ): AbstractContentItemComponent {
 
-        if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
+        if (shouldWrapInStack({itemConfig, parentItem})) {
+            itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
+        }
 
         const injector = Injector.create({
             providers: [{
