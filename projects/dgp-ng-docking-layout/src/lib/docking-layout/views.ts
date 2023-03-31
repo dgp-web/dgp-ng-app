@@ -31,22 +31,6 @@ export const dockingLayoutViewMap = {
             `;
         }
     },
-    itemContainer: {
-        render() {
-            return `
-                <div class="lm_item_container">
-                    <div class="lm_content"></div>
-                </div>
-            `;
-        }
-    },
-    root: {
-        render() {
-            return `
-                <div class="lm_goldenlayout lm_item lm_root"></div>
-            `;
-        }
-    },
     rowOrColumn: {
         render(model?: DockingLayoutViewModels["rowOrColumn"]) {
             return `
