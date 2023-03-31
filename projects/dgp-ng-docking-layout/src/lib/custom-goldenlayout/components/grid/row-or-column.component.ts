@@ -75,7 +75,6 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         newItemSize = (1 / this.contentItems.length) * 100;
 
         if (_$suspendResize === true) {
-            this.emitBubblingEvent("stateChanged");
             return;
         }
 
@@ -89,7 +88,6 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         }
 
         this.callDownwards("setSize");
-        this.emitBubblingEvent("stateChanged");
     }
 
 
@@ -133,7 +131,6 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             this.parent.replaceChild(this, childItem, true);
         } else {
             this.callDownwards("setSize");
-            this.emitBubblingEvent("stateChanged");
         }
     }
 
@@ -145,7 +142,6 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         AbstractContentItemComponent.prototype.replaceChild.call(this, oldChild, newChild);
         newChild.config[this._dimension] = size;
         this.callDownwards("setSize");
-        this.emitBubblingEvent("stateChanged");
     }
 
     /**
@@ -156,7 +152,6 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             this.calculateRelativeSizes();
             this.setAbsoluteSizes();
         }
-        this.emitBubblingEvent("stateChanged");
         this.emit("resize");
     }
 

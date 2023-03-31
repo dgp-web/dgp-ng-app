@@ -1,10 +1,8 @@
 import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { HeaderConfig, ItemConfiguration, itemDefaultConfig } from "../../types";
-import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { ItemConfiguration, itemDefaultConfig } from "../../types";
+import { EventEmitter } from "../../utilities";
 import { AreaSides } from "../../models/area.model";
-import { ALL_EVENT } from "../../constants/event-types/all-event.constant";
-import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
 import { StackComponent } from "../tabs/stack.component";
 import { DropSegment } from "../../models/drop-segment.model";
 import { RootComponent } from "../root.component";
@@ -15,7 +13,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     _side: boolean | DropSegment;
     _sided: boolean;
-    _header: HeaderConfig;
 
     contentItems: (AbstractContentItemComponent | StackComponent)[] = [];
 
@@ -29,9 +26,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     element: JQuery;
     childElementContainer: JQuery;
 
-    pendingEventPropagations = {};
-    throttledEvents = [stateChangedEventType];
-
     protected constructor(
         readonly dockingLayoutService: DockingLayoutService,
         readonly config: ItemConfiguration,
@@ -40,7 +34,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         super();
 
         this.config = {...itemDefaultConfig, ...config};
-        this.on(ALL_EVENT, this.propagateEvent, this);
         if (config.content) this.createContentItems(config);
     }
 
@@ -147,43 +140,9 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.isInitialised = true;
     }
 
-    emitBubblingEvent(name: string) {
-        const event = new BubblingEvent(name, this);
-        this.emit(name, event);
-    }
-
     private createContentItems(config: ItemConfiguration) {
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
-    private propagateEvent(name: string, event: BubblingEvent) {
-        if (event instanceof BubblingEvent &&
-            event.isPropagationStopped === false &&
-            this.isInitialised === true) {
-
-            if (this.isRoot === false && this.parent) {
-                (this.parent as AbstractContentItemComponent).emit?.apply(this.parent, Array.prototype.slice.call(arguments, 0));
-            } else {
-                this.scheduleEventPropagationToLayoutManager(name, event);
-            }
-        }
-    }
-
-    private scheduleEventPropagationToLayoutManager(name: string, event) {
-        if (new LayoutManagerUtilities().indexOf(name, this.throttledEvents) === -1) {
-            this.dockingLayoutService.emit(name, event.origin);
-        } else {
-            if (this.pendingEventPropagations[name] !== true) {
-                this.pendingEventPropagations[name] = true;
-                new LayoutManagerUtilities().animFrame(() => this.propagateEventToLayoutManager(name, event));
-            }
-        }
-
-    }
-
-    private propagateEventToLayoutManager(name: string, event) {
-        this.pendingEventPropagations[name] = false;
-        this.dockingLayoutService.emit(name, event);
-    }
 }
 
