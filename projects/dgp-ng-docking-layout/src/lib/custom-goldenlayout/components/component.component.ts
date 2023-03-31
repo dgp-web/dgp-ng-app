@@ -2,9 +2,8 @@ import { AbstractContentItemComponent } from "./shared/abstract-content-item.com
 import { ItemContainerComponent } from "./grid/item-container.component";
 import { ChangeDetectionStrategy, Component, Directive, ElementRef, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ComponentConfiguration, HeaderConfig, ITEM_CONFIG, ItemConfiguration, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
+import { ComponentConfiguration, ITEM_CONFIG, ItemConfiguration, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../utilities";
-import { DropSegment } from "../models/drop-segment.model";
 import { StackComponent } from "./tabs/stack.component";
 import { stateChangedEventType } from "../constants/event-types/state-changed-event-type.constant";
 import { RootComponent } from "./root.component";
@@ -19,20 +18,9 @@ import { createItemTypeCreatedEventType } from "../functions/create-item-type-cr
 // tslint:disable-next-line:directive-class-suffix
 export abstract class ComponentAbstractContentItemComponent extends EventEmitter {
 
-    _side: boolean | DropSegment;
-    _sided: boolean;
-    _header: HeaderConfig;
-
     contentItems: (AbstractContentItemComponent | StackComponent)[] = [];
 
     isInitialised = false;
-    isMaximised = false;
-    isRoot = false;
-    isRow = false;
-    isColumn = false;
-    isStack = false;
-    isComponent = false;
-
     element: JQuery;
     childElementContainer: JQuery;
 
@@ -51,9 +39,6 @@ export abstract class ComponentAbstractContentItemComponent extends EventEmitter
         if (config.content) this.createContentItems(config);
     }
 
-    /**
-     * Calls a method recursively downwards on the tree
-     */
     callDownwards(functionName: string,
                   functionArguments?: any[],
                   bottomUp?: boolean,
@@ -69,59 +54,30 @@ export abstract class ComponentAbstractContentItemComponent extends EventEmitter
         }
     }
 
-    /**
-     * Removes a child node (and its children) from the tree
-     */
     removeChild(contentItem: AbstractContentItemComponent, keepChild?: boolean) {
 
-        /*
-         * Get the position of the item that's to be removed within all content items this node contains
-         */
         const index = this.contentItems.indexOf(contentItem);
 
-        /**
-         * Call .destroy on the content item. this also calls .destroy on all its children
-         */
         if (keepChild !== true) {
             this.contentItems[index].destroy();
         }
 
-        /**
-         * Remove the content item from this nodes array of children
-         */
         this.contentItems.splice(index, 1);
 
-        /**
-         * Remove the item from the configuration
-         */
         this.config.content.splice(index, 1);
 
-        /**
-         * If this node still contains other content items, adjust their size
-         */
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
 
-            /**
-             * If this was the last content item, remove this node as well
-             */
-        } else if (!(this.isRoot) && this.config.isClosable === true) {
+        } else if (this.config.isClosable === true) {
             this.parent.removeChild(this as any);
         }
     }
 
-    /**
-     * Convenience method.
-     * Shorthand for this.parent.removeChild( this )
-     */
     remove() {
         this.parent.removeChild(this as any);
     }
 
-    /****************************************
-     * PACKAGE PRIVATE
-     ****************************************/
-    //noinspection TsLint
     _$setParent(parent: AbstractContentItemComponent) {
         this.parent = parent;
     }
@@ -210,7 +166,7 @@ export abstract class ComponentAbstractContentItemComponent extends EventEmitter
              * propagate the bubbling event from the top level of the substree directly
              * to the layoutManager
              */
-            if (this.isRoot === false && this.parent) {
+            if (this.parent) {
                 (this.parent as AbstractContentItemComponent).emit?.apply(this.parent, Array.prototype.slice.call(arguments, 0));
             } else {
                 this.scheduleEventPropagationToLayoutManager(name, event);
@@ -256,6 +212,7 @@ export abstract class ComponentAbstractContentItemComponent extends EventEmitter
 })
 export class GlComponent extends ComponentAbstractContentItemComponent {
     private container: ItemContainerComponent;
+    isComponent = true;
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
