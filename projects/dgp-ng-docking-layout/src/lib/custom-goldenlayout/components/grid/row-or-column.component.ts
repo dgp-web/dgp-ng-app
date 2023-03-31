@@ -7,6 +7,7 @@ import { SplitterComponent } from "../resize/splitter.component";
 import { AreaSides } from "../../models/area.model";
 import { StackComponent } from "../tabs/stack.component";
 import { DropSegment } from "../../models/drop-segment.model";
+import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -42,7 +43,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
         isColumn: boolean,
         public dockingLayoutService: DockingLayoutService,
         config: ItemConfiguration,
-        public parent: RowOrColumnComponentBase
+        public parent: RowOrColumnParentComponent
     ) {
         super();
 
