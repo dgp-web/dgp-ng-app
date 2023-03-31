@@ -38,7 +38,7 @@ export class AreaService {
                         itemAreas.push(area);
                         const header: Partial<Mutable<Area>> = {};
                         Object.assign(header, area);
-                        Object.assign(header, (area.contentItem as StackComponent).contentAreaDimensions.header.highlightArea);
+                        Object.assign(header, (area.contentItem as any).contentAreaDimensions.header.highlightArea);
                         header.surface = (+header.x2 - +header.x1) * (+header.y2 - +header.y1);
                         itemAreas.push(header as Area);
                     }

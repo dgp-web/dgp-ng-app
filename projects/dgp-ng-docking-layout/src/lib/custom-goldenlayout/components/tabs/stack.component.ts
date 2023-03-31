@@ -178,7 +178,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
     }
 
     private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as any);
     }
 
     setSize() {
@@ -209,7 +209,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         this.isInitialised = true;
 
         for (i = 0; i < this.contentItems.length; i++) {
-            this.headerComponent.createTab(this.contentItems[i]);
+            this.headerComponent.createTab(this.contentItems[i] as any);
             this.contentItems[i].hide();
         }
 
@@ -221,7 +221,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         if (notNullOrUndefined(this.config.publishSelectedItemChange$)) {
             this.subscription = this.config.publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
-                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
+                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id) as any);
                 }
             });
         }
@@ -266,8 +266,8 @@ export class StackComponent extends EventEmitter implements DropTarget {
             contentItem.init();
         }
         this.childElementContainer.append(contentItem.element);
-        this.headerComponent.createTab(contentItem, index);
-        this.setActiveContentItem(contentItem);
+        this.headerComponent.createTab(contentItem as any, index);
+        this.setActiveContentItem(contentItem as any);
         this.callDownwards("setSize");
     }
 
@@ -290,7 +290,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         this.headerComponent.removeTab(contentItem);
         if (this.headerComponent.activeContentItem === contentItem) {
             if (this.contentItems.length > 0) {
-                this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)]);
+                this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)] as any);
             } else {
                 this.activeContentItem = null;
             }
@@ -361,7 +361,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
          */
         if (hasCorrectParent) {
             index = new LayoutManagerUtilities().indexOf(this, this.parent.contentItems);
-            this.parent.addChild(contentItem, insertBefore ? index : index + 1, true);
+            this.parent.addChild(contentItem as any, insertBefore ? index : index + 1, true);
             this.config[dimension] *= 0.5;
             contentItem.config[dimension] = this.config[dimension];
             this.parent.callDownwards("setSize");

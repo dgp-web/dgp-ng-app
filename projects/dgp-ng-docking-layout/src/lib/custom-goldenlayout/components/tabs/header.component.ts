@@ -87,7 +87,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
          */
 
         tab.selected.subscribe(() => {
-            if (contentItem === this.parent.getActiveContentItem()) return;
+            if (contentItem === this.parent.getActiveContentItem() as any) return;
             this.parent.setActiveContentItem(contentItem);
         });
 
