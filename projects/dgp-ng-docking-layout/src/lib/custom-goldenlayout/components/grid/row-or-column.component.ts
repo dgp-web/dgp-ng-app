@@ -143,7 +143,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
     /**
      * Removes a child of this element
      */
-    removeChild(contentItem: RowOrColumnComponentBase, keepChild: boolean) {
+    removeChild(contentItem: RowOrColumnComponentBase | StackComponent, keepChild: boolean) {
         let index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems);
         const removedItemSize = contentItem.config[this._dimension],
 

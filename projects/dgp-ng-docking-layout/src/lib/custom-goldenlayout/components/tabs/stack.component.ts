@@ -19,7 +19,7 @@ import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
-
+import { StackParentComponent } from "../../models/stack-parent-component.model";
 
 @Component({
     selector: "dgp-stack",
@@ -53,7 +53,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         private readonly dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG) config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        readonly parent: any
+        readonly parent: StackParentComponent
     ) {
         super();
 
@@ -149,7 +149,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
     }
 
     remove() {
-        this.parent.removeChild(this as any);
+        this.parent.removeChild(this, undefined);
     }
 
     hide() {
@@ -275,7 +275,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
         } else if (this.config.isClosable === true) {
-            this.parent.removeChild(this as any);
+            this.parent.removeChild(this, undefined);
         }
 
         this.headerComponent.removeTab(contentItem);
