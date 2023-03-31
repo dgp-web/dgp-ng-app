@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Directive, Inject, Injector } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, Injector } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
@@ -28,11 +28,14 @@ import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
-import { RootComponent } from "../root.component";
 
-@Directive()
-// tslint:disable-next-line:directive-class-suffix
-export abstract class StackAbstractContentItemComponent extends EventEmitter {
+
+@Component({
+    selector: "dgp-stack",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class StackComponent extends EventEmitter implements DropTarget {
 
     _side: boolean | DropSegment;
     _sided: boolean;
@@ -45,115 +48,6 @@ export abstract class StackAbstractContentItemComponent extends EventEmitter {
 
     isInitialised = false;
 
-    protected constructor(
-        readonly dockingLayoutService: DockingLayoutService,
-        readonly config: ItemConfiguration,
-        public parent: AbstractContentItemComponent | RootComponent
-    ) {
-        super();
-
-        this.config = {...itemDefaultConfig, ...config};
-        if (config.content) this.createContentItems(config);
-    }
-
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
-        }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-    }
-
-    removeChild(contentItem: GlComponent, keepChild?: boolean) {
-        const index = this.contentItems.indexOf(contentItem);
-
-        if (keepChild !== true) {
-            this.contentItems[index].destroy();
-        }
-
-        this.contentItems.splice(index, 1);
-        this.config.content.splice(index, 1);
-
-        if (this.contentItems.length > 0) {
-            this.callDownwards("setSize");
-        } else if (this.config.isClosable === true) {
-            this.parent.removeChild(this as any);
-        }
-    }
-
-    addChild(contentItem: GlComponent, index?: number, foo?: boolean) {
-        if (index === undefined) {
-            index = this.contentItems.length;
-        }
-
-        this.contentItems.splice(index, 0, contentItem);
-
-        if (this.config.content === undefined) {
-            this.config.content = [];
-        }
-
-        this.config.content.splice(index, 0, contentItem.config);
-        contentItem.parent = this as any;
-
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem.init();
-        }
-    }
-
-    remove() {
-        this.parent.removeChild(this as any);
-    }
-
-    hide() {
-        this.callOnActiveComponents("hide");
-        this.element.hide();
-        this.dockingLayoutService.updateSize();
-    }
-
-    show() {
-        this.callOnActiveComponents("show");
-        this.element.show();
-        this.dockingLayoutService.updateSize();
-    }
-
-    private callOnActiveComponents(methodName: string): void {
-        (this as any).getActiveContentItem()[methodName]();
-    }
-
-    destroy() {
-        this.unsubscribe();
-        this.callDownwards("destroy", [], true, true);
-        this.element.remove();
-    }
-
-    init(): void {
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.childElementContainer.append(this.contentItems[i].element);
-        }
-
-        this.isInitialised = true;
-    }
-
-    private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
-    }
-
-}
-
-
-@Component({
-    selector: "dgp-stack",
-    template: ``,
-    changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class StackComponent extends StackAbstractContentItemComponent implements DropTarget {
     private activeContentItem: AbstractContentItemComponent = null;
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
@@ -162,14 +56,19 @@ export class StackComponent extends StackAbstractContentItemComponent implements
 
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
+    config: StackConfiguration;
 
     constructor(
-        dockingLayoutService: DockingLayoutService,
+        private readonly dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG) config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         readonly parent: AbstractContentItemComponent
     ) {
-        super(dockingLayoutService, config, parent);
+        super();
+
+
+        this.config = {...itemDefaultConfig, ...config};
+        if (config.content) this.createContentItems(config);
 
         const vcRef = dockingLayoutService.getViewContainerRef();
         const rootInjector = dockingLayoutService.getInjector();
@@ -235,9 +134,14 @@ export class StackComponent extends StackAbstractContentItemComponent implements
     init() {
         if (this.isInitialised === true) return;
 
+
         let i, initialItem;
 
-        super.init();
+        for (i = 0; i < this.contentItems.length; i++) {
+            this.childElementContainer.append(this.contentItems[i].element);
+        }
+
+        this.isInitialised = true;
 
         for (i = 0; i < this.contentItems.length; i++) {
             this.headerComponent.createTab(this.contentItems[i]);
@@ -249,8 +153,8 @@ export class StackComponent extends StackAbstractContentItemComponent implements
             this.setActiveContentItem(initialItem);
         }
 
-        if (notNullOrUndefined((this.config as StackConfiguration).publishSelectedItemChange$)) {
-            this.subscription = (this.config as StackConfiguration).publishSelectedItemChange$.subscribe(change => {
+        if (notNullOrUndefined(this.config.publishSelectedItemChange$)) {
+            this.subscription = this.config.publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
                     this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
                 }
@@ -280,7 +184,22 @@ export class StackComponent extends StackAbstractContentItemComponent implements
     }
 
     addChild(contentItem: GlComponent, index?) {
-        super.addChild(contentItem, index);
+        if (index === undefined) {
+            index = this.contentItems.length;
+        }
+
+        this.contentItems.splice(index, 0, contentItem);
+
+        if (this.config.content === undefined) {
+            this.config.content = [];
+        }
+
+        this.config.content.splice(index, 0, contentItem.config);
+        contentItem.parent = this as any;
+
+        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
+            contentItem.init();
+        }
         this.childElementContainer.append(contentItem.element);
         this.headerComponent.createTab(contentItem, index);
         this.setActiveContentItem(contentItem);
@@ -288,8 +207,21 @@ export class StackComponent extends StackAbstractContentItemComponent implements
     }
 
     removeChild(contentItem, keepChild) {
-        const index = new LayoutManagerUtilities().indexOf(contentItem, this.contentItems);
-        super.removeChild(contentItem, keepChild);
+        let index = this.contentItems.indexOf(contentItem);
+
+        if (keepChild !== true) {
+            this.contentItems[index].destroy();
+        }
+
+        this.contentItems.splice(index, 1);
+        this.config.content.splice(index, 1);
+
+        if (this.contentItems.length > 0) {
+            this.callDownwards("setSize");
+        } else if (this.config.isClosable === true) {
+            this.parent.removeChild(this as any);
+        }
+
         this.headerComponent.removeTab(contentItem);
         if (this.headerComponent.activeContentItem === contentItem) {
             if (this.contentItems.length > 0) {
@@ -301,7 +233,9 @@ export class StackComponent extends StackAbstractContentItemComponent implements
     }
 
     destroy() {
-        super.destroy();
+        this.unsubscribe();
+        this.callDownwards("destroy", [], true, true);
+        this.element.remove();
         this.headerComponent.destroy();
 
         if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
@@ -626,6 +560,45 @@ export class StackComponent extends StackAbstractContentItemComponent implements
         const highlightArea = this.contentAreaDimensions[segment].highlightArea;
         this.dockingLayoutService.dropTargetIndicator.highlightArea(highlightArea);
         this.dropSegment = segment;
+    }
+
+    callDownwards(functionName: string,
+                  functionArguments?: any[],
+                  bottomUp?: boolean,
+                  skipSelf?: boolean) {
+        if (bottomUp !== true && skipSelf !== true) {
+            this[functionName].apply(this, functionArguments || []);
+        }
+        for (let i = 0; i < this.contentItems.length; i++) {
+            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
+        }
+        if (bottomUp === true && skipSelf !== true) {
+            this[functionName].apply(this, functionArguments || []);
+        }
+    }
+
+    remove() {
+        this.parent.removeChild(this as any);
+    }
+
+    hide() {
+        this.callOnActiveComponents("hide");
+        this.element.hide();
+        this.dockingLayoutService.updateSize();
+    }
+
+    show() {
+        this.callOnActiveComponents("show");
+        this.element.show();
+        this.dockingLayoutService.updateSize();
+    }
+
+    private callOnActiveComponents(methodName: string): void {
+        this.getActiveContentItem()[methodName]();
+    }
+
+    private createContentItems(config: ItemConfiguration) {
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
     }
 
 }
