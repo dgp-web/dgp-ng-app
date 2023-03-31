@@ -5,9 +5,9 @@ import { ItemConfiguration, itemDefaultConfig } from "../../types";
 import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
 import { AreaSides } from "../../models/area.model";
-import { StackComponent } from "../tabs/stack.component";
 import { DropSegment } from "../../models/drop-segment.model";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
+import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -29,7 +29,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
     _side: boolean | DropSegment;
     _sided: boolean;
 
-    contentItems: (RowOrColumnComponentBase | StackComponent)[] = [];
+    contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
     isRoot = false;
@@ -143,7 +143,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
     /**
      * Removes a child of this element
      */
-    removeChild(contentItem: RowOrColumnComponentBase | StackComponent, keepChild: boolean) {
+    removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
         let index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems);
         const removedItemSize = contentItem.config[this._dimension],
 
@@ -200,7 +200,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
         }
     }
 
-    _$setParent(parent: any) {
+    _$setParent(parent: RowOrColumnParentComponent) {
         this.parent = parent;
     }
 
@@ -217,7 +217,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
     /**
      * Replaces a child of this Row or Column with another contentItem
      */
-    replaceChild(oldChild: RowOrColumnComponentBase, newChild: RowOrColumnComponentBase, destroyOldChild?: boolean) {
+    replaceChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent, destroyOldChild?: boolean) {
         const size = oldChild.config[this._dimension];
 
         const index = this.contentItems.indexOf(oldChild);

@@ -53,7 +53,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         private readonly dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG) config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        readonly parent: StackParentComponent
+        public parent: StackParentComponent
     ) {
         super();
 
