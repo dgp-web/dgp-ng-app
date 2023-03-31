@@ -129,7 +129,7 @@ export class DockingLayoutService extends EventEmitter {
 
         const componentType = typeToComponentMap[itemConfig.type];
 
-        return this.viewContainerRef.createComponent<any>(componentType as any, {injector}).instance;
+        return this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
     }
 
     destroy() {
@@ -148,7 +148,7 @@ export class DockingLayoutService extends EventEmitter {
 
         this.selectedItem = item;
 
-        this.emit<SelectionChangedEvent>("selectionChanged", item as any);
+        this.emit<SelectionChangedEvent>("selectionChanged", item);
     }
 
     private createRootComponent(config: LayoutConfiguration): void {

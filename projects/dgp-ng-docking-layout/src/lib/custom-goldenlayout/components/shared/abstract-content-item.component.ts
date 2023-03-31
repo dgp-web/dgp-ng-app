@@ -28,7 +28,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     _sided: boolean;
     _header: HeaderConfig;
 
-    contentItems: AbstractContentItemComponent[] = [];
+    contentItems: (AbstractContentItemComponent | StackComponent)[] = [];
 
     isInitialised = false;
     isMaximised = false;
@@ -164,13 +164,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.contentItems[index] = newChild;
         newChild.parent = this;
 
-        /*
-         * Update tab reference
-         */
-        if (this.isStack) {
-            (this as any).header.tabs[index].contentItem = newChild;
-        }
-
         // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
             newChild.init();
@@ -227,7 +220,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     private callOnActiveComponents(methodName: string): void {
         this.contentItems.filter(x => x.config.type === "stack")
-            .map(x => x as unknown as StackComponent)
+            .map(x => x as StackComponent)
             .map(stack => stack.getActiveContentItem())
             .forEach(component => component[methodName]());
     }
@@ -270,7 +263,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         this.emit(name, event);
     }
 
-    //noinspection TsLint
     /**
      * Private method, creates all content items for this node at initialisation time
      * PLEASE NOTE, please see addChild for adding contentItems add runtime
