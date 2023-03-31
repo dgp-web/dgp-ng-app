@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, Optional } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, Injector, Optional } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../types";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
@@ -25,7 +25,7 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
     private _contentElement: JQuery<HTMLElement>;
 
     constructor(@Inject(ITEM_CONFIG)
-                readonly config: ItemConfiguration,
+                readonly config: any,
                 @Optional()
                 @Inject(PARENT_ITEM_COMPONENT)
                 readonly parent: AbstractContentItemComponent,
@@ -37,6 +37,20 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
             dockingLayoutViewMap.itemContainer.render()
         );
         this._contentElement = this._element.find(".lm_content");
+
+
+        let ComponentConstructor = dockingLayoutService.getComponent(this.config.id),
+            componentConfig = $.extend(true, {}, this.config.componentState || {});
+
+        componentConfig.componentName = this.config.id;
+        // this.componentName = this.config.id;
+
+        if (this.config.label === "") {
+            this.config.label = this.config.id;
+        }
+
+        const component = ComponentConstructor(this, componentConfig);
+
     }
 
     ngAfterViewInit(): void {

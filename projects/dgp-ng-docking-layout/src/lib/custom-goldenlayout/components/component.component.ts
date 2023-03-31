@@ -10,10 +10,11 @@ import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlComponent extends AbstractContentItemComponent {
-    componentName: any;
-    public container: ItemContainerComponent;
-    public instance: any;
-    public element: JQuery<HTMLElement>;
+    private componentName: string;
+    private container: ItemContainerComponent;
+    private instance: any;
+
+    element: JQuery<HTMLElement>;
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
@@ -54,7 +55,6 @@ export class GlComponent extends AbstractContentItemComponent {
         itemContainerComponentRef.changeDetectorRef.markForCheck();
         this.container = itemContainerComponentRef.instance;
 
-        this.instance = ComponentConstructor(this.container, componentConfig);
         this.element = this.container._element;
     }
 
