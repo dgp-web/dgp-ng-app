@@ -1,8 +1,6 @@
 import { TemplateRef } from "@angular/core";
 
 export interface ComponentDefinition<T = any> {
-    componentName?: string;
-
     template(): TemplateRef<T>;
 }
 

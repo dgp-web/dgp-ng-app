@@ -1,6 +1,6 @@
 import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import { ItemContainerComponent } from "./grid/item-container.component";
-import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject, Injector } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 
@@ -31,19 +31,9 @@ export class GlComponent extends AbstractContentItemComponent {
         this.isComponent = true;
 
         const vcRef = this.dockingLayoutService.getViewContainerRef();
-        const rootInjector = this.dockingLayoutService.getInjector();
-        const injector = Injector.create({
-            parent: rootInjector,
-            providers: [{
-                provide: ITEM_CONFIG,
-                useValue: this.config
-            }, {
-                provide: PARENT_ITEM_COMPONENT,
-                useValue: this
-            }]
-        });
 
-        const itemContainerComponentRef = vcRef.createComponent(ItemContainerComponent, {injector});
+        const itemContainerComponentRef = vcRef.createComponent(ItemContainerComponent);
+        itemContainerComponentRef.instance.config = this.config;
         itemContainerComponentRef.changeDetectorRef.markForCheck();
         this.container = itemContainerComponentRef.instance;
 
