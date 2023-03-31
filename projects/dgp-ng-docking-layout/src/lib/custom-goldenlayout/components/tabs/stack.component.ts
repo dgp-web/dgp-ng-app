@@ -371,7 +371,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
              */
         } else {
             type = isVertical ? "column" : "row";
-            rowOrColumn = this.dockingLayoutService.createContentItem({type}, this as any);
+            rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
             this.parent.replaceChild(this as any, rowOrColumn);
 
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);

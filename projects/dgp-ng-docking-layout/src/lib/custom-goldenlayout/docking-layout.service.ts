@@ -25,6 +25,7 @@ import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
+import { StackComponent } from "./components/tabs/stack.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -109,10 +110,10 @@ export class DockingLayoutService extends EventEmitter {
 
     createContentItem(
         itemConfig: ItemConfiguration,
-        parentItem: AbstractContentItemComponent | RootComponent
+        parentItem: AbstractContentItemComponent | RootComponent | StackComponent
     ): AbstractContentItemComponent {
 
-        if (shouldWrapInStack({itemConfig, parentItem})) {
+        if (shouldWrapInStack({itemConfig, parentItem: parentItem as AbstractContentItemComponent})) {
             itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
         }
 
