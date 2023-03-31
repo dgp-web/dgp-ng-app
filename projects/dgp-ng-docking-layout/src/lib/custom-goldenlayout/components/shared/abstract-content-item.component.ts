@@ -2,7 +2,6 @@ import { Directive } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { HeaderConfig, ItemConfiguration, itemDefaultConfig } from "../../types";
 import { BubblingEvent, EventEmitter, LayoutManagerUtilities } from "../../utilities";
-import { goldenLayoutEngineConfig } from "../../constants/golden-layout-engine-config.constant";
 import { AreaSides } from "../../models/area.model";
 import { ALL_EVENT } from "../../constants/event-types/all-event.constant";
 import { stateChangedEventType } from "../../constants/event-types/state-changed-event-type.constant";
@@ -31,7 +30,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
     contentItems: (AbstractContentItemComponent | StackComponent)[] = [];
 
     isInitialised = false;
-    isMaximised = false;
     isRoot = false;
     isRow = false;
     isColumn = false;
@@ -56,9 +54,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         if (config.content) this.createContentItems(config);
     }
 
-    /**
-     * Calls a method recursively downwards on the tree
-     */
     callDownwards(functionName: string,
                   functionArguments?: any[],
                   bottomUp?: boolean,
@@ -74,43 +69,22 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
         }
     }
 
-    /**
-     * Removes a child node (and its children) from the tree
-     */
     removeChild(contentItem: AbstractContentItemComponent, keepChild?: boolean) {
 
-        /*
-         * Get the position of the item that's to be removed within all content items this node contains
-         */
         const index = this.contentItems.indexOf(contentItem);
 
-        /**
-         * Call .destroy on the content item. this also calls .destroy on all its children
-         */
         if (keepChild !== true) {
             this.contentItems[index].destroy();
         }
 
-        /**
-         * Remove the content item from this nodes array of children
-         */
         this.contentItems.splice(index, 1);
 
-        /**
-         * Remove the item from the configuration
-         */
         this.config.content.splice(index, 1);
 
-        /**
-         * If this node still contains other content items, adjust their size
-         */
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
 
-            /**
-             * If this was the last content item, remove this node as well
-             */
-        } else if (!(this.isRoot) && this.config.isClosable === true) {
+        } else if (this.config.isClosable === true) {
             this.parent.removeChild(this);
         }
     }
@@ -190,18 +164,6 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     highlightDropZone(x: number, y: number, area: AreaSides) {
         this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
-    }
-
-    hide() {
-        this.callOnActiveComponents("hide");
-        this.element.hide();
-        this.dockingLayoutService.updateSize();
-    }
-
-    show() {
-        this.callOnActiveComponents("show");
-        this.element.show();
-        this.dockingLayoutService.updateSize();
     }
 
     private callOnActiveComponents(methodName: string): void {
