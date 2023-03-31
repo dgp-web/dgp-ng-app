@@ -22,9 +22,7 @@ import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
-import { StackComponent } from "./components/tabs/stack.component";
-import { GlComponent } from "./components/component.component";
-import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
+import { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -33,7 +31,7 @@ import { RowOrColumnComponent } from "./components/grid/row-or-column.component"
 export class DockingLayoutService extends EventEmitter {
 
     config: LayoutConfiguration;
-    container: JQuery; // TODO: Could / should be AbstractContentItemComponent according to RootComponent
+    container: JQuery;
     dropTargetIndicator: DropTargetIndicatorComponent;
     tabDropPlaceholder: TabDropPlaceholderComponent;
 
@@ -104,14 +102,17 @@ export class DockingLayoutService extends EventEmitter {
         if (this.isInitialised) {
             this.root.callDownwards("setSize", [this.width, this.height]);
         }
-    } 
+    }
 
-    createContentItem<T extends RowOrColumnComponent | RootComponent | StackComponent | GlComponent>(
+    createContentItem<T extends DockingLayoutItemComponent>(
         itemConfig: ItemConfiguration,
-        parentItem: RowOrColumnComponent | RootComponent | StackComponent | GlComponent
+        parentItem: DockingLayoutItemComponent
     ): T {
 
-        if (shouldWrapInStack({itemConfig, parentItem: parentItem as RowOrColumnComponent | RootComponent | StackComponent | GlComponent})) {
+        if (shouldWrapInStack({
+            itemConfig,
+            parentItem
+        })) {
             itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
         }
 
