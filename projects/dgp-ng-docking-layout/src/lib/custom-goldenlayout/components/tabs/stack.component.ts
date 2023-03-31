@@ -116,6 +116,71 @@ export class StackComponent extends EventEmitter implements DropTarget {
 
     }
 
+    private resetHeaderDropZone() {
+        this.dockingLayoutService.tabDropPlaceholder.remove();
+    }
+
+    private setupHeaderPosition() {
+        const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
+        this.headerComponent.element.toggle(!!this._header.show);
+        this._side = side;
+        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
+        this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
+        if (this._side) {
+            this.element.addClass("lm_" + this._side);
+        }
+        if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
+            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
+            this.headerComponent.element[headerPosition](this.childElementContainer);
+            this.callDownwards("setSize");
+        }
+    }
+
+    private highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
+        const highlightArea = this.contentAreaDimensions[segment].highlightArea;
+        this.dockingLayoutService.dropTargetIndicator.highlightArea(highlightArea);
+        this.dropSegment = segment;
+    }
+
+    callDownwards(functionName: string,
+                  functionArguments?: any[],
+                  bottomUp?: boolean,
+                  skipSelf?: boolean) {
+        if (bottomUp !== true && skipSelf !== true) {
+            this[functionName].apply(this, functionArguments || []);
+        }
+        for (let i = 0; i < this.contentItems.length; i++) {
+            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
+        }
+        if (bottomUp === true && skipSelf !== true) {
+            this[functionName].apply(this, functionArguments || []);
+        }
+    }
+
+    remove() {
+        this.parent.removeChild(this as any);
+    }
+
+    hide() {
+        this.callOnActiveComponents("hide");
+        this.element.hide();
+        this.dockingLayoutService.updateSize();
+    }
+
+    show() {
+        this.callOnActiveComponents("show");
+        this.element.show();
+        this.dockingLayoutService.updateSize();
+    }
+
+    private callOnActiveComponents(methodName: string): void {
+        this.getActiveContentItem()[methodName]();
+    }
+
+    private createContentItems(config: ItemConfiguration) {
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
+    }
+
     setSize() {
         const headerSize = this._header.show ? this.dockingLayoutService.config.dimensions.headerHeight : 0;
         const contentWidth = this.element.width() - (this._sided ? headerSize : 0);
@@ -534,71 +599,6 @@ export class StackComponent extends EventEmitter implements DropTarget {
             y1: tabTop,
             y2: tabTop + tabElement.innerHeight()
         });
-    }
-
-    private resetHeaderDropZone() {
-        this.dockingLayoutService.tabDropPlaceholder.remove();
-    }
-
-    private setupHeaderPosition() {
-        const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
-        this.headerComponent.element.toggle(!!this._header.show);
-        this._side = side;
-        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
-        this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
-        if (this._side) {
-            this.element.addClass("lm_" + this._side);
-        }
-        if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
-            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
-            this.headerComponent.element[headerPosition](this.childElementContainer);
-            this.callDownwards("setSize");
-        }
-    }
-
-    private highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
-        const highlightArea = this.contentAreaDimensions[segment].highlightArea;
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(highlightArea);
-        this.dropSegment = segment;
-    }
-
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
-        }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-    }
-
-    remove() {
-        this.parent.removeChild(this as any);
-    }
-
-    hide() {
-        this.callOnActiveComponents("hide");
-        this.element.hide();
-        this.dockingLayoutService.updateSize();
-    }
-
-    show() {
-        this.callOnActiveComponents("show");
-        this.element.show();
-        this.dockingLayoutService.updateSize();
-    }
-
-    private callOnActiveComponents(methodName: string): void {
-        this.getActiveContentItem()[methodName]();
-    }
-
-    private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this as any) as GlComponent);
     }
 
 }
