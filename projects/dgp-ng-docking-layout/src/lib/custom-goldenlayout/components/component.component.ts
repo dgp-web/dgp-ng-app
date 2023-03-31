@@ -1,12 +1,17 @@
 import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import { ItemContainerComponent } from "./grid/item-container.component";
-import { ChangeDetectionStrategy, Component, forwardRef, Inject, Injector } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject, Injector } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 
 @Component({
     selector: "dgp-gl-component",
     template: ``,
+    styles: [`
+        :host {
+            overflow: auto;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlComponent extends AbstractContentItemComponent {
@@ -18,7 +23,8 @@ export class GlComponent extends AbstractContentItemComponent {
         @Inject(ITEM_CONFIG)
         public config: any,
         @Inject(PARENT_ITEM_COMPONENT)
-        public parent: AbstractContentItemComponent
+        public parent: AbstractContentItemComponent,
+        private readonly elementRef: ElementRef<HTMLElement>,
     ) {
         super(dockingLayoutService, config, parent);
 
@@ -41,7 +47,9 @@ export class GlComponent extends AbstractContentItemComponent {
         itemContainerComponentRef.changeDetectorRef.markForCheck();
         this.container = itemContainerComponentRef.instance;
 
-        this.element = this.container._element;
+        this.element = $(this.elementRef.nativeElement);
+        // move rendered item to container (shouldn't be necessary?)
+        this.elementRef.nativeElement.append(itemContainerComponentRef.injector.get(ElementRef).nativeElement);
     }
 
     close() {

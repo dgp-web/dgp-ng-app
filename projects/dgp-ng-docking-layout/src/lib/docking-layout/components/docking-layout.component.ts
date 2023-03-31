@@ -182,8 +182,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
                     const id = createGuid();
 
-                    // creation and closing
-
                     container.on("hide", () => {
                         this.destroyEmbeddedView(id, this);
                     });
@@ -192,20 +190,9 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
                         this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
                     });
 
-                    container.on("open", () => {
-                    });
-
                     container.on("destroy", () => {
                         this.destroyEmbeddedView(id, this);
                     });
-
-                    container.on("resize", () => {
-
-                    });
-
-                    container.on("tab", () => {
-                    });
-
 
                 });
 
