@@ -10,11 +10,7 @@ import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GlComponent extends AbstractContentItemComponent {
-    private componentName: string;
     private container: ItemContainerComponent;
-    private instance: any;
-
-    element: JQuery<HTMLElement>;
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
@@ -25,16 +21,6 @@ export class GlComponent extends AbstractContentItemComponent {
         public parent: AbstractContentItemComponent
     ) {
         super(dockingLayoutService, config, parent);
-
-        let ComponentConstructor = dockingLayoutService.getComponent(this.config.id),
-            componentConfig = $.extend(true, {}, this.config.componentState || {});
-
-        componentConfig.componentName = this.config.id;
-        this.componentName = this.config.id;
-
-        if (this.config.label === "") {
-            this.config.label = this.config.id;
-        }
 
         this.isComponent = true;
 
@@ -63,10 +49,6 @@ export class GlComponent extends AbstractContentItemComponent {
     }
 
     setSize() {
-        if (this.element.is(":visible")) {
-            // Do not update size of hidden components to prevent unwanted reflows
-            this.container._$setSize(this.element.width(), this.element.height());
-        }
     }
 
     init() {

@@ -1,29 +1,38 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, Optional } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, Optional, ViewChild } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../../types";
 import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { hideEventType } from "../../constants/event-types/hide-event-type.constant";
 import { showEventType } from "../../constants/event-types/show-event-type.constant";
 import { shownEventType } from "../../constants/event-types/shown-event-type.constant";
-import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { ComponentDefinition } from "../../utilities/models";
+import { EventEmitter } from "../../utilities";
 
 @Component({
     selector: "dgp-item-container",
     template: `
-        <!-- <div class="lm_item_container">
-             <div class="lm_content"></div>
-         </div>-->
+        <div class="lm_content"
+             #content></div>
     `,
+    styles: [`
+        :host {
+            width: 100%;
+            height: 100%;
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemContainerComponent extends AbstractContentItemComponent implements AfterViewInit {
+export class ItemContainerComponent extends EventEmitter implements AfterViewInit {
+
+    @HostBinding(".lm_item_container")
+    readonly bindings = true;
 
     width: number;
     height: number;
-    _element: JQuery;
-    private _contentElement: JQuery<HTMLElement>;
+    _element = $(this.elementRef.nativeElement);
+    @ViewChild("content", {static: true})
+    private contentElementElementRef: ElementRef<HTMLElement>;
+    private _contentElement: JQuery;
 
     constructor(@Inject(ITEM_CONFIG)
                 readonly config: ComponentConfiguration,
@@ -33,14 +42,14 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
                 readonly dockingLayoutService: DockingLayoutService,
                 readonly elementRef: ElementRef<HTMLElement>
     ) {
-        super(dockingLayoutService, config, parent);
-        this._element = $(this.elementRef.nativeElement).append(
-            dockingLayoutViewMap.itemContainer.render()
-        );
-        this._contentElement = this._element.find(".lm_content");
+        super();
+    }
 
+    ngAfterViewInit(): void {
 
-        let ComponentConstructor = dockingLayoutService.getComponent(this.config.id);
+        this._contentElement = $(this.contentElementElementRef.nativeElement);
+
+        let ComponentConstructor = this.dockingLayoutService.getComponent(this.config.id);
         const componentConfig = $.extend(true, {}, this.config.componentState || {}) as ComponentDefinition;
 
         componentConfig.componentName = this.config.id;
@@ -51,9 +60,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
 
         ComponentConstructor(this, componentConfig);
 
-    }
-
-    ngAfterViewInit(): void {
     }
 
     // noinspection JSUnusedGlobalSymbols
@@ -86,24 +92,6 @@ export class ItemContainerComponent extends AbstractContentItemComponent impleme
         // call shown only if the container has a valid size
         if (this.height !== 0 || this.width !== 0) {
             this.emit(shownEventType);
-        }
-    }
-
-    /**
-     * Set's the containers size. Called by the container's component.
-     * To set the size programmatically from within the container please
-     * use the public setSize method
-     */
-    _$setSize(width: number, height: number) {
-        if (width !== this.width || height !== this.height) {
-            this.width = width;
-            this.height = height;
-            const cl = this._contentElement[0];
-            const hdelta = cl.offsetWidth - cl.clientWidth;
-            const vdelta = cl.offsetHeight - cl.clientHeight;
-            this._contentElement.width(this.width - hdelta)
-                .height(this.height - vdelta);
-            this.emit(resizeEventType);
         }
     }
 
