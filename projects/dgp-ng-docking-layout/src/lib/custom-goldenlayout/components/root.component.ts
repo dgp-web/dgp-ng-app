@@ -13,6 +13,7 @@ import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration, itemDefaultConfig } from "../types";
+import { RowOrColumnComponentBase } from "./grid/row-or-column.component";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -148,7 +149,7 @@ export class RootComponent implements AfterViewInit, DropTarget {
         }
     }
 
-    removeChild(contentItem: any, keepChild?: boolean) {
+    removeChild(contentItem: RowOrColumnComponentBase, keepChild?: boolean) {
 
         const index = this.contentItems.indexOf(contentItem);
 
@@ -166,7 +167,7 @@ export class RootComponent implements AfterViewInit, DropTarget {
         }
     }
 
-    replaceChild(oldChild: any, newChild: any, destroyOldChild?: boolean) {
+    replaceChild(oldChild: RowOrColumnComponentBase, newChild: RowOrColumnComponentBase, destroyOldChild?: boolean) {
 
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;

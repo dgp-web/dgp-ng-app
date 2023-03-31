@@ -15,7 +15,7 @@ export class RowOrColumnComponentBase extends EventEmitter {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
-    public readonly splitterGrabSize: any;
+    public readonly splitterGrabSize: number;
     public readonly _isColumn: boolean;
     public readonly _dimension: string;
     public readonly splitters = new Array<SplitterComponent>();
@@ -68,7 +68,10 @@ export class RowOrColumnComponentBase extends EventEmitter {
      */
     addChild(contentItem: RowOrColumnComponentBase, index: number, _$suspendResize: boolean) {
 
-        let newItemSize, itemSize, i, splitterElement;
+        let newItemSize: number,
+            itemSize: number,
+            i: number,
+            splitterElement: JQuery<HTMLElement>;
 
         if (index === undefined) {
             index = this.contentItems.length;
@@ -254,21 +257,12 @@ export class RowOrColumnComponentBase extends EventEmitter {
         this.emit("resize");
     }
 
-    /**
-     * Invoked recursively by the layout manager. AbstractContentItem.init appends
-     * the contentItem's DOM elements to the container, RowOrColumn init adds splitters
-     * in between them
-     *
-     * @package private
-     * @override AbstractContentItem.init
-     * @returns {void}
-     */
     init(): void {
         if (this.isInitialised === true) {
             return;
         }
 
-        let i;
+        let i: number;
 
         for (i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
