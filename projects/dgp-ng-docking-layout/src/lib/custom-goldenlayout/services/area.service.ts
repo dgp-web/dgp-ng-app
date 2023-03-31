@@ -27,7 +27,7 @@ export class AreaService {
 
             allContentItems
                 .filter(x => x.isStack)
-                .map(x => x as StackComponent)
+                .map(x => x as unknown as StackComponent)
                 .map(x => x.getArea())
                 .filter(notNullOrUndefined)
                 .forEach(area => {

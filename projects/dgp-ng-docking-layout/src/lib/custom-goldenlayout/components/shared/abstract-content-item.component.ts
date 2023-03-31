@@ -227,7 +227,7 @@ export abstract class AbstractContentItemComponent extends EventEmitter {
 
     private callOnActiveComponents(methodName: string): void {
         this.contentItems.filter(x => x.config.type === "stack")
-            .map(x => x as StackComponent)
+            .map(x => x as unknown as StackComponent)
             .map(stack => stack.getActiveContentItem())
             .forEach(component => component[methodName]());
     }

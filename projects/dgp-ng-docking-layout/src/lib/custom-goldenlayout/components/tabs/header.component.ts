@@ -104,7 +104,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
                 x.dragListener,
                 this.layoutManager,
                 contentItem,
-                this.parent
+                this.parent as any
             );
         });
 
