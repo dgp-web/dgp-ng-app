@@ -20,7 +20,12 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
 
 @Component({
     selector: "dgp-gl-root",
-    template: ``,
+    template: `
+        <!-- <ng-container *ngFor="let itemConfig of config.content">
+             <dgp-row [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row>
+             <dgp-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-column>
+         </ng-container>-->
+    `,
     styles: [`
         :host {
             position: relative;
@@ -50,6 +55,14 @@ export class RootComponent implements AfterViewInit, DropTarget {
         private readonly elRef: ElementRef
     ) {
         this.config = {...itemDefaultConfig, ...config};
+    }
+
+    init(): void {
+        this.contentItems.forEach(contentItem => {
+            this.element.append(contentItem.element);
+        });
+
+        this.isInitialised = true;
     }
 
     ngAfterViewInit() {
@@ -192,14 +205,6 @@ export class RootComponent implements AfterViewInit, DropTarget {
     destroy() {
         this.callDownwards("destroy", [], true, true);
         this.element.remove();
-    }
-
-    init(): void {
-        this.contentItems.forEach(contentItem => {
-            this.element.append(contentItem.element);
-        });
-
-        this.isInitialised = true;
     }
 
 }
