@@ -2,7 +2,7 @@ import { AbstractContentItemComponent } from "./shared/abstract-content-item.com
 import { ItemContainerComponent } from "./grid/item-container.component";
 import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
+import { ComponentConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
 
 @Component({
     selector: "dgp-gl-component",
@@ -21,7 +21,7 @@ export class GlComponent extends AbstractContentItemComponent {
         @Inject(forwardRef(() => DockingLayoutService))
         public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
-        public config: any,
+        public config: ComponentConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: AbstractContentItemComponent,
         private readonly elementRef: ElementRef<HTMLElement>,
