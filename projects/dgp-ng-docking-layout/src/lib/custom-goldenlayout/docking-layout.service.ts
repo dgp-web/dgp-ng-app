@@ -10,7 +10,6 @@ import {
 } from "./types";
 import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
-import { AbstractContentItemComponent } from "./components/shared/abstract-content-item.component";
 import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
 import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
@@ -25,6 +24,7 @@ import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
 import { StackComponent } from "./components/tabs/stack.component";
 import { GlComponent } from "./components/component.component";
+import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -104,14 +104,14 @@ export class DockingLayoutService extends EventEmitter {
         if (this.isInitialised) {
             this.root.callDownwards("setSize", [this.width, this.height]);
         }
-    }
+    } 
 
-    createContentItem<T extends AbstractContentItemComponent | RootComponent | StackComponent | GlComponent>(
+    createContentItem<T extends RowOrColumnComponent | RootComponent | StackComponent | GlComponent>(
         itemConfig: ItemConfiguration,
-        parentItem: AbstractContentItemComponent | RootComponent | StackComponent | GlComponent
+        parentItem: RowOrColumnComponent | RootComponent | StackComponent | GlComponent
     ): T {
 
-        if (shouldWrapInStack({itemConfig, parentItem: parentItem as AbstractContentItemComponent})) {
+        if (shouldWrapInStack({itemConfig, parentItem: parentItem as RowOrColumnComponent | RootComponent | StackComponent | GlComponent})) {
             itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
         }
 

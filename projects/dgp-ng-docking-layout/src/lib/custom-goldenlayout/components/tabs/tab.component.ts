@@ -1,6 +1,5 @@
 import { Vector2 } from "../../../common/models";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { activeClassName } from "../../constants/active-class-name.constant";
 import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, ViewChild } from "@angular/core";
 import { DragStartEvent } from "../../models/drag-start-event.model";
@@ -31,7 +30,7 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
     private dragListener: DragListenerDirective;
 
     @Output()
-    readonly selected = new EventEmitter<AbstractContentItemComponent>();
+    readonly selected = new EventEmitter<any>();
 
     @Output()
     readonly dragStart = new EventEmitter<DragStartEvent>();

@@ -1,4 +1,3 @@
-import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -81,7 +80,7 @@ export class RootComponent implements AfterViewInit, DropTarget {
         this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
     }
 
-    _$onDrop(contentItem: AbstractContentItemComponent, area: Area) {
+    _$onDrop(contentItem: any, area: Area) {
         let stack;
 
         if (contentItem.isComponent) {
@@ -97,10 +96,10 @@ export class RootComponent implements AfterViewInit, DropTarget {
         const type = area.side[0] === "x" ? "row" : "column";
         const dimension = area.side[0] === "x" ? "width" : "height";
         const insertBefore = area.side[1] === "2";
-        const column = this.contentItems[0] as AbstractContentItemComponent;
+        const column = this.contentItems[0] as any;
 
         if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
-            const rowOrColumn: AbstractContentItemComponent = this.dockingLayoutService.createContentItem({type}, this);
+            const rowOrColumn: any = this.dockingLayoutService.createContentItem({type}, this);
             this.replaceChild(column, rowOrColumn);
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
             rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
@@ -149,7 +148,7 @@ export class RootComponent implements AfterViewInit, DropTarget {
         }
     }
 
-    removeChild(contentItem: AbstractContentItemComponent, keepChild?: boolean) {
+    removeChild(contentItem: any, keepChild?: boolean) {
 
         const index = this.contentItems.indexOf(contentItem);
 
@@ -167,7 +166,7 @@ export class RootComponent implements AfterViewInit, DropTarget {
         }
     }
 
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent, destroyOldChild?: boolean) {
+    replaceChild(oldChild: any, newChild: any, destroyOldChild?: boolean) {
 
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;

@@ -6,7 +6,6 @@ import { EventEmitter } from "../../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../../models/drag-event.model";
 import { Area } from "../../models/area.model";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { DropSegment } from "../../models/drop-segment.model";
 import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
 import { lmContentClassName } from "../../constants/class-names/lm-content-class-name.constant";
@@ -45,8 +44,8 @@ export class DragProxy extends EventEmitter {
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
-                private readonly contentItem: AbstractContentItemComponent | GlComponent,
-                private readonly originalParent: AbstractContentItemComponent) {
+                private readonly contentItem: any | GlComponent,
+                private readonly originalParent: any) {
         super();
 
         const dragSub = this.dragListener

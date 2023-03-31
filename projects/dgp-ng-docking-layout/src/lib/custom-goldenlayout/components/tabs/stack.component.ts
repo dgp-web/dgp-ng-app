@@ -3,7 +3,6 @@ import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
 import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
@@ -54,7 +53,7 @@ export class StackComponent extends EventEmitter implements DropTarget {
         private readonly dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG) config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        readonly parent: AbstractContentItemComponent
+        readonly parent: any
     ) {
         super();
 

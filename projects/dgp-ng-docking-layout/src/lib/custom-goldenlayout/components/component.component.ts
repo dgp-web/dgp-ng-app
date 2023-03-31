@@ -1,4 +1,3 @@
-import { AbstractContentItemComponent } from "./shared/abstract-content-item.component";
 import { ItemContainerComponent } from "./grid/item-container.component";
 import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
@@ -29,7 +28,7 @@ export class GlComponent extends EventEmitter {
         @Inject(ITEM_CONFIG)
         public config: ComponentConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        public parent: AbstractContentItemComponent,
+        public parent: any,
         private readonly elementRef: ElementRef<HTMLElement>,
     ) {
         super();
@@ -86,7 +85,7 @@ export class GlComponent extends EventEmitter {
         }
     }
 
-    _$setParent(parent: AbstractContentItemComponent) {
+    _$setParent(parent: any) {
         this.parent = parent;
     }
 

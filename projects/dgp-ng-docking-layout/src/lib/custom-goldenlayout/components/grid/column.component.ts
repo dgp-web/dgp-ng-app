@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { RowOrColumnComponentBase } from "./row-or-column.component";
 import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../types";
 import { DockingLayoutService } from "../../docking-layout.service";
@@ -16,7 +15,7 @@ export class ColumnComponent extends RowOrColumnComponentBase {
         @Inject(ITEM_CONFIG)
             config: ItemConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-            parent: AbstractContentItemComponent
+            parent: any
     ) {
         super(true, dockingLayoutService, config, parent);
     }

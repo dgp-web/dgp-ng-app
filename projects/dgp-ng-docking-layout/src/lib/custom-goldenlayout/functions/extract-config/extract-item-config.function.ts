@@ -1,7 +1,6 @@
 import { ItemConfiguration } from "../../types";
-import { AbstractContentItemComponent } from "../../components/shared/abstract-content-item.component";
 
-export function extractItemConfig(configNode: ItemConfiguration, item: AbstractContentItemComponent) {
+export function extractItemConfig(configNode: ItemConfiguration, item: any) {
     let key: string;
     let i: number;
 

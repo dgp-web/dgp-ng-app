@@ -1,14 +1,16 @@
 import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ItemConfiguration } from "../../types";
-import { LayoutManagerUtilities } from "../../utilities";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
+import { ItemConfiguration, itemDefaultConfig } from "../../types";
+import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
+import { AreaSides } from "../../models/area.model";
+import { StackComponent } from "../tabs/stack.component";
+import { DropSegment } from "../../models/drop-segment.model";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class RowOrColumnComponentBase extends AbstractContentItemComponent {
+export class RowOrColumnComponentBase extends EventEmitter {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
@@ -23,13 +25,29 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
+    _side: boolean | DropSegment;
+    _sided: boolean;
+
+    contentItems: (RowOrColumnComponentBase | StackComponent)[] = [];
+
+    isInitialised = false;
+    isRoot = false;
+    isRow = false;
+    isColumn = false;
+    isStack = false;
+    isComponent = false;
+    config: ItemConfiguration;
+
     constructor(
         isColumn: boolean,
         public dockingLayoutService: DockingLayoutService,
         config: ItemConfiguration,
-        parent: AbstractContentItemComponent
+        public parent: RowOrColumnComponentBase
     ) {
-        super(dockingLayoutService, config, parent);
+        super();
+
+        this.config = {...itemDefaultConfig, ...config};
+        if (config.content) this.createContentItems(config);
 
         this.isRow = !isColumn;
         this.isColumn = isColumn;
@@ -47,7 +65,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     /**
      * Add a new contentItem to the Row or Column
      */
-    addChild(contentItem: AbstractContentItemComponent, index: number, _$suspendResize: boolean) {
+    addChild(contentItem: RowOrColumnComponentBase, index: number, _$suspendResize: boolean) {
 
         let newItemSize, itemSize, i, splitterElement;
 
@@ -70,7 +88,22 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         }
 
 
-        AbstractContentItemComponent.prototype.addChild.call(this, contentItem, index);
+        if (index === undefined) {
+            index = this.contentItems.length;
+        }
+
+        this.contentItems.splice(index, 0, contentItem);
+
+        if (this.config.content === undefined) {
+            this.config.content = [];
+        }
+
+        this.config.content.splice(index, 0, contentItem.config);
+        contentItem.parent = this;
+
+        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
+            contentItem.init();
+        }
 
         newItemSize = (1 / this.contentItems.length) * 100;
 
@@ -90,13 +123,29 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         this.callDownwards("setSize");
     }
 
+    callDownwards(functionName: string,
+                  functionArguments?: any[],
+                  bottomUp?: boolean,
+                  skipSelf?: boolean) {
+        if (bottomUp !== true && skipSelf !== true) {
+            this[functionName].apply(this, functionArguments || []);
+        }
+        for (let i = 0; i < this.contentItems.length; i++) {
+            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
+        }
+        if (bottomUp === true && skipSelf !== true) {
+            this[functionName].apply(this, functionArguments || []);
+        }
+    }
+
 
     /**
      * Removes a child of this element
      */
-    removeChild(contentItem: AbstractContentItemComponent, keepChild: boolean) {
+    removeChild(contentItem: RowOrColumnComponentBase, keepChild: boolean) {
+        let index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems);
         const removedItemSize = contentItem.config[this._dimension],
-            index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems),
+
             splitterIndex = Math.max(index - 1, 0);
         let i,
             childItem;
@@ -123,7 +172,23 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             }
         }
 
-        AbstractContentItemComponent.prototype.removeChild.call(this, contentItem, keepChild);
+
+        index = this.contentItems.indexOf(contentItem);
+
+        if (keepChild !== true) {
+            this.contentItems[index].destroy();
+        }
+
+        this.contentItems.splice(index, 1);
+
+        this.config.content.splice(index, 1);
+
+        if (this.contentItems.length > 0) {
+            this.callDownwards("setSize");
+
+        } else if (this.config.isClosable === true) {
+            this.parent.removeChild(this, undefined);
+        }
 
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
             childItem = this.contentItems[0];
@@ -134,12 +199,45 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         }
     }
 
+    _$setParent(parent: any) {
+        this.parent = parent;
+    }
+
+    highlightDropZone(x: number, y: number, area: AreaSides) {
+        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
+    }
+
+    destroy() {
+        this.unsubscribe();
+        this.callDownwards("destroy", [], true, true);
+        this.element.remove();
+    }
+
     /**
      * Replaces a child of this Row or Column with another contentItem
      */
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent) {
+    replaceChild(oldChild: RowOrColumnComponentBase, newChild: RowOrColumnComponentBase, destroyOldChild?: boolean) {
         const size = oldChild.config[this._dimension];
-        AbstractContentItemComponent.prototype.replaceChild.call(this, oldChild, newChild);
+
+        const index = this.contentItems.indexOf(oldChild);
+        const parentNode = oldChild.element[0].parentNode;
+
+        parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
+
+        if (destroyOldChild === true) {
+            oldChild.parent = null;
+            oldChild.destroy();
+        }
+
+        this.contentItems[index] = newChild;
+        newChild.parent = this;
+
+        // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
+        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
+            newChild.init();
+        }
+
+        this.callDownwards("setSize");
         newChild.config[this._dimension] = size;
         this.callDownwards("setSize");
     }
@@ -171,7 +269,11 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
 
         let i;
 
-        AbstractContentItemComponent.prototype.init.call(this);
+        for (i = 0; i < this.contentItems.length; i++) {
+            this.childElementContainer.append(this.contentItems[i].element);
+        }
+
+        this.isInitialised = true;
 
         for (i = 0; i < this.contentItems.length - 1; i++) {
             this.contentItems[i].element.after(this.createSplitter(i).element);
@@ -397,6 +499,15 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             this.contentItems[i].config.width = (allEntries[i].width / sizeData.totalWidth) * 100;
         }
     }
+
+    remove() {
+        this.parent.removeChild(this, undefined);
+    }
+
+    private createContentItems(config: ItemConfiguration) {
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
+    }
+
 
     /**
      * Instantiates a new lm.controls.Splitter, binds events to it and adds
