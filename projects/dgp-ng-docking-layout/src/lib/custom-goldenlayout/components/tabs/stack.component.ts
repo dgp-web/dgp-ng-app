@@ -211,7 +211,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.contentItems[i].element.width(contentWidth)
                 .height(contentHeight);
         }
-        this.headerComponent?.updateTabSizes();
     }
 
     init() {
