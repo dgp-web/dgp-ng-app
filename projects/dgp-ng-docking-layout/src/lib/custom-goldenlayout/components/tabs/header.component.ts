@@ -1,25 +1,22 @@
-import { EventEmitter } from "../../utilities";
 import { TabComponent } from "./tab.component";
-import { Component, ElementRef, EventEmitter as NgEventEmitter, HostBinding, Input, Output, ViewContainerRef } from "@angular/core";
+import { Component, ElementRef, EventEmitter as NgEventEmitter, HostBinding, Output, ViewContainerRef } from "@angular/core";
 import { ComponentConfiguration, StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
+import { DgpView } from "dgp-ng-app";
 
-/**
- * This class represents a header above a Stack ContentItem.
- */
 @Component({
     selector: "dgp-gl-header",
     template: `
         <ul class="lm_tabs card-header-tabs nav nav-tabs">
-            <dgp-gl-tab *ngFor="let componentConfig of stackConfig.content"
+            <dgp-gl-tab *ngFor="let componentConfig of model.content"
                         [model]="componentConfig"
-                        [isActive]="activeContentItem?.id === componentConfig.id"
+                        [isActive]="model.activeItemId === componentConfig.id"
                         (dragStart)="propagateDragStart($event, componentConfig)"
                         (selected)="propagateSelected(componentConfig)"></dgp-gl-tab>
         </ul>
     `
 })
-export class HeaderComponent extends EventEmitter {
+export class HeaderComponent extends DgpView<StackConfiguration> {
 
     @HostBinding("class.lm_header")
     @HostBinding("class.card-header")
@@ -27,13 +24,6 @@ export class HeaderComponent extends EventEmitter {
 
     readonly element = $(this.elementRef.nativeElement);
     readonly tabs = new Array<TabComponent>();
-    activeContentItem: ComponentConfiguration;
-
-    @Input()
-    sided: boolean;
-
-    @Input()
-    stackConfig: StackConfiguration;
 
     @Output()
     readonly selectedContentItemChange = new NgEventEmitter<ComponentConfiguration>();
@@ -50,6 +40,10 @@ export class HeaderComponent extends EventEmitter {
         super();
     }
 
+    getActiveContentItem(): ComponentConfiguration {
+        return this.model.content.find(x => x.id === this.model.activeItemId);
+    }
+
     propagateDragStart(event: DragStartEvent, componentConfig: ComponentConfiguration) {
         this.dragStart.emit({
             contentItem: componentConfig,
@@ -60,17 +54,6 @@ export class HeaderComponent extends EventEmitter {
 
     propagateSelected(componentConfig: ComponentConfiguration) {
         this.selectedContentItemChange.emit(componentConfig);
-    }
-
-    setActiveContentItem(contentItem: ComponentConfiguration) {
-        for (let i = 0; i < this.stackConfig.content.length; i++) {
-            let isActive = this.stackConfig.content[i].id === contentItem.id;
-
-            if (isActive === true) {
-                this.activeContentItem = contentItem;
-                this.stackConfig.activeItemIndex = i;
-            }
-        }
     }
 
     destroy(): void {

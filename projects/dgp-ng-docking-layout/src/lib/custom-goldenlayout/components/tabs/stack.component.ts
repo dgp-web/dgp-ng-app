@@ -87,11 +87,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.headerComponent = headerComponentRef.instance;
 
         this.config$.subscribe(x => {
-            this.headerComponent.stackConfig = x;
-        });
-
-        this._sided$.subscribe(x => {
-            this.headerComponent.sided = x;
+            this.headerComponent.model = x;
         });
 
         this.headerComponent.selectedContentItemChange.subscribe(x => {
@@ -238,7 +234,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         }
 
         this.activeContentItem = contentItem;
-        this.headerComponent.setActiveContentItem(contentItem.config);
+        this.config.activeItemId = contentItem.config.id;
         contentItem.show();
         this.emit(activeContentItemChangedEventType, contentItem);
         this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
@@ -249,7 +245,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     getActiveContentItem(): GlComponent {
-        return this.contentItems.find(x => x.config.id === this.headerComponent.activeContentItem?.id);
+        return this.contentItems.find(x => x.config.id === this.headerComponent.getActiveContentItem()?.id);
     }
 
     addChild(contentItem: GlComponent, index?) {
@@ -291,7 +287,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.parent.removeChild(this, undefined);
         }
 
-        if (this.headerComponent.activeContentItem.id === contentItem.config.id) {
+        if (this.headerComponent.getActiveContentItem().id === contentItem.config.id) {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)] as any);
             } else {
