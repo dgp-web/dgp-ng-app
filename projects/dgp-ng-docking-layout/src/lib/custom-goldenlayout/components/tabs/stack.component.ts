@@ -34,8 +34,13 @@ import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 })
 export class StackComponent extends DockingLayoutEngineObject implements DropTarget, AfterViewInit {
 
-    @HostBinding(".lm_item .lm_stack .card")
+
+    @HostBinding("class.lm_item")
+    @HostBinding("class.lm_stack")
+    @HostBinding("class.card")
     readonly bindings = true;
+
+
 
 
     _side: boolean | DropSegment;
