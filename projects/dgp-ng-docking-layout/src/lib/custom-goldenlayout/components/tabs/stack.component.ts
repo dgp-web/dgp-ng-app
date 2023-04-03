@@ -109,7 +109,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         });
 
         this.headerComponent.selectedContentItemChange.subscribe(x => {
-            return;
             if (x === this.getActiveContentItem()) return;
             this.setActiveContentItem(x);
         });
