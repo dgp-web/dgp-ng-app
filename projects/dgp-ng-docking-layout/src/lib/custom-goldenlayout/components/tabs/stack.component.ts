@@ -5,7 +5,7 @@ import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COM
 import { LayoutManagerUtilities } from "../../utilities";
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
 import { DropSegment } from "../../models/drop-segment.model";
 import { ContentAreaDimensions } from "../../models/content-area-dimensions.model";
@@ -59,6 +59,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
     config: StackConfiguration;
+    readonly config$ = observeAttribute$(this as StackComponent, "config");
+    readonly _sided$ = observeAttribute$(this as StackComponent, "_sided");
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
@@ -93,8 +95,16 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
         const headerComponentRef = vcRef.createComponent(HeaderComponent, {injector});
         this.headerComponent = headerComponentRef.instance;
-        this.headerComponent.stackConfig = this.config;
-        this.headerComponent.sided = this._sided;
+        /*   this.headerComponent.stackConfig = this.config;
+           this.headerComponent.sided = this._sided;*/
+
+        this.config$.subscribe(x => {
+            this.headerComponent.stackConfig = x;
+        });
+
+        this._sided$.subscribe(x => {
+            this.headerComponent.sided = x;
+        });
 
         this.headerComponent.selectedContentItemChange.subscribe(x => {
             return;
@@ -208,7 +218,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.contentItems[i].element.width(contentWidth)
                 .height(contentHeight);
         }
-        this.headerComponent?.updateTabSizes();
+        //this.headerComponent?.updateTabSizes();
         this.emit(resizeEventType);
     }
 

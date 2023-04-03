@@ -173,7 +173,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
             if (isActive === true) {
                 this.activeContentItem = contentItem;
-                this.stackConfig.activeItemIndex = i;
+                this.parent.config.activeItemIndex = i;
             }
         }
 
@@ -182,13 +182,13 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
              * If the tab selected was in the dropdown, move everything down one to make way for this one to be the first.
              * This will make sure the most used tabs stay visible.
              */
-            if (this.lastVisibleTabIndex !== -1 && this.stackConfig.activeItemIndex > this.lastVisibleTabIndex) {
-                let activeTab = this.tabs[this.stackConfig.activeItemIndex];
-                for (let j = this.stackConfig.activeItemIndex; j > 0; j--) {
+            if (this.lastVisibleTabIndex !== -1 && this.parent.config.activeItemIndex > this.lastVisibleTabIndex) {
+                let activeTab = this.tabs[this.parent.config.activeItemIndex];
+                for (let j = this.parent.config.activeItemIndex; j > 0; j--) {
                     this.tabs[j] = this.tabs[j - 1];
                 }
                 this.tabs[0] = activeTab;
-                this.stackConfig.activeItemIndex = 0;
+                this.parent.config.activeItemIndex = 0;
             }
         }
 
@@ -216,8 +216,8 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     updateTabSizes(showTabMenu?: boolean): void {
         if (this.tabs.length === 0) return;
 
-        this.element.css(widthOrHeight(!this.sided), "");
-        this.element[widthOrHeight(this.sided)](this.layoutManager.config.dimensions.headerHeight);
+        this.element.css(widthOrHeight(!this.parent._sided), "");
+        this.element[widthOrHeight(this.parent._sided)](this.layoutManager.config.dimensions.headerHeight);
         let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
@@ -231,7 +231,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             tabOverlapAllowanceExceeded = false,
             activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
             activeTab = this.tabs[activeIndex];
-        if (this.sided) {
+        if (this.parent._sided) {
             availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight() - this._tabControlOffset;
         }
         this.lastVisibleTabIndex = -1;
