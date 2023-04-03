@@ -27,10 +27,11 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
     selector: "dgp-gl-header",
     template: `
         <ul class="lm_tabs card-header-tabs nav nav-tabs">
-            <!-- <dgp-gl-tab *ngFor="let componentConfig of stackConfig.content"
-                         [tabId]="componentConfig.id"
-                         [label]="componentConfig.title"
-             ></dgp-gl-tab>-->
+            <dgp-gl-tab *ngFor="let componentConfig of stackConfig.content"
+                        [model]="componentConfig"
+                        [isActive]="stackConfig.activeItemId === componentConfig.id"
+                        (dragStart)="propagateDragStart($event, componentConfig)"
+                        (selected)="propagateSelected(componentConfig)"></dgp-gl-tab>
         </ul>
         <ul class="lm_controls"></ul>
         <ul class="lm_tabdropdown_list"></ul>
@@ -95,22 +96,33 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         this.controlsContainer = this.element.find("." + controlsClassName);
     }
 
+    propagateDragStart(event: DragStartEvent, componentConfig: ComponentConfiguration) {
+        this.dragStart.emit({
+            contentItem: componentConfig,
+            dragListener: event.dragListener,
+            coordinates: event.coordinates
+        });
+    }
+
+    propagateSelected(componentConfig: ComponentConfiguration) {
+        this.selectedContentItemChange.emit(componentConfig);
+    }
+
     /**
      * Creates a new tab and associates it with a contentItem
      */
     createTab(contentItem: ComponentConfiguration, index?: number): void {
-        // return;
+        return;
         /**
          * If there's already a tab relating to the content item, don't do anything
          */
-        if (this.tabs.some(x => x.tabId === contentItem.id)) return;
+        if (this.tabs.some(x => x.model.id === contentItem.id)) return;
 
         const vcRef = this.viewContainerRef;
         const tabRef = vcRef.createComponent(TabComponent);
         this.tabRefs.push(tabRef);
         let tab = tabRef.instance;
-        tab.tabId = contentItem.id;
-        tab.label = contentItem.title;
+        tab.model = contentItem;
         tabRef.changeDetectorRef.markForCheck();
 
         /**
@@ -123,7 +135,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
         tab.dragStart.subscribe(x => {
             this.dragStart.emit({
-                contentItem: contentItem,
+                contentItem,
                 coordinates: x.coordinates,
                 dragListener: x.dragListener
             });
@@ -155,7 +167,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
      */
     removeTab(contentItem: ComponentConfiguration): void {
         for (let i = 0; i < this.tabs.length; i++) {
-            if (this.tabs[i].tabId === contentItem.id) {
+            if (this.tabs[i].model.id === contentItem.id) {
                 this.tabRefs[i].destroy();
                 this.tabRefs.splice(i, 1);
                 this.tabs.splice(i, 1);
@@ -169,7 +181,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
      */
     setActiveContentItem(contentItem: ComponentConfiguration) {
         for (let i = 0; i < this.tabs.length; i++) {
-            let isActive = this.tabs[i].tabId === contentItem.id;
+            let isActive = this.tabs[i].model.id === contentItem.id;
             this.tabs[i].isActive = isActive;
 
             if (isActive === true) {

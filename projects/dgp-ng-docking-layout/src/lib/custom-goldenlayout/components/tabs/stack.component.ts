@@ -101,7 +101,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         });
 
         this.headerComponent.selectedContentItemChange.subscribe(x => {
-            const resolved = this.contentItems.find(y => y.config === x);
+            const resolved = this.contentItems.find(y => y.config.id === x.id);
             if (resolved === this.getActiveContentItem()) return;
             this.setActiveContentItem(resolved);
         });
@@ -109,7 +109,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.headerComponent.dragStart.subscribe(x => {
             if (!x.dragListener) return;
 
-            const resolved = this.contentItems.find(y => y.config === x.contentItem);
+            const resolved = this.contentItems.find(y => y.config.id === x.contentItem.id);
 
             return new DragProxy(
                 x.coordinates,

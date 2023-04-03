@@ -17,7 +17,7 @@ import { ComponentConfiguration } from "../../types";
             (dragStart$)="onDragStart($event)"
             class="lm_tab nav-item">
             <a class="lm_title nav-link"
-               [class.active]="isActive">{{label}}</a>
+               [class.active]="isActive">{{model.title}}</a>
         </li>
     `
 })
@@ -38,12 +38,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
     @HostBinding("." + activeClassName)
     @Input()
     isActive: boolean;
-
-    @Input()
-    tabId: string;
-
-    @Input()
-    label: string;
 
     constructor(
         private readonly elementRef: ElementRef
