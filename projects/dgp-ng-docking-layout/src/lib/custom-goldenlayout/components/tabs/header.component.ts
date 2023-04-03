@@ -17,7 +17,7 @@ import {
     ViewContainerRef
 } from "@angular/core";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
-import { GlComponent } from "../component.component";
+import type { GlComponent } from "../component.component";
 import { LayoutConfiguration, StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 

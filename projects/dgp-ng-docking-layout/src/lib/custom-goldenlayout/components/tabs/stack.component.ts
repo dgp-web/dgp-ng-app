@@ -24,7 +24,7 @@ import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 @Component({
     selector: "dgp-stack",
     template: `
-        <!--<dgp-gl-header></dgp-gl-header>-->
+       <!-- <dgp-gl-header></dgp-gl-header>-->
         <!--<
             <div class="lm_items card-body" style="padding: 0;"></div>
         -->
