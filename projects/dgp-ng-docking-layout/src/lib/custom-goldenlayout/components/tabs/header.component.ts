@@ -199,8 +199,8 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     updateTabSizes(showTabMenu?: boolean): void {
         if (this.tabs.length === 0) return;
 
-        this.element.css(widthOrHeight(!this.parent._sided), "");
-        this.element[widthOrHeight(this.parent._sided)](this.layoutManager.config.dimensions.headerHeight);
+        this.element.css(widthOrHeight(!this.sided), "");
+        this.element[widthOrHeight(this.sided)](this.layoutManager.config.dimensions.headerHeight);
         let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
@@ -214,7 +214,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             tabOverlapAllowanceExceeded = false,
             activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
             activeTab = this.tabs[activeIndex];
-        if (this.parent._sided) {
+        if (this.sided) {
             availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight() - this._tabControlOffset;
         }
         this.lastVisibleTabIndex = -1;
