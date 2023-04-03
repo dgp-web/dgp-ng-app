@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, Injector } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Injector } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
@@ -24,7 +24,12 @@ import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 
 @Component({
     selector: "dgp-stack",
-    template: ``,
+    template: `
+        <!--<div class="lm_item lm_stack card">
+
+            <div class="lm_items card-body" style="padding: 0;"></div>
+        </div>-->
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StackComponent extends DockingLayoutEngineObject implements DropTarget {
@@ -54,7 +59,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         private readonly dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG) config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        public parent: StackParentComponent
+        public parent: StackParentComponent,
+        private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
 
