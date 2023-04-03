@@ -1,4 +1,3 @@
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { EventEmitter } from "../../utilities";
 import { TabComponent } from "./tab.component";
 import { widthOrHeight } from "../../functions/width-or-height.function";
@@ -28,11 +27,9 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
 @Component({
     selector: "dgp-gl-header",
     template: `
-        <!--
-             <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
-             <ul class="lm_controls"></ul>
-             <ul class="lm_tabdropdown_list"></ul>
-        -->
+        <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+        <ul class="lm_controls"></ul>
+        <ul class="lm_tabdropdown_list"></ul>
         <!-- <ng-container *ngFor="let componentConfig of stackConfig.content">
              {{componentConfig.title}}
          </ng-container>-->
@@ -44,7 +41,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     @HostBinding("class.card-header")
     readonly bindings = true;
 
-    readonly element = $(this.elementRef.nativeElement).append(dockingLayoutViewMap.header.render());
+    readonly element = $(this.elementRef.nativeElement);
     readonly rawElement = this.element[0];
     readonly tabs = new Array<TabComponent>();
     readonly tabRefs = new Array<ComponentRef<TabComponent>>();
