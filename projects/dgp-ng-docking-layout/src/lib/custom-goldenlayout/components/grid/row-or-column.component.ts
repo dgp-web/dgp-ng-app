@@ -2,16 +2,19 @@ import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ItemConfiguration, itemDefaultConfig } from "../../types";
-import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
 import { AreaSides } from "../../models/area.model";
 import { DropSegment } from "../../models/drop-segment.model";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
+import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
+import { DragProxy } from "../drag-and-drop/drag-proxy.component";
+import { WithDragParent } from "../../models/with-drag-parent.model";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class RowOrColumnComponentBase extends EventEmitter {
+export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
@@ -127,22 +130,6 @@ export class RowOrColumnComponentBase extends EventEmitter {
         this.callDownwards("setSize");
     }
 
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
-        }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-    }
-
-
     /**
      * Removes a child of this element
      */
@@ -203,8 +190,8 @@ export class RowOrColumnComponentBase extends EventEmitter {
         }
     }
 
-    _$setParent(parent: RowOrColumnParentComponent) {
-        this.parent = parent;
+    setDragParent(parent: DragProxy) {
+        this.parent = parent as any;
     }
 
     highlightDropZone(x: number, y: number, area: AreaSides) {

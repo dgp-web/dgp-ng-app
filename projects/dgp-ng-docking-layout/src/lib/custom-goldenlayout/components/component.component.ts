@@ -2,8 +2,10 @@ import { ItemContainerComponent } from "./grid/item-container.component";
 import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
-import { EventEmitter } from "../utilities";
 import { AreaSides } from "../models/area.model";
+import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
+import { DragProxy } from "./drag-and-drop/drag-proxy.component";
+import { WithDragParent } from "../models/with-drag-parent.model";
 
 @Component({
     selector: "dgp-gl-component",
@@ -15,7 +17,7 @@ import { AreaSides } from "../models/area.model";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlComponent extends EventEmitter {
+export class GlComponent extends DockingLayoutEngineObject implements WithDragParent {
 
     private container: ItemContainerComponent;
     isComponent = true;
@@ -73,19 +75,7 @@ export class GlComponent extends EventEmitter {
         this.element.remove();
     }
 
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-    }
-
-    _$setParent(parent: any) {
+    setDragParent(parent: DragProxy) {
         this.parent = parent;
     }
 

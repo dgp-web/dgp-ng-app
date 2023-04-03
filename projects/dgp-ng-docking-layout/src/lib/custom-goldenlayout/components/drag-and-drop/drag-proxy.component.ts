@@ -12,6 +12,7 @@ import { lmContentClassName } from "../../constants/class-names/lm-content-class
 import { itemDroppedEventType } from "../../constants/event-types/item-dropped-event-type.constant";
 import { createDropSegmentClassName } from "../../functions/create-drop-segment-class-name.function";
 import { GlComponent } from "../component.component";
+import { RowOrColumnComponentBase } from "../grid/row-or-column.component";
 
 /**
  * This class creates a temporary container
@@ -44,7 +45,7 @@ export class DragProxy extends EventEmitter {
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
-                private readonly contentItem: any | GlComponent,
+                private readonly contentItem: RowOrColumnComponentBase | GlComponent,
                 private readonly originalParent: any) {
         super();
 
@@ -169,7 +170,7 @@ export class DragProxy extends EventEmitter {
             this.contentItem.parent.removeChild(this.contentItem as any, true);
         }
 
-        this.contentItem._$setParent(this as any);
+        this.contentItem.setDragParent(this as any);
     }
 
     /**

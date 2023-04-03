@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, Injector } from "@angular/c
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
-import { EventEmitter, LayoutManagerUtilities } from "../../utilities";
+import { LayoutManagerUtilities } from "../../utilities";
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined } from "dgp-ng-app";
@@ -20,13 +20,14 @@ import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
+import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 
 @Component({
     selector: "dgp-stack",
     template: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StackComponent extends EventEmitter implements DropTarget {
+export class StackComponent extends DockingLayoutEngineObject implements DropTarget {
 
     _side: boolean | DropSegment;
     _sided: boolean;
@@ -56,7 +57,6 @@ export class StackComponent extends EventEmitter implements DropTarget {
         public parent: StackParentComponent
     ) {
         super();
-
 
         this.config = {...itemDefaultConfig, ...config};
         if (config.content) this.createContentItems(config);
@@ -131,21 +131,6 @@ export class StackComponent extends EventEmitter implements DropTarget {
         const highlightArea = this.contentAreaDimensions[segment].highlightArea;
         this.dockingLayoutService.dropTargetIndicator.highlightArea(highlightArea);
         this.dropSegment = segment;
-    }
-
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
-        }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
     }
 
     remove() {
