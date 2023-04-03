@@ -1,16 +1,14 @@
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { EventEmitter } from "../../utilities";
 import { TabComponent } from "./tab.component";
-import { StackComponent } from "./stack.component";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { widthOrHeight } from "../../functions/width-or-height.function";
 import { tabsClassName } from "../../constants/class-names/tabs-class-name.constant";
 import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
-import { AfterViewInit, Component, ComponentRef, ElementRef, EventEmitter as NgEventEmitter, Inject, Input, Output } from "@angular/core";
+import { AfterViewInit, Component, ComponentRef, ElementRef, EventEmitter as NgEventEmitter, Input, Output } from "@angular/core";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
-import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
 import { GlComponent } from "../component.component";
 import { StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
@@ -58,8 +56,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
     constructor(
         private readonly layoutManager: DockingLayoutService,
-        @Inject(PARENT_STACK_COMPONENT_REF)
-        readonly parent: StackComponent,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
