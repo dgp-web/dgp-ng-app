@@ -24,7 +24,7 @@ import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 @Component({
     selector: "dgp-stack",
     template: `
-       <!-- <dgp-gl-header></dgp-gl-header>-->
+        <!-- <dgp-gl-header></dgp-gl-header>-->
         <!--<
             <div class="lm_items card-body" style="padding: 0;"></div>
         -->
@@ -216,22 +216,16 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     init() {
         if (this.isInitialised === true) return;
 
-
-        let i, initialItem;
-
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
+            this.headerComponent.createTab(this.contentItems[i]);
+            this.contentItems[i].hide();
         }
 
         this.isInitialised = true;
 
-        for (i = 0; i < this.contentItems.length; i++) {
-            this.headerComponent.createTab(this.contentItems[i] as any);
-            this.contentItems[i].hide();
-        }
-
         if (this.contentItems.length > 0) {
-            initialItem = this.contentItems[this.config.activeItemIndex || 0];
+            const initialItem = this.contentItems[this.config.activeItemIndex || 0];
             this.setActiveContentItem(initialItem);
         }
 
