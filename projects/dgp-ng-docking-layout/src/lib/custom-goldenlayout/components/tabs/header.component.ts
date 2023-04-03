@@ -8,12 +8,14 @@ import { tabsClassName } from "../../constants/class-names/tabs-class-name.const
 import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
-import { DragProxy } from "../drag-and-drop/drag-proxy.component";
-import { AfterViewInit, Component, ComponentRef, ElementRef, Inject } from "@angular/core";
-import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
+import { AfterViewInit, Component, ComponentRef, ElementRef, EventEmitter as NgEventEmitter, Inject, Input, Output } from "@angular/core";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
 import { GlComponent } from "../component.component";
+import { StackConfiguration } from "../../types";
+import { DragStartEvent } from "../../models/drag-start-event.model";
+import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
+import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -42,6 +44,20 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     private lastVisibleTabIndex = -1;
     private readonly _tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
 
+    @Input()
+    sided: boolean;
+
+    @Input()
+    stackConfig: StackConfiguration;
+
+    @Output()
+    readonly selectedContentItemChange = new NgEventEmitter<GlComponent>();
+
+    @Output()
+    readonly dragStart = new NgEventEmitter<{
+        readonly contentItem: GlComponent;
+    } & DragStartEvent>();
+
     constructor(
         private readonly layoutManager: DockingLayoutService,
         @Inject(PARENT_STACK_COMPONENT_REF)
@@ -54,7 +70,8 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             this.element.addClass(selectableClassName);
         }
 
-        this.parent.on(resizeEventType, this.updateTabSizes, this);
+        // TODO: Resize!!!
+        parent.on(resizeEventType, this.updateTabSizes, this);
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
         $(document).mouseup(this.hideAdditionalTabsDropdown);
     }
@@ -87,11 +104,19 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
          */
 
         tab.selected.subscribe(() => {
+            //this.selectedContentItemChange.emit(contentItem);
+            // TODO: Extract this
             if (contentItem === this.parent.getActiveContentItem() as any) return;
             this.parent.setActiveContentItem(contentItem);
         });
 
         tab.dragStart.subscribe(x => {
+            /* this.dragStart.emit({
+                 contentItem,
+                 coordinates: x.coordinates,
+                 dragListener: x.dragListener
+             });*/
+            // TODO: Extract this
             if (!x.dragListener) return;
 
             return new DragProxy(
@@ -148,7 +173,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
             if (isActive === true) {
                 this.activeContentItem = contentItem;
-                this.parent.config.activeItemIndex = i;
+                this.stackConfig.activeItemIndex = i;
             }
         }
 
@@ -157,13 +182,13 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
              * If the tab selected was in the dropdown, move everything down one to make way for this one to be the first.
              * This will make sure the most used tabs stay visible.
              */
-            if (this.lastVisibleTabIndex !== -1 && this.parent.config.activeItemIndex > this.lastVisibleTabIndex) {
-                let activeTab = this.tabs[this.parent.config.activeItemIndex];
-                for (let j = this.parent.config.activeItemIndex; j > 0; j--) {
+            if (this.lastVisibleTabIndex !== -1 && this.stackConfig.activeItemIndex > this.lastVisibleTabIndex) {
+                let activeTab = this.tabs[this.stackConfig.activeItemIndex];
+                for (let j = this.stackConfig.activeItemIndex; j > 0; j--) {
                     this.tabs[j] = this.tabs[j - 1];
                 }
                 this.tabs[0] = activeTab;
-                this.parent.config.activeItemIndex = 0;
+                this.stackConfig.activeItemIndex = 0;
             }
         }
 
@@ -188,11 +213,11 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * Pushes the tabs to the tab dropdown if the available space is not sufficient
      */
-    private updateTabSizes(showTabMenu?: boolean): void {
+    updateTabSizes(showTabMenu?: boolean): void {
         if (this.tabs.length === 0) return;
 
-        this.element.css(widthOrHeight(!this.parent._sided), "");
-        this.element[widthOrHeight(this.parent._sided)](this.layoutManager.config.dimensions.headerHeight);
+        this.element.css(widthOrHeight(!this.sided), "");
+        this.element[widthOrHeight(this.sided)](this.layoutManager.config.dimensions.headerHeight);
         let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
@@ -206,7 +231,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             tabOverlapAllowanceExceeded = false,
             activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
             activeTab = this.tabs[activeIndex];
-        if (this.parent._sided) {
+        if (this.sided) {
             availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight() - this._tabControlOffset;
         }
         this.lastVisibleTabIndex = -1;

@@ -21,6 +21,7 @@ import { GlComponent } from "../component.component";
 import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-component-ref-injection-token.constant";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
+import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 
 @Component({
     selector: "dgp-stack",
@@ -92,6 +93,28 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
         const headerComponentRef = vcRef.createComponent(HeaderComponent, {injector});
         this.headerComponent = headerComponentRef.instance;
+        this.headerComponent.stackConfig = this.config;
+        this.headerComponent.sided = this._sided;
+
+        this.headerComponent.selectedContentItemChange.subscribe(x => {
+            return;
+            if (x === this.getActiveContentItem()) return;
+            this.setActiveContentItem(x);
+        });
+
+        this.headerComponent.dragStart.subscribe(x => {
+            return;
+            if (!x.dragListener) return;
+
+            return new DragProxy(
+                x.coordinates,
+                x.dragListener,
+                this.dockingLayoutService,
+                x.contentItem,
+                this
+            );
+        });
+
         this.headerComponent.ngAfterViewInit();
 
         // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
@@ -185,6 +208,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.contentItems[i].element.width(contentWidth)
                 .height(contentHeight);
         }
+        this.headerComponent?.updateTabSizes();
         this.emit(resizeEventType);
     }
 
