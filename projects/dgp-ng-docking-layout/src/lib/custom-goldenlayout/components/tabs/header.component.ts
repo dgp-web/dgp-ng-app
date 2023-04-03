@@ -8,7 +8,6 @@ import { selectableClassName } from "../../constants/class-names/selectable-clas
 import {
     AfterViewInit,
     Component,
-    ComponentRef,
     ElementRef,
     EventEmitter as NgEventEmitter,
     HostBinding,
@@ -45,7 +44,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
     readonly element = $(this.elementRef.nativeElement);
     readonly tabs = new Array<TabComponent>();
-    readonly tabRefs = new Array<ComponentRef<TabComponent>>();
     activeContentItem: any;
     private tabsContainer: JQuery<HTMLElement>;
     private tabDropdownContainer: JQuery<HTMLElement>;
@@ -111,8 +109,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     removeTab(contentItem: ComponentConfiguration): void {
         for (let i = 0; i < this.tabs.length; i++) {
             if (this.tabs[i].model.id === contentItem.id) {
-                this.tabRefs[i].destroy();
-                this.tabRefs.splice(i, 1);
                 this.tabs.splice(i, 1);
                 return;
             }
@@ -153,7 +149,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
     destroy(): void {
         this.emit(destroyEventType, this);
-        this.tabRefs.forEach(tab => tab.destroy());
         $(document).off("mouseup", this.hideAdditionalTabsDropdown);
         this.element.remove();
     }
