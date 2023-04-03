@@ -156,7 +156,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
             if (isActive === true) {
                 this.activeContentItem = contentItem;
-                this.parent.config.activeItemIndex = i;
+                this.stackConfig.activeItemIndex = i;
             }
         }
 
@@ -165,13 +165,13 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
              * If the tab selected was in the dropdown, move everything down one to make way for this one to be the first.
              * This will make sure the most used tabs stay visible.
              */
-            if (this.lastVisibleTabIndex !== -1 && this.parent.config.activeItemIndex > this.lastVisibleTabIndex) {
-                let activeTab = this.tabs[this.parent.config.activeItemIndex];
-                for (let j = this.parent.config.activeItemIndex; j > 0; j--) {
+            if (this.lastVisibleTabIndex !== -1 && this.stackConfig.activeItemIndex > this.lastVisibleTabIndex) {
+                let activeTab = this.tabs[this.stackConfig.activeItemIndex];
+                for (let j = this.stackConfig.activeItemIndex; j > 0; j--) {
                     this.tabs[j] = this.tabs[j - 1];
                 }
                 this.tabs[0] = activeTab;
-                this.parent.config.activeItemIndex = 0;
+                this.stackConfig.activeItemIndex = 0;
             }
         }
 
