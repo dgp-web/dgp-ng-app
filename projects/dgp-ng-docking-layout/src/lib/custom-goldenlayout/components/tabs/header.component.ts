@@ -1,7 +1,6 @@
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { EventEmitter } from "../../utilities";
 import { TabComponent } from "./tab.component";
-import { DockingLayoutService } from "../../docking-layout.service";
 import { widthOrHeight } from "../../functions/width-or-height.function";
 import { tabsClassName } from "../../constants/class-names/tabs-class-name.constant";
 import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
@@ -10,8 +9,9 @@ import { selectableClassName } from "../../constants/class-names/selectable-clas
 import { AfterViewInit, Component, ComponentRef, ElementRef, EventEmitter as NgEventEmitter, Input, Output } from "@angular/core";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 import { GlComponent } from "../component.component";
-import { StackConfiguration } from "../../types";
+import { LayoutConfiguration, StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
+import { DockingLayoutService } from "../../docking-layout.service";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -38,7 +38,10 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     private controlsContainer: JQuery<HTMLElement>;
     private readonly hideAdditionalTabsDropdown: any;
     private lastVisibleTabIndex = -1;
-    private readonly _tabControlOffset = this.layoutManager.config.settings.tabControlOffset;
+    private _tabControlOffset: number;
+
+    @Input()
+    rootConfig: LayoutConfiguration;
 
     @Input()
     sided: boolean;
@@ -55,20 +58,21 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     } & DragStartEvent>();
 
     constructor(
-        private readonly layoutManager: DockingLayoutService,
+        private readonly dockingLayoutService: DockingLayoutService,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
 
-        if (this.layoutManager.config.settings.selectionEnabled === true) {
-            this.element.addClass(selectableClassName);
-        }
 
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
         $(document).mouseup(this.hideAdditionalTabsDropdown);
     }
 
     ngAfterViewInit(): void {
+        if (this.rootConfig.settings.selectionEnabled === true) {
+            this.element.addClass(selectableClassName);
+        }
+        this._tabControlOffset = this.rootConfig.settings.tabControlOffset;
         this.tabsContainer = this.element.find("." + tabsClassName);
         this.tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
         this.controlsContainer = this.element.find("." + controlsClassName);
@@ -83,7 +87,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
          */
         if (this.tabs.some(x => x.tabId === contentItem.config.id)) return;
 
-        const vcRef = this.layoutManager.getViewContainerRef();
+        const vcRef = this.dockingLayoutService.getViewContainerRef();
         const tabRef = vcRef.createComponent(TabComponent);
         this.tabRefs.push(tabRef);
         let tab = tabRef.instance;
@@ -156,7 +160,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             }
         }
 
-        if (this.layoutManager.config.settings.reorderOnTabMenuClick) {
+        if (this.rootConfig.settings.reorderOnTabMenuClick) {
             /**
              * If the tab selected was in the dropdown, move everything down one to make way for this one to be the first.
              * This will make sure the most used tabs stay visible.
@@ -196,7 +200,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         if (this.tabs.length === 0) return;
 
         this.element.css(widthOrHeight(!this.sided), "");
-        this.element[widthOrHeight(this.sided)](this.layoutManager.config.dimensions.headerHeight);
+        this.element[widthOrHeight(this.sided)](this.rootConfig.dimensions.headerHeight);
         let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
@@ -206,7 +210,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             marginLeft: string,
             overlap = 0,
             tabWidth: number,
-            tabOverlapAllowance = this.layoutManager.config.settings.tabOverlapAllowance,
+            tabOverlapAllowance = this.rootConfig.settings.tabOverlapAllowance,
             tabOverlapAllowanceExceeded = false,
             activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
             activeTab = this.tabs[activeIndex];

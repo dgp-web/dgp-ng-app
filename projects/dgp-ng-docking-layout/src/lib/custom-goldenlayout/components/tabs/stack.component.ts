@@ -24,6 +24,7 @@ import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 @Component({
     selector: "dgp-stack",
     template: `
+        <!--<dgp-gl-header></dgp-gl-header>-->
         <!--<
             <div class="lm_items card-body" style="padding: 0;"></div>
         -->
@@ -88,6 +89,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.headerComponent = headerComponentRef.instance;
         /*   this.headerComponent.stackConfig = this.config;
            this.headerComponent.sided = this._sided;*/
+
+        this.headerComponent.rootConfig = this.dockingLayoutService.config;
 
         this.config$.subscribe(x => {
             this.headerComponent.stackConfig = x;
