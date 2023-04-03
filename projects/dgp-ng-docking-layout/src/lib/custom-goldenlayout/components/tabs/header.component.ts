@@ -12,6 +12,7 @@ import {
     ComponentRef,
     ElementRef,
     EventEmitter as NgEventEmitter,
+    HostBinding,
     Input,
     Output,
     ViewContainerRef
@@ -27,16 +28,23 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
 @Component({
     selector: "dgp-gl-header",
     template: `
-        <!-- <div class="lm_header card-header">
+        <!--
              <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
              <ul class="lm_controls"></ul>
              <ul class="lm_tabdropdown_list"></ul>
-         </div>-->
+        -->
+        <!-- <ng-container *ngFor="let componentConfig of stackConfig.content">
+             {{componentConfig.title}}
+         </ng-container>-->
     `
 })
 export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
-    readonly element = $(dockingLayoutViewMap.header.render());
+    @HostBinding("class.lm_header")
+    @HostBinding("class.card-header")
+    readonly bindings = true;
+
+    readonly element = $(this.elementRef.nativeElement).append(dockingLayoutViewMap.header.render());
     readonly rawElement = this.element[0];
     readonly tabs = new Array<TabComponent>();
     readonly tabRefs = new Array<ComponentRef<TabComponent>>();
