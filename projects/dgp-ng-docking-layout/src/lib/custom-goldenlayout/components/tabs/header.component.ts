@@ -6,12 +6,20 @@ import { tabsClassName } from "../../constants/class-names/tabs-class-name.const
 import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
 import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
-import { AfterViewInit, Component, ComponentRef, ElementRef, EventEmitter as NgEventEmitter, Input, Output } from "@angular/core";
+import {
+    AfterViewInit,
+    Component,
+    ComponentRef,
+    ElementRef,
+    EventEmitter as NgEventEmitter,
+    Input,
+    Output,
+    ViewContainerRef
+} from "@angular/core";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
 import { GlComponent } from "../component.component";
 import { LayoutConfiguration, StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
-import { DockingLayoutService } from "../../docking-layout.service";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -58,7 +66,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     } & DragStartEvent>();
 
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
+        private readonly viewContainerRef: ViewContainerRef,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
@@ -87,7 +95,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
          */
         if (this.tabs.some(x => x.tabId === contentItem.config.id)) return;
 
-        const vcRef = this.dockingLayoutService.getViewContainerRef();
+        const vcRef = this.viewContainerRef;
         const tabRef = vcRef.createComponent(TabComponent);
         this.tabRefs.push(tabRef);
         let tab = tabRef.instance;
