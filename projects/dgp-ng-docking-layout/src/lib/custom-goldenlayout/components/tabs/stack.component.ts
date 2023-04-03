@@ -101,18 +101,21 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         });
 
         this.headerComponent.selectedContentItemChange.subscribe(x => {
-            if (x === this.getActiveContentItem()) return;
-            this.setActiveContentItem(x);
+            const resolved = this.contentItems.find(y => y.config === x);
+            if (resolved === this.getActiveContentItem()) return;
+            this.setActiveContentItem(resolved);
         });
 
         this.headerComponent.dragStart.subscribe(x => {
             if (!x.dragListener) return;
 
+            const resolved = this.contentItems.find(y => y.config === x.contentItem);
+
             return new DragProxy(
                 x.coordinates,
                 x.dragListener,
                 this.dockingLayoutService,
-                x.contentItem,
+                resolved,
                 this
             );
         });
@@ -218,7 +221,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
         for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
-            this.headerComponent.createTab(this.contentItems[i]);
+            this.headerComponent.createTab(this.contentItems[i].config);
             this.contentItems[i].hide();
         }
 
@@ -245,7 +248,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         }
 
         this.activeContentItem = contentItem;
-        this.headerComponent.setActiveContentItem(contentItem);
+        this.headerComponent.setActiveContentItem(contentItem.config);
         contentItem.show();
         this.emit(activeContentItemChangedEventType, contentItem);
         this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
@@ -278,8 +281,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             contentItem.init();
         }
         this.childElementContainer.append(contentItem.element);
-        this.headerComponent.createTab(contentItem as any, index);
-        this.setActiveContentItem(contentItem as any);
+        this.headerComponent.createTab(contentItem.config, index);
+        this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
     }
 
@@ -299,7 +302,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.parent.removeChild(this, undefined);
         }
 
-        this.headerComponent.removeTab(contentItem);
+        this.headerComponent.removeTab(contentItem.config);
         if (this.headerComponent.activeContentItem === contentItem) {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)] as any);

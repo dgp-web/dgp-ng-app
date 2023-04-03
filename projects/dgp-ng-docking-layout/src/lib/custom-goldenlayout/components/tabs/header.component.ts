@@ -17,8 +17,7 @@ import {
     ViewContainerRef
 } from "@angular/core";
 import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
-import type { GlComponent } from "../component.component";
-import { LayoutConfiguration, StackConfiguration } from "../../types";
+import { ComponentConfiguration, LayoutConfiguration, StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 
 /**
@@ -27,7 +26,12 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
 @Component({
     selector: "dgp-gl-header",
     template: `
-        <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
+        <ul class="lm_tabs card-header-tabs nav nav-tabs">
+            <!-- <dgp-gl-tab *ngFor="let componentConfig of stackConfig.content"
+                         [tabId]="componentConfig.id"
+                         [label]="componentConfig.title"
+             ></dgp-gl-tab>-->
+        </ul>
         <ul class="lm_controls"></ul>
         <ul class="lm_tabdropdown_list"></ul>
         <!-- <ng-container *ngFor="let componentConfig of stackConfig.content">
@@ -63,11 +67,11 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     stackConfig: StackConfiguration;
 
     @Output()
-    readonly selectedContentItemChange = new NgEventEmitter<GlComponent>();
+    readonly selectedContentItemChange = new NgEventEmitter<ComponentConfiguration>();
 
     @Output()
     readonly dragStart = new NgEventEmitter<{
-        readonly contentItem: GlComponent;
+        readonly contentItem: ComponentConfiguration;
     } & DragStartEvent>();
 
     constructor(
@@ -94,18 +98,19 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * Creates a new tab and associates it with a contentItem
      */
-    createTab(contentItem: GlComponent, index?: number): void {
+    createTab(contentItem: ComponentConfiguration, index?: number): void {
+        // return;
         /**
          * If there's already a tab relating to the content item, don't do anything
          */
-        if (this.tabs.some(x => x.tabId === contentItem.config.id)) return;
+        if (this.tabs.some(x => x.tabId === contentItem.id)) return;
 
         const vcRef = this.viewContainerRef;
         const tabRef = vcRef.createComponent(TabComponent);
         this.tabRefs.push(tabRef);
         let tab = tabRef.instance;
-        tab.tabId = contentItem.config.id;
-        tab.label = contentItem.config.title;
+        tab.tabId = contentItem.id;
+        tab.label = contentItem.title;
         tabRef.changeDetectorRef.markForCheck();
 
         /**
@@ -118,7 +123,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
         tab.dragStart.subscribe(x => {
             this.dragStart.emit({
-                contentItem,
+                contentItem: contentItem,
                 coordinates: x.coordinates,
                 dragListener: x.dragListener
             });
@@ -148,9 +153,9 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * Finds a tab based on the contentItem its associated with and removes it.
      */
-    removeTab(contentItem: GlComponent): void {
+    removeTab(contentItem: ComponentConfiguration): void {
         for (let i = 0; i < this.tabs.length; i++) {
-            if (this.tabs[i].tabId === contentItem.config.id) {
+            if (this.tabs[i].tabId === contentItem.id) {
                 this.tabRefs[i].destroy();
                 this.tabRefs.splice(i, 1);
                 this.tabs.splice(i, 1);
@@ -162,9 +167,9 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     /**
      * The programmatical equivalent of clicking a Tab.
      */
-    setActiveContentItem(contentItem: GlComponent) {
+    setActiveContentItem(contentItem: ComponentConfiguration) {
         for (let i = 0; i < this.tabs.length; i++) {
-            let isActive = this.tabs[i].tabId === contentItem.config.id;
+            let isActive = this.tabs[i].tabId === contentItem.id;
             this.tabs[i].isActive = isActive;
 
             if (isActive === true) {
