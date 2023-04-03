@@ -35,9 +35,6 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
         </ul>
         <ul class="lm_controls"></ul>
         <ul class="lm_tabdropdown_list"></ul>
-        <!-- <ng-container *ngFor="let componentConfig of stackConfig.content">
-             {{componentConfig.title}}
-         </ng-container>-->
     `
 })
 export class HeaderComponent extends EventEmitter implements AfterViewInit {
