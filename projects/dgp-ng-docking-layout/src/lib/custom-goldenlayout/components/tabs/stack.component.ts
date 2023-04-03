@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, Injector } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, Injector } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
@@ -25,14 +25,17 @@ import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 @Component({
     selector: "dgp-stack",
     template: `
-        <!--<div class="lm_item lm_stack card">
-
+        <!--<
             <div class="lm_items card-body" style="padding: 0;"></div>
-        </div>-->
+        -->
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StackComponent extends DockingLayoutEngineObject implements DropTarget {
+export class StackComponent extends DockingLayoutEngineObject implements DropTarget, AfterViewInit {
+
+    @HostBinding(".lm_item .lm_stack .card")
+    readonly bindings = true;
+
 
     _side: boolean | DropSegment;
     _sided: boolean;
@@ -40,7 +43,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
     contentItems: GlComponent[] = [];
 
-    element: JQuery;
+    element = $(this.elementRef.nativeElement);
+
     childElementContainer: JQuery;
 
     isInitialised = false;
@@ -67,8 +71,16 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.config = {...itemDefaultConfig, ...config};
         if (config.content) this.createContentItems(config);
 
-        const vcRef = dockingLayoutService.getViewContainerRef();
-        const rootInjector = dockingLayoutService.getInjector();
+        this.initialize();
+    }
+
+    ngAfterViewInit(): void {
+    }
+
+    initialize(): void {
+
+        const vcRef = this.dockingLayoutService.getViewContainerRef();
+        const rootInjector = this.dockingLayoutService.getInjector();
 
         const injector = Injector.create({
             providers: [{
@@ -83,20 +95,20 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.headerComponent.ngAfterViewInit();
 
         // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
-        const cfg = dockingLayoutService.config;
+        const cfg = this.dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
-            show: cfg.settings.hasHeaders === true && config.hasHeaders !== false,
+            show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
             popout: cfg.settings.showPopoutIcon && cfg.labels.popout,
             maximise: cfg.settings.showMaximiseIcon && cfg.labels.maximise,
             close: cfg.settings.showCloseIcon && cfg.labels.close,
             minimise: cfg.labels.minimise,
         };
 
-        if (config.header) {
-            Object.assign(this._header, config.header);
+        if (this.config.header) {
+            Object.assign(this._header, this.config.header);
         }
-        if (config.content && config.content[0] && config.content[0].header) {
-            Object.assign(this._header, config.content[0].header);
+        if (this.config.content && this.config.content[0] && this.config.content[0].header) {
+            Object.assign(this._header, this.config.content[0].header);
         }
 
 
@@ -104,8 +116,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             dockingLayoutViewMap.stackContent.render()
         );
 
-        // TODO: allow passing dynamic content into the stack so we can work with HTML elements
-        this.element = $(dockingLayoutViewMap.stack.render());
         this.element.append(this.headerComponent.element);
         this.element.append(this.childElementContainer);
 
@@ -231,6 +241,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     addChild(contentItem: GlComponent, index?) {
+
         if (index === undefined) {
             index = this.contentItems.length;
         }
