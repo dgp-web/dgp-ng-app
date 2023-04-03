@@ -14,7 +14,6 @@ import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-compone
 import { GlComponent } from "../component.component";
 import { StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
-import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 
 /**
@@ -70,8 +69,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             this.element.addClass(selectableClassName);
         }
 
-        // TODO: Resize!!!
-        parent.on(resizeEventType, this.updateTabSizes, this);
         this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
         $(document).mouseup(this.hideAdditionalTabsDropdown);
     }

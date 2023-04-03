@@ -13,7 +13,6 @@ import { lmLeftClassName } from "../../constants/class-names/lm-left-class-name.
 import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
 import { lmBottomClassName } from "../../constants/class-names/lm-bottom-class-name.constant";
 import { lmRightClassName } from "../../constants/class-names/lm-right-class-name.constant";
-import { resizeEventType } from "../../constants/event-types/resize-event-type.constant";
 import { activeContentItemChangedEventType } from "../../constants/event-types/active-content-item-changed-event-type.constant";
 import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
@@ -39,8 +38,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     @HostBinding("class.lm_stack")
     @HostBinding("class.card")
     readonly bindings = true;
-
-
 
 
     _side: boolean | DropSegment;
@@ -223,8 +220,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.contentItems[i].element.width(contentWidth)
                 .height(contentHeight);
         }
-        //this.headerComponent?.updateTabSizes();
-        this.emit(resizeEventType);
+        this.headerComponent?.updateTabSizes();
     }
 
     init() {
