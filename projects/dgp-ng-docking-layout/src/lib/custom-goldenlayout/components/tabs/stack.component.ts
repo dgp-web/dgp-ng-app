@@ -85,10 +85,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         const vcRef = this.dockingLayoutService.getViewContainerRef();
         const headerComponentRef = vcRef.createComponent(HeaderComponent);
         this.headerComponent = headerComponentRef.instance;
-        /*   this.headerComponent.stackConfig = this.config;
-           this.headerComponent.sided = this._sided;*/
-
-        this.headerComponent.rootConfig = this.dockingLayoutService.config;
 
         this.config$.subscribe(x => {
             this.headerComponent.stackConfig = x;
@@ -117,8 +113,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
                 this
             );
         });
-
-        this.headerComponent.ngAfterViewInit();
 
         // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
         const cfg = this.dockingLayoutService.config;
