@@ -14,6 +14,7 @@ import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration, itemDefaultConfig } from "../types";
 import { RowOrColumnComponentBase } from "./grid/row-or-column.component";
+import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
@@ -33,7 +34,7 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent implements AfterViewInit, DropTarget {
+export class RootComponent extends DockingLayoutEngineObject implements AfterViewInit, DropTarget {
 
     readonly contentItems = this.config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
 
@@ -54,6 +55,8 @@ export class RootComponent implements AfterViewInit, DropTarget {
         private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
     ) {
+        super();
+
         this.config = {...itemDefaultConfig, ...config};
     }
 
@@ -145,21 +148,6 @@ export class RootComponent implements AfterViewInit, DropTarget {
             surface: width * height,
             contentItem: this
         };
-    }
-
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
-        }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
     }
 
     removeChild(contentItem: RowOrColumnComponentBase, keepChild?: boolean) {
