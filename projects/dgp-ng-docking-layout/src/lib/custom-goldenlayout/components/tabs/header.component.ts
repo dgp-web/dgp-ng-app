@@ -44,7 +44,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
     readonly bindings = true;
 
     readonly element = $(this.elementRef.nativeElement);
-    readonly rawElement = this.element[0];
     readonly tabs = new Array<TabComponent>();
     readonly tabRefs = new Array<ComponentRef<TabComponent>>();
     activeContentItem: any;
