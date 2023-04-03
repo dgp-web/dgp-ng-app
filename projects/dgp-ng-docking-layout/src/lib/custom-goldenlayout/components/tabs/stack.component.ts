@@ -114,7 +114,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         });
 
         this.headerComponent.dragStart.subscribe(x => {
-            return;
             if (!x.dragListener) return;
 
             return new DragProxy(

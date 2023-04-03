@@ -14,7 +14,6 @@ import { PARENT_STACK_COMPONENT_REF } from "../../constants/parent-stack-compone
 import { GlComponent } from "../component.component";
 import { StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
-import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 
 /**
  * This class represents a header above a Stack ContentItem.
@@ -105,21 +104,11 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         });
 
         tab.dragStart.subscribe(x => {
-            /* this.dragStart.emit({
-                 contentItem,
-                 coordinates: x.coordinates,
-                 dragListener: x.dragListener
-             });*/
-            // TODO: Extract this
-            if (!x.dragListener) return;
-
-            return new DragProxy(
-                x.coordinates,
-                x.dragListener,
-                this.layoutManager,
+            this.dragStart.emit({
                 contentItem,
-                this.parent
-            );
+                coordinates: x.coordinates,
+                dragListener: x.dragListener
+            });
         });
 
         if (this.tabs.length === 0) {
