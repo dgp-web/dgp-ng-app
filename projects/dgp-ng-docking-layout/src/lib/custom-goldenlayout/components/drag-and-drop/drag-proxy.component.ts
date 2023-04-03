@@ -13,6 +13,7 @@ import { itemDroppedEventType } from "../../constants/event-types/item-dropped-e
 import { createDropSegmentClassName } from "../../functions/create-drop-segment-class-name.function";
 import { GlComponent } from "../component.component";
 import { RowOrColumnComponentBase } from "../grid/row-or-column.component";
+import { StackComponent } from "../tabs/stack.component";
 
 /**
  * This class creates a temporary container
@@ -46,7 +47,7 @@ export class DragProxy extends EventEmitter {
                 private readonly dragListener: DragListenerDirective,
                 private readonly layoutManager: DockingLayoutService,
                 private readonly contentItem: RowOrColumnComponentBase | GlComponent,
-                private readonly originalParent: any) {
+                private readonly originalParent: StackComponent) {
         super();
 
         const dragSub = this.dragListener
