@@ -2,8 +2,6 @@ import { EventEmitter } from "../../utilities";
 import { TabComponent } from "./tab.component";
 import { widthOrHeight } from "../../functions/width-or-height.function";
 import { tabsClassName } from "../../constants/class-names/tabs-class-name.constant";
-import { tabDropdownListClassName } from "../../constants/class-names/tabs-dropdown-list-class-name.constant";
-import { controlsClassName } from "../../constants/class-names/controls-class-name.constant";
 import { selectableClassName } from "../../constants/class-names/selectable-class-name.constant";
 import {
     AfterViewInit,
@@ -28,12 +26,10 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
         <ul class="lm_tabs card-header-tabs nav nav-tabs">
             <dgp-gl-tab *ngFor="let componentConfig of stackConfig.content"
                         [model]="componentConfig"
-                        [isActive]="stackConfig.activeItemId === componentConfig.id"
+                        [isActive]="activeContentItem?.id === componentConfig.id"
                         (dragStart)="propagateDragStart($event, componentConfig)"
                         (selected)="propagateSelected(componentConfig)"></dgp-gl-tab>
         </ul>
-        <ul class="lm_controls"></ul>
-        <ul class="lm_tabdropdown_list"></ul>
     `
 })
 export class HeaderComponent extends EventEmitter implements AfterViewInit {
@@ -44,13 +40,10 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
     readonly element = $(this.elementRef.nativeElement);
     readonly tabs = new Array<TabComponent>();
-    activeContentItem: any;
+    activeContentItem: ComponentConfiguration;
     private tabsContainer: JQuery<HTMLElement>;
-    private tabDropdownContainer: JQuery<HTMLElement>;
     private controlsContainer: JQuery<HTMLElement>;
-    private readonly hideAdditionalTabsDropdown: any;
     private lastVisibleTabIndex = -1;
-    private _tabControlOffset: number;
 
     @Input()
     rootConfig: LayoutConfiguration;
@@ -74,20 +67,13 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
-
-
-        this.hideAdditionalTabsDropdown = () => this._hideAdditionalTabsDropdown();
-        $(document).mouseup(this.hideAdditionalTabsDropdown);
     }
 
     ngAfterViewInit(): void {
         if (this.rootConfig.settings.selectionEnabled === true) {
             this.element.addClass(selectableClassName);
         }
-        this._tabControlOffset = this.rootConfig.settings.tabControlOffset;
         this.tabsContainer = this.element.find("." + tabsClassName);
-        this.tabDropdownContainer = this.element.find("." + tabDropdownListClassName).hide();
-        this.controlsContainer = this.element.find("." + controlsClassName);
     }
 
     propagateDragStart(event: DragStartEvent, componentConfig: ComponentConfiguration) {
@@ -119,9 +105,8 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
      * The programmatical equivalent of clicking a Tab.
      */
     setActiveContentItem(contentItem: ComponentConfiguration) {
-        for (let i = 0; i < this.tabs.length; i++) {
-            let isActive = this.tabs[i].model.id === contentItem.id;
-            this.tabs[i].isActive = isActive;
+        for (let i = 0; i < this.stackConfig.content.length; i++) {
+            let isActive = this.stackConfig.content[i].id === contentItem.id;
 
             if (isActive === true) {
                 this.activeContentItem = contentItem;
@@ -149,17 +134,9 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
     destroy(): void {
         this.emit(destroyEventType, this);
-        $(document).off("mouseup", this.hideAdditionalTabsDropdown);
         this.element.remove();
     }
 
-
-    /**
-     * Hides drop down for additional tabs when there are too many to display.
-     */
-    _hideAdditionalTabsDropdown(): void {
-        this.tabDropdownContainer.hide();
-    }
 
     /**
      * Pushes the tabs to the tab dropdown if the available space is not sufficient
@@ -169,7 +146,7 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
 
         this.element.css(widthOrHeight(!this.sided), "");
         this.element[widthOrHeight(this.sided)](this.rootConfig.dimensions.headerHeight);
-        let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth() - this._tabControlOffset,
+        let availableWidth = this.element.outerWidth() - this.controlsContainer.outerWidth(),
             cumulativeTabWidth = 0,
             visibleTabWidth = 0,
             tabElement: JQuery<HTMLElement>,
@@ -180,10 +157,10 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
             tabWidth: number,
             tabOverlapAllowance = this.rootConfig.settings.tabOverlapAllowance,
             tabOverlapAllowanceExceeded = false,
-            activeIndex = (this.activeContentItem ? this.tabs.indexOf(this.activeContentItem.tab) : 0),
+            activeIndex = (this.activeContentItem ? this.stackConfig.content.indexOf(this.activeContentItem) : 0),
             activeTab = this.tabs[activeIndex];
         if (this.sided) {
-            availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight() - this._tabControlOffset;
+            availableWidth = this.element.outerHeight() - this.controlsContainer.outerHeight();
         }
         this.lastVisibleTabIndex = -1;
 
@@ -237,15 +214,9 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
                 }
 
                 if (tabOverlapAllowanceExceeded && i !== activeIndex) {
-                    if (showTabMenu) {
-                        // Tab menu already shown, so we just add to it.
-                        tabElement.css({"z-index": "auto", "margin-left": ""});
-                        this.tabDropdownContainer.append(tabElement);
-                    } else {
-                        // We now know the tab menu must be shown, so we have to recalculate everything.
-                        this.updateTabSizes(true);
-                        return;
-                    }
+                    // We now know the tab menu must be shown, so we have to recalculate everything.
+                    this.updateTabSizes(true);
+                    return;
                 }
 
             } else {

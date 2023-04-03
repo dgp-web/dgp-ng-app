@@ -33,12 +33,10 @@ import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 })
 export class StackComponent extends DockingLayoutEngineObject implements DropTarget, AfterViewInit {
 
-
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
     @HostBinding("class.card")
     readonly bindings = true;
-
 
     _side: boolean | DropSegment;
     _sided: boolean;
@@ -258,7 +256,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     getActiveContentItem(): GlComponent {
-        return this.headerComponent.activeContentItem;
+        return this.contentItems.find(x => x.config.id === this.headerComponent.activeContentItem?.id);
     }
 
     addChild(contentItem: GlComponent, index?) {
@@ -301,7 +299,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         }
 
         this.headerComponent.removeTab(contentItem.config);
-        if (this.headerComponent.activeContentItem === contentItem) {
+        if (this.headerComponent.activeContentItem.id === contentItem.config.id) {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)] as any);
             } else {
