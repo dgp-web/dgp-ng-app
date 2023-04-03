@@ -97,7 +97,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
         this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
     }
 
-    _$onDrop(contentItem: any, area: Area) {
+    onDrop(contentItem: any, area: Area) {
         let stack;
 
         if (contentItem.isComponent) {

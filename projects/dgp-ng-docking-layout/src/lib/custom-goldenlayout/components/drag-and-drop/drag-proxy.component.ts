@@ -127,14 +127,14 @@ export class DragProxy extends EventEmitter {
          * Valid drop area found
          */
         if (this.area !== null) {
-            this.area.contentItem._$onDrop(this.contentItem, this.area);
+            this.area.contentItem.onDrop(this.contentItem, this.area);
 
             /**
              * No valid drop area available at present, but one has been found before.
              * Use it
              */
         } else if (this.lastValidArea !== null) {
-            this.lastValidArea.contentItem._$onDrop(this.contentItem, this.lastValidArea);
+            this.lastValidArea.contentItem.onDrop(this.contentItem, this.lastValidArea);
 
             /**
              * No valid drop area found during the duration of the drag. Return

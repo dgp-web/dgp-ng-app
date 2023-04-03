@@ -284,7 +284,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         }
     }
 
-    _$onDrop(contentItem: GlComponent) {
+    onDrop(contentItem: GlComponent) {
 
         /*
          * The item was dropped on the header area. Just add it as a child of this stack and
