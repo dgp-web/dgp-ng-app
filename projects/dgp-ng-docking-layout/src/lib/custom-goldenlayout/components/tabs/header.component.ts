@@ -86,19 +86,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         this.selectedContentItemChange.emit(componentConfig);
     }
 
-
-    /**
-     * Finds a tab based on the contentItem its associated with and removes it.
-     */
-    removeTab(contentItem: ComponentConfiguration): void {
-        for (let i = 0; i < this.tabs.length; i++) {
-            if (this.tabs[i].model.id === contentItem.id) {
-                this.tabs.splice(i, 1);
-                return;
-            }
-        }
-    }
-
     /**
      * The programmatical equivalent of clicking a Tab.
      */

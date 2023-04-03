@@ -297,7 +297,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.parent.removeChild(this, undefined);
         }
 
-        this.headerComponent.removeTab(contentItem.config);
         if (this.headerComponent.activeContentItem.id === contentItem.config.id) {
             if (this.contentItems.length > 0) {
                 this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)] as any);
