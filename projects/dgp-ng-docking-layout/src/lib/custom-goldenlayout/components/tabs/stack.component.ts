@@ -221,7 +221,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
         for (let i = 0; i < this.contentItems.length; i++) {
             this.childElementContainer.append(this.contentItems[i].element);
-            this.headerComponent.createTab(this.contentItems[i].config);
             this.contentItems[i].hide();
         }
 
@@ -281,7 +280,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             contentItem.init();
         }
         this.childElementContainer.append(contentItem.element);
-        this.headerComponent.createTab(contentItem.config, index);
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");
     }

@@ -108,59 +108,6 @@ export class HeaderComponent extends EventEmitter implements AfterViewInit {
         this.selectedContentItemChange.emit(componentConfig);
     }
 
-    /**
-     * Creates a new tab and associates it with a contentItem
-     */
-    createTab(contentItem: ComponentConfiguration, index?: number): void {
-        return;
-        /**
-         * If there's already a tab relating to the content item, don't do anything
-         */
-        if (this.tabs.some(x => x.model.id === contentItem.id)) return;
-
-        const vcRef = this.viewContainerRef;
-        const tabRef = vcRef.createComponent(TabComponent);
-        this.tabRefs.push(tabRef);
-        let tab = tabRef.instance;
-        tab.model = contentItem;
-        tabRef.changeDetectorRef.markForCheck();
-
-        /**
-         * Register to Angular outputs
-         */
-
-        tab.selected.subscribe(() => {
-            this.selectedContentItemChange.emit(contentItem);
-        });
-
-        tab.dragStart.subscribe(x => {
-            this.dragStart.emit({
-                contentItem,
-                coordinates: x.coordinates,
-                dragListener: x.dragListener
-            });
-        });
-
-        if (this.tabs.length === 0) {
-            this.tabs.push(tab);
-            this.tabsContainer.append(tab.element);
-            return;
-        }
-
-        if (index === undefined) {
-            index = this.tabs.length;
-        }
-
-        if (index > 0) {
-            this.tabs[index - 1].element.after(tab.element);
-        } else {
-            this.tabs[0].element.before(tab.element);
-        }
-
-        this.tabs.splice(index, 0, tab);
-        this.updateTabSizes();
-
-    }
 
     /**
      * Finds a tab based on the contentItem its associated with and removes it.
