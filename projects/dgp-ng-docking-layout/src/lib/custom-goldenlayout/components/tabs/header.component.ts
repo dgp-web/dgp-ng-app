@@ -1,5 +1,5 @@
 import { TabComponent } from "./tab.component";
-import { Component, ElementRef, EventEmitter as NgEventEmitter, HostBinding, Output, ViewContainerRef } from "@angular/core";
+import { Component, ElementRef, EventEmitter as NgEventEmitter, HostBinding, Output, QueryList, ViewChildren } from "@angular/core";
 import { ComponentConfiguration, StackConfiguration } from "../../types";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
@@ -23,7 +23,8 @@ export class HeaderComponent extends DgpView<StackConfiguration> {
     readonly bindings = true;
 
     readonly element = $(this.elementRef.nativeElement);
-    readonly tabs = new Array<TabComponent>();
+    @ViewChildren(TabComponent)
+    readonly tabs: QueryList<TabComponent>;
 
     @Output()
     readonly selectedContentItemChange = new NgEventEmitter<ComponentConfiguration>();
@@ -34,7 +35,6 @@ export class HeaderComponent extends DgpView<StackConfiguration> {
     } & DragStartEvent>();
 
     constructor(
-        private readonly viewContainerRef: ViewContainerRef,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();

@@ -547,7 +547,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         }
 
         for (i = 0; i < tabsLength; i++) {
-            tabElement = this.headerComponent.tabs[i].element;
+            tabElement = this.headerComponent.tabs.toArray()[i].element;
             offset = tabElement.offset();
             if (this._sided) {
                 tabLeft = offset.top;
