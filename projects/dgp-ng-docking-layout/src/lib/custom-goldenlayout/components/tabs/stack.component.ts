@@ -213,7 +213,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
     }
 
-    addChild(contentItem: GlComponent, index?) {
+    addChild(contentItem: GlComponent, index?: number) {
 
         if (index === undefined) {
             index = this.contentItems.length;
@@ -226,7 +226,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
 
         this.config.content.splice(index, 0, contentItem.config);
-        contentItem.parent = this as any;
+        contentItem.parent = this;
 
         this.childElementContainer.append(contentItem.element);
         this.setActiveContentItem(contentItem.config.id);

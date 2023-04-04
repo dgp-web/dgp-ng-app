@@ -82,7 +82,6 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
 
         this.element.width(width);
         this.element.height(height);
-
         /*
          * Root can be empty
          */

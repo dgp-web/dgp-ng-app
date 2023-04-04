@@ -141,7 +141,7 @@ export class DragProxy extends EventEmitter {
              * (Which is not the case if the drag had been initiated by createDragSource)
              */
         } else if (this.originalParent) {
-            this.originalParent.addChild(this.contentItem as any);
+            this.originalParent.addChild(this.contentItem);
 
             /**
              * The drag didn't ultimately end up with adding the content item to
@@ -186,7 +186,6 @@ export class DragProxy extends EventEmitter {
         height -= (!this.sided ? dimensions.headerHeight : 0);
 
         $x.size(this.childElementContainer, {x: width, y: height});
-        $x.size(this.contentItem.element, {x: width, y: height});
     }
 
 }
