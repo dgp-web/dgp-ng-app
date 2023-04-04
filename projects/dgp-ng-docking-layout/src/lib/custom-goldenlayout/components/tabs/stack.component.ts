@@ -11,7 +11,7 @@ import {
     StackConfiguration
 } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
-import { HeaderComponent } from "./header.component";
+import { StackHeaderComponent } from "./stack-header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
@@ -66,7 +66,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     private dropIndex: number = null;
     private subscription: Subscription;
     // @ViewChild(HeaderComponent, {read: HeaderComponent})
-    private headerComponent: HeaderComponent;
+    private headerComponent: StackHeaderComponent;
 
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
@@ -95,7 +95,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     initialize(): void {
 
         const vcRef = this.dockingLayoutService.getViewContainerRef();
-        const headerComponentRef = vcRef.createComponent(HeaderComponent);
+        const headerComponentRef = vcRef.createComponent(StackHeaderComponent);
         this.headerComponent = headerComponentRef.instance;
 
         this.config$.subscribe(x => {

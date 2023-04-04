@@ -5,7 +5,7 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
 
 @Component({
-    selector: "dgp-gl-header",
+    selector: "dgp-gl-stack-header",
     template: `
         <ul class="lm_tabs card-header-tabs nav nav-tabs">
             <dgp-gl-tab *ngFor="let componentConfig of model.content"
@@ -16,7 +16,7 @@ import { DgpView } from "dgp-ng-app";
         </ul>
     `
 })
-export class HeaderComponent extends DgpView<StackConfiguration> {
+export class StackHeaderComponent extends DgpView<StackConfiguration> {
 
     @HostBinding("class.lm_header")
     @HostBinding("class.card-header")
