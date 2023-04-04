@@ -40,10 +40,6 @@ export class StackHeaderComponent extends DgpView<StackConfiguration> {
         super();
     }
 
-    getActiveContentItem(): ComponentConfiguration {
-        return this.model.content.find(x => x.id === this.model.activeItemId);
-    }
-
     propagateDragStart(event: DragStartEvent, componentConfig: ComponentConfiguration) {
         this.dragStart.emit({
             contentItem: componentConfig,

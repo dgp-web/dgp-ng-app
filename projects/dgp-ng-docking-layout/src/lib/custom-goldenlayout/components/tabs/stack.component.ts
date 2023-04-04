@@ -170,19 +170,13 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     hide() {
-        this.callOnActiveComponents("hide");
         this.element.hide();
         this.dockingLayoutService.updateSize();
     }
 
     show() {
-        this.callOnActiveComponents("show");
         this.element.show();
         this.dockingLayoutService.updateSize();
-    }
-
-    private callOnActiveComponents(methodName: string): void {
-        this.getActiveContentItem()[methodName]();
     }
 
     private createContentItems(config: StackConfiguration) {
@@ -221,7 +215,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         if (notNullOrUndefined(this.config.publishSelectedItemChange$)) {
             this.subscription = this.config.publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
-                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id) as any);
+                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
                 }
             });
         }
@@ -242,10 +236,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         if (this.config.onSelectedItemChange) {
             this.config.onSelectedItemChange(contentItem.config.id);
         }
-    }
-
-    getActiveContentItem(): GlComponent {
-        return this.contentItems.find(x => x.config.id === this.config.activeItemId);
     }
 
     addChild(contentItem: GlComponent, index?) {
@@ -612,8 +602,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     processSelectedContentItemChange(x: ComponentConfiguration) {
+        if (x.id === this.config.activeItemId) return;
         const resolved = this.contentItems.find(y => y.config.id === x.id);
-        if (resolved === this.getActiveContentItem()) return;
         this.setActiveContentItem(resolved);
     }
 }
