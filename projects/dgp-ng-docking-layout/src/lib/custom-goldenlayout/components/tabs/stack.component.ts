@@ -6,11 +6,9 @@ import {
     HeaderConfig,
     ITEM_CONFIG,
     itemDefaultConfig,
-    ItemType,
     PARENT_ITEM_COMPONENT,
     StackConfiguration
 } from "../../types";
-import { LayoutManagerUtilities } from "../../utilities";
 import { StackHeaderComponent } from "./stack-header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
@@ -29,6 +27,7 @@ import { StackParentComponent } from "../../models/stack-parent-component.model"
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
+import { RowOrColumnComponent } from "../grid/row-or-column.component";
 
 @Component({
     selector: "dgp-stack",
@@ -318,58 +317,50 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
          * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
          * aggregate some conditions to make the if statements later on more readable
          */
-        let isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom,
-            isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right,
-            insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left,
-            hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow),
-            type: ItemType = isVertical ? "column" : "row",
-            dimension = isVertical ? "height" : "width",
-            index,
-            stack,
-            rowOrColumn;
+        const isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom;
+        const isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right;
+        const insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left;
+        const hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow);
+        const dimension = isVertical ? "height" : "width";
 
-        /*
-         * The content item can be either a component or a stack. If it is a component, wrap it into a stack
-         */
-        if (contentItem.isComponent) {
-            console.log("STACK");
-            stack = this.dockingLayoutService.createContentItem({
-                type: "stack",
-                header: contentItem.config.header || {}
-            }, this as any);
-            stack.init();
-            stack.addChild(contentItem);
-            contentItem = stack;
-        } else {
-            console.log("NO STACK");
-        }
+        const stack = this.createAndInitStack(contentItem);
 
         /*
          * If the item is dropped on top or bottom of a column or left and right of a row, it's already
          * layd out in the correct way. Just add it as a child
          */
         if (hasCorrectParent) {
-            index = new LayoutManagerUtilities().indexOf(this, this.parent.contentItems);
-            this.parent.addChild(contentItem as any, insertBefore ? index : index + 1, true);
+            const index = this.parent.contentItems.indexOf(this);
+            this.parent.addChild(stack as any, insertBefore ? index : index + 1, true);
             this.config[dimension] *= 0.5;
-            contentItem.config[dimension] = this.config[dimension];
+            stack.config[dimension] = this.config[dimension];
             this.parent.callDownwards("setSize");
             /*
              * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
              * to create the appropriate contentItem for them to live in
              */
         } else {
-            type = isVertical ? "column" : "row";
-            rowOrColumn = this.dockingLayoutService.createContentItem({type}, this);
+            const type = isVertical ? "column" : "row";
+            const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
             this.parent.replaceChild(this as any, rowOrColumn);
 
-            rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
-            rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
+            rowOrColumn.addChild(stack as any, insertBefore ? 0 : undefined, true);
+            rowOrColumn.addChild(this as any, insertBefore ? undefined : 0, true);
 
             this.config[dimension] = 50;
-            contentItem.config[dimension] = 50;
+            stack.config[dimension] = 50;
             rowOrColumn.callDownwards("setSize");
         }
+    }
+
+    private createAndInitStack(component: GlComponent): StackComponent {
+        const stack = this.dockingLayoutService.createContentItem<StackComponent>({
+            type: "stack",
+            header: component.config.header || {}
+        }, this);
+        stack.init();
+        stack.addChild(component);
+        return stack;
     }
 
     /**
