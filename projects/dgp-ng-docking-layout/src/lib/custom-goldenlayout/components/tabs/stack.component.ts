@@ -374,7 +374,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
      * If the user hovers above the header part of the stack, indicate drop positions for tabs.
      * otherwise indicate which segment of the body the dragged item would be dropped on
      */
-    highlightDropZone(x, y) {
+    highlightDropZone(x: number, y: number) {
         let segment: keyof ContentAreaDimensions;
         let area: AreaSides;
 
