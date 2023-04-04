@@ -108,7 +108,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             this.processDragStart(x);
         });
 
-        // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
         const cfg = this.dockingLayoutService.config;
         this._header = { // defaults' reconstruction from old configuration style
             show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
@@ -253,7 +252,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
         this.childElementContainer.append(contentItem.element);
         this.setActiveContentItem(contentItem.config.id);
-        this.callDownwards("setSize");
+        this.setSize();
     }
 
     removeChild(componentId: string, keepChild: boolean) {
@@ -268,7 +267,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.config.content.splice(index, 1);
 
         if (this.contentItems.length > 0) {
-            this.callDownwards("setSize");
+            this.setSize();
         } else if (this.config.isClosable === true) {
             this.parent.removeChild(this, undefined);
         }
