@@ -1,5 +1,5 @@
 import { ItemContainerComponent } from "./grid/item-container.component";
-import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject, ViewChild } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
@@ -8,7 +8,9 @@ import { WithDragParent } from "../models/with-drag-parent.model";
 
 @Component({
     selector: "dgp-gl-component",
-    template: ``,
+    template: `
+        <dgp-item-container [model]="config"></dgp-item-container>
+    `,
     styles: [`
         :host {
             overflow: auto;
@@ -16,16 +18,18 @@ import { WithDragParent } from "../models/with-drag-parent.model";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlComponent extends DockingLayoutEngineObject implements WithDragParent {
+export class GlComponent extends DockingLayoutEngineObject implements WithDragParent, AfterViewInit {
 
+    @ViewChild(ItemContainerComponent, {read: ItemContainerComponent})
     private container: ItemContainerComponent;
     isComponent = true;
     isInitialised = false;
-    element: JQuery;
+    element = $(this.elementRef.nativeElement);
 
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
         public dockingLayoutService: DockingLayoutService,
+        //rivate readonly vcRef: ViewContainerRef,
         @Inject(ITEM_CONFIG)
         public config: ComponentConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
@@ -34,18 +38,11 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
     ) {
         super();
         this.config = {...itemDefaultConfig, ...config};
-        this.isComponent = true;
 
-        const vcRef = this.dockingLayoutService.getViewContainerRef();
+    }
 
-        const itemContainerComponentRef = vcRef.createComponent(ItemContainerComponent);
-        itemContainerComponentRef.instance.model = this.config;
-        itemContainerComponentRef.changeDetectorRef.markForCheck();
-        this.container = itemContainerComponentRef.instance;
-
-        this.element = $(this.elementRef.nativeElement);
-        // move rendered item to container (shouldn't be necessary?)
-        this.elementRef.nativeElement.append(itemContainerComponentRef.injector.get(ElementRef).nativeElement);
+    ngAfterViewInit(): void {
+        this.elementRef.nativeElement.append(this.container.elementRef.nativeElement);
     }
 
     setSize() {
@@ -77,5 +74,6 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
     setDragParent(parent: DragProxy) {
         this.parent = parent;
     }
+
 
 }
