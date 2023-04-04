@@ -331,7 +331,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
          */
         if (hasCorrectParent) {
             const index = this.parent.contentItems.indexOf(this);
-            this.parent.addChild(stack as any, insertBefore ? index : index + 1, true);
+            this.parent.addChild(stack, insertBefore ? index : index + 1, true);
             this.config[dimension] *= 0.5;
             stack.config[dimension] = this.config[dimension];
             this.parent.callDownwards("setSize");
@@ -342,10 +342,10 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         } else {
             const type = isVertical ? "column" : "row";
             const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
-            this.parent.replaceChild(this as any, rowOrColumn);
+            this.parent.replaceChild(this, rowOrColumn);
 
-            rowOrColumn.addChild(stack as any, insertBefore ? 0 : undefined, true);
-            rowOrColumn.addChild(this as any, insertBefore ? undefined : 0, true);
+            rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
+            rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
 
             this.config[dimension] = 50;
             stack.config[dimension] = 50;

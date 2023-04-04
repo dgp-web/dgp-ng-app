@@ -11,6 +11,7 @@ import { RowOrColumnContentItemComponent } from "../../models/row-or-column-cont
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../../models/with-drag-parent.model";
+import { StackComponent } from "../tabs/stack.component";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -69,7 +70,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     /**
      * Add a new contentItem to the Row or Column
      */
-    addChild(contentItem: RowOrColumnComponentBase, index: number, _$suspendResize: boolean) {
+    addChild(contentItem: RowOrColumnComponentBase | StackComponent, index: number, _$suspendResize: boolean) {
 
         let newItemSize: number,
             itemSize: number,
