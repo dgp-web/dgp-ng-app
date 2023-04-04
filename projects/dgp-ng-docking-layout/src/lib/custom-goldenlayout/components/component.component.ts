@@ -2,7 +2,6 @@ import { ItemContainerComponent } from "./grid/item-container.component";
 import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
-import { AreaSides } from "../models/area.model";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 import { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../models/with-drag-parent.model";
@@ -40,7 +39,7 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
         const vcRef = this.dockingLayoutService.getViewContainerRef();
 
         const itemContainerComponentRef = vcRef.createComponent(ItemContainerComponent);
-        itemContainerComponentRef.instance.config = this.config;
+        itemContainerComponentRef.instance.model = this.config;
         itemContainerComponentRef.changeDetectorRef.markForCheck();
         this.container = itemContainerComponentRef.instance;
 
@@ -77,10 +76,6 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
 
     setDragParent(parent: DragProxy) {
         this.parent = parent;
-    }
-
-    highlightDropZone(x: number, y: number, area: AreaSides) {
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
     }
 
 }
