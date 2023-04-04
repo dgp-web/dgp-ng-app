@@ -208,21 +208,21 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.isInitialised = true;
 
         if (this.contentItems.length > 0) {
-            const initialItem = this.contentItems[this.config.activeItemIndex || 0];
-            this.setActiveContentItem(initialItem);
+            this.setActiveContentItem(this.config.id);
         }
 
         if (notNullOrUndefined(this.config.publishSelectedItemChange$)) {
             this.subscription = this.config.publishSelectedItemChange$.subscribe(change => {
                 if (this.contentItems.find(x => x.config.id === change.id)) {
-                    this.setActiveContentItem(this.contentItems.find(x => x.config.id === change.id));
+                    this.setActiveContentItem(change.id);
                 }
             });
         }
 
     }
 
-    setActiveContentItem(contentItem: GlComponent) {
+    setActiveContentItem(componentId: string) {
+        const contentItem = this.contentItems.find(x => x.config.id === componentId) || this.contentItems[0];
         if (this.activeContentItem !== null) {
             this.activeContentItem.hide();
         }
@@ -254,7 +254,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         contentItem.parent = this as any;
 
         this.childElementContainer.append(contentItem.element);
-        this.setActiveContentItem(contentItem);
+        this.setActiveContentItem(contentItem.config.id);
         this.callDownwards("setSize");
     }
 
@@ -276,7 +276,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
         if (this.config.activeItemId === contentItem.config.id) {
             if (this.contentItems.length > 0) {
-                this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)] as any);
+                this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)].config.id);
             } else {
                 this.activeContentItem = null;
             }
@@ -603,8 +603,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
     processSelectedContentItemChange(x: ComponentConfiguration) {
         if (x.id === this.config.activeItemId) return;
-        const resolved = this.contentItems.find(y => y.config.id === x.id);
-        this.setActiveContentItem(resolved);
+        this.setActiveContentItem(x.id);
     }
 }
 
