@@ -54,7 +54,7 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
 
     init() {
         this.isInitialised = true;
-        this.container.emit("open");
+        this.container.open();
     }
 
     hide() {
@@ -70,7 +70,7 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
     }
 
     destroy() {
-        this.container.emit("destroy", this);
+        this.container.destroy();
         this.unsubscribe();
         this.element.remove();
     }

@@ -8,13 +8,9 @@ import {
     Input,
     Output
 } from "@angular/core";
-import { DockingLayoutService } from "../../docking-layout.service";
 import { ComponentConfiguration } from "../../types";
-import { hideEventType } from "../../constants/event-types/hide-event-type.constant";
-import { showEventType } from "../../constants/event-types/show-event-type.constant";
 import { ComponentDefinition, ContainerDefinition } from "../../utilities/models";
-import { EventEmitter } from "../../utilities";
-import { destroyEventType } from "../../constants/event-types/destroy-event-type.constant";
+import { ComponentRegistry } from "../../services/component-registry";
 
 @Component({
     selector: "dgp-item-container",
@@ -26,7 +22,7 @@ import { destroyEventType } from "../../constants/event-types/destroy-event-type
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemContainerComponent extends EventEmitter implements AfterViewInit, ContainerDefinition {
+export class ItemContainerComponent implements AfterViewInit, ContainerDefinition {
 
     @HostBinding("class.lm_item_container")
     @HostBinding("class.lm_content")
@@ -38,6 +34,9 @@ export class ItemContainerComponent extends EventEmitter implements AfterViewIni
     config: ComponentConfiguration;
 
     @Output()
+    readonly onOpen = new NgEventEmitter();
+
+    @Output()
     readonly onHide = new NgEventEmitter();
 
     @Output()
@@ -47,14 +46,13 @@ export class ItemContainerComponent extends EventEmitter implements AfterViewIni
     readonly onDestroy = new NgEventEmitter();
 
     constructor(
-        readonly dockingLayoutService: DockingLayoutService,
+        readonly componentRegistry: ComponentRegistry,
         readonly elementRef: ElementRef<HTMLElement>
     ) {
-        super();
     }
 
     ngAfterViewInit(): void {
-        let ComponentConstructor = this.dockingLayoutService.getComponent(this.config.id);
+        let ComponentConstructor = this.componentRegistry.getComponent(this.config.id);
         const componentConfig = $.extend(true, {}, this.config.componentState || {}) as ComponentDefinition;
 
         if (this.config.title === "") {
@@ -68,21 +66,22 @@ export class ItemContainerComponent extends EventEmitter implements AfterViewIni
         return this.element;
     }
 
+    open() {
+        this.onOpen.emit();
+    }
+
     hide() {
         this.onHide.emit();
-        this.emit(hideEventType);
         this.element.hide();
     }
 
     show() {
         this.onShow.emit();
-        this.emit(showEventType);
         this.element.show();
     }
 
     destroy() {
         this.onDestroy.emit();
-        this.emit(destroyEventType);
     }
 
 }

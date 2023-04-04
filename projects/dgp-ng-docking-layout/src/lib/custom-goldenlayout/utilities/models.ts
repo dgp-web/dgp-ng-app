@@ -7,15 +7,16 @@ export interface ComponentDefinition<T = any> {
 
 export interface ContainerDefinition {
 
-    onHide: Observable<void>;
-    
+    onOpen: Observable<void>;
+
     onDestroy: Observable<void>;
+
+    onHide: Observable<void>;
 
     onShow: Observable<void>;
 
     getElement(): any;
 
-    on(eventName: "open" | "destroy" | "hide" | "show", callback: () => void): void;
 
 }
 

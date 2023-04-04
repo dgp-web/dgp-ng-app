@@ -75,8 +75,6 @@ export class DockingLayoutService extends EventEmitter {
         this.tabDropPlaceholder = viewContainerRef.createComponent(TabDropPlaceholderComponent).instance;
     }
 
-    getComponent = x => this.componentRegistry.getComponent(x);
-
     init() {
         const dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
         dropTargetIndicatorComponentRef.changeDetectorRef.markForCheck();
