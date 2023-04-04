@@ -5,6 +5,7 @@ import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COM
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 import { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../models/with-drag-parent.model";
+import { StackComponent } from "./tabs/stack.component";
 
 @Component({
     selector: "dgp-gl-component",
@@ -29,16 +30,14 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
     constructor(
         @Inject(forwardRef(() => DockingLayoutService))
         public dockingLayoutService: DockingLayoutService,
-        //rivate readonly vcRef: ViewContainerRef,
         @Inject(ITEM_CONFIG)
         public config: ComponentConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        public parent: any,
+        public parent: StackComponent,
         private readonly elementRef: ElementRef<HTMLElement>,
     ) {
         super();
         this.config = {...itemDefaultConfig, ...config};
-
     }
 
     ngAfterViewInit(): void {
@@ -72,7 +71,7 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
     }
 
     setDragParent(parent: DragProxy) {
-        this.parent = parent;
+        this.parent = parent as unknown as StackComponent;
     }
 
 
