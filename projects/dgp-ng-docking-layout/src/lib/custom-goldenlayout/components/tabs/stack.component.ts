@@ -152,7 +152,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
             const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
             this.headerComponent.element[headerPosition](this.childElementContainer);
-            this.callDownwards("setSize");
+            this.setSize();
         }
     }
 
@@ -227,7 +227,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.activeContentItem = contentItem;
         this.config.activeItemId = contentItem.config.id;
         contentItem.show();
-        this.emit(activeContentItemChangedEventType, contentItem);
         this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
 
         if (this.config.onSelectedItemChange) {
@@ -283,7 +282,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
     destroy() {
         this.unsubscribe();
-        this.callDownwards("destroy", [], true, true);
         this.element.remove();
         this.headerComponent.destroy();
 
