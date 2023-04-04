@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
@@ -519,18 +519,18 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     private highlightHeaderDropZone(x: number) {
-        let i,
-            tabElement,
+        let i: number,
+            tabElement: JQuery<HTMLElement>,
             tabsLength = this.headerComponent.tabs.length,
             isAboveTab = false,
-            tabTop,
-            tabLeft,
-            offset,
-            placeHolderTop,
-            placeHolderLeft,
-            headerOffset,
-            tabWidth,
-            halfX;
+            tabTop: number,
+            tabLeft: number,
+            offset: JQuery.Coordinates,
+            placeHolderTop: number,
+            placeHolderLeft: number,
+            headerOffset: JQuery.Coordinates,
+            tabWidth: number,
+            halfX: number;
 
         // Empty stack
         if (tabsLength === 0) {
