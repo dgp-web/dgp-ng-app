@@ -245,7 +245,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     getActiveContentItem(): GlComponent {
-        return this.contentItems.find(x => x.config.id === this.headerComponent.getActiveContentItem()?.id);
+        return this.contentItems.find(x => x.config.id === this.config.activeItemId);
     }
 
     addChild(contentItem: GlComponent, index?) {
