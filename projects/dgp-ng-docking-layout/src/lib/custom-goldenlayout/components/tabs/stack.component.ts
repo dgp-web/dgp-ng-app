@@ -146,7 +146,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
         if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
             const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
             this.headerComponent.element[headerPosition](this.childElementContainer);
-            this.setSize();
         }
     }
 
@@ -172,20 +171,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private createContentItems(config: StackConfiguration) {
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
-    }
-
-    setSize() {
-        const headerSize = this._header.show ? this.dockingLayoutService.config.dimensions.headerHeight : 0;
-        const contentWidth = this.element.width() - (this._sided ? headerSize : 0);
-        const contentHeight = this.element.height() - (!this._sided ? headerSize : 0);
-
-        this.childElementContainer.width(contentWidth);
-        this.childElementContainer.height(contentHeight);
-
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].element.width(contentWidth)
-                .height(contentHeight);
-        }
     }
 
     init() {
@@ -245,7 +230,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.childElementContainer.append(contentItem.element);
         this.setActiveContentItem(contentItem.config.id);
-        this.setSize();
     }
 
     removeChild(componentId: string, keepChild: boolean) {
@@ -260,7 +244,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.config.content.splice(index, 1);
 
         if (this.contentItems.length > 0) {
-            this.setSize();
         } else if (this.config.isClosable === true) {
             this.parent.removeChild(this, undefined);
         }

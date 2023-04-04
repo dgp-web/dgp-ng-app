@@ -13,6 +13,10 @@ import { StackComponent } from "./tabs/stack.component";
     styles: [`
         :host {
             overflow: auto;
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
