@@ -164,9 +164,7 @@ export class DragProxy extends EventEmitter {
         /**
          * parent is null if the drag had been initiated by a external drag source
          */
-        if (this.contentItem.parent) {
-            this.contentItem.parent.removeChild(this.contentItem.config.id, true);
-        }
+        this.contentItem.startDragging();
 
         this.contentItem.setDragParent(this);
     }

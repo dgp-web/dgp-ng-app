@@ -36,8 +36,8 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
         <div class="lm_items card-body" style="padding: 0;">
             <dgp-gl-component *ngFor="let componentConfig of config.content"
                               [config]="componentConfig"
-                              [parent]="this"
-                              [isHidden]="config.activeItemId !== componentConfig.id">
+                              [isHidden]="config.activeItemId !== componentConfig.id"
+                              (dragStart)="onDragStart(componentConfig.id)">
             </dgp-gl-component>
         </div>
     `
@@ -91,7 +91,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     initialize(): void {
 
         this.config = {...itemDefaultConfig, ...this.config};
-        // if (this.config.content) this.createContentItems(this.config);
 
         const vcRef = this.dockingLayoutService.getViewContainerRef();
         const headerComponentRef = vcRef.createComponent(StackHeaderComponent);
@@ -131,6 +130,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
         // this.element.append(this.childElementContainer);
 
         this.setupHeaderPosition();
+    }
+
+    onDragStart(componentConfig: string) {
+        this.removeChild(componentConfig, true);
     }
 
     private resetHeaderDropZone() {
@@ -221,7 +224,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
 
         this.config.content.splice(index, 0, contentItem.config);
-        contentItem.parent = this;
+        // contentItem.parent = this;
 
         this.childElementContainer.append(contentItem.element);
         this.setActiveContentItem(contentItem.config.id);
