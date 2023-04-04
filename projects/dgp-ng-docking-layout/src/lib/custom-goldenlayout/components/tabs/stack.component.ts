@@ -263,9 +263,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.config.content.splice(index, 0, contentItem.config);
         contentItem.parent = this as any;
 
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem.init();
-        }
         this.childElementContainer.append(contentItem.element);
         this.setActiveContentItem(contentItem);
         this.callDownwards("setSize");

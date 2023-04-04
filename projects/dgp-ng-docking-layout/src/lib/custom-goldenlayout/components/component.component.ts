@@ -1,6 +1,5 @@
 import { ItemContainerComponent } from "./grid/item-container.component";
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject, ViewChild } from "@angular/core";
-import { DockingLayoutService } from "../docking-layout.service";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } from "@angular/core";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
 import { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../models/with-drag-parent.model";
@@ -20,33 +19,25 @@ import { StackComponent } from "./tabs/stack.component";
 })
 export class GlComponent implements WithDragParent, AfterViewInit {
 
+    readonly element = $(this.elementRef.nativeElement);
+
     @ViewChild(ItemContainerComponent, {read: ItemContainerComponent})
     private container: ItemContainerComponent;
+
     isComponent = true;
-    isInitialised = false;
-    element = $(this.elementRef.nativeElement);
 
     constructor(
-        @Inject(forwardRef(() => DockingLayoutService))
-        public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
         public config: ComponentConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: StackComponent,
-        private readonly elementRef: ElementRef<HTMLElement>,
+        private readonly elementRef: ElementRef<HTMLElement>
     ) {
         this.config = {...itemDefaultConfig, ...config};
     }
 
     ngAfterViewInit(): void {
         this.elementRef.nativeElement.append(this.container.elementRef.nativeElement);
-    }
-
-    setSize() {
-    }
-
-    init() {
-        this.isInitialised = true;
         this.container.open();
     }
 
