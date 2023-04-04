@@ -226,7 +226,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
 
         // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            newChild.init();
+            if (!newChild.isStack) newChild.init();
         }
 
         this.callDownwards("setSize");

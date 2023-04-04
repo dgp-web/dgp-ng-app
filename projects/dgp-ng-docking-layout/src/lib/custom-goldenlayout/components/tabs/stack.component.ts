@@ -122,10 +122,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             Object.assign(this._header, this.config.content[0].header);
         }
 
-
-        this.childElementContainer = $(
-            dockingLayoutViewMap.stackContent.render()
-        );
+        this.childElementContainer = $(dockingLayoutViewMap.stackContent.render());
 
         this.element.append(this.headerComponent.element);
         this.element.append(this.childElementContainer);
