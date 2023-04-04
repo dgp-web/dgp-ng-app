@@ -42,6 +42,8 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
 })
 export class StackComponent implements DropTarget, AfterViewInit {
 
+    private contentItems: GlComponent[] = [];
+
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
     @HostBinding("class.card")
@@ -50,8 +52,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     _side: boolean | DropSegment;
     _sided: boolean;
     _header: HeaderConfig;
-
-    contentItems: GlComponent[] = [];
 
     element = $(this.elementRef.nativeElement);
 
