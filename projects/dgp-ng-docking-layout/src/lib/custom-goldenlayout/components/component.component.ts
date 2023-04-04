@@ -1,5 +1,4 @@
-import { ItemContainerComponent } from "./grid/item-container.component";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject } from "@angular/core";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
 import { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../models/with-drag-parent.model";
@@ -21,9 +20,6 @@ import { StackComponent } from "./tabs/stack.component";
 export class GlComponent implements WithDragParent {
 
     readonly element = $(this.elementRef.nativeElement);
-
-    @ViewChild(ItemContainerComponent, {read: ItemContainerComponent})
-    private container: ItemContainerComponent;
 
     isComponent = true;
     isHidden = true;
