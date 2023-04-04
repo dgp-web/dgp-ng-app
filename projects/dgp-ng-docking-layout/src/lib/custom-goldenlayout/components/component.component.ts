@@ -37,7 +37,6 @@ export class GlComponent implements WithDragParent, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.elementRef.nativeElement.append(this.container.elementRef.nativeElement);
         this.container.open();
     }
 
