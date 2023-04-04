@@ -258,7 +258,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.callDownwards("setSize");
     }
 
-    removeChild(contentItem: GlComponent, keepChild) {
+    removeChild(componentId: string, keepChild: boolean) {
+        const contentItem = this.contentItems.find(x => x.config.id === componentId);
         let index = this.contentItems.indexOf(contentItem);
 
         if (keepChild !== true) {
