@@ -330,27 +330,53 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
          * layd out in the correct way. Just add it as a child
          */
         if (hasCorrectParent) {
-            const index = this.parent.contentItems.indexOf(this);
-            this.parent.addChild(stack, insertBefore ? index : index + 1, true);
-            this.config[dimension] *= 0.5;
-            stack.config[dimension] = this.config[dimension];
-            this.parent.callDownwards("setSize");
+            this.addStackToExistingRowOrColumn({stack, dimension, insertBefore});
             /*
              * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
              * to create the appropriate contentItem for them to live in
              */
         } else {
-            const type = isVertical ? "column" : "row";
-            const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
-            this.parent.replaceChild(this, rowOrColumn);
-
-            rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
-            rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
-
-            this.config[dimension] = 50;
-            stack.config[dimension] = 50;
-            rowOrColumn.callDownwards("setSize");
+            this.addStackToNewRowOrColumn({stack, dimension, insertBefore, isVertical});
         }
+    }
+
+    private addStackToNewRowOrColumn(payload: {
+        readonly stack: StackComponent;
+        readonly isVertical: boolean;
+        readonly insertBefore: boolean;
+        readonly dimension: "width" | "height";
+    }) {
+        const stack = payload.stack;
+        const insertBefore = payload.insertBefore;
+        const dimension = payload.dimension;
+        const isVertical = payload.isVertical;
+
+        const type = isVertical ? "column" : "row";
+        const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
+        this.parent.replaceChild(this, rowOrColumn);
+
+        rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
+        rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
+
+        this.config[dimension] = 50;
+        stack.config[dimension] = 50;
+        rowOrColumn.callDownwards("setSize");
+    }
+
+    private addStackToExistingRowOrColumn(payload: {
+        readonly stack: StackComponent;
+        readonly insertBefore: boolean;
+        readonly dimension: "width" | "height";
+    }) {
+        const stack = payload.stack;
+        const insertBefore = payload.insertBefore;
+        const dimension = payload.dimension;
+
+        const index = this.parent.contentItems.indexOf(this);
+        this.parent.addChild(stack, insertBefore ? index : index + 1, true);
+        this.config[dimension] *= 0.5;
+        stack.config[dimension] = this.config[dimension];
+        this.parent.callDownwards("setSize");
     }
 
     private createAndInitStack(component: GlComponent): StackComponent {
@@ -405,7 +431,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             x2: offset.left + width,
             y2: offset.top + height,
             surface: width * height,
-            contentItem: this as any
+            contentItem: this
         };
     }
 
