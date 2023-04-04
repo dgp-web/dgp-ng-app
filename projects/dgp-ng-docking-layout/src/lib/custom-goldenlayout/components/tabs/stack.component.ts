@@ -332,6 +332,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
          * The content item can be either a component or a stack. If it is a component, wrap it into a stack
          */
         if (contentItem.isComponent) {
+            console.log("STACK");
             stack = this.dockingLayoutService.createContentItem({
                 type: "stack",
                 header: contentItem.config.header || {}
@@ -339,6 +340,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
             stack.init();
             stack.addChild(contentItem);
             contentItem = stack;
+        } else {
+            console.log("NO STACK");
         }
 
         /*
@@ -591,6 +594,8 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         if (!x.dragListener) return;
 
         const resolved = this.contentItems.find(y => y.config.id === x.contentItem.id);
+
+        if (!resolved) return;
 
         return new DragProxy(
             x.coordinates,
