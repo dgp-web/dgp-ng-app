@@ -182,15 +182,15 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
                     const id = createGuid();
 
-                    container.on("hide", () => {
+                    container.onHide.subscribe(() => {
                         this.destroyEmbeddedView(id, this);
                     });
 
-                    container.on("show", () => {
+                    container.onShow.subscribe(() => {
                         this.createEmbeddedView(id, componentState.template(), container.getElement(), this);
                     });
 
-                    container.on("destroy", () => {
+                    container.onDestroy.subscribe(() => {
                         this.destroyEmbeddedView(id, this);
                     });
 
