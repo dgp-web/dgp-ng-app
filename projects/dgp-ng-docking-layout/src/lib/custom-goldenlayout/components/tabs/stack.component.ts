@@ -70,21 +70,17 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
 
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
-    config: StackConfiguration;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
-        @Inject(ITEM_CONFIG) config: StackConfiguration,
+        @Inject(ITEM_CONFIG)
+        public config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: StackParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
-
-        this.config = {...itemDefaultConfig, ...config};
-        if (config.content) this.createContentItems(config);
-
         this.initialize();
     }
 
@@ -93,6 +89,9 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     initialize(): void {
+
+        this.config = {...itemDefaultConfig, ...this.config};
+        if (this.config.content) this.createContentItems(this.config);
 
         const vcRef = this.dockingLayoutService.getViewContainerRef();
         const headerComponentRef = vcRef.createComponent(StackHeaderComponent);
