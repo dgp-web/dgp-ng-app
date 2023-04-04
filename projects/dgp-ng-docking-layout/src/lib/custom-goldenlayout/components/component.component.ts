@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject } from "@angular/core";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
-import { DragProxy } from "./drag-and-drop/drag-proxy.component";
-import { WithDragParent } from "../models/with-drag-parent.model";
-import { StackComponent } from "./tabs/stack.component";
+import type { DragProxy } from "./drag-and-drop/drag-proxy.component";
+import type { WithDragParent } from "../models/with-drag-parent.model";
+import type { StackComponent } from "./tabs/stack.component";
 
 @Component({
     selector: "dgp-gl-component",

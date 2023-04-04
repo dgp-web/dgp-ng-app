@@ -34,9 +34,10 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
         <!--<dgp-gl-header [model]="config"
                        (dragStart)="processDragStart($event)"
                        (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-header>-->
-        <!--<
-            <div class="lm_items card-body" style="padding: 0;"></div>
-        -->
+
+        <div class="lm_items card-body" style="padding: 0;">
+            <dgp-gl-component></dgp-gl-component>
+        </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
