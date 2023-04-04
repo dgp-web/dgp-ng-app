@@ -24,7 +24,6 @@ import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
-import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import { RowOrColumnComponent } from "../grid/row-or-column.component";
@@ -41,7 +40,7 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StackComponent extends DockingLayoutEngineObject implements DropTarget, AfterViewInit {
+export class StackComponent implements DropTarget, AfterViewInit {
 
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
@@ -79,12 +78,11 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         public parent: StackParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
-        super();
         this.initialize();
     }
 
     ngAfterViewInit(): void {
-
+        this.init();
     }
 
     initialize(): void {
@@ -133,7 +131,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         this.element.append(this.childElementContainer);
 
         this.setupHeaderPosition();
-
     }
 
     private resetHeaderDropZone() {
@@ -281,7 +278,6 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     destroy() {
-        this.unsubscribe();
         this.element.remove();
         this.headerComponent.destroy();
 
