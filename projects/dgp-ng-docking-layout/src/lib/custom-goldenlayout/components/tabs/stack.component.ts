@@ -1,7 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, ViewChild } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { HeaderConfig, ITEM_CONFIG, itemDefaultConfig, ItemType, PARENT_ITEM_COMPONENT, StackConfiguration } from "../../types";
+import {
+    ComponentConfiguration,
+    HeaderConfig,
+    ITEM_CONFIG,
+    itemDefaultConfig,
+    ItemType,
+    PARENT_ITEM_COMPONENT,
+    StackConfiguration
+} from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { HeaderComponent } from "./header.component";
 import { Subscription } from "rxjs";
@@ -20,11 +28,14 @@ import { GlComponent } from "../component.component";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
+import { DragStartEvent } from "../../models/drag-start-event.model";
 
 @Component({
     selector: "dgp-stack",
     template: `
-        <!-- <dgp-gl-header></dgp-gl-header>-->
+        <!--<dgp-gl-header [model]="config"
+                       (dragStart)="processDragStart($event)"
+                       (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-header>-->
         <!--<
             <div class="lm_items card-body" style="padding: 0;"></div>
         -->
@@ -54,13 +65,13 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
+    // @ViewChild(HeaderComponent, {read: HeaderComponent})
     private headerComponent: HeaderComponent;
 
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
     config: StackConfiguration;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
-    readonly _sided$ = observeAttribute$(this as StackComponent, "_sided");
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
@@ -78,6 +89,7 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
     }
 
     ngAfterViewInit(): void {
+
     }
 
     initialize(): void {
@@ -91,23 +103,11 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         });
 
         this.headerComponent.selectedContentItemChange.subscribe(x => {
-            const resolved = this.contentItems.find(y => y.config.id === x.id);
-            if (resolved === this.getActiveContentItem()) return;
-            this.setActiveContentItem(resolved);
+            this.processSelectedContentItemChange(x);
         });
 
         this.headerComponent.dragStart.subscribe(x => {
-            if (!x.dragListener) return;
-
-            const resolved = this.contentItems.find(y => y.config.id === x.contentItem.id);
-
-            return new DragProxy(
-                x.coordinates,
-                x.dragListener,
-                this.dockingLayoutService,
-                resolved,
-                this
-            );
+            this.processDragStart(x);
         });
 
         // this.headerComponent = new HeaderComponent(dockingLayoutService, this);
@@ -600,5 +600,24 @@ export class StackComponent extends DockingLayoutEngineObject implements DropTar
         });
     }
 
+    processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
+        if (!x.dragListener) return;
+
+        const resolved = this.contentItems.find(y => y.config.id === x.contentItem.id);
+
+        return new DragProxy(
+            x.coordinates,
+            x.dragListener,
+            this.dockingLayoutService,
+            resolved,
+            this
+        );
+    }
+
+    processSelectedContentItemChange(x: ComponentConfiguration) {
+        const resolved = this.contentItems.find(y => y.config.id === x.id);
+        if (resolved === this.getActiveContentItem()) return;
+        this.setActiveContentItem(resolved);
+    }
 }
 
