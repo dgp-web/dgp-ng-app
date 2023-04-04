@@ -1,5 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject } from "@angular/core";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import { AfterViewInit, Component, ElementRef, HostBinding, Inject, QueryList, ViewChildren } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
     ComponentConfiguration,
@@ -19,7 +18,6 @@ import { lmLeftClassName } from "../../constants/class-names/lm-left-class-name.
 import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
 import { lmBottomClassName } from "../../constants/class-names/lm-bottom-class-name.constant";
 import { lmRightClassName } from "../../constants/class-names/lm-right-class-name.constant";
-import { activeContentItemChangedEventType } from "../../constants/event-types/active-content-item-changed-event-type.constant";
 import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
@@ -36,14 +34,18 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
                        (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-header>-->
 
         <div class="lm_items card-body" style="padding: 0;">
-            <dgp-gl-component></dgp-gl-component>
+            <dgp-gl-component *ngFor="let componentConfig of config.content"
+                              [config]="componentConfig"
+                              [parent]="this"
+                              [isHidden]="config.activeItemId !== componentConfig.id">
+            </dgp-gl-component>
         </div>
-    `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    `
 })
 export class StackComponent implements DropTarget, AfterViewInit {
 
-    private contentItems: GlComponent[] = [];
+    @ViewChildren(GlComponent)
+    private contentItems: QueryList<GlComponent>;
 
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
@@ -89,7 +91,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     initialize(): void {
 
         this.config = {...itemDefaultConfig, ...this.config};
-        if (this.config.content) this.createContentItems(this.config);
+        // if (this.config.content) this.createContentItems(this.config);
 
         const vcRef = this.dockingLayoutService.getViewContainerRef();
         const headerComponentRef = vcRef.createComponent(StackHeaderComponent);
@@ -123,10 +125,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
             Object.assign(this._header, this.config.content[0].header);
         }
 
-        this.childElementContainer = $(dockingLayoutViewMap.stackContent.render());
+        // this.childElementContainer = $(dockingLayoutViewMap.stackContent.render());
 
         this.element.append(this.headerComponent.element);
-        this.element.append(this.childElementContainer);
+        // this.element.append(this.childElementContainer);
 
         this.setupHeaderPosition();
     }
@@ -170,27 +172,18 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.dockingLayoutService.updateSize();
     }
 
-    private createContentItems(config: StackConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
-    }
-
     init() {
         if (this.isInitialised === true) return;
 
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.childElementContainer.append(this.contentItems[i].element);
-            this.contentItems[i].hide();
-        }
-
         this.isInitialised = true;
 
-        if (this.contentItems.length > 0) {
+        if (this.config.content.length > 0) {
             this.setActiveContentItem(this.config.id);
         }
 
         if (notNullOrUndefined(this.config.publishSelectedItemChange$)) {
             this.subscription = this.config.publishSelectedItemChange$.subscribe(change => {
-                if (this.contentItems.find(x => x.config.id === change.id)) {
+                if (this.config.content.find(x => x.id === change.id)) {
                     this.setActiveContentItem(change.id);
                 }
             });
@@ -199,28 +192,29 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     setActiveContentItem(componentId: string) {
-        const contentItem = this.contentItems.find(x => x.config.id === componentId) || this.contentItems[0];
-        if (this.activeContentItem !== null) {
-            this.activeContentItem.hide();
+        // const contentItem = this.contentItems.find(x => x.config.id === componentId) || this.contentItems[0];
+        if (this.config.activeItemId !== null) {
+            // TODO
+            //  this.activeContentItem.hide();
         }
 
-        this.activeContentItem = contentItem;
-        this.config.activeItemId = contentItem.config.id;
-        contentItem.show();
-        this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
+        //  this.activeContentItem = contentItem;
+        this.config.activeItemId = componentId;
+        // contentItem.show();
+        // this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
 
         if (this.config.onSelectedItemChange) {
-            this.config.onSelectedItemChange(contentItem.config.id);
+            this.config.onSelectedItemChange(componentId);
         }
     }
 
     addChild(contentItem: GlComponent, index?: number) {
 
         if (index === undefined) {
-            index = this.contentItems.length;
+            index = this.config.content.length;
         }
 
-        this.contentItems.splice(index, 0, contentItem);
+        this.config.content.splice(index, 0, contentItem.config);
 
         if (this.config.content === undefined) {
             this.config.content = [];
@@ -234,24 +228,23 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     removeChild(componentId: string, keepChild: boolean) {
-        const contentItem = this.contentItems.find(x => x.config.id === componentId);
-        let index = this.contentItems.indexOf(contentItem);
+        const contentItem = this.config.content.find(x => x.id === componentId);
+        let index = this.config.content.indexOf(contentItem);
 
         if (keepChild !== true) {
-            this.contentItems[index].destroy();
+            // this.contentItems[index].destroy();
         }
 
-        this.contentItems.splice(index, 1);
         this.config.content.splice(index, 1);
 
-        if (this.contentItems.length > 0) {
+        if (this.config.content.length > 0) {
         } else if (this.config.isClosable === true) {
             this.parent.removeChild(this, undefined);
         }
 
-        if (this.config.activeItemId === contentItem.config.id) {
-            if (this.contentItems.length > 0) {
-                this.setActiveContentItem(this.contentItems[Math.max(index - 1, 0)].config.id);
+        if (this.config.activeItemId === componentId) {
+            if (this.config.content.length > 0) {
+                this.setActiveContentItem(this.config.content[Math.max(index - 1, 0)].id);
             } else {
                 this.activeContentItem = null;
             }
@@ -438,7 +431,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         /**
          * Highlight the entire body if the stack is empty
          */
-        if (this.contentItems.length === 0) {
+        if (this.config.content.length === 0) {
 
             this.contentAreaDimensions.body = {
                 hoverArea: contentArea,
@@ -584,7 +577,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
         if (!x.dragListener) return;
 
-        const resolved = this.contentItems.find(y => y.config.id === x.contentItem.id);
+        const resolved = this.contentItems?.find(y => y.config.id === x.contentItem.id);
 
         if (!resolved) return;
 

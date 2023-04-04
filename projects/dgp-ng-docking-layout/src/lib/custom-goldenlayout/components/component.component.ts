@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject } from "@angular/core";
-import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit } from "@angular/core";
+import { ComponentConfiguration, itemDefaultConfig } from "../types";
 import type { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import type { WithDragParent } from "../models/with-drag-parent.model";
 import type { StackComponent } from "./tabs/stack.component";
+import { observeAttribute$ } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-gl-component",
@@ -21,24 +22,45 @@ import type { StackComponent } from "./tabs/stack.component";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlComponent implements WithDragParent {
+export class GlComponent implements WithDragParent, OnInit, AfterViewInit {
 
     readonly element = $(this.elementRef.nativeElement);
 
     isComponent = true;
+
+    @Input()
     isHidden = true;
+    readonly isHidden$ = observeAttribute$(this as GlComponent, "isHidden");
+
+    @Input()
+    config: ComponentConfiguration;
+
+    @Input()
+    parent: StackComponent;
 
     constructor(
-        @Inject(ITEM_CONFIG)
-        public config: ComponentConfiguration,
-        @Inject(PARENT_ITEM_COMPONENT)
-        public parent: StackComponent,
+        /*     @Inject(ITEM_CONFIG)
+             public config: ComponentConfiguration,
+             @Inject(PARENT_ITEM_COMPONENT)
+             public parent: StackComponent,*/
         private readonly elementRef: ElementRef<HTMLElement>,
         private readonly cd: ChangeDetectorRef
     ) {
-        this.config = {...itemDefaultConfig, ...config};
     }
 
+    ngOnInit(): void {
+        this.config = {...itemDefaultConfig, ...this.config};
+    }
+
+    ngAfterViewInit(): void {
+        this.isHidden$.subscribe(hidden => {
+            if (hidden) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        });
+    }
 
     hide() {
         this.isHidden = true;
