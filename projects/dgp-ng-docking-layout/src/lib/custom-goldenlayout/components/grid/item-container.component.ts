@@ -5,12 +5,13 @@ import {
     ElementRef,
     EventEmitter as NgEventEmitter,
     HostBinding,
+    Input,
     Output
 } from "@angular/core";
 import { ComponentConfiguration } from "../../types";
 import { ComponentDefinition, ContainerDefinition } from "../../utilities/models";
 import { ComponentRegistry } from "../../services/component-registry";
-import { DgpView } from "dgp-ng-app";
+import { DgpView, observeAttribute$ } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-item-container",
@@ -42,6 +43,10 @@ export class ItemContainerComponent extends DgpView<ComponentConfiguration> impl
     @Output()
     readonly onDestroy = new NgEventEmitter();
 
+    @Input()
+    isHidden: boolean;
+    readonly isHidden$ = observeAttribute$(this as ItemContainerComponent, "isHidden");
+
     constructor(
         readonly componentRegistry: ComponentRegistry,
         readonly elementRef: ElementRef<HTMLElement>
@@ -58,22 +63,31 @@ export class ItemContainerComponent extends DgpView<ComponentConfiguration> impl
         }
 
         ComponentConstructor(this, componentConfig);
+        this.open();
+
+        this.isHidden$.subscribe(hidden => {
+            if (hidden) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        });
     }
 
     getElement() {
         return this.element;
     }
 
-    open() {
+    private open() {
         this.onOpen.emit();
     }
 
-    hide() {
+    private hide() {
         this.onHide.emit();
         this.element.hide();
     }
 
-    show() {
+    private show() {
         this.onShow.emit();
         this.element.show();
     }
