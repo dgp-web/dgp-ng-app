@@ -168,7 +168,7 @@ export class DragProxy extends EventEmitter {
             this.contentItem.parent.removeChild(this.contentItem as any, true);
         }
 
-        this.contentItem.setDragParent(this as any);
+        this.contentItem.setDragParent(this);
     }
 
     /**
@@ -187,9 +187,6 @@ export class DragProxy extends EventEmitter {
 
         $x.size(this.childElementContainer, {x: width, y: height});
         $x.size(this.contentItem.element, {x: width, y: height});
-
-        this.contentItem.callDownwards("show");
-        this.contentItem.callDownwards("setSize");
     }
 
 }

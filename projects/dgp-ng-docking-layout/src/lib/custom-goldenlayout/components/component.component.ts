@@ -2,7 +2,6 @@ import { ItemContainerComponent } from "./grid/item-container.component";
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, forwardRef, Inject, ViewChild } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { ComponentConfiguration, ITEM_CONFIG, itemDefaultConfig, PARENT_ITEM_COMPONENT } from "../types";
-import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 import { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../models/with-drag-parent.model";
 import { StackComponent } from "./tabs/stack.component";
@@ -19,7 +18,7 @@ import { StackComponent } from "./tabs/stack.component";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GlComponent extends DockingLayoutEngineObject implements WithDragParent, AfterViewInit {
+export class GlComponent implements WithDragParent, AfterViewInit {
 
     @ViewChild(ItemContainerComponent, {read: ItemContainerComponent})
     private container: ItemContainerComponent;
@@ -36,7 +35,6 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
         public parent: StackComponent,
         private readonly elementRef: ElementRef<HTMLElement>,
     ) {
-        super();
         this.config = {...itemDefaultConfig, ...config};
     }
 
@@ -55,18 +53,15 @@ export class GlComponent extends DockingLayoutEngineObject implements WithDragPa
     hide() {
         this.container.hide();
         this.element.hide();
-        this.dockingLayoutService.updateSize();
     }
 
     show() {
         this.container.show();
         this.element.show();
-        this.dockingLayoutService.updateSize();
     }
 
     destroy() {
         this.container.destroy();
-        this.unsubscribe();
         this.element.remove();
     }
 

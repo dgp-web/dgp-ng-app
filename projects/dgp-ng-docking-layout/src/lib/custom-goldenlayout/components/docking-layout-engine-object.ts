@@ -13,7 +13,9 @@ export class DockingLayoutEngineObject extends EventEmitter implements ObjectTre
             this[functionName].apply(this, functionArguments || []);
         }
         for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
+            if (this.contentItems[i].callDownwards) {
+                this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
+            }
         }
         if (bottomUp === true && skipSelf !== true) {
             this[functionName].apply(this, functionArguments || []);
