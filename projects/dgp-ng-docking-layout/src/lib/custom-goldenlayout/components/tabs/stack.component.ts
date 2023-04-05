@@ -255,7 +255,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     onDrop(contentItem: GlComponent) {
-
         /*
          * The item was dropped on the header area. Just add it as a child of this stack and
          * get the hell out of this logic

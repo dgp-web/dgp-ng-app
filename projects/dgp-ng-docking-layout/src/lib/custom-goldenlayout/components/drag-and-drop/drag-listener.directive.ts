@@ -81,7 +81,6 @@ export class DragListenerDirective {
             }
 
             if (this.isDragging) {
-                this.dragStart$.emit(this.coordinates);
                 this.drag$.emit({
                     x: this.coordinates.x,
                     y: this.coordinates.y,
