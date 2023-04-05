@@ -505,11 +505,9 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
 
         splitter.isVertical = this._isColumn;
         splitter.size = this.splitterSize;
-        splitter.size = this.splitterSize;
         splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
         splitter.ngAfterViewInit();
-
 
         const dragSub = splitter
             .dragListener

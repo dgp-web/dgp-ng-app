@@ -68,7 +68,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     elementRef: ElementRef;
 
     @Input()
-    splitterSize = 2;
+    splitterSize = 4;
 
     // Settings
     @Input() hasHeaders = true;
