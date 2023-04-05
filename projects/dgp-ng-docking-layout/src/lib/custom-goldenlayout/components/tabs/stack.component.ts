@@ -67,8 +67,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     element = $(this.elementRef.nativeElement);
 
-    childElementContainer: JQuery;
-
     isInitialised = false;
 
     private activeContentItem: GlComponent = null;
@@ -376,7 +374,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
 
         const headerArea = this.getAreaInternal(this.headerComponent.element),
-            contentArea = this.getAreaInternal(this.childElementContainer),
+            contentArea = this.getAreaInternal(),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
 
