@@ -57,6 +57,10 @@ import { MatTabGroup } from "@angular/material/tabs";
         </mat-tab-group>
     `,
     styles: [`
+        :host {
+            overflow: auto;
+        }
+
         .tab-header {
             height: 100%;
             width: 100%;
