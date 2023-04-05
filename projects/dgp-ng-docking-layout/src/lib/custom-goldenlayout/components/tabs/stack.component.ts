@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, Inject, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, QueryList, ViewChildren } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
     ComponentConfiguration,
@@ -79,7 +79,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
         public config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: StackParentComponent,
-        private readonly elementRef: ElementRef<HTMLElement>
+        private readonly elementRef: ElementRef<HTMLElement>,
+        private readonly cd: ChangeDetectorRef
     ) {
         this.initialize();
     }
@@ -210,6 +211,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config.content.splice(index, 0, contentItem.config);
         this.setActiveContentItem(contentItem.config.id);
+        this.cd.markForCheck();
     }
 
     removeChild(componentId: string, keepChild: boolean) {
