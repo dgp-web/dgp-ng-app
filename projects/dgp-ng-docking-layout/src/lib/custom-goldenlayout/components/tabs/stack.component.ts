@@ -180,6 +180,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.isInitialised = true;
 
+        if (!this.config.content) this.config.content = [];
+
         if (this.config.content.length > 0) {
             this.setActiveContentItem(this.config.id);
         }
@@ -226,7 +228,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.config.content.splice(index, 0, contentItem.config);
         // contentItem.parent = this;
 
-        this.childElementContainer.append(contentItem.element);
+        // this.childElementContainer.append(contentItem.element);
         this.setActiveContentItem(contentItem.config.id);
     }
 
