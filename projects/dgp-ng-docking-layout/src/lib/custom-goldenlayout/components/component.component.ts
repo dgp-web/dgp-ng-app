@@ -1,14 +1,4 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ComponentConfiguration, itemDefaultConfig } from "../types";
 import type { DragProxy } from "./drag-and-drop/drag-proxy.component";
 import type { WithDragParent } from "../models/with-drag-parent.model";
@@ -28,8 +18,7 @@ import { observeAttribute$ } from "dgp-ng-app";
             flex-direction: column;
             height: 100%;
         }
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    `]
 })
 export class GlComponent implements WithDragParent, OnInit, AfterViewInit {
 

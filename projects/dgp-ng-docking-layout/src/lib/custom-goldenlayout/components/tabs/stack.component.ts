@@ -183,7 +183,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         if (!this.config.content) this.config.content = [];
 
         if (this.config.content.length > 0) {
-            this.setActiveContentItem(this.config.id);
+            this.setActiveContentItem(this.config.content[0].id);
         }
 
         if (notNullOrUndefined(this.config.publishSelectedItemChange$)) {
@@ -197,16 +197,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     setActiveContentItem(componentId: string) {
-        // const contentItem = this.contentItems.find(x => x.config.id === componentId) || this.contentItems[0];
-        if (this.config.activeItemId !== null) {
-            // TODO
-            //  this.activeContentItem.hide();
-        }
-
-        //  this.activeContentItem = contentItem;
         this.config.activeItemId = componentId;
-        // contentItem.show();
-        // this.dockingLayoutService.emit(activeContentItemChangedEventType, contentItem);
 
         if (this.config.onSelectedItemChange) {
             this.config.onSelectedItemChange(componentId);
