@@ -1,15 +1,21 @@
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { AfterViewInit, Component, ElementRef, Input } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
+import { Vector2 } from "../../../common";
+import { DragEvent } from "../../models/drag-event.model";
 
 @Component({
     selector: "dgp-gl-splitter",
     template: `
         <ng-container *ngIf="isVertical">
             <div class="lm_splitter lm_vertical"
-                 [style.height.px]="size">
+                 [style.height.px]="size"
+                 dgpGlDragListener
+                 (dragStart$)="dragStart$.emit($event)"
+                 (dragStop$)="dragStop$.emit($event)"
+                 (drag$)="drag$.emit($event)">
                 <div class="lm_drag_handle"
                      [style.top.px]="handleExcessPos$ | async"
                      [style.height.px]="handleSize$ | async"></div>
@@ -18,7 +24,11 @@ import { map } from "rxjs/operators";
 
         <ng-container *ngIf="!isVertical">
             <div class="lm_splitter lm_horizontal"
-                 [style.width.px]="size">
+                 [style.width.px]="size"
+                 dgpGlDragListener
+                 (dragStart$)="dragStart$.emit($event)"
+                 (dragStop$)="dragStop$.emit($event)"
+                 (drag$)="drag$.emit($event)">
                 <div class="lm_drag_handle"
                      [style.left.px]="handleExcessPos$ | async"
                      [style.width.px]="handleSize$ | async"></div>
@@ -26,9 +36,14 @@ import { map } from "rxjs/operators";
         </ng-container>
     `
 })
-export class SplitterComponent implements AfterViewInit {
+export class SplitterComponent  {
 
-    dragListener: DragListenerDirective;
+    @Output()
+    readonly dragStart$ = new EventEmitter<Vector2>();
+    @Output()
+    readonly dragStop$ = new EventEmitter<{}>();
+    @Output()
+    readonly drag$ = new EventEmitter<DragEvent>();
 
     @Input()
     size: number;
@@ -81,11 +96,6 @@ export class SplitterComponent implements AfterViewInit {
     constructor(
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
-    }
-
-    ngAfterViewInit(): void {
-        this.dragListener = new DragListenerDirective();
-        this.dragListener.initProgrammatically(this.element);
     }
 
     destroy() {

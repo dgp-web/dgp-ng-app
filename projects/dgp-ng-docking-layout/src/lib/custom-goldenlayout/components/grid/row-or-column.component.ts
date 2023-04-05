@@ -507,24 +507,19 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         splitter.size = this.splitterSize;
         splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
-        splitter.ngAfterViewInit();
-
         const dragSub = splitter
-            .dragListener
             .drag$
             .subscribe(x => this.onSplitterDrag(splitter, x.x, x.y));
 
         this.subscriptions.push(dragSub);
 
         const splitterDragStartSubscription = splitter
-            .dragListener
             .dragStart$
             .subscribe(x => this.onSplitterDragStart(splitter));
 
         this.subscriptions.push(splitterDragStartSubscription);
 
         const splitterDragStopSubscription = splitter
-            .dragListener
             .dragStop$
             .subscribe(() => this.onSplitterDragStop(splitter));
 

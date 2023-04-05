@@ -17,7 +17,9 @@ import { ComponentConfiguration } from "../../types";
             (dragStart$)="onDragStart($event)"
             class="lm_tab nav-item">
             <a class="lm_title nav-link"
-               [class.active]="isActive">{{model.title}}</a>
+               [class.active]="isActive">
+                {{model.title}}
+            </a>
         </li>
     `
 })

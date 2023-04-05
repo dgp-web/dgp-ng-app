@@ -26,6 +26,8 @@ import { DragListenerDirective } from "../custom-goldenlayout/components/drag-an
 import { SplitterComponent } from "../custom-goldenlayout/components/resize/splitter.component";
 import { StackHeaderComponent } from "../custom-goldenlayout/components/tabs/stack-header.component";
 import { StackBodyComponent } from "../custom-goldenlayout/components/tabs/stack-body.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -48,7 +50,9 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         EffectsModule.forFeature([
             DockingLayoutEffects
         ]),
-        DgpResizeSensorModule
+        DgpResizeSensorModule,
+        MatButtonModule,
+        MatIconModule
     ],
     declarations: [
         DockingLayoutContainerComponent,
