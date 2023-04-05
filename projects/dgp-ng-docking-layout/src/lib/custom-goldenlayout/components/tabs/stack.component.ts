@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, QueryList, ViewChildren } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostBinding,
+    Inject,
+    QueryList,
+    ViewChild,
+    ViewChildren
+} from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
     ComponentConfiguration,
@@ -15,7 +25,6 @@ import { sides } from "../../constants/sides.constant";
 import { DropSegment } from "../../models/drop-segment.model";
 import { ContentAreaDimensions } from "../../models/content-area-dimensions.model";
 import { lmLeftClassName } from "../../constants/class-names/lm-left-class-name.constant";
-import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
 import { lmBottomClassName } from "../../constants/class-names/lm-bottom-class-name.constant";
 import { lmRightClassName } from "../../constants/class-names/lm-right-class-name.constant";
 import { DropTarget } from "../../models/drop-target.model";
@@ -29,9 +38,9 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
 @Component({
     selector: "dgp-stack",
     template: `
-        <!--<dgp-gl-header [model]="config"
-                       (dragStart)="processDragStart($event)"
-                       (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-header>-->
+        <dgp-gl-stack-header [model]="config"
+                             (dragStart)="processDragStart($event)"
+                             (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-stack-header>
 
         <div class="lm_items card-body" style="padding: 0;">
             <dgp-gl-component *ngFor="let componentConfig of config.content"
@@ -66,7 +75,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
-    // @ViewChild(HeaderComponent, {read: HeaderComponent})
+    @ViewChild(StackHeaderComponent, {read: StackHeaderComponent})
     private headerComponent: StackHeaderComponent;
 
     contentAreaDimensions: ContentAreaDimensions = null;
@@ -93,24 +102,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
-        const vcRef = this.dockingLayoutService.getViewContainerRef();
-        const headerComponentRef = vcRef.createComponent(StackHeaderComponent);
-        this.headerComponent = headerComponentRef.instance;
-
-        this.config$.subscribe(x => {
-            this.headerComponent.model = x;
-        });
-
-        this.headerComponent.selectedContentItemChange.subscribe(x => {
-            this.processSelectedContentItemChange(x);
-        });
-
-        this.headerComponent.dragStart.subscribe(x => {
-            this.processDragStart(x);
-        });
-
         const cfg = this.dockingLayoutService.config;
-        this._header = { // defaults' reconstruction from old configuration style
+        this._header = {
             show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
             popout: cfg.settings.showPopoutIcon && cfg.labels.popout,
             maximise: cfg.settings.showMaximiseIcon && cfg.labels.maximise,
@@ -125,11 +118,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
             Object.assign(this._header, this.config.content[0].header);
         }
 
-        // this.childElementContainer = $(dockingLayoutViewMap.stackContent.render());
-
-        this.element.append(this.headerComponent.element);
-        // this.element.append(this.childElementContainer);
-
         this.setupHeaderPosition();
     }
 
@@ -143,16 +131,11 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private setupHeaderPosition() {
         const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
-        this.headerComponent.element.toggle(!!this._header.show);
         this._side = side;
         this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
         this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
-        }
-        if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
-            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
-            this.headerComponent.element[headerPosition](this.childElementContainer);
         }
     }
 
@@ -240,7 +223,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     destroy() {
         this.element.remove();
-        this.headerComponent.destroy();
 
         if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
             this.subscription.unsubscribe();
