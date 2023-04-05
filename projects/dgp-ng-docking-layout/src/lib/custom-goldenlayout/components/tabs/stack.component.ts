@@ -371,7 +371,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     /**
      * Returns the area the component currently occupies in the format
      */
-    private getAreaInternal(element?: JQuery): Area {
+    private getAreaInternal<T = number>(element?: JQuery): Area {
         element = element || this.element;
 
         const offset = element.offset(),
@@ -393,9 +393,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
             return null;
         }
 
-        const getArea = this.getAreaInternal,
-            headerArea = getArea.call(this, this.headerComponent.element),
-            contentArea = getArea.call(this, this.childElementContainer),
+        const headerArea = this.getAreaInternal(this.headerComponent.element),
+            contentArea = this.getAreaInternal(this.childElementContainer),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
 
@@ -424,7 +423,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
                 highlightArea: contentArea
             };
 
-            return getArea.call(this, this.element);
+            return this.getAreaInternal(this.element);
         }
 
         this.contentAreaDimensions.left = {
@@ -475,7 +474,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             }
         };
 
-        return getArea.call(this, this.element);
+        return this.getAreaInternal(this.element);
     }
 
     private highlightHeaderDropZone(x: number) {
