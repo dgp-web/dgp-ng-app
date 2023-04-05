@@ -18,7 +18,6 @@ import {
     PARENT_ITEM_COMPONENT,
     StackConfiguration
 } from "../../types";
-import { StackHeaderComponent } from "./stack-header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
@@ -34,11 +33,30 @@ import { StackParentComponent } from "../../models/stack-parent-component.model"
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import { RowOrColumnComponent } from "../grid/row-or-column.component";
+import { Vector2 } from "../../../common";
+import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
+import { MatTabGroup } from "@angular/material/tabs";
 
 @Component({
     selector: "dgp-stack",
     template: `
-        <dgp-gl-stack-header [model]="config"
+        <mat-tab-group>
+            <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
+                <ng-template mat-tab-label>
+                    <div #tabHeader
+                         dgpGlDragListener
+                         (dragStart$)="onDragStart1($event, componentConfig, i)">
+                        {{componentConfig.title}}
+                    </div>
+                </ng-template>
+                <dgp-gl-component [config]="componentConfig"
+                                  [isHidden]="config.activeItemId !== componentConfig.id"
+                                  (dragStart)="onDragStart(componentConfig.id)">
+                </dgp-gl-component>
+            </mat-tab>
+        </mat-tab-group>
+
+        <!--<dgp-gl-stack-header [model]="config"
                              (dragStart)="processDragStart($event)"
                              (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-stack-header>
 
@@ -48,10 +66,13 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
                               [isHidden]="config.activeItemId !== componentConfig.id"
                               (dragStart)="onDragStart(componentConfig.id)">
             </dgp-gl-component>
-        </div>
+        </div>-->
     `
 })
 export class StackComponent implements DropTarget, AfterViewInit {
+
+    @ViewChildren("tabHeader", {read: DragListenerDirective})
+    private matTabDraglisteners: QueryList<DragListenerDirective>;
 
     @ViewChildren(GlComponent)
     private contentItems: QueryList<GlComponent>;
@@ -73,8 +94,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
-    @ViewChild(StackHeaderComponent, {read: StackHeaderComponent})
-    private headerComponent: StackHeaderComponent;
+    @ViewChild(MatTabGroup, {read: ElementRef})
+    private headerComponent: ElementRef<HTMLElement>;
 
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
@@ -90,6 +111,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
         private readonly cd: ChangeDetectorRef
     ) {
         this.initialize();
+    }
+
+    onDragStart1(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
+        const dragListener = this.matTabDraglisteners.get(tabIndex);
+        console.log(dragListener);
+        this.processDragStart({coordinates, contentItem, dragListener});
     }
 
     ngAfterViewInit(): void {
@@ -373,7 +400,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             return null;
         }
 
-        const headerArea = this.getAreaInternal(this.headerComponent.element),
+        const headerArea = this.getAreaInternal($(this.headerComponent.nativeElement)),
             contentArea = this.getAreaInternal(),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
@@ -458,9 +485,11 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     private highlightHeaderDropZone(x: number) {
+        const headerElement = $(this.headerComponent.nativeElement);
+        const tabsLength = this.matTabDraglisteners.length;
+
         let i: number,
             tabElement: JQuery<HTMLElement>,
-            tabsLength = this.headerComponent.tabs.length,
             isAboveTab = false,
             tabTop: number,
             tabLeft: number,
@@ -473,20 +502,20 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         // Empty stack
         if (tabsLength === 0) {
-            headerOffset = this.headerComponent.element.offset();
+            headerOffset = headerElement.offset();
 
             this.dockingLayoutService.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
                 x2: headerOffset.left + 100,
-                y1: headerOffset.top + this.headerComponent.element.height() - 20,
-                y2: headerOffset.top + this.headerComponent.element.height()
+                y1: headerOffset.top + headerElement.height() - 20,
+                y2: headerOffset.top + headerElement.height()
             });
 
             return;
         }
 
         for (i = 0; i < tabsLength; i++) {
-            tabElement = this.headerComponent.tabs.toArray()[i].element;
+            tabElement = $(this.matTabDraglisteners.toArray()[i].elementRef.nativeElement);
             offset = tabElement.offset();
             if (this._sided) {
                 tabLeft = offset.top;
