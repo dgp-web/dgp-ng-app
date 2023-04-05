@@ -63,7 +63,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
 
     @Input()
-    splitterSize = 1;
+    splitterSize = 4;
 
     constructor(private readonly viewContainerRef: ViewContainerRef,
                 private readonly dockingLayoutService: DockingLayoutService,
