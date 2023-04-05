@@ -160,12 +160,10 @@ export class DragProxy extends EventEmitter {
      * Removes the item from its original position within the tree
      */
     private updateTree() {
-
         /**
          * parent is null if the drag had been initiated by a external drag source
          */
         this.contentItem.startDragging();
-
         this.contentItem.setDragParent(this);
     }
 

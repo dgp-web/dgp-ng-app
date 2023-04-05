@@ -47,7 +47,7 @@ export class GlComponent implements WithDragParent, OnInit, AfterViewInit {
     parent: DragProxy;
 
     @Output()
-    readonly dragStart = new EventEmitter<void>();
+    readonly dragStart = new EventEmitter();
 
     constructor(
         private readonly elementRef: ElementRef<HTMLElement>,
