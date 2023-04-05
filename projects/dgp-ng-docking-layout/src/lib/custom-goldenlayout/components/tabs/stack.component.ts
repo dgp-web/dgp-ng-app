@@ -45,29 +45,26 @@ import { MatTabGroup } from "@angular/material/tabs";
                 <ng-template mat-tab-label>
                     <div #tabHeader
                          dgpGlDragListener
-                         (dragStart$)="onDragStart1($event, componentConfig, i)">
+                         (dragStart$)="onDragStart1($event, componentConfig, i)"
+                         class="tab-header">
                         {{componentConfig.title}}
                     </div>
                 </ng-template>
                 <dgp-gl-component [config]="componentConfig"
-                                  [isHidden]="config.activeItemId !== componentConfig.id"
-                                  (dragStart)="onDragStart(componentConfig.id)">
-                </dgp-gl-component>
+                                  [isHidden]="false"
+                                  (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
             </mat-tab>
         </mat-tab-group>
-
-        <!--<dgp-gl-stack-header [model]="config"
-                             (dragStart)="processDragStart($event)"
-                             (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-stack-header>
-
-        <div class="lm_items card-body" style="padding: 0;">
-            <dgp-gl-component *ngFor="let componentConfig of config.content"
-                              [config]="componentConfig"
-                              [isHidden]="config.activeItemId !== componentConfig.id"
-                              (dragStart)="onDragStart(componentConfig.id)">
-            </dgp-gl-component>
-        </div>-->
-    `
+    `,
+    styles: [`
+        .tab-header {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;;
+        }
+    `]
 })
 export class StackComponent implements DropTarget, AfterViewInit {
 
@@ -115,7 +112,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     onDragStart1(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
         const dragListener = this.matTabDraglisteners.get(tabIndex);
-        console.log(dragListener);
         this.processDragStart({coordinates, contentItem, dragListener});
     }
 
@@ -584,7 +580,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
         );
     }
 
-    processSelectedContentItemChange(x: ComponentConfiguration) {
+    processSelectedContentItemChange(index: number) {
+        const x = this.config.content[index];
         if (x.id === this.config.activeItemId) return;
         this.setActiveContentItem(x.id);
     }

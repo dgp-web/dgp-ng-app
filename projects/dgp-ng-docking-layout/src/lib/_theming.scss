@@ -472,3 +472,16 @@
 .lm_header.card-header.lm_selectable {
     z-index: 0;
 }
+
+dgp-stack {
+
+    .mat-tab-label {
+        padding: 0;
+    }
+
+    .mat-tab-label-content {
+        width: 100%;
+        height: 100%;
+    }
+
+}
