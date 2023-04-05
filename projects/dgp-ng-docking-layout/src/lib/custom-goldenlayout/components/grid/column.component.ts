@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { RowOrColumnComponentBase } from "./row-or-column.component";
 import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../types";
 import { DockingLayoutService } from "../../docking-layout.service";
+import { ColumnParentComponent, RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 
 @Component({
     selector: "dgp-column",
@@ -12,13 +12,13 @@ import { DockingLayoutService } from "../../docking-layout.service";
 export class ColumnComponent extends RowOrColumnComponentBase {
 
     constructor(
-        public layoutManager: DockingLayoutService,
+        public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
             config: ItemConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-            parent: AbstractContentItemComponent
+            parent: ColumnParentComponent
     ) {
-        super(true, layoutManager, config, parent);
+        super(true, dockingLayoutService, config, parent as RowOrColumnParentComponent);
     }
 
 }

@@ -1,18 +1,25 @@
 import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ItemConfiguration } from "../../types";
+import { ItemConfiguration, itemDefaultConfig } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { SplitterComponent } from "../resize/splitter.component";
+import { AreaSides } from "../../models/area.model";
+import { DropSegment } from "../../models/drop-segment.model";
+import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
+import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
+import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
+import { DragProxy } from "../drag-and-drop/drag-proxy.component";
+import { WithDragParent } from "../../models/with-drag-parent.model";
+import { StackComponent } from "../tabs/stack.component";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class RowOrColumnComponentBase extends AbstractContentItemComponent {
+export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
-    public readonly splitterGrabSize: any;
+    public readonly splitterGrabSize: number;
     public readonly _isColumn: boolean;
     public readonly _dimension: string;
     public readonly splitters = new Array<SplitterComponent>();
@@ -23,13 +30,29 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
+    _side: boolean | DropSegment;
+    _sided: boolean;
+
+    contentItems: RowOrColumnContentItemComponent[] = [];
+
+    isInitialised = false;
+    isRoot = false;
+    isRow = false;
+    isColumn = false;
+    isStack = false;
+    isComponent = false;
+    config: ItemConfiguration;
+
     constructor(
         isColumn: boolean,
-        public layoutManager: DockingLayoutService,
+        public dockingLayoutService: DockingLayoutService,
         config: ItemConfiguration,
-        parent: AbstractContentItemComponent
+        public parent: RowOrColumnParentComponent
     ) {
-        super(layoutManager, config, parent);
+        super();
+
+        this.config = {...itemDefaultConfig, ...config};
+        if (config.content) this.createContentItems(config);
 
         this.isRow = !isColumn;
         this.isColumn = isColumn;
@@ -38,8 +61,8 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             dockingLayoutViewMap.rowOrColumn.render({isColumn})
         );
         this.childElementContainer = this.element;
-        this.splitterSize = layoutManager.config.dimensions.borderWidth;
-        this.splitterGrabSize = layoutManager.config.dimensions.borderGrabWidth;
+        this.splitterSize = dockingLayoutService.config.dimensions.borderWidth;
+        this.splitterGrabSize = dockingLayoutService.config.dimensions.borderGrabWidth;
         this._isColumn = isColumn;
         this._dimension = isColumn ? "height" : "width";
     }
@@ -47,9 +70,12 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     /**
      * Add a new contentItem to the Row or Column
      */
-    addChild(contentItem: AbstractContentItemComponent, index: number, _$suspendResize: boolean) {
+    addChild(contentItem: RowOrColumnComponentBase | StackComponent, index: number, _$suspendResize: boolean) {
 
-        let newItemSize, itemSize, i, splitterElement;
+        let newItemSize: number,
+            itemSize: number,
+            i: number,
+            splitterElement: JQuery<HTMLElement>;
 
         if (index === undefined) {
             index = this.contentItems.length;
@@ -70,12 +96,26 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         }
 
 
-        AbstractContentItemComponent.prototype.addChild.call(this, contentItem, index);
+        if (index === undefined) {
+            index = this.contentItems.length;
+        }
+
+        this.contentItems.splice(index, 0, contentItem);
+
+        if (this.config.content === undefined) {
+            this.config.content = [];
+        }
+
+        this.config.content.splice(index, 0, contentItem.config);
+        contentItem.parent = this;
+
+        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
+            contentItem.init();
+        }
 
         newItemSize = (1 / this.contentItems.length) * 100;
 
         if (_$suspendResize === true) {
-            this.emitBubblingEvent("stateChanged");
             return;
         }
 
@@ -89,16 +129,15 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         }
 
         this.callDownwards("setSize");
-        this.emitBubblingEvent("stateChanged");
     }
-
 
     /**
      * Removes a child of this element
      */
-    removeChild(contentItem: AbstractContentItemComponent, keepChild: boolean) {
+    removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
+        let index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems);
         const removedItemSize = contentItem.config[this._dimension],
-            index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems),
+
             splitterIndex = Math.max(index - 1, 0);
         let i,
             childItem;
@@ -125,7 +164,23 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             }
         }
 
-        AbstractContentItemComponent.prototype.removeChild.call(this, contentItem, keepChild);
+
+        index = this.contentItems.indexOf(contentItem);
+
+        if (keepChild !== true) {
+            this.contentItems[index].destroy();
+        }
+
+        this.contentItems.splice(index, 1);
+
+        this.config.content.splice(index, 1);
+
+        if (this.contentItems.length > 0) {
+            this.callDownwards("setSize");
+
+        } else if (this.config.isClosable === true) {
+            this.parent.removeChild(this, undefined);
+        }
 
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
             childItem = this.contentItems[0];
@@ -133,19 +188,50 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             this.parent.replaceChild(this, childItem, true);
         } else {
             this.callDownwards("setSize");
-            this.emitBubblingEvent("stateChanged");
         }
+    }
+
+    setDragParent(parent: DragProxy) {
+        this.parent = parent as any;
+    }
+
+    highlightDropZone(x: number, y: number, area: AreaSides) {
+        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
+    }
+
+    destroy() {
+        this.unsubscribe();
+        this.callDownwards("destroy", [], true, true);
+        this.element.remove();
     }
 
     /**
      * Replaces a child of this Row or Column with another contentItem
      */
-    replaceChild(oldChild: AbstractContentItemComponent, newChild: AbstractContentItemComponent) {
+    replaceChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent, destroyOldChild?: boolean) {
         const size = oldChild.config[this._dimension];
-        AbstractContentItemComponent.prototype.replaceChild.call(this, oldChild, newChild);
+
+        const index = this.contentItems.indexOf(oldChild);
+        const parentNode = oldChild.element[0].parentNode;
+
+        parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
+
+        if (destroyOldChild === true) {
+            oldChild.parent = null;
+            oldChild.destroy();
+        }
+
+        this.contentItems[index] = newChild;
+        newChild.parent = this;
+
+        // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
+        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
+            if (!newChild.isStack) newChild.init();
+        }
+
+        this.callDownwards("setSize");
         newChild.config[this._dimension] = size;
         this.callDownwards("setSize");
-        this.emitBubblingEvent("stateChanged");
     }
 
     /**
@@ -156,27 +242,21 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
             this.calculateRelativeSizes();
             this.setAbsoluteSizes();
         }
-        this.emitBubblingEvent("stateChanged");
         this.emit("resize");
     }
 
-    /**
-     * Invoked recursively by the layout manager. AbstractContentItem.init appends
-     * the contentItem's DOM elements to the container, RowOrColumn init adds splitters
-     * in between them
-     *
-     * @package private
-     * @override AbstractContentItem.init
-     * @returns {void}
-     */
     init(): void {
         if (this.isInitialised === true) {
             return;
         }
 
-        let i;
+        let i: number;
 
-        AbstractContentItemComponent.prototype.init.call(this);
+        for (i = 0; i < this.contentItems.length; i++) {
+            this.childElementContainer.append(this.contentItems[i].element);
+        }
+
+        this.isInitialised = true;
 
         for (i = 0; i < this.contentItems.length - 1; i++) {
             this.contentItems[i].element.after(this.createSplitter(i).element);
@@ -329,7 +409,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * @returns {}
      */
     private respectMinItemWidth() {
-        const minItemWidth = this.layoutManager.config.dimensions ? (this.layoutManager.config.dimensions.minItemWidth || 0) : 0;
+        const minItemWidth = this.dockingLayoutService.config.dimensions ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0) : 0;
         let sizeData = null;
         const entriesOverMin = [];
         let totalOverMin = 0;
@@ -403,6 +483,15 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
         }
     }
 
+    remove() {
+        this.parent.removeChild(this, undefined);
+    }
+
+    private createContentItems(config: ItemConfiguration) {
+        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
+    }
+
+
     /**
      * Instantiates a new lm.controls.Splitter, binds events to it and adds
      * it to the array of splitters at the position specified as the index argument
@@ -410,24 +499,27 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
      * What it doesn't do though is to append the splitter to the DOM
      */
     private createSplitter(index: number): SplitterComponent {
-        let splitter = new SplitterComponent(this.layoutManager, this._isColumn, this.splitterSize, this.splitterGrabSize);
+        const vcRef = this.dockingLayoutService.getViewContainerRef();
+        const splitterComponentRef = vcRef.createComponent(SplitterComponent);
+        const splitter = splitterComponentRef.instance;
+
+        splitter.isVertical = this._isColumn;
+        splitter.size = this.splitterSize;
+        splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
         const dragSub = splitter
-            .dragListener
             .drag$
             .subscribe(x => this.onSplitterDrag(splitter, x.x, x.y));
 
         this.subscriptions.push(dragSub);
 
         const splitterDragStartSubscription = splitter
-            .dragListener
             .dragStart$
             .subscribe(x => this.onSplitterDragStart(splitter));
 
         this.subscriptions.push(splitterDragStartSubscription);
 
         const splitterDragStopSubscription = splitter
-            .dragListener
             .dragStop$
             .subscribe(() => this.onSplitterDragStop(splitter));
 
@@ -477,7 +569,7 @@ export class RowOrColumnComponentBase extends AbstractContentItemComponent {
     private onSplitterDragStart(splitter: SplitterComponent): void {
 
         const items = this.getItemsForSplitter(splitter),
-            minSize = this.layoutManager.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
+            minSize = this.dockingLayoutService.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
 
         const beforeMinDim = this._getMinimumDimensions(items.before.config.content);
         const beforeMinSize = this._isColumn ? beforeMinDim.vertical : beforeMinDim.horizontal;

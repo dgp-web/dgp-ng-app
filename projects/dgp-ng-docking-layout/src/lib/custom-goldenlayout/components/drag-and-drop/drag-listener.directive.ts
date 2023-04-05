@@ -5,7 +5,6 @@ import { draggingClassName } from "../../constants/class-names/dragging-class-na
 import { createPassiveEventListenerOptions } from "../../functions/create-passive-event-listener-options.function";
 import { DragEvent } from "../../models/drag-event.model";
 import { createCoordinates } from "../../functions/create-coordinates.function";
-import { notNullOrUndefined } from "dgp-ng-app";
 
 @Directive({
     selector: "[dgpGlDragListener]"
@@ -18,9 +17,8 @@ export class DragListenerDirective {
     readonly dragStop$ = new EventEmitter<{}>();
     @Output()
     readonly drag$ = new EventEmitter<DragEvent>();
-
-    private element: HTMLElement;
-    private $body: any;
+    private $body = $(document.body);
+    
     private timeout: number;
 
     private readonly delay = 200;
@@ -30,21 +28,12 @@ export class DragListenerDirective {
     private originalCoordinates = createCoordinates();
 
     private isDragging = false;
-    private $element: JQuery<HTMLElement>;
+    private $element = $(this.elementRef.nativeElement);
+    private element = this.$element[0];
 
     constructor(
-        private readonly elementRef?: ElementRef<HTMLElement>
+        private readonly elementRef: ElementRef<HTMLElement>
     ) {
-        if (notNullOrUndefined(elementRef)) {
-            this.initProgrammatically($(elementRef.nativeElement));
-        }
-    }
-
-    initProgrammatically($element: JQuery<HTMLElement>) {
-        this.$element = $element;
-        this.element = this.$element[0];
-        this.$body = $(document.body);
-
         this.element.addEventListener("mousedown", this.onMouseDown, createPassiveEventListenerOptions());
     }
 
@@ -81,7 +70,6 @@ export class DragListenerDirective {
             }
 
             if (this.isDragging) {
-                this.dragStart$.emit(this.coordinates);
                 this.drag$.emit({
                     x: this.coordinates.x,
                     y: this.coordinates.y,

@@ -1,13 +1,6 @@
 import { DockingLayoutViewModels } from "./models";
 
 export const dockingLayoutViewMap = {
-    dragHandle: {
-        render() {
-            return `
-                <div class="lm_drag_handle"></div>
-            `;
-        }
-    },
     dragProxy: {
         render(model: {
             readonly draggedItem: HTMLElement
@@ -27,37 +20,12 @@ export const dockingLayoutViewMap = {
             `;
         }
     },
-    dropTargetIndicator: {
-        render() {
-            return `
-                <div class="dgp-drop-target-indicator"><div class="lm_inner"></div></div>
-            `;
-        }
-    },
     header: {
         render() {
             return `
-               <div class="lm_header card-header">
                     <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
                     <ul class="lm_controls"></ul>
                     <ul class="lm_tabdropdown_list"></ul>
-               </div>
-            `;
-        }
-    },
-    itemContainer: {
-        render() {
-            return `
-                <div class="lm_item_container">
-                    <div class="lm_content"></div>
-                </div>
-            `;
-        }
-    },
-    root: {
-        render() {
-            return `
-                <div class="lm_goldenlayout lm_item lm_root"></div>
             `;
         }
     },
@@ -65,13 +33,6 @@ export const dockingLayoutViewMap = {
         render(model?: DockingLayoutViewModels["rowOrColumn"]) {
             return `
                 <div class="lm_item lm_${model.isColumn ? "column" : "row"}"></div>
-            `;
-        }
-    },
-    splitter: {
-        render() {
-            return `
-                <div class="lm_splitter"></div>
             `;
         }
     },

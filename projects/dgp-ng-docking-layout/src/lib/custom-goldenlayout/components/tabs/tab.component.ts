@@ -1,6 +1,5 @@
 import { Vector2 } from "../../../common/models";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { AbstractContentItemComponent } from "../shared/abstract-content-item.component";
 import { activeClassName } from "../../constants/active-class-name.constant";
 import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, ViewChild } from "@angular/core";
 import { DragStartEvent } from "../../models/drag-start-event.model";
@@ -18,7 +17,9 @@ import { ComponentConfiguration } from "../../types";
             (dragStart$)="onDragStart($event)"
             class="lm_tab nav-item">
             <a class="lm_title nav-link"
-               [class.active]="isActive">{{label}}</a>
+               [class.active]="isActive">
+                {{model.title}}
+            </a>
         </li>
     `
 })
@@ -31,7 +32,7 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
     private dragListener: DragListenerDirective;
 
     @Output()
-    readonly selected = new EventEmitter<AbstractContentItemComponent>();
+    readonly selected = new EventEmitter<any>();
 
     @Output()
     readonly dragStart = new EventEmitter<DragStartEvent>();
@@ -39,12 +40,6 @@ export class TabComponent extends DgpView<ComponentConfiguration> {
     @HostBinding("." + activeClassName)
     @Input()
     isActive: boolean;
-
-    @Input()
-    tabId: string;
-
-    @Input()
-    label: string;
 
     constructor(
         private readonly elementRef: ElementRef

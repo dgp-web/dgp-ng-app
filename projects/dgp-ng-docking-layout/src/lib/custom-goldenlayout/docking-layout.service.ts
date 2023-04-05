@@ -1,16 +1,20 @@
 import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
-import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
+import {
+    ComponentConfiguration,
+    ITEM_CONFIG,
+    ItemConfiguration,
+    LayoutConfiguration,
+    PARENT_ITEM_COMPONENT,
+    StackConfiguration
+} from "./types";
 import { EventEmitter } from "./utilities";
 import { EventHub } from "./utilities/event-hub";
-import { AbstractContentItemComponent } from "./components/shared/abstract-content-item.component";
 import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
 import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
 import { InitializedEvent } from "./models/events/initialized-event.model";
-import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
-import { notNullOrUndefined } from "dgp-ng-app";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
@@ -18,6 +22,7 @@ import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
+import { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -25,7 +30,6 @@ import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placehol
 @Injectable()
 export class DockingLayoutService extends EventEmitter {
 
-    selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery;
     dropTargetIndicator: DropTargetIndicatorComponent;
@@ -69,21 +73,12 @@ export class DockingLayoutService extends EventEmitter {
         this.config = createLayoutConfig(config);
         this.dropTargetIndicator = null;
         this.tabDropPlaceholder = viewContainerRef.createComponent(TabDropPlaceholderComponent).instance;
-
-        /*this.on("stateChanged", (x) => {
-            console.log(x);
-            try {
-                console.log(this.toConfig(this.root));
-            } catch (e) {
-                console.error(e);
-            }
-        });*/
     }
 
-    getComponent = x => this.componentRegistry.getComponent(x);
-
     init() {
-        this.dropTargetIndicator = this.viewContainerRef.createComponent(DropTargetIndicatorComponent).instance;
+        const dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
+        dropTargetIndicatorComponentRef.changeDetectorRef.markForCheck();
+        this.dropTargetIndicator = dropTargetIndicatorComponentRef.instance;
         this.updateSize();
         this.createRootComponent(this.config);
     }
@@ -107,9 +102,17 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
+    createContentItem<T extends DockingLayoutItemComponent>(
+        itemConfig: ItemConfiguration,
+        parentItem: DockingLayoutItemComponent
+    ): T {
 
-        if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
+        if (shouldWrapInStack({
+            itemConfig,
+            parentItem
+        })) {
+            itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
+        }
 
         const injector = Injector.create({
             providers: [{
@@ -124,27 +127,13 @@ export class DockingLayoutService extends EventEmitter {
 
         const componentType = typeToComponentMap[itemConfig.type];
 
-        return this.viewContainerRef.createComponent<any>(componentType as any, {injector}).instance;
+        return this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
     }
 
     destroy() {
         if (this.isInitialised === false) return;
         this.root.callDownwards("destroy", [], true);
-        this.root.contentItems = [];
         this.eventHub.destroy();
-    }
-
-    selectItem(item: AbstractContentItemComponent, silent: boolean) {
-
-        if (item === this.selectedItem) return;
-
-        if (notNullOrUndefined(this.selectedItem)) this.selectedItem.deselect();
-
-        if (item && silent !== true) item.select();
-
-        this.selectedItem = item;
-
-        this.emit<SelectionChangedEvent>("selectionChanged", item);
     }
 
     private createRootComponent(config: LayoutConfiguration): void {
@@ -158,7 +147,9 @@ export class DockingLayoutService extends EventEmitter {
             }],
             parent: this.injector
         });
-        this.root = this.viewContainerRef.createComponent(RootComponent, {injector}).instance;
+        const rootComponentRef = this.viewContainerRef.createComponent(RootComponent, {injector});
+        rootComponentRef.changeDetectorRef.markForCheck();
+        this.root = rootComponentRef.instance;
     }
 
     getArea(x: number, y: number): Area {

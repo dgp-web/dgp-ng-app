@@ -38,7 +38,8 @@
 
 .lm_splitter {
     position: relative;
-    z-index: 20
+    z-index: 20;
+    cursor: grab;
 }
 
 .lm_splitter:hover, .lm_splitter.lm_dragging {
