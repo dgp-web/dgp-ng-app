@@ -215,7 +215,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     setActiveContentItem(componentId: string) {
+        const item = this.config.content.find(x => x.id === componentId);
+        const index = this.config.content.indexOf(item);
         this.config.activeItemId = componentId;
+        this.config.activeItemIndex = index;
 
         if (this.config.onSelectedItemChange) {
             this.config.onSelectedItemChange(componentId);
