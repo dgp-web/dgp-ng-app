@@ -36,12 +36,12 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { MatTabGroup } from "@angular/material/tabs";
-import { StackHeaderComponent } from "./stack-header.component";
 
 @Component({
     selector: "dgp-stack",
     template: `
-        <!--<mat-tab-group>
+        <mat-tab-group [selectedIndex]="config.activeItemIndex"
+                       (selectedIndexChange)="processSelectedContentItemChange($event)">
             <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
                 <ng-template mat-tab-label>
                     <div #tabHeader
@@ -51,15 +51,8 @@ import { StackHeaderComponent } from "./stack-header.component";
                         {{componentConfig.title}}
                     </div>
                 </ng-template>
-                <dgp-gl-component [config]="componentConfig"
-                                  [isHidden]="false"
-                                  (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
             </mat-tab>
-        </mat-tab-group>-->
-
-        <dgp-gl-stack-header [model]="config"
-                             (dragStart)="processDragStart($event)"
-                             (selectedContentItemChange)="legacyProcessSelectedContentItemChange($event)"></dgp-gl-stack-header>
+        </mat-tab-group>
 
         <dgp-gl-component *ngFor="let componentConfig of config.content"
                           [config]="componentConfig"
@@ -69,6 +62,11 @@ import { StackHeaderComponent } from "./stack-header.component";
     styles: [`
         :host {
             overflow: auto;
+        }
+
+        mat-tab-group {
+            flex-shrink: 0;
+            height: 50px;
         }
 
         .tab-header {
@@ -105,8 +103,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
-    // @ViewChild(MatTabGroup, {read: ElementRef})
-    @ViewChild(StackHeaderComponent, {read: ElementRef})
+    @ViewChild(MatTabGroup, {read: ElementRef})
     private headerComponent: ElementRef<HTMLElement>;
 
     contentAreaDimensions: ContentAreaDimensions = null;
@@ -593,11 +590,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
             resolved,
             this
         );
-    }
-
-    legacyProcessSelectedContentItemChange(x: ComponentConfiguration) {
-        if (x.id === this.config.activeItemId) return;
-        this.setActiveContentItem(x.id);
     }
 
     processSelectedContentItemChange(index: number) {
