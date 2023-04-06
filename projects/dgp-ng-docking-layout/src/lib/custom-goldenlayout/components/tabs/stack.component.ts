@@ -57,17 +57,14 @@ import { StackHeaderComponent } from "./stack-header.component";
             </mat-tab>
         </mat-tab-group>-->
 
-         <dgp-gl-stack-header [model]="config"
-                              (dragStart)="processDragStart($event)"
-                              (selectedContentItemChange)="legacyProcessSelectedContentItemChange($event)"></dgp-gl-stack-header>
+        <dgp-gl-stack-header [model]="config"
+                             (dragStart)="processDragStart($event)"
+                             (selectedContentItemChange)="legacyProcessSelectedContentItemChange($event)"></dgp-gl-stack-header>
 
-         <div class="lm_items card-body" style="padding: 0;">
-             <dgp-gl-component *ngFor="let componentConfig of config.content"
-                               [config]="componentConfig"
-                               [isHidden]="config.activeItemId !== componentConfig.id"
-                               (dragStart)="onDragStart(componentConfig.id)">
-             </dgp-gl-component>
-         </div>
+        <dgp-gl-component *ngFor="let componentConfig of config.content"
+                          [config]="componentConfig"
+                          [isHidden]="config.activeItemId !== componentConfig.id"
+                          (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
     `,
     styles: [`
         :host {
