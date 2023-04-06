@@ -62,6 +62,8 @@ import { MatTabGroup } from "@angular/material/tabs";
     styles: [`
         :host {
             overflow: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         mat-tab-group {
@@ -88,7 +90,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
-    @HostBinding("class.card")
     readonly bindings = true;
 
     _side: boolean | DropSegment;
