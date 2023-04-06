@@ -36,11 +36,12 @@ import { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { MatTabGroup } from "@angular/material/tabs";
+import { StackHeaderComponent } from "./stack-header.component";
 
 @Component({
     selector: "dgp-stack",
     template: `
-        <mat-tab-group>
+        <!--<mat-tab-group>
             <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
                 <ng-template mat-tab-label>
                     <div #tabHeader
@@ -54,7 +55,19 @@ import { MatTabGroup } from "@angular/material/tabs";
                                   [isHidden]="false"
                                   (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
             </mat-tab>
-        </mat-tab-group>
+        </mat-tab-group>-->
+
+         <dgp-gl-stack-header [model]="config"
+                              (dragStart)="processDragStart($event)"
+                              (selectedContentItemChange)="legacyProcessSelectedContentItemChange($event)"></dgp-gl-stack-header>
+
+         <div class="lm_items card-body" style="padding: 0;">
+             <dgp-gl-component *ngFor="let componentConfig of config.content"
+                               [config]="componentConfig"
+                               [isHidden]="config.activeItemId !== componentConfig.id"
+                               (dragStart)="onDragStart(componentConfig.id)">
+             </dgp-gl-component>
+         </div>
     `,
     styles: [`
         :host {
@@ -95,7 +108,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
-    @ViewChild(MatTabGroup, {read: ElementRef})
+    // @ViewChild(MatTabGroup, {read: ElementRef})
+    @ViewChild(StackHeaderComponent, {read: ElementRef})
     private headerComponent: ElementRef<HTMLElement>;
 
     contentAreaDimensions: ContentAreaDimensions = null;
@@ -582,6 +596,11 @@ export class StackComponent implements DropTarget, AfterViewInit {
             resolved,
             this
         );
+    }
+
+    legacyProcessSelectedContentItemChange(x: ComponentConfiguration) {
+        if (x.id === this.config.activeItemId) return;
+        this.setActiveContentItem(x.id);
     }
 
     processSelectedContentItemChange(index: number) {
