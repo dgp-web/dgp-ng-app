@@ -18,6 +18,10 @@ export interface SplitterComponents {
     after: RowOrColumnContentItemComponent;
 }
 
+export interface Wide {
+    width: number;
+}
+
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
@@ -354,7 +358,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
      */
     private calculateRelativeSizes(): void {
 
-        let i,
+        let i: number,
             total = 0;
         const itemsWithoutSetDimension = [],
             dimension = this._isColumn ? "height" : "width";
@@ -412,7 +416,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     private respectMinItemWidth(): void {
         const minItemWidth = this.dockingLayoutService.config.dimensions ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0) : 0;
         let sizeData = null;
-        const entriesOverMin: Array<{ width: number; }> = [];
+        const entriesOverMin: Array<Wide> = [];
         let totalOverMin = 0;
         let totalUnderMin = 0;
         let remainingWidth = 0;
@@ -420,8 +424,8 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         let contentItem = null;
         let reducePercent: number;
         let reducedWidth: number;
-        const allEntries: Array<{ width: number; }> = [];
-        let entry: { width: number; };
+        const allEntries: Array<Wide> = [];
+        let entry: Wide;
 
         if (this._isColumn || !minItemWidth || this.contentItems.length <= 1) {
             return;
