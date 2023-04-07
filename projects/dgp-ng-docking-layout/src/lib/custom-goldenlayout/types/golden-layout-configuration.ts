@@ -6,10 +6,6 @@ export type ItemType = "row" | "column" | "stack" | "component" | "root";
 
 export interface HeaderConfig {
     show: boolean | DropSegment;
-    popout: string;
-    maximise: string;
-    close: string;
-    minimise: string;
 }
 
 export interface LayoutConfiguration {
@@ -37,13 +33,6 @@ export interface LayoutConfiguration {
         readonly dragProxyWidth?: number;
         readonly dragProxyHeight?: number;
         readonly borderGrabWidth?: number;
-    };
-    readonly labels?: {
-        readonly close?: string;
-        readonly maximise?: string;
-        readonly minimise?: string;
-        readonly popout?: string;
-        readonly tabDropdown?: string;
     };
     readonly content?: ItemConfiguration[];
 }
@@ -79,7 +68,6 @@ export interface StackConfiguration extends ItemConfiguration {
     activeItemIndex?: number;
     activeItemId?: string;
     hasHeaders?: boolean;
-    header?: any;
 
     content: ComponentConfiguration[];
     onSelectedItemChange?: (id: string) => void;

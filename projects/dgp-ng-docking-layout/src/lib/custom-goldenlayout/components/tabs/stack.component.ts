@@ -144,15 +144,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const cfg = this.dockingLayoutService.config;
         this._header = {
             show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
-            popout: cfg.settings.showPopoutIcon && cfg.labels.popout,
-            maximise: cfg.settings.showMaximiseIcon && cfg.labels.maximise,
-            close: cfg.settings.showCloseIcon && cfg.labels.close,
-            minimise: cfg.labels.minimise,
         };
-
-        if (this.config.header) {
-            Object.assign(this._header, this.config.header);
-        }
 
         this.setupHeaderPosition();
     }

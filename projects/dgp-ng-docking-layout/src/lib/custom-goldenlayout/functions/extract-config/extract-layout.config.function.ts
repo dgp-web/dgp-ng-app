@@ -9,7 +9,6 @@ export function extractLayoutConfig(payload: {
     const config: Mutable<LayoutConfiguration> = {
         settings: payload.currentConfig.settings,
         dimensions: payload.currentConfig.dimensions,
-        labels: payload.currentConfig.labels,
         content: []
     };
 

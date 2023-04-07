@@ -22,11 +22,5 @@ export const defaultLayoutConfig: LayoutConfiguration = { // default config
         headerHeight: 20,
         dragProxyWidth: 300,
         dragProxyHeight: 200
-    },
-    labels: {
-        close: "close",
-        maximise: "maximise",
-        minimise: "minimise",
-        tabDropdown: "additional tabs"
     }
-}
+};
