@@ -542,49 +542,20 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         };
     }
 
-    /**
-     * Gets the minimum dimensions for the given item configuration array
-     * @param item
-     * @private
-     */
-    _getMinimumDimensions(arr) {
-        let minWidth = 0, minHeight = 0;
-
-        for (let i = 0; i < arr.length; ++i) {
-            minWidth = Math.max(arr[i].minWidth || 0, minWidth);
-            minHeight = Math.max(arr[i].minHeight || 0, minHeight);
-        }
-
-        return {horizontal: minWidth, vertical: minHeight};
-    }
-
-    /**
-     * Invoked when a splitter's dragListener fires dragStart. Calculates the splitters
-     * movement area once (so that it doesn't need calculating on every mousemove event)
-     */
     private onSplitterDragStart(splitter: SplitterComponent): void {
 
         const items = this.getItemsForSplitter(splitter),
             minSize = this.dockingLayoutService.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
 
-        const beforeMinDim = this._getMinimumDimensions(items.before.config.content);
-        const beforeMinSize = this._isColumn ? beforeMinDim.vertical : beforeMinDim.horizontal;
+        const beforeMinSize = 0;
 
-        const afterMinDim = this._getMinimumDimensions(items.after.config.content);
-        const afterMinSize = this._isColumn ? afterMinDim.vertical : afterMinDim.horizontal;
+        const afterMinSize = 0;
 
         this.splitterPosition = 0;
         this.splitterMinPosition = -1 * (items.before.element[this._dimension]() - (beforeMinSize || minSize));
         this.splitterMaxPosition = items.after.element[this._dimension]() - (afterMinSize || minSize);
     }
 
-    /**
-     * Invoked when a splitter's DragListener fires drag. Updates the splitters DOM position,
-     * but not the sizes of the elements the splitter controls in order to minimize resize events
-     *
-     * @param   {Int} offsetX  Relative pixel values to the splitters original position. Can be negative
-     * @param   {Int} offsetY  Relative pixel values to the splitters original position. Can be negative
-     */
     private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
 
         const offset = this._isColumn ? offsetY : offsetX;
@@ -595,11 +566,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         }
     }
 
-    /**
-     * Invoked when a splitter's DragListener fires dragStop. Resets the splitters DOM position,
-     * and applies the new sizes to the elements before and after the splitter and their children
-     * on the next animation frame
-     */
     private onSplitterDragStop(splitter: SplitterComponent): void {
 
         const items = this.getItemsForSplitter(splitter),
