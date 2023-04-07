@@ -1,16 +1,12 @@
 import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ItemConfiguration, itemDefaultConfig } from "../../types";
+import { ColumnConfiguration, ItemConfiguration, itemDefaultConfig, RowConfiguration } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
-import { AreaSides } from "../../models/area.model";
-import { DropSegment } from "../../models/drop-segment.model";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
-import { DragProxy } from "../drag-and-drop/drag-proxy.component";
-import { WithDragParent } from "../../models/with-drag-parent.model";
 import { StackComponent } from "../tabs/stack.component";
 
 export interface SplitterComponents {
@@ -31,7 +27,7 @@ export interface AbsoluteSizes {
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
+export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
@@ -45,21 +41,18 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
-    _side: boolean | DropSegment;
-    _sided: boolean;
-
     contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
     isRow = false;
     isColumn = false;
     isStack = false;
-    config: ItemConfiguration;
+    config: RowConfiguration | ColumnConfiguration;
 
     constructor(
         isColumn: boolean,
         public dockingLayoutService: DockingLayoutService,
-        config: ItemConfiguration,
+        config: RowConfiguration | ColumnConfiguration,
         public parent: RowOrColumnParentComponent
     ) {
         super();
@@ -211,14 +204,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         } else {
             this.callDownwards("setSize");
         }
-    }
-
-    setDragParent(parent: DragProxy) {
-        this.parent = parent as any;
-    }
-
-    highlightDropZone(x: number, y: number, area: AreaSides) {
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
     }
 
     destroy() {
