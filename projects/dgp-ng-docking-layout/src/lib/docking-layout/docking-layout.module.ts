@@ -28,6 +28,7 @@ import { StackHeaderComponent } from "../custom-goldenlayout/components/tabs/sta
 import { StackBodyComponent } from "../custom-goldenlayout/components/tabs/stack-body.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
+import { MatTabsModule } from "@angular/material/tabs";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -52,7 +53,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         ]),
         DgpResizeSensorModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatTabsModule
     ],
     declarations: [
         DockingLayoutContainerComponent,

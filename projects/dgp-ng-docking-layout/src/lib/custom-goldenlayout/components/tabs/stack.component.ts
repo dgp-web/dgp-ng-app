@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Inject, QueryList, ViewChildren } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostBinding,
+    Inject,
+    QueryList,
+    ViewChild,
+    ViewChildren
+} from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
     ComponentConfiguration,
@@ -8,14 +18,12 @@ import {
     PARENT_ITEM_COMPONENT,
     StackConfiguration
 } from "../../types";
-import { StackHeaderComponent } from "./stack-header.component";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
 import { DropSegment } from "../../models/drop-segment.model";
 import { ContentAreaDimensions } from "../../models/content-area-dimensions.model";
 import { lmLeftClassName } from "../../constants/class-names/lm-left-class-name.constant";
-import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-name.constant";
 import { lmBottomClassName } from "../../constants/class-names/lm-bottom-class-name.constant";
 import { lmRightClassName } from "../../constants/class-names/lm-right-class-name.constant";
 import { DropTarget } from "../../models/drop-target.model";
@@ -25,31 +33,66 @@ import { StackParentComponent } from "../../models/stack-parent-component.model"
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import { RowOrColumnComponent } from "../grid/row-or-column.component";
+import { Vector2 } from "../../../common";
+import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
+import { MatTabGroup } from "@angular/material/tabs";
 
 @Component({
     selector: "dgp-stack",
     template: `
-        <!--<dgp-gl-header [model]="config"
-                       (dragStart)="processDragStart($event)"
-                       (selectedContentItemChange)="processSelectedContentItemChange($event)"></dgp-gl-header>-->
+        <mat-tab-group *ngIf="hasHeaders"
+                       [selectedIndex]="config.activeItemIndex"
+                       (selectedIndexChange)="processSelectedContentItemChange($event)">
+            <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
+                <ng-template mat-tab-label>
+                    <div #tabHeader
+                         dgpGlDragListener
+                         (dragStart$)="onDragStart1($event, componentConfig, i)"
+                         class="tab-header">
+                        {{componentConfig.title}}
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
 
-        <div class="lm_items card-body" style="padding: 0;">
-            <dgp-gl-component *ngFor="let componentConfig of config.content"
-                              [config]="componentConfig"
-                              [isHidden]="config.activeItemId !== componentConfig.id"
-                              (dragStart)="onDragStart(componentConfig.id)">
-            </dgp-gl-component>
-        </div>
-    `
+        <dgp-gl-component *ngFor="let componentConfig of config.content"
+                          [config]="componentConfig"
+                          [isHidden]="config.activeItemId !== componentConfig.id"
+                          (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
+    `,
+    styles: [`
+        :host {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        mat-tab-group {
+            flex-shrink: 0;
+            height: 50px;
+        }
+
+        .tab-header {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    `]
 })
 export class StackComponent implements DropTarget, AfterViewInit {
+
+    @ViewChildren("tabHeader", {read: DragListenerDirective})
+    private matTabDraglisteners: QueryList<DragListenerDirective>;
 
     @ViewChildren(GlComponent)
     private contentItems: QueryList<GlComponent>;
 
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
-    @HostBinding("class.card")
     readonly bindings = true;
 
     _side: boolean | DropSegment;
@@ -58,20 +101,20 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     element = $(this.elementRef.nativeElement);
 
-    childElementContainer: JQuery;
-
     isInitialised = false;
 
     private activeContentItem: GlComponent = null;
     private dropSegment: keyof ContentAreaDimensions = null;
     private dropIndex: number = null;
     private subscription: Subscription;
-    // @ViewChild(HeaderComponent, {read: HeaderComponent})
-    private headerComponent: StackHeaderComponent;
+    @ViewChild(MatTabGroup, {read: ElementRef})
+    private headerComponent: ElementRef<HTMLElement>;
 
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
+
+    readonly hasHeaders = this.dockingLayoutService.config.settings.hasHeaders;
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
@@ -85,6 +128,11 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.initialize();
     }
 
+    onDragStart1(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
+        const dragListener = this.matTabDraglisteners.get(tabIndex);
+        this.processDragStart({coordinates, contentItem, dragListener});
+    }
+
     ngAfterViewInit(): void {
         this.init();
     }
@@ -93,24 +141,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
-        const vcRef = this.dockingLayoutService.getViewContainerRef();
-        const headerComponentRef = vcRef.createComponent(StackHeaderComponent);
-        this.headerComponent = headerComponentRef.instance;
-
-        this.config$.subscribe(x => {
-            this.headerComponent.model = x;
-        });
-
-        this.headerComponent.selectedContentItemChange.subscribe(x => {
-            this.processSelectedContentItemChange(x);
-        });
-
-        this.headerComponent.dragStart.subscribe(x => {
-            this.processDragStart(x);
-        });
-
         const cfg = this.dockingLayoutService.config;
-        this._header = { // defaults' reconstruction from old configuration style
+        this._header = {
             show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
             popout: cfg.settings.showPopoutIcon && cfg.labels.popout,
             maximise: cfg.settings.showMaximiseIcon && cfg.labels.maximise,
@@ -125,11 +157,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
             Object.assign(this._header, this.config.content[0].header);
         }
 
-        // this.childElementContainer = $(dockingLayoutViewMap.stackContent.render());
-
-        this.element.append(this.headerComponent.element);
-        // this.element.append(this.childElementContainer);
-
         this.setupHeaderPosition();
     }
 
@@ -143,16 +170,11 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private setupHeaderPosition() {
         const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
-        this.headerComponent.element.toggle(!!this._header.show);
         this._side = side;
         this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
         this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
-        }
-        if (this.element.find("." + lmHeaderClassName).length && this.childElementContainer) {
-            const headerPosition = [DropSegment.Right, DropSegment.Bottom].indexOf(this._side as DropSegment) >= 0 ? "before" : "after";
-            this.headerComponent.element[headerPosition](this.childElementContainer);
         }
     }
 
@@ -198,7 +220,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     setActiveContentItem(componentId: string) {
+        const item = this.config.content.find(x => x.id === componentId);
+        const index = this.config.content.indexOf(item);
         this.config.activeItemId = componentId;
+        this.config.activeItemIndex = index;
 
         if (this.config.onSelectedItemChange) {
             this.config.onSelectedItemChange(componentId);
@@ -240,7 +265,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     destroy() {
         this.element.remove();
-        this.headerComponent.destroy();
 
         if (notNullOrUndefined(this.subscription) && !this.subscription.closed) {
             this.subscription.unsubscribe();
@@ -371,7 +395,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     /**
      * Returns the area the component currently occupies in the format
      */
-    private getAreaInternal(element?: JQuery): Area {
+    private getAreaInternal<T = number>(element?: JQuery): Area {
         element = element || this.element;
 
         const offset = element.offset(),
@@ -393,9 +417,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
             return null;
         }
 
-        const getArea = this.getAreaInternal,
-            headerArea = getArea.call(this, this.headerComponent.element),
-            contentArea = getArea.call(this, this.childElementContainer),
+        const headerArea = this.getAreaInternal($(this.headerComponent.nativeElement)),
+            contentArea = this.getAreaInternal(),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
 
@@ -424,7 +447,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
                 highlightArea: contentArea
             };
 
-            return getArea.call(this, this.element);
+            return this.getAreaInternal(this.element);
         }
 
         this.contentAreaDimensions.left = {
@@ -475,13 +498,15 @@ export class StackComponent implements DropTarget, AfterViewInit {
             }
         };
 
-        return getArea.call(this, this.element);
+        return this.getAreaInternal(this.element);
     }
 
     private highlightHeaderDropZone(x: number) {
+        const headerElement = $(this.headerComponent.nativeElement);
+        const tabsLength = this.matTabDraglisteners.length;
+
         let i: number,
             tabElement: JQuery<HTMLElement>,
-            tabsLength = this.headerComponent.tabs.length,
             isAboveTab = false,
             tabTop: number,
             tabLeft: number,
@@ -494,20 +519,20 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         // Empty stack
         if (tabsLength === 0) {
-            headerOffset = this.headerComponent.element.offset();
+            headerOffset = headerElement.offset();
 
             this.dockingLayoutService.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
                 x2: headerOffset.left + 100,
-                y1: headerOffset.top + this.headerComponent.element.height() - 20,
-                y2: headerOffset.top + this.headerComponent.element.height()
+                y1: headerOffset.top + headerElement.height() - 20,
+                y2: headerOffset.top + headerElement.height()
             });
 
             return;
         }
 
         for (i = 0; i < tabsLength; i++) {
-            tabElement = this.headerComponent.tabs.toArray()[i].element;
+            tabElement = $(this.matTabDraglisteners.toArray()[i].elementRef.nativeElement);
             offset = tabElement.offset();
             if (this._sided) {
                 tabLeft = offset.top;
@@ -576,7 +601,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
         );
     }
 
-    processSelectedContentItemChange(x: ComponentConfiguration) {
+    processSelectedContentItemChange(index: number) {
+        const x = this.config.content[index];
         if (x.id === this.config.activeItemId) return;
         this.setActiveContentItem(x.id);
     }

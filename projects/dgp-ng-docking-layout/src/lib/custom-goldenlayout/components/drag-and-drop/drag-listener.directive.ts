@@ -18,7 +18,7 @@ export class DragListenerDirective {
     @Output()
     readonly drag$ = new EventEmitter<DragEvent>();
     private $body = $(document.body);
-    
+
     private timeout: number;
 
     private readonly delay = 200;
@@ -32,7 +32,7 @@ export class DragListenerDirective {
     private element = this.$element[0];
 
     constructor(
-        private readonly elementRef: ElementRef<HTMLElement>
+        readonly elementRef: ElementRef<HTMLElement>
     ) {
         this.element.addEventListener("mousedown", this.onMouseDown, createPassiveEventListenerOptions());
     }
