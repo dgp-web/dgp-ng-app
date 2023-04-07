@@ -54,10 +54,8 @@ export interface ItemConfiguration {
     width?: number;
     height?: number;
     isClosable?: boolean;
-    title?: string;
 
     content?: ItemConfiguration[];
-    header?: any;
 }
 
 export interface ComponentConfiguration extends ItemConfiguration {
@@ -81,6 +79,7 @@ export interface StackConfiguration extends ItemConfiguration {
     activeItemIndex?: number;
     activeItemId?: string;
     hasHeaders?: boolean;
+    header?: any;
 
     content: ComponentConfiguration[];
     onSelectedItemChange?: (id: string) => void;
@@ -101,4 +100,3 @@ export interface ColumnConfiguration extends ItemConfiguration {
 
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
 export const PARENT_ITEM_COMPONENT = new InjectionToken("parentItemCOmponent");
-export const ROW_OR_COLUMN = new InjectionToken<boolean>("RowOrColumn");

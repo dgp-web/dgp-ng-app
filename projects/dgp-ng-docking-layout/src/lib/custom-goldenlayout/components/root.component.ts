@@ -101,8 +101,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
 
         if (contentItem.isComponent) {
             stack = this.dockingLayoutService.createContentItem({
-                type: "stack",
-                header: contentItem.config.header || {}
+                type: "stack"
             }, this);
             stack.init();
             stack.addChild(contentItem);
