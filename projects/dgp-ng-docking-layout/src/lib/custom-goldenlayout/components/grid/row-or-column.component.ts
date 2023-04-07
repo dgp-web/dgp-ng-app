@@ -51,11 +51,9 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
-    isRoot = false;
     isRow = false;
     isColumn = false;
     isStack = false;
-    isComponent = false;
     config: ItemConfiguration;
 
     constructor(

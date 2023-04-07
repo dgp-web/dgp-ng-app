@@ -54,10 +54,7 @@ export interface ItemConfiguration {
     width?: number;
     height?: number;
     isClosable?: boolean;
-    hasHeaders?: boolean;
-    reorderEnabled?: boolean;
     title?: string;
-    activeItemIndex?: number;
 
     content?: ItemConfiguration[];
     header?: any;
@@ -83,6 +80,7 @@ export interface StackConfiguration extends ItemConfiguration {
     type: "stack";
     activeItemIndex?: number;
     activeItemId?: string;
+    hasHeaders?: boolean;
 
     content: ComponentConfiguration[];
     onSelectedItemChange?: (id: string) => void;
