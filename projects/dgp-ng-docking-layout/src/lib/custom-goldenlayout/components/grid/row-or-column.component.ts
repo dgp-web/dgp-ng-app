@@ -409,23 +409,19 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.respectMinItemWidth();
     }
 
-    /**
-     * Adjusts the column widths to respect the dimensions minItemWidth if set.
-     * @returns {}
-     */
-    private respectMinItemWidth() {
+    private respectMinItemWidth(): void {
         const minItemWidth = this.dockingLayoutService.config.dimensions ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0) : 0;
         let sizeData = null;
-        const entriesOverMin = [];
+        const entriesOverMin: Array<{ width: number; }> = [];
         let totalOverMin = 0;
         let totalUnderMin = 0;
         let remainingWidth = 0;
         let itemSize = 0;
         let contentItem = null;
-        let reducePercent;
-        let reducedWidth;
-        const allEntries = [];
-        let entry;
+        let reducePercent: number;
+        let reducedWidth: number;
+        const allEntries: Array<{ width: number; }> = [];
+        let entry: { width: number; };
 
         if (this._isColumn || !minItemWidth || this.contentItems.length <= 1) {
             return;
