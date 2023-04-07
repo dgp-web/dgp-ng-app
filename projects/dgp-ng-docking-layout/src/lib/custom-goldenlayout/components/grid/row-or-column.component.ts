@@ -13,6 +13,11 @@ import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { WithDragParent } from "../../models/with-drag-parent.model";
 import { StackComponent } from "../tabs/stack.component";
 
+export interface SplitterComponents {
+    before: RowOrColumnContentItemComponent;
+    after: RowOrColumnContentItemComponent;
+}
+
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
@@ -491,13 +496,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
-
-    /**
-     * Instantiates a new lm.controls.Splitter, binds events to it and adds
-     * it to the array of splitters at the position specified as the index argument
-     *
-     * What it doesn't do though is to append the splitter to the DOM
-     */
     private createSplitter(index: number): SplitterComponent {
         const vcRef = this.dockingLayoutService.getViewContainerRef();
         const splitterComponentRef = vcRef.createComponent(SplitterComponent);
@@ -534,11 +532,9 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
      * registered splitters and returns a map containing the contentItem
      * before and after the splitters, both of which are affected if the
      * splitter is moved
-     *
-     * @returns {Object} A map of contentItems that the splitter affects
      */
-    private getItemsForSplitter(splitter: SplitterComponent) {
-        const index = this.layoutManagerUtilities.indexOf(splitter, this.splitters);
+    private getItemsForSplitter(splitter: SplitterComponent): SplitterComponents {
+        const index = this.splitters.indexOf(splitter);
 
         return {
             before: this.contentItems[index],
