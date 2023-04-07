@@ -36,7 +36,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
     public readonly splitterGrabSize: number;
-    public readonly _isColumn: boolean;
     public readonly _dimension: string;
     public readonly splitters = new Array<SplitterComponent>();
 
@@ -73,14 +72,25 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.isRow = !isColumn;
         this.isColumn = isColumn;
 
-        this.element = $(
-            dockingLayoutViewMap.rowOrColumn.render({isColumn})
-        );
+        this.element = $(dockingLayoutViewMap.rowOrColumn.render({isColumn}));
         this.childElementContainer = this.element;
         this.splitterSize = dockingLayoutService.config.dimensions.borderWidth;
         this.splitterGrabSize = dockingLayoutService.config.dimensions.borderGrabWidth;
-        this._isColumn = isColumn;
         this._dimension = isColumn ? "height" : "width";
+    }
+
+    init(): void {
+        if (this.isInitialised === true) return;
+
+        for (let i = 0; i < this.contentItems.length; i++) {
+            this.childElementContainer.append(this.contentItems[i].element);
+        }
+
+        this.isInitialised = true;
+
+        for (let i = 0; i < this.contentItems.length - 1; i++) {
+            this.contentItems[i].element.after(this.createSplitter(i).element);
+        }
     }
 
     /**
@@ -259,20 +269,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.emit("resize");
     }
 
-    init(): void {
-        if (this.isInitialised === true) return;
-
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.childElementContainer.append(this.contentItems[i].element);
-        }
-
-        this.isInitialised = true;
-
-        for (let i = 0; i < this.contentItems.length - 1; i++) {
-            this.contentItems[i].element.after(this.createSplitter(i).element);
-        }
-    }
-
     /**
      * Turns the relative sizes calculated by calculateRelativeSizes into
      * absolute pixel values and applies them to the children's DOM elements
@@ -287,7 +283,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
                 sizeData.itemSizes[i]++;
             }
 
-            if (this._isColumn) {
+            if (this.isColumn) {
                 this.contentItems[i].element.width(sizeData.totalWidth);
                 this.contentItems[i].element.height(sizeData.itemSizes[i]);
             } else {
@@ -310,14 +306,14 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
             itemSize: number,
             itemSizes = new Array<number>();
 
-        if (this._isColumn) {
+        if (this.isColumn) {
             totalHeight -= totalSplitterSize;
         } else {
             totalWidth -= totalSplitterSize;
         }
 
         for (i = 0; i < this.contentItems.length; i++) {
-            if (this._isColumn) {
+            if (this.isColumn) {
                 itemSize = Math.floor(totalHeight * (this.contentItems[i].config.height / 100));
             } else {
                 itemSize = Math.floor(totalWidth * (this.contentItems[i].config.width / 100));
@@ -327,7 +323,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
             itemSizes.push(itemSize);
         }
 
-        additionalPixel = Math.floor((this._isColumn ? totalHeight : totalWidth) - totalAssigned);
+        additionalPixel = Math.floor((this.isColumn ? totalHeight : totalWidth) - totalAssigned);
 
         return {
             itemSizes,
@@ -359,7 +355,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
 
         let total = 0;
         const itemsWithoutSetDimension = [],
-            dimension = this._isColumn ? "height" : "width";
+            dimension = this.isColumn ? "height" : "width";
 
         for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i].config[dimension] !== undefined) {
@@ -425,7 +421,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         const allEntries: Array<Wide> = [];
         let entry: Wide;
 
-        if (this._isColumn || !minItemWidth || this.contentItems.length <= 1) return;
+        if (this.isColumn || !minItemWidth || this.contentItems.length <= 1) return;
 
         sizeData = this.calculateAbsoluteSizes();
 
@@ -493,7 +489,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         const splitterComponentRef = vcRef.createComponent(SplitterComponent);
         const splitter = splitterComponentRef.instance;
 
-        splitter.isVertical = this._isColumn;
+        splitter.isVertical = this.isColumn;
         splitter.size = this.splitterSize;
         splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
@@ -536,7 +532,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
         const items = this.getItemsForSplitter(splitter),
-            minSize = this.dockingLayoutService.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
+            minSize = this.dockingLayoutService.config.dimensions[this.isColumn ? "minItemHeight" : "minItemWidth"];
 
         const beforeMinSize = 0;
         const afterMinSize = 0;
@@ -547,11 +543,11 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     }
 
     private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
-        const offset = this._isColumn ? offsetY : offsetX;
+        const offset = this.isColumn ? offsetY : offsetX;
 
         if (offset > this.splitterMinPosition && offset < this.splitterMaxPosition) {
             this.splitterPosition = offset;
-            splitter.element.css(this._isColumn ? "top" : "left", offset);
+            splitter.element.css(this.isColumn ? "top" : "left", offset);
         }
     }
 
