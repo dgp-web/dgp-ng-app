@@ -7,12 +7,6 @@ export const defaultLayoutConfig: LayoutConfiguration = { // default config
         constrainDragToContainer: true,
         reorderEnabled: true,
         selectionEnabled: false,
-        showMaximiseIcon: true,
-        showCloseIcon: true,
-        responsiveMode: "onload", // Can be onload, always, or none.
-        tabOverlapAllowance: 0, // maximum pixel overlap per tab
-        reorderOnTabMenuClick: true,
-        tabControlOffset: 10
     },
     dimensions: {
         borderWidth: 5,

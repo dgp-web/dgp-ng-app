@@ -14,16 +14,6 @@ export interface LayoutConfiguration {
         readonly constrainDragToContainer?: boolean;
         readonly reorderEnabled?: boolean;
         readonly selectionEnabled?: boolean;
-        readonly popoutWholeStack?: boolean;
-        readonly blockedPopoutsThrowError?: boolean;
-        readonly closePopoutsOnUnload?: boolean;
-        readonly showPopoutIcon?: boolean;
-        readonly showMaximiseIcon?: boolean;
-        readonly showCloseIcon?: boolean;
-        readonly responsiveMode?: string;
-        readonly tabOverlapAllowance?: number;
-        readonly reorderOnTabMenuClick?: boolean;
-        readonly tabControlOffset?: number;
     };
     readonly dimensions?: {
         readonly borderWidth?: number;
