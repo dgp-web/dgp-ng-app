@@ -24,8 +24,6 @@ import { DgpResizeSensorModule } from "dgp-ng-app";
 import { TabComponent } from "../custom-goldenlayout/components/tabs/tab.component";
 import { DragListenerDirective } from "../custom-goldenlayout/components/drag-and-drop/drag-listener.directive";
 import { SplitterComponent } from "../custom-goldenlayout/components/resize/splitter.component";
-import { StackHeaderComponent } from "../custom-goldenlayout/components/tabs/stack-header.component";
-import { StackBodyComponent } from "../custom-goldenlayout/components/tabs/stack-body.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
@@ -71,9 +69,7 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
         DragListenerDirective,
-        SplitterComponent,
-        StackHeaderComponent,
-        StackBodyComponent
+        SplitterComponent
     ],
     exports: [
         DockingLayoutContainerComponent,
@@ -90,9 +86,7 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
         DragListenerDirective,
-        SplitterComponent,
-        StackHeaderComponent,
-        StackBodyComponent
+        SplitterComponent
     ],
     providers: [
         DockingLayoutService,
