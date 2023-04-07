@@ -22,6 +22,13 @@ export interface Wide {
     width: number;
 }
 
+export interface AbsoluteSizes {
+    itemSizes: Array<number>;
+    additionalPixel: number;
+    totalWidth: number;
+    totalHeight: number;
+}
+
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
 export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
@@ -301,14 +308,14 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
      * Calculates the absolute sizes of all of the children of this Item.
      * @returns {object} - Set with absolute sizes and additional pixels.
      */
-    private calculateAbsoluteSizes() {
-        let i,
+    private calculateAbsoluteSizes(): AbsoluteSizes {
+        let i: number,
             totalSplitterSize = (this.contentItems.length - 1) * this.splitterSize,
             totalWidth = this.element.width(),
             totalHeight = this.element.height(),
             totalAssigned = 0,
-            additionalPixel,
-            itemSize,
+            additionalPixel: number,
+            itemSize: number,
             itemSizes = [];
 
         if (this._isColumn) {
