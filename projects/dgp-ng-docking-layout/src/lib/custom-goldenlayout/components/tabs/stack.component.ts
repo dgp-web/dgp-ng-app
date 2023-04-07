@@ -77,7 +77,9 @@ import { MatTabGroup } from "@angular/material/tabs";
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: center;;
+            justify-content: center;
+            padding-left: 8px;
+            padding-right: 8px;
         }
     `]
 })
