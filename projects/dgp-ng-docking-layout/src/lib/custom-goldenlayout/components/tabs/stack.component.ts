@@ -40,7 +40,8 @@ import { MatTabGroup } from "@angular/material/tabs";
 @Component({
     selector: "dgp-stack",
     template: `
-        <mat-tab-group [selectedIndex]="config.activeItemIndex"
+        <mat-tab-group *ngIf="hasHeaders"
+                       [selectedIndex]="config.activeItemIndex"
                        (selectedIndexChange)="processSelectedContentItemChange($event)">
             <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
                 <ng-template mat-tab-label>
@@ -110,6 +111,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
     contentAreaDimensions: ContentAreaDimensions = null;
     isStack = true;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
+
+    readonly hasHeaders = this.dockingLayoutService.config.settings.hasHeaders;
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
