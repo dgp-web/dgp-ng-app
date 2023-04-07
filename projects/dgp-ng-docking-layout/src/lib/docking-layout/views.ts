@@ -20,33 +20,10 @@ export const dockingLayoutViewMap = {
             `;
         }
     },
-    header: {
-        render() {
-            return `
-                    <ul class="lm_tabs card-header-tabs nav nav-tabs"></ul>
-                    <ul class="lm_controls"></ul>
-                    <ul class="lm_tabdropdown_list"></ul>
-            `;
-        }
-    },
     rowOrColumn: {
         render(model?: DockingLayoutViewModels["rowOrColumn"]) {
             return `
                 <div class="lm_item lm_${model.isColumn ? "column" : "row"}"></div>
-            `;
-        }
-    },
-    stack: {
-        render() {
-            return `
-                <div class="lm_item lm_stack card"></div>
-            `;
-        }
-    },
-    stackContent: {
-        render() {
-            return `
-                <div class="lm_items card-body" style="padding: 0;"></div>
             `;
         }
     },
