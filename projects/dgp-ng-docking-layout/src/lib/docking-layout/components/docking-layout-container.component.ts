@@ -32,8 +32,7 @@ export class DockingLayoutContainerComponent {
             id: this.id,
             componentState: {
                 template: () => this.templateRef
-            },
-            reorderEnabled: true
+            }
         };
 
     }

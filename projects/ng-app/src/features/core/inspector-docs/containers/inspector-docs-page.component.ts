@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { AttributeMetadata } from "data-modeling";
 
 @Component({
     selector: "dgp-inspector-docs-page",
@@ -45,6 +46,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                     </dgp-inspector-section>
                 </dgp-inspector>
 
+                <dgp-input-field [metadata]="metadata"
+                                 [showFieldIcons]="true"
+                                 [fieldLabelThemeColor]="'warn'"></dgp-input-field>
+
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
@@ -54,5 +59,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectorDocsPageComponent {
-
+    readonly metadata: AttributeMetadata = {
+        label: "Test",
+        icon: "delete"
+    };
 }

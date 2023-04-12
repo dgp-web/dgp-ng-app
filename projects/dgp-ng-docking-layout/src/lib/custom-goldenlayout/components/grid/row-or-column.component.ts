@@ -1,26 +1,37 @@
 import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ItemConfiguration, itemDefaultConfig } from "../../types";
+import { ColumnConfiguration, ItemConfiguration, itemDefaultConfig, RowConfiguration } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
-import { AreaSides } from "../../models/area.model";
-import { DropSegment } from "../../models/drop-segment.model";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
-import { DragProxy } from "../drag-and-drop/drag-proxy.component";
-import { WithDragParent } from "../../models/with-drag-parent.model";
 import { StackComponent } from "../tabs/stack.component";
+
+export interface SplitterComponents {
+    before: RowOrColumnContentItemComponent;
+    after: RowOrColumnContentItemComponent;
+}
+
+export interface Wide {
+    width: number;
+}
+
+export interface AbsoluteSizes {
+    itemSizes: Array<number>;
+    additionalPixel: number;
+    totalWidth: number;
+    totalHeight: number;
+}
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export class RowOrColumnComponentBase extends DockingLayoutEngineObject implements WithDragParent {
+export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
     public readonly splitterGrabSize: number;
-    public readonly _isColumn: boolean;
     public readonly _dimension: string;
     public readonly splitters = new Array<SplitterComponent>();
 
@@ -30,23 +41,18 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
-    _side: boolean | DropSegment;
-    _sided: boolean;
-
     contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
-    isRoot = false;
     isRow = false;
     isColumn = false;
     isStack = false;
-    isComponent = false;
-    config: ItemConfiguration;
+    config: RowConfiguration | ColumnConfiguration;
 
     constructor(
         isColumn: boolean,
         public dockingLayoutService: DockingLayoutService,
-        config: ItemConfiguration,
+        config: RowConfiguration | ColumnConfiguration,
         public parent: RowOrColumnParentComponent
     ) {
         super();
@@ -57,14 +63,25 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.isRow = !isColumn;
         this.isColumn = isColumn;
 
-        this.element = $(
-            dockingLayoutViewMap.rowOrColumn.render({isColumn})
-        );
+        this.element = $(dockingLayoutViewMap.rowOrColumn.render({isColumn}));
         this.childElementContainer = this.element;
         this.splitterSize = dockingLayoutService.config.dimensions.borderWidth;
         this.splitterGrabSize = dockingLayoutService.config.dimensions.borderGrabWidth;
-        this._isColumn = isColumn;
         this._dimension = isColumn ? "height" : "width";
+    }
+
+    init(): void {
+        if (this.isInitialised === true) return;
+
+        for (let i = 0; i < this.contentItems.length; i++) {
+            this.childElementContainer.append(this.contentItems[i].element);
+        }
+
+        this.isInitialised = true;
+
+        for (let i = 0; i < this.contentItems.length - 1; i++) {
+            this.contentItems[i].element.after(this.createSplitter(i).element);
+        }
     }
 
     /**
@@ -74,7 +91,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
 
         let newItemSize: number,
             itemSize: number,
-            i: number,
             splitterElement: JQuery<HTMLElement>;
 
         if (index === undefined) {
@@ -119,7 +135,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
             return;
         }
 
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i] === contentItem) {
                 contentItem.config[this._dimension] = newItemSize;
             } else {
@@ -139,8 +155,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         const removedItemSize = contentItem.config[this._dimension],
 
             splitterIndex = Math.max(index - 1, 0);
-        let i,
-            childItem;
+        let childItem: RowOrColumnContentItemComponent;
 
         if (index === -1) {
             throw new Error("Can't remove child. ContentItem is not child of this Row or Column");
@@ -158,7 +173,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         /**
          * Allocate the space that the removed item occupied to the remaining items
          */
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i] !== contentItem) {
                 this.contentItems[i].config[this._dimension] += removedItemSize / (this.contentItems.length - 1);
             }
@@ -185,18 +200,10 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
             childItem = this.contentItems[0];
             this.contentItems = [];
-            this.parent.replaceChild(this, childItem, true);
+            this.parent.replaceChild(this, childItem as RowOrColumnComponentBase, true);
         } else {
             this.callDownwards("setSize");
         }
-    }
-
-    setDragParent(parent: DragProxy) {
-        this.parent = parent as any;
-    }
-
-    highlightDropZone(x: number, y: number, area: AreaSides) {
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
     }
 
     destroy() {
@@ -245,24 +252,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.emit("resize");
     }
 
-    init(): void {
-        if (this.isInitialised === true) {
-            return;
-        }
-
-        let i: number;
-
-        for (i = 0; i < this.contentItems.length; i++) {
-            this.childElementContainer.append(this.contentItems[i].element);
-        }
-
-        this.isInitialised = true;
-
-        for (i = 0; i < this.contentItems.length - 1; i++) {
-            this.contentItems[i].element.after(this.createSplitter(i).element);
-        }
-    }
-
     /**
      * Turns the relative sizes calculated by calculateRelativeSizes into
      * absolute pixel values and applies them to the children's DOM elements
@@ -270,15 +259,14 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
      * Assigns additional pixels to counteract Math.floor
      */
     private setAbsoluteSizes(): void {
-        let i;
         const sizeData = this.calculateAbsoluteSizes();
 
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             if (sizeData.additionalPixel - i > 0) {
                 sizeData.itemSizes[i]++;
             }
 
-            if (this._isColumn) {
+            if (this.isColumn) {
                 this.contentItems[i].element.width(sizeData.totalWidth);
                 this.contentItems[i].element.height(sizeData.itemSizes[i]);
             } else {
@@ -289,27 +277,26 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
     }
 
     /**
-     * Calculates the absolute sizes of all of the children of this Item.
-     * @returns {object} - Set with absolute sizes and additional pixels.
+     * Calculates the absolute sizes of all the children of this Item.
      */
-    private calculateAbsoluteSizes() {
-        let i,
+    private calculateAbsoluteSizes(): AbsoluteSizes {
+        let i: number,
             totalSplitterSize = (this.contentItems.length - 1) * this.splitterSize,
             totalWidth = this.element.width(),
             totalHeight = this.element.height(),
             totalAssigned = 0,
-            additionalPixel,
-            itemSize,
-            itemSizes = [];
+            additionalPixel: number,
+            itemSize: number,
+            itemSizes = new Array<number>();
 
-        if (this._isColumn) {
+        if (this.isColumn) {
             totalHeight -= totalSplitterSize;
         } else {
             totalWidth -= totalSplitterSize;
         }
 
         for (i = 0; i < this.contentItems.length; i++) {
-            if (this._isColumn) {
+            if (this.isColumn) {
                 itemSize = Math.floor(totalHeight * (this.contentItems[i].config.height / 100));
             } else {
                 itemSize = Math.floor(totalWidth * (this.contentItems[i].config.width / 100));
@@ -319,7 +306,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
             itemSizes.push(itemSize);
         }
 
-        additionalPixel = Math.floor((this._isColumn ? totalHeight : totalWidth) - totalAssigned);
+        additionalPixel = Math.floor((this.isColumn ? totalHeight : totalWidth) - totalAssigned);
 
         return {
             itemSizes,
@@ -349,12 +336,11 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
      */
     private calculateRelativeSizes(): void {
 
-        let i,
-            total = 0;
+        let total = 0;
         const itemsWithoutSetDimension = [],
-            dimension = this._isColumn ? "height" : "width";
+            dimension = this.isColumn ? "height" : "width";
 
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i].config[dimension] !== undefined) {
                 total += this.contentItems[i].config[dimension];
             } else {
@@ -374,7 +360,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
          * Allocate the remaining size to the items without a set dimension
          */
         if (Math.round(total) < 100 && itemsWithoutSetDimension.length > 0) {
-            for (i = 0; i < itemsWithoutSetDimension.length; i++) {
+            for (let i = 0; i < itemsWithoutSetDimension.length; i++) {
                 itemsWithoutSetDimension[i].config[dimension] = (100 - total) / itemsWithoutSetDimension.length;
             }
             this.respectMinItemWidth();
@@ -388,7 +374,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
          * This will be reset in the next step
          */
         if (Math.round(total) > 100) {
-            for (i = 0; i < itemsWithoutSetDimension.length; i++) {
+            for (let i = 0; i < itemsWithoutSetDimension.length; i++) {
                 itemsWithoutSetDimension[i].config[dimension] = 50;
                 total += 50;
             }
@@ -397,34 +383,28 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         /**
          * Set every item's size relative to 100 relative to its size to total
          */
-        for (i = 0; i < this.contentItems.length; i++) {
+        for (let i = 0; i < this.contentItems.length; i++) {
             this.contentItems[i].config[dimension] = (this.contentItems[i].config[dimension] / total) * 100;
         }
 
         this.respectMinItemWidth();
     }
 
-    /**
-     * Adjusts the column widths to respect the dimensions minItemWidth if set.
-     * @returns {}
-     */
-    private respectMinItemWidth() {
+    private respectMinItemWidth(): void {
         const minItemWidth = this.dockingLayoutService.config.dimensions ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0) : 0;
-        let sizeData = null;
-        const entriesOverMin = [];
+        let sizeData: AbsoluteSizes = null;
+        const entriesOverMin: Array<Wide> = [];
         let totalOverMin = 0;
         let totalUnderMin = 0;
         let remainingWidth = 0;
         let itemSize = 0;
-        let contentItem = null;
-        let reducePercent;
-        let reducedWidth;
-        const allEntries = [];
-        let entry;
+        let contentItem: RowOrColumnContentItemComponent = null;
+        let reducePercent: number;
+        let reducedWidth: number;
+        const allEntries: Array<Wide> = [];
+        let entry: Wide;
 
-        if (this._isColumn || !minItemWidth || this.contentItems.length <= 1) {
-            return;
-        }
+        if (this.isColumn || !minItemWidth || this.contentItems.length <= 1) return;
 
         sizeData = this.calculateAbsoluteSizes();
 
@@ -432,14 +412,12 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
          * Figure out how much we are under the min item size total and how much room we have to use.
          */
         for (let i = 0; i < this.contentItems.length; i++) {
-
             contentItem = this.contentItems[i];
             itemSize = sizeData.itemSizes[i];
 
             if (itemSize < minItemWidth) {
                 totalUnderMin += minItemWidth - itemSize;
                 entry = {width: minItemWidth};
-
             } else {
                 totalOverMin += itemSize - minItemWidth;
                 entry = {width: itemSize};
@@ -452,9 +430,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         /**
          * If there is nothing under min, or there is not enough over to make up the difference, do nothing.
          */
-        if (totalUnderMin === 0 || totalUnderMin > totalOverMin) {
-            return;
-        }
+        if (totalUnderMin === 0 || totalUnderMin > totalOverMin) return;
 
         /**
          * Evenly reduce all columns that are over the min item width to make up the difference.
@@ -491,19 +467,12 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
-
-    /**
-     * Instantiates a new lm.controls.Splitter, binds events to it and adds
-     * it to the array of splitters at the position specified as the index argument
-     *
-     * What it doesn't do though is to append the splitter to the DOM
-     */
     private createSplitter(index: number): SplitterComponent {
         const vcRef = this.dockingLayoutService.getViewContainerRef();
         const splitterComponentRef = vcRef.createComponent(SplitterComponent);
         const splitter = splitterComponentRef.instance;
 
-        splitter.isVertical = this._isColumn;
+        splitter.isVertical = this.isColumn;
         splitter.size = this.splitterSize;
         splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
@@ -534,11 +503,9 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
      * registered splitters and returns a map containing the contentItem
      * before and after the splitters, both of which are affected if the
      * splitter is moved
-     *
-     * @returns {Object} A map of contentItems that the splitter affects
      */
-    private getItemsForSplitter(splitter: SplitterComponent) {
-        const index = this.layoutManagerUtilities.indexOf(splitter, this.splitters);
+    private getItemsForSplitter(splitter: SplitterComponent): SplitterComponents {
+        const index = this.splitters.indexOf(splitter);
 
         return {
             before: this.contentItems[index],
@@ -546,66 +513,28 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         };
     }
 
-    /**
-     * Gets the minimum dimensions for the given item configuration array
-     * @param item
-     * @private
-     */
-    _getMinimumDimensions(arr) {
-        let minWidth = 0, minHeight = 0;
-
-        for (let i = 0; i < arr.length; ++i) {
-            minWidth = Math.max(arr[i].minWidth || 0, minWidth);
-            minHeight = Math.max(arr[i].minHeight || 0, minHeight);
-        }
-
-        return {horizontal: minWidth, vertical: minHeight};
-    }
-
-    /**
-     * Invoked when a splitter's dragListener fires dragStart. Calculates the splitters
-     * movement area once (so that it doesn't need calculating on every mousemove event)
-     */
     private onSplitterDragStart(splitter: SplitterComponent): void {
-
         const items = this.getItemsForSplitter(splitter),
-            minSize = this.dockingLayoutService.config.dimensions[this._isColumn ? "minItemHeight" : "minItemWidth"];
+            minSize = this.dockingLayoutService.config.dimensions[this.isColumn ? "minItemHeight" : "minItemWidth"];
 
-        const beforeMinDim = this._getMinimumDimensions(items.before.config.content);
-        const beforeMinSize = this._isColumn ? beforeMinDim.vertical : beforeMinDim.horizontal;
-
-        const afterMinDim = this._getMinimumDimensions(items.after.config.content);
-        const afterMinSize = this._isColumn ? afterMinDim.vertical : afterMinDim.horizontal;
+        const beforeMinSize = 0;
+        const afterMinSize = 0;
 
         this.splitterPosition = 0;
         this.splitterMinPosition = -1 * (items.before.element[this._dimension]() - (beforeMinSize || minSize));
         this.splitterMaxPosition = items.after.element[this._dimension]() - (afterMinSize || minSize);
     }
 
-    /**
-     * Invoked when a splitter's DragListener fires drag. Updates the splitters DOM position,
-     * but not the sizes of the elements the splitter controls in order to minimize resize events
-     *
-     * @param   {Int} offsetX  Relative pixel values to the splitters original position. Can be negative
-     * @param   {Int} offsetY  Relative pixel values to the splitters original position. Can be negative
-     */
     private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
-
-        const offset = this._isColumn ? offsetY : offsetX;
+        const offset = this.isColumn ? offsetY : offsetX;
 
         if (offset > this.splitterMinPosition && offset < this.splitterMaxPosition) {
             this.splitterPosition = offset;
-            splitter.element.css(this._isColumn ? "top" : "left", offset);
+            splitter.element.css(this.isColumn ? "top" : "left", offset);
         }
     }
 
-    /**
-     * Invoked when a splitter's DragListener fires dragStop. Resets the splitters DOM position,
-     * and applies the new sizes to the elements before and after the splitter and their children
-     * on the next animation frame
-     */
     private onSplitterDragStop(splitter: SplitterComponent): void {
-
         const items = this.getItemsForSplitter(splitter),
             sizeBefore = items.before.element[this._dimension](),
             sizeAfter = items.after.element[this._dimension](),
@@ -615,10 +544,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject implemen
         items.before.config[this._dimension] = splitterPositionInRange * totalRelativeSize;
         items.after.config[this._dimension] = (1 - splitterPositionInRange) * totalRelativeSize;
 
-        splitter.element.css({
-            top: 0,
-            left: 0
-        });
+        splitter.element.css({top: 0, left: 0});
 
         this.layoutManagerUtilities.animFrame(() => this.callDownwards("setSize"));
     }

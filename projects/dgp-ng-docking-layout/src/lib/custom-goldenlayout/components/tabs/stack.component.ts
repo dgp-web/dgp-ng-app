@@ -144,18 +144,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const cfg = this.dockingLayoutService.config;
         this._header = {
             show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
-            popout: cfg.settings.showPopoutIcon && cfg.labels.popout,
-            maximise: cfg.settings.showMaximiseIcon && cfg.labels.maximise,
-            close: cfg.settings.showCloseIcon && cfg.labels.close,
-            minimise: cfg.labels.minimise,
         };
-
-        if (this.config.header) {
-            Object.assign(this._header, this.config.header);
-        }
-        if (this.config.content && this.config.content[0] && this.config.content[0].header) {
-            Object.assign(this._header, this.config.content[0].header);
-        }
 
         this.setupHeaderPosition();
     }
@@ -359,7 +348,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private createAndInitStack(component: GlComponent): StackComponent {
         const stack = this.dockingLayoutService.createContentItem<StackComponent>({
             type: "stack",
-            header: component.config.header || {}
         }, this);
         stack.init();
         stack.addChild(component);

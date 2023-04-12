@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { RowOrColumnComponentBase } from "./row-or-column.component";
-import { ITEM_CONFIG, ItemConfiguration, PARENT_ITEM_COMPONENT } from "../../types";
+import { ColumnConfiguration, ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../../types";
 import { DockingLayoutService } from "../../docking-layout.service";
 import { ColumnParentComponent, RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 
@@ -14,7 +14,7 @@ export class ColumnComponent extends RowOrColumnComponentBase {
     constructor(
         public dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
-            config: ItemConfiguration,
+            config: ColumnConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
             parent: ColumnParentComponent
     ) {

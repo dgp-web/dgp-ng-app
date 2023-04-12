@@ -33,7 +33,7 @@ export const APP_REDUCER = new InjectionToken<ActionReducerMap<any>>("AppReducer
         DgpHamburgerShellModule.forRoot(),
         DgpThemeSwitcherModule.forRoot({
             ...defaultThemeSwitcherConfig,
-            components: ["inspector"]
+            components: [/*"inspector"*/]
         }),
         DgpHamburgerMenuModule,
         DgpLogModule,
