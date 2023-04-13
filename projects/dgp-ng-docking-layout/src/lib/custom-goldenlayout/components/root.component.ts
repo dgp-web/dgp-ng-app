@@ -138,24 +138,6 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         };
     }
 
-    // TODO: Easy
-    removeChild(contentItem: RowOrColumnComponent, keepChild?: boolean) {
-        const index = this.contentItems.indexOf(contentItem);
-
-        if (keepChild !== true) {
-            this.contentItems[index].destroy();
-        }
-
-        this.contentItems.splice(index, 1);
-
-        this.config.content.splice(index, 1);
-
-        if (this.contentItems.length > 0) {
-            this.callDownwards("setSize");
-
-        }
-    }
-
     replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent, destroyOldChild?: boolean) {
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;

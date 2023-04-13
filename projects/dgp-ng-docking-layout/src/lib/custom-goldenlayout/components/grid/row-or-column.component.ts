@@ -213,7 +213,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             this.callDownwards("setSize");
 
         } else if (this.config.isClosable === true) {
-            this.parent.removeChild(this, undefined);
+            if (this.parent.config.type === "column" || this.parent.config.type === "row") {
+                (this.parent as RowOrColumnComponent).removeChild(this, undefined);
+            }
         }
 
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
@@ -311,7 +313,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     }
 
     remove() {
-        this.parent.removeChild(this, undefined);
+        if (this.parent.config.type === "column" || this.parent.config.type === "row") {
+            (this.parent as RowOrColumnComponent).removeChild(this, undefined);
+        }
     }
 
     private createContentItems(config: ItemConfiguration) {
