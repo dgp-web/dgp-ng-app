@@ -22,10 +22,10 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
 @Component({
     selector: "dgp-gl-root",
     template: `
-        <!-- <ng-container *ngFor="let itemConfig of config.content">
-             <dgp-row [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row>
-             <dgp-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-column>
-         </ng-container>-->
+<!--        <ng-container *ngFor="let itemConfig of config.content">
+            <dgp-row-or-column [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row-or-column>
+            <dgp-row-or-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-row-or-column>
+        </ng-container>-->
     `,
     styles: [`
         :host {
@@ -47,7 +47,6 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
     readonly element = $(this.elRef.nativeElement);
 
     constructor(
-        @Inject(forwardRef(() => DockingLayoutService))
         readonly dockingLayoutService: DockingLayoutService,
         @Inject(ROOT_CONFIG)
         readonly config: ItemConfiguration,

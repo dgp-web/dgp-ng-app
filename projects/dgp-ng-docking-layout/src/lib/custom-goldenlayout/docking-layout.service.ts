@@ -14,7 +14,6 @@ import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-ta
 import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
 import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
-import { InitializedEvent } from "./models/events/initialized-event.model";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
@@ -85,7 +84,6 @@ export class DockingLayoutService extends EventEmitter {
 
     registerInitialization() {
         this.isInitialised = true;
-        this.emit<InitializedEvent>("initialised");
     }
 
     updateSize(width?: number, height?: number) {
