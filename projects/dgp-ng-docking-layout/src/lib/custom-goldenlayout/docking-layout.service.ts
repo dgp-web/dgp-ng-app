@@ -9,11 +9,8 @@ import {
     StackConfiguration
 } from "./types";
 import { EventEmitter } from "./utilities";
-import { EventHub } from "./utilities/event-hub";
 import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
-import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
-import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
-import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
+import { ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
@@ -38,7 +35,6 @@ export class DockingLayoutService extends EventEmitter {
     private width: number;
     private height: number;
     private root: RootComponent;
-    private eventHub: EventHub;
 
     private viewContainerRef: ViewContainerRef;
 
@@ -57,13 +53,10 @@ export class DockingLayoutService extends EventEmitter {
     createDockingLayout(config: LayoutConfiguration,
                         viewContainerRef: ViewContainerRef) {
 
-        if (!isJQueryLoaded()) throw new Error(jqueryErrorMessage);
-
         this.viewContainerRef = viewContainerRef;
         const container = viewContainerRef.element.nativeElement as HTMLElement;
         this.container = $(container);
 
-        this.eventHub = new EventHub(this);
         this.config = createLayoutConfig(config);
         this.dropTargetIndicator = null;
         this.tabDropPlaceholder = viewContainerRef.createComponent(TabDropPlaceholderComponent).instance;
@@ -100,10 +93,7 @@ export class DockingLayoutService extends EventEmitter {
         parentItem: DockingLayoutItemComponent
     ): T {
 
-        if (shouldWrapInStack({
-            itemConfig,
-            parentItem
-        })) {
+        if (shouldWrapInStack({itemConfig, parentItem})) {
             itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
         }
 
@@ -126,21 +116,18 @@ export class DockingLayoutService extends EventEmitter {
     destroy() {
         if (this.isInitialised === false) return;
         this.root.callDownwards("destroy", [], true);
-        this.eventHub.destroy();
     }
 
     private createRootComponent(config: LayoutConfiguration): void {
         const injector = Injector.create({
             providers: [{
-                provide: ROOT_CONFIG,
-                useValue: {content: config.content}
-            }, {
                 provide: ROOT_CONTAINER_ELEMENT,
                 useValue: this.container
             }],
             parent: this.injector
         });
         const rootComponentRef = this.viewContainerRef.createComponent(RootComponent, {injector});
+        rootComponentRef.instance.config = {content: config.content};
         rootComponentRef.changeDetectorRef.markForCheck();
         this.root = rootComponentRef.instance;
     }

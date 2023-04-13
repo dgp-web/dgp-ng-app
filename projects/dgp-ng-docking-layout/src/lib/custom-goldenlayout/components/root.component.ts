@@ -1,9 +1,19 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, InjectionToken } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    HostBinding,
+    Inject,
+    InjectionToken,
+    Input,
+    OnInit
+} from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
-import { ItemConfiguration, itemDefaultConfig } from "../types";
+import { ItemConfiguration } from "../types";
 import type { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 
@@ -25,29 +35,32 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends DockingLayoutEngineObject implements AfterViewInit, DropTarget {
+export class RootComponent extends DockingLayoutEngineObject implements OnInit, AfterViewInit, DropTarget {
 
-    readonly contentItems = this.config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
+    contentItems: RowOrColumnComponent[];
 
     isInitialised = false;
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
 
-    readonly type = "root";
     readonly element = $(this.elRef.nativeElement);
+
+    @Input()
+    config: ItemConfiguration;
 
     constructor(
         readonly dockingLayoutService: DockingLayoutService,
-        @Inject(ROOT_CONFIG)
-        readonly config: ItemConfiguration,
         @Inject(ROOT_CONTAINER_ELEMENT)
         private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
     ) {
         super();
 
-        this.config = {...itemDefaultConfig, ...config};
+    }
+
+    ngOnInit(): void {
+        this.contentItems = this.config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
     init(): void {
