@@ -254,19 +254,19 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
     private setAbsoluteSizes(): void {
         const sizeData = this.calculateAbsoluteSizes();
 
-        for (let i = 0; i < this.contentItems.length; i++) {
-            if (sizeData.additionalPixel - i > 0) {
-                sizeData.itemSizes[i]++;
+        this.contentItems.forEach((item, index) => {
+            if (sizeData.additionalPixel - index > 0) {
+                sizeData.itemSizes[index]++;
             }
 
             if (this.isColumn) {
-                this.contentItems[i].element.width(sizeData.totalWidth);
-                this.contentItems[i].element.height(sizeData.itemSizes[i]);
+                item.element.width(sizeData.totalWidth);
+                item.element.height(sizeData.itemSizes[index]);
             } else {
-                this.contentItems[i].element.width(sizeData.itemSizes[i]);
-                this.contentItems[i].element.height(sizeData.totalHeight);
+                item.element.width(sizeData.itemSizes[index]);
+                item.element.height(sizeData.totalHeight);
             }
-        }
+        });
     }
 
     private calculateAbsoluteSizes(): AbsoluteSizes {
