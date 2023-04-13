@@ -177,14 +177,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
      */
     removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
         let index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems);
-        const removedItemSize = contentItem.config[this._dimension],
-
-            splitterIndex = Math.max(index - 1, 0);
+        const removedItemSize = contentItem.config[this._dimension];
+        const splitterIndex = Math.max(index - 1, 0);
         let childItem: RowOrColumnContentItemComponent;
-
-        if (index === -1) {
-            throw new Error("Can't remove child. ContentItem is not child of this Row or Column");
-        }
 
         /**
          * Remove the splitter before the item or after if the item happens
