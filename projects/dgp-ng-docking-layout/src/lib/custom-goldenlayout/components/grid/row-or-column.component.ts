@@ -229,7 +229,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
             if (!newChild.isStack) newChild.init();
         }
 
-        this.callDownwards("setSize");
         newChild.config[this._dimension] = size;
         this.callDownwards("setSize");
     }
