@@ -45,12 +45,12 @@ export function calculateRelativeSizes(payload: {
     const minItemWidth = payload.minItemWidth;
 
     let total = 0;
-    const itemsWithoutSetDimension = [],
-        dimension = this.isColumn ? "height" : "width";
+    const itemsWithoutSetDimension = new Array<ItemConfiguration>(),
+        dimension = isColumn ? "height" : "width";
 
-    this.contentItems.forEach(x => {
-        if (x.config[dimension]) {
-            total += x.config[dimension];
+    itemConfigs.forEach(x => {
+        if (x[dimension]) {
+            total += x[dimension];
         } else {
             itemsWithoutSetDimension.push(x);
         }
@@ -62,9 +62,7 @@ export function calculateRelativeSizes(payload: {
      * Everything adds up to hundred, all good :-)
      */
     if (roundedTotal === 100) {
-        return respectMinItemWidth({
-            itemConfigs, isColumn, splitterSize, element, minItemWidth
-        });
+        return respectMinItemWidth({itemConfigs, isColumn, splitterSize, element, minItemWidth});
 
         /**
          * Allocate the remaining size to the items without a set dimension
@@ -72,11 +70,9 @@ export function calculateRelativeSizes(payload: {
     } else if (roundedTotal < 100 && itemsWithoutSetDimension.length > 0) {
         const itemsWithoutSetDimensionLength = itemsWithoutSetDimension.length;
         itemsWithoutSetDimension.forEach(x => {
-            x.config[dimension] = (100 - total) / itemsWithoutSetDimensionLength;
+            x[dimension] = (100 - total) / itemsWithoutSetDimensionLength;
         });
-        return respectMinItemWidth({
-            itemConfigs, isColumn, splitterSize, element, minItemWidth
-        });
+        return respectMinItemWidth({itemConfigs, isColumn, splitterSize, element, minItemWidth});
 
         /**
          * If the total is > 100, but there are also items without a set dimension left, assing 50
@@ -86,7 +82,7 @@ export function calculateRelativeSizes(payload: {
          */
     } else if (roundedTotal > 100) {
         itemsWithoutSetDimension.forEach(x => {
-            x.config[dimension] = 50;
+            x[dimension] = 50;
             total += 50;
         });
     }
@@ -102,9 +98,7 @@ export function calculateRelativeSizes(payload: {
         };
     });
 
-    return respectMinItemWidth({
-        itemConfigs, isColumn, splitterSize, element, minItemWidth
-    });
+    return respectMinItemWidth({itemConfigs, isColumn, splitterSize, element, minItemWidth});
 }
 
 export interface SplitterComponents {
