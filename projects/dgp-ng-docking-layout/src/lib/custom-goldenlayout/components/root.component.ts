@@ -8,7 +8,6 @@ import {
     Inject,
     InjectionToken,
     Input,
-    OnInit,
     Output
 } from "@angular/core";
 import { Area, AreaSides } from "../models/area.model";
@@ -41,7 +40,7 @@ export interface RootDropEvent {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RootComponent extends DockingLayoutEngineObject implements OnInit, AfterViewInit, DropTarget {
+export class RootComponent extends DockingLayoutEngineObject implements AfterViewInit, DropTarget {
 
     contentItems: RowOrColumnComponent[] = [];
 
@@ -72,9 +71,6 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
     ) {
         super();
 
-    }
-
-    ngOnInit(): void {
     }
 
     ngAfterViewInit() {
@@ -118,7 +114,6 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
 
     onDrop(contentItem: any, area: Area) {
         this.drop.emit({contentItem, area});
-
     }
 
     getArea(element?: JQuery): Area {
@@ -159,9 +154,6 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         this.callDownwards("setSize");
     }
 
-    destroy() {
-        this.callDownwards("destroy", [], true, true);
-        this.element.remove();
-    }
+
 
 }
