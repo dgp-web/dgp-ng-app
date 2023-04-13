@@ -340,58 +340,61 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
         const itemsWithoutSetDimension = [],
             dimension = this.isColumn ? "height" : "width";
 
-        for (let i = 0; i < this.contentItems.length; i++) {
-            if (this.contentItems[i].config[dimension] !== undefined) {
-                total += this.contentItems[i].config[dimension];
+        this.contentItems.forEach(x => {
+            if (x.config[dimension]) {
+                total += x.config[dimension];
             } else {
-                itemsWithoutSetDimension.push(this.contentItems[i]);
+                itemsWithoutSetDimension.push(x);
             }
-        }
+        });
+
+        const roundedTotal = Math.round(total);
 
         /**
          * Everything adds up to hundred, all good :-)
          */
-        if (Math.round(total) === 100) {
+        if (roundedTotal === 100) {
             this.respectMinItemWidth();
             return;
-        }
 
-        /**
-         * Allocate the remaining size to the items without a set dimension
-         */
-        if (Math.round(total) < 100 && itemsWithoutSetDimension.length > 0) {
-            for (let i = 0; i < itemsWithoutSetDimension.length; i++) {
-                itemsWithoutSetDimension[i].config[dimension] = (100 - total) / itemsWithoutSetDimension.length;
-            }
+            /**
+             * Allocate the remaining size to the items without a set dimension
+             */
+        } else if (roundedTotal < 100 && itemsWithoutSetDimension.length > 0) {
+            const itemsWithoutSetDimensionLength = itemsWithoutSetDimension.length;
+            itemsWithoutSetDimension.forEach(x => {
+                x.config[dimension] = (100 - total) / itemsWithoutSetDimensionLength;
+            });
             this.respectMinItemWidth();
             return;
-        }
 
-        /**
-         * If the total is > 100, but there are also items without a set dimension left, assing 50
-         * as their dimension and add it to the total
-         *
-         * This will be reset in the next step
-         */
-        if (Math.round(total) > 100) {
-            for (let i = 0; i < itemsWithoutSetDimension.length; i++) {
-                itemsWithoutSetDimension[i].config[dimension] = 50;
+            /**
+             * If the total is > 100, but there are also items without a set dimension left, assing 50
+             * as their dimension and add it to the total
+             *
+             * This will be reset in the next step
+             */
+        } else if (roundedTotal > 100) {
+            itemsWithoutSetDimension.forEach(x => {
+                x.config[dimension] = 50;
                 total += 50;
-            }
+            });
         }
 
         /**
          * Set every item's size relative to 100 relative to its size to total
          */
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].config[dimension] = (this.contentItems[i].config[dimension] / total) * 100;
-        }
+        this.contentItems.forEach(x => {
+            x.config[dimension] = (x.config[dimension] / total) * 100;
+        });
 
         this.respectMinItemWidth();
     }
 
     private respectMinItemWidth(): void {
-        const minItemWidth = this.dockingLayoutService.config.dimensions ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0) : 0;
+        const minItemWidth = this.dockingLayoutService.config.dimensions
+            ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0)
+            : 0;
         let sizeData: AbsoluteSizes = null;
         const entriesOverMin: Array<Wide> = [];
         let totalOverMin = 0;
