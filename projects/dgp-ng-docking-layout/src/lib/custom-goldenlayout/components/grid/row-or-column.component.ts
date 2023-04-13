@@ -241,7 +241,6 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
             this.calculateRelativeSizes();
             this.setAbsoluteSizes();
         }
-        this.emit("resize");
     }
 
     /**
