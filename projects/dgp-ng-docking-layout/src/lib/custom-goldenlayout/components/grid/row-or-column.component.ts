@@ -8,6 +8,141 @@ import { RowOrColumnParentComponent } from "../../models/row-parent-component.mo
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 import { StackComponent } from "../tabs/stack.component";
+import { Many } from "data-modeling";
+
+
+/**
+ * Calculates the absolute sizes of all the children of this Item.
+ */
+export function calculateAbsoluteSizes(payload: {
+    readonly contentItems: Many<RowOrColumnContentItemComponent>;
+    readonly element: JQuery;
+    readonly isColumn: boolean;
+    readonly splitterSize: number;
+}): AbsoluteSizes {
+    const contentItems = payload.contentItems;
+    const element = payload.element;
+    const isColumn = payload.isColumn;
+    const splitterSize = payload.splitterSize;
+
+    let i: number,
+        totalSplitterSize = (contentItems.length - 1) * splitterSize,
+        totalWidth = element.width(),
+        totalHeight = element.height(),
+        totalAssigned = 0,
+        additionalPixel: number,
+        itemSize: number,
+        itemSizes = new Array<number>();
+
+    if (isColumn) {
+        totalHeight -= totalSplitterSize;
+    } else {
+        totalWidth -= totalSplitterSize;
+    }
+
+    for (i = 0; i < contentItems.length; i++) {
+        if (isColumn) {
+            itemSize = Math.floor(totalHeight * (contentItems[i].config.height / 100));
+        } else {
+            itemSize = Math.floor(totalWidth * (contentItems[i].config.width / 100));
+        }
+
+        totalAssigned += itemSize;
+        itemSizes.push(itemSize);
+    }
+
+    additionalPixel = Math.floor((isColumn ? totalHeight : totalWidth) - totalAssigned);
+
+    return {
+        itemSizes,
+        additionalPixel,
+        totalWidth,
+        totalHeight
+    };
+}
+
+export function respectMinItemWidth(payload: {
+    readonly contentItems: Many<RowOrColumnContentItemComponent>;
+    readonly element: JQuery;
+    readonly isColumn: boolean;
+    readonly splitterSize: number;
+    readonly minItemWidth?: number;
+}): void {
+    const contentItems = payload.contentItems;
+    const isColumn = payload.isColumn;
+    const element = payload.element;
+    const splitterSize = payload.splitterSize;
+    const minItemWidth = payload.minItemWidth || 0;
+
+    let sizeData: AbsoluteSizes = null;
+    const entriesOverMin: Array<Wide> = [];
+    let totalOverMin = 0;
+    let totalUnderMin = 0;
+    let remainingWidth = 0;
+    let itemSize = 0;
+    let contentItem: RowOrColumnContentItemComponent = null;
+    let reducePercent: number;
+    let reducedWidth: number;
+    const allEntries: Array<Wide> = [];
+    let entry: Wide;
+
+    if (isColumn || !minItemWidth || contentItems.length <= 1) return;
+
+    sizeData = calculateAbsoluteSizes({
+        contentItems, isColumn, element, splitterSize
+    });
+
+    /**
+     * Figure out how much we are under the min item size total and how much room we have to use.
+     */
+    for (let i = 0; i < contentItems.length; i++) {
+        contentItem = contentItems[i];
+        itemSize = sizeData.itemSizes[i];
+
+        if (itemSize < minItemWidth) {
+            totalUnderMin += minItemWidth - itemSize;
+            entry = {width: minItemWidth};
+        } else {
+            totalOverMin += itemSize - minItemWidth;
+            entry = {width: itemSize};
+            entriesOverMin.push(entry);
+        }
+
+        allEntries.push(entry);
+    }
+
+    /**
+     * If there is nothing under min, or there is not enough over to make up the difference, do nothing.
+     */
+    if (totalUnderMin === 0 || totalUnderMin > totalOverMin) return;
+
+    /**
+     * Evenly reduce all columns that are over the min item width to make up the difference.
+     */
+    reducePercent = totalUnderMin / totalOverMin;
+    remainingWidth = totalUnderMin;
+    for (let i = 0; i < entriesOverMin.length; i++) {
+        entry = entriesOverMin[i];
+        reducedWidth = Math.round((entry.width - minItemWidth) * reducePercent);
+        remainingWidth -= reducedWidth;
+        entry.width -= reducedWidth;
+    }
+
+    /**
+     * Take anything remaining from the last item.
+     */
+    if (remainingWidth !== 0) {
+        allEntries[allEntries.length - 1].width -= remainingWidth;
+    }
+
+    /**
+     * Set every item's size relative to 100 relative to its size to total
+     */
+    for (let i = 0; i < contentItems.length; i++) {
+        contentItems[i].config.width = (allEntries[i].width / sizeData.totalWidth) * 100;
+    }
+}
+
 
 export interface SplitterComponents {
     before: RowOrColumnContentItemComponent;
@@ -354,7 +489,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
          * Everything adds up to hundred, all good :-)
          */
         if (roundedTotal === 100) {
-            this.respectMinItemWidth();
+            this.respectMinItemWidth(this.contentItems);
             return;
 
             /**
@@ -365,7 +500,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
             itemsWithoutSetDimension.forEach(x => {
                 x.config[dimension] = (100 - total) / itemsWithoutSetDimensionLength;
             });
-            this.respectMinItemWidth();
+            this.respectMinItemWidth(this.contentItems);
             return;
 
             /**
@@ -388,78 +523,17 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
             x.config[dimension] = (x.config[dimension] / total) * 100;
         });
 
-        this.respectMinItemWidth();
+        this.respectMinItemWidth(this.contentItems);
     }
 
-    private respectMinItemWidth(): void {
-        const minItemWidth = this.dockingLayoutService.config.dimensions
-            ? (this.dockingLayoutService.config.dimensions.minItemWidth || 0)
-            : 0;
-        let sizeData: AbsoluteSizes = null;
-        const entriesOverMin: Array<Wide> = [];
-        let totalOverMin = 0;
-        let totalUnderMin = 0;
-        let remainingWidth = 0;
-        let itemSize = 0;
-        let contentItem: RowOrColumnContentItemComponent = null;
-        let reducePercent: number;
-        let reducedWidth: number;
-        const allEntries: Array<Wide> = [];
-        let entry: Wide;
-
-        if (this.isColumn || !minItemWidth || this.contentItems.length <= 1) return;
-
-        sizeData = this.calculateAbsoluteSizes();
-
-        /**
-         * Figure out how much we are under the min item size total and how much room we have to use.
-         */
-        for (let i = 0; i < this.contentItems.length; i++) {
-            contentItem = this.contentItems[i];
-            itemSize = sizeData.itemSizes[i];
-
-            if (itemSize < minItemWidth) {
-                totalUnderMin += minItemWidth - itemSize;
-                entry = {width: minItemWidth};
-            } else {
-                totalOverMin += itemSize - minItemWidth;
-                entry = {width: itemSize};
-                entriesOverMin.push(entry);
-            }
-
-            allEntries.push(entry);
-        }
-
-        /**
-         * If there is nothing under min, or there is not enough over to make up the difference, do nothing.
-         */
-        if (totalUnderMin === 0 || totalUnderMin > totalOverMin) return;
-
-        /**
-         * Evenly reduce all columns that are over the min item width to make up the difference.
-         */
-        reducePercent = totalUnderMin / totalOverMin;
-        remainingWidth = totalUnderMin;
-        for (let i = 0; i < entriesOverMin.length; i++) {
-            entry = entriesOverMin[i];
-            reducedWidth = Math.round((entry.width - minItemWidth) * reducePercent);
-            remainingWidth -= reducedWidth;
-            entry.width -= reducedWidth;
-        }
-
-        /**
-         * Take anything remaining from the last item.
-         */
-        if (remainingWidth !== 0) {
-            allEntries[allEntries.length - 1].width -= remainingWidth;
-        }
-
-        /**
-         * Set every item's size relative to 100 relative to its size to total
-         */
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.contentItems[i].config.width = (allEntries[i].width / sizeData.totalWidth) * 100;
-        }
+    respectMinItemWidth(contentItems: Many<RowOrColumnContentItemComponent>) {
+        respectMinItemWidth({
+            contentItems,
+            isColumn: this.isColumn,
+            splitterSize: this.splitterSize,
+            element: this.element,
+            minItemWidth: this.dockingLayoutService.config?.dimensions?.minItemWidth
+        });
     }
 
     remove() {
