@@ -13,7 +13,7 @@ import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration, itemDefaultConfig } from "../types";
-import { RowOrColumnComponent } from "./grid/row-or-column.component";
+import type { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");

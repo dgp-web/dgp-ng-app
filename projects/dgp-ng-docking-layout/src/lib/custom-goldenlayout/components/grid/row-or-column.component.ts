@@ -14,7 +14,7 @@ import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
-import { StackComponent } from "../tabs/stack.component";
+import type { StackComponent } from "../tabs/stack.component";
 import { Many } from "data-modeling";
 import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-sizes.function";
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
@@ -28,7 +28,25 @@ export interface SplitterComponents {
 
 @Component({
     selector: "dgp-row-or-column",
-    template: ``,
+    template: `
+        <!--
+
+                <ng-container *ngFor="let itemConfig of config.content">
+
+                    <ng-container [ngSwitch]="itemConfig.type">
+
+                        &lt;!&ndash;  <dgp-row-or-column *ngSwitchCase="'row'"></dgp-row-or-column>
+                          <dgp-row-or-column *ngSwitchCase="'column'"></dgp-row-or-column>
+                          <dgp-stack *ngSwitchCase="'stack'"></dgp-stack>&ndash;&gt;
+                        <ng-container *ngSwitchCase="'row'">Row</ng-container>
+                        <ng-container *ngSwitchCase="'column'">Column</ng-container>
+                        <ng-container *ngSwitchCase="'stack'">Stack</ng-container>
+
+                    </ng-container>
+
+                </ng-container>
+        -->
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RowOrColumnComponent extends DockingLayoutEngineObject {
@@ -54,7 +72,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     config: RowConfiguration | ColumnConfiguration;
 
     constructor(
-        public dockingLayoutService: DockingLayoutService,
+        readonly dockingLayoutService: DockingLayoutService,
         @Inject(ITEM_CONFIG)
             config: RowConfiguration | ColumnConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)

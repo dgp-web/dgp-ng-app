@@ -32,7 +32,7 @@ import { GlComponent } from "../component.component";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
-import { RowOrColumnComponent } from "../grid/row-or-column.component";
+import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { MatTabGroup } from "@angular/material/tabs";
