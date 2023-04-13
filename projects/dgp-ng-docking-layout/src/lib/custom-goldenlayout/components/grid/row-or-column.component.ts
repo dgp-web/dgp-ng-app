@@ -66,15 +66,15 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
     init(): void {
         if (this.isInitialised === true) return;
 
-        for (let i = 0; i < this.contentItems.length; i++) {
-            this.childElementContainer.append(this.contentItems[i].element);
-        }
+        this.contentItems.forEach((item, index) => {
+            this.childElementContainer.append(item.element);
+            if (index !== this.contentItems.length - 1) {
+                item.element.after(this.createSplitter(index).element);
+            }
+        });
 
         this.isInitialised = true;
 
-        for (let i = 0; i < this.contentItems.length - 1; i++) {
-            this.contentItems[i].element.after(this.createSplitter(i).element);
-        }
     }
 
     /**
@@ -233,14 +233,9 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
         this.callDownwards("setSize");
     }
 
-    /**
-     * Called whenever the dimensions of this item or one of its parents change
-     */
     setSize() {
-        if (this.contentItems.length > 0) {
-            this.calculateRelativeSizes();
-            this.setAbsoluteSizes();
-        }
+        this.calculateRelativeSizes();
+        this.setAbsoluteSizes();
     }
 
     /**
