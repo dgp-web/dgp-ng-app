@@ -162,7 +162,7 @@ export class DockingLayoutService extends EventEmitter {
 
             if (column.config.type !== type) {
                 const rowOrColumn = this.createContentItem<RowOrColumnComponent>({type}, this.root);
-                this.root.replaceChild(column, rowOrColumn);
+                this.root.addChild(column, rowOrColumn);
                 rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
                 rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
                 column.config[dimension] = 50;

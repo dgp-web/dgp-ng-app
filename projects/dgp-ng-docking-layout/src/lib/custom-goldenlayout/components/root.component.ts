@@ -99,9 +99,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
 
         this.element.width(width);
         this.element.height(height);
-        /*
-         * Root can be empty
-         */
+
         if (this.contentItems[0]) {
             this.contentItems[0].element.width(width);
             this.contentItems[0].element.height(height);
@@ -133,16 +131,11 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
         };
     }
 
-    replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent, destroyOldChild?: boolean) {
+    addChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent) {
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;
 
         parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
-
-        if (destroyOldChild === true) {
-            oldChild.parent = null;
-            oldChild.destroy();
-        }
 
         this.contentItems[index] = newChild;
         newChild.parent = this;
@@ -154,6 +147,13 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
         this.callDownwards("setSize");
     }
 
+
+    replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent) {
+        this.addChild(oldChild, newChild);
+
+        oldChild.parent = null;
+        oldChild.destroy();
+    }
 
 
 }

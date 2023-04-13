@@ -221,7 +221,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
             childItem = this.contentItems[0];
             this.contentItems = [];
-            this.parent.replaceChild(this, childItem as RowOrColumnComponent, true);
+            this.parent.replaceChild(this, childItem as RowOrColumnComponent);
         } else {
             this.callDownwards("setSize");
         }
