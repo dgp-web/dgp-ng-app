@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component, Directive } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Directive, Inject } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
-import { ColumnConfiguration, ItemConfiguration, itemDefaultConfig, RowConfiguration } from "../../types";
+import {
+    ColumnConfiguration,
+    ITEM_CONFIG,
+    ItemConfiguration,
+    itemDefaultConfig,
+    PARENT_ITEM_COMPONENT,
+    RowConfiguration
+} from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
@@ -43,12 +50,15 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
     config: RowConfiguration | ColumnConfiguration;
 
     constructor(
-        isColumn: boolean,
         public dockingLayoutService: DockingLayoutService,
-        config: RowConfiguration | ColumnConfiguration,
+        @Inject(ITEM_CONFIG)
+            config: RowConfiguration | ColumnConfiguration,
+        @Inject(PARENT_ITEM_COMPONENT)
         public parent: RowOrColumnParentComponent
     ) {
         super();
+
+        const isColumn = config.type === "column";
 
         this.config = {...itemDefaultConfig, ...config};
         if (config.content) this.createContentItems(config);

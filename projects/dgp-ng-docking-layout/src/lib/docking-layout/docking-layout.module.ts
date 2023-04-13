@@ -14,8 +14,6 @@ import { StoreModule } from "@ngrx/store";
 import { dockingLayoutStoreFeature } from "./models";
 import { EffectsModule } from "@ngrx/effects";
 import { DockingLayoutEffects } from "./effects";
-import { ColumnComponent } from "../custom-goldenlayout/components/grid/column.component";
-import { RowComponent } from "../custom-goldenlayout/components/grid/row.component";
 import { RootComponent } from "../custom-goldenlayout/components/root.component";
 import { GlComponent } from "../custom-goldenlayout/components/component.component";
 import { DropTargetIndicatorComponent } from "../custom-goldenlayout/components/drag-and-drop/drop-target-indicator.component";
@@ -61,8 +59,6 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         RowOrColumnComponent,
         StackComponent,
         ItemContainerComponent,
-        ColumnComponent,
-        RowComponent,
         RootComponent,
         GlComponent,
         TabComponent,
@@ -78,8 +74,6 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         RowOrColumnComponent,
         StackComponent,
         ItemContainerComponent,
-        ColumnComponent,
-        RowComponent,
         RootComponent,
         GlComponent,
         TabComponent,

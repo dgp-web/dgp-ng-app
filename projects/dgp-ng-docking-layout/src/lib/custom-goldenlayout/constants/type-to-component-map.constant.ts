@@ -1,11 +1,10 @@
-import { ColumnComponent } from "../components/grid/column.component";
-import { RowComponent } from "../components/grid/row.component";
 import { StackComponent } from "../components/tabs/stack.component";
 import { GlComponent } from "../components/component.component";
+import { RowOrColumnComponent } from "../components/grid/row-or-column.component";
 
 export const typeToComponentMap = {
-    column: ColumnComponent,
-    row: RowComponent,
+    column: RowOrColumnComponent,
+    row: RowOrColumnComponent,
     stack: StackComponent,
     component: GlComponent
 };
