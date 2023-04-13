@@ -68,7 +68,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     isInitialised = false;
     isRow = false;
     isColumn = false;
-    isStack = false;
     config: RowConfiguration | ColumnConfiguration;
 
     constructor(
@@ -251,9 +250,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         this.contentItems[index] = newChild;
         newChild.parent = this;
 
-        // TODO this doesn't update the config... refactor to leave item nodes untouched after creation
         if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            if (!newChild.isStack) newChild.init();
+            newChild.init();
         }
 
         newChild.config[this._dimension] = size;
