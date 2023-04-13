@@ -13,7 +13,7 @@ import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration, itemDefaultConfig } from "../types";
-import { RowOrColumnComponentBase } from "./grid/row-or-column.component";
+import { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 
 export const ROOT_CONFIG = new InjectionToken("rootConfig");
@@ -148,7 +148,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
         };
     }
 
-    removeChild(contentItem: RowOrColumnComponentBase, keepChild?: boolean) {
+    removeChild(contentItem: RowOrColumnComponent, keepChild?: boolean) {
 
         const index = this.contentItems.indexOf(contentItem);
 
@@ -166,7 +166,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
         }
     }
 
-    replaceChild(oldChild: RowOrColumnComponentBase, newChild: RowOrColumnComponentBase, destroyOldChild?: boolean) {
+    replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent, destroyOldChild?: boolean) {
 
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Directive, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { DockingLayoutService } from "../../docking-layout.service";
 import {
@@ -25,9 +25,13 @@ export interface SplitterComponents {
     after: RowOrColumnContentItemComponent;
 }
 
-@Directive()
-// tslint:disable-next-line:directive-class-suffix
-export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
+
+@Component({
+    selector: "dgp-row-or-column",
+    template: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     public readonly element: JQuery<HTMLElement>;
     public readonly splitterSize: number;
@@ -90,7 +94,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
     /**
      * Add a new contentItem to the Row or Column
      */
-    addChild(contentItem: RowOrColumnComponentBase | StackComponent, index: number, _$suspendResize: boolean) {
+    addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
 
         let newItemSize: number,
             itemSize: number,
@@ -203,7 +207,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
             childItem = this.contentItems[0];
             this.contentItems = [];
-            this.parent.replaceChild(this, childItem as RowOrColumnComponentBase, true);
+            this.parent.replaceChild(this, childItem as RowOrColumnComponent, true);
         } else {
             this.callDownwards("setSize");
         }
@@ -386,13 +390,4 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
     }
 
 
-}
-
-
-@Component({
-    selector: "dgp-row-or-column",
-    template: ``,
-    changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class RowOrColumnComponent extends RowOrColumnComponentBase {
 }
