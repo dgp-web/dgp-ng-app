@@ -19,6 +19,8 @@ import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
 import { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
+import { StackComponent } from "./components/tabs/stack.component";
+import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -130,7 +132,50 @@ export class DockingLayoutService extends EventEmitter {
         rootComponentRef.instance.config = {content: config.content};
         rootComponentRef.changeDetectorRef.markForCheck();
         this.root = rootComponentRef.instance;
+
         this.root.initialized.subscribe(() => this.registerInitialization());
+
+        this.root.dragOver.subscribe(area => {
+            this.tabDropPlaceholder.remove();
+            this.dropTargetIndicator.highlightArea(area);
+        });
+
+        this.root.drop.subscribe(event => {
+            let contentItem = event.contentItem;
+            const area = event.area;
+
+            let stack: StackComponent;
+
+            if (contentItem.isComponent) {
+                stack = this.createContentItem({
+                    type: "stack"
+                }, this.root);
+                stack.init();
+                stack.addChild(contentItem);
+                contentItem = stack;
+            }
+
+            const type = area.side[0] === "x" ? "row" : "column";
+            const dimension = area.side[0] === "x" ? "width" : "height";
+            const insertBefore = area.side[1] === "2";
+            const column = this.root.contentItems[0];
+
+            if (column.config.type !== type) {
+                const rowOrColumn = this.createContentItem<RowOrColumnComponent>({type}, this.root);
+                this.root.replaceChild(column, rowOrColumn);
+                rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
+                rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
+                column.config[dimension] = 50;
+                contentItem.config[dimension] = 50;
+                rowOrColumn.callDownwards("setSize");
+            } else {
+                const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
+                column.addChild(contentItem, insertBefore ? 0 : undefined, true);
+                sibling.config[dimension] *= 0.5;
+                contentItem.config[dimension] = sibling.config[dimension];
+                column.callDownwards("setSize");
+            }
+        });
     }
 
     getArea(x: number, y: number): Area {

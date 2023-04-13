@@ -18,9 +18,13 @@ import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration } from "../types";
 import type { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
-import type { StackComponent } from "./tabs/stack.component";
 
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
+
+export interface RootDropEvent {
+    contentItem: any;
+    area: Area;
+}
 
 @Component({
     selector: "dgp-gl-root",
@@ -53,6 +57,12 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
 
     @Output()
     readonly initialized = new EventEmitter<void>();
+
+    @Output()
+    readonly dragOver = new EventEmitter<AreaSides>();
+
+    @Output()
+    readonly drop = new EventEmitter<RootDropEvent>();
 
     constructor(
         readonly dockingLayoutService: DockingLayoutService,
@@ -99,43 +109,12 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         }
     }
 
-    highlightDropZone(x, y, area: AreaSides) {
-        this.dockingLayoutService.tabDropPlaceholder.remove();
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(area);
+    highlightDropZone(x: number, y: number, area: AreaSides) {
+        this.dragOver.emit(area);
     }
 
     onDrop(contentItem: any, area: Area) {
-        let stack: StackComponent;
-
-        if (contentItem.isComponent) {
-            stack = this.dockingLayoutService.createContentItem({
-                type: "stack"
-            }, this);
-            stack.init();
-            stack.addChild(contentItem);
-            contentItem = stack;
-        }
-
-        const type = area.side[0] === "x" ? "row" : "column";
-        const dimension = area.side[0] === "x" ? "width" : "height";
-        const insertBefore = area.side[1] === "2";
-        const column = this.contentItems[0];
-
-        if (column.config.type !== type) {
-            const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
-            this.replaceChild(column, rowOrColumn);
-            rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
-            rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
-            column.config[dimension] = 50;
-            contentItem.config[dimension] = 50;
-            rowOrColumn.callDownwards("setSize");
-        } else {
-            const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
-            column.addChild(contentItem, insertBefore ? 0 : undefined, true);
-            sibling.config[dimension] *= 0.5;
-            contentItem.config[dimension] = sibling.config[dimension];
-            column.callDownwards("setSize");
-        }
+        this.drop.emit({contentItem, area});
 
     }
 
