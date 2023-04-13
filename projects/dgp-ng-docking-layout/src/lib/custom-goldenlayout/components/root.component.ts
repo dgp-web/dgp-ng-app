@@ -3,11 +3,13 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
+    EventEmitter,
     HostBinding,
     Inject,
     InjectionToken,
     Input,
-    OnInit
+    OnInit,
+    Output
 } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { Area, AreaSides } from "../models/area.model";
@@ -49,6 +51,9 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
     @Input()
     config: ItemConfiguration;
 
+    @Output()
+    readonly initialized = new EventEmitter<void>();
+
     constructor(
         readonly dockingLayoutService: DockingLayoutService,
         @Inject(ROOT_CONTAINER_ELEMENT)
@@ -74,7 +79,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
     ngAfterViewInit() {
         this.containerElement.append(this.element);
         this.callDownwards("init");
-        this.dockingLayoutService.registerInitialization();
+        this.initialized.emit();
     }
 
     setSize(width?: number, height?: number) {

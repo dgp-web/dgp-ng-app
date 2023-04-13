@@ -70,7 +70,7 @@ export class DockingLayoutService extends EventEmitter {
         this.createRootComponent(this.config);
     }
 
-    registerInitialization() {
+    private registerInitialization() {
         this.isInitialised = true;
     }
 
@@ -130,6 +130,7 @@ export class DockingLayoutService extends EventEmitter {
         rootComponentRef.instance.config = {content: config.content};
         rootComponentRef.changeDetectorRef.markForCheck();
         this.root = rootComponentRef.instance;
+        this.root.initialized.subscribe(() => this.registerInitialization());
     }
 
     getArea(x: number, y: number): Area {
