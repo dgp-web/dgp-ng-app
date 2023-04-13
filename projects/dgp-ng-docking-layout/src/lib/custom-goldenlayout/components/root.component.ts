@@ -121,7 +121,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         const insertBefore = area.side[1] === "2";
         const column = this.contentItems[0];
 
-        if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
+        if (column.config.type !== type) {
             const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
             this.replaceChild(column, rowOrColumn);
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
@@ -158,7 +158,6 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
 
     // TODO: Easy
     removeChild(contentItem: RowOrColumnComponent, keepChild?: boolean) {
-
         const index = this.contentItems.indexOf(contentItem);
 
         if (keepChild !== true) {
@@ -175,9 +174,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         }
     }
 
-    // TODO: Easy
     replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent, destroyOldChild?: boolean) {
-
         const index = this.contentItems.indexOf(oldChild);
         const parentNode = oldChild.element[0].parentNode;
 
@@ -198,7 +195,6 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         this.callDownwards("setSize");
     }
 
-    // TODO: Easy
     destroy() {
         this.callDownwards("destroy", [], true, true);
         this.element.remove();
