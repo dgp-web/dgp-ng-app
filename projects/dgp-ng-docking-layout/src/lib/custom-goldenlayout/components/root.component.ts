@@ -18,8 +18,8 @@ import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration } from "../types";
 import type { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
+import type { StackComponent } from "./tabs/stack.component";
 
-export const ROOT_CONFIG = new InjectionToken("rootConfig");
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
 
 @Component({
@@ -105,7 +105,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
     }
 
     onDrop(contentItem: any, area: Area) {
-        let stack;
+        let stack: StackComponent;
 
         if (contentItem.isComponent) {
             stack = this.dockingLayoutService.createContentItem({
@@ -119,10 +119,10 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         const type = area.side[0] === "x" ? "row" : "column";
         const dimension = area.side[0] === "x" ? "width" : "height";
         const insertBefore = area.side[1] === "2";
-        const column = this.contentItems[0] as any;
+        const column = this.contentItems[0];
 
         if (!(column.isRow || column.isColumn) || column.config.type !== type) { // TODO: move this type here
-            const rowOrColumn: any = this.dockingLayoutService.createContentItem({type}, this);
+            const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
             this.replaceChild(column, rowOrColumn);
             rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
             rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
@@ -130,10 +130,10 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
             contentItem.config[dimension] = 50;
             rowOrColumn.callDownwards("setSize");
         } else {
-            const sibbling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
+            const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
             column.addChild(contentItem, insertBefore ? 0 : undefined, true);
-            sibbling.config[dimension] *= 0.5;
-            contentItem.config[dimension] = sibbling.config[dimension];
+            sibling.config[dimension] *= 0.5;
+            contentItem.config[dimension] = sibling.config[dimension];
             column.callDownwards("setSize");
         }
 
@@ -156,6 +156,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         };
     }
 
+    // TODO: Easy
     removeChild(contentItem: RowOrColumnComponent, keepChild?: boolean) {
 
         const index = this.contentItems.indexOf(contentItem);
@@ -174,6 +175,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         }
     }
 
+    // TODO: Easy
     replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent, destroyOldChild?: boolean) {
 
         const index = this.contentItems.indexOf(oldChild);
@@ -196,6 +198,7 @@ export class RootComponent extends DockingLayoutEngineObject implements OnInit, 
         this.callDownwards("setSize");
     }
 
+    // TODO: Easy
     destroy() {
         this.callDownwards("destroy", [], true, true);
         this.element.remove();
