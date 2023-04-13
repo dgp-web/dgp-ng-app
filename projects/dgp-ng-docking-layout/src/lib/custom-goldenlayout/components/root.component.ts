@@ -1,13 +1,4 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ElementRef,
-    forwardRef,
-    HostBinding,
-    Inject,
-    InjectionToken
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, InjectionToken } from "@angular/core";
 import { DockingLayoutService } from "../docking-layout.service";
 import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined } from "dgp-ng-app";
@@ -22,10 +13,10 @@ export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement")
 @Component({
     selector: "dgp-gl-root",
     template: `
-<!--        <ng-container *ngFor="let itemConfig of config.content">
-            <dgp-row-or-column [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row-or-column>
-            <dgp-row-or-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-row-or-column>
-        </ng-container>-->
+        <!--        <ng-container *ngFor="let itemConfig of config.content">
+                    <dgp-row-or-column [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row-or-column>
+                    <dgp-row-or-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-row-or-column>
+                </ng-container>-->
     `,
     styles: [`
         :host {

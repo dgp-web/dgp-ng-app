@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
+import { Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
 import {
     ComponentConfiguration,
@@ -43,7 +43,6 @@ export class DockingLayoutService extends EventEmitter {
     private viewContainerRef: ViewContainerRef;
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly componentRegistry: ComponentRegistry,
         private readonly areaService: AreaService,
         private readonly injector: Injector
@@ -53,10 +52,6 @@ export class DockingLayoutService extends EventEmitter {
 
     getViewContainerRef() {
         return this.viewContainerRef;
-    }
-
-    getInjector() {
-        return this.injector;
     }
 
     createDockingLayout(config: LayoutConfiguration,
