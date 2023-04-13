@@ -15,18 +15,18 @@ import { Many } from "data-modeling";
  * Calculates the absolute sizes of all the children of this Item.
  */
 export function calculateAbsoluteSizes(payload: {
-    readonly contentItems: Many<RowOrColumnContentItemComponent>;
+    readonly itemConfigs: Many<ItemConfiguration>;
     readonly element: JQuery;
     readonly isColumn: boolean;
     readonly splitterSize: number;
 }): AbsoluteSizes {
-    const contentItems = payload.contentItems;
+    const itemConfigs = payload.itemConfigs;
     const element = payload.element;
     const isColumn = payload.isColumn;
     const splitterSize = payload.splitterSize;
 
     let i: number,
-        totalSplitterSize = (contentItems.length - 1) * splitterSize,
+        totalSplitterSize = (itemConfigs.length - 1) * splitterSize,
         totalWidth = element.width(),
         totalHeight = element.height(),
         totalAssigned = 0,
@@ -40,11 +40,11 @@ export function calculateAbsoluteSizes(payload: {
         totalWidth -= totalSplitterSize;
     }
 
-    for (i = 0; i < contentItems.length; i++) {
+    for (i = 0; i < itemConfigs.length; i++) {
         if (isColumn) {
-            itemSize = Math.floor(totalHeight * (contentItems[i].config.height / 100));
+            itemSize = Math.floor(totalHeight * (itemConfigs[i].height / 100));
         } else {
-            itemSize = Math.floor(totalWidth * (contentItems[i].config.width / 100));
+            itemSize = Math.floor(totalWidth * (itemConfigs[i].width / 100));
         }
 
         totalAssigned += itemSize;
@@ -62,13 +62,13 @@ export function calculateAbsoluteSizes(payload: {
 }
 
 export function respectMinItemWidth(payload: {
-    readonly contentItems: Many<RowOrColumnContentItemComponent>;
+    readonly itemConfigs: Many<ItemConfiguration>;
     readonly element: JQuery;
     readonly isColumn: boolean;
     readonly splitterSize: number;
     readonly minItemWidth?: number;
-}): void {
-    const contentItems = payload.contentItems;
+}): Many<ItemConfiguration> {
+    const itemConfigs = payload.itemConfigs;
     const isColumn = payload.isColumn;
     const element = payload.element;
     const splitterSize = payload.splitterSize;
@@ -80,23 +80,19 @@ export function respectMinItemWidth(payload: {
     let totalUnderMin = 0;
     let remainingWidth = 0;
     let itemSize = 0;
-    let contentItem: RowOrColumnContentItemComponent = null;
     let reducePercent: number;
     let reducedWidth: number;
     const allEntries: Array<Wide> = [];
     let entry: Wide;
 
-    if (isColumn || !minItemWidth || contentItems.length <= 1) return;
+    if (isColumn || !minItemWidth || itemConfigs.length <= 1) return itemConfigs;
 
-    sizeData = calculateAbsoluteSizes({
-        contentItems, isColumn, element, splitterSize
-    });
+    sizeData = calculateAbsoluteSizes({itemConfigs, isColumn, element, splitterSize});
 
     /**
      * Figure out how much we are under the min item size total and how much room we have to use.
      */
-    for (let i = 0; i < contentItems.length; i++) {
-        contentItem = contentItems[i];
+    for (let i = 0; i < itemConfigs.length; i++) {
         itemSize = sizeData.itemSizes[i];
 
         if (itemSize < minItemWidth) {
@@ -114,7 +110,7 @@ export function respectMinItemWidth(payload: {
     /**
      * If there is nothing under min, or there is not enough over to make up the difference, do nothing.
      */
-    if (totalUnderMin === 0 || totalUnderMin > totalOverMin) return;
+    if (totalUnderMin === 0 || totalUnderMin > totalOverMin) return itemConfigs;
 
     /**
      * Evenly reduce all columns that are over the min item width to make up the difference.
@@ -138,9 +134,10 @@ export function respectMinItemWidth(payload: {
     /**
      * Set every item's size relative to 100 relative to its size to total
      */
-    for (let i = 0; i < contentItems.length; i++) {
-        contentItems[i].config.width = (allEntries[i].width / sizeData.totalWidth) * 100;
-    }
+    return itemConfigs.map((item, index) => {
+        const width = (allEntries[index].width / sizeData.totalWidth) * 100;
+        return {...item, width};
+    });
 }
 
 
@@ -489,7 +486,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
          * Everything adds up to hundred, all good :-)
          */
         if (roundedTotal === 100) {
-            this.respectMinItemWidth(this.contentItems);
+            this.respectMinItemWidth();
             return;
 
             /**
@@ -500,7 +497,7 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
             itemsWithoutSetDimension.forEach(x => {
                 x.config[dimension] = (100 - total) / itemsWithoutSetDimensionLength;
             });
-            this.respectMinItemWidth(this.contentItems);
+            this.respectMinItemWidth();
             return;
 
             /**
@@ -523,16 +520,20 @@ export class RowOrColumnComponentBase extends DockingLayoutEngineObject {
             x.config[dimension] = (x.config[dimension] / total) * 100;
         });
 
-        this.respectMinItemWidth(this.contentItems);
+        this.respectMinItemWidth();
     }
 
-    respectMinItemWidth(contentItems: Many<RowOrColumnContentItemComponent>) {
-        respectMinItemWidth({
-            contentItems,
+    respectMinItemWidth() {
+        let configs = this.contentItems.map(x => x.config) as Many<ItemConfiguration>;
+        configs = respectMinItemWidth({
+            itemConfigs: configs,
             isColumn: this.isColumn,
             splitterSize: this.splitterSize,
             element: this.element,
             minItemWidth: this.dockingLayoutService.config?.dimensions?.minItemWidth
+        });
+        configs.forEach((item, index) => {
+            this.contentItems[index].config = item as any;
         });
     }
 
