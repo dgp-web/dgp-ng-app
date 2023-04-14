@@ -36,6 +36,8 @@ import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { MatTabGroup } from "@angular/material/tabs";
+import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indicator.component";
+import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
 
 @Component({
     selector: "dgp-stack",
@@ -118,6 +120,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
+        private readonly dropTargetIndicator: DropTargetIndicatorComponent,
+        private readonly tabDropPlaceholder: TabDropPlaceholderComponent,
         @Inject(ITEM_CONFIG)
         public config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
@@ -154,7 +158,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     private resetHeaderDropZone() {
-        this.dockingLayoutService.tabDropPlaceholder.remove();
+        this.tabDropPlaceholder.remove();
     }
 
     private setupHeaderPosition() {
@@ -169,7 +173,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private highlightBodyDropZone(segment: keyof ContentAreaDimensions) {
         const highlightArea = this.contentAreaDimensions[segment].highlightArea;
-        this.dockingLayoutService.dropTargetIndicator.highlightArea(highlightArea);
+        this.dropTargetIndicator.highlightArea(highlightArea);
         this.dropSegment = segment;
     }
 
@@ -179,12 +183,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     hide() {
         this.element.hide();
-        this.dockingLayoutService.updateSize();
     }
 
     show() {
         this.element.show();
-        this.dockingLayoutService.updateSize();
     }
 
     init() {
@@ -509,7 +511,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         if (tabsLength === 0) {
             headerOffset = headerElement.offset();
 
-            this.dockingLayoutService.dropTargetIndicator.highlightArea({
+            this.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
                 x2: headerOffset.left + 100,
                 y1: headerOffset.top + headerElement.height() - 20,
@@ -546,28 +548,28 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         if (x < halfX) {
             this.dropIndex = i;
-            tabElement.before(this.dockingLayoutService.tabDropPlaceholder.$element);
+            tabElement.before(this.tabDropPlaceholder.$element);
         } else {
             this.dropIndex = Math.min(i + 1, tabsLength);
-            tabElement.after(this.dockingLayoutService.tabDropPlaceholder.$element);
+            tabElement.after(this.tabDropPlaceholder.$element);
         }
 
 
         if (this._sided) {
-            placeHolderTop = this.dockingLayoutService.tabDropPlaceholder.offset().top;
-            this.dockingLayoutService.dropTargetIndicator.highlightArea({
+            placeHolderTop = this.tabDropPlaceholder.offset().top;
+            this.dropTargetIndicator.highlightArea({
                 x1: tabTop,
                 x2: tabTop + tabElement.innerHeight(),
                 y1: placeHolderTop,
-                y2: placeHolderTop + this.dockingLayoutService.tabDropPlaceholder.width()
+                y2: placeHolderTop + this.tabDropPlaceholder.width()
             });
             return;
         }
-        placeHolderLeft = this.dockingLayoutService.tabDropPlaceholder.offset().left;
+        placeHolderLeft = this.tabDropPlaceholder.offset().left;
 
-        this.dockingLayoutService.dropTargetIndicator.highlightArea({
+        this.dropTargetIndicator.highlightArea({
             x1: placeHolderLeft,
-            x2: placeHolderLeft + this.dockingLayoutService.tabDropPlaceholder.width(),
+            x2: placeHolderLeft + this.tabDropPlaceholder.width(),
             y1: tabTop,
             y2: tabTop + tabElement.innerHeight()
         });

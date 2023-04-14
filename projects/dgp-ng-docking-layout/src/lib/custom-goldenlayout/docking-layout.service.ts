@@ -109,6 +109,12 @@ export class DockingLayoutService extends EventEmitter {
             }, {
                 provide: ViewContainerRef,
                 useValue: this.viewContainerRef
+            }, {
+                provide: DropTargetIndicatorComponent,
+                useValue: this.dropTargetIndicator
+            }, {
+                provide: TabDropPlaceholderComponent,
+                useValue: this.tabDropPlaceholder
             }],
             parent: this.injector
         });
@@ -127,6 +133,12 @@ export class DockingLayoutService extends EventEmitter {
             providers: [{
                 provide: ROOT_CONTAINER_ELEMENT,
                 useValue: this.container
+            }, {
+                provide: DropTargetIndicatorComponent,
+                useValue: this.dropTargetIndicator
+            }, {
+                provide: TabDropPlaceholderComponent,
+                useValue: this.tabDropPlaceholder
             }],
             parent: this.injector
         });
