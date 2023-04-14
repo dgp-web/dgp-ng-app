@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Inject, ViewContainerRef } from "@angular/core";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    HostBinding,
+    Inject,
+    QueryList,
+    ViewChildren,
+    ViewContainerRef
+} from "@angular/core";
 import {
     ColumnConfiguration,
     ITEM_CONFIG,
@@ -29,17 +39,26 @@ export interface SplitterComponents {
     selector: "dgp-row-or-column",
     template: `
 
-        <!-- <ng-container *ngFor="let itemConfig of config.content">
+        <!--<ng-container *ngFor="let itemConfig of config.content">
 
-             <ng-container [ngSwitch]="itemConfig.type">
+            <ng-container [ngSwitch]="itemConfig.type">
 
-                 <dgp-row-or-column *ngSwitchCase="'row'">Row</dgp-row-or-column>
-                 <dgp-row-or-column *ngSwitchCase="'column'">Column</dgp-row-or-column>
-                 <dgp-stack *ngSwitchCase="'stack'">Stack</dgp-stack>
+                <dgp-row-or-column *ngSwitchCase="'row'"
+                                   #child>
+                    Row
+                </dgp-row-or-column>
+                <dgp-row-or-column *ngSwitchCase="'column'"
+                                   #child>
+                    Column
+                </dgp-row-or-column>
+                <dgp-stack *ngSwitchCase="'stack'"
+                           #child>
+                    Stack
+                </dgp-stack>
 
-             </ng-container>
+            </ng-container>
 
-         </ng-container>-->
+        </ng-container>-->
     `,
     styles: [`
         :host {
@@ -47,7 +66,7 @@ export interface SplitterComponents {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RowOrColumnComponent extends DockingLayoutEngineObject {
+export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -70,6 +89,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     private splitterMinPosition: number = null;
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
+
+    @ViewChildren("#child")
+    contentItems1: QueryList<RowOrColumnContentItemComponent>;
 
     contentItems: RowOrColumnContentItemComponent[] = [];
 
@@ -110,6 +132,10 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
         this.isInitialised = true;
 
+    }
+
+    ngAfterViewInit(): void {
+        console.log(this.contentItems1);
     }
 
     /**
