@@ -309,7 +309,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             isColumn: this.isColumn,
             splitterSize: this.splitterSize,
             element: this.element,
-            minItemWidth: 10 /*this.dockingLayoutService.config?.dimensions?.minItemWidth*/
+            minItemWidth: 10
         });
         configs.forEach((item, index) => {
             this.contentItems[index].config = item as any;
@@ -374,7 +374,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
         const items = this.getItemsForSplitter(splitter),
-            minSize = 10 /*this.dockingLayoutService.config.dimensions[this.isColumn ? "minItemHeight" : "minItemWidth"]*/;
+            minSize = 10;
 
         const beforeMinSize = 0;
         const afterMinSize = 0;
