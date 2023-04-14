@@ -106,6 +106,9 @@ export class DockingLayoutService extends EventEmitter {
             }, {
                 provide: PARENT_ITEM_COMPONENT,
                 useValue: parentItem
+            }, {
+                provide: ViewContainerRef,
+                useValue: this.viewContainerRef
             }],
             parent: this.injector
         });

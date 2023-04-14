@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, ViewContainerRef } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
-import { DockingLayoutService } from "../../docking-layout.service";
 import {
     ColumnConfiguration,
     ITEM_CONFIG,
@@ -19,6 +18,7 @@ import { Many } from "data-modeling";
 import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-sizes.function";
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
 import { calculateRelativeSizes } from "../../functions/grid/calculate-relative-sizes.function";
+import { DockingLayoutService } from "../../docking-layout.service";
 
 export interface SplitterComponents {
     before: RowOrColumnContentItemComponent;
@@ -71,7 +71,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     config: RowConfiguration | ColumnConfiguration;
 
     constructor(
-        readonly dockingLayoutService: DockingLayoutService,
+        private readonly dockingLayoutService: DockingLayoutService,
+        private readonly viewContainerRef: ViewContainerRef,
         @Inject(ITEM_CONFIG)
             config: RowConfiguration | ColumnConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
@@ -89,8 +90,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
         this.element = $(dockingLayoutViewMap.rowOrColumn.render({isColumn}));
         this.childElementContainer = this.element;
-        this.splitterSize = dockingLayoutService.config.dimensions.borderWidth;
-        this.splitterGrabSize = dockingLayoutService.config.dimensions.borderGrabWidth;
+        this.splitterSize = 5; /*dockingLayoutService.config.dimensions.borderWidth;*/
+        this.splitterGrabSize = 15;/*dockingLayoutService.config.dimensions.borderGrabWidth;*/
         this._dimension = isColumn ? "height" : "width";
     }
 
@@ -305,7 +306,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             isColumn: this.isColumn,
             splitterSize: this.splitterSize,
             element: this.element,
-            minItemWidth: this.dockingLayoutService.config?.dimensions?.minItemWidth
+            minItemWidth: 10 /*this.dockingLayoutService.config?.dimensions?.minItemWidth*/
         });
         configs.forEach((item, index) => {
             this.contentItems[index].config = item as any;
@@ -323,7 +324,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     }
 
     private createSplitter(index: number): SplitterComponent {
-        const vcRef = this.dockingLayoutService.getViewContainerRef();
+        const vcRef = this.viewContainerRef;
         const splitterComponentRef = vcRef.createComponent(SplitterComponent);
         const splitter = splitterComponentRef.instance;
 
@@ -370,7 +371,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
         const items = this.getItemsForSplitter(splitter),
-            minSize = this.dockingLayoutService.config.dimensions[this.isColumn ? "minItemHeight" : "minItemWidth"];
+            minSize = 10 /*this.dockingLayoutService.config.dimensions[this.isColumn ? "minItemHeight" : "minItemWidth"]*/;
 
         const beforeMinSize = 0;
         const afterMinSize = 0;
