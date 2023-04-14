@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, ViewContainerRef } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewContainerRef } from "@angular/core";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import {
     ColumnConfiguration,
@@ -29,23 +29,18 @@ export interface SplitterComponents {
 @Component({
     selector: "dgp-row-or-column",
     template: `
-        <!--
 
-                <ng-container *ngFor="let itemConfig of config.content">
+        <!-- <ng-container *ngFor="let itemConfig of config.content">
 
-                    <ng-container [ngSwitch]="itemConfig.type">
+             <ng-container [ngSwitch]="itemConfig.type">
 
-                        &lt;!&ndash;  <dgp-row-or-column *ngSwitchCase="'row'"></dgp-row-or-column>
-                          <dgp-row-or-column *ngSwitchCase="'column'"></dgp-row-or-column>
-                          <dgp-stack *ngSwitchCase="'stack'"></dgp-stack>&ndash;&gt;
-                        <ng-container *ngSwitchCase="'row'">Row</ng-container>
-                        <ng-container *ngSwitchCase="'column'">Column</ng-container>
-                        <ng-container *ngSwitchCase="'stack'">Stack</ng-container>
+                 <dgp-row-or-column *ngSwitchCase="'row'">Row</dgp-row-or-column>
+                 <dgp-row-or-column *ngSwitchCase="'column'">Column</dgp-row-or-column>
+                 <dgp-stack *ngSwitchCase="'stack'">Stack</dgp-stack>
 
-                    </ng-container>
+             </ng-container>
 
-                </ng-container>
-        -->
+         </ng-container>-->
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -76,7 +71,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         @Inject(ITEM_CONFIG)
             config: RowConfiguration | ColumnConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
-        public parent: RowOrColumnParentComponent
+        public parent: RowOrColumnParentComponent,
+        private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
 
