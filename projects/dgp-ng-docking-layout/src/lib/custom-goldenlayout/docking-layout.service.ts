@@ -117,7 +117,6 @@ export class DockingLayoutService extends EventEmitter {
 
     destroy() {
         if (this.isInitialised === false) return;
-        this.root.callDownwards("destroy", [], true);
     }
 
     private createRootComponent(config: LayoutConfiguration): void {
