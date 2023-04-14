@@ -1,4 +1,3 @@
-import { RowComponent } from "../components/grid/row.component";
-import { ColumnComponent } from "../components/grid/column.component";
+import type { RowOrColumnComponent } from "../components/grid/row-or-column.component";
 
-export type StackParentComponent = RowComponent | ColumnComponent;
+export type StackParentComponent = RowOrColumnComponent;

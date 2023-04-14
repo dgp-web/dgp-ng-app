@@ -5,8 +5,6 @@
 export * from "./lib/common";
 export * from "./lib/custom-goldenlayout";
 export { RowOrColumnComponent } from "./lib/custom-goldenlayout/components/grid/row-or-column.component";
-export { RowComponent } from "./lib/custom-goldenlayout/components/grid/row.component";
-export { ColumnComponent } from "./lib/custom-goldenlayout/components/grid/column.component";
 export { RootComponent } from "./lib/custom-goldenlayout/components/root.component";
 export { TabComponent } from "./lib/custom-goldenlayout/components/tabs/tab.component";
 export { GlComponent } from "./lib/custom-goldenlayout/components/component.component";
