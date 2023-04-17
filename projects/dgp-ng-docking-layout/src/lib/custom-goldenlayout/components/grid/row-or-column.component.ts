@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewContainerRef } from "@angular/core";
-import { dockingLayoutViewMap } from "../../../docking-layout/views";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    HostBinding,
+    Inject,
+    QueryList,
+    ViewChildren,
+    ViewContainerRef
+} from "@angular/core";
 import {
     ColumnConfiguration,
     ITEM_CONFIG,
@@ -30,46 +39,70 @@ export interface SplitterComponents {
     selector: "dgp-row-or-column",
     template: `
 
-        <!-- <ng-container *ngFor="let itemConfig of config.content">
+        <!--<ng-container *ngFor="let itemConfig of config.content">
 
-             <ng-container [ngSwitch]="itemConfig.type">
+            <ng-container [ngSwitch]="itemConfig.type">
 
-                 <dgp-row-or-column *ngSwitchCase="'row'">Row</dgp-row-or-column>
-                 <dgp-row-or-column *ngSwitchCase="'column'">Column</dgp-row-or-column>
-                 <dgp-stack *ngSwitchCase="'stack'">Stack</dgp-stack>
+                <dgp-row-or-column *ngSwitchCase="'row'"
+                                   #child>
+                    Row
+                </dgp-row-or-column>
+                <dgp-row-or-column *ngSwitchCase="'column'"
+                                   #child>
+                    Column
+                </dgp-row-or-column>
+                <dgp-stack *ngSwitchCase="'stack'"
+                           #child>
+                    Stack
+                </dgp-stack>
 
-             </ng-container>
+            </ng-container>
 
-         </ng-container>-->
+        </ng-container>-->
     `,
+    styles: [`
+        :host {
+        }
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RowOrColumnComponent extends DockingLayoutEngineObject {
+export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
 
-    public readonly element: JQuery<HTMLElement>;
+    @HostBinding("class.lm_item")
+    readonly bindings = true;
+
+    @HostBinding("class.lm_row")
+    readonly isRow = this.config.type === "row";
+
+    @HostBinding("class.lm_column")
+    readonly isColumn = this.config.type === "column";
+
+    readonly element = $(this.elementRef.nativeElement);
+    readonly childElementContainer = this.element;
+
     public readonly splitterSize: number;
     public readonly splitterGrabSize: number;
     public readonly _dimension: string;
-    public readonly splitters = new Array<SplitterComponent>();
 
-    public childElementContainer: JQuery<HTMLElement>;
+    public readonly splitters = new Array<SplitterComponent>();
     private splitterPosition: number = null;
     private splitterMinPosition: number = null;
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
+    @ViewChildren("#child")
+    contentItems1: QueryList<RowOrColumnContentItemComponent>;
+
     contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
-    isRow = false;
-    isColumn = false;
-    config: RowConfiguration | ColumnConfiguration;
+
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
         private readonly viewContainerRef: ViewContainerRef,
         @Inject(ITEM_CONFIG)
-            config: RowConfiguration | ColumnConfiguration,
+        public config: RowConfiguration | ColumnConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: RowOrColumnParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>
@@ -81,13 +114,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         this.config = {...itemDefaultConfig, ...config};
         if (config.content) this.createContentItems(config);
 
-        this.isRow = !isColumn;
-        this.isColumn = isColumn;
-
-        this.element = $(dockingLayoutViewMap.rowOrColumn.render({isColumn}));
         this.childElementContainer = this.element;
-        this.splitterSize = 5; /*dockingLayoutService.config.dimensions.borderWidth;*/
-        this.splitterGrabSize = 15;/*dockingLayoutService.config.dimensions.borderGrabWidth;*/
+        this.splitterSize = 5;
+        this.splitterGrabSize = 15;
         this._dimension = isColumn ? "height" : "width";
     }
 
@@ -103,6 +132,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
         this.isInitialised = true;
 
+    }
+
+    ngAfterViewInit(): void {
     }
 
     /**
@@ -302,7 +334,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             isColumn: this.isColumn,
             splitterSize: this.splitterSize,
             element: this.element,
-            minItemWidth: 10 /*this.dockingLayoutService.config?.dimensions?.minItemWidth*/
+            minItemWidth: 10
         });
         configs.forEach((item, index) => {
             this.contentItems[index].config = item as any;
@@ -367,7 +399,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
         const items = this.getItemsForSplitter(splitter),
-            minSize = 10 /*this.dockingLayoutService.config.dimensions[this.isColumn ? "minItemHeight" : "minItemWidth"]*/;
+            minSize = 10;
 
         const beforeMinSize = 0;
         const afterMinSize = 0;

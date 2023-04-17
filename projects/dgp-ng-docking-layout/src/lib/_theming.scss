@@ -470,3 +470,15 @@ dgp-stack {
     }
 
 }
+
+.lm_item {
+    display: flex;
+}
+
+.lm_row {
+    flex-direction: row;
+}
+
+.lm_column {
+    flex-direction: column;
+}
