@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
-import { connectedScatterPlotMetadata } from "../../../constants/connected-scatter-plot/connected-scatter-plot-metadata.constant";
 import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
+import {
+    connectedScatterPlotMetadata
+} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -34,7 +36,8 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
                                                 [yAxisStep]="model.yAxisStep"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"
-                                                [dotSize]="model.dotSize"></dgp-connected-scatter-plot>
+                                                [dotSize]="model.dotSize"
+                                                [lineWidth]="model.lineWidth"></dgp-connected-scatter-plot>
                 </ng-template>
 
             </dgp-split-panel-content>

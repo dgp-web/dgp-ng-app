@@ -1,7 +1,12 @@
 import { InjectionToken, TemplateRef } from "@angular/core";
 import { Subject } from "rxjs";
+import { DropSegment } from "../models/drop-segment.model";
 
 export type ItemType = "row" | "column" | "stack" | "component" | "root";
+
+export interface HeaderConfig {
+    show: boolean | DropSegment;
+}
 
 export interface LayoutConfiguration {
     readonly settings?: {
@@ -9,16 +14,6 @@ export interface LayoutConfiguration {
         readonly constrainDragToContainer?: boolean;
         readonly reorderEnabled?: boolean;
         readonly selectionEnabled?: boolean;
-        readonly popoutWholeStack?: boolean;
-        readonly blockedPopoutsThrowError?: boolean;
-        readonly closePopoutsOnUnload?: boolean;
-        readonly showPopoutIcon?: boolean;
-        readonly showMaximiseIcon?: boolean;
-        readonly showCloseIcon?: boolean;
-        readonly responsiveMode?: string;
-        readonly tabOverlapAllowance?: number;
-        readonly reorderOnTabMenuClick?: boolean;
-        readonly tabControlOffset?: number;
     };
     readonly dimensions?: {
         readonly borderWidth?: number;
@@ -29,29 +24,17 @@ export interface LayoutConfiguration {
         readonly dragProxyHeight?: number;
         readonly borderGrabWidth?: number;
     };
-    readonly labels?: {
-        readonly close?: string;
-        readonly maximise?: string;
-        readonly minimise?: string;
-        readonly popout?: string;
-        readonly tabDropdown?: string;
-    };
     readonly content?: ItemConfiguration[];
 }
 
 export interface ItemConfiguration {
     type?: ItemType;
-    id?: string | string[];
+    id?: string;
     width?: number;
     height?: number;
     isClosable?: boolean;
-    hasHeaders?: boolean;
-    reorderEnabled?: boolean;
-    title?: string;
-    activeItemIndex?: number;
 
     content?: ItemConfiguration[];
-    header?: any;
 }
 
 export interface ComponentConfiguration extends ItemConfiguration {
@@ -74,8 +57,9 @@ export interface StackConfiguration extends ItemConfiguration {
     type: "stack";
     activeItemIndex?: number;
     activeItemId?: string;
+    hasHeaders?: boolean;
 
-    content: ItemConfiguration[];
+    content: ComponentConfiguration[];
     onSelectedItemChange?: (id: string) => void;
     publishSelectedItemChange$?: Subject<SelectedItemChange>;
 }
@@ -94,4 +78,3 @@ export interface ColumnConfiguration extends ItemConfiguration {
 
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
 export const PARENT_ITEM_COMPONENT = new InjectionToken("parentItemCOmponent");
-export const ROW_OR_COLUMN = new InjectionToken<boolean>("RowOrColumn");

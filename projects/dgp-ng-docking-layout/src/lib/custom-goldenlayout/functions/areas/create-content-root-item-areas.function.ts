@@ -4,9 +4,9 @@ import { mutatify } from "data-modeling";
 
 export function createRootItemAreas(payload: RootComponent): Array<Area> {
     const areaSize = 50;
-    const sides: AreaSides = {y2: 0, x2: 0, y1: "y2", x1: "x2"};
+    const sides: AreaSides<number | string> = {y2: 0, x2: 0, y1: "y2", x1: "x2"};
     return Object.keys(sides).map(side => {
-        const area = mutatify(payload._$getArea());
+        const area = mutatify(payload.getArea());
         area.side = side as keyof AreaSides;
         if (sides [side]) {
             area[side] = area[sides [side]] - areaSize;

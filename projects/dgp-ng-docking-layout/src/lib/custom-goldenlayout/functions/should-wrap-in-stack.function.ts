@@ -1,13 +1,13 @@
 import { ItemConfiguration } from "../types";
-import { AbstractContentItemComponent } from "../components/abstract-content-item.component";
-import { StackComponent } from "../components/stack.component";
+import { StackComponent } from "../components/tabs/stack.component";
+import { DockingLayoutItemComponent } from "../models/docking-layout-item-component.model";
 
 export function shouldWrapInStack(payload: {
     readonly itemConfig: ItemConfiguration;
-    readonly parentItem: AbstractContentItemComponent;
+    readonly parentItem: DockingLayoutItemComponent;
 }): boolean {
     return payload.itemConfig.type === "component" &&
         !(payload.parentItem instanceof StackComponent) &&
         !!payload.parentItem;
 }
- 
+

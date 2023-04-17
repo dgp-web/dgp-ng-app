@@ -13,13 +13,16 @@ export class DgpLineChartLineDirective implements AfterViewInit, OnChanges {
     @Input()
     scales: ConnectedScatterPlotScales;
 
+    @Input()
+    lineWidth = 1.5;
+
     constructor(private readonly elementRef: ElementRef,
                 private readonly renderer: Renderer2) {
     }
 
     ngAfterViewInit(): void {
         this.renderer.setAttribute(this.elementRef.nativeElement, "fill", "transparent");
-        this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "1.5");
+        this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", this.lineWidth.toString());
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -27,6 +30,10 @@ export class DgpLineChartLineDirective implements AfterViewInit, OnChanges {
         if (changes.series) {
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.series.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.series.stroke));
+        }
+
+        if (changes.lineWidth) {
+            this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", this.lineWidth.toString());
         }
 
         if (changes.series || changes.scales) {

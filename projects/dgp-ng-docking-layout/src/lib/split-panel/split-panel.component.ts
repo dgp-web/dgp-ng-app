@@ -63,7 +63,7 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
     private embeddedViewRefs: KeyValueStore<EmbeddedViewRef<any>> = {};
 
     @Input()
-    splitterSize = 1;
+    splitterSize = 4;
 
     constructor(private readonly viewContainerRef: ViewContainerRef,
                 private readonly dockingLayoutService: DockingLayoutService,
@@ -109,10 +109,10 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
             .filter(componentConfig => !this.componentRegistry.hasComponent(componentConfig.id as string))
             .forEach(componentConfig => this.componentRegistry.registerComponent(componentConfig.id, (container, component) => {
                 const instanceId = createGuid();
-                container.on("open",
+                container.onOpen.subscribe(
                     () => this.createEmbeddedView(instanceId, component.template(), container.getElement(), this)
                 );
-                container.on("destroy",
+                container.onDestroy.subscribe(
                     () => SplitPanelComponent.destroyEmbeddedView(instanceId, this)
                 );
             }));

@@ -1,23 +1,26 @@
-import { ComponentFactoryResolver, Injectable, Injector, ViewContainerRef } from "@angular/core";
+import { Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
-import { ITEM_CONFIG, ItemConfiguration, LayoutConfiguration, PARENT_ITEM_COMPONENT } from "./types";
+import {
+    ComponentConfiguration,
+    ITEM_CONFIG,
+    ItemConfiguration,
+    LayoutConfiguration,
+    PARENT_ITEM_COMPONENT,
+    StackConfiguration
+} from "./types";
 import { EventEmitter } from "./utilities";
-import { EventHub } from "./utilities/event-hub";
-import { AbstractContentItemComponent } from "./components/abstract-content-item.component";
-import { DropTargetIndicatorComponent } from "./components/drop-target-indicator.component";
-import { ROOT_CONFIG, ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
-import { jqueryErrorMessage } from "./constants/jquery-error-message.constant";
-import { isJQueryLoaded } from "./functions/is-jquery-loaded.function";
-import { InitializedEvent } from "./models/events/initialized-event.model";
-import { SelectionChangedEvent } from "./models/events/selection-changed-event.model";
-import { notNullOrUndefined } from "dgp-ng-app";
+import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
+import { ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
-import { TabDropPlaceholderComponent } from "./components/tab-drop-placeholder.component";
+import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
+import { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
+import { StackComponent } from "./components/tabs/stack.component";
+import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -25,7 +28,6 @@ import { TabDropPlaceholderComponent } from "./components/tab-drop-placeholder.c
 @Injectable()
 export class DockingLayoutService extends EventEmitter {
 
-    selectedItem: AbstractContentItemComponent;
     config: LayoutConfiguration;
     container: JQuery;
     dropTargetIndicator: DropTargetIndicatorComponent;
@@ -35,12 +37,10 @@ export class DockingLayoutService extends EventEmitter {
     private width: number;
     private height: number;
     private root: RootComponent;
-    private eventHub: EventHub;
 
     private viewContainerRef: ViewContainerRef;
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly componentRegistry: ComponentRegistry,
         private readonly areaService: AreaService,
         private readonly injector: Injector
@@ -48,41 +48,32 @@ export class DockingLayoutService extends EventEmitter {
         super();
     }
 
+    getViewContainerRef() {
+        return this.viewContainerRef;
+    }
+
     createDockingLayout(config: LayoutConfiguration,
                         viewContainerRef: ViewContainerRef) {
-
-        if (!isJQueryLoaded()) throw new Error(jqueryErrorMessage);
 
         this.viewContainerRef = viewContainerRef;
         const container = viewContainerRef.element.nativeElement as HTMLElement;
         this.container = $(container);
 
-        this.eventHub = new EventHub(this);
         this.config = createLayoutConfig(config);
         this.dropTargetIndicator = null;
         this.tabDropPlaceholder = viewContainerRef.createComponent(TabDropPlaceholderComponent).instance;
-
-        /*this.on("stateChanged", (x) => {
-            console.log(x);
-            try {
-                console.log(this.toConfig(this.root));
-            } catch (e) {
-                console.error(e);
-            }
-        });*/
     }
 
-    getComponent = x => this.componentRegistry.getComponent(x);
-
     init() {
-        this.dropTargetIndicator = this.viewContainerRef.createComponent(DropTargetIndicatorComponent).instance;
+        const dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
+        dropTargetIndicatorComponentRef.changeDetectorRef.markForCheck();
+        this.dropTargetIndicator = dropTargetIndicatorComponentRef.instance;
         this.updateSize();
         this.createRootComponent(this.config);
     }
 
-    registerInitialization() {
+    private registerInitialization() {
         this.isInitialised = true;
-        this.emit<InitializedEvent>("initialised");
     }
 
     updateSize(width?: number, height?: number) {
@@ -99,9 +90,14 @@ export class DockingLayoutService extends EventEmitter {
         }
     }
 
-    createContentItem(itemConfig: ItemConfiguration, parentItem: AbstractContentItemComponent): AbstractContentItemComponent {
+    createContentItem<T extends DockingLayoutItemComponent>(
+        itemConfig: ItemConfiguration,
+        parentItem: DockingLayoutItemComponent
+    ): T {
 
-        if (shouldWrapInStack({itemConfig, parentItem})) itemConfig = wrapInStack(itemConfig);
+        if (shouldWrapInStack({itemConfig, parentItem})) {
+            itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
+        }
 
         const injector = Injector.create({
             providers: [{
@@ -110,47 +106,90 @@ export class DockingLayoutService extends EventEmitter {
             }, {
                 provide: PARENT_ITEM_COMPONENT,
                 useValue: parentItem
+            }, {
+                provide: ViewContainerRef,
+                useValue: this.viewContainerRef
+            }, {
+                provide: DropTargetIndicatorComponent,
+                useValue: this.dropTargetIndicator
+            }, {
+                provide: TabDropPlaceholderComponent,
+                useValue: this.tabDropPlaceholder
             }],
             parent: this.injector
         });
 
         const componentType = typeToComponentMap[itemConfig.type];
 
-        return this.viewContainerRef.createComponent<any>(componentType as any, {injector}).instance;
+        return this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
     }
 
     destroy() {
         if (this.isInitialised === false) return;
-        this.root.callDownwards("_$destroy", [], true);
-        this.root.contentItems = [];
-        this.eventHub.destroy();
-    }
-
-    selectItem(item: AbstractContentItemComponent, silent: boolean) {
-
-        if (item === this.selectedItem) return;
-
-        if (notNullOrUndefined(this.selectedItem)) this.selectedItem.deselect();
-
-        if (item && silent !== true) item.select();
-
-        this.selectedItem = item;
-
-        this.emit<SelectionChangedEvent>("selectionChanged", item);
     }
 
     private createRootComponent(config: LayoutConfiguration): void {
         const injector = Injector.create({
             providers: [{
-                provide: ROOT_CONFIG,
-                useValue: {content: config.content}
-            }, {
                 provide: ROOT_CONTAINER_ELEMENT,
                 useValue: this.container
+            }, {
+                provide: DropTargetIndicatorComponent,
+                useValue: this.dropTargetIndicator
+            }, {
+                provide: TabDropPlaceholderComponent,
+                useValue: this.tabDropPlaceholder
             }],
             parent: this.injector
         });
-        this.root = this.viewContainerRef.createComponent(RootComponent, {injector}).instance;
+        const rootComponentRef = this.viewContainerRef.createComponent(RootComponent, {injector});
+        rootComponentRef.instance.config = {content: config.content};
+        rootComponentRef.changeDetectorRef.markForCheck();
+        this.root = rootComponentRef.instance;
+
+        this.root.initialized.subscribe(() => this.registerInitialization());
+
+        this.root.dragOver.subscribe(area => {
+            this.tabDropPlaceholder.remove();
+            this.dropTargetIndicator.highlightArea(area);
+        });
+
+        this.root.drop.subscribe(event => {
+            let contentItem = event.contentItem;
+            const area = event.area;
+
+            let stack: StackComponent;
+
+            if (contentItem.isComponent) {
+                stack = this.createContentItem({
+                    type: "stack"
+                }, this.root);
+                stack.init();
+                stack.addChild(contentItem);
+                contentItem = stack;
+            }
+
+            const type = area.side[0] === "x" ? "row" : "column";
+            const dimension = area.side[0] === "x" ? "width" : "height";
+            const insertBefore = area.side[1] === "2";
+            const column = this.root.contentItems[0];
+
+            if (column.config.type !== type) {
+                const rowOrColumn = this.createContentItem<RowOrColumnComponent>({type}, this.root);
+                this.root.addChild(column, rowOrColumn);
+                rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
+                rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
+                column.config[dimension] = 50;
+                contentItem.config[dimension] = 50;
+                rowOrColumn.callDownwards("setSize");
+            } else {
+                const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
+                column.addChild(contentItem, insertBefore ? 0 : undefined, true);
+                sibling.config[dimension] *= 0.5;
+                contentItem.config[dimension] = sibling.config[dimension];
+                column.callDownwards("setSize");
+            }
+        });
     }
 
     getArea(x: number, y: number): Area {

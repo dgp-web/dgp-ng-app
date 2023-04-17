@@ -108,6 +108,9 @@ export {
 } from "./lib/connected-scatter-plot/directives/scatter-plot-dot-tooltip.directive";
 export { DgpLineChartLineDirective } from "./lib/connected-scatter-plot/directives/line-chart-line.directive";
 export { TrackByConnectedScatterDotPipe } from "./lib/connected-scatter-plot/pipes/track-by-connected-scatter-dot.pipe";
+export {
+    ResolveConnectedScatterPlotLineWidthPipe
+} from "./lib/connected-scatter-plot/pipes/resolve-connected-scatter-plot-line-width.pipe";
 
 /**
  * -----

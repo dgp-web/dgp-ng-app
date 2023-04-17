@@ -1,94 +1,86 @@
-import { AbstractContentItemComponent } from "./abstract-content-item.component";
-import { ItemContainerComponent } from "./item-container.component";
-import { ChangeDetectionStrategy, Component, forwardRef, Inject } from "@angular/core";
-import { DockingLayoutService } from "../docking-layout.service";
-import { ITEM_CONFIG, PARENT_ITEM_COMPONENT } from "../types";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ComponentConfiguration, itemDefaultConfig } from "../types";
+import type { DragProxy } from "./drag-and-drop/drag-proxy.component";
+import type { WithDragParent } from "../models/with-drag-parent.model";
+import { observeAttribute$ } from "dgp-ng-app";
 
-/**
- * @param {[type]} layoutManager [description]
- * @param {[type]} config      [description]
- * @param {[type]} parent        [description]
- */
 @Component({
     selector: "dgp-gl-component",
-    template: ``,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    template: `
+        <dgp-item-container [model]="config"
+                            [isHidden]="isHidden"></dgp-item-container>
+    `,
+    styles: [`
+        :host {
+            overflow: auto;
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            height: 100%;
+        }
+    `]
 })
-export class GlComponent extends AbstractContentItemComponent {
-    componentName: any;
-    public container: any;
-    public instance: any;
-    public element: any;
+export class GlComponent implements WithDragParent, OnInit, AfterViewInit {
+
+    readonly element = $(this.elementRef.nativeElement);
+
+    isComponent = true;
+
+    @Input()
+    isHidden = true;
+    readonly isHidden$ = observeAttribute$(this as GlComponent, "isHidden");
+
+    @Input()
+    config: ComponentConfiguration;
+
+    parent: DragProxy;
+
+    @Output()
+    readonly dragStart = new EventEmitter();
 
     constructor(
-        @Inject(forwardRef(() => DockingLayoutService))
-        public layoutManager: DockingLayoutService,
-        @Inject(ITEM_CONFIG)
-        public config: any,
-        @Inject(PARENT_ITEM_COMPONENT)
-        public parent: AbstractContentItemComponent
+        private readonly elementRef: ElementRef<HTMLElement>,
+        private readonly cd: ChangeDetectorRef
     ) {
-        super(layoutManager, config, parent);
-
-        let ComponentConstructor = layoutManager.getComponent(this.config.id),
-            componentConfig = $.extend(true, {}, this.config.componentState || {});
-
-        componentConfig.componentName = this.config.id;
-        this.componentName = this.config.id;
-
-        if (this.config.label === "") {
-            this.config.label = this.config.id;
-        }
-
-        this.isComponent = true;
-        this.container = new ItemContainerComponent(this.config, this, layoutManager);
-        this.instance = ComponentConstructor(this.container, componentConfig);
-        this.element = this.container._element;
     }
 
-    close() {
-        this.parent.removeChild(this);
+    startDragging() {
+        this.dragStart.emit();
     }
 
-    setSize() {
-        if (this.element.is(":visible")) {
-            // Do not update size of hidden components to prevent unwanted reflows
-            this.container._$setSize(this.element.width(), this.element.height());
-        }
+    ngOnInit(): void {
+        this.config = {...itemDefaultConfig, ...this.config};
     }
 
-    _$init() {
-        super._$init();
-        this.container.emit("open");
+    ngAfterViewInit(): void {
+        this.isHidden$.subscribe(hidden => {
+            if (hidden) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        });
     }
 
-    _$hide() {
-        this.container.hide();
-        super._$hide();
+    hide() {
+        this.isHidden = true;
+        this.cd.markForCheck();
+        this.element.hide();
     }
 
-    _$show() {
-        this.container.show();
-        super._$show();
+    show() {
+        this.isHidden = false;
+        this.cd.markForCheck();
+        this.element.show();
     }
 
-    _$shown() {
-        this.container.shown();
-        // super._$shown();
+    destroy() {
+        this.element.remove();
     }
 
-    _$destroy() {
-        this.container.emit("destroy", this);
-        super._$destroy();
+    setDragParent(parent: DragProxy) {
+        this.parent = parent;
     }
 
-    /**
-     * Dragging onto a component directly is not an option
-     *
-     * @returns null
-     */
-    _$getArea() {
-        return null;
-    }
 
 }
