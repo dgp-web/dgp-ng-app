@@ -135,7 +135,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     ngAfterViewInit(): void {
-        console.log(this.contentItems1);
     }
 
     /**
