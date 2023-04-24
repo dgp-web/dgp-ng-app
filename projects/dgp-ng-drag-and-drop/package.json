@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-drag-and-drop",
-    "version": "14.4.0",
+    "version": "14.5.0",
     "peerDependencies": {
         "@angular/common": "^14",
         "@angular/core": "^14"

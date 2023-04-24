@@ -2,6 +2,7 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { ConnectedScatterPlotControlLine } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
+import { ControlLineAxis } from "../../stroke/models";
 
 @Directive({selector: "[dgpConnectedScatterPlotControlLine]"})
 export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
@@ -23,13 +24,23 @@ export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
 
         if (changes.scales || changes.connectedScatterPlotControlLine || changes.lineWidth) {
 
-            const y = this.scales.yAxisScale(this.connectedScatterPlotControlLine.value);
-            const xAxisRange = this.scales.xAxisScale.range();
+            if (!this.connectedScatterPlotControlLine.axis || this.connectedScatterPlotControlLine.axis === ControlLineAxis.Y) {
+                const y = this.scales.yAxisScale(this.connectedScatterPlotControlLine.value);
+                const xAxisRange = this.scales.xAxisScale.range();
 
-            this.renderer.setAttribute(this.elementRef.nativeElement, "x1", xAxisRange[0].toString());
-            this.renderer.setAttribute(this.elementRef.nativeElement, "x2", xAxisRange[1].toString());
-            this.renderer.setAttribute(this.elementRef.nativeElement, "y1", y.toString());
-            this.renderer.setAttribute(this.elementRef.nativeElement, "y2", y.toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "x1", xAxisRange[0].toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "x2", xAxisRange[1].toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "y1", y.toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "y2", y.toString());
+            } else {
+                const x = this.scales.xAxisScale(this.connectedScatterPlotControlLine.value);
+                const yAxisRange = this.scales.yAxisScale.range();
+
+                this.renderer.setAttribute(this.elementRef.nativeElement, "x1", x.toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "x2", x.toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "y1", yAxisRange[0].toString());
+                this.renderer.setAttribute(this.elementRef.nativeElement, "y2", yAxisRange[1].toString());
+            }
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.connectedScatterPlotControlLine.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-dasharray", mapStrokeToStrokeDasharray(this.connectedScatterPlotControlLine.stroke));

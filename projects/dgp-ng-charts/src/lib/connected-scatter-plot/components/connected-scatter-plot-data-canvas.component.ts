@@ -24,6 +24,7 @@ import { debounceTime } from "rxjs/operators";
 import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../functions/compute-points-for-shape.function";
+import { ControlLineAxis } from "../../stroke/models";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -203,25 +204,30 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                     ctx.beginPath();
                     ctx.lineWidth = lineWidth;
 
-
-                    const y = this.scales.yAxisScale(controlLine.value);
-                    const x0 = this.scales.xAxisScale.range()[0];
-                    const x1 = this.scales.xAxisScale.range()[1];
-
-
                     ctx.strokeStyle = controlLine.colorHex;
                     const stroke = mapStrokeToArray(controlLine.stroke);
                     ctx.setLineDash(stroke);
 
-                    ctx.moveTo(x0, y);
-                    ctx.lineTo(x1, y);
+                    if (!controlLine.axis || controlLine.axis === ControlLineAxis.Y) {
+                        const y = this.scales.yAxisScale(controlLine.value);
+                        const x0 = this.scales.xAxisScale.range()[0];
+                        const x1 = this.scales.xAxisScale.range()[1];
+
+                        ctx.moveTo(x0, y);
+                        ctx.lineTo(x1, y);
+                    } else {
+                        const x = this.scales.xAxisScale(controlLine.value);
+                        const y0 = this.scales.yAxisScale.range()[0];
+                        const y1 = this.scales.yAxisScale.range()[1];
+
+                        ctx.moveTo(x, y0);
+                        ctx.lineTo(x, y1);
+                    }
+
                     ctx.stroke();
 
                 });
             }
-
-            /*this.drawTopLine(ctx);
-            this.drawRightLine(ctx);*/
 
         });
 

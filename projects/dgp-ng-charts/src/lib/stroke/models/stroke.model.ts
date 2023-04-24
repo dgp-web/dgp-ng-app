@@ -5,3 +5,4 @@ export enum Stroke {
     Dotted,
     DashDotted
 }
+
