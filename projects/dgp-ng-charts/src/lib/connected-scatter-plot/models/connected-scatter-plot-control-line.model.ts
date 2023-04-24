@@ -1,4 +1,4 @@
-import { Stroke } from "../../stroke/models";
+import { ControlLineAxis, Stroke } from "../../stroke/models";
 
 export interface ConnectedScatterPlotControlLine {
     readonly connectedScatterPlotControlLineId: string;
@@ -6,4 +6,8 @@ export interface ConnectedScatterPlotControlLine {
     readonly value: number;
     readonly colorHex: string;
     readonly stroke?: Stroke;
+    /**
+     * Implicit default: Y
+     */
+    readonly axis?: ControlLineAxis;
 }
