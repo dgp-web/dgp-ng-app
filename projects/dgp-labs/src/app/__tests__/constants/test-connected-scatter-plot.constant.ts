@@ -1,4 +1,4 @@
-import { ConnectedScatterPlot, ScaleType, Stroke } from "dgp-ng-charts";
+import { ConnectedScatterPlot, ControlLineAxis, ScaleType, Stroke } from "dgp-ng-charts";
 import { testConnectedScatterGroups } from "../../features/charts/constants/test-connected-scatter-groups.constant";
 
 export const testConnectedScatterPlot: ConnectedScatterPlot = {
@@ -12,6 +12,13 @@ export const testConnectedScatterPlot: ConnectedScatterPlot = {
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7,
         stroke: Stroke.Dashed
+    }, {
+        label: "Vertical limit",
+        colorHex: "#999999",
+        connectedScatterPlotControlLineId: "verticalLimit",
+        value: 6,
+        stroke: Stroke.Dashed,
+        axis: ControlLineAxis.X
     }],
     showYAxisGridLines: true,
     showXAxisGridLines: true,

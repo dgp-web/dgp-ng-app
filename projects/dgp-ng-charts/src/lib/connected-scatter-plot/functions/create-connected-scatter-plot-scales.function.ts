@@ -7,6 +7,7 @@ import { createCardinalYAxis, createYAxisScale, toReferenceTickLength } from "..
 import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
 import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
 import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
+import { ControlLineAxis } from "../../stroke/models";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
@@ -29,7 +30,13 @@ export function createConnectedScatterPlotScales(payload: {
     if (notNullOrUndefined(payload.controlLines)) {
         payload.controlLines.forEach(controlLine => {
             if (isNullOrUndefined(controlLine)) return;
-            valuesForYExtremumComputation.push(controlLine.value);
+
+            if (!controlLine.axis || controlLine.axis === ControlLineAxis.Y) {
+                valuesForYExtremumComputation.push(controlLine.value);
+            } else {
+                valuesForXExtremumComputation.push(controlLine.value);
+            }
+
         });
     }
 
