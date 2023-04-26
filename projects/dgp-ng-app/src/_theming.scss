@@ -108,6 +108,10 @@
 
     @include dgp-normalize();
 
+    body {
+        accent-color: mat.get-color-from-palette($accent) !important;
+    }
+
     $app-typography: mat.define-typography-config(
         $font-family: 'Segoe UI',
     );
