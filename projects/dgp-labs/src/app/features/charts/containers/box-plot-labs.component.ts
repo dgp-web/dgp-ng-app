@@ -16,7 +16,7 @@ export const testBoxPlot: BoxPlot = {
         boxes: [{
             boxGroupId: "boxGroup01",
             boxId: "box01",
-            colorHex: "#ff0000",
+            colorHex: "#ffab40",
             quantiles: {
                 max: 13,
                 upper: 10,
