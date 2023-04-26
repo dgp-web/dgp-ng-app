@@ -108,8 +108,26 @@
 
     @include dgp-normalize();
 
-    $app-theme: mat.define-light-theme($primary, $accent, $warn);
-    $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
+    $app-typography: mat.define-typography-config(
+        $font-family: 'Segoe UI',
+    );
+
+    $app-theme: mat.define-light-theme((
+        color: (
+            primary: $primary,
+            accent: $accent,
+            warn: $warn
+        ),
+        typography: $app-typography
+    ));
+    $app-dark-theme: mat.define-dark-theme((
+        color: (
+            primary: $primary,
+            accent: $accent,
+            warn: $warn
+        ),
+        typography: $app-typography
+    ));
 
     @include mat.all-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
