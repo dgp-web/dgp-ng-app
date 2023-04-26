@@ -19,7 +19,86 @@ dgp-shape-select {
     width: 100%;
 }
 
-body {
-    font-family: 'Segoe UI', serif;
+/**
+ * Tab labels for ng material are fat bastards so we limit their height
+ * and decrease the exaggerated min-width
+ */
+.mat-tab-label {
+    height: 36px !important;
+    min-width: 100px !important;
 }
 
+dgp-stack > mat-tab-group {
+    height: 36px !important;
+}
+
+/**
+ * The default mat tooltip is so small it's barely visible.
+ *
+ * We make it larger so even a normal person can read it comfortably.
+ */
+.mat-tooltip {
+    font-size: 13px !important;
+    white-space: pre-line;
+}
+
+/**
+ * Make icons on mat-button usable without always setting margin-right
+ */
+button[mat-button], button[mat-raised-button] {
+    mat-icon {
+        margin-right: 8px;
+    }
+}
+
+
+.mat-list-avatar {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/**
+ * Makes styling of material lists compact
+ */
+mat-nav-list, mat-selection-list, mat-list {
+
+    padding-top: 0 !important;
+
+    .mat-list-item, mat-list-option {
+        height: auto !important;
+        word-break: break-all !important;
+        display: flex !important;
+        white-space: normal !important;
+        text-overflow: unset !important;
+        min-height: 32px !important;
+        margin-top: 4px !important;
+        margin-bottom: 4px !important;
+
+        .mat-list-item-content {
+            flex-grow: 1;
+        }
+
+        .mat-line {
+            white-space: normal !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            display: block !important;
+            box-sizing: border-box !important;
+        }
+
+    }
+
+    .mat-subheader {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        height: 32px;
+        display: block;
+        font-size: smaller;
+        padding: 12px !important;
+    }
+
+}
