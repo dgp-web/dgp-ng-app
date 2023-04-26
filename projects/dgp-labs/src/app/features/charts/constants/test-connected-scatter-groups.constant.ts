@@ -2,7 +2,7 @@ import { ConnectedScatterGroup, Shape, Stroke } from "dgp-ng-charts";
 
 export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = [{
     connectedScatterGroupId: "group01",
-    colorHex: "#00ff00",
+    colorHex: "#ffab40",
     shape: Shape.Cross,
     series: [{
         label: "Series 01",
@@ -17,7 +17,7 @@ export const testConnectedScatterGroups: ReadonlyArray<ConnectedScatterGroup> = 
     }]
 }, {
     connectedScatterGroupId: "group02",
-    colorHex: "#ff00ff",
+    colorHex: "#ffab40",
     shape: Shape.Rectangle,
     series: [{
         label: "Series 03",

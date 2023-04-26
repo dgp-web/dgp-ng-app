@@ -8,13 +8,13 @@ export const testConnectedScatterPlot: ConnectedScatterPlot = {
     chartTitle: "Chart title",
     controlLines: [{
         label: "Upper limit",
-        colorHex: "#666666",
+        colorHex: "#0277bd",
         connectedScatterPlotControlLineId: "upperLimit",
         value: 7,
         stroke: Stroke.Dashed
     }, {
         label: "Vertical limit",
-        colorHex: "#999999",
+        colorHex: "#0277bd",
         connectedScatterPlotControlLineId: "verticalLimit",
         value: 6,
         stroke: Stroke.Dashed,
