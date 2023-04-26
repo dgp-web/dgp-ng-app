@@ -1,0 +1,18 @@
+
+input, select, textarea {
+    width: 100%;
+    background: transparent;
+    color: inherit;
+    border: none;
+    border-bottom: 1px solid dimgray;
+    font-size: smaller;
+}
+
+
+option {
+    color: black;
+}
+
+textarea {
+    height: 32px;
+}

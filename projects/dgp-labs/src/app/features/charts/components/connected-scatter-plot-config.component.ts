@@ -67,10 +67,10 @@ import {
                 </dgp-inspector-item>
 
                 <dgp-connected-scatter-group-form
-                    *ngIf="selectedDataGroup$ | async as selectedDataGroup"
-                    [model]="selectedDataGroup"
-                    (modelChange)="updateSelectedGroup(selectedDataGroup)"
-                    [disabled]="disabled"></dgp-connected-scatter-group-form>
+                        *ngIf="selectedDataGroup$ | async as selectedDataGroup"
+                        [model]="selectedDataGroup"
+                        (modelChange)="updateSelectedGroup(selectedDataGroup)"
+                        [disabled]="disabled"></dgp-connected-scatter-group-form>
 
             </dgp-inspector-section>
 

@@ -8,7 +8,8 @@ import {
     defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
-    DgpHamburgerShellModule, DgpInspectorModule,
+    DgpHamburgerShellModule,
+    DgpInspectorModule,
     DgpRequestStoreModule,
     DgpRoutingOverlayModule,
     DgpThemeSwitcherModule,
@@ -124,9 +125,11 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         MatListModule,
         DgpDataExportLabsModule,
         DgpInspectorModule.forRoot({
-            showFieldIcons: true,
-            showFieldDescriptions: true,
-            responsive: true
+            showFieldIcons: false,
+            showFieldDescriptions: "onHover",
+            responsive: true,
+            fieldLabelThemeColor: "accent",
+            maxContentWidth: "180px"
         })
     ],
     providers: [appReducerProvider],
