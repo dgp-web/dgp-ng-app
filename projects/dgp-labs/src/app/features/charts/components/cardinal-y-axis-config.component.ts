@@ -55,9 +55,10 @@ import {
 
                 <dgp-inspector-item label="Grid lines"
                                     matIconName="border_vertical">
-                    <mat-slide-toggle [disabled]="disabled"
-                                      [ngModel]="model.showYAxisGridLines"
-                                      (ngModelChange)="setShowYAxisGridLines($event)"></mat-slide-toggle>
+                    <input type="checkbox"
+                           [disabled]="disabled"
+                           [ngModel]="model.showYAxisGridLines"
+                           (ngModelChange)="setShowYAxisGridLines($event)">
                 </dgp-inspector-item>
 
             </dgp-inspector-section>
