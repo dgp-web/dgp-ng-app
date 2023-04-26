@@ -23,16 +23,18 @@ import { ConnectedScatterGroup, Shape } from "dgp-ng-charts";
 
             <dgp-inspector-item matIconName="scatter_plot"
                                 label="Show vertices">
-                <mat-slide-toggle [disabled]="disabled"
-                                  [ngModel]="model.showVertices"
-                                  (ngModelChange)="updateShowVertices($event)"></mat-slide-toggle>
+                <input type="checkbox"
+                       [ngModel]="model.showVertices"
+                       [disabled]="disabled"
+                       (ngModelChange)="updateShowVertices($event)">
             </dgp-inspector-item>
 
             <dgp-inspector-item matIconName="show_chart"
                                 label="Show edges">
-                <mat-slide-toggle [disabled]="disabled"
-                                  [ngModel]="model.showEdges"
-                                  (ngModelChange)="updateShowEdges($event)"></mat-slide-toggle>
+                <input type="checkbox"
+                       [ngModel]="model.showEdges"
+                       [disabled]="disabled"
+                       (ngModelChange)="updateShowEdges($event)">
             </dgp-inspector-item>
         </dgp-inspector>
     `,
