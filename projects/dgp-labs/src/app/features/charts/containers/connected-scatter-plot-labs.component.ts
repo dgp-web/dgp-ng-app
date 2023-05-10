@@ -6,6 +6,28 @@ import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 
+/**
+ * References
+ * - https://de.wikipedia.org/wiki/Normalverteilung
+ * - https://en.wikipedia.org/wiki/Normal_distribution
+ */
+export function getGaussianDensity(payload: {
+    readonly x: number;
+    readonly median: number;
+    readonly variance: number;
+}): number {
+
+    const x = payload.x;
+
+    const median = payload.median;
+    const variance = payload.variance;
+
+    const scale = Math.sqrt(variance);
+
+    return 1 / Math.sqrt(2 * Math.PI * variance) * Math.exp(-1 / 2 * (((x - median) / scale) ** 2));
+
+}
+
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
     template: `
