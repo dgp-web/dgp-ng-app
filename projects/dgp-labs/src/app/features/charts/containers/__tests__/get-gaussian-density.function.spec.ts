@@ -67,13 +67,11 @@ describe("gaussian", () => {
 
         });
 
-        fit(`getGaussianQuantile`, () => {
+        it(`getGaussianQuantile`, () => {
 
-            //const payload = [1, 2, 3, 4, 5, 6, 7];
             const payload = Array.from({length: 101}, (x, i) => i);
             const median = d3.median(payload);
             const variance = d3.variance(payload);
-
 
             console.log("payload", payload);
             console.log("median", median);
@@ -85,13 +83,56 @@ describe("gaussian", () => {
 
             console.log("p", p);
 
-            const result = p.map(pValue => getGaussianQuantile({
+            const quantiles = p.map(pValue => getGaussianQuantile({
                 variance,
                 median,
                 p: pValue
             }));
 
-            console.log("quantiles", result);
+            console.log("quantiles", quantiles);
+
+            const pointsForPlot = payload.map((x, i) => {
+                const y = quantiles[i];
+                return {x, y};
+            });
+
+            console.log("pointsForPlot", pointsForPlot);
+
+        });
+
+        fit(`getGaussianQuantile:gaussian`, () => {
+
+
+            const rdm = d3.randomNormal(50, 15);
+
+            const payload = Array.from({length: 101}, (x, i) => rdm());
+            const median = d3.median(payload);
+            const variance = d3.variance(payload);
+
+            console.log("payload", payload);
+            console.log("median", median);
+            console.log("variance", variance);
+
+            const p = payload.map(x => getGaussianCumulativeDistribution({
+                x, variance, median
+            }));
+
+            console.log("p", p);
+
+            const quantiles = p.map(pValue => getGaussianQuantile({
+                variance,
+                median,
+                p: 0.57
+            }));
+
+            console.log("quantiles", quantiles);
+
+            const pointsForPlot = payload.map((x, i) => {
+                const y = quantiles[i];
+                return {x, y};
+            });
+
+            console.log("pointsForPlot", pointsForPlot);
 
         });
 
