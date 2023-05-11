@@ -106,33 +106,33 @@ describe("gaussian", () => {
 
             const rdm = d3.randomNormal(0, 1);
 
-            const payload = _.sortBy(Array.from({length: 101}, (x, i) => rdm()));
-            const median = d3.median(payload);
-            const variance = d3.variance(payload);
+            const xValues = _.sortBy(Array.from({length: 101}, (x, i) => rdm()));
 
-            console.log("payload", payload);
+            const median = d3.median(xValues);
+            const variance = d3.variance(xValues);
+
+            console.log("payload", xValues);
             console.log("median", median);
             console.log("variance", variance);
 
-            const n = payload.length;
+            const n = xValues.length;
 
-            const p = payload.map((pValue, index) => getMedianRank({
-                n, i: index + 1
-            }));
+            const yValues = xValues.map((pValue, index) => {
+                const i = index + 1;
 
-            console.log("p", p);
+                return getMedianRank({n, i});
+            });
 
-            const quantiles = p.map((pValue, index) => getGaussianQuantile({
-                variance,
-                median,
-                p: pValue
-            }));
+            console.log("p", yValues);
 
-            console.log("quantiles", quantiles);
-
-            const pointsForPlot = payload.map((x, i) => {
-                const y = quantiles[i];
-                return {x, y};
+            const pointsForPlot = xValues.map((x, i) => {
+                const y = yValues[i];
+                const transformedYValue = getGaussianQuantile({
+                    variance,
+                    median,
+                    p: y
+                });
+                return {x, y: transformedYValue * 100};
             });
 
             console.log("pointsForPlot", pointsForPlot);
