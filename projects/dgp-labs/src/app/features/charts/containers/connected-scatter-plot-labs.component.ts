@@ -11,7 +11,7 @@ import {
  * - https://de.wikipedia.org/wiki/Normalverteilung
  * - https://en.wikipedia.org/wiki/Normal_distribution
  */
-export function getGaussianDensity(payload: {
+export function getGaussianProbabilityDensity(payload: {
     readonly x: number;
     readonly median: number;
     readonly variance: number;
@@ -25,6 +25,47 @@ export function getGaussianDensity(payload: {
     const scale = Math.sqrt(variance);
 
     return 1 / Math.sqrt(2 * Math.PI * variance) * Math.exp(-1 / 2 * (((x - median) / scale) ** 2));
+
+}
+
+/**
+ * References
+ * - https://stackoverflow.com/questions/1906064/gauss-error-function-implementation-for-javascript
+ */
+export function getGaussianError(x: number) {
+    let z: number;
+    const ERF_A = 0.147;
+    let theSignOfX: number;
+    if (0 === x) {
+        theSignOfX = 0;
+        return 0;
+    } else if (x > 0) {
+        theSignOfX = 1;
+    } else {
+        theSignOfX = -1;
+    }
+
+    const one_plus_axsqrd = 1 + ERF_A * x * x;
+    const four_ovr_pi_etc = 4 / Math.PI + ERF_A * x * x;
+    let ratio = four_ovr_pi_etc / one_plus_axsqrd;
+    ratio *= x * -x;
+    const expofun = Math.exp(ratio);
+    const radical = Math.sqrt(1 - expofun);
+    z = radical * theSignOfX;
+    return z;
+}
+
+export function getGaussianCumulativeDistribution(payload: {
+    readonly x: number;
+    readonly median: number;
+    readonly variance: number;
+}): number {
+    const x = payload.x;
+
+    const median = payload.median;
+    const variance = payload.variance;
+
+    return 1 / 2 * (1 + getGaussianError((x - median) / Math.sqrt(2 * variance)));
 
 }
 

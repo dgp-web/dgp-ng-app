@@ -1,23 +1,50 @@
-import { getGaussianDensity } from "../connected-scatter-plot-labs.component";
+import { getGaussianCumulativeDistribution, getGaussianProbabilityDensity } from "../connected-scatter-plot-labs.component";
 
-describe(getGaussianDensity.name, () => {
+describe("gaussian", () => {
 
-    fit(`playground`, () => {
+    describe(getGaussianProbabilityDensity.name, () => {
 
-        //const payload = Array.from({length: 100}, (v, i) => i + 1);
-        const payload = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+        it(`playground`, () => {
 
-        console.log("payload", payload);
+            //const payload = Array.from({length: 100}, (v, i) => i + 1);
+            const payload = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
 
-        const result = payload.map(x => getGaussianDensity({
-            x, variance: 0.2, median: 0
-        }));
+            console.log("payload", payload);
 
-        console.log("result", result);
+            const result = payload.map(x => getGaussianProbabilityDensity({
+                x, variance: 0.2, median: 0
+            }));
 
-        const result01 = result.map(x => 1 / x);
+            console.log("result", result);
 
-        console.log("result01", result01);
+            const result01 = result.map(x => 1 / x);
+
+            console.log("result01", result01);
+
+        });
+
+    });
+
+    describe(getGaussianCumulativeDistribution.name, () => {
+
+        fit(`playground`, () => {
+
+            //const payload = Array.from({length: 100}, (v, i) => i + 1);
+            const payload = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+
+            console.log("payload", payload);
+
+            const result = payload.map(x => getGaussianCumulativeDistribution({
+                x, variance: 0.2, median: 0
+            }));
+
+            console.log("result", result);
+
+            const result01 = result.map(x => 1 / x);
+
+            console.log("result01", result01);
+
+        });
 
     });
 
