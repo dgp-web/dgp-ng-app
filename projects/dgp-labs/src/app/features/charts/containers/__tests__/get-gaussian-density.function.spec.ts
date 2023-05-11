@@ -1,9 +1,11 @@
 import {
     getGaussianCumulativeDistribution,
     getGaussianProbabilityDensity,
-    getGaussianQuantile
+    getGaussianQuantile,
+    getMedianRank
 } from "../connected-scatter-plot-labs.component";
 import * as d3 from "d3";
+import * as _ from "lodash";
 
 describe("gaussian", () => {
 
@@ -102,10 +104,9 @@ describe("gaussian", () => {
 
         fit(`getGaussianQuantile:gaussian`, () => {
 
+            const rdm = d3.randomNormal(0, 1);
 
-            const rdm = d3.randomNormal(50, 15);
-
-            const payload = Array.from({length: 101}, (x, i) => rdm());
+            const payload = _.sortBy(Array.from({length: 101}, (x, i) => rdm()));
             const median = d3.median(payload);
             const variance = d3.variance(payload);
 
@@ -113,16 +114,18 @@ describe("gaussian", () => {
             console.log("median", median);
             console.log("variance", variance);
 
-            const p = payload.map(x => getGaussianCumulativeDistribution({
-                x, variance, median
+            const n = payload.length;
+
+            const p = payload.map((pValue, index) => getMedianRank({
+                n, i: index + 1
             }));
 
             console.log("p", p);
 
-            const quantiles = p.map(pValue => getGaussianQuantile({
+            const quantiles = p.map((pValue, index) => getGaussianQuantile({
                 variance,
                 median,
-                p: 0.57
+                p: pValue
             }));
 
             console.log("quantiles", quantiles);

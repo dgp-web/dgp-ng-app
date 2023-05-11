@@ -120,6 +120,22 @@ export function getGaussianQuantile(payload: {
     return median + scale * Math.sqrt(2) * getInverseGaussianError(2 * p - 1);
 }
 
+export function getMedianRank(payload: {
+    /**
+     * Rank of the smallest value, start at 1
+     */
+    readonly i: number;
+    /**
+     * Sample size
+     */
+    readonly n: number;
+}) {
+    const i = payload.i;
+    const n = payload.n;
+
+    return (i - 0.3) / (n + 0.4);
+}
+
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
     template: `
