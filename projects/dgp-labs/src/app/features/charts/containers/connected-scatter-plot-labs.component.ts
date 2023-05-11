@@ -106,20 +106,17 @@ export function getInverseGaussianError(x: number): number {
  * - https://en.wikipedia.org/wiki/Normal_distribution
  */
 export function getGaussianQuantile(payload: {
-    readonly x: number;
     readonly median: number;
     readonly variance: number;
     readonly p: number;
 }) {
-    const x = payload.x;
-
     const median = payload.median;
     const variance = payload.variance;
     const scale = Math.sqrt(variance);
 
-    const p = payload.variance;
+    const p = payload.p;
 
-    return median + scale * Math.sqrt(variance) * getInverseGaussianError(2 * p - 1);
+    return median + scale * Math.sqrt(2) * getInverseGaussianError(2 * p - 1);
 }
 
 @Component({
