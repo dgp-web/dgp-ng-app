@@ -104,6 +104,7 @@ export function getInverseGaussianError(x: number): number {
  *
  * References
  * - https://en.wikipedia.org/wiki/Normal_distribution
+ * - https://en.wikipedia.org/wiki/Probit
  */
 export function getGaussianQuantile(payload: {
     readonly median: number;

@@ -3,6 +3,7 @@ import {
     getGaussianProbabilityDensity,
     getGaussianQuantile
 } from "../connected-scatter-plot-labs.component";
+import * as d3 from "d3";
 
 describe("gaussian", () => {
 
@@ -44,7 +45,7 @@ describe("gaussian", () => {
 
     describe(getGaussianQuantile.name, () => {
 
-        fit(`getGaussianQuantile`, () => {
+        it(`getGaussianQuantile:probit`, () => {
 
             const payload = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
 
@@ -59,6 +60,34 @@ describe("gaussian", () => {
             const result = p.map(pValue => getGaussianQuantile({
                 variance: 0.2,
                 median: 0,
+                p: pValue
+            }));
+
+            console.log("quantiles", result);
+
+        });
+
+        fit(`getGaussianQuantile`, () => {
+
+            //const payload = [1, 2, 3, 4, 5, 6, 7];
+            const payload = Array.from({length: 101}, (x, i) => i);
+            const median = d3.median(payload);
+            const variance = d3.variance(payload);
+
+
+            console.log("payload", payload);
+            console.log("median", median);
+            console.log("variance", variance);
+
+            const p = payload.map(x => getGaussianCumulativeDistribution({
+                x, variance, median
+            }));
+
+            console.log("p", p);
+
+            const result = p.map(pValue => getGaussianQuantile({
+                variance,
+                median,
                 p: pValue
             }));
 
