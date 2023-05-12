@@ -151,9 +151,10 @@ export function createGaussianScale(payload: {
      */
     const median = 0;
     /**
-     *
+     * We can use the variance included in the data or 1 which makes us work with the standard normal distribution.
      */
-    const variance = d3.variance(values);
+        // const variance = d3.variance(values);
+    const variance = 1;
 
     const interpolate = (a: number, b: number) => {
 

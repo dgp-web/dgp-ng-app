@@ -152,7 +152,7 @@ describe("gaussian", () => {
             const median = d3.median(values);
             console.log("median", median);
             const variance = d3.variance(values);
-            console.log("variance", variance);
+            console.log("variance", variance, " Note: 1 may be use instead");
             const min = d3.min(values);
             console.log("min", min);
             const max = d3.max(values);
