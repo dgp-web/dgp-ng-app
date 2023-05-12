@@ -106,7 +106,6 @@ describe("gaussian", () => {
         it(`getGaussianQuantile:gaussian`, () => {
 
             const rdm = d3.randomNormal(0, 1);
-
             const xValues = _.sortBy(Array.from({length: 101}, (x, i) => rdm()));
 
             const median = d3.median(xValues);
@@ -146,23 +145,36 @@ describe("gaussian", () => {
 
         fit(`playground`, () => {
 
-            const payload = Array.from({length: 101}, (x, i) => i);
-            const median = d3.median(payload);
-            const variance = d3.variance(payload);
+            const rdm = d3.randomNormal(0, 1);
+            const values = _.sortBy(Array.from({length: 15}, (x, i) => rdm()));
+            // const payload = Array.from({length: 101}, (x, i) => i);
+
+            const median = d3.median(values);
+            console.log("median", median);
+            const variance = d3.variance(values);
+            console.log("variance", variance);
+            const min = d3.min(values);
+            console.log("min", min);
+            const max = d3.max(values);
+            console.log("max", max);
 
             const scale = createGaussianScale({
-                variance,
-                median,
-                dataAreaSize: 400
+                values,
+                dataAreaSize: 400,
             });
 
-            // TODO: define tick values for 1..99 quantiles
-            // TODO: compute y-axis for those tick values
-            // TODO: map values to distance --> how to do this?
             const tickValues = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
+            const axis = d3.axisLeft(scale)
+                .tickValues(tickValues);
 
-            tickValues.forEach(tick => {
-                console.log(scale(tick));
+
+            values.forEach((x, index) => {
+                const medianRankInPercent = getMedianRank({
+                    i: index + 1,
+                    n: values.length
+                }) * 100;
+                const quantile = scale(medianRankInPercent);
+                console.log("median rank", medianRankInPercent, "quantile", quantile);
             });
 
         });

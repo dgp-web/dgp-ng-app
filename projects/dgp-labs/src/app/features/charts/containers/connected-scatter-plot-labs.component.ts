@@ -6,6 +6,7 @@ import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 import * as d3 from "d3";
+import { Many } from "data-modeling";
 
 /**
  * References
@@ -138,29 +139,40 @@ export function getMedianRank(payload: {
 }
 
 export function createGaussianScale(payload: {
+    readonly values: Many<number>;
     readonly dataAreaSize: number;
-    readonly median: number;
-    readonly variance: number;
 }) {
+    const values = payload.values;
     const dataAreaSize = payload.dataAreaSize;
-    const median = payload.median;
-    const variance = payload.variance;
+
+    const median = d3.median(values);
+    const variance = d3.variance(values);
 
     const interpolate = (a: number, b: number) => {
-        return (t: number) => {
-            console.log(t, getGaussianQuantile({variance, median, p: t}) / 100 * dataAreaSize);
 
-            // console.log(a, b, t, getGaussianQuantile({variance, median, p: t}));
-            return getGaussianQuantile({variance, median, p: t});
+        const middle = Math.abs(a - b) / 2;
+        const percentile01 = getGaussianQuantile({variance, median: 0, p: 0.01});
+        const percentile99 = getGaussianQuantile({variance, median: 0, p: 0.99});
+
+        return (t: number) => {
+            const p = t;
+            const quantile = getGaussianQuantile({variance, median: 0, p});
+            let distanceFromMiddle: number;
+            if (quantile < 0) {
+                distanceFromMiddle = -Math.abs(quantile / percentile01) * 200;
+            } else if (quantile === 0) {
+                distanceFromMiddle = 0;
+            } else if (quantile > 0) {
+                distanceFromMiddle = Math.abs(quantile / percentile99) * 200;
+            }
+            return middle + distanceFromMiddle;
         };
     };
 
-    const scale = d3.scaleLinear()
+    return d3.scaleLinear()
         .domain([0, 100])
         .interpolate(interpolate)
         .range([0, dataAreaSize]);
-
-    return scale;
 }
 
 @Component({
