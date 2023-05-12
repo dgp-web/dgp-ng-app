@@ -163,19 +163,32 @@ describe("gaussian", () => {
                 dataAreaSize: 400,
             });
 
+            values.forEach((x, index) => {
+                /**
+                 * We're going to use the inverse CDF, so we need probabilities between 0 and 1.
+                 *
+                 * The median rank can fulfill that.
+                 */
+                const medianRank = getMedianRank({
+                    i: index + 1,
+                    n: values.length
+                });
+
+                /**
+                 * In order to display the rank in percent, we multiply it by 100.
+                 */
+                const medianRankInPercent = medianRank * 100;
+
+                /**
+                 * This resolved rank gets transformed into a visual range by our scale.
+                 */
+                const computedRange = scale(medianRankInPercent);
+                console.log("median rank", medianRankInPercent, "computedRange", computedRange);
+            });
+
             const tickValues = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
             const axis = d3.axisLeft(scale)
                 .tickValues(tickValues);
-
-
-            values.forEach((x, index) => {
-                const medianRankInPercent = getMedianRank({
-                    i: index + 1,
-                    n: values.length
-                }) * 100;
-                const quantile = scale(medianRankInPercent);
-                console.log("median rank", medianRankInPercent, "quantile", quantile);
-            });
 
         });
 

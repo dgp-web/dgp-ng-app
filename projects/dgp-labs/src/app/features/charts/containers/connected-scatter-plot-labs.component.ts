@@ -145,31 +145,64 @@ export function createGaussianScale(payload: {
     const values = payload.values;
     const dataAreaSize = payload.dataAreaSize;
 
-    const median = d3.median(values);
+    /**
+     * The axis scale uses a distribution with median 0 which helps us with computing regular distances
+     * in both directions. p of 0.5 results in 0 which should be the middle of the range.
+     */
+    const median = 0;
+    /**
+     *
+     */
     const variance = d3.variance(values);
 
     const interpolate = (a: number, b: number) => {
 
-        const middle = Math.abs(a - b) / 2;
-        const percentile01 = getGaussianQuantile({variance, median: 0, p: 0.01});
-        const percentile99 = getGaussianQuantile({variance, median: 0, p: 0.99});
+        /**
+         * a and b are the range boundaries
+         *
+         * We compute the visual middle between them which is where our median value should be placed.
+         */
+        const halfOfRange = Math.abs(a - b) / 2;
+        const middle = halfOfRange;
+
+        const percentile01 = getGaussianQuantile({variance, median, p: 0.01});
+        const percentile99 = getGaussianQuantile({variance, median, p: 0.99});
 
         return (t: number) => {
+            /**
+             * Note that the value t already gets transformed by d3.
+             *
+             * It's the computed distance of an input value between the domain boundaries.
+             *
+             * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
+             */
             const p = t;
-            const quantile = getGaussianQuantile({variance, median: 0, p});
+            const quantile = getGaussianQuantile({variance, median, p});
+
+            /**
+             * The quantile function returns positive and negative values which we need to associate with ranges.
+             *
+             * We divide them by the maximal or minimal values of our logical domain and then multiply the result
+             * with half of the range.
+             *
+             * This allows us to walk the correct distance into the respective direction.
+             */
             let distanceFromMiddle: number;
             if (quantile < 0) {
-                distanceFromMiddle = -Math.abs(quantile / percentile01) * 200;
+                distanceFromMiddle = -Math.abs(quantile / percentile01) * halfOfRange;
             } else if (quantile === 0) {
                 distanceFromMiddle = 0;
             } else if (quantile > 0) {
-                distanceFromMiddle = Math.abs(quantile / percentile99) * 200;
+                distanceFromMiddle = Math.abs(quantile / percentile99) * halfOfRange;
             }
             return middle + distanceFromMiddle;
         };
     };
 
     return d3.scaleLinear()
+        /**
+         * The domain is chosen between 0 and 100 instead of between 0 and 1.
+         */
         .domain([0, 100])
         .interpolate(interpolate)
         .range([0, dataAreaSize]);
