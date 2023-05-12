@@ -5,6 +5,7 @@ import { testConnectedScatterPlot } from "../../../__tests__/constants/test-conn
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
+import * as d3 from "d3";
 
 /**
  * References
@@ -134,6 +135,32 @@ export function getMedianRank(payload: {
     const n = payload.n;
 
     return (i - 0.3) / (n + 0.4);
+}
+
+export function createGaussianScale(payload: {
+    readonly dataAreaSize: number;
+    readonly median: number;
+    readonly variance: number;
+}) {
+    const dataAreaSize = payload.dataAreaSize;
+    const median = payload.median;
+    const variance = payload.variance;
+
+    const interpolate = (a: number, b: number) => {
+        return (t: number) => {
+            console.log(t, getGaussianQuantile({variance, median, p: t}) / 100 * dataAreaSize);
+
+            // console.log(a, b, t, getGaussianQuantile({variance, median, p: t}));
+            return getGaussianQuantile({variance, median, p: t});
+        };
+    };
+
+    const scale = d3.scaleLinear()
+        .domain([0, 100])
+        .interpolate(interpolate)
+        .range([0, dataAreaSize]);
+
+    return scale;
 }
 
 @Component({

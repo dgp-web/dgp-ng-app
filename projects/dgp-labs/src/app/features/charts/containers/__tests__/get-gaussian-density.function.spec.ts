@@ -1,4 +1,5 @@
 import {
+    createGaussianScale,
     getGaussianCumulativeDistribution,
     getGaussianProbabilityDensity,
     getGaussianQuantile,
@@ -102,7 +103,7 @@ describe("gaussian", () => {
 
         });
 
-        fit(`getGaussianQuantile:gaussian`, () => {
+        it(`getGaussianQuantile:gaussian`, () => {
 
             const rdm = d3.randomNormal(0, 1);
 
@@ -136,6 +137,33 @@ describe("gaussian", () => {
             });
 
             console.log("pointsForPlot", pointsForPlot);
+
+        });
+
+    });
+
+    describe(`createGaussianScale`, () => {
+
+        fit(`playground`, () => {
+
+            const payload = Array.from({length: 101}, (x, i) => i);
+            const median = d3.median(payload);
+            const variance = d3.variance(payload);
+
+            const scale = createGaussianScale({
+                variance,
+                median,
+                dataAreaSize: 400
+            });
+
+            // TODO: define tick values for 1..99 quantiles
+            // TODO: compute y-axis for those tick values
+            // TODO: map values to distance --> how to do this?
+            const tickValues = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
+
+            tickValues.forEach(tick => {
+                console.log(scale(tick));
+            });
 
         });
 
