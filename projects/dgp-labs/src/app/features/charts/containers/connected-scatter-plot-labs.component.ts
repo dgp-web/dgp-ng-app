@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
+import { DgpModelEditorComponentBase, matrixToMany } from "dgp-ng-app";
+import { ConnectedScatterPlot, ConnectedScatterPlotRenderer, createNormalInterpolator } from "dgp-ng-charts";
 import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
+
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -34,6 +35,8 @@ import {
                                                 [yAxisMin]="model.yAxisMin"
                                                 [yAxisMax]="model.yAxisMax"
                                                 [yAxisStep]="model.yAxisStep"
+                                                [yAxisInterpolator]="model.yAxisInterpolator"
+                                                [yAxisTickValues]="model.yAxisTickValues"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"
                                                 [dotSize]="model.dotSize"
@@ -49,9 +52,9 @@ import {
                                             matIconName="label"
                                             description="Test">
                             <dgp-connected-scatter-plot-renderer-select
-                                [disabled]="disabled"
-                                [model]="renderer"
-                                (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                    [disabled]="disabled"
+                                    [model]="renderer"
+                                    (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
                         </dgp-inspector-item>
                     </dgp-inspector>
 

@@ -4,7 +4,8 @@ import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
 import { CardinalYAxis, ChartTitles, ScaleType } from "../../shared/models";
 import { DgpPlotComponentBase } from "./plot.component-base";
-import { Mutable } from "data-modeling";
+import { Many, Mutable } from "data-modeling";
+import * as d3 from "d3";
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
@@ -39,19 +40,31 @@ export class DgpCardinalYAxisChartComponentBase extends DgpPlotComponentBase imp
     yAxisTickFormat?: (x: string) => string;
     readonly yAxisTickFormat$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisTickFormat");
 
+    @Input()
+    yAxisInterpolator: d3.InterpolatorFactory<number, number>;
+    readonly yAxisInterpolator$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisInterpolator");
+
+    @Input()
+    yAxisTickValues: Many<number>;
+    readonly yAxisTickValues$ = observeAttribute$(this as DgpCardinalYAxisChartComponentBase, "yAxisTickValues");
+
     readonly yAxis$ = combineLatest([
         this.yAxisMin$,
         this.yAxisMax$,
         this.yAxisStep$,
         this.yAxisScaleType$,
         this.yAxisTickFormat$,
+        this.yAxisInterpolator$,
+        this.yAxisTickValues$,
     ]).pipe(
         map(x => ({
             yAxisMin: x[0],
             yAxisMax: x[1],
             yAxisStep: x[2],
             yAxisScaleType: x[3],
-            yAxisTickFormat: x[4]
+            yAxisTickFormat: x[4],
+            yAxisInterpolator: x[5],
+            yAxisTickValues: x[6]
         } as CardinalYAxis))
     );
 

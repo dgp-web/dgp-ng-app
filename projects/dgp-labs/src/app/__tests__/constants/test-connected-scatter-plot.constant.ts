@@ -1,5 +1,14 @@
-import { ConnectedScatterPlot, ControlLineAxis, ScaleType, Stroke } from "dgp-ng-charts";
+import { ConnectedScatterPlot, ControlLineAxis, createNormalInterpolator, ScaleType, Stroke } from "dgp-ng-charts";
 import { testConnectedScatterGroups } from "../../features/charts/constants/test-connected-scatter-groups.constant";
+import { matrixToMany } from "dgp-ng-app";
+
+export const yAxisInterpolator = createNormalInterpolator({
+    values: testConnectedScatterGroups.map(group => {
+        return group.series.map(series => series.dots.map(dot => {
+            return dot.y;
+        })).reduce(matrixToMany, []);
+    }).reduce(matrixToMany, [])
+});
 
 export const testConnectedScatterPlot: ConnectedScatterPlot = {
     model: testConnectedScatterGroups,
@@ -25,5 +34,9 @@ export const testConnectedScatterPlot: ConnectedScatterPlot = {
     yAxisScaleType: ScaleType.Linear,
     xAxisScaleType: ScaleType.Logarithmic,
     dotSize: 10,
-    lineWidth: 1.5
+    lineWidth: 1.5,
+    yAxisInterpolator,
+    yAxisMax: 100,
+    yAxisMin: 0,
+    yAxisTickValues: [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
 };
