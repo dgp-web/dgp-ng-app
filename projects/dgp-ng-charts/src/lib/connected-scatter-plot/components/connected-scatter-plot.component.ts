@@ -8,7 +8,6 @@ import { filterNotNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
 import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-renderer.model";
-import * as d3 from "d3";
 
 @Component({
     selector: "dgp-connected-scatter-plot",
@@ -76,10 +75,6 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
 
     @Input()
     autoResize = true;
-
-    @Input()
-    yAxisInterpolator: d3.InterpolatorFactory<number, number>;
-    readonly yAxisInterpolator$ = observeAttribute$(this as DgpConnectedScatterPlotComponent, "yAxisInterpolator");
 
     @Input()
     model: readonly ConnectedScatterGroup[];
