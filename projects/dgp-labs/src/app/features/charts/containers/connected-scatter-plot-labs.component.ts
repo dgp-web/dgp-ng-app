@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { DgpModelEditorComponentBase, matrixToMany } from "dgp-ng-app";
-import { ConnectedScatterPlot, ConnectedScatterPlotRenderer, createNormalInterpolator } from "dgp-ng-charts";
+import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
 import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
 import {
     connectedScatterPlotMetadata
@@ -52,9 +52,9 @@ import {
                                             matIconName="label"
                                             description="Test">
                             <dgp-connected-scatter-plot-renderer-select
-                                    [disabled]="disabled"
-                                    [model]="renderer"
-                                    (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                [disabled]="disabled"
+                                [model]="renderer"
+                                (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
                         </dgp-inspector-item>
                     </dgp-inspector>
 
