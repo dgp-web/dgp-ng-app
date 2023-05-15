@@ -1,12 +1,12 @@
+import * as d3 from "d3";
+import * as _ from "lodash";
 import {
     createNormalScale,
     getGaussianCumulativeDistribution,
     getGaussianProbabilityDensity,
     getGaussianQuantile,
     getMedianRank
-} from "../connected-scatter-plot-labs.component";
-import * as d3 from "d3";
-import * as _ from "lodash";
+} from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/normal";
 
 describe("gaussian", () => {
 
