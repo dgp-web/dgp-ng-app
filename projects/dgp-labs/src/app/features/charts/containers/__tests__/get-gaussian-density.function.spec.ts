@@ -6,7 +6,7 @@ import {
     getGaussianProbabilityDensity,
     getGaussianQuantile,
     getMedianRank
-} from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/normal";
+} from "dgp-ng-charts";
 
 describe("gaussian", () => {
 
