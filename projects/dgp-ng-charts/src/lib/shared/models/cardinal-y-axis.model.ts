@@ -3,6 +3,7 @@ import { CardinalAxisTickFormat } from "./cardinal-axis-tick-format.model";
 import { YAxisTitle } from "./y-axis-title.model";
 import { ShowYAxisGridLines } from "./show-y-axis-grid-lines.model";
 import * as d3 from "d3";
+import { Many } from "data-modeling";
 
 export interface CardinalYAxis extends YAxisTitle, ShowYAxisGridLines {
     readonly yAxisMin?: number;
@@ -11,4 +12,5 @@ export interface CardinalYAxis extends YAxisTitle, ShowYAxisGridLines {
     readonly yAxisScaleType?: ScaleType;
     readonly yAxisTickFormat?: CardinalAxisTickFormat;
     readonly yAxisInterpolator?: d3.InterpolatorFactory<number, number>;
+    readonly yAxisTickValues?: Many<number>;
 }

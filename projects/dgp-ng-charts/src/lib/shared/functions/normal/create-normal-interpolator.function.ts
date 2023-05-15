@@ -54,11 +54,11 @@ export function createNormalInterpolator(payload: {
              */
             let distanceFromMiddle: number;
             if (quantile < 0) {
-                distanceFromMiddle = -Math.abs(quantile / percentile01) * halfOfRange;
+                distanceFromMiddle = Math.abs(quantile / percentile01) * halfOfRange;
             } else if (quantile === 0) {
                 distanceFromMiddle = 0;
             } else if (quantile > 0) {
-                distanceFromMiddle = Math.abs(quantile / percentile99) * halfOfRange;
+                distanceFromMiddle = -Math.abs(quantile / percentile99) * halfOfRange;
             }
             return middle + distanceFromMiddle;
         };
