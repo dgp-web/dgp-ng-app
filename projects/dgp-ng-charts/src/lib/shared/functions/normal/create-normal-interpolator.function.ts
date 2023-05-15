@@ -1,13 +1,7 @@
-import { Many } from "data-modeling";
 import * as d3 from "d3";
 import { getGaussianQuantile } from "./get-gaussian-quantile.function";
 
-export function createNormalInterpolator(payload: {
-    readonly values: Many<number>;
-}): d3.InterpolatorFactory<number, number> {
-
-    const values = payload.values;
-
+export function createNormalInterpolator(payload?: {}): d3.InterpolatorFactory<number, number> {
 
     /**
      * The axis scale uses a distribution with median 0 which helps us with computing regular distances
