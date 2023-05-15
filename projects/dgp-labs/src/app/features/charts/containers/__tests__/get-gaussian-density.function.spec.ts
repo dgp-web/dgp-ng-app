@@ -1,5 +1,5 @@
 import {
-    createGaussianScale,
+    createNormalScale,
     getGaussianCumulativeDistribution,
     getGaussianProbabilityDensity,
     getGaussianQuantile,
@@ -158,7 +158,7 @@ describe("gaussian", () => {
             const max = d3.max(values);
             console.log("max", max);
 
-            const scale = createGaussianScale({
+            const scale = createNormalScale({
                 values,
                 dataAreaSize: 400,
             });

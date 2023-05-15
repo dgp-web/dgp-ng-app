@@ -138,12 +138,13 @@ export function getMedianRank(payload: {
     return (i - 0.3) / (n + 0.4);
 }
 
-export function createGaussianScale(payload: {
+
+export function createNormalInterpolator(payload: {
     readonly values: Many<number>;
-    readonly dataAreaSize: number;
-}) {
+}): d3.InterpolatorFactory<number, number> {
+
     const values = payload.values;
-    const dataAreaSize = payload.dataAreaSize;
+
 
     /**
      * The axis scale uses a distribution with median 0 which helps us with computing regular distances
@@ -156,7 +157,7 @@ export function createGaussianScale(payload: {
         // const variance = d3.variance(values);
     const variance = 1;
 
-    const interpolate = (a: number, b: number) => {
+    return (a: number, b: number) => {
 
         /**
          * a and b are the range boundaries
@@ -199,6 +200,17 @@ export function createGaussianScale(payload: {
             return middle + distanceFromMiddle;
         };
     };
+
+}
+
+export function createNormalScale(payload: {
+    readonly values: Many<number>;
+    readonly dataAreaSize: number;
+}) {
+    const values = payload.values;
+    const dataAreaSize = payload.dataAreaSize;
+
+    const interpolate = createNormalInterpolator({values});
 
     return d3.scaleLinear()
         /**
