@@ -2,12 +2,12 @@ import { CardinalD3AxisScale, CardinalYAxis, ScaleType } from "../models";
 import * as d3 from "d3";
 import { Axis, ScaleLogarithmic } from "d3";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { getLinearAxisTickValuesForStep } from "./get-linear-axis-tick-values-for-interval.function";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
 import { formatLogTick } from "./format-log-tick.function";
 import { getLogTickValues } from "../function/get-log-tick-values.function";
 import { NumericDomain } from "../models/numeric-domain.model";
 import { byInvertedDomain } from "./by-domain.function";
+import { getLinearAxisTickValuesForStep } from "./get-linear-axis-tick-values-for-interval.function";
 
 export function createCardinalYAxis(payload: {
     readonly yAxisModel: CardinalYAxis;
@@ -24,13 +24,15 @@ export function createCardinalYAxis(payload: {
 
             yAxis = d3.axisLeft(yAxisScale);
 
-            if (notNullOrUndefined(yAxisModel.yAxisStep) && yAxisModel.yAxisStep > 0) {
+            if (notNullOrUndefined(yAxisModel.yAxisTickValues)) {
+                yAxis = yAxis
+                    .tickValues(yAxisModel.yAxisTickValues as number[]);
+            } else if (notNullOrUndefined(yAxisModel.yAxisStep) && yAxisModel.yAxisStep > 0) {
 
                 const tickValues = getLinearAxisTickValuesForStep({
                     axisScale: yAxisScale,
                     tickInterval: yAxisModel.yAxisStep
                 });
-
                 yAxis = yAxis
                     .tickValues(tickValues as number[]);
 

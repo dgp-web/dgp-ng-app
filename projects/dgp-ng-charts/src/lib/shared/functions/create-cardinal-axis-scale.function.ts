@@ -9,12 +9,14 @@ export function createCardinalAxisScale(payload: {
     readonly max: number;
     readonly step?: number;
     readonly scaleType: ScaleType;
+    readonly interpolator?: d3.InterpolatorFactory<number, number>;
 }) {
 
     const dataAreaSize = payload.dataAreaSize;
     const min = payload.min;
     const max = payload.max;
     const step = payload.step;
+    const interpolator = payload.interpolator;
 
     let scale: ScaleLinear<number, number> | ScaleLogarithmic<number, number>;
 
@@ -24,6 +26,11 @@ export function createCardinalAxisScale(payload: {
             scale = d3.scaleLinear()
                 .domain([min, max])
                 .range([0, dataAreaSize]);
+
+            if (interpolator) {
+                scale = scale.interpolate(interpolator);
+            }
+
             break;
         case ScaleType.Logarithmic:
             scale = d3.scaleLog();

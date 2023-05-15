@@ -1,6 +1,7 @@
 import { ScaleType } from "../models";
 import { reverseDomain } from "./reverse-domain.function";
 import { createCardinalAxisScale } from "./create-cardinal-axis-scale.function";
+import * as d3 from "d3";
 
 export function createYAxisScale(payload: {
     readonly dataAreaHeight: number;
@@ -8,6 +9,7 @@ export function createYAxisScale(payload: {
     readonly yMax: number;
     readonly yAxisStep?: number;
     readonly yAxisScaleType?: ScaleType;
+    readonly yAxisInterpolator?: d3.InterpolatorFactory<number, number>;
 }) {
 
     let scale = createCardinalAxisScale({
@@ -15,10 +17,14 @@ export function createYAxisScale(payload: {
         min: payload.yMin,
         dataAreaSize: payload.dataAreaHeight,
         scaleType: payload.yAxisScaleType,
-        step: payload.yAxisStep
+        step: payload.yAxisStep,
+        interpolator: payload.yAxisInterpolator
     });
 
-    scale = reverseDomain(scale);
+    if (!payload.yAxisInterpolator) {
+        console.log("reverse");
+        scale = reverseDomain(scale);
+    }
 
     return scale;
 
