@@ -1,6 +1,5 @@
 import * as d3 from "d3";
-import { getWeibullQuantile } from "../weibull/get-weibull-quantile.function";
-
+import { getWeibullQuantile } from "./get-weibull-quantile.function";
 
 export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<number, number> {
     return (a: number, b: number) => {

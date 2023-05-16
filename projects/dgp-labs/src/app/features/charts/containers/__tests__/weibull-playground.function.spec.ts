@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { getMedianRank } from "dgp-ng-charts";
 import {
     createWeibullInterpolator
-} from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/normal/create-weibull-interpolator.function";
+} from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-interpolator.function";
 import { getWeibullQuantile } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/get-weibull-quantile.function";
 
 export function createWeibullScale(payload: {
