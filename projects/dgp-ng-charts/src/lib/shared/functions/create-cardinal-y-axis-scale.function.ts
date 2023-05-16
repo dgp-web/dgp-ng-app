@@ -22,7 +22,6 @@ export function createYAxisScale(payload: {
     });
 
     if (!payload.yAxisInterpolator) {
-        console.log("reverse");
         scale = reverseDomain(scale);
     }
 
