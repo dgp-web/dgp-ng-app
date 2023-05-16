@@ -28,19 +28,18 @@ describe("Weibull", () => {
 
         fit(`Weibull quantile`, () => {
 
-            const payload = [0.63238, Math.log(2)];
+            const payload = [0.01, 0.632, 0.99];
             const p = payload.map((x, index) => getMedianRank({
                 i: index + 1,
                 n: payload.length
             }));
 
-            const result = payload.map(pValue => {
+            payload.forEach(pValue => {
                 const quantile = getWeibullQuantile({
                     p: pValue
                 });
                 console.log("p", pValue, "quantile", quantile);
             });
-
 
         });
 
@@ -50,7 +49,6 @@ describe("Weibull", () => {
 
                 const rdm = d3.randomNormal(0, 1);
                 const values = _.sortBy(Array.from({length: 15}, (x, i) => rdm()));
-                // const payload = Array.from({length: 101}, (x, i) => i);
 
                 const median = d3.median(values);
                 console.log("median", median);

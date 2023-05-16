@@ -9,11 +9,12 @@ export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const halfOfRange = Math.abs(a - b) / 2;
-        const middle = halfOfRange;
+        const range = Math.abs(a - b);
 
         const percentile01 = getWeibullQuantile({p: 0.01});
         const percentile99 = getWeibullQuantile({p: 0.99});
+
+        const totalDistance = Math.abs(percentile01 - percentile99);
 
         return (t: number) => {
             /**
@@ -24,26 +25,11 @@ export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            const quantile = getWeibullQuantile({p});
+            const percentile = getWeibullQuantile({p});
+            const distance = Math.abs(percentile - percentile99);
+            const share = distance / totalDistance;
 
-            // let distanceFromMiddle = Math.abs(a - b) * quantile;
-            /**
-             * The quantile function returns positive and negative values which we need to associate with ranges.
-             *
-             * We divide them by the maximal or minimal values of our logical domain and then multiply the result
-             * with half of the range.
-             *
-             * This allows us to walk the correct distance into the respective direction.
-             */
-            let distanceFromMiddle: number;
-            if (quantile < 0) {
-                distanceFromMiddle = Math.abs(quantile / percentile01) * halfOfRange;
-            } else if (quantile === 0) {
-                distanceFromMiddle = 0;
-            } else if (quantile > 0) {
-                distanceFromMiddle = -Math.abs(quantile / percentile99) * halfOfRange;
-            }
-            return distanceFromMiddle;
+            return share * range;
         };
     };
 
