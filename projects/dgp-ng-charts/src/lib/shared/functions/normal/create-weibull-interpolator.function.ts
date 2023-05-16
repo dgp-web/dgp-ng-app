@@ -1,19 +1,6 @@
 import * as d3 from "d3";
+import { getWeibullQuantile } from "../weibull/get-weibull-quantile.function";
 
-
-/**
- * ln(-ln(1 - p))
- *
- * References
- * - https://en.wikipedia.org/wiki/Weibull_distribution
- */
-export function getWeibullQuantile(payload: {
-    readonly p: number;
-}) {
-    const p = payload.p;
-
-    return Math.log(-Math.log(1 - p));
-}
 
 export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<number, number> {
     return (a: number, b: number) => {

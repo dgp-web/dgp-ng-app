@@ -2,9 +2,9 @@ import * as d3 from "d3";
 import * as _ from "lodash";
 import { getMedianRank } from "dgp-ng-charts";
 import {
-    createWeibullInterpolator,
-    getWeibullQuantile
+    createWeibullInterpolator
 } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/normal/create-weibull-interpolator.function";
+import { getWeibullQuantile } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/get-weibull-quantile.function";
 
 export function createWeibullScale(payload: {
     readonly dataAreaSize: number;
