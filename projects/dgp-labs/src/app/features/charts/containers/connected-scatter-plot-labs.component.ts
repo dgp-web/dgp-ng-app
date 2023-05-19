@@ -183,7 +183,7 @@ const originalShape = 1;
 
 const rdm = weibull.factory(originalShape, originalScale);
 // const rdm = d3.randomNormal(0, 1);
-const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()));
+const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(Math.log));
 
 const yValues = values.map((x, index) => {
 
@@ -210,6 +210,9 @@ const fittedDist = fitWeibullDistribution({
 const shape = fittedDist.shape;
 const scale = fittedDist.scale;
 
+console.log(shape, scale);
+console.log(originalShape, originalScale);
+
 const minP = d3.min(dots.map(x => x.y)) / 100;
 const maxP = d3.max(dots.map(x => x.y)) / 100;
 
@@ -220,10 +223,8 @@ const quantileMin = getWeibullQuantile({
 const quantileMax = getWeibullQuantile({
     shape, scale, p: maxP
 });
-/*
 
-console.log(shape, scale);
-console.log(originalShape, originalScale);
+/*
 
 console.log(getWeibullQuantile({
     shape, scale, p: maxP
