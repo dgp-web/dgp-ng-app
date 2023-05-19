@@ -5,7 +5,10 @@ import {
     createWeibullInterpolator
 } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-interpolator.function";
 import { getWeibullQuantile } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/get-weibull-quantile.function";
-import { fitWeibullDistribution } from "../connected-scatter-plot-labs.component";
+
+import {
+    fitWeibullDistribution
+} from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/fit-weibull-distribution.function";
 
 export function createWeibullScale(payload: {
     readonly dataAreaSize: number;

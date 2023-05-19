@@ -1,66 +1,20 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { byUnique, createGuid, DgpModelEditorComponentBase } from "dgp-ng-app";
+import { createGuid, DgpModelEditorComponentBase } from "dgp-ng-app";
 import {
     ConnectedScatterGroup,
     ConnectedScatterPlot,
     ConnectedScatterPlotRenderer,
     createWeibullInterpolator,
     Dot,
-    getMedianRank,
-    getWeibullQuantile
+    getMedianRank
 } from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
-import * as d3 from "d3";
 import * as _ from "lodash";
-import { Many } from "data-modeling";
-import * as regression from "regression";
 import * as weibull from "@stdlib/random-base-weibull";
+import { getFittedWeibullDistributionLine } from "../../../../../../dgp-ng-charts/src/lib/shared/functions";
 
-
-/**
- * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9
- */
-
-/*
-To fit a Weibull distribution to these data, notice that the CDF for the
-Weibull is p = Pr{X <= x} = 1 - exp(-(x/a)^b).
-Transforming that to log(a) + log(-log(1-p))*(1/b) = log(x) again gives a
-linear relationship, this time between log(-log(1-p)) and log(x).
-We can use least squares to fit a straight line on the transformed scale
-using p and x from the ECDF, and the slope and intercept of that line lead
-to estimates of a and b.
-
-logx = log(x);
-logy = log(-log(1 - p));
-poly = polyfit(logy,logx,1);
-paramHat = [exp(poly(2)) 1/poly(1)]*/
-
-/**
- * Resources: https://www.npmjs.com/package/distfitjs
- * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9
- */
-export function fitWeibullDistribution(payload: {
-    readonly x: Many<number>;
-    readonly y: Many<number>;
-}) {
-    const x = payload.x;
-    const y = payload.y;
-
-    const tuples = y.map((yv, index) => [yv, x[index]]);
-
-    const engine = regression.polynomial(tuples, {order: 1});
-
-    const slope = engine.equation[0];
-    const intercept = engine.equation[1];
-
-    const scale = Math.exp(intercept);
-    const shape = 1 / slope;
-
-    return {scale, shape};
-
-}
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -158,54 +112,25 @@ const originalScale = 2;
 const originalShape = 1;
 
 const rdm = weibull.factory(originalShape, originalScale);
-const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(Math.log));
 
-const yValues = values.map((x, index) => {
+const X = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(Math.log));
+
+const pValues = X.map((x, index) => {
 
     return getMedianRank({
         i: index + 1,
-        n: values.length
-    }) * 100;
+        n: X.length
+    });
 
 });
+const Y = pValues.map(x => x * 100);
 
-const dots = values.map((x, index) => {
-
-    const y = yValues[index];
-
+const dots = X.map((x, index) => {
+    const y = Y[index];
     return {x, y} as Dot;
-
 });
 
-const fittedDist = fitWeibullDistribution({
-    x: values,
-    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv, shape: 1, scale: 1}))
-});
-
-const shape = fittedDist.shape;
-const scale = fittedDist.scale;
-
-console.log("originalScale", originalScale, "originalShape", originalShape);
-console.log("scale", scale, "shape", shape);
-
-const minP = d3.min(dots.map(x => x.y)) / 100;
-const maxP = d3.max(dots.map(x => x.y)) / 100;
-
-const quantileMin = getWeibullQuantile({
-    shape, scale, p: minP
-});
-
-const quantileMax = getWeibullQuantile({
-    shape, scale, p: maxP
-});
-
-const fittedLine: Many<Dot> = [{
-    x: quantileMin,
-    y: minP * 100
-}, {
-    x: quantileMax,
-    y: maxP * 100
-}];
+const fittedLine = getFittedWeibullDistributionLine({X, Y});
 
 const group: ConnectedScatterGroup = {
 
@@ -228,10 +153,4 @@ const group: ConnectedScatterGroup = {
     }]
 };
 
-const pValues = [
-    ...dots.map(x => x.y / 100)
-].filter(byUnique);
-
-const yAxisInterpolator = createWeibullInterpolator({
-    pValues
-});
+const yAxisInterpolator = createWeibullInterpolator({pValues});
