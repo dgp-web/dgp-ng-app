@@ -3,11 +3,11 @@ import { testConnectedScatterGroups } from "../../features/charts/constants/test
 import { matrixToMany } from "dgp-ng-app";
 
 export const yAxisInterpolator = createNormalInterpolator({
-    values: testConnectedScatterGroups.map(group => {
+   /* pValues: testConnectedScatterGroups.map(group => {
         return group.series.map(series => series.dots.map(dot => {
             return dot.y;
         })).reduce(matrixToMany, []);
-    }).reduce(matrixToMany, [])
+    }).reduce(matrixToMany, [])*/
 });
 
 export const testConnectedScatterPlot: ConnectedScatterPlot = {

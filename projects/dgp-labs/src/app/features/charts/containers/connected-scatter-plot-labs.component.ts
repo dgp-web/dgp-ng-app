@@ -166,9 +166,6 @@ const quantileMax = getGaussianQuantile({
     variance, median, p: maxP
 });
 
-console.log("quantileMin", quantileMin, "minP", minP);
-console.log("quantileMax", quantileMax, "maxP", maxP);
-
 const fittedLine: Many<Dot> = [{
     x: quantileMin,
     y: minP * 100
@@ -192,7 +189,7 @@ const group: ConnectedScatterGroup = {
     }, {
         connectedScatterSeriesId: "Fitted distribution",
         colorHex: "#ff0000",
-        showVertices: true,
+        showVertices: false,
         showEdges: true,
         dots: fittedLine
     }]
@@ -203,11 +200,6 @@ const pValues = [
     ...fittedLine.map(x => x.y / 100)
 ].filter(byUnique);
 
-console.log(pValues);
-
 const yAxisInterpolator = createNormalInterpolator({
-    /*    median,
-        variance,
-        */
     pValues
 });

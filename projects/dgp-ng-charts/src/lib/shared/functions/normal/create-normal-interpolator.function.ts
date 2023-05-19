@@ -1,8 +1,11 @@
 import * as d3 from "d3";
 import { getGaussianQuantile } from "./get-gaussian-quantile.function";
+import { Many } from "data-modeling";
 
-export function createNormalInterpolator(payload?: {}): d3.InterpolatorFactory<number, number> {
-
+export function createNormalInterpolator(payload?: {
+    readonly pValues?: Many<number>;
+}): d3.InterpolatorFactory<number, number> {
+    const pValues = payload.pValues;
     /**
      * The axis scale uses a distribution with median 0 which helps us with computing regular distances
      * in both directions. p of 0.5 results in 0 which should be the middle of the range.
@@ -14,6 +17,12 @@ export function createNormalInterpolator(payload?: {}): d3.InterpolatorFactory<n
         // const variance = d3.variance(values);
     const variance = 1;
 
+    let pMin = 0.01;
+    if (pValues) pMin = d3.min(pValues);
+
+    let pMax = 0.99;
+    if (pValues) pMax = d3.max(pValues);
+
     return (a: number, b: number) => {
 
         /**
@@ -21,11 +30,12 @@ export function createNormalInterpolator(payload?: {}): d3.InterpolatorFactory<n
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const halfOfRange = Math.abs(a - b) / 2;
-        const middle = halfOfRange;
+        const range = Math.abs(a - b);
 
-        const percentile01 = getGaussianQuantile({variance, median, p: 0.01});
-        const percentile99 = getGaussianQuantile({variance, median, p: 0.99});
+        const minQuantile = getGaussianQuantile({variance, median, p: pMin});
+        const maxQuantile = getGaussianQuantile({variance, median, p: pMax});
+
+        const totalDistance = Math.abs(minQuantile - maxQuantile);
 
         return (t: number) => {
             /**
@@ -37,24 +47,10 @@ export function createNormalInterpolator(payload?: {}): d3.InterpolatorFactory<n
              */
             const p = t;
             const quantile = getGaussianQuantile({variance, median, p});
+            const distance = Math.abs(quantile - maxQuantile);
+            const share = distance / totalDistance;
 
-            /**
-             * The quantile function returns positive and negative values which we need to associate with ranges.
-             *
-             * We divide them by the maximal or minimal values of our logical domain and then multiply the result
-             * with half of the range.
-             *
-             * This allows us to walk the correct distance into the respective direction.
-             */
-            let distanceFromMiddle: number;
-            if (quantile < 0) {
-                distanceFromMiddle = Math.abs(quantile / percentile01) * halfOfRange;
-            } else if (quantile === 0) {
-                distanceFromMiddle = 0;
-            } else if (quantile > 0) {
-                distanceFromMiddle = -Math.abs(quantile / percentile99) * halfOfRange;
-            }
-            return middle + distanceFromMiddle;
+            return share * range;
         };
     };
 
