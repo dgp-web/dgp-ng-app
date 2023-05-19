@@ -15,11 +15,12 @@ import {
 import * as d3 from "d3";
 import * as _ from "lodash";
 import { Many } from "data-modeling";
+import * as regression from "regression";
 
 /**
  * Helper function to compute parameter sigma2 for the Normal
  */
-export function computeVariance(data: Many<number>, mu: number) {
+export function estimateVariance(data: Many<number>, mu: number) {
     let sumOfSquaredDiffs = 0;
     const n = data.length;
     for (let i = 0; i < n; i++) {
@@ -29,10 +30,62 @@ export function computeVariance(data: Many<number>, mu: number) {
     return sumOfSquaredDiffs / n;
 }
 
+
+/**
+ * Resources: https://www.npmjs.com/package/distfitjs
+ */
 export function fitNormalDistribution(data: Many<number>): { readonly mu: number; readonly variance: number; } {
     const mu = d3.median(data);
-    const sigma2 = computeVariance(data, mu);
+    const sigma2 = estimateVariance(data, mu);
     return {mu, variance: sigma2};
+}
+
+/**
+ * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9
+ */
+
+/*
+To fit a Weibull distribution to these data, notice that the CDF for the
+Weibull is p = Pr{X <= x} = 1 - exp(-(x/a)^b).
+Transforming that to log(a) + log(-log(1-p))*(1/b) = log(x) again gives a
+linear relationship, this time between log(-log(1-p)) and log(x).
+We can use least squares to fit a straight line on the transformed scale
+using p and x from the ECDF, and the slope and intercept of that line lead
+to estimates of a and b.
+
+logx = log(x);
+logy = log(-log(1 - p));
+poly = polyfit(logy,logx,1);
+paramHat = [exp(poly(2)) 1/poly(1)]*/
+
+
+/**
+ * Resources: https://www.npmjs.com/package/distfitjs
+ *
+ * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9
+ */
+export function fitWeibullDistribution(payload: {
+    readonly x: Many<number>;
+    readonly y: Many<number>;
+}) {
+    const x = payload.x;
+    const y = payload.y;
+
+    const tuples = y.map((yv, index) => [yv, x[index]]);
+
+    const engine = regression.linear(tuples);
+
+    console.log(engine.string);
+    console.log(engine.equation);
+
+    const slope = engine.equation[0];
+    const intercept = engine.equation[1];
+
+    const scale = Math.exp(intercept);
+    const shape = 1 / slope;
+
+    return {scale, shape};
+
 }
 
 @Component({
@@ -128,7 +181,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 }
 
 const rdm = d3.randomNormal(0, 1);
-const values = _.sortBy(Array.from({length: 100}, (x, i) => rdm()));
+const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()));
 
 
 const result = fitNormalDistribution(values);
