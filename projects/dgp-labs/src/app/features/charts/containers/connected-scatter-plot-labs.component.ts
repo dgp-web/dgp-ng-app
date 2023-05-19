@@ -1,11 +1,48 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
-import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
+import { byUnique, createGuid, DgpModelEditorComponentBase } from "dgp-ng-app";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlot,
+    ConnectedScatterPlotRenderer,
+    createNormalInterpolator,
+    Dot,
+    getGaussianQuantile,
+    getMedianRank
+} from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
+import * as d3 from "d3";
+import * as _ from "lodash";
+import { Many } from "data-modeling";
 
+/**
+ * Helper function to compute parameter mu for the Normal
+ */
+function computeMu(data: Many<number>): number {
+    return d3.median(data);
+}
+
+/**
+ * Helper function to compute parameter sigma2 for the Normal
+ */
+function computeSigma2(data: Many<number>, mu: number) {
+    let sumOfSquaredDiffs = 0;
+    const n = data.length;
+    let i;
+    for (i = 0; i < n; i++) {
+        const squaredDiff = Math.pow(data[i] - mu, 2);
+        sumOfSquaredDiffs += squaredDiff;
+    }
+    const sigma2 = sumOfSquaredDiffs / n;
+    return sigma2;
+}
+
+export function fitData(data: Many<number>): { readonly mu: number; readonly variance: number; } {
+    const mu = d3.median(data);
+    const sigma2 = computeSigma2(data, mu);
+    return {mu, variance: sigma2};
+}
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -82,10 +119,95 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     readonly cspMetadata = connectedScatterPlotMetadata;
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
-    model = testConnectedScatterPlot;
+    // model = testConnectedScatterPlot;
+    model = {
+        yAxisInterpolator,
+        yAxisMin: 0,
+        yAxisMax: 100,
+        model: [group],
+        showXAxisGridLines: true,
+        showYAxisGridLines: true,
+    } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
         this.renderer = renderer;
     }
 
 }
+
+const rdm = d3.randomNormal(0, 1);
+const values = _.sortBy(Array.from({length: 100}, (x, i) => rdm()));
+
+
+const result = fitData(values);
+const median = result.mu;
+const variance = result.variance;
+
+const dots = values.map((x, index) => {
+
+    const p = getMedianRank({
+        i: index + 1,
+        n: values.length
+    }) * 100;
+
+    const y = p;
+
+    return {x, y} as Dot;
+
+});
+
+const minP = d3.min(dots.map(x => x.y)) / 100;
+const maxP = d3.max(dots.map(x => x.y)) / 100;
+
+const quantileMin = getGaussianQuantile({
+    variance, median, p: minP
+});
+const quantileMax = getGaussianQuantile({
+    variance, median, p: maxP
+});
+
+console.log("quantileMin", quantileMin, "minP", minP);
+console.log("quantileMax", quantileMax, "maxP", maxP);
+
+const fittedLine: Many<Dot> = [{
+    x: quantileMin,
+    y: minP * 100
+}, {
+    x: quantileMax,
+    y: maxP * 100
+}];
+
+const group: ConnectedScatterGroup = {
+
+    connectedScatterGroupId: createGuid(),
+    colorHex: "#00ff00",
+    showEdges: true,
+    showVertices: true,
+    series: [{
+        connectedScatterSeriesId: "Data",
+        colorHex: "#00ff00",
+        showVertices: true,
+        showEdges: false,
+        dots
+    }, {
+        connectedScatterSeriesId: "Fitted distribution",
+        colorHex: "#ff0000",
+        showVertices: true,
+        showEdges: true,
+        dots: fittedLine
+    }]
+};
+
+const pValues = [
+    ...dots.map(x => x.y / 100),
+    ...fittedLine.map(x => x.y / 100)
+].filter(byUnique);
+
+console.log(pValues);
+
+const yAxisInterpolator = createNormalInterpolator({
+    /*    median,
+        variance,
+        */
+    pValues
+});
