@@ -7,7 +7,8 @@ import {
     createWeibullInterpolator,
     Dot,
     getMedianRank,
-    getWeibullQuantile
+    getWeibullQuantile,
+    ScaleType
 } from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
@@ -76,8 +77,6 @@ export function fitWeibullDistribution(payload: {
 
     const slope = engine.equation[0];
     const intercept = engine.equation[1];
-
-    console.log(slope, intercept);
 
     const scale = Math.exp(intercept);
     const shape = 1 / slope;
@@ -169,7 +168,8 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         model: [group],
         showXAxisGridLines: true,
         showYAxisGridLines: true,
-        dotSize: 8
+        dotSize: 8,
+        xAxisScaleType: ScaleType.Logarithmic
     } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
@@ -178,8 +178,12 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
 }
 
-const rdm = weibull.factory(2, 1);
-const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(v => Math.log(v)));
+const originalScale = 2;
+const originalShape = 1;
+
+const rdm = weibull.factory(originalShape, originalScale);
+// const rdm = d3.randomNormal(0, 1);
+const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()));
 
 const yValues = values.map((x, index) => {
 
@@ -190,13 +194,6 @@ const yValues = values.map((x, index) => {
 
 });
 
-const fittedDist = fitWeibullDistribution({
-    x: values,
-    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv}))
-});
-const shape = fittedDist.shape;
-const scale = fittedDist.scale;
-
 const dots = values.map((x, index) => {
 
     const y = yValues[index];
@@ -205,18 +202,36 @@ const dots = values.map((x, index) => {
 
 });
 
+const fittedDist = fitWeibullDistribution({
+    x: values,
+    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv}))
+});
+
+const shape = fittedDist.shape;
+const scale = fittedDist.scale;
+
 const minP = d3.min(dots.map(x => x.y)) / 100;
 const maxP = d3.max(dots.map(x => x.y)) / 100;
 
 const quantileMin = getWeibullQuantile({
     shape, scale, p: minP
 });
-console.log("quantileMin", quantileMin, {
-    shape, scale, p: minP
-});
+
 const quantileMax = getWeibullQuantile({
     shape, scale, p: maxP
 });
+/*
+
+console.log(shape, scale);
+console.log(originalShape, originalScale);
+
+console.log(getWeibullQuantile({
+    shape, scale, p: maxP
+}));
+console.log(getWeibullQuantile({
+    shape: originalShape, scale: originalScale, p: maxP
+}));
+*/
 
 const fittedLine: Many<Dot> = [{
     x: quantileMin,
@@ -225,8 +240,6 @@ const fittedLine: Many<Dot> = [{
     x: quantileMax,
     y: maxP * 100
 }];
-
-console.log("fittedLine", fittedLine);
 
 const group: ConnectedScatterGroup = {
 
@@ -250,10 +263,9 @@ const group: ConnectedScatterGroup = {
 };
 
 const pValues = [
-    ...dots.map(x => x.y / 100),
-    ...fittedLine.map(x => x.y / 100)
+    ...dots.map(x => x.y / 100)
 ].filter(byUnique);
 
 const yAxisInterpolator = createWeibullInterpolator({
-    pValues
+    pValues, scale: originalScale, shape: originalShape
 });

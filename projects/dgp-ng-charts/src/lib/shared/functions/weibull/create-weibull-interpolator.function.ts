@@ -1,9 +1,12 @@
 import * as d3 from "d3";
 import { getWeibullQuantile } from "./get-weibull-quantile.function";
 import { Many } from "data-modeling";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 export function createWeibullInterpolator(payload?: {
     readonly pValues?: Many<number>;
+    readonly scale?: number;
+    readonly shape?: number;
 }): d3.InterpolatorFactory<number, number> {
     const pValues = payload.pValues;
 
@@ -12,6 +15,12 @@ export function createWeibullInterpolator(payload?: {
 
     let pMax = 0.99;
     if (pValues) pMax = d3.max(pValues);
+
+    let scale = 1;
+    if (notNullOrUndefined(payload.scale)) scale = payload.scale;
+
+    let shape = 1;
+    if (notNullOrUndefined(payload.shape)) shape = payload.shape;
 
     return (a: number, b: number) => {
 
@@ -22,8 +31,8 @@ export function createWeibullInterpolator(payload?: {
          */
         const range = Math.abs(a - b);
 
-        const minQuantile = getWeibullQuantile({p: pMin});
-        const maxQuantile = getWeibullQuantile({p: pMax});
+        const minQuantile = getWeibullQuantile({p: pMin, scale, shape});
+        const maxQuantile = getWeibullQuantile({p: pMax, scale, shape});
 
         const totalDistance = Math.abs(minQuantile - maxQuantile);
 
@@ -36,7 +45,7 @@ export function createWeibullInterpolator(payload?: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            const quantile = getWeibullQuantile({p});
+            const quantile = getWeibullQuantile({p, scale, shape});
             const distance = Math.abs(quantile - maxQuantile);
             const share = distance / totalDistance;
 
