@@ -255,5 +255,5 @@ const pValues = [
 ].filter(byUnique);
 
 const yAxisInterpolator = createWeibullInterpolator({
-    pValues, scale: 1, shape: 1
+    pValues
 });

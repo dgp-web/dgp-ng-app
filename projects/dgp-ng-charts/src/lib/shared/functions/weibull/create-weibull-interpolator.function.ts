@@ -1,12 +1,9 @@
 import * as d3 from "d3";
 import { getWeibullQuantile } from "./get-weibull-quantile.function";
 import { Many } from "data-modeling";
-import { notNullOrUndefined } from "dgp-ng-app";
 
 export function createWeibullInterpolator(payload?: {
     readonly pValues?: Many<number>;
-    readonly scale?: number;
-    readonly shape?: number;
 }): d3.InterpolatorFactory<number, number> {
     const pValues = payload.pValues;
 
@@ -16,11 +13,9 @@ export function createWeibullInterpolator(payload?: {
     let pMax = 0.99;
     if (pValues) pMax = d3.max(pValues);
 
-    let scale = 1;
-    if (notNullOrUndefined(payload.scale)) scale = payload.scale;
+    const scale = 1;
 
-    let shape = 1;
-    if (notNullOrUndefined(payload.shape)) shape = payload.shape;
+    const shape = 1;
 
     return (a: number, b: number) => {
 
