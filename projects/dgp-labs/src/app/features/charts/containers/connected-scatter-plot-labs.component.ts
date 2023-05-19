@@ -169,7 +169,6 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
-        xAxisScaleType: ScaleType.Logarithmic
     } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
