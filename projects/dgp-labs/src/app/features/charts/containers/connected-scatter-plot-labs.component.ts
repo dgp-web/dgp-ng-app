@@ -7,8 +7,7 @@ import {
     createWeibullInterpolator,
     Dot,
     getMedianRank,
-    getWeibullQuantile,
-    ScaleType
+    getWeibullQuantile
 } from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
@@ -177,11 +176,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
 }
 
-const originalScale = 2;
+const originalScale = 1;
 const originalShape = 1;
 
-const rdm = weibull.factory(originalShape, originalScale);
-// const rdm = d3.randomNormal(0, 1);
+const rdm = weibull.factory(originalScale, originalShape);
 const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(Math.log));
 
 const yValues = values.map((x, index) => {
@@ -203,14 +201,14 @@ const dots = values.map((x, index) => {
 
 const fittedDist = fitWeibullDistribution({
     x: values,
-    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv}))
+    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv, shape: originalShape, scale: originalScale}))
 });
 
 const shape = fittedDist.shape;
 const scale = fittedDist.scale;
 
-console.log(shape, scale);
-console.log(originalShape, originalScale);
+console.log("originalScale", originalScale, "originalShape", originalShape);
+console.log("scale", scale, "shape", shape);
 
 const minP = d3.min(dots.map(x => x.y)) / 100;
 const maxP = d3.max(dots.map(x => x.y)) / 100;
@@ -222,16 +220,6 @@ const quantileMin = getWeibullQuantile({
 const quantileMax = getWeibullQuantile({
     shape, scale, p: maxP
 });
-
-/*
-
-console.log(getWeibullQuantile({
-    shape, scale, p: maxP
-}));
-console.log(getWeibullQuantile({
-    shape: originalShape, scale: originalScale, p: maxP
-}));
-*/
 
 const fittedLine: Many<Dot> = [{
     x: quantileMin,

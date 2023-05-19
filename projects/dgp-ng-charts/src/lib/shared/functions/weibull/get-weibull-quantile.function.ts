@@ -2,6 +2,7 @@ import { notNullOrUndefined } from "dgp-ng-app";
 
 /**
  * ln(-ln(1 - p))
+ * ln(lambda * ((-ln(1 - p)) ** (1/shape)))
  *
  * References
  * - https://en.wikipedia.org/wiki/Weibull_distribution
@@ -19,5 +20,6 @@ export function getWeibullQuantile(payload: {
     let shape = 1;
     if (notNullOrUndefined(payload.shape)) shape = payload.shape;
 
-    return scale * (Math.log(-Math.log(1 - p)) ** (1 / shape));
+    return Math.log(scale * ((-Math.log(1 - p)) ** (1 / shape)));
 }
+
