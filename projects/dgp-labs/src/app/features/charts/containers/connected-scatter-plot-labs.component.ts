@@ -33,15 +33,6 @@ export function estimateVariance(data: Many<number>, mu: number) {
 
 
 /**
- * Resources: https://www.npmjs.com/package/distfitjs
- */
-export function fitNormalDistribution(data: Many<number>): { readonly mu: number; readonly variance: number; } {
-    const mu = d3.median(data);
-    const sigma2 = estimateVariance(data, mu);
-    return {mu, variance: sigma2};
-}
-
-/**
  * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9
  */
 
