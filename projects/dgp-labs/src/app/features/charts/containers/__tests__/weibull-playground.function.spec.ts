@@ -98,8 +98,9 @@ describe("Weibull", () => {
 
             fit(`playground`, () => {
 
-                const rdm = d3.randomNormal(1, 1);
-                const x = _.sortBy(Array.from({length: 100}, (noop, i) => rdm()));
+                const rdm = d3.randomNormal(50, 15);
+                const x = _.sortBy(Array.from({length: 100}, (noop, i) => rdm())
+                    .map(v => Math.log(v)));
 
                 const y = x.map((noop, index) => {
                     /**

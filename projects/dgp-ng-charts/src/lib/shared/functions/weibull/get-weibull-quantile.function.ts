@@ -19,5 +19,5 @@ export function getWeibullQuantile(payload: {
     let shape = 1;
     if (notNullOrUndefined(payload.shape)) shape = payload.shape;
 
-    return scale *( Math.log(-Math.log(1 - p)) ** (1/shape));
+    return scale * (Math.log(-Math.log(1 - p)) ** (1 / shape));
 }

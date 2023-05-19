@@ -4,10 +4,10 @@ import {
     ConnectedScatterGroup,
     ConnectedScatterPlot,
     ConnectedScatterPlotRenderer,
-    createNormalInterpolator,
+    createWeibullInterpolator,
     Dot,
-    getGaussianQuantile,
-    getMedianRank
+    getMedianRank,
+    getWeibullQuantile
 } from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
@@ -16,6 +16,7 @@ import * as d3 from "d3";
 import * as _ from "lodash";
 import { Many } from "data-modeling";
 import * as regression from "regression";
+import * as weibull from "@stdlib/random-base-weibull";
 
 /**
  * Helper function to compute parameter sigma2 for the Normal
@@ -58,10 +59,8 @@ logy = log(-log(1 - p));
 poly = polyfit(logy,logx,1);
 paramHat = [exp(poly(2)) 1/poly(1)]*/
 
-
 /**
  * Resources: https://www.npmjs.com/package/distfitjs
- *
  * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9
  */
 export function fitWeibullDistribution(payload: {
@@ -73,13 +72,12 @@ export function fitWeibullDistribution(payload: {
 
     const tuples = y.map((yv, index) => [yv, x[index]]);
 
-    const engine = regression.linear(tuples);
-
-    console.log(engine.string);
-    console.log(engine.equation);
+    const engine = regression.polynomial(tuples, {order: 1});
 
     const slope = engine.equation[0];
     const intercept = engine.equation[1];
+
+    console.log(slope, intercept);
 
     const scale = Math.exp(intercept);
     const shape = 1 / slope;
@@ -180,22 +178,28 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
 }
 
-const rdm = d3.randomNormal(0, 1);
-const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()));
+const rdm = weibull.factory(2, 1);
+const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(v => Math.log(v)));
 
+const yValues = values.map((x, index) => {
 
-const result = fitNormalDistribution(values);
-const median = result.mu;
-const variance = result.variance;
-
-const dots = values.map((x, index) => {
-
-    const p = getMedianRank({
+    return getMedianRank({
         i: index + 1,
         n: values.length
     }) * 100;
 
-    const y = p;
+});
+
+const fittedDist = fitWeibullDistribution({
+    x: values,
+    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv}))
+});
+const shape = fittedDist.shape;
+const scale = fittedDist.scale;
+
+const dots = values.map((x, index) => {
+
+    const y = yValues[index];
 
     return {x, y} as Dot;
 
@@ -204,11 +208,14 @@ const dots = values.map((x, index) => {
 const minP = d3.min(dots.map(x => x.y)) / 100;
 const maxP = d3.max(dots.map(x => x.y)) / 100;
 
-const quantileMin = getGaussianQuantile({
-    variance, median, p: minP
+const quantileMin = getWeibullQuantile({
+    shape, scale, p: minP
 });
-const quantileMax = getGaussianQuantile({
-    variance, median, p: maxP
+console.log("quantileMin", quantileMin, {
+    shape, scale, p: minP
+});
+const quantileMax = getWeibullQuantile({
+    shape, scale, p: maxP
 });
 
 const fittedLine: Many<Dot> = [{
@@ -218,6 +225,8 @@ const fittedLine: Many<Dot> = [{
     x: quantileMax,
     y: maxP * 100
 }];
+
+console.log("fittedLine", fittedLine);
 
 const group: ConnectedScatterGroup = {
 
@@ -245,6 +254,6 @@ const pValues = [
     ...fittedLine.map(x => x.y / 100)
 ].filter(byUnique);
 
-const yAxisInterpolator = createNormalInterpolator({
+const yAxisInterpolator = createWeibullInterpolator({
     pValues
 });
