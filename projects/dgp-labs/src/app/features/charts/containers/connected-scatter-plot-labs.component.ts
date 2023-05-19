@@ -179,7 +179,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 const originalScale = 2;
 const originalShape = 1;
 
-const rdm = weibull.factory(originalScale, originalShape);
+const rdm = weibull.factory(originalShape, originalScale);
 const values = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(Math.log));
 
 const yValues = values.map((x, index) => {
