@@ -176,7 +176,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
 }
 
-const originalScale = 1;
+const originalScale = 2;
 const originalShape = 1;
 
 const rdm = weibull.factory(originalScale, originalShape);
@@ -201,7 +201,7 @@ const dots = values.map((x, index) => {
 
 const fittedDist = fitWeibullDistribution({
     x: values,
-    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv, shape: originalShape, scale: originalScale}))
+    y: yValues.map(yv => yv / 100).map(yv => getWeibullQuantile({p: yv, shape: 1, scale: 1}))
 });
 
 const shape = fittedDist.shape;
@@ -255,5 +255,5 @@ const pValues = [
 ].filter(byUnique);
 
 const yAxisInterpolator = createWeibullInterpolator({
-    pValues, scale: originalScale, shape: originalShape
+    pValues, scale: 1, shape: 1
 });
