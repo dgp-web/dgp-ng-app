@@ -17,30 +17,21 @@ import * as _ from "lodash";
 import { Many } from "data-modeling";
 
 /**
- * Helper function to compute parameter mu for the Normal
- */
-function computeMu(data: Many<number>): number {
-    return d3.median(data);
-}
-
-/**
  * Helper function to compute parameter sigma2 for the Normal
  */
-function computeSigma2(data: Many<number>, mu: number) {
+export function computeVariance(data: Many<number>, mu: number) {
     let sumOfSquaredDiffs = 0;
     const n = data.length;
-    let i;
-    for (i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
         const squaredDiff = Math.pow(data[i] - mu, 2);
         sumOfSquaredDiffs += squaredDiff;
     }
-    const sigma2 = sumOfSquaredDiffs / n;
-    return sigma2;
+    return sumOfSquaredDiffs / n;
 }
 
-export function fitData(data: Many<number>): { readonly mu: number; readonly variance: number; } {
+export function fitNormalDistribution(data: Many<number>): { readonly mu: number; readonly variance: number; } {
     const mu = d3.median(data);
-    const sigma2 = computeSigma2(data, mu);
+    const sigma2 = computeVariance(data, mu);
     return {mu, variance: sigma2};
 }
 
@@ -127,6 +118,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         model: [group],
         showXAxisGridLines: true,
         showYAxisGridLines: true,
+        dotSize: 8
     } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
@@ -139,7 +131,7 @@ const rdm = d3.randomNormal(0, 1);
 const values = _.sortBy(Array.from({length: 100}, (x, i) => rdm()));
 
 
-const result = fitData(values);
+const result = fitNormalDistribution(values);
 const median = result.mu;
 const variance = result.variance;
 
@@ -182,7 +174,7 @@ const group: ConnectedScatterGroup = {
     showVertices: true,
     series: [{
         connectedScatterSeriesId: "Data",
-        colorHex: "#00ff00",
+        colorHex: "#00ff0066",
         showVertices: true,
         showEdges: false,
         dots
