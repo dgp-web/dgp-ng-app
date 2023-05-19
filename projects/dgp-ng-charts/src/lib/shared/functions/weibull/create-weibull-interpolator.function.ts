@@ -1,7 +1,18 @@
 import * as d3 from "d3";
 import { getWeibullQuantile } from "./get-weibull-quantile.function";
+import { Many } from "data-modeling";
 
-export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<number, number> {
+export function createWeibullInterpolator(payload?: {
+    readonly pValues?: Many<number>;
+}): d3.InterpolatorFactory<number, number> {
+    const pValues = payload.pValues;
+
+    let pMin = 0.01;
+    if (pValues) pMin = d3.min(pValues);
+
+    let pMax = 0.99;
+    if (pValues) pMax = d3.max(pValues);
+
     return (a: number, b: number) => {
 
         /**
@@ -11,10 +22,10 @@ export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<
          */
         const range = Math.abs(a - b);
 
-        const percentile01 = getWeibullQuantile({p: 0.01});
-        const percentile99 = getWeibullQuantile({p: 0.99});
+        const minQuantile = getWeibullQuantile({p: pMin});
+        const maxQuantile = getWeibullQuantile({p: pMax});
 
-        const totalDistance = Math.abs(percentile01 - percentile99);
+        const totalDistance = Math.abs(minQuantile - maxQuantile);
 
         return (t: number) => {
             /**
@@ -25,8 +36,8 @@ export function createWeibullInterpolator(payload?: {}): d3.InterpolatorFactory<
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            const percentile = getWeibullQuantile({p});
-            const distance = Math.abs(percentile - percentile99);
+            const quantile = getWeibullQuantile({p});
+            const distance = Math.abs(quantile - maxQuantile);
             const share = distance / totalDistance;
 
             return share * range;
