@@ -18,19 +18,6 @@ import { Many } from "data-modeling";
 import * as regression from "regression";
 import * as weibull from "@stdlib/random-base-weibull";
 
-/**
- * Helper function to compute parameter sigma2 for the Normal
- */
-export function estimateVariance(data: Many<number>, mu: number) {
-    let sumOfSquaredDiffs = 0;
-    const n = data.length;
-    for (let i = 0; i < n; i++) {
-        const squaredDiff = Math.pow(data[i] - mu, 2);
-        sumOfSquaredDiffs += squaredDiff;
-    }
-    return sumOfSquaredDiffs / n;
-}
-
 
 /**
  * https://www.mbfys.ru.nl/~robvdw/CNP04/LAB_ASSIGMENTS/LAB05_CN05/MATLAB2007b/stats/html/cdffitdemo.html#9

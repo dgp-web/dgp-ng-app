@@ -1,6 +1,7 @@
 import { Many } from "data-modeling";
 import * as d3 from "d3";
-import { estimateVariance } from "../../../../../../dgp-labs/src/app/features/charts/containers/connected-scatter-plot-labs.component";
+
+import { estimateVariance } from "./estimate-variance.function";
 
 /**
  * Resources: https://www.npmjs.com/package/distfitjs
