@@ -20,7 +20,7 @@ export function createWeibullYAxisTickValues(payload: {
     }
 
     if (max > result[result.length - 1]) {
-        result.splice(result.length, 0, max);
+        result.splice(result.length-1, 1, max);
     }
 
     return result;

@@ -14,7 +14,7 @@ import { toWeibullInput } from "../../../../../../dgp-ng-charts/src/lib/shared/f
 import {
     createWeibullYAxisTickValues
 } from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-y-axis-tick-values.function";
-
+import * as d3 from "d3";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -46,6 +46,7 @@ import {
                                                 [yAxisStep]="model.yAxisStep"
                                                 [yAxisInterpolator]="model.yAxisInterpolator"
                                                 [yAxisTickValues]="model.yAxisTickValues"
+                                                [yAxisTickFormat]="model.yAxisTickFormat"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"
                                                 [dotSize]="model.dotSize"
@@ -100,7 +101,14 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
-        yAxisTickValues
+        yAxisTickValues,
+        yAxisTickFormat: (x: number) => {
+            if (x >= 1 && x <= 99) return d3.format("d")(x);
+            if (x > 99) return x.toPrecision(3);
+            if (x < 1) return x.toPrecision(3);
+
+            return;
+        }
     } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
@@ -122,8 +130,6 @@ const dots = toProbabilityChartDots({X, P});
 const yAxisInterpolator = createWeibullInterpolator({P});
 
 const yAxisTickValues = createWeibullYAxisTickValues({P});
-
-console.log(yAxisTickValues);
 
 const group: ConnectedScatterGroup = {
 
