@@ -11,6 +11,9 @@ import {
     toProbabilityChartDots
 } from "../../../../../../dgp-ng-charts/src/lib/shared/functions";
 import { toWeibullInput } from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/to-weibull-input.function";
+import {
+    createWeibullYAxisTickValues
+} from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-y-axis-tick-values.function";
 
 
 @Component({
@@ -97,7 +100,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
-        yAxisTickValues: [1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 99]
+        yAxisTickValues
     } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
@@ -117,6 +120,10 @@ const P = X.map(toMedianRank);
 const dots = toProbabilityChartDots({X, P});
 
 const yAxisInterpolator = createWeibullInterpolator({P});
+
+const yAxisTickValues = createWeibullYAxisTickValues({P});
+
+console.log(yAxisTickValues);
 
 const group: ConnectedScatterGroup = {
 
