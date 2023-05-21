@@ -97,6 +97,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
+        yAxisTickValues: [1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 99]
     } as ConnectedScatterPlot;
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
