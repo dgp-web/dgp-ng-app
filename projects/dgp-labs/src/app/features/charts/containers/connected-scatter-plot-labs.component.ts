@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
-import { testConnectedScatterPlot } from "../../../__tests__/constants/test-connected-scatter-plot.constant";
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
-
+import { createTestWeibullPlot } from "../../../__tests__/functions/create-test-weibull-plot.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -37,6 +36,7 @@ import {
                                                 [yAxisStep]="model.yAxisStep"
                                                 [yAxisInterpolator]="model.yAxisInterpolator"
                                                 [yAxisTickValues]="model.yAxisTickValues"
+                                                [yAxisTickFormat]="model.yAxisTickFormat"
                                                 [showYAxisGridLines]="model.showYAxisGridLines"
                                                 [controlLines]="model.controlLines"
                                                 [dotSize]="model.dotSize"
@@ -82,10 +82,16 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     readonly cspMetadata = connectedScatterPlotMetadata;
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
-    model = testConnectedScatterPlot;
+    // model = testConnectedScatterPlot;
+    model = createTestWeibullPlot({
+        n: 121,
+        scale: 2,
+        shape: 1
+    });
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
         this.renderer = renderer;
     }
 
 }
+

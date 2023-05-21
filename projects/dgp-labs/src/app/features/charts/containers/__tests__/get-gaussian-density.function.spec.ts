@@ -143,7 +143,7 @@ describe("gaussian", () => {
 
     describe(`createGaussianScale`, () => {
 
-        fit(`playground`, () => {
+        it(`playground`, () => {
 
             const rdm = d3.randomNormal(0, 1);
             const values = _.sortBy(Array.from({length: 15}, (x, i) => rdm()));

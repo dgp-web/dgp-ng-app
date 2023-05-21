@@ -1,5 +1,7 @@
 export * from "./create-normal-interpolator.function";
 export * from "./create-normal-scale.function";
+export * from "./estimate-variance.function";
+export * from "./fit-normal-distribution.function";
 export * from "./get-gaussian-cumulative-distribution.function";
 export * from "./get-gaussian-error.function";
 export * from "./get-gaussian-probability-density.function";

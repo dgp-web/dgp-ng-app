@@ -6,6 +6,10 @@ import {
 } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-interpolator.function";
 import { getWeibullQuantile } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/get-weibull-quantile.function";
 
+import {
+    fitWeibullDistribution
+} from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/fit-weibull-distribution.function";
+
 export function createWeibullScale(payload: {
     readonly dataAreaSize: number;
 }) {
@@ -45,7 +49,7 @@ describe("Weibull", () => {
 
         describe(`scale`, () => {
 
-            fit(`playground`, () => {
+            it(`playground`, () => {
 
                 const rdm = d3.randomNormal(0, 1);
                 const values = _.sortBy(Array.from({length: 15}, (x, i) => rdm()));
@@ -92,6 +96,38 @@ describe("Weibull", () => {
 
             });
 
+        });
+        describe(`fitWeibullDistribution`, () => {
+
+            fit(`playground`, () => {
+
+                const rdm = d3.randomNormal(50, 15);
+                const x = _.sortBy(Array.from({length: 100}, (noop, i) => rdm())
+                    .map(v => Math.log(v)));
+
+                const y = x.map((noop, index) => {
+                    /**
+                     * We're going to use the inverse CDF, so we need probabilities between 0 and 1.
+                     *
+                     * The median rank can fulfill that.
+                     */
+                    const p = getMedianRank({
+                        i: index + 1,
+                        n: x.length
+                    });
+
+                    return getWeibullQuantile({p});
+
+                });
+
+                console.log("values", x);
+
+                const fittedRant = fitWeibullDistribution({quantiles: y, logX: x});
+
+                console.log(JSON.stringify(fittedRant));
+
+
+            });
         });
 
     });
