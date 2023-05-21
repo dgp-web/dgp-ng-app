@@ -4,11 +4,7 @@ import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-chart
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
-import * as weibull from "@stdlib/random-base-weibull";
-import {
-    createWeibullConnectedScatterGroup
-} from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-connected-scatter-group.function";
-import { createWeibullPlot } from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-plot.function";
+import { createTestWeibullPlot } from "../../../__tests__/functions/create-test-weibull-plot.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -87,8 +83,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
     // model = testConnectedScatterPlot;
-    model = createWeibullPlot({
-        model: [createWeibullConnectedScatterGroup({values})]
+    model = createTestWeibullPlot({
+        n: 121,
+        scale: 2,
+        shape: 1
     });
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
@@ -96,10 +94,4 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     }
 
 }
-
-const originalScale = 2;
-const originalShape = 1;
-
-const rdm = weibull.factory(originalShape, originalScale);
-const values = Array.from({length: 121}, () => rdm());
 
