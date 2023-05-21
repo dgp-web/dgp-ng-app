@@ -24,7 +24,7 @@ export function createWeibullConnectedScatterGroup(payload: {
         showVertices: true,
         series: [{
             connectedScatterSeriesId: connectedScatterGroupId + ".Data",
-            colorHex: "#00ff0066",
+            colorHex: config.colorHex || "#00ff0066",
             showVertices: true,
             showEdges: false,
             dots
