@@ -25,13 +25,13 @@ paramHat = [exp(poly(2)) 1/poly(1)]
  */
 
 export function fitWeibullDistribution(payload: {
-    readonly x: Many<number>;
-    readonly y: Many<number>;
+    readonly X: Many<number>;
+    readonly quantiles: Many<number>;
 }) {
-    const x = payload.x;
-    const y = payload.y;
+    const X = payload.X;
+    const quantiles = payload.quantiles;
 
-    const tuples = y.map((yv, index) => [yv, x[index]]);
+    const tuples = quantiles.map((yv, index) => [yv, X[index]]);
 
     const engine = regression.polynomial(tuples, {order: 1});
 

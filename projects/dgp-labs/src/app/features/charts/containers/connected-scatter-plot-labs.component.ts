@@ -6,7 +6,8 @@ import {
     ConnectedScatterPlotRenderer,
     createWeibullInterpolator,
     Dot,
-    getMedianRank
+    getMedianRank,
+    toPercent
 } from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
@@ -115,7 +116,7 @@ const rdm = weibull.factory(originalShape, originalScale);
 
 const X = _.sortBy(Array.from({length: 121}, (x, i) => rdm()).map(Math.log));
 
-const pValues = X.map((x, index) => {
+const P = X.map((x, index) => {
 
     return getMedianRank({
         i: index + 1,
@@ -123,14 +124,14 @@ const pValues = X.map((x, index) => {
     });
 
 });
-const Y = pValues.map(x => x * 100);
 
 const dots = X.map((x, index) => {
-    const y = Y[index];
+    const p = P[index];
+    const y = toPercent(p);
     return {x, y} as Dot;
 });
 
-const fittedLine = getFittedWeibullDistributionLine({X, Y});
+const fittedLine = getFittedWeibullDistributionLine({X, P});
 
 const group: ConnectedScatterGroup = {
 
@@ -153,4 +154,4 @@ const group: ConnectedScatterGroup = {
     }]
 };
 
-const yAxisInterpolator = createWeibullInterpolator({pValues});
+const yAxisInterpolator = createWeibullInterpolator({P});

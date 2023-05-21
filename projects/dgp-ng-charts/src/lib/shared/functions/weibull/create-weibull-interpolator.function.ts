@@ -3,15 +3,15 @@ import { getWeibullQuantile } from "./get-weibull-quantile.function";
 import { Many } from "data-modeling";
 
 export function createWeibullInterpolator(payload?: {
-    readonly pValues?: Many<number>;
+    readonly P?: Many<number>;
 }): d3.InterpolatorFactory<number, number> {
-    const pValues = payload.pValues;
+    const P = payload.P;
 
     let pMin = 0.01;
-    if (pValues) pMin = d3.min(pValues);
+    if (P) pMin = d3.min(P);
 
     let pMax = 0.99;
-    if (pValues) pMax = d3.max(pValues);
+    if (P) pMax = d3.max(P);
 
     const scale = 1;
 
