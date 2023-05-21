@@ -20,7 +20,6 @@ export function createWeibullConnectedScatterGroup(payload: {
 
     const result: ConnectedScatterGroup = {
         connectedScatterGroupId,
-        colorHex: "#00ff00",
         showEdges: true,
         showVertices: true,
         series: [{

@@ -1,4 +1,3 @@
-import { Many } from "data-modeling";
 import { matrixToMany } from "dgp-ng-app";
 import { createWeibullYAxisTickValues } from "./create-weibull-y-axis-tick-values.function";
 import * as d3 from "d3";
@@ -6,10 +5,11 @@ import * as _ from "lodash";
 import { ConnectedScatterGroup, ConnectedScatterPlot } from "../../../connected-scatter-plot/models";
 import { createWeibullInterpolator } from "./create-weibull-interpolator.function";
 import { fromPercent } from "../from-percent.function";
+import { Many } from "data-modeling";
 
 export function createWeibullPlot(
     payload: {
-        readonly model: Many<ConnectedScatterGroup>;
+        readonly model: Many<ConnectedScatterGroup>
     },
     config: Partial<ConnectedScatterPlot> = {}
 ): ConnectedScatterPlot {
@@ -45,6 +45,6 @@ export function createWeibullPlot(
         }
     };
 
-    return _.merge(config, result);
+    return _.merge(result, config);
 
 }
