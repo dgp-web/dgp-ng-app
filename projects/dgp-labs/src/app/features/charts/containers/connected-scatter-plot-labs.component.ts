@@ -1,20 +1,14 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { createGuid, DgpModelEditorComponentBase } from "dgp-ng-app";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotRenderer, createWeibullInterpolator } from "dgp-ng-charts";
+import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 import * as weibull from "@stdlib/random-base-weibull";
 import {
-    getFittedWeibullDistributionLine,
-    toMedianRank,
-    toProbabilityChartDots
-} from "../../../../../../dgp-ng-charts/src/lib/shared/functions";
-import { toWeibullInput } from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/to-weibull-input.function";
-import {
-    createWeibullYAxisTickValues
-} from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-y-axis-tick-values.function";
-import * as d3 from "d3";
+    createWeibullConnectedScatterGroup
+} from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-connected-scatter-group.function";
+import { createWeibullPlot } from "../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-plot.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -93,23 +87,9 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
     // model = testConnectedScatterPlot;
-    model = {
-        yAxisInterpolator,
-        yAxisMin: 0,
-        yAxisMax: 100,
-        model: [group],
-        showXAxisGridLines: true,
-        showYAxisGridLines: true,
-        dotSize: 8,
-        yAxisTickValues,
-        yAxisTickFormat: (x: number) => {
-            if (x >= 1 && x <= 99) return d3.format("d")(x);
-            if (x > 99) return x.toPrecision(3);
-            if (x < 1) return x.toPrecision(3);
-
-            return;
-        }
-    } as ConnectedScatterPlot;
+    model = createWeibullPlot({
+        model: [createWeibullConnectedScatterGroup({values})]
+    });
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
         this.renderer = renderer;
@@ -122,33 +102,4 @@ const originalShape = 1;
 
 const rdm = weibull.factory(originalShape, originalScale);
 const values = Array.from({length: 121}, () => rdm());
-
-const X = toWeibullInput(values);
-const P = X.map(toMedianRank);
-const dots = toProbabilityChartDots({X, P});
-
-const yAxisInterpolator = createWeibullInterpolator({P});
-
-const yAxisTickValues = createWeibullYAxisTickValues({P});
-
-const group: ConnectedScatterGroup = {
-
-    connectedScatterGroupId: createGuid(),
-    colorHex: "#00ff00",
-    showEdges: true,
-    showVertices: true,
-    series: [{
-        connectedScatterSeriesId: "Data",
-        colorHex: "#00ff0066",
-        showVertices: true,
-        showEdges: false,
-        dots
-    }, {
-        connectedScatterSeriesId: "Fitted distribution",
-        colorHex: "#ff0000",
-        showVertices: false,
-        showEdges: true,
-        dots: getFittedWeibullDistributionLine({X, P})
-    }]
-};
 
