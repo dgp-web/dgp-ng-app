@@ -1,4 +1,5 @@
 import { notNullOrUndefined } from "dgp-ng-app";
+import { WeibullParameters } from "../../models";
 
 /**
  * ln(-ln(1 - p))
@@ -9,9 +10,7 @@ import { notNullOrUndefined } from "dgp-ng-app";
  */
 export function getWeibullQuantile(payload: {
     readonly p: number;
-    readonly scale?: number;
-    readonly shape?: number;
-}) {
+} & Partial<WeibullParameters>) {
     const p = payload.p;
 
     let scale = 1;

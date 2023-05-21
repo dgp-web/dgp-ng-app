@@ -14,3 +14,4 @@ export { DataAreaSize } from "./data-area-size.model";
 export { ContainerSize } from "./container-size.model";
 export { ChartTitles } from "./chart-titles.model";
 export { ChartGridLineConfig } from "./chart-grid-line-config.model";
+export { WeibullParameters } from "./weibull/weibull-parameters.model";

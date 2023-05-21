@@ -122,7 +122,7 @@ describe("Weibull", () => {
 
                 console.log("values", x);
 
-                const fittedRant = fitWeibullDistribution({quantiles: y, X: x});
+                const fittedRant = fitWeibullDistribution({quantiles: y, logX: x});
 
                 console.log(JSON.stringify(fittedRant));
 

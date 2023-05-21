@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { getWeibullQuantile } from "./get-weibull-quantile.function";
 import { Many } from "data-modeling";
+import { defaultWeibullParameters } from "../../constants";
 
 export function createWeibullInterpolator(payload?: {
     readonly P?: Many<number>;
@@ -13,9 +14,8 @@ export function createWeibullInterpolator(payload?: {
     let pMax = 0.99;
     if (P) pMax = d3.max(P);
 
-    const scale = 1;
-
-    const shape = 1;
+    const scale = defaultWeibullParameters.scale;
+    const shape = defaultWeibullParameters.shape;
 
     return (a: number, b: number) => {
 
