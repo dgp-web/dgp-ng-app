@@ -1,13 +1,13 @@
+import { Many } from "data-modeling";
+import { ConnectedScatterGroup, ConnectedScatterPlot } from "../../../connected-scatter-plot/models";
 import { byUnique, matrixToMany } from "dgp-ng-app";
-import { createWeibullYAxisTickValues } from "./create-weibull-y-axis-tick-values.function";
+import { fromPercent } from "../from-percent.function";
+import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
 import * as d3 from "d3";
 import * as _ from "lodash";
-import { ConnectedScatterGroup, ConnectedScatterPlot } from "../../../connected-scatter-plot/models";
-import { createWeibullInterpolator } from "./create-weibull-interpolator.function";
-import { fromPercent } from "../from-percent.function";
-import { Many } from "data-modeling";
+import { createNormalInterpolator } from "./create-normal-interpolator.function";
 
-export function createWeibullPlot(
+export function createNormalPlot(
     payload: {
         readonly model: Many<ConnectedScatterGroup>
     },
@@ -25,9 +25,9 @@ export function createWeibullPlot(
         .filter(byUnique)
         .sort();
 
-    const yAxisInterpolator = createWeibullInterpolator({P});
+    const yAxisInterpolator = createNormalInterpolator({P});
 
-    const yAxisTickValues = createWeibullYAxisTickValues({P});
+    const yAxisTickValues = createNormalYAxisTickValues({P});
 
     const result: ConnectedScatterPlot = {
         yAxisInterpolator,
@@ -39,8 +39,8 @@ export function createWeibullPlot(
         dotSize: 8,
         yAxisTickValues,
         yAxisTickFormat: (x: number) => {
-            if (x >= 1 && x <= 99) return d3.format("d")(x);
-            if (x > 99) return x.toPrecision(3);
+            if (x >= 1 && x <= 95) return d3.format("d")(x);
+            if (x > 95) return x.toPrecision(3);
             if (x < 1) return x.toPrecision(3);
 
             return;
@@ -48,5 +48,4 @@ export function createWeibullPlot(
     };
 
     return _.merge(result, config);
-
 }

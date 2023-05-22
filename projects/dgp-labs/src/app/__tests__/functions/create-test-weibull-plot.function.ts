@@ -11,13 +11,10 @@ export function createTestWeibullPlot(payload: {
 
     const rdm = weibull.factory(shape, scale);
     const values = Array.from({length: n}, () => rdm());
-    /*const rdm01 = weibull.factory(3, 2);
-    const values01 = Array.from({length: n}, () => rdm());*/
 
     return createWeibullPlot({
         model: [
-            createWeibullConnectedScatterGroup({values}),
-            //createWeibullConnectedScatterGroup({values: values01}, {colorHex: "#0000ff66"})
+            createWeibullConnectedScatterGroup({values})
         ]
     });
 }

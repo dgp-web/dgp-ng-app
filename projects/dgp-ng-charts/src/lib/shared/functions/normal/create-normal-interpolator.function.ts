@@ -3,9 +3,9 @@ import { getGaussianQuantile } from "./get-gaussian-quantile.function";
 import { Many } from "data-modeling";
 
 export function createNormalInterpolator(payload?: {
-    readonly pValues?: Many<number>;
+    readonly P?: Many<number>;
 }): d3.InterpolatorFactory<number, number> {
-    const pValues = payload.pValues;
+    const P = payload.P;
     /**
      * The axis scale uses a distribution with median 0 which helps us with computing regular distances
      * in both directions. p of 0.5 results in 0 which should be the middle of the range.
@@ -17,10 +17,16 @@ export function createNormalInterpolator(payload?: {
     const variance = 1;
 
     let pMin = 0.01;
-    if (pValues) pMin = d3.min(pValues);
+    if (P) {
+        const computedPMin = d3.min(P);
+        if (computedPMin < pMin) pMin = computedPMin;
+    }
 
     let pMax = 0.99;
-    if (pValues) pMax = d3.max(pValues);
+    if (P) {
+        const computedPMax = d3.max(P);
+        if (computedPMax > pMax) pMax = computedPMax;
+    }
 
     return (a: number, b: number) => {
 

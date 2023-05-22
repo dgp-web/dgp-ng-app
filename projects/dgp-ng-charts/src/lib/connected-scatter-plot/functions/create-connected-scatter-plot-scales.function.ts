@@ -50,6 +50,11 @@ export function createConnectedScatterPlotScales(payload: {
         xMax = payload.xAxisMax;
     }
 
+    if (notNullOrUndefined(payload.yAxisTickValues)) {
+        payload.yAxisTickValues.forEach(yTick => {
+            valuesForYExtremumComputation.push(yTick);
+        });
+    }
 
     let yMin = _.min(valuesForYExtremumComputation);
     let yMax = _.max(valuesForYExtremumComputation);

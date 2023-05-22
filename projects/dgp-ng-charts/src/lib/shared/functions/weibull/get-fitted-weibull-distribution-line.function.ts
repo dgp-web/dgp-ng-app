@@ -22,8 +22,8 @@ export function getFittedWeibullDistributionLine(payload: {
     const shape = fittedDist.shape;
     const scale = fittedDist.scale;
 
-    const minP = d3.min(P);
-    const maxP = d3.max(P);
+    const minP = Math.min(d3.min(P), 0.01);
+    const maxP = Math.max(d3.max(P), 0.99);
 
     const quantileMin = getWeibullQuantile({shape, scale, p: minP});
     const quantileMax = getWeibullQuantile({shape, scale, p: maxP});
