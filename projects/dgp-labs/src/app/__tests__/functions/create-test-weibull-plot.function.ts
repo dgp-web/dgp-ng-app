@@ -1,23 +1,23 @@
 import { ConnectedScatterPlot, createWeibullConnectedScatterGroup, createWeibullPlot, Shape, WeibullParameters } from "dgp-ng-charts";
 import * as weibull from "@stdlib/random-base-weibull";
+import { Many } from "data-modeling";
 
-export function createTestWeibullPlot(payload: {
+export interface WeibullDataConfig extends WeibullParameters {
     readonly n: number;
-} & WeibullParameters): ConnectedScatterPlot {
+    readonly colorHex?: string;
+}
 
-    const n = payload.n;
-    const scale = payload.scale;
-    const shape = payload.shape;
-
-    const rdm = weibull.factory(shape, scale);
-    const values = Array.from({length: n}, () => rdm());
-
+export function createTestWeibullPlot(payload: Many<WeibullDataConfig>): ConnectedScatterPlot {
     return createWeibullPlot({
-        model: [
-            createWeibullConnectedScatterGroup({values}, {
-                colorHex: "#ff000066",
+        model: payload.map(x => {
+
+            const rdm = weibull.factory(x.shape, x.scale);
+            const values = Array.from({length: x.n}, () => rdm());
+
+            return createWeibullConnectedScatterGroup({values}, {
+                colorHex: x.colorHex || "#ff000066",
                 shape: Shape.Cross
-            })
-        ]
+            });
+        })
     });
 }

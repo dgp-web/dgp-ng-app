@@ -5,7 +5,6 @@ import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 import { createTestWeibullPlot } from "../../../__tests__/functions/create-test-weibull-plot.function";
-import * as _ from "lodash";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -52,9 +51,9 @@ import * as _ from "lodash";
                         <dgp-inspector-item label="Renderer"
                                             matIconName="label">
                             <dgp-connected-scatter-plot-renderer-select
-                                    [disabled]="disabled"
-                                    [model]="renderer"
-                                    (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                [disabled]="disabled"
+                                [model]="renderer"
+                                (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
                         </dgp-inspector-item>
                         <dgp-inspector-item label="Items"
                                             matIconName="pin">
@@ -93,11 +92,11 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     n = 121;
 
-    model = createTestWeibullPlot({
-        n: this.n,
-        shape: 2,
-        scale: 1
-    });
+    model =createTestWeibullPlot([
+        {n: 121, shape: 2, scale: 1},
+        {n: 53, shape: 3, scale: 2},
+        {n: 77, shape: 4, scale: 5},
+    ]);
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
         this.renderer = renderer;
@@ -108,11 +107,11 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     }
 
     updateN(n: number) {
-        const model = createTestWeibullPlot({
-            n,
-            shape: 2,
-            scale: 1
-        });
+        const model = createTestWeibullPlot([
+            {n: 121, shape: 2, scale: 1, colorHex: "#ff000066"},
+            {n: 53, shape: 3, scale: 2, colorHex: "#00ff0066"},
+            {n: 77, shape: 4, scale: 5, colorHex: "#0000ff66"},
+        ]);
 
         this.setModel({
             ...this.model,
