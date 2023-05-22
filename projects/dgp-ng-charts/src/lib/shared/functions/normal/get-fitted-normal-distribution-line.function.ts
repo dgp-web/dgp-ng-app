@@ -17,7 +17,7 @@ export function getFittedNormalDistributionLine(payload: {
 
     const fittedDist = fitNormalDistribution(X);
 
-    const median = fittedDist.mu;
+    const median = fittedDist.median;
     const variance = fittedDist.variance;
 
     const minP = Math.min(d3.min(totalP), 0.01);

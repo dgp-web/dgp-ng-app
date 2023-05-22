@@ -3,6 +3,7 @@ export * from "./cardinal-y-axis.model";
 export * from "./chart.model";
 export * from "./chart-margin.model";
 export * from "./chart-selection-mode.model";
+export * from "./distribution-type.model";
 export * from "./limits.model";
 export * from "./scale-type.model";
 export * from "./shared-chart-config.model";
