@@ -25,12 +25,6 @@ export function createNormalConnectedScatterGroup(payload: {
             showVertices: config.showVertices || true,
             showEdges: config.showEdges || false,
             dots
-        }, {
-            connectedScatterSeriesId: connectedScatterGroupId + ".Fitted distribution",
-            colorHex: "#ff0000",
-            showVertices: false,
-            showEdges: true,
-            dots: getFittedNormalDistributionLine({X, P})
         }]
     };
 

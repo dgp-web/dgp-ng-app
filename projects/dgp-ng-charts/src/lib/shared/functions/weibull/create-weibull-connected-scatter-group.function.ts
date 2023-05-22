@@ -3,7 +3,6 @@ import { toWeibullInput } from "./to-weibull-input.function";
 import { toMedianRank } from "../to-median-rank.function";
 import { toProbabilityChartDots } from "../to-probability-chart-dots.function";
 import { createGuid } from "dgp-ng-app";
-import { getFittedWeibullDistributionLine } from "./get-fitted-weibull-distribution-line.function";
 import * as _ from "lodash";
 import { ConnectedScatterGroup } from "../../../connected-scatter-plot/models";
 
@@ -28,11 +27,6 @@ export function createWeibullConnectedScatterGroup(payload: {
             connectedScatterSeriesId: connectedScatterGroupId + ".Data",
             showVertices: true,
             dots
-        }, {
-            connectedScatterSeriesId: connectedScatterGroupId + ".Fitted distribution",
-            showVertices: false,
-            showEdges: true,
-            dots: getFittedWeibullDistributionLine({X, P})
         }]
     };
 

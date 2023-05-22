@@ -7,7 +7,7 @@ import { getInverseGaussianError } from "./get-inverse-gaussian-error.function";
  * - https://en.wikipedia.org/wiki/Normal_distribution
  * - https://en.wikipedia.org/wiki/Probit
  */
-export function getGaussianQuantile(payload: {
+export function getNormalQuantile(payload: {
     readonly median: number;
     readonly variance: number;
     readonly p: number;

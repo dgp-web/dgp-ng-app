@@ -1,32 +1,24 @@
 import * as d3 from "d3";
-import { getGaussianQuantile } from "./get-gaussian-quantile.function";
+import { getNormalQuantile } from "./get-normal-quantile.function";
 import { Many } from "data-modeling";
+import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
+import { defaultNormalParameters } from "../../constants";
 
 export function createNormalInterpolator(payload?: {
     readonly P?: Many<number>;
 }): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
-    /**
-     * The axis scale uses a distribution with median 0 which helps us with computing regular distances
-     * in both directions. p of 0.5 results in 0 which should be the middle of the range.
-     */
-    const median = 0;
-    /**
-     * We can use the variance included in the data or 1 which makes us work with the standard normal distribution.
-     */
-    const variance = 1;
 
-    let pMin = 0.01;
-    if (P) {
-        const computedPMin = d3.min(P);
-        if (computedPMin < pMin) pMin = computedPMin;
-    }
+    const normalParameters = defaultNormalParameters;
 
-    let pMax = 0.99;
-    if (P) {
-        const computedPMax = d3.max(P);
-        if (computedPMax > pMax) pMax = computedPMax;
-    }
+    const pMin = getProbabilityChartPMin({P});
+    const pMax = getProbabilityChartPMax({P});
+
+    const minQuantile = getNormalQuantile({p: pMin, ...normalParameters});
+    const maxQuantile = getNormalQuantile({p: pMax, ...normalParameters});
+
+    const totalDistance = Math.abs(minQuantile - maxQuantile);
 
     return (a: number, b: number) => {
 
@@ -37,11 +29,6 @@ export function createNormalInterpolator(payload?: {
          */
         const range = Math.abs(a - b);
 
-        const minQuantile = getGaussianQuantile({variance, median, p: pMin});
-        const maxQuantile = getGaussianQuantile({variance, median, p: pMax});
-
-        const totalDistance = Math.abs(minQuantile - maxQuantile);
-
         return (t: number) => {
             /**
              * Note that the value t already gets transformed by d3.
@@ -51,7 +38,7 @@ export function createNormalInterpolator(payload?: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            const quantile = getGaussianQuantile({variance, median, p});
+            const quantile = getNormalQuantile({p, ...normalParameters});
             const distance = Math.abs(quantile - maxQuantile);
             const share = distance / totalDistance;
 
