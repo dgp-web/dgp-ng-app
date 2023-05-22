@@ -33,7 +33,7 @@ export function createWeibullPlot(
     model = model.map(csg => {
         // TODO: Handle case for more than 1 series
         const refSeries = csg.series[0];
-        
+
         const X = refSeries.dots.map(x => x.x);
         const P = refSeries.dots.map(x => x.y).map(fromPercent);
 

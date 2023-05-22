@@ -8,18 +8,20 @@ import { toPercent } from "../to-percent.function";
 export function getFittedNormalDistributionLine(payload: {
     readonly X: Many<number>;
     readonly P: Many<number>;
+    readonly totalP: Many<number>;
 }): Many<Dot> {
 
     const X = payload.X;
     const P = payload.P;
+    const totalP = payload.totalP;
 
     const fittedDist = fitNormalDistribution(X);
 
     const median = fittedDist.mu;
     const variance = fittedDist.variance;
 
-    const minP = Math.min(d3.min(P), 0.01);
-    const maxP = Math.max(d3.max(P), 0.99);
+    const minP = Math.min(d3.min(totalP), 0.01);
+    const maxP = Math.max(d3.max(totalP), 0.99);
 
     const quantileMin = getNormalQuantile({median, variance, p: minP});
     const quantileMax = getNormalQuantile({median, variance, p: maxP});

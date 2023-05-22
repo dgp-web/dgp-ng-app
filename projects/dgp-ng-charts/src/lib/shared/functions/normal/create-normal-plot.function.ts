@@ -6,6 +6,8 @@ import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.
 import * as d3 from "d3";
 import * as _ from "lodash";
 import { createNormalInterpolator } from "./create-normal-interpolator.function";
+import { getFittedWeibullDistributionLine } from "../weibull";
+import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 
 export function createNormalPlot(
     payload: {
@@ -14,9 +16,9 @@ export function createNormalPlot(
     config: Partial<ConnectedScatterPlot> = {}
 ): ConnectedScatterPlot {
 
-    const model = payload.model;
+    let model = payload.model;
 
-    const P = model.map(x => x.series)
+    const totalP = model.map(x => x.series)
         .reduce(matrixToMany, [])
         .map(x => x.dots)
         .reduce(matrixToMany, [])
@@ -25,9 +27,30 @@ export function createNormalPlot(
         .filter(byUnique)
         .sort();
 
-    const yAxisInterpolator = createNormalInterpolator({P});
+    const yAxisInterpolator = createNormalInterpolator({P: totalP});
 
-    const yAxisTickValues = createNormalYAxisTickValues({P});
+    const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
+
+    model = model.map(csg => {
+        // TODO: Handle case for more than 1 series
+        const refSeries = csg.series[0];
+
+        const X = refSeries.dots.map(x => x.x);
+        const P = refSeries.dots.map(x => x.y).map(fromPercent);
+
+        return {
+            ...csg,
+            series: [
+                csg.series[0],
+                {
+                    connectedScatterSeriesId: csg.connectedScatterGroupId + ".Fitted distribution",
+                    showVertices: false,
+                    showEdges: true,
+                    dots: getFittedNormalDistributionLine({X, P, totalP})
+                }
+            ]
+        };
+    });
 
     const result: ConnectedScatterPlot = {
         yAxisInterpolator,
