@@ -9,10 +9,16 @@ export function createWeibullInterpolator(payload?: {
     const P = payload.P;
 
     let pMin = 0.01;
-    if (P) pMin = d3.min(P);
+    if (P) {
+        const computedPMin = d3.min(P);
+        if (computedPMin < pMin) pMin = computedPMin;
+    }
 
     let pMax = 0.99;
-    if (P) pMax = d3.max(P);
+    if (P) {
+        const computedPMax = d3.max(P);
+        if (computedPMax > pMax) pMax = computedPMax;
+    }
 
     const scale = defaultWeibullParameters.scale;
     const shape = defaultWeibullParameters.shape;

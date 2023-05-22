@@ -82,7 +82,7 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     readonly cspMetadata = connectedScatterPlotMetadata;
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
-    // model = testConnectedScatterPlot;
+
     model = createTestWeibullPlot({
         n: 121,
         scale: 2,

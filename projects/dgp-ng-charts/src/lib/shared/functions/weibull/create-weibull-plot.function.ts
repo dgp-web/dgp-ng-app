@@ -1,4 +1,4 @@
-import { matrixToMany } from "dgp-ng-app";
+import { byUnique, matrixToMany } from "dgp-ng-app";
 import { createWeibullYAxisTickValues } from "./create-weibull-y-axis-tick-values.function";
 import * as d3 from "d3";
 import * as _ from "lodash";
@@ -21,7 +21,9 @@ export function createWeibullPlot(
         .map(x => x.dots)
         .reduce(matrixToMany, [])
         .map(x => x.y)
-        .map(fromPercent);
+        .map(fromPercent)
+        .filter(byUnique)
+        .sort();
 
     const yAxisInterpolator = createWeibullInterpolator({P});
 
