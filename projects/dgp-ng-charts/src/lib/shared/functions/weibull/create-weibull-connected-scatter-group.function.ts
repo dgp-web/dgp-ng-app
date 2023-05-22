@@ -20,15 +20,16 @@ export function createWeibullConnectedScatterGroup(payload: {
 
     const result: ConnectedScatterGroup = {
         connectedScatterGroupId,
+        colorHex: config.colorHex || "#00ff0066",
+        showEdges: config.showEdges || false,
+        shape: config.shape,
+        stroke: config.stroke,
         series: [{
             connectedScatterSeriesId: connectedScatterGroupId + ".Data",
-            colorHex: config.colorHex || "#00ff0066",
-            showVertices: config.showVertices || true,
-            showEdges: config.showEdges || false,
+            showVertices: true,
             dots
         }, {
             connectedScatterSeriesId: connectedScatterGroupId + ".Fitted distribution",
-            colorHex: "#ff0000",
             showVertices: false,
             showEdges: true,
             dots: getFittedWeibullDistributionLine({X, P})

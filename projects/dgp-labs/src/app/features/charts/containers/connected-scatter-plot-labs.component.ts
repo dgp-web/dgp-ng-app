@@ -4,7 +4,7 @@ import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-chart
 import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
-import { createTestNormalPlot } from "../../../__tests__/functions/create-test-normal-plot.function";
+import { createTestWeibullPlot } from "../../../__tests__/functions/create-test-weibull-plot.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -83,8 +83,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
 
-    model = createTestNormalPlot({
-        n: 121
+    model = createTestWeibullPlot({
+        n: 121,
+        shape: 2,
+        scale: 1
     });
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {

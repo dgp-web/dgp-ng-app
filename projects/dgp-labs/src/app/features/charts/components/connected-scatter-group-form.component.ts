@@ -47,7 +47,7 @@ export class ConnectedScatterGroupFormComponent extends DgpModelEditorComponentB
         this.updateModel({shape});
     }
 
-    updateColorHex(colorHex: any) {
+    updateColorHex(colorHex: string) {
         this.updateModel({colorHex});
     }
 

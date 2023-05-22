@@ -1,4 +1,4 @@
-import { ConnectedScatterPlot, createWeibullConnectedScatterGroup, createWeibullPlot, WeibullParameters } from "dgp-ng-charts";
+import { ConnectedScatterPlot, createWeibullConnectedScatterGroup, createWeibullPlot, Shape, WeibullParameters } from "dgp-ng-charts";
 import * as weibull from "@stdlib/random-base-weibull";
 
 export function createTestWeibullPlot(payload: {
@@ -14,7 +14,10 @@ export function createTestWeibullPlot(payload: {
 
     return createWeibullPlot({
         model: [
-            createWeibullConnectedScatterGroup({values})
+            createWeibullConnectedScatterGroup({values}, {
+                colorHex: "#ff000066",
+                shape: Shape.Cross
+            })
         ]
     });
 }
