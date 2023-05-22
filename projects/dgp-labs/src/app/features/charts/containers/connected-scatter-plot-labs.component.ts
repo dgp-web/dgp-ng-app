@@ -92,10 +92,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     n = 121;
 
-    model =createTestWeibullPlot([
-        {n: 121, shape: 2, scale: 1},
-        {n: 53, shape: 3, scale: 2},
-        {n: 77, shape: 4, scale: 5},
+    model = createTestWeibullPlot([
+        {n: 121, shape: 2, scale: 1, colorHex: "#ff000066"},
+        {n: 53, shape: 3, scale: 2, colorHex: "#00ff0066"},
+        {n: 77, shape: 4, scale: 5, colorHex: "#0000ff66"},
     ]);
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
