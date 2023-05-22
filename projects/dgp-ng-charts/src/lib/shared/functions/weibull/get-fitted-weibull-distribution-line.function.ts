@@ -8,12 +8,20 @@ import { getProbabilityChartPMin } from "../probability-chart/get-probability-ch
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 
 export function getFittedWeibullDistributionLine(payload: {
+    /**
+     * X and P values of a current series
+     */
     readonly X: Many<number>;
     readonly P: Many<number>;
+    /**
+     * All P values so we can determine global boundaries that are needed for drawing
+     */
+    readonly totalP: Many<number>;
 }): Many<Dot> {
 
     const X = payload.X;
     const P = payload.P;
+    const totalP = payload.totalP;
 
     const fittedDist = fitWeibullDistribution({
         X,
@@ -23,8 +31,8 @@ export function getFittedWeibullDistributionLine(payload: {
     const shape = fittedDist.shape;
     const scale = fittedDist.scale;
 
-    const minP = getProbabilityChartPMin({P});
-    const maxP = getProbabilityChartPMax({P});
+    const minP = getProbabilityChartPMin({P: totalP});
+    const maxP = getProbabilityChartPMax({P: totalP});
 
     const quantileMin = getWeibullQuantile({shape, scale, p: minP});
     const quantileMax = getWeibullQuantile({shape, scale, p: maxP});

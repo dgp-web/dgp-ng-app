@@ -6,6 +6,7 @@ import { ConnectedScatterGroup, ConnectedScatterPlot } from "../../../connected-
 import { createWeibullInterpolator } from "./create-weibull-interpolator.function";
 import { fromPercent } from "../from-percent.function";
 import { Many } from "data-modeling";
+import { getFittedWeibullDistributionLine } from "./get-fitted-weibull-distribution-line.function";
 
 export function createWeibullPlot(
     payload: {
@@ -14,9 +15,9 @@ export function createWeibullPlot(
     config: Partial<ConnectedScatterPlot> = {}
 ): ConnectedScatterPlot {
 
-    const model = payload.model;
+    let model = payload.model;
 
-    const P = model.map(x => x.series)
+    const totalP = model.map(x => x.series)
         .reduce(matrixToMany, [])
         .map(x => x.dots)
         .reduce(matrixToMany, [])
@@ -25,9 +26,30 @@ export function createWeibullPlot(
         .filter(byUnique)
         .sort();
 
-    const yAxisInterpolator = createWeibullInterpolator({P});
+    const yAxisInterpolator = createWeibullInterpolator({P: totalP});
 
-    const yAxisTickValues = createWeibullYAxisTickValues({P});
+    const yAxisTickValues = createWeibullYAxisTickValues({P: totalP});
+
+    model = model.map(csg => {
+        // TODO: Handle case for more than 1 series
+        const refSeries = csg.series[0];
+        
+        const X = refSeries.dots.map(x => x.x);
+        const P = refSeries.dots.map(x => x.y).map(fromPercent);
+
+        return {
+            ...csg,
+            series: [
+                csg.series[0],
+                {
+                    connectedScatterSeriesId: csg.connectedScatterGroupId + ".Fitted distribution",
+                    showVertices: false,
+                    showEdges: true,
+                    dots: getFittedWeibullDistributionLine({X, P, totalP})
+                }
+            ]
+        };
+    });
 
     const result: ConnectedScatterPlot = {
         yAxisInterpolator,
