@@ -2,26 +2,23 @@ import * as d3 from "d3";
 import { getWeibullQuantile } from "./get-weibull-quantile.function";
 import { Many } from "data-modeling";
 import { defaultWeibullParameters } from "../../constants";
+import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
+import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 
 export function createWeibullInterpolator(payload?: {
     readonly P?: Many<number>;
 }): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
-    let pMin = 0.01;
-    if (P) {
-        const computedPMin = d3.min(P);
-        if (computedPMin < pMin) pMin = computedPMin;
-    }
+    const weibullParameters = defaultWeibullParameters;
 
-    let pMax = 0.99;
-    if (P) {
-        const computedPMax = d3.max(P);
-        if (computedPMax > pMax) pMax = computedPMax;
-    }
+    const pMin = getProbabilityChartPMin({P});
+    const pMax = getProbabilityChartPMax({P});
 
-    const scale = defaultWeibullParameters.scale;
-    const shape = defaultWeibullParameters.shape;
+    const minQuantile = getWeibullQuantile({p: pMin, ...weibullParameters});
+    const maxQuantile = getWeibullQuantile({p: pMax, ...weibullParameters});
+
+    const totalDistance = Math.abs(minQuantile - maxQuantile);
 
     return (a: number, b: number) => {
 
@@ -32,11 +29,6 @@ export function createWeibullInterpolator(payload?: {
          */
         const range = Math.abs(a - b);
 
-        const minQuantile = getWeibullQuantile({p: pMin, scale, shape});
-        const maxQuantile = getWeibullQuantile({p: pMax, scale, shape});
-
-        const totalDistance = Math.abs(minQuantile - maxQuantile);
-
         return (t: number) => {
             /**
              * Note that the value t already gets transformed by d3.
@@ -46,7 +38,7 @@ export function createWeibullInterpolator(payload?: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            const quantile = getWeibullQuantile({p, scale, shape});
+            const quantile = getWeibullQuantile({p, ...weibullParameters});
             const distance = Math.abs(quantile - maxQuantile);
             const share = distance / totalDistance;
 

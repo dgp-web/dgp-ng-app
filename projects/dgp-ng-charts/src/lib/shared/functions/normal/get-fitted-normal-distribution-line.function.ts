@@ -2,7 +2,7 @@ import { Many } from "data-modeling";
 import { Dot } from "../../../connected-scatter-plot/models";
 import { fitNormalDistribution } from "./fit-normal-distribution.function";
 import * as d3 from "d3";
-import { getGaussianQuantile } from "./get-gaussian-quantile.function";
+import { getNormalQuantile } from "./get-normal-quantile.function";
 import { toPercent } from "../to-percent.function";
 
 export function getFittedNormalDistributionLine(payload: {
@@ -21,8 +21,8 @@ export function getFittedNormalDistributionLine(payload: {
     const minP = Math.min(d3.min(P), 0.01);
     const maxP = Math.max(d3.max(P), 0.99);
 
-    const quantileMin = getGaussianQuantile({median, variance, p: minP});
-    const quantileMax = getGaussianQuantile({median, variance, p: maxP});
+    const quantileMin = getNormalQuantile({median, variance, p: minP});
+    const quantileMax = getNormalQuantile({median, variance, p: maxP});
 
     const fittedLine: Many<Dot> = [{
         x: quantileMin,
