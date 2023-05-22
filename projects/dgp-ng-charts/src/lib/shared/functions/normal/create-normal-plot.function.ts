@@ -6,7 +6,6 @@ import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.
 import * as d3 from "d3";
 import * as _ from "lodash";
 import { createNormalInterpolator } from "./create-normal-interpolator.function";
-import { getFittedWeibullDistributionLine } from "../weibull";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 
 export function createNormalPlot(
