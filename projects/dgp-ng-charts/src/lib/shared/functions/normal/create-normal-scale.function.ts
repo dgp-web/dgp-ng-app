@@ -9,7 +9,7 @@ export function createNormalScale(payload: {
     const pValues = payload.values;
     const dataAreaSize = payload.dataAreaSize;
 
-    const interpolate = createNormalInterpolator({pValues});
+    const interpolate = createNormalInterpolator({P: pValues});
 
     return d3.scaleLinear()
         /**
