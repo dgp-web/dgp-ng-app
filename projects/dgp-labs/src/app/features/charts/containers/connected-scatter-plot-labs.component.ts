@@ -5,6 +5,7 @@ import {
     connectedScatterPlotMetadata
 } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
 import { createTestWeibullPlot } from "../../../__tests__/functions/create-test-weibull-plot.function";
+import * as _ from "lodash";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -49,12 +50,19 @@ import { createTestWeibullPlot } from "../../../__tests__/functions/create-test-
                     <dgp-inspector class="--dynamic-form-fields"
                                    [responsive]="true">
                         <dgp-inspector-item label="Renderer"
-                                            matIconName="label"
-                                            description="Test">
+                                            matIconName="label">
                             <dgp-connected-scatter-plot-renderer-select
-                                [disabled]="disabled"
-                                [model]="renderer"
-                                (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                    [disabled]="disabled"
+                                    [model]="renderer"
+                                    (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                        </dgp-inspector-item>
+                        <dgp-inspector-item label="Items"
+                                            matIconName="pin">
+
+                            <input type="number"
+                                   [ngModel]="n"
+                                   (ngModelChange)="updateN($event)">
+
                         </dgp-inspector-item>
                     </dgp-inspector>
 
@@ -83,8 +91,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
 
+    n = 121;
+
     model = createTestWeibullPlot({
-        n: 121,
+        n: this.n,
         shape: 2,
         scale: 1
     });
@@ -97,5 +107,17 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         this.setModel(payload);
     }
 
+    updateN(n: number) {
+        const model = createTestWeibullPlot({
+            n,
+            shape: 2,
+            scale: 1
+        });
+
+        this.setModel({
+            ...this.model,
+            ...model
+        });
+    }
 }
 
