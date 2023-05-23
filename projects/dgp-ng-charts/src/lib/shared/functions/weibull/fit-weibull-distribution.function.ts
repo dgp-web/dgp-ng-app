@@ -12,7 +12,7 @@ export function fitWeibullDistribution(payload: {
     readonly X: Many<number>;
     readonly quantiles: Many<number>;
 }): WeibullParameters {
-    const X = payload.X;
+    const X = payload.X.map(Math.log);
     const quantiles = payload.quantiles;
 
     const tuples = quantiles.map((yv, index) => [yv, X[index]]);
