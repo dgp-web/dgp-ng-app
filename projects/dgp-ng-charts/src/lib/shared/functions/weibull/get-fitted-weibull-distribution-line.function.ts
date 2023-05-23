@@ -1,11 +1,11 @@
 import { Many } from "data-modeling";
 import { fitWeibullDistribution } from "./fit-weibull-distribution.function";
-import { getWeibullQuantile, getWeibullQuantile1 } from "./get-weibull-quantile.function";
 import { Dot } from "../../../connected-scatter-plot/models";
 import { toPercent } from "../to-percent.function";
-import { toWeibullQuantile } from "./to-weibull-quantile.function";
+import { toWeibullYCoordinate } from "./to-weibull-y-coordinate.function";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { getWeibullQuantile } from "./get-weibull-quantile.function";
 
 export function getFittedWeibullDistributionLine(payload: {
     /**
@@ -25,7 +25,7 @@ export function getFittedWeibullDistributionLine(payload: {
 
     const fittedDist = fitWeibullDistribution({
         X,
-        quantiles: P.map(toWeibullQuantile())
+        quantiles: P.map(toWeibullYCoordinate())
     });
 
     const shape = fittedDist.shape;
@@ -34,8 +34,8 @@ export function getFittedWeibullDistributionLine(payload: {
     const minP = getProbabilityChartPMin({P: totalP});
     const maxP = getProbabilityChartPMax({P: totalP});
 
-    const quantileMin = getWeibullQuantile1({shape, scale, p: minP});
-    const quantileMax = getWeibullQuantile1({shape, scale, p: maxP});
+    const quantileMin = getWeibullQuantile({shape, scale, p: minP});
+    const quantileMax = getWeibullQuantile({shape, scale, p: maxP});
 
     const fittedLine: Many<Dot> = [{
         x: quantileMin,

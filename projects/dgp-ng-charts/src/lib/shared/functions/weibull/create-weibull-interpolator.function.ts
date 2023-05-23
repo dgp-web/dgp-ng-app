@@ -1,7 +1,6 @@
 import * as d3 from "d3";
-import { getWeibullQuantile } from "./get-weibull-quantile.function";
+import { getWeibullYCoordinate } from "./get-weibull-y-coordinate.function";
 import { Many } from "data-modeling";
-import { defaultWeibullParameters } from "../../constants";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 
@@ -10,13 +9,11 @@ export function createWeibullInterpolator(payload?: {
 }): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
-    const weibullParameters = defaultWeibullParameters;
-
     const pMin = getProbabilityChartPMin({P});
     const pMax = getProbabilityChartPMax({P});
 
-    const minQuantile = getWeibullQuantile({p: pMin, ...weibullParameters});
-    const maxQuantile = getWeibullQuantile({p: pMax, ...weibullParameters});
+    const minQuantile = getWeibullYCoordinate({p: pMin});
+    const maxQuantile = getWeibullYCoordinate({p: pMax});
 
     const totalDistance = Math.abs(minQuantile - maxQuantile);
 
@@ -38,7 +35,7 @@ export function createWeibullInterpolator(payload?: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            const quantile = getWeibullQuantile({p, ...weibullParameters});
+            const quantile = getWeibullYCoordinate({p});
             const distance = Math.abs(quantile - maxQuantile);
             const share = distance / totalDistance;
 
