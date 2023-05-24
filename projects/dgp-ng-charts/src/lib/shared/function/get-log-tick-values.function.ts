@@ -1,4 +1,6 @@
-export function getLogTickValues(base: number = 10) {
+import { matrixToMany } from "dgp-ng-app";
+
+export function getLogTickValues(base: number = 10, steps = [1]) {
     return [
         Math.pow(base, -15),
         Math.pow(base, -14),
@@ -31,6 +33,8 @@ export function getLogTickValues(base: number = 10) {
         Math.pow(base, 13),
         Math.pow(base, 14),
         Math.pow(base, 15)
-    ];
+    ].map(item => {
+        return steps.map(step => step * item);
+    }).reduce(matrixToMany);
 
 }

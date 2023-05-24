@@ -49,7 +49,7 @@ export function createCardinalXAxis(payload: {
             const base = typedScale.base();
             const domain = typedScale.domain();
 
-            const tickValues = getLogTickValues(base)
+            const tickValues = getLogTickValues(base, [1, 2, 3, 5])
                 .filter(byDomain(domain as NumericDomain));
 
             xAxis = d3.axisBottom(xAxisScale)
