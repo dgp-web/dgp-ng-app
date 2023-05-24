@@ -49,12 +49,23 @@ export function createCardinalXAxis(payload: {
             const base = typedScale.base();
             const domain = typedScale.domain();
 
-            const tickValues = getLogTickValues(base)
+            const xTickCount = axisTickFormattingService.estimateContinuousXAxisTickCount({
+                containerWidth: payload.containerWidth
+            });
+
+            const steps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            let tickValues = getLogTickValues(base, steps)
                 .filter(byDomain(domain as NumericDomain));
 
+            while (tickValues.length > xTickCount) {
+                steps.pop();
+                tickValues = getLogTickValues(base, steps)
+                    .filter(byDomain(domain as NumericDomain));
+            }
+
             xAxis = d3.axisBottom(xAxisScale)
-                .tickValues(tickValues)
-                .tickFormat(value => formatLogTick(value as unknown as number, base));
+                .tickFormat(value => formatLogTick(value as unknown as number, base))
+                .tickValues(tickValues);
             break;
 
     }

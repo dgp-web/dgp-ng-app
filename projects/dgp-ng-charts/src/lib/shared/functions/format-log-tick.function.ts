@@ -11,6 +11,9 @@ export function formatLogTick(value: number, base: number = 10): string {
         power = Math.round(power);
         return base + formatPower(power);
     } else {
+
+        if (value < 1) return value.toPrecision(1);
+
         return value.toString();
     }
 

@@ -4,7 +4,7 @@ import { getMedianRank } from "dgp-ng-charts";
 import {
     createWeibullInterpolator
 } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/create-weibull-interpolator.function";
-import { getWeibullQuantile } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/get-weibull-quantile.function";
+import { getWeibullYCoordinate } from "../../../../../../../dgp-ng-charts/src/lib/shared/functions/weibull/get-weibull-y-coordinate.function";
 
 import {
     fitWeibullDistribution
@@ -28,7 +28,7 @@ export function createWeibullScale(payload: {
 
 describe("Weibull", () => {
 
-    describe(getWeibullQuantile.name, () => {
+    describe(getWeibullYCoordinate.name, () => {
 
         fit(`Weibull quantile`, () => {
 
@@ -39,7 +39,7 @@ describe("Weibull", () => {
             }));
 
             payload.forEach(pValue => {
-                const quantile = getWeibullQuantile({
+                const quantile = getWeibullYCoordinate({
                     p: pValue
                 });
                 console.log("p", pValue, "quantile", quantile);
@@ -116,7 +116,7 @@ describe("Weibull", () => {
                         n: x.length
                     });
 
-                    return getWeibullQuantile({p});
+                    return getWeibullYCoordinate({p});
 
                 });
 

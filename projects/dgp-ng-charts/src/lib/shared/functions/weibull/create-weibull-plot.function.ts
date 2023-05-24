@@ -7,6 +7,7 @@ import { createWeibullInterpolator } from "./create-weibull-interpolator.functio
 import { fromPercent } from "../from-percent.function";
 import { Many } from "data-modeling";
 import { getFittedWeibullDistributionLine } from "./get-fitted-weibull-distribution-line.function";
+import { ScaleType } from "../../models";
 
 export function createWeibullPlot(
     payload: {
@@ -52,6 +53,7 @@ export function createWeibullPlot(
     });
 
     const result: ConnectedScatterPlot = {
+        xAxisScaleType: ScaleType.Logarithmic,
         yAxisInterpolator,
         yAxisMin: 0,
         yAxisMax: 100,
