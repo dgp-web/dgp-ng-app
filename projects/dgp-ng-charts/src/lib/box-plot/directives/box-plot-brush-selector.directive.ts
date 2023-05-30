@@ -1,6 +1,7 @@
 import { Directive, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
-import { BoxGroup, BoxOutlier, BoxPlotScales, BoxPlotSelection } from "../models";
+import { BoxGroup, BoxOutlier, BoxPlotScales, BoxPlotSelection, BrushCoordinates } from "../models";
 import * as d3 from "d3";
+import { D3BrushEvent } from "d3";
 import { getOutlierXPosition, isBrushed } from "../functions";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import { ChartSelectionMode } from "../../shared/models";
@@ -59,8 +60,8 @@ export class BoxPlotBrushSelectorDirective implements OnChanges {
                     [0, 0],
                     [this.scales.dataAreaWidth, this.scales.dataAreaHeight]
                 ])
-                .on("start brush", () => {
-                    const extent = d3.event.selection;
+                .on("start brush", (e: D3BrushEvent<any>) => {
+                    const extent = e.selection as BrushCoordinates;
 
                     const outliers = getOutliers(this.boxGroups).filter(x => isBrushed(
                         extent,

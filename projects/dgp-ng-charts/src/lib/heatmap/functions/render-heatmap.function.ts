@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { D3BrushEvent } from "d3";
 import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
@@ -88,11 +89,11 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
         const selectionPublisher = new Subject<HeatmapSelection>();
 
-        const brush = d3.brush()
+        const brush = d3.brush<any>()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
-            .on("end", function (event) {
+            .on("end", (e: D3BrushEvent<any>) => {
 
-                const extent = d3.event.selection;
+                const extent = e.selection as BrushCoordinates;
 
                 let selection: HeatmapSelection = {
                     tiles: extent ? payload.model.filter(x => isBrushed(
@@ -177,7 +178,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             if (notNullOrUndefined(upperLeftCorner.x)
                 && notNullOrUndefined(upperLeftCorner.y)) {
 
-                payload.drawD3ChartInfo.svg.call(brush.move, [
+                payload.drawD3ChartInfo.svg.call(brush.move as any, [
                     [
                         xAxis(upperLeftCorner.x.toString()),
                         yAxis(upperLeftCorner.y.toString())
