@@ -13,3 +13,4 @@ export * from "./get-normal-quantile.function";
 export * from "./get-inverse-gaussian-error.function";
 export * from "./get-median-rank.function";
 export { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
+export { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
