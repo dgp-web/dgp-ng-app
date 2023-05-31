@@ -1,7 +1,7 @@
-import { ConnectedScatterPlotConfig } from "../models";
+import { ConnectedScatterPlotChartConfig } from "../models";
 import { defaultWithCardinalScaleOffset } from "../../shared/constants";
 
-export const defaultConnectedScatterPlotConfig: ConnectedScatterPlotConfig = {
+export const defaultConnectedScatterPlotConfig: ConnectedScatterPlotChartConfig = {
     ...defaultWithCardinalScaleOffset,
     margin: {
         top: 1,
