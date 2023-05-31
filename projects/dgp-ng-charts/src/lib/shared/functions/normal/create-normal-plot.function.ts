@@ -1,5 +1,5 @@
-import { Many } from "data-modeling";
-import { ConnectedScatterGroup, ConnectedScatterPlot } from "../../../connected-scatter-plot/models";
+import { Many, mutatify } from "data-modeling";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotConfig } from "../../../connected-scatter-plot/models";
 import { byUnique, matrixToMany } from "dgp-ng-app";
 import { fromPercent } from "../from-percent.function";
 import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
@@ -12,8 +12,21 @@ export function createNormalPlot(
     payload: {
         readonly model: Many<ConnectedScatterGroup>
     },
-    config: Partial<ConnectedScatterPlot> = {}
+    config: ConnectedScatterPlotConfig = {}
 ): ConnectedScatterPlot {
+
+    /**
+     * Ensure no model is passed as config which can lead to unwanted merge behavior.
+     *
+     * We first cast the config as model, then create a shallow copy from which the "model"
+     * attribute can be deleted in a safe manner.
+     */
+    let configWithModel = (config as ConnectedScatterPlot);
+    if (configWithModel.model) {
+        configWithModel = {...config, model: undefined};
+        delete mutatify(configWithModel).model;
+        config = {...configWithModel};
+    }
 
     let model = payload.model;
 
