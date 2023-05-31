@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot, ConnectedScatterPlotConfig, ConnectedScatterPlotRenderer, createNormalPlot } from "dgp-ng-charts";
 import { connectedScatterPlotMetadata } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants";
-import { createTestNormalPlot } from "../../../__tests__/functions/create-test-normal-plot.function";
 import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/create-test-normal-plot-scatter-group.function";
 
 @Component({
@@ -93,20 +92,21 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     n = 121;
 
-    model = createTestNormalPlot({n: this.n});
+    group = createTestNormalPlotScatterGroup({n: this.n});
+    model = createNormalPlot({model: [this.group]});
 
     updateRenderer(renderer: ConnectedScatterPlotRenderer) {
         this.renderer = renderer;
     }
 
     setPlot(payload: ConnectedScatterPlotConfig) {
-        const group = createTestNormalPlotScatterGroup({n: this.n});
-        const model = createNormalPlot({model: [group]});
+        const model = createNormalPlot({model: [this.group]}, payload);
         this.setModel(model);
     }
 
     updateN(n: number) {
-        const model = createTestNormalPlot({n});
+        this.group = createTestNormalPlotScatterGroup({n: this.n});
+        const model = createNormalPlot({model: [this.group]}, this.model);
         this.setModel(model);
         this.n = n;
     }
