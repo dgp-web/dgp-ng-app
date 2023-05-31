@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { ConnectedScatterPlot, ConnectedScatterPlotRenderer } from "dgp-ng-charts";
-import {
-    connectedScatterPlotMetadata
-} from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants/connected-scatter-plot-metadata.constant";
+import { ConnectedScatterPlot, ConnectedScatterPlotConfig, ConnectedScatterPlotRenderer, createNormalPlot } from "dgp-ng-charts";
+import { connectedScatterPlotMetadata } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants";
 import { createTestNormalPlot } from "../../../__tests__/functions/create-test-normal-plot.function";
+import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/create-test-normal-plot-scatter-group.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -100,8 +99,10 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
         this.renderer = renderer;
     }
 
-    setPlot(payload: ConnectedScatterPlot) {
-        this.setModel(payload);
+    setPlot(payload: ConnectedScatterPlotConfig) {
+        const group = createTestNormalPlotScatterGroup({n: this.n});
+        const model = createNormalPlot({model: [group]});
+        this.setModel(model);
     }
 
     updateN(n: number) {
