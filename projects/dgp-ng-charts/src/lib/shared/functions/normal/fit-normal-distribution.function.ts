@@ -8,7 +8,10 @@ import { NormalParameters } from "../../models";
  * Resources: https://www.npmjs.com/package/distfitjs
  */
 export function fitNormalDistribution(X: Many<number>): NormalParameters {
-    const median = d3.median(X);
+    /**
+     * The mean usually produces better results with symmetric distributions.
+     */
+    const median = d3.mean(X);
     const variance = estimateVariance(X, median);
     return {median, variance};
 }
