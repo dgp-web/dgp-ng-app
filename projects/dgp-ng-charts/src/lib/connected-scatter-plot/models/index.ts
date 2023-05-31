@@ -10,4 +10,5 @@ export * from "./dot-config.model";
 export * from "./dot-hover-event.model";
 export * from "./connected-scatter-series-config.model";
 export * from "./line-config.model";
+export { ConnectedScatterPlotModel } from "./connected-scatter-plot-model.model";
 

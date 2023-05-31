@@ -1,6 +1,5 @@
 import { Many } from "data-modeling";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotConfig } from "../../../connected-scatter-plot/models";
-import { byUnique, matrixToMany } from "dgp-ng-app";
 import { fromPercent } from "../from-percent.function";
 import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
 import * as d3 from "d3";
@@ -8,7 +7,7 @@ import * as _ from "lodash";
 import { createNormalInterpolator } from "./create-normal-interpolator.function";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
-
+import { computeTotalP } from "../compute-total-p.function";
 
 export function createNormalPlot(
     payload: {
@@ -21,14 +20,7 @@ export function createNormalPlot(
 
     let model = payload.model;
 
-    const totalP = model.map(x => x.series)
-        .reduce(matrixToMany, [])
-        .map(x => x.dots)
-        .reduce(matrixToMany, [])
-        .map(x => x.y)
-        .map(fromPercent)
-        .filter(byUnique)
-        .sort();
+    const totalP = computeTotalP(model);
 
     const yAxisInterpolator = createNormalInterpolator({P: totalP});
 

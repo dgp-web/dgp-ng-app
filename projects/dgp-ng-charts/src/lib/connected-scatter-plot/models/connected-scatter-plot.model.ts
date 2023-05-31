@@ -1,6 +1,6 @@
-import { ConnectedScatterGroup } from "./connected-scatter-group.model";
 import { ConnectedScatterPlotConfig } from "./connected-scatter-plot-config.model";
+import { ConnectedScatterPlotModel } from "./connected-scatter-plot-model.model";
 
 export interface ConnectedScatterPlot extends ConnectedScatterPlotConfig {
-    readonly model: ReadonlyArray<ConnectedScatterGroup>;
+    readonly model: ConnectedScatterPlotModel;
 }
