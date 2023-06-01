@@ -5,6 +5,8 @@ import { getProbabilityChartPMax } from "../probability-chart/get-probability-ch
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { defaultNormalParameters } from "../../constants";
 
+// TODO: Ensure that no values <0 and >100 can be picked as boundaries
+// TODO: Unit test this; it should return a valid result for the extreme values that are used for drawing the lines
 export function createNormalInterpolator(payload?: {
     readonly P?: Many<number>;
 }): d3.InterpolatorFactory<number, number> {
@@ -15,10 +17,11 @@ export function createNormalInterpolator(payload?: {
     const pMin = getProbabilityChartPMin({P});
     const pMax = getProbabilityChartPMax({P});
 
+    // TODO: Proxy with getNormalYCoordinate({y}); == quantile function
     const minQuantile = getNormalQuantile({p: pMin, ...normalParameters});
     const maxQuantile = getNormalQuantile({p: pMax, ...normalParameters});
 
-    const totalDistance = Math.abs(minQuantile - maxQuantile);
+    const referenceDistance = Math.abs(minQuantile - maxQuantile);
 
     return (a: number, b: number) => {
 
@@ -40,7 +43,7 @@ export function createNormalInterpolator(payload?: {
             const p = t;
             const quantile = getNormalQuantile({p, ...normalParameters});
             const distance = Math.abs(quantile - maxQuantile);
-            const share = distance / totalDistance;
+            const share = distance / referenceDistance;
 
             return share * range;
         };
