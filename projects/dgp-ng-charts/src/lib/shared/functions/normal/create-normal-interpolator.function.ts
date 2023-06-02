@@ -11,6 +11,10 @@ export function createNormalInterpolator(payload: {
 } = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
+    /**
+     * TODO: since we use this for computing the reference distance, we should refer it to a fixed distance and NOT between
+     * the computed min and max; this leads to wrong spacing since pMin is not as far away from 0.01 as pMax is from 0.99
+     */
     const pMin = getProbabilityChartPMin({P});
     const pMax = getProbabilityChartPMax({P});
 
