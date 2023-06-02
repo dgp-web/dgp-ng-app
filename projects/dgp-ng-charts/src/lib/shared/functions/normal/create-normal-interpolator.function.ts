@@ -135,9 +135,10 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = reverseLinearInterpolation({value: t, min: pMin, max: pMax});
-            const tRef = p / Math.abs(pRefMax - pRefMin); // TODO
+            // interpolate
+            const tRef = Math.abs(p - pRefMin) / Math.abs(pRefMax - pRefMin); // TODO
             const yPxOnRefScale = refInterpolator(tRef);
-            const yPxDistanceOnCurrentScale = Math.abs(yPxOnRefScale - yMaxPx);
+            const yPxDistanceOnCurrentScale = yPxOnRefScale - yMaxPx;
 
             return yPxDistanceOnCurrentScale * factor;
 
