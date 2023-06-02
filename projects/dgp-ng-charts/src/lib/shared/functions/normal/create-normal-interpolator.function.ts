@@ -8,6 +8,7 @@ import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 // TODO: Unit test this; it should return a valid result for the extreme values that are used for drawing the lines
 export function createNormalInterpolator(payload: {
     readonly P?: Many<number>;
+    // TODO: Pass configured domain limits here
 } = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
@@ -31,6 +32,9 @@ export function createNormalInterpolator(payload: {
          * We compute the visual middle between them which is where our median value should be placed.
          */
         const range = Math.abs(a - b);
+        // TODO: Compute length of current yDomainLength: y(pMax) - y(pMin)
+        // TODO: Compute length of reference yRefDomainLength: yRef(pRefMax) - yRef(pRefMin)
+        // TODO: Compute factor: yRefDomainLength / yDomainLength
 
         /**
          * TODO: When adjusting the domain, t is wrongly computed in relation to its bounds and NOT against a range between 0 and 1 or between 0 and 100
@@ -44,6 +48,10 @@ export function createNormalInterpolator(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
+            // TODO: reverse linear interpolation: t * (pMax - pMin) = p
+            // TODO: compute pixel position on reference scale: yRef(p)
+            // TODO: compute pixel delta from y(pMax) - y(p)
+            // TODO: multiply pixel delta with factor
 
             if (p === pMin) return b;
             if (p === pMax) return a;
