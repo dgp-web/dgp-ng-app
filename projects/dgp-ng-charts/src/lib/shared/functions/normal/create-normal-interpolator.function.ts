@@ -7,9 +7,9 @@ import { defaultNormalParameters } from "../../constants";
 
 // TODO: Ensure that no values <0 and >100 can be picked as boundaries
 // TODO: Unit test this; it should return a valid result for the extreme values that are used for drawing the lines
-export function createNormalInterpolator(payload?: {
+export function createNormalInterpolator(payload: {
     readonly P?: Many<number>;
-}): d3.InterpolatorFactory<number, number> {
+} = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
     const normalParameters = defaultNormalParameters;

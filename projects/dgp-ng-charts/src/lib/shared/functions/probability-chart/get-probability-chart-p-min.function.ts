@@ -6,11 +6,12 @@ export function getProbabilityChartPMin(payload?: {
     readonly P?: Many<number>;
 }): number {
 
-    if (!payload || !payload.P) return null;
+    let pMin = defaultProbabilityChartPMin;
+    if (!payload) return pMin;
 
     const P = payload.P;
+    if (!P) return pMin;
 
-    let pMin = defaultProbabilityChartPMin;
     if (P) {
         const computedPMin = d3.min(P);
         if (computedPMin < pMin) pMin = computedPMin;
