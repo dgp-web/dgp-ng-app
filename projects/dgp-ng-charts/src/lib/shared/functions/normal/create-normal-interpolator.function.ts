@@ -4,6 +4,7 @@ import { Many } from "data-modeling";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { defaultNormalParameters } from "../../constants";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 // TODO: Ensure that no values <0 and >100 can be picked as boundaries
 // TODO: Unit test this; it should return a valid result for the extreme values that are used for drawing the lines
@@ -23,6 +24,8 @@ export function createNormalInterpolator(payload: {
 
     const referenceDistance = Math.abs(minQuantile - maxQuantile);
 
+    const clamp = createClamp({ min: pMin, max: pMax });
+
     return (a: number, b: number) => {
 
         /**
@@ -40,13 +43,39 @@ export function createNormalInterpolator(payload: {
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
-            const p = t;
+            const p = clamp(t);
             const quantile = getNormalQuantile({p, ...normalParameters});
             const distance = Math.abs(quantile - maxQuantile);
             const share = distance / referenceDistance;
 
             return share * range;
         };
+    };
+
+}
+
+export type Clamp = (x: number) => number;
+
+export function createClamp(payload: {
+    readonly min?: number;
+    readonly max?: number;
+}): Clamp {
+
+    const min = payload.min;
+    const max = payload.max;
+
+    return x => {
+
+        if (notNullOrUndefined(min)) {
+            if (x < min) return min;
+        }
+
+        if (notNullOrUndefined(max)) {
+            if (x > max) return max;
+        }
+
+        return x;
+
     };
 
 }

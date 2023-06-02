@@ -1,5 +1,5 @@
 import { createNormalInterpolator } from "../create-normal-interpolator.function";
-import { defaultNormalParameters, defaultProbabilityChartPMax, defaultProbabilityChartPMin } from "../../../constants";
+import { defaultProbabilityChartPMax, defaultProbabilityChartPMin } from "../../../constants";
 
 describe(createNormalInterpolator.name, () => {
 
@@ -11,8 +11,6 @@ describe(createNormalInterpolator.name, () => {
         const b = 400;
 
         const interpolate = createInterpolator(a, b);
-
-        const normalParameters = defaultNormalParameters;
 
         it(`should return b for the default pMin`, () => {
             const pMin = defaultProbabilityChartPMin;
@@ -33,6 +31,32 @@ describe(createNormalInterpolator.name, () => {
             const result = interpolate(p);
             const expectedResult = Math.abs(a - b) / 2;
             expect(result).toEqual(expectedResult);
+        });
+
+        it(`should clamp passed values and return b for p = 0`, () => {
+            const p = 0;
+            const result = interpolate(p);
+            const expectedResult = b;
+            expect(result).toEqual(expectedResult);
+        });
+
+        it(`should NOT return Infinity for p = 0`, () => {
+            const p = 0;
+            const result = interpolate(p);
+            expect(result).not.toEqual(Infinity);
+        });
+
+        it(`should clamp passed values and return a for p = 1`, () => {
+            const p = 1;
+            const result = interpolate(p);
+            const expectedResult = a;
+            expect(result).toEqual(expectedResult);
+        });
+
+        it(`should NOT return -Infinity for p = 1`, () => {
+            const p = 1;
+            const result = interpolate(p);
+            expect(result).not.toEqual(-Infinity);
         });
 
     });
