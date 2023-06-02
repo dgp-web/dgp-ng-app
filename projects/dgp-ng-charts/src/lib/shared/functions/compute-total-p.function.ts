@@ -13,3 +13,18 @@ export function computeTotalP(payload: ConnectedScatterPlotModel): P {
         .filter(byUnique)
         .sort();
 }
+
+
+export function computeProbabilityChartDomain(payload: ConnectedScatterPlotModel): [number, number] {
+    const totalDomainValues = payload.map(x => x.series)
+        .reduce(matrixToMany, [])
+        .map(x => x.dots)
+        .reduce(matrixToMany, [])
+        .map(x => x.x);
+
+    const min = Math.min(...totalDomainValues);
+    const max = Math.max(...totalDomainValues);
+
+    return [min, max];
+
+}

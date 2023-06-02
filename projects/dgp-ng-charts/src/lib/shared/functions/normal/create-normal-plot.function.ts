@@ -7,7 +7,7 @@ import * as _ from "lodash";
 import { createNormalInterpolator } from "./create-normal-interpolator.function";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
-import { computeTotalP } from "../compute-total-p.function";
+import { computeProbabilityChartDomain, computeTotalP } from "../compute-total-p.function";
 
 export function createNormalPlot(
     payload: {
@@ -21,8 +21,9 @@ export function createNormalPlot(
     let model = payload.model;
 
     const totalP = computeTotalP(model);
+    const domain = computeProbabilityChartDomain(model);
 
-    const yAxisInterpolator = createNormalInterpolator({P: totalP});
+    const yAxisInterpolator = createNormalInterpolator({P: totalP, domain});
 
     const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 

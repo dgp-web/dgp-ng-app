@@ -22,9 +22,11 @@ export function createNormalInterpolator(payload: {
     const minQuantile = getNormalQuantile({p: pMin, ...normalParameters});
     const maxQuantile = getNormalQuantile({p: pMax, ...normalParameters});
 
+    console.log(pMax);
+    console.log(maxQuantile);
     const referenceDistance = Math.abs(minQuantile - maxQuantile);
 
-    const clamp = createClamp({ min: pMin, max: pMax });
+    const clampP = createClamp({min: pMin, max: pMax});
 
     return (a: number, b: number) => {
 
@@ -43,7 +45,11 @@ export function createNormalInterpolator(payload: {
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
-            const p = clamp(t);
+            const p = clampP(t);
+
+            if (p === pMin) return b;
+            if (p === pMax) return a;
+
             const quantile = getNormalQuantile({p, ...normalParameters});
             const distance = Math.abs(quantile - maxQuantile);
             const share = distance / referenceDistance;

@@ -1,5 +1,4 @@
 import { Many } from "data-modeling";
-import * as d3 from "d3";
 import { defaultProbabilityChartPMin } from "../../constants";
 
 export function getProbabilityChartPMin(payload?: {
@@ -12,10 +11,7 @@ export function getProbabilityChartPMin(payload?: {
     const P = payload.P;
     if (!P) return pMin;
 
-    if (P) {
-        const computedPMin = d3.min(P);
-        if (computedPMin < pMin) pMin = computedPMin;
-    }
+    pMin = Math.min(...P);
 
     return pMin;
 
