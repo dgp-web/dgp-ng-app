@@ -2,7 +2,6 @@ import * as d3 from "d3";
 import { Many } from "data-modeling";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
-import { createClamp } from "../create-clamp.function";
 import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 
 // TODO: Ensure that no values <0 and >100 can be picked as boundaries
@@ -15,13 +14,10 @@ export function createNormalInterpolator(payload: {
     const pMin = getProbabilityChartPMin({P});
     const pMax = getProbabilityChartPMax({P});
 
-    // TODO: Proxy with getNormalYCoordinate({y}); == quantile function
-    const minQuantile = getNormalYCoordinate({p: pMin});
-    const maxQuantile = getNormalYCoordinate({p: pMax});
+    const yMin = getNormalYCoordinate({p: pMin});
+    const yMax = getNormalYCoordinate({p: pMax});
 
-    const referenceDistance = Math.abs(minQuantile - maxQuantile);
-
-    const clampP = createClamp({min: pMin, max: pMax});
+    const referenceDistance = Math.abs(yMin - yMax);
 
     return (a: number, b: number) => {
 
@@ -32,6 +28,9 @@ export function createNormalInterpolator(payload: {
          */
         const range = Math.abs(a - b);
 
+        /**
+         * TODO: When adjusting the domain, t is wrongly computed in relation to its bounds and NOT against a range between 0 and 1 or between 0 and 100
+         */
         return (t: number) => {
             /**
              * Note that the value t already gets transformed by d3.
@@ -40,13 +39,13 @@ export function createNormalInterpolator(payload: {
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
-            const p = clampP(t);
+            const p = t;
 
             if (p === pMin) return b;
             if (p === pMax) return a;
 
-            const quantile = getNormalYCoordinate({p});
-            const distance = Math.abs(quantile - maxQuantile);
+            const y = getNormalYCoordinate({p});
+            const distance = Math.abs(y - yMax);
             const share = distance / referenceDistance;
 
             return share * range;
