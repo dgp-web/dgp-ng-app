@@ -3,7 +3,6 @@ import { Many } from "data-modeling";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
-import { isNullOrUndefined } from "dgp-ng-app";
 
 // TODO: Ensure that no values <0 and >100 can be picked as boundaries
 // TODO: Unit test this; it should return a valid result for the extreme values that are used for drawing the lines
@@ -72,9 +71,9 @@ export function createNormalInterpolatorWithBoundaries(payload: {
     /**
      * Configured domain limits
      */
-    readonly pMin?: number;
-    readonly pMax?: number;
-} = {}): d3.InterpolatorFactory<number, number> {
+    readonly pMin: number;
+    readonly pMax: number;
+}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
 
@@ -89,14 +88,6 @@ export function createNormalInterpolatorWithBoundaries(payload: {
     const yRefMax = getNormalYCoordinate({p: pRefMax});
 
 
-    let pMin = payload.pMin;
-    if (isNullOrUndefined(pMin)) pMin = pRefMin;
-
-    let pMax = payload.pMax;
-    if (isNullOrUndefined(pMax)) pMax = pRefMax;
-
-    const yRefDomainLength = Math.abs(yRefMin - yRefMax);
-
     return (a: number, b: number) => {
 
         /**
@@ -107,16 +98,24 @@ export function createNormalInterpolatorWithBoundaries(payload: {
         const range = Math.abs(a - b);
         const yRefPxLength = range;
 
-        const interpolator = createNormalInterpolator({P})(a, b);
+        const refInterpolator = createNormalInterpolator({P})(a, b);
 
-        // TODO: call interpolator with t for pMin and t for pMax
-        const tPMin = pMin / (pRefMax - pRefMin);
-        const tPMax = pMax / (pRefMax - pRefMin);
+        const pMin = payload.pMin;
+        const pMax = payload.pMax;
 
-        const yMinPx = interpolator(tPMin);
-        const yMaxPx = interpolator(tPMax);
+        console.log(pMin, pMax);
+        console.log(pRefMin, pRefMax);
+
+        const tPMin = Math.abs(pMin - pRefMin) / Math.abs(pRefMax - pRefMin);
+        const tPMax = Math.abs(pMax - pRefMin) / Math.abs(pRefMax - pRefMin);
+
+        console.log("tPMin and tPMax", tPMin, tPMax);
+        const yMinPx = refInterpolator(tPMin);
+        const yMaxPx = refInterpolator(tPMax);
 
         const yPxLength = Math.abs(yMinPx - yMaxPx);
+        console.log("yPxLength", yPxLength);
+
         const factor = yRefPxLength / yPxLength;
 
 
@@ -136,22 +135,25 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = reverseLinearInterpolation({value: t, min: pMin, max: pMax});
-            const tRef = null; // TODO
-            const yPxOnRefScale = interpolator(tRef);
+            const tRef = p / Math.abs(pRefMax - pRefMin); // TODO
+            const yPxOnRefScale = refInterpolator(tRef);
+            const yPxDistanceOnCurrentScale = Math.abs(yPxOnRefScale - yMaxPx);
+
+            return yPxDistanceOnCurrentScale * factor;
 
             // TODO: reverse linear interpolation: t * (pMax - pMin) = p
             // TODO: compute pixel position on reference scale: yRef(p)
             // TODO: compute pixel delta from y(pMax) - y(p)
             // TODO: multiply pixel delta with factor
 
-            if (p === pMin) return b;
-            if (p === pMax) return a;
+            /*   if (p === pMin) return b;
+               if (p === pMax) return a;
 
-            const y = getNormalYCoordinate({p});
-            const distance = Math.abs(y - yMax);
-            const share = distance / referenceDistance;
+               const y = getNormalYCoordinate({p});
+               const distance = Math.abs(y - yMax);
+               const share = distance / referenceDistance;
 
-            return share * range;
+               return share * range;*/
         };
     };
 

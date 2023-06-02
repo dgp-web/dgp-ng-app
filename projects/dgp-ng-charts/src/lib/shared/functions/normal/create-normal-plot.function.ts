@@ -4,10 +4,11 @@ import { fromPercent } from "../from-percent.function";
 import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
 import * as d3 from "d3";
 import * as _ from "lodash";
-import { createNormalInterpolator } from "./create-normal-interpolator.function";
+import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator.function";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
 import { computeTotalP } from "../compute-total-p.function";
+import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 
 export function createNormalPlot(
     payload: {
@@ -20,8 +21,26 @@ export function createNormalPlot(
 
     let model = payload.model;
 
+    let yAxisMin = config.yAxisMin;
+    let yAxisMax = config.yAxisMax;
+
     const totalP = computeTotalP(model);
-    const yAxisInterpolator = createNormalInterpolator({P: totalP});
+
+    const yAxisInterpolator = createNormalInterpolatorWithBoundaries({
+        P: totalP,
+        /**
+         * pMin and pMax can be overridden which corresponds to zooming into the data
+         */
+        pMin: notNullOrUndefined(yAxisMin) ? fromPercent(yAxisMin) : undefined,
+        pMax: notNullOrUndefined(yAxisMax) ? fromPercent(yAxisMax) : undefined,
+    });
+
+    /*  const yAxisInterpolator = createNormalInterpolator({
+          P: totalP,
+      });
+  */
+    if (isNullOrUndefined(yAxisMin)) yAxisMin = 0;
+    if (isNullOrUndefined(yAxisMax)) yAxisMax = 100;
 
     const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 
@@ -48,21 +67,21 @@ export function createNormalPlot(
 
     const result: ConnectedScatterPlot = {
         yAxisInterpolator,
-        yAxisMin: 0,
-        yAxisMax: 100,
+        yAxisMin,
+        yAxisMax,
         model,
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
-        yAxisTickValues,
-        yAxisTickFormat: (x: number) => {
+        // yAxisTickValues,
+        /*yAxisTickFormat: (x: number) => {
             if (x >= 1 && x <= 95) return d3.format("d")(x);
             if (x > 95) return x.toPrecision(3);
             if (x < 1) return x.toPrecision(3);
 
             return;
-        }
+        }*/
     };
 
-    return _.merge(result, config);
+    return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }
