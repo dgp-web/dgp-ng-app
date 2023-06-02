@@ -51,7 +51,7 @@ export function createNormalInterpolator(payload: {
             // TODO: reverse linear interpolation: t * (pMax - pMin) = p
             // TODO: compute pixel position on reference scale: yRef(p)
             // TODO: compute pixel delta from y(pMax) - y(p)
-            // TODO: multiply pixel delta with factor
+            // TODO: multiply pixel delta with factor 
 
             if (p === pMin) return b;
             if (p === pMax) return a;
