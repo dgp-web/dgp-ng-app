@@ -28,6 +28,13 @@ describe(createNormalInterpolator.name, () => {
             expect(result).toEqual(expectedResult);
         });
 
+        it(`should return Math.abs(a-b)/2 for p = 0.5`, () => {
+            const p = 0.5;
+            const result = interpolate(p);
+            const expectedResult = Math.abs(a - b) / 2;
+            expect(result).toEqual(expectedResult);
+        });
+
     });
 
 });
