@@ -1,5 +1,5 @@
 import { createNormalInterpolator } from "../create-normal-interpolator.function";
-import { defaultNormalParameters, defaultProbabilityChartPMin } from "../../../constants";
+import { defaultNormalParameters, defaultProbabilityChartPMax, defaultProbabilityChartPMin } from "../../../constants";
 
 describe(createNormalInterpolator.name, () => {
 
@@ -18,6 +18,13 @@ describe(createNormalInterpolator.name, () => {
             const pMin = defaultProbabilityChartPMin;
             const result = interpolate(pMin);
             const expectedResult = b;
+            expect(result).toEqual(expectedResult);
+        });
+
+        it(`should return a for the default pMax`, () => {
+            const pMax = defaultProbabilityChartPMax;
+            const result = interpolate(pMax);
+            const expectedResult = a;
             expect(result).toEqual(expectedResult);
         });
 
