@@ -4,11 +4,8 @@ import { getProbabilityChartPMax } from "../probability-chart/get-probability-ch
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 
-// TODO: Ensure that no values <0 and >100 can be picked as boundaries
-// TODO: Unit test this; it should return a valid result for the extreme values that are used for drawing the lines
 export function createNormalInterpolator(payload: {
     readonly P?: Many<number>;
-    // TODO: Pass configured domain limits here
 } = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
@@ -22,7 +19,10 @@ export function createNormalInterpolator(payload: {
     const yMin = getNormalYCoordinate({p: pMin});
     const yMax = getNormalYCoordinate({p: pMax});
 
-    const referenceDistance = Math.abs(yMin - yMax);
+    const referenceDistance = computeDistance({
+        a: yMin,
+        b: yMax
+    });
 
     return (a: number, b: number) => {
 
@@ -31,14 +31,8 @@ export function createNormalInterpolator(payload: {
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const range = Math.abs(a - b);
-        // TODO: Compute length of current yDomainLength: y(pMax) - y(pMin)
-        // TODO: Compute length of reference yRefDomainLength: yRef(pRefMax) - yRef(pRefMin)
-        // TODO: Compute factor: yRefDomainLength / yDomainLength
+        const range = computeDistance({a: b, b: a});
 
-        /**
-         * TODO: When adjusting the domain, t is wrongly computed in relation to its bounds and NOT against a range between 0 and 1 or between 0 and 100
-         */
         return (t: number) => {
             /**
              * Note that the value t already gets transformed by d3.
@@ -48,16 +42,15 @@ export function createNormalInterpolator(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = t;
-            // TODO: reverse linear interpolation: t * (pMax - pMin) = p
-            // TODO: compute pixel position on reference scale: yRef(p)
-            // TODO: compute pixel delta from y(pMax) - y(p)
-            // TODO: multiply pixel delta with factor
 
             if (p === pMin) return b;
             if (p === pMax) return a;
 
             const y = getNormalYCoordinate({p});
-            const distance = Math.abs(y - yMax);
+            const distance = computeDistance({
+                a: y,
+                b: yMax
+            });
             const share = distance / referenceDistance;
 
             return share * range;
