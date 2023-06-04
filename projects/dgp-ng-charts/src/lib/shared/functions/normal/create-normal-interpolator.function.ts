@@ -106,6 +106,7 @@ export function createNormalInterpolatorWithBoundaries(payload: {
         console.log(pMin, pMax);
         console.log(pRefMin, pRefMax);
 
+        // TODO: Use interpolateLinearly
         const tPMin = Math.abs(pMin - pRefMin) / Math.abs(pRefMax - pRefMin);
         const tPMax = Math.abs(pMax - pRefMin) / Math.abs(pRefMax - pRefMin);
 
@@ -160,6 +161,21 @@ export function createNormalInterpolatorWithBoundaries(payload: {
 
 }
 
+export function interpolateLinearly(payload: {
+    readonly value: number;
+    readonly min: number;
+    readonly max: number;
+}): number {
+
+    const value = payload.value;
+    const min = payload.min;
+    const max = payload.max;
+
+    // TODO: Remove abs with computeDistance
+    return Math.abs(value - min) / Math.abs(max - min);
+
+}
+
 export function reverseLinearInterpolation(payload: {
     readonly value: number;
     readonly min: number;
@@ -170,6 +186,7 @@ export function reverseLinearInterpolation(payload: {
     const min = payload.min;
     const max = payload.max;
 
+    // TODO: Remove abs
     return value * Math.abs(max - min);
 
 }
