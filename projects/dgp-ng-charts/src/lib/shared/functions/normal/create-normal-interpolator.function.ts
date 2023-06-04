@@ -103,30 +103,24 @@ export function createNormalInterpolatorWithBoundaries(payload: {
         const pMin = payload.pMin;
         const pMax = payload.pMax;
 
-        console.log(pMin, pMax);
-        console.log(pRefMin, pRefMax);
+        const tPMin = interpolateLinearly({
+            value: pMin,
+            min: pRefMin,
+            max: pRefMax
+        });
+        const tPMax = interpolateLinearly({
+            value: pMax,
+            min: pRefMin,
+            max: pRefMax
+        });
 
-        // TODO: Use interpolateLinearly
-        const tPMin = Math.abs(pMin - pRefMin) / Math.abs(pRefMax - pRefMin);
-        const tPMax = Math.abs(pMax - pRefMin) / Math.abs(pRefMax - pRefMin);
-
-        console.log("tPMin and tPMax", tPMin, tPMax);
         const yMinPx = refInterpolator(tPMin);
         const yMaxPx = refInterpolator(tPMax);
 
         const yPxLength = Math.abs(yMinPx - yMaxPx);
-        console.log("yPxLength", yPxLength);
 
         const factor = yRefPxLength / yPxLength;
 
-
-        // TODO: Compute length of current yDomainLength: y(pMax) - y(pMin)
-        // TODO: Compute length of reference yRefDomainLength: yRef(pRefMax) - yRef(pRefMin)
-        // TODO: Compute factor: yRefDomainLength / yDomainLength
-
-        /**
-         * TODO: When adjusting the domain, t is wrongly computed in relation to its bounds and NOT against a range between 0 and 1 or between 0 and 100
-         */
         return (t: number) => {
             /**
              * Note that the value t already gets transformed by d3.
@@ -136,26 +130,15 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = reverseLinearInterpolation({value: t, min: pMin, max: pMax});
-            // interpolate
-            const tRef = Math.abs(p - pRefMin) / Math.abs(pRefMax - pRefMin); // TODO
+            const tRef = interpolateLinearly({
+                value: p,
+                min: pRefMin,
+                max: pRefMax
+            });
             const yPxOnRefScale = refInterpolator(tRef);
             const yPxDistanceOnCurrentScale = yPxOnRefScale - yMaxPx;
 
             return yPxDistanceOnCurrentScale * factor;
-
-            // TODO: reverse linear interpolation: t * (pMax - pMin) = p
-            // TODO: compute pixel position on reference scale: yRef(p)
-            // TODO: compute pixel delta from y(pMax) - y(p)
-            // TODO: multiply pixel delta with factor
-
-            /*   if (p === pMin) return b;
-               if (p === pMax) return a;
-
-               const y = getNormalYCoordinate({p});
-               const distance = Math.abs(y - yMax);
-               const share = distance / referenceDistance;
-
-               return share * range;*/
         };
     };
 
