@@ -11,7 +11,8 @@ export function getProbabilityChartPMin(payload?: {
     const P = payload.P;
     if (!P) return pMin;
 
-    pMin = Math.min(...P);
+    const computedPMin = Math.min(...P);
+    if (computedPMin < pMin) pMin = computedPMin;
 
     return pMin;
 

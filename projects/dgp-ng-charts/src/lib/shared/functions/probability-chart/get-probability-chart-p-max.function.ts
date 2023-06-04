@@ -11,7 +11,8 @@ export function getProbabilityChartPMax(payload?: {
     const P = payload.P;
     if (!P) return pMax;
 
-    pMax = Math.max(...P);
+    const computedPMax = Math.max(...P);
+    if (computedPMax > pMax) pMax = computedPMax;
 
     return pMax;
 
