@@ -5,10 +5,7 @@ describe(computeDistance.name, () => {
     it(`should return target-start`, () => {
         const target = 3;
         const start = 1;
-        const result = computeDistance({
-            target: 3,
-            start: 1
-        });
+        const result = computeDistance({target, start});
         expect(result).toBe(target - start);
     });
 
