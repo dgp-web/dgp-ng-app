@@ -44,6 +44,8 @@ export function createNormalInterpolatorWithBoundaries(payload: {
         const yRefPxDistance = computeDistance({target: rangeTarget, start: rangeStart});
         const factor = yRefPxDistance / yPxDistance;
 
+        console.log("yPxDistance, yRefPxDistance, factor", yPxDistance, yRefPxDistance, factor);
+
         return (t: number) => {
             /**
              * Note that the value t already gets transformed by d3.
