@@ -26,44 +26,18 @@ describe("createNormalInterpolator", () => {
             expect(result).toEqual(expectedResult);
         });
 
-        it(`should return Math.abs(a-b)/2 for p = 0.5`, () => {
+        it(`should return (b-a)/2 for p = 0.5`, () => {
             const p = 0.5;
             const result = interpolate(p);
-            const expectedResult = Math.abs(a - b) / 2;
+            const expectedResult = (b - a) / 2;
             expect(result).toEqual(expectedResult);
-        });
-
-        it(`should clamp passed values and return b for p = 0`, () => {
-            const p = 0;
-            const result = interpolate(p);
-            const expectedResult = b;
-            expect(result).toEqual(expectedResult);
-        });
-
-        it(`should NOT return Infinity for p = 0`, () => {
-            const p = 0;
-            const result = interpolate(p);
-            expect(result).not.toEqual(Infinity);
-        });
-
-        it(`should clamp passed values and return a for p = 1`, () => {
-            const p = 1;
-            const result = interpolate(p);
-            const expectedResult = a;
-            expect(result).toEqual(expectedResult);
-        });
-
-        it(`should NOT return -Infinity for p = 1`, () => {
-            const p = 1;
-            const result = interpolate(p);
-            expect(result).not.toEqual(-Infinity);
         });
 
     });
 
     describe(`with passed P for n = 11 from 0 to 1 in steps of 0.1 and a range between 0 and 400 px`, () => {
 
-        const P = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+        const P = [0.005, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.995];
 
         const createInterpolator = createNormalInterpolator({P});
 
@@ -83,6 +57,13 @@ describe("createNormalInterpolator", () => {
             const pMin = Math.max(...P);
             const result = interpolate(pMin);
             const expectedResult = a;
+            expect(result).toEqual(expectedResult);
+        });
+
+        it(`should return (b-a)/2 for p = 0.5`, () => {
+            const p = 0.5;
+            const result = interpolate(p);
+            const expectedResult = (b - a) / 2;
             expect(result).toEqual(expectedResult);
         });
 

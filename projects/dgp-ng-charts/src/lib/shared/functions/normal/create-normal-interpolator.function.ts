@@ -45,6 +45,7 @@ export function createNormalInterpolator(payload: {
                 target: y,
                 start: yMax
             });
+
             const share = distance / referenceDistance;
 
             return share * range;
