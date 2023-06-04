@@ -95,7 +95,7 @@ export function createNormalInterpolatorWithBoundaries(payload: {
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const range = Math.abs(a - b);
+        const range = computeDistance({a, b});
         const yRefPxLength = range;
 
         const refInterpolator = createNormalInterpolator({P})(a, b);
@@ -117,7 +117,7 @@ export function createNormalInterpolatorWithBoundaries(payload: {
         const yMinPx = refInterpolator(tPMin);
         const yMaxPx = refInterpolator(tPMax);
 
-        const yPxLength = Math.abs(yMinPx - yMaxPx);
+        const yPxLength = computeDistance({a: yMinPx, b: yMaxPx});
 
         const factor = yRefPxLength / yPxLength;
 
@@ -144,6 +144,18 @@ export function createNormalInterpolatorWithBoundaries(payload: {
 
 }
 
+export function computeDistance(payload: {
+    readonly a: number;
+    readonly b: number;
+}): number {
+
+    const a = payload.a;
+    const b = payload.b;
+
+    return Math.abs(a - b);
+
+}
+
 export function interpolateLinearly(payload: {
     readonly value: number;
     readonly min: number;
@@ -154,9 +166,10 @@ export function interpolateLinearly(payload: {
     const min = payload.min;
     const max = payload.max;
 
-    // TODO: Remove abs with computeDistance
-    return Math.abs(value - min) / Math.abs(max - min);
+    const valueDistance = computeDistance({a: min, b: value});
+    const refDistance = computeDistance({a: min, b: max});
 
+    return valueDistance / refDistance;
 }
 
 export function reverseLinearInterpolation(payload: {
@@ -169,9 +182,9 @@ export function reverseLinearInterpolation(payload: {
     const min = payload.min;
     const max = payload.max;
 
-    // TODO: Remove abs
-    return value * Math.abs(max - min);
+    const distance = computeDistance({a: min, b: max});
 
+    return value * distance;
 }
 
 // DUMP FROM OLD IMPLEMENTATION
