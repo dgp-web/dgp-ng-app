@@ -15,3 +15,4 @@ export * from "./get-median-rank.function";
 export { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 export { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
 export { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
+export { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";

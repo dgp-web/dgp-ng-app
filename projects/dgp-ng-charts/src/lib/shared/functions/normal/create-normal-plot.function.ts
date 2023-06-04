@@ -3,11 +3,12 @@ import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotConfig
 import { fromPercent } from "../from-percent.function";
 import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
 import * as _ from "lodash";
-import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator.function";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
 import { computeTotalP } from "../compute-total-p.function";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+
+import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
 
 export function createNormalPlot(
     payload: {
@@ -34,10 +35,9 @@ export function createNormalPlot(
         pMax: notNullOrUndefined(yAxisMax) ? fromPercent(yAxisMax) : undefined,
     });
 
-    /*  const yAxisInterpolator = createNormalInterpolator({
-          P: totalP,
-      });
-  */
+    /*const yAxisInterpolator = createNormalInterpolator({
+        P: totalP,
+    });*/
 
     if (isNullOrUndefined(yAxisMin)) yAxisMin = 0;
     if (isNullOrUndefined(yAxisMax)) yAxisMax = 100;
