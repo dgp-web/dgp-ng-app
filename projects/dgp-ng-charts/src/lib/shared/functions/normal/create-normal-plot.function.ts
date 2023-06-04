@@ -2,7 +2,6 @@ import { Many } from "data-modeling";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotConfig } from "../../../connected-scatter-plot/models";
 import { fromPercent } from "../from-percent.function";
 import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
-import * as d3 from "d3";
 import * as _ from "lodash";
 import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator.function";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
@@ -39,8 +38,11 @@ export function createNormalPlot(
           P: totalP,
       });
   */
+
     if (isNullOrUndefined(yAxisMin)) yAxisMin = 0;
     if (isNullOrUndefined(yAxisMax)) yAxisMax = 100;
+
+    console.log(yAxisMin, yAxisMax);
 
     const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 
