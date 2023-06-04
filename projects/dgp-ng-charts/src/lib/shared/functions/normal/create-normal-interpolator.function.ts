@@ -27,14 +27,14 @@ export function createNormalInterpolator(payload: {
         start: yMax
     });
 
-    return (a: number, b: number) => {
+    return (rangeStart: number, rangeTarget: number) => {
 
         /**
          * a and b are the range boundaries
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const range = computeDistance({target: b, start: a});
+        const range = computeDistance({target: rangeTarget, start: rangeStart});
 
         return (t: number) => {
             /**
@@ -46,8 +46,8 @@ export function createNormalInterpolator(payload: {
              */
             const p = t;
 
-            if (p === pMin) return b;
-            if (p === pMax) return a;
+            if (p === pMin) return rangeTarget;
+            if (p === pMax) return rangeStart;
 
             const y = getNormalYCoordinate({p});
             const distance = computeDistance({
@@ -75,31 +75,31 @@ export function createNormalInterpolatorWithBoundaries(payload: {
     const pRefMin = getProbabilityChartPMin({P});
     const pRefMax = getProbabilityChartPMax({P});
 
-    return (a: number, b: number) => {
+    const pMin = payload.pMin;
+    const pMax = payload.pMax;
+
+    const tPMin = interpolateLinearly({
+        value: pMin,
+        min: pRefMin,
+        max: pRefMax
+    });
+    const tPMax = interpolateLinearly({
+        value: pMax,
+        min: pRefMin,
+        max: pRefMax
+    });
+
+    return (rangeStart: number, rangeTarget: number) => {
 
         /**
          * a and b are the range boundaries
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const range = computeDistance({target: b, start: a});
+        const range = computeDistance({target: rangeTarget, start: rangeStart});
         const yRefPxLength = range;
 
-        const refInterpolator = createNormalInterpolator({P})(a, b);
-
-        const pMin = payload.pMin;
-        const pMax = payload.pMax;
-
-        const tPMin = interpolateLinearly({
-            value: pMin,
-            min: pRefMin,
-            max: pRefMax
-        });
-        const tPMax = interpolateLinearly({
-            value: pMax,
-            min: pRefMin,
-            max: pRefMax
-        });
+        const refInterpolator = createNormalInterpolator({P})(rangeStart, rangeTarget);
 
         const yMinPx = refInterpolator(tPMin);
         const yMaxPx = refInterpolator(tPMax);
@@ -117,14 +117,10 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = reverseLinearInterpolation({value: t, min: pMin, max: pMax});
+            const pRef = interpolateLinearly({value: p, min: pRefMin, max: pRefMax});
 
-            const tRef = interpolateLinearly({
-                value: p,
-                min: pRefMin,
-                max: pRefMax
-            });
+            const yPxOnRefScale = refInterpolator(pRef);
 
-            const yPxOnRefScale = refInterpolator(tRef);
             const yPxDistanceOnCurrentScale = computeDistance({
                 target: yPxOnRefScale,
                 start: yMaxPx

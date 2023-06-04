@@ -83,5 +83,6 @@ export function createNormalPlot(
         }*/
     };
 
+    // TODO: This mergeing is crap
     return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }
