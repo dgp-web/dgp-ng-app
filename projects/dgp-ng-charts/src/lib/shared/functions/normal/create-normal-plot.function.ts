@@ -42,8 +42,6 @@ export function createNormalPlot(
     if (isNullOrUndefined(yAxisMin)) yAxisMin = 0;
     if (isNullOrUndefined(yAxisMax)) yAxisMax = 100;
 
-    console.log(yAxisMin, yAxisMax);
-
     const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 
     model = model.map(csg => {

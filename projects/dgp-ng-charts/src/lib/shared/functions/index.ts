@@ -16,3 +16,6 @@ export { getProbabilityChartPMin } from "./probability-chart/get-probability-cha
 export { getProbabilityChartPMax } from "./probability-chart/get-probability-chart-p-max.function";
 export { computeTotalP } from "./compute-total-p.function";
 export { createClamp } from "./create-clamp.function";
+export { computeDistance } from "./compute-distance.function";
+export { interpolateLinearly } from "./interpolate-linearly.function";
+export { reverseLinearInterpolation } from "./reverse-linear-interpolation.function";
