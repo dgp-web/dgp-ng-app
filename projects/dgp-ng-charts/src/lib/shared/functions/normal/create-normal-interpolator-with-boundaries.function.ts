@@ -22,15 +22,23 @@ export function createNormalInterpolatorWithBoundaries(payload: {
     const pRefMin = getProbabilityChartPMin({P});
     const pRefMax = getProbabilityChartPMax({P});
 
+    console.log("pMin, pMax, pRefMin, pRefMax", pMin, pMax, pRefMin, pRefMax);
+
     const tPMin = interpolateLinearly({value: pMin, min: pRefMin, max: pRefMax});
     const tPMax = interpolateLinearly({value: pMax, min: pRefMin, max: pRefMax});
+
+    console.log("tPMin, tPMax", tPMin, tPMax);
 
     return (rangeStart: number, rangeTarget: number) => {
 
         const getPxOnRefScale = createNormalInterpolator({P})(rangeStart, rangeTarget);
 
+        // TODO: THis computation or rather the one of tPMin is not correct
         const pMinYPx = getPxOnRefScale(tPMin);
         const pMaxYPx = getPxOnRefScale(tPMax);
+
+        console.log("pMinYPx, pMaxYPx", pMinYPx, pMaxYPx);
+
         const yPxDistance = computeDistance({target: pMinYPx, start: pMaxYPx});
 
         const yRefPxDistance = computeDistance({target: rangeTarget, start: rangeStart});
