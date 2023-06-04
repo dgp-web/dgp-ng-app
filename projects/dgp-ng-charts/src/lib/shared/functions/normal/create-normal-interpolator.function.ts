@@ -95,7 +95,7 @@ export function createNormalInterpolatorWithBoundaries(payload: {
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const range = computeDistance({a, b});
+        const range = computeDistance({a: b, b: a});
         const yRefPxLength = range;
 
         const refInterpolator = createNormalInterpolator({P})(a, b);
@@ -135,6 +135,8 @@ export function createNormalInterpolatorWithBoundaries(payload: {
                 min: pRefMin,
                 max: pRefMax
             });
+            console.log(tRef);
+
             const yPxOnRefScale = refInterpolator(tRef);
             const yPxDistanceOnCurrentScale = yPxOnRefScale - yMaxPx;
 
@@ -152,7 +154,7 @@ export function computeDistance(payload: {
     const a = payload.a;
     const b = payload.b;
 
-    return Math.abs(a - b);
+    return a - b;
 
 }
 
@@ -182,7 +184,7 @@ export function reverseLinearInterpolation(payload: {
     const min = payload.min;
     const max = payload.max;
 
-    const distance = computeDistance({a: min, b: max});
+    const distance = computeDistance({a: max, b: min});
 
     return value * distance;
 }
