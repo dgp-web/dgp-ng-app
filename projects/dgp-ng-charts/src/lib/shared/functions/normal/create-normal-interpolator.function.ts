@@ -135,10 +135,12 @@ export function createNormalInterpolatorWithBoundaries(payload: {
                 min: pRefMin,
                 max: pRefMax
             });
-            console.log(tRef);
 
             const yPxOnRefScale = refInterpolator(tRef);
-            const yPxDistanceOnCurrentScale = yPxOnRefScale - yMaxPx;
+            const yPxDistanceOnCurrentScale = computeDistance({
+                a: yPxOnRefScale,
+                b: yMaxPx
+            });
 
             return yPxDistanceOnCurrentScale * factor;
         };
@@ -168,8 +170,8 @@ export function interpolateLinearly(payload: {
     const min = payload.min;
     const max = payload.max;
 
-    const valueDistance = computeDistance({a: min, b: value});
-    const refDistance = computeDistance({a: min, b: max});
+    const valueDistance = computeDistance({a: value, b: min});
+    const refDistance = computeDistance({a: max, b: min});
 
     return valueDistance / refDistance;
 }
