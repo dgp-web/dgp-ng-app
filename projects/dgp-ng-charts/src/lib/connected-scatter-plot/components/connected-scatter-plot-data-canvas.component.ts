@@ -25,7 +25,8 @@ import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../functions/compute-points-for-shape.function";
 import { ControlLineAxis } from "../../stroke/models";
-import { computeDistance, fromPercent, getNormalYCoordinate } from "../../shared/functions";
+import { computeDistance, fromPercent, getGaussianCumulativeDistribution, getNormalYCoordinate } from "../../shared/functions";
+import { defaultNormalParameters } from "../../shared/constants";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -345,9 +346,10 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             const referenceDistance = computeDistance({target: pMaxY, start: pMinY});
 
             const pYDistance = yPxValue / (yRange[1] - yRange[0]) * referenceDistance;
-            console.log(pYDistance);
+            const py = pMax - pYDistance;
+            const p = getGaussianCumulativeDistribution({...defaultNormalParameters, x: py});
 
-
+            console.log("pYDistance, py, p", pYDistance, py, p);
             /* const p = reverseTComputation({value: t, min: pMin, max: pMax});
 
              if (p === pMin) return rangeTarget;
