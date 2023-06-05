@@ -346,7 +346,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             const referenceDistance = computeDistance({target: pMaxY, start: pMinY});
 
             const pYDistance = yPxValue / (yRange[1] - yRange[0]) * referenceDistance;
-            const py = pMax - pYDistance;
+            const py = pMaxY - pYDistance;
             const p = getGaussianCumulativeDistribution({...defaultNormalParameters, x: py});
 
             console.log("pYDistance, py, p", pYDistance, py, p);
