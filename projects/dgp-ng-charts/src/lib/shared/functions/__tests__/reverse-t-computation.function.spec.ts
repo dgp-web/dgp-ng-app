@@ -12,7 +12,7 @@ describe("reverseTComputation", () => {
             value, min, max
         });
 
-        const expectedResult = value * (max - min);
+        const expectedResult = min + value * (max - min);
         expect(result).toEqual(expectedResult);
     });
 
