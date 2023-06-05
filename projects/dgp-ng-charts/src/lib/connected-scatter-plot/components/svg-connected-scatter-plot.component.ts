@@ -120,6 +120,10 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         let result = "";
         if (notNullOrUndefined(series.label)) result += series.label + ": ";
+        if (notNullOrUndefined(dot.label)) {
+            if (result) result += "; ";
+            result += dot.label + ": ";
+        }
         result += "(" + dot.x.toPrecision(3) + ", " + dot.y.toPrecision(3) + ")";
         return result;
     }
