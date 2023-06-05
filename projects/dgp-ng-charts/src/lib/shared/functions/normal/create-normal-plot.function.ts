@@ -9,10 +9,10 @@ import { computeTotalP } from "../compute-total-p.function";
 import { notNullOrUndefined } from "dgp-ng-app";
 
 import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
-import { createNormalInterpolator } from "./create-normal-interpolator.function";
 import { toPercent } from "../to-percent.function";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { ScaleType } from "../../models";
 
 export function createNormalPlot(
     payload: {
@@ -84,6 +84,7 @@ export function createNormalPlot(
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
+        yAxisScaleType: ScaleType.Normal,
         // yAxisTickValues,
         /*yAxisTickFormat: (x: number) => {
             if (x >= 1 && x <= 95) return d3.format("d")(x);

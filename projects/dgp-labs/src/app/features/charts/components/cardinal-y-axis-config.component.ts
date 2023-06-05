@@ -29,6 +29,9 @@ import {
                         <option [ngValue]="scaleTypeEnum.Logarithmic">
                             Logarithmic
                         </option>
+                        <option [ngValue]="scaleTypeEnum.Normal">
+                            Normal
+                        </option>
                     </select>
                 </dgp-inspector-item>
 
