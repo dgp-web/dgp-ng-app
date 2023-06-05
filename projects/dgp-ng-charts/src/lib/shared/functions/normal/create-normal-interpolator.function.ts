@@ -4,6 +4,7 @@ import { getProbabilityChartPMax } from "../probability-chart/get-probability-ch
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 import { computeDistance } from "../compute-distance.function";
+import { reverseTComputation } from "../reverse-t-computation.function";
 
 export function createNormalInterpolator(payload: {
     readonly P?: Many<number>;
@@ -15,6 +16,8 @@ export function createNormalInterpolator(payload: {
 
     const pMinY = getNormalYCoordinate({p: pMin});
     const pMaxY = getNormalYCoordinate({p: pMax});
+
+    console.log("pRefMin, pRefMax, pMinY, pMaxY", pMin, pMax, pMinY, pMaxY);
 
     const referenceDistance = computeDistance({target: pMaxY, start: pMinY});
 
@@ -35,8 +38,9 @@ export function createNormalInterpolator(payload: {
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
-            const p = t;
+                //const p = t;
 
+            const p = reverseTComputation({value: t, min: pMin, max: pMax});
             if (p === pMin) return rangeTarget;
             if (p === pMax) return rangeStart;
 
