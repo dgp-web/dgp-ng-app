@@ -2,9 +2,9 @@ import { Many } from "data-modeling";
 import * as d3 from "d3";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
-import { interpolateLinearly } from "../interpolate-linearly.function";
+import { computeT } from "../compute-t.function";
 import { computeDistance } from "../compute-distance.function";
-import { reverseLinearInterpolation } from "../reverse-linear-interpolation.function";
+import { reverseTComputation } from "../reverse-t-computation.function";
 import { createNormalInterpolator } from "./create-normal-interpolator.function";
 
 export function createNormalInterpolatorWithBoundaries(payload: {
@@ -24,8 +24,8 @@ export function createNormalInterpolatorWithBoundaries(payload: {
 
     console.log("pMin, pMax, pRefMin, pRefMax", pMin, pMax, pRefMin, pRefMax);
 
-    const tPMin = interpolateLinearly({value: pMin, min: pRefMin, max: pRefMax});
-    const tPMax = interpolateLinearly({value: pMax, min: pRefMin, max: pRefMax});
+    const tPMin = computeT({value: pMin, min: pRefMin, max: pRefMax});
+    const tPMax = computeT({value: pMax, min: pRefMin, max: pRefMax});
 
     console.log("tPMin, tPMax", tPMin, tPMax);
 
@@ -54,8 +54,8 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
-            const p = reverseLinearInterpolation({value: t, min: pMin, max: pMax});
-            const pRef = interpolateLinearly({value: p, min: pRefMin, max: pRefMax});
+            const p = reverseTComputation({value: t, min: pMin, max: pMax});
+            const pRef = computeT({value: p, min: pRefMin, max: pRefMax});
 
             const yPxOnRefScale = getPxOnRefScale(pRef);
 

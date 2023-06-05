@@ -1,6 +1,6 @@
-import { reverseLinearInterpolation } from "../reverse-linear-interpolation.function";
+import { reverseTComputation } from "../reverse-t-computation.function";
 
-describe(reverseLinearInterpolation.name, () => {
+describe("reverseTComputation", () => {
 
     it(`should return the value associated with ratio on the distance between min and max`, () => {
         const min = 10;
@@ -8,7 +8,7 @@ describe(reverseLinearInterpolation.name, () => {
 
         const value = 0.17;
 
-        const result = reverseLinearInterpolation({
+        const result = reverseTComputation({
             value, min, max
         });
 
