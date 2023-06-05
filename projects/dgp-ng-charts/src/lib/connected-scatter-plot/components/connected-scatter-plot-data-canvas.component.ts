@@ -331,7 +331,23 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
             );
         } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Normal) {
-            // TODO: try to compute the things backwards
+            const yPxValue = absoluteY - yRange[0];
+
+            const yMin = yDomain[0];
+            const yMax = yDomain[1];
+
+            const pMin = fromPercent(yMin);
+            const pMax = fromPercent(yMax);
+
+            const pMinY = getNormalYCoordinate({p: pMin});
+            const pMaxY = getNormalYCoordinate({p: pMax});
+
+            const referenceDistance = computeDistance({target: pMaxY, start: pMinY});
+
+            const pYDistance = yPxValue / (yRange[1] - yRange[0]) * referenceDistance;
+            console.log(pYDistance);
+
+
             /* const p = reverseTComputation({value: t, min: pMin, max: pMax});
 
              if (p === pMin) return rangeTarget;
@@ -346,30 +362,30 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
              const share = pYDistance / referenceDistance;
 
              return share * yPxDistance;*/
+            /*
 
+                        const yMin = yDomain[0];
+                        const yMax = yDomain[1];
 
-            const yMin = yDomain[0];
-            const yMax = yDomain[1];
+                        yDomainDistance = computeDistance({target: yMax, start: yMin});
 
-            yDomainDistance = computeDistance({target: yMax, start: yMin});
+                        // TODO: This has a linear scale but doesn't suffice
+                        const yDomainValue = yMax - yRelativeDistance * yDomainDistance;
+                        console.log("yDomainValue", yDomainValue);
 
-            // TODO: This has a linear scale but doesn't suffice
-            const yDomainValue = yMax - yRelativeDistance * yDomainDistance;
-            console.log("yDomainValue", yDomainValue);
+                        const pMin = fromPercent(yMin);
+                        const pMax = fromPercent(yMax);
 
-            const pMin = fromPercent(yMin);
-            const pMax = fromPercent(yMax);
+                        const yPMin = getNormalYCoordinate({p: pMin});
+                        const yPMax = getNormalYCoordinate({p: pMax});
+                        const yP = getNormalYCoordinate({p});
 
-            const yPMin = getNormalYCoordinate({p: pMin});
-            const yPMax = getNormalYCoordinate({p: pMax});
-            const yP = getNormalYCoordinate({p});
+                        const yRefDist = computeDistance({target: yPMax, start: yPMin});
+                        const yDist = computeDistance({target: yPMax, start: yP});
+                        const coefficient = yDist / yRefDist;
 
-            const yRefDist = computeDistance({target: yPMax, start: yPMin});
-            const yDist = computeDistance({target: yPMax, start: yP});
-            const coefficient = yDist / yRefDist;
-
-            lowerYBoundary = yDomainValue - yDist;
-            upperYBoundary = yDomainValue + yDist;
+                        lowerYBoundary = yDomainValue - yDist;
+                        upperYBoundary = yDomainValue + yDist;*/
 
         }
 
