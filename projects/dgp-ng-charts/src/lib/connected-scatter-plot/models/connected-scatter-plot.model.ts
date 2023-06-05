@@ -1,10 +1,6 @@
-import { CardinalXAxis, CardinalYAxis, Chart } from "../../shared/models";
-import { ConnectedScatterGroup } from "./connected-scatter-group.model";
-import { ConnectedScatterPlotControlLine } from "./connected-scatter-plot-control-line.model";
-import { DotConfig } from "./dot-config.model";
-import { LineConfig } from "./line-config.model";
+import { ConnectedScatterPlotConfig } from "./connected-scatter-plot-config.model";
+import { ConnectedScatterPlotModel } from "./connected-scatter-plot-model.model";
 
-export interface ConnectedScatterPlot extends Chart, CardinalXAxis, CardinalYAxis, DotConfig, LineConfig {
-    readonly model: ReadonlyArray<ConnectedScatterGroup>;
-    readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
+export interface ConnectedScatterPlot extends ConnectedScatterPlotConfig {
+    readonly model: ConnectedScatterPlotModel;
 }

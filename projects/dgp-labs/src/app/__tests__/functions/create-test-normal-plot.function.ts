@@ -1,5 +1,5 @@
-import { ConnectedScatterPlot, createNormalConnectedScatterGroup, createNormalPlot } from "dgp-ng-charts";
-import * as d3 from "d3";
+import { ConnectedScatterPlot, createNormalPlot } from "dgp-ng-charts";
+import { createTestNormalPlotScatterGroup } from "./create-test-normal-plot-scatter-group.function";
 
 export function createTestNormalPlot(payload: {
     readonly n: number;
@@ -7,12 +7,9 @@ export function createTestNormalPlot(payload: {
 
     const n = payload.n;
 
-    const rdm = d3.randomNormal(0, 1);
-    const values = Array.from({length: n}, () => rdm());
-
     return createNormalPlot({
         model: [
-            createNormalConnectedScatterGroup({values})
+            createTestNormalPlotScatterGroup({n})
         ]
     });
 }

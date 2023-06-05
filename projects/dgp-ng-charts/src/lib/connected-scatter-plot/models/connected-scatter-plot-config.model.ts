@@ -1,20 +1,8 @@
-import { SharedChartConfig } from "../../shared/models";
+import { CardinalXAxis, CardinalYAxis, Chart } from "../../shared/models";
+import { DotConfig } from "./dot-config.model";
+import { LineConfig } from "./line-config.model";
+import { ConnectedScatterPlotControlLine } from "./connected-scatter-plot-control-line.model";
 
-export interface ConnectedScatterPlotConfig extends SharedChartConfig {
-    /**
-     * Normalized share with which the extreme values
-     * are offset from the borders of the drawing area.
-     *
-     * If this is 0, then the extreme values are
-     * drawn directly onto the borders
-     *
-     * default: 0.05
-     */
-    readonly cardinalScaleOffset: number;
-    /**
-     * Reference length of a character
-     *
-     * default: 10
-     */
-    readonly refTickCharWidth: number;
+export interface ConnectedScatterPlotConfig extends Chart, CardinalXAxis, CardinalYAxis, DotConfig, LineConfig {
+    readonly controlLines?: ReadonlyArray<ConnectedScatterPlotControlLine>;
 }

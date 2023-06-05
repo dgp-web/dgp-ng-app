@@ -12,7 +12,7 @@ import {
 import { AxisScales, ScaleType } from "../../shared/models";
 import {
     ConnectedScatterGroup,
-    ConnectedScatterPlotConfig,
+    ConnectedScatterPlotChartConfig,
     ConnectedScatterPlotControlLine,
     ConnectedScatterSeries,
     Dot,
@@ -69,7 +69,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
     readonly size$ = observeAttribute$(this as DgpConnectedScatterPlotDataCanvasComponent, "size");
 
     @Input()
-    config: ConnectedScatterPlotConfig;
+    config: ConnectedScatterPlotChartConfig;
 
     @Input()
     model: readonly ConnectedScatterGroup[];

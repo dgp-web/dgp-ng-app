@@ -1,32 +1,57 @@
 import { Many } from "data-modeling";
-import { ConnectedScatterGroup, ConnectedScatterPlot } from "../../../connected-scatter-plot/models";
-import { byUnique, matrixToMany } from "dgp-ng-app";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotConfig } from "../../../connected-scatter-plot/models";
 import { fromPercent } from "../from-percent.function";
 import { createNormalYAxisTickValues } from "./create-normal-y-axis-tick-values.function";
-import * as d3 from "d3";
 import * as _ from "lodash";
-import { createNormalInterpolator } from "./create-normal-interpolator.function";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
+import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
+import { computeTotalP } from "../compute-total-p.function";
+import { notNullOrUndefined } from "dgp-ng-app";
+
+import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
+import { createNormalInterpolator } from "./create-normal-interpolator.function";
+import { toPercent } from "../to-percent.function";
+import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
+import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 
 export function createNormalPlot(
     payload: {
         readonly model: Many<ConnectedScatterGroup>
     },
-    config: Partial<ConnectedScatterPlot> = {}
+    config: ConnectedScatterPlotConfig = {}
 ): ConnectedScatterPlot {
+
+    config = resolveConnectedScatterPlotConfig(config);
 
     let model = payload.model;
 
-    const totalP = model.map(x => x.series)
-        .reduce(matrixToMany, [])
-        .map(x => x.dots)
-        .reduce(matrixToMany, [])
-        .map(x => x.y)
-        .map(fromPercent)
-        .filter(byUnique)
-        .sort();
+    let yAxisMin = config.yAxisMin;
+    let yAxisMax = config.yAxisMax;
 
-    const yAxisInterpolator = createNormalInterpolator({P: totalP});
+    const totalP = computeTotalP(model);
+
+    let pMin = getProbabilityChartPMin({P: totalP});
+    let pMax = getProbabilityChartPMax({P: totalP});
+
+    if (notNullOrUndefined(yAxisMin)) {
+        pMin = fromPercent(yAxisMin);
+    } else {
+        yAxisMin = toPercent(pMin);
+    }
+    if (notNullOrUndefined(yAxisMax)) {
+        pMax = fromPercent(yAxisMax);
+    } else {
+        yAxisMax = toPercent(pMax);
+    }
+
+    const yAxisInterpolator = createNormalInterpolatorWithBoundaries({
+        P: totalP,
+        /**
+         * pMin and pMax can be overridden which corresponds to zooming into the data
+         */
+        pMin,
+        pMax,
+    });
 
     const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 
@@ -53,21 +78,22 @@ export function createNormalPlot(
 
     const result: ConnectedScatterPlot = {
         yAxisInterpolator,
-        yAxisMin: 0,
-        yAxisMax: 100,
+        yAxisMin,
+        yAxisMax,
         model,
         showXAxisGridLines: true,
         showYAxisGridLines: true,
         dotSize: 8,
-        yAxisTickValues,
-        yAxisTickFormat: (x: number) => {
+        // yAxisTickValues,
+        /*yAxisTickFormat: (x: number) => {
             if (x >= 1 && x <= 95) return d3.format("d")(x);
             if (x > 95) return x.toPrecision(3);
             if (x < 1) return x.toPrecision(3);
 
             return;
-        }
+        }*/
     };
 
-    return _.merge(result, config);
+    // TODO: This mergeing is crap
+    return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }

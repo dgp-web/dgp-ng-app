@@ -14,3 +14,8 @@ export { toMedianRank } from "./to-median-rank.function";
 export { toProbabilityChartDots } from "./to-probability-chart-dots.function";
 export { getProbabilityChartPMin } from "./probability-chart/get-probability-chart-p-min.function";
 export { getProbabilityChartPMax } from "./probability-chart/get-probability-chart-p-max.function";
+export { computeTotalP } from "./compute-total-p.function";
+export { createClamp } from "./create-clamp.function";
+export { computeDistance } from "./compute-distance.function";
+export { computeT } from "./compute-t.function";
+export { reverseTComputation } from "./reverse-t-computation.function";

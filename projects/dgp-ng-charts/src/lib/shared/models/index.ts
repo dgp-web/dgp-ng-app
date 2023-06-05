@@ -17,3 +17,6 @@ export { ChartTitles } from "./chart-titles.model";
 export { ChartGridLineConfig } from "./chart-grid-line-config.model";
 export { WeibullParameters } from "./weibull/weibull-parameters.model";
 export { NormalParameters } from "./normal/normal-parameters.model";
+export { P } from "./p.model";
+export { X } from "./x.model";
+export { Clamp } from "./clamp.model";

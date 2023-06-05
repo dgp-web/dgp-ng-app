@@ -4,7 +4,6 @@ import { toMedianRank } from "../to-median-rank.function";
 import { toProbabilityChartDots } from "../to-probability-chart-dots.function";
 import { createGuid } from "dgp-ng-app";
 import * as _ from "lodash";
-import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 
 export function createNormalConnectedScatterGroup(payload: {
     readonly values: Many<number>;
