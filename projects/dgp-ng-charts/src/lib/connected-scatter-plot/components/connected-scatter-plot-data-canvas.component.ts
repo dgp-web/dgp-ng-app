@@ -336,13 +336,12 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
             yDomainDistance = computeDistance({target: yMax, start: yMin});
 
-            // TODO: This is the linear value and needs to be adjusted
-            // TODO: Adjust
-            const yDomainValue = yMin + yRelativeDistance * yDomainDistance;
+            // TODO: This has a linear scale but doesn't suffice
+            const yDomainValue = yMax - yRelativeDistance * yDomainDistance;
+
             console.log("yDomainValue", yDomainValue);
 
             const p = 1 - fromPercent(yDomainValue);
-            console.log("p", p);
 
             const pMin = fromPercent(yMin);
             const pMax = fromPercent(yMax);
@@ -353,9 +352,11 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
             const yRefDist = computeDistance({target: yPMax, start: yPMin});
             const yDist = computeDistance({target: yPMax, start: yP});
-            const share = yDist / yRefDist;
+            const coefficient = yDist / yRefDist;
 
-            console.log("yDomainValue", yDomainValue * share);
+            lowerYBoundary = yDomainValue - yDist;
+            upperYBoundary = yDomainValue + yDist;
+
         }
 
         let dot: Dot;
