@@ -13,10 +13,10 @@ export function createNormalInterpolator(payload: {
     const pMin = getProbabilityChartPMin({P});
     const pMax = getProbabilityChartPMax({P});
 
-    const yMin = getNormalYCoordinate({p: pMin});
-    const yMax = getNormalYCoordinate({p: pMax});
+    const pMinY = getNormalYCoordinate({p: pMin});
+    const pMaxY = getNormalYCoordinate({p: pMax});
 
-    const referenceDistance = computeDistance({target: yMin, start: yMax});
+    const referenceDistance = computeDistance({target: pMaxY, start: pMinY});
 
     return (rangeStart: number, rangeTarget: number) => {
 
@@ -25,7 +25,7 @@ export function createNormalInterpolator(payload: {
          *
          * We compute the visual middle between them which is where our median value should be placed.
          */
-        const range = computeDistance({target: rangeTarget, start: rangeStart});
+        const yPxDistance = computeDistance({target: rangeTarget, start: rangeStart});
 
         return (t: number) => {
             /**
@@ -40,15 +40,15 @@ export function createNormalInterpolator(payload: {
             if (p === pMin) return rangeTarget;
             if (p === pMax) return rangeStart;
 
-            const y = getNormalYCoordinate({p});
-            const distance = computeDistance({
-                target: y,
-                start: yMax
+            const pY = getNormalYCoordinate({p});
+            const pYDistance = computeDistance({
+                target: pMaxY,
+                start: pY
             });
 
-            const share = distance / referenceDistance;
+            const share = pYDistance / referenceDistance;
 
-            return share * range;
+            return share * yPxDistance;
         };
     };
 
