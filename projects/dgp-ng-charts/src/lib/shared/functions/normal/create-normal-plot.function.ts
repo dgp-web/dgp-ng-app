@@ -6,10 +6,13 @@ import * as _ from "lodash";
 import { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
 import { computeTotalP } from "../compute-total-p.function";
-import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
 import { createNormalInterpolator } from "./create-normal-interpolator.function";
+import { toPercent } from "../to-percent.function";
+import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
+import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 
 export function createNormalPlot(
     payload: {
@@ -27,21 +30,28 @@ export function createNormalPlot(
 
     const totalP = computeTotalP(model);
 
+    let pMin = getProbabilityChartPMin({P: totalP});
+    let pMax = getProbabilityChartPMax({P: totalP});
+
+    if (notNullOrUndefined(yAxisMin)) {
+        pMin = fromPercent(yAxisMin);
+    } else {
+        yAxisMin = toPercent(pMin);
+    }
+    if (notNullOrUndefined(yAxisMax)) {
+        pMax = fromPercent(yAxisMax);
+    } else {
+        yAxisMax = toPercent(pMax);
+    }
+
     const yAxisInterpolator = createNormalInterpolatorWithBoundaries({
         P: totalP,
         /**
          * pMin and pMax can be overridden which corresponds to zooming into the data
          */
-        pMin: notNullOrUndefined(yAxisMin) ? fromPercent(yAxisMin) : undefined,
-        pMax: notNullOrUndefined(yAxisMax) ? fromPercent(yAxisMax) : undefined,
+        pMin,
+        pMax,
     });
-
-    const yAxisInterpolator1 = createNormalInterpolator({
-        P: totalP,
-    });
-
-    if (isNullOrUndefined(yAxisMin)) yAxisMin = 0;
-    if (isNullOrUndefined(yAxisMax)) yAxisMax = 100;
 
     const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 
