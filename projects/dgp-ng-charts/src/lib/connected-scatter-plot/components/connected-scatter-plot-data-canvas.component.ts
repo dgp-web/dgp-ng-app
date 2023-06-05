@@ -331,6 +331,23 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
             );
         } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Normal) {
+            // TODO: try to compute the things backwards
+            /* const p = reverseTComputation({value: t, min: pMin, max: pMax});
+
+             if (p === pMin) return rangeTarget;
+             if (p === pMax) return rangeStart;
+
+             const pY = getNormalYCoordinate({p});
+             const pYDistance = computeDistance({
+                 target: pMaxY,
+                 start: pY
+             });
+
+             const share = pYDistance / referenceDistance;
+
+             return share * yPxDistance;*/
+
+
             const yMin = yDomain[0];
             const yMax = yDomain[1];
 
@@ -338,10 +355,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
             // TODO: This has a linear scale but doesn't suffice
             const yDomainValue = yMax - yRelativeDistance * yDomainDistance;
-
             console.log("yDomainValue", yDomainValue);
-
-            const p = 1 - fromPercent(yDomainValue);
 
             const pMin = fromPercent(yMin);
             const pMax = fromPercent(yMax);
