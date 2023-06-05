@@ -7,12 +7,14 @@ import * as _ from "lodash";
 
 export function createNormalConnectedScatterGroup(payload: {
     readonly values: Many<number>;
+    readonly labels?: Many<string>;
 }, config: Partial<ConnectedScatterGroup> = {}): ConnectedScatterGroup {
     const values = payload.values;
+    const labels = payload.labels;
 
     const X = _.sortBy(values);
     const P = X.map(toMedianRank);
-    const dots = toProbabilityChartDots({X, P});
+    const dots = toProbabilityChartDots({X, P, labels});
 
     const connectedScatterGroupId = createGuid();
 
