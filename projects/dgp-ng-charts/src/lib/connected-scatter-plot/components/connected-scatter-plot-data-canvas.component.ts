@@ -25,7 +25,7 @@ import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../functions/compute-points-for-shape.function";
 import { ControlLineAxis } from "../../stroke/models";
-import { computeDistance, fromPercent, getGaussianCumulativeDistribution, getNormalYCoordinate } from "../../shared/functions";
+import { computeDistance, fromPercent, getGaussianCumulativeDistribution, getNormalYCoordinate, toPercent } from "../../shared/functions";
 import { defaultNormalParameters } from "../../shared/constants";
 
 @Component({
@@ -294,7 +294,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         let lowerXBoundary: number;
         let upperXBoundary: number;
 
-        if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Linear) {
+        if (!this.scales.xAxisModel.xAxisScaleType || this.scales.xAxisModel.xAxisScaleType === ScaleType.Linear) {
             xDomainDistance = xDomain[1] - xDomain[0];
             const xDomainValue = xDomain[0] + xRelativeDistance * xDomainDistance;
             xTolerance = Math.abs(xDomainDistance * 0.005);
@@ -317,7 +317,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
         let lowerYBoundary: number;
         let upperYBoundary: number;
 
-        if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Linear) {
+        if (!this.scales.yAxisModel.yAxisScaleType || this.scales.yAxisModel.yAxisScaleType === ScaleType.Linear) {
             yDomainDistance = yDomain[1] - yDomain[0];
             const yDomainValue = yDomain[0] + yRelativeDistance * yDomainDistance;
             yTolerance = Math.abs(yDomainDistance * 0.005);
@@ -349,46 +349,10 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             const py = pMaxY - pYDistance;
             const p = getGaussianCumulativeDistribution({...defaultNormalParameters, x: py});
 
-            console.log("pYDistance, py, p", pYDistance, py, p);
-            /* const p = reverseTComputation({value: t, min: pMin, max: pMax});
+            const yDomainValue = toPercent(p);
 
-             if (p === pMin) return rangeTarget;
-             if (p === pMax) return rangeStart;
-
-             const pY = getNormalYCoordinate({p});
-             const pYDistance = computeDistance({
-                 target: pMaxY,
-                 start: pY
-             });
-
-             const share = pYDistance / referenceDistance;
-
-             return share * yPxDistance;*/
-            /*
-
-                        const yMin = yDomain[0];
-                        const yMax = yDomain[1];
-
-                        yDomainDistance = computeDistance({target: yMax, start: yMin});
-
-                        // TODO: This has a linear scale but doesn't suffice
-                        const yDomainValue = yMax - yRelativeDistance * yDomainDistance;
-                        console.log("yDomainValue", yDomainValue);
-
-                        const pMin = fromPercent(yMin);
-                        const pMax = fromPercent(yMax);
-
-                        const yPMin = getNormalYCoordinate({p: pMin});
-                        const yPMax = getNormalYCoordinate({p: pMax});
-                        const yP = getNormalYCoordinate({p});
-
-                        const yRefDist = computeDistance({target: yPMax, start: yPMin});
-                        const yDist = computeDistance({target: yPMax, start: yP});
-                        const coefficient = yDist / yRefDist;
-
-                        lowerYBoundary = yDomainValue - yDist;
-                        upperYBoundary = yDomainValue + yDist;*/
-
+            lowerYBoundary = yDomainValue - 1;
+            upperYBoundary = yDomainValue + 1;
         }
 
         let dot: Dot;
@@ -399,6 +363,7 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             xGroup.series.forEach(xSeries => {
 
                 xSeries.dots.forEach(xDot => {
+
                     if (xDot.x >= lowerXBoundary && xDot.x <= upperXBoundary
                         && xDot.y >= lowerYBoundary && xDot.y <= upperYBoundary) {
 
