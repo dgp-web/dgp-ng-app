@@ -25,6 +25,7 @@ import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../functions/compute-points-for-shape.function";
 import { ControlLineAxis } from "../../stroke/models";
+import { computeDistance, fromPercent, getNormalYCoordinate } from "../../shared/functions";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -329,6 +330,27 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
             upperYBoundary = Math.pow(10,
                 Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
             );
+        } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Normal) {
+            const yMin = yDomain[0];
+            const yMax = yDomain[1];
+
+            yDomainDistance = yMax - yMin;
+
+            const yDomainValue = yMin + yRelativeDistance * yDomainDistance;
+            const p = fromPercent(yDomainValue);
+
+            const pMin = fromPercent(yMin);
+            const pMax = fromPercent(yMax);
+
+            const pMinY = getNormalYCoordinate({p: pMin});
+            const pMaxY = getNormalYCoordinate({p: pMax});
+
+            const pRefDist = computeDistance({target: pMaxY, start: pMinY});
+
+            const y = getNormalYCoordinate({p});
+            const pDist = computeDistance({target: pMaxY, start: y});
+            const share = pDist / pRefDist;
+
         }
 
         let dot: Dot;
