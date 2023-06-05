@@ -12,5 +12,5 @@ export function reverseTComputation(payload: {
 
     const distance = computeDistance({target: max, start: min});
 
-    return value * distance;
+    return min + value * distance;
 }

@@ -22,29 +22,20 @@ export function createNormalInterpolatorWithBoundaries(payload: {
     const pRefMin = getProbabilityChartPMin({P});
     const pRefMax = getProbabilityChartPMax({P});
 
-    console.log("pMin, pMax, pRefMin, pRefMax", pMin, pMax, pRefMin, pRefMax);
-
     const tPMin = computeT({value: pMin, min: pRefMin, max: pRefMax});
     const tPMax = computeT({value: pMax, min: pRefMin, max: pRefMax});
-
-    console.log("tPMin, tPMax", tPMin, tPMax);
 
     return (rangeStart: number, rangeTarget: number) => {
 
         const getPxOnRefScale = createNormalInterpolator({P})(rangeStart, rangeTarget);
 
-        // TODO: THis computation or rather the one of tPMin is not correct
         const pMinYPx = getPxOnRefScale(tPMin);
         const pMaxYPx = getPxOnRefScale(tPMax);
-
-        console.log("pMinYPx, pMaxYPx", pMinYPx, pMaxYPx);
 
         const yPxDistance = computeDistance({target: pMinYPx, start: pMaxYPx});
 
         const yRefPxDistance = computeDistance({target: rangeTarget, start: rangeStart});
         const factor = yRefPxDistance / yPxDistance;
-
-        console.log("yPxDistance, yRefPxDistance, factor", yPxDistance, yRefPxDistance, factor);
 
         return (t: number) => {
             /**
@@ -55,13 +46,20 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
             const p = reverseTComputation({value: t, min: pMin, max: pMax});
-            const pRef = computeT({value: p, min: pRefMin, max: pRefMax});
 
-            const yPxOnRefScale = getPxOnRefScale(pRef);
+            console.log(p);
 
-            const yPxDistanceOnRefScale = computeDistance({target: yPxOnRefScale, start: pMaxYPx});
+            if (p === pMin) return rangeTarget;
+            if (p === pMax) return rangeStart;
 
-            return yPxDistanceOnRefScale * factor;
+            const tPRef = computeT({value: p, min: pRefMin, max: pRefMax});
+
+            const yPxOnRefScale = getPxOnRefScale(tPRef);
+
+            const yPxDistanceOnRefScale = computeDistance({target: pMinYPx, start: yPxOnRefScale});
+            const yPxDistanceOnCurrentScale = yPxDistanceOnRefScale * factor;
+
+            return yPxDistanceOnCurrentScale;
         };
     };
 
