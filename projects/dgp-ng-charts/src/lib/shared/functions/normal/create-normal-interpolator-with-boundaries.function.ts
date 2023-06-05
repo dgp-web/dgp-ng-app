@@ -47,8 +47,6 @@ export function createNormalInterpolatorWithBoundaries(payload: {
              */
             const p = reverseTComputation({value: t, min: pMin, max: pMax});
 
-            console.log(p);
-
             if (p === pMin) return rangeTarget;
             if (p === pMax) return rangeStart;
 
@@ -59,7 +57,7 @@ export function createNormalInterpolatorWithBoundaries(payload: {
             const yPxDistanceOnRefScale = computeDistance({target: pMinYPx, start: yPxOnRefScale});
             const yPxDistanceOnCurrentScale = yPxDistanceOnRefScale * factor;
 
-            return yPxDistanceOnCurrentScale;
+            return rangeTarget - yPxDistanceOnCurrentScale;
         };
     };
 
