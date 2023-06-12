@@ -85,7 +85,7 @@ export function createNormalPlot(
         showYAxisGridLines: true,
         dotSize: 8,
         yAxisScaleType: ScaleType.Normal,
-        // yAxisTickValues,
+        yAxisTickValues,
         /*yAxisTickFormat: (x: number) => {
             if (x >= 1 && x <= 95) return d3.format("d")(x);
             if (x > 95) return x.toPrecision(3);
