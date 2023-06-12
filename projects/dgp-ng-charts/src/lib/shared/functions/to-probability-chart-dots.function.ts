@@ -14,7 +14,7 @@ export function toProbabilityChartDots(payload: {
 
     return X.map((x, index) => {
         const p = P[index];
-        const label = labels[index];
+        const label = labels ? labels[index] : undefined;
         const y = toPercent(p);
         return {x, y, label} as Dot;
     });
