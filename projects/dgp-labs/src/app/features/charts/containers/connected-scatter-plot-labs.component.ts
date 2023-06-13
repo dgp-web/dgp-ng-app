@@ -12,65 +12,74 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
             {{cspMetadata.label}}
         </dgp-page-header>
 
-        <dgp-split-panel orientation="horizontal">
+        <dgp-docking-layout>
+            <dgp-docking-layout-item type="row">
 
-            <dgp-split-panel-content [size]="80">
-                <ng-template>
-                    <dgp-connected-scatter-plot [model]="model.model"
-                                                [renderer]="renderer"
-                                                [chartTitle]="model.chartTitle"
-                                                [xAxisTitle]="model.xAxisTitle"
-                                                [xAxisMin]="model.xAxisMin"
-                                                [xAxisMax]="model.xAxisMax"
-                                                [xAxisStep]="model.xAxisStep"
-                                                [xAxisTickFormat]="model.xAxisTickFormat"
-                                                [xAxisScaleType]="model.xAxisScaleType"
-                                                [showXAxisGridLines]="model.showXAxisGridLines"
-                                                [showDataAreaOutline]="true"
-                                                [yAxisTitle]="model.yAxisTitle"
-                                                [yAxisScaleType]="model.yAxisScaleType"
-                                                [yAxisMin]="model.yAxisMin"
-                                                [yAxisMax]="model.yAxisMax"
-                                                [yAxisStep]="model.yAxisStep"
-                                                [yAxisInterpolator]="model.yAxisInterpolator"
-                                                [yAxisTickValues]="model.yAxisTickValues"
-                                                [yAxisTickFormat]="model.yAxisTickFormat"
-                                                [showYAxisGridLines]="model.showYAxisGridLines"
-                                                [controlLines]="model.controlLines"
-                                                [dotSize]="model.dotSize"
-                                                [lineWidth]="model.lineWidth"></dgp-connected-scatter-plot>
-                </ng-template>
+                <dgp-docking-layout-item type="column"
+                                         width="80">
+                    <dgp-docking-layout-container label="Plot">
+                        <ng-template>
+                            <dgp-connected-scatter-plot [model]="model.model"
+                                                        [renderer]="renderer"
+                                                        [chartTitle]="model.chartTitle"
+                                                        [xAxisTitle]="model.xAxisTitle"
+                                                        [xAxisMin]="model.xAxisMin"
+                                                        [xAxisMax]="model.xAxisMax"
+                                                        [xAxisStep]="model.xAxisStep"
+                                                        [xAxisTickFormat]="model.xAxisTickFormat"
+                                                        [xAxisScaleType]="model.xAxisScaleType"
+                                                        [showXAxisGridLines]="model.showXAxisGridLines"
+                                                        [showDataAreaOutline]="true"
+                                                        [yAxisTitle]="model.yAxisTitle"
+                                                        [yAxisScaleType]="model.yAxisScaleType"
+                                                        [yAxisMin]="model.yAxisMin"
+                                                        [yAxisMax]="model.yAxisMax"
+                                                        [yAxisStep]="model.yAxisStep"
+                                                        [yAxisInterpolator]="model.yAxisInterpolator"
+                                                        [yAxisTickValues]="model.yAxisTickValues"
+                                                        [yAxisTickFormat]="model.yAxisTickFormat"
+                                                        [showYAxisGridLines]="model.showYAxisGridLines"
+                                                        [controlLines]="model.controlLines"
+                                                        [dotSize]="model.dotSize"
+                                                        [lineWidth]="model.lineWidth"></dgp-connected-scatter-plot>
+                        </ng-template>
 
-            </dgp-split-panel-content>
-            <dgp-split-panel-content [size]="20">
-                <ng-template>
-                    <dgp-inspector class="--dynamic-form-fields"
-                                   [responsive]="true">
-                        <dgp-inspector-item label="Renderer"
-                                            matIconName="label">
-                            <dgp-connected-scatter-plot-renderer-select
-                                [disabled]="disabled"
-                                [model]="renderer"
-                                (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
-                        </dgp-inspector-item>
+                    </dgp-docking-layout-container>
+                </dgp-docking-layout-item>
 
-                        <dgp-inspector-item label="Items"
-                                            matIconName="pin">
+                <dgp-docking-layout-item type="column"
+                                         width="20">
+                    <dgp-docking-layout-container label="Config">
+                        <ng-template>
+                            <dgp-inspector class="--dynamic-form-fields"
+                                           [responsive]="true">
+                                <dgp-inspector-item label="Renderer"
+                                                    matIconName="label">
+                                    <dgp-connected-scatter-plot-renderer-select
+                                            [disabled]="disabled"
+                                            [model]="renderer"
+                                            (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                </dgp-inspector-item>
 
-                            <input type="number"
-                                   [ngModel]="n"
-                                   (ngModelChange)="updateN($event)">
+                                <dgp-inspector-item label="Items"
+                                                    matIconName="pin">
 
-                        </dgp-inspector-item>
+                                    <input type="number"
+                                           [ngModel]="n"
+                                           (ngModelChange)="updateN($event)">
 
-                    </dgp-inspector>
+                                </dgp-inspector-item>
 
-                    <dgp-connected-scatter-plot-config [model]="model"
-                                                       (modelChange)="setPlot($event)"></dgp-connected-scatter-plot-config>
-                </ng-template>
-            </dgp-split-panel-content>
+                            </dgp-inspector>
 
-        </dgp-split-panel>
+                            <dgp-connected-scatter-plot-config [model]="model"
+                                                               (modelChange)="setPlot($event)"></dgp-connected-scatter-plot-config>
+                        </ng-template>
+                    </dgp-docking-layout-container>
+                </dgp-docking-layout-item>
+
+            </dgp-docking-layout-item>
+        </dgp-docking-layout>
 
     `,
     styles: [`

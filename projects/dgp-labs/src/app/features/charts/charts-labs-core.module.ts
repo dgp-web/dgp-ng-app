@@ -12,7 +12,7 @@ import {
 } from "dgp-ng-charts";
 import { DocsModule } from "dgp-ng-docs";
 import { containers } from "./containers/containers";
-import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
+import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
@@ -41,7 +41,8 @@ import { components } from "./components/components";
         CommonModule,
         DgpSVGSymbolsModule,
         DgpFillPatternIconModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        DgpDockingLayoutModule
     ],
     declarations: [
         ...components,
