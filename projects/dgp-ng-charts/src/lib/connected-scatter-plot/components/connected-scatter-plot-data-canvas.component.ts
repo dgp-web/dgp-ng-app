@@ -25,8 +25,7 @@ import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../functions/compute-points-for-shape.function";
 import { ControlLineAxis } from "../../stroke/models";
-import { computeDistance, fromPercent, getGaussianCumulativeDistribution, getNormalYCoordinate, toPercent } from "../../shared/functions";
-import { defaultNormalParameters } from "../../shared/constants";
+import { toNormalYDomainValueFromRangeValue } from "../../shared/functions/normal/to-normal-y-domain-value-from-range-value.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -332,24 +331,11 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                 Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
             );
         } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Normal) {
-            const yPxValue = absoluteY - yRange[0];
 
-            const yMin = yDomain[0];
-            const yMax = yDomain[1];
-
-            const pMin = fromPercent(yMin);
-            const pMax = fromPercent(yMax);
-
-            const pMinY = getNormalYCoordinate({p: pMin});
-            const pMaxY = getNormalYCoordinate({p: pMax});
-
-            const referenceDistance = computeDistance({target: pMaxY, start: pMinY});
-
-            const pYDistance = yPxValue / (yRange[1] - yRange[0]) * referenceDistance;
-            const py = pMaxY - pYDistance;
-            const p = getGaussianCumulativeDistribution({...defaultNormalParameters, x: py});
-
-            const yDomainValue = toPercent(p);
+            const yDomainValue = toNormalYDomainValueFromRangeValue({
+                yRangeValue: absoluteY,
+                yAxisScale: this.scales.yAxisScale
+            });
 
             lowerYBoundary = yDomainValue - 1;
             upperYBoundary = yDomainValue + 1;

@@ -12,6 +12,7 @@ export * from "./get-gaussian-probability-density.function";
 export * from "./get-normal-quantile.function";
 export * from "./get-inverse-gaussian-error.function";
 export * from "./get-median-rank.function";
+export * from "./to-normal-y-domain-value-from-range-value.function";
 export { getFittedNormalDistributionLine } from "./get-fitted-normal-distribution-line.function";
 export { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
 export { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
