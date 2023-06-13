@@ -30,6 +30,14 @@ import {
                            (ngModelChange)="setDotSize($event)">
                 </dgp-inspector-item>
 
+                <dgp-inspector-item label="Show dot tooltips"
+                                    matIconName="info">
+                    <input type="checkbox"
+                           [disabled]="disabled"
+                           [ngModel]="model.showDotTooltips"
+                           (ngModelChange)="setShowDotTooltips($event)">
+                </dgp-inspector-item>
+
                 <dgp-inspector-item label="Line width"
                                     matIconName="label">
                     <input type="number"
@@ -68,10 +76,10 @@ import {
 
 
                 <dgp-connected-scatter-group-form
-                        *ngIf="selectedDataGroup$ | async as selectedDataGroup"
-                        [model]="selectedDataGroup"
-                        (modelChange)="updateSelectedGroup($event)"
-                        [disabled]="disabled"></dgp-connected-scatter-group-form>
+                    *ngIf="selectedDataGroup$ | async as selectedDataGroup"
+                    [model]="selectedDataGroup"
+                    (modelChange)="updateSelectedGroup($event)"
+                    [disabled]="disabled"></dgp-connected-scatter-group-form>
 
             </dgp-inspector-section>
 
@@ -262,5 +270,9 @@ export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponent
 
     setLineWidth(lineWidth: number) {
         this.updateModel({lineWidth});
+    }
+
+    setShowDotTooltips(showDotTooltips: boolean) {
+        this.updateModel({showDotTooltips});
     }
 }

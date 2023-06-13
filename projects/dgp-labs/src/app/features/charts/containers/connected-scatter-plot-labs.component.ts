@@ -41,7 +41,8 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
                                                         [showYAxisGridLines]="model.showYAxisGridLines"
                                                         [controlLines]="model.controlLines"
                                                         [dotSize]="model.dotSize"
-                                                        [lineWidth]="model.lineWidth"></dgp-connected-scatter-plot>
+                                                        [lineWidth]="model.lineWidth"
+                                                        [showDotTooltips]="model.showDotTooltips"></dgp-connected-scatter-plot>
                         </ng-template>
 
                     </dgp-docking-layout-container>
