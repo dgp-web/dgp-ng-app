@@ -9,7 +9,7 @@ import {
     Output,
     ViewChild
 } from "@angular/core";
-import { AxisScales, ScaleType } from "../../shared/models";
+import { AxisScales } from "../../shared/models";
 import {
     ConnectedScatterGroup,
     ConnectedScatterPlotChartConfig,
@@ -25,7 +25,6 @@ import { mapStrokeToArray } from "../../stroke/functions";
 import { Shape } from "../../shapes/models";
 import { computePointsForShape } from "../functions/compute-points-for-shape.function";
 import { ControlLineAxis } from "../../stroke/models";
-import { toNormalYDomainValueFromRangeValue } from "../../shared/functions/normal/to-normal-y-domain-value-from-range-value.function";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-canvas",
@@ -282,76 +281,34 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
         const canvasBoundingClient = this.canvasElementRef.nativeElement.getBoundingClientRect();
         const xRange = this.scales.xAxisScale.range();
-        const xDomain = this.scales.xAxisScale.domain();
         const yRange = this.scales.yAxisScale.range();
-        const yDomain = this.scales.yAxisScale.domain();
 
-        const absoluteX = pointerX - canvasBoundingClient.x;
-        const xRelativeDistance = (absoluteX - xRange[0]) / (xRange[1] - xRange[0]);
-        let xDomainDistance: number;
-        let xTolerance: number;
-        let lowerXBoundary: number;
-        let upperXBoundary: number;
-
-        if (!this.scales.xAxisModel.xAxisScaleType || this.scales.xAxisModel.xAxisScaleType === ScaleType.Linear) {
-            xDomainDistance = xDomain[1] - xDomain[0];
-            const xDomainValue = xDomain[0] + xRelativeDistance * xDomainDistance;
-            xTolerance = Math.abs(xDomainDistance * 0.005);
-            lowerXBoundary = xDomainValue - xTolerance;
-            upperXBoundary = xDomainValue + xTolerance;
-        } else if (this.scales.xAxisModel.xAxisScaleType === ScaleType.Logarithmic) {
-            xDomainDistance = Math.log10(xDomain[1]) - Math.log10(xDomain[0]);
-            lowerXBoundary = Math.pow(10,
-                Math.log10(xDomain[0]) + xDomainDistance * xRelativeDistance - xDomainDistance * xRelativeDistance * 0.005
-            );
-            upperXBoundary = Math.pow(10,
-                Math.log10(xDomain[0]) + xDomainDistance * xRelativeDistance + xDomainDistance * xRelativeDistance * 0.005
-            );
-        }
-
-        const absoluteY = pointerY - canvasBoundingClient.y;
-        const yRelativeDistance = (absoluteY - yRange[0]) / (yRange[1] - yRange[0]);
-        let yDomainDistance: number;
-        let yTolerance: number;
-        let lowerYBoundary: number;
-        let upperYBoundary: number;
-
-        if (!this.scales.yAxisModel.yAxisScaleType || this.scales.yAxisModel.yAxisScaleType === ScaleType.Linear) {
-            yDomainDistance = yDomain[1] - yDomain[0];
-            const yDomainValue = yDomain[0] + yRelativeDistance * yDomainDistance;
-            yTolerance = Math.abs(yDomainDistance * 0.005);
-            lowerYBoundary = yDomainValue - yTolerance;
-            upperYBoundary = yDomainValue + yTolerance;
-        } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Logarithmic) {
-            yDomainDistance = Math.log10(yDomain[1]) - Math.log10(yDomain[0]);
-            lowerYBoundary = Math.pow(10,
-                Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance + yDomainDistance * yRelativeDistance * 0.005
-            );
-            upperYBoundary = Math.pow(10,
-                Math.log10(yDomain[0]) + yDomainDistance * yRelativeDistance - yDomainDistance * yRelativeDistance * 0.005
-            );
-        } else if (this.scales.yAxisModel.yAxisScaleType === ScaleType.Normal) {
-
-            const yDomainValue = toNormalYDomainValueFromRangeValue({
-                yRangeValue: absoluteY,
-                yAxisScale: this.scales.yAxisScale
-            });
-
-            lowerYBoundary = yDomainValue - 1;
-            upperYBoundary = yDomainValue + 1;
-        }
+        const xRangeValue = pointerX - canvasBoundingClient.x;
+        const yRangeValue = pointerY - canvasBoundingClient.y;
 
         let dot: Dot;
         let series: ConnectedScatterSeries;
         let group: ConnectedScatterGroup;
+
+        const yDelta = (yRange[1] - yRange[0]) * 0.005;
+        const xDelta = (xRange[1] - xRange[0]) * 0.005;
 
         this.model.forEach(xGroup => {
             xGroup.series.forEach(xSeries => {
 
                 xSeries.dots.forEach(xDot => {
 
-                    if (xDot.x >= lowerXBoundary && xDot.x <= upperXBoundary
-                        && xDot.y >= lowerYBoundary && xDot.y <= upperYBoundary) {
+                    const dotX = this.scales.xAxisScale(xDot.x);
+                    const dotY = this.scales.yAxisScale(xDot.y);
+
+                    const upperX = dotX + xDelta;
+                    const lowerX = dotX - xDelta;
+
+                    const upperY = dotY + yDelta;
+                    const lowerY = dotY - yDelta;
+
+                    if (xRangeValue >= lowerX && xRangeValue <= upperX
+                        && yRangeValue >= lowerY && yRangeValue <= upperY) {
 
                         dot = xDot;
                         series = xSeries;

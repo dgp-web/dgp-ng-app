@@ -13,6 +13,7 @@ import { toPercent } from "../to-percent.function";
 import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
 import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
 import { ScaleType } from "../../models";
+import * as d3 from "d3";
 
 export function createNormalPlot(
     payload: {
@@ -86,14 +87,14 @@ export function createNormalPlot(
         dotSize: 8,
         yAxisScaleType: ScaleType.Normal,
         yAxisTickValues,
-        showDotTooltips: true
-        /*yAxisTickFormat: (x: number) => {
+        showDotTooltips: true,
+        yAxisTickFormat: (x: number) => {
             if (x >= 1 && x <= 95) return d3.format("d")(x);
             if (x > 95) return x.toPrecision(3);
             if (x < 1) return x.toPrecision(3);
 
             return;
-        }*/
+        }
     };
 
     // TODO: This mergeing is crap
