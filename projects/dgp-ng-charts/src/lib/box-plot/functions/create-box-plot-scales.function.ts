@@ -2,13 +2,11 @@ import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { Axis, ScaleBand } from "d3";
+import { Axis } from "d3";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { CardinalYAxis, ContainerSize, ScaleType } from "../../shared/models";
+import { CardinalYAxis, CategoricalD3AxisScale, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
-import { XAxisTitle } from "../../shared/models/x-axis-title.mode";
-import { ShowXAxisGridLines } from "../../shared/models/show-x-axis-grid-lines.model";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
@@ -137,12 +135,6 @@ export function createBoxPlotScales(payload: {
     };
 
 }
-
-export interface CategoricalXAxis extends XAxisTitle, ShowXAxisGridLines {
-    readonly xAxisTickFormat?: (x: string) => string;
-}
-
-export type CategoricalD3AxisScale = ScaleBand<string>;
 
 export function createCategoricalXAxis(payload: {
     readonly containerWidth: number;
