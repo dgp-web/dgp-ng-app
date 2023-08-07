@@ -5,9 +5,14 @@ import { KVS } from "entity-store";
 import { Many } from "data-modeling";
 import { createCategorizedValuesChartScales } from "../../shared/functions/create-categorized-values-chart-scales.function";
 
-export function createBarChartScales(payload: {
-    readonly barGroups: ReadonlyArray<BarGroup>;
-} & ContainerSize & CategoricalXAxis & CardinalYAxis, config = defaultBarChartConfig): BarChartScales {
+export interface BarChartScalesParams extends ContainerSize, CategoricalXAxis, CardinalYAxis {
+    readonly barGroups: Many<BarGroup>;
+}
+
+export function createBarChartScales(
+    payload: BarChartScalesParams,
+    config = defaultBarChartConfig
+): BarChartScales {
 
     const valuesForExtremumComputation = payload.barGroups.reduce((previousValue, currentValue) => {
 
