@@ -27,3 +27,4 @@ export function createCategoricalXAxis(payload: {
 
     return xAxis;
 }
+
