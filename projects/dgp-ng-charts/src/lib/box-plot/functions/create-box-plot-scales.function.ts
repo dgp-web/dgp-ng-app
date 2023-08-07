@@ -2,11 +2,9 @@ import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as _ from "lodash";
 import * as d3 from "d3";
-import { Axis } from "d3";
-import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { createCardinalYAxis, createCategoricalXAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { CardinalYAxis, CategoricalD3AxisScale, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
-import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
+import { CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
@@ -136,26 +134,3 @@ export function createBoxPlotScales(payload: {
 
 }
 
-export function createCategoricalXAxis(payload: {
-    readonly containerWidth: number;
-    readonly xAxisModel: CategoricalXAxis;
-    readonly xAxisScale: CategoricalD3AxisScale;
-}): Axis<string> {
-
-    const containerWidth = payload.containerWidth;
-    const xAxisModel = payload.xAxisModel;
-    const xAxisScale = payload.xAxisScale;
-
-    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
-        currentXAxisValues: xAxisScale.domain(),
-        containerWidth
-    });
-
-    let xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
-
-    if (notNullOrUndefined(xAxisModel.xAxisTickFormat)) {
-        xAxis = xAxis.tickFormat(xAxisModel.xAxisTickFormat as any);
-    }
-
-    return xAxis;
-}
