@@ -1,9 +1,10 @@
 import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
-import { KVS } from "entity-store";
 import { Many } from "data-modeling";
 import { createCategorizedValuesChartScales } from "../../shared/functions/create-categorized-values-chart-scales.function";
 import { CategorizedValuesChartScalesSharedParams } from "../../shared/models/categorized-values-chart-scales-shared-params.model";
+import { toBarChartValuesForExtremumComputation } from "./to-bar-chart-values-for-extremum-computation.function";
+import { toBarChartSubCategoryKVS } from "./to-bar-chart-sub-category-kvs.function";
 
 export interface BarChartScalesParams extends CategorizedValuesChartScalesSharedParams {
     readonly barGroups: Many<BarGroup>;
@@ -14,19 +15,10 @@ export function createBarChartScales(
     config = defaultBarChartConfig
 ): BarChartScales {
 
-    const valuesForExtremumComputation = payload.barGroups.reduce((previousValue, currentValue) => {
+    const valuesForExtremumComputation = payload.barGroups.reduce(toBarChartValuesForExtremumComputation, []);
 
-        currentValue.bars.forEach(bar => {
-            previousValue.push(bar.value);
-        });
-
-        return previousValue;
-    }, new Array<number>());
     const categories = payload.barGroups.map(x => x.barGroupKey);
-    const subCategoryKVS = payload.barGroups.reduce((result, boxGroup) => {
-        result[boxGroup.barGroupKey] = boxGroup.bars.map(x => x.barKey);
-        return result;
-    }, {} as KVS<Many<string>>);
+    const subCategoryKVS = payload.barGroups.reduce(toBarChartSubCategoryKVS, {});
 
     return createCategorizedValuesChartScales({
         ...payload,
