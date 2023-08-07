@@ -1,11 +1,11 @@
 import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
-import { CardinalYAxis, CategoricalXAxis, ContainerSize } from "../../shared/models";
 import { KVS } from "entity-store";
 import { Many } from "data-modeling";
 import { createCategorizedValuesChartScales } from "../../shared/functions/create-categorized-values-chart-scales.function";
+import { CategorizedValuesChartScalesParams } from "../../shared/models/categorized-values-chart-scales-params.model";
 
-export interface BarChartScalesParams extends ContainerSize, CategoricalXAxis, CardinalYAxis {
+export interface BarChartScalesParams extends CategorizedValuesChartScalesParams {
     readonly barGroups: Many<BarGroup>;
 }
 
