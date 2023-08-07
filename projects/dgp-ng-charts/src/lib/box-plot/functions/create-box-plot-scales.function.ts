@@ -2,16 +2,18 @@ import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as _ from "lodash";
 import * as d3 from "d3";
+import { Axis, ScaleBand } from "d3";
 import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { CardinalYAxis, ContainerSize, ScaleType } from "../../shared/models";
 import { axisTickFormattingService } from "../../bar-chart/functions/axis-tick-formatting.service";
+import { XAxisTitle } from "../../shared/models/x-axis-title.mode";
+import { ShowXAxisGridLines } from "../../shared/models/show-x-axis-grid-lines.model";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
-    readonly xAxisTickFormat?: (x: string) => string;
-} & ContainerSize & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
+} & ContainerSize & CategoricalXAxis & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
 
     const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
     const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));
@@ -99,16 +101,11 @@ export function createBoxPlotScales(payload: {
 
     }, {});
 
-    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
-        currentXAxisValues: xAxisScale.domain(),
+    const xAxis = createCategoricalXAxis({
+        xAxisScale,
+        xAxisModel: payload,
         containerWidth: payload.containerWidth
     });
-
-    let xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
-
-    if (notNullOrUndefined(payload.xAxisTickFormat)) {
-        xAxis = xAxis.tickFormat(payload.xAxisTickFormat as any);
-    }
 
     const yAxis = createCardinalYAxis({
         yAxisScale,
@@ -139,4 +136,34 @@ export function createBoxPlotScales(payload: {
         }
     };
 
+}
+
+export interface CategoricalXAxis extends XAxisTitle, ShowXAxisGridLines {
+    readonly xAxisTickFormat?: (x: string) => string;
+}
+
+export type CategoricalD3AxisScale = ScaleBand<string>;
+
+export function createCategoricalXAxis(payload: {
+    readonly containerWidth: number;
+    readonly xAxisModel: CategoricalXAxis;
+    readonly xAxisScale: CategoricalD3AxisScale;
+}): Axis<string> {
+
+    const containerWidth = payload.containerWidth;
+    const xAxisModel = payload.xAxisModel;
+    const xAxisScale = payload.xAxisScale;
+
+    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
+        currentXAxisValues: xAxisScale.domain(),
+        containerWidth
+    });
+
+    let xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
+
+    if (notNullOrUndefined(xAxisModel.xAxisTickFormat)) {
+        xAxis = xAxis.tickFormat(xAxisModel.xAxisTickFormat as any);
+    }
+
+    return xAxis;
 }
