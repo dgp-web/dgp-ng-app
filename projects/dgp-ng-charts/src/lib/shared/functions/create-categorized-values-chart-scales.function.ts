@@ -1,6 +1,6 @@
 import { Many } from "data-modeling";
 import { KVS } from "entity-store";
-import { CardinalYAxis, CategoricalXAxis, ContainerSize, SharedChartConfig } from "../models";
+import { SharedChartConfig } from "../models";
 import { CategorizedValuesChartScales } from "../models/categorized-values-chart-scales.model";
 import * as _ from "lodash";
 import { notNullOrUndefined } from "dgp-ng-app";
@@ -9,29 +9,35 @@ import { createCategoricalXAxisScale } from "./create-categorical-x-axis-scale.f
 import { createCategoricalXAxis } from "./create-categorical-x-axis.function";
 import { createCardinalYAxis } from "./create-cardinal-y-axis.function";
 import { tryResolveMarginLeft } from "./try-resolve-margin-left.function";
+import { CategorizedValuesChartScalesSharedParams } from "../models/categorized-values-chart-scales-shared-params.model";
 
-export function createCategorizedValuesChartScales(payload: {
+export interface CategorizedValuesChartScalesParams extends CategorizedValuesChartScalesSharedParams {
     readonly categories: Many<string>;
     readonly subCategoryKVS: KVS<Many<string>>;
     readonly valuesForExtremumComputation: Many<number>;
-} & ContainerSize & CategoricalXAxis & CardinalYAxis, config: SharedChartConfig & {
-    /**
-     * Normalized share with which the extreme values
-     * are offset from the borders of the drawing area.
-     *
-     * If this is 0, then the extreme values are
-     * drawn directly onto the borders
-     *
-     * default: 0.05
-     */
-    readonly cardinalScaleOffset: number;
-    /**
-     * Reference length of a character
-     *
-     * default: 10
-     */
-    readonly refTickCharWidth: number;
-}): CategorizedValuesChartScales {
+}
+
+export function createCategorizedValuesChartScales(
+    payload: CategorizedValuesChartScalesParams,
+    config: SharedChartConfig & {
+        /**
+         * Normalized share with which the extreme values
+         * are offset from the borders of the drawing area.
+         *
+         * If this is 0, then the extreme values are
+         * drawn directly onto the borders
+         *
+         * default: 0.05
+         */
+        readonly cardinalScaleOffset: number;
+        /**
+         * Reference length of a character
+         *
+         * default: 10
+         */
+        readonly refTickCharWidth: number;
+    }
+): CategorizedValuesChartScales {
 
     const categories = payload.categories;
     const subCategoryKVS = payload.subCategoryKVS;

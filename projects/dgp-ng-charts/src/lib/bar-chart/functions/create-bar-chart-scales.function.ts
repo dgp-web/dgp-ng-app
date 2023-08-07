@@ -3,9 +3,9 @@ import { defaultBarChartConfig } from "../constants";
 import { KVS } from "entity-store";
 import { Many } from "data-modeling";
 import { createCategorizedValuesChartScales } from "../../shared/functions/create-categorized-values-chart-scales.function";
-import { CategorizedValuesChartScalesParams } from "../../shared/models/categorized-values-chart-scales-params.model";
+import { CategorizedValuesChartScalesSharedParams } from "../../shared/models/categorized-values-chart-scales-shared-params.model";
 
-export interface BarChartScalesParams extends CategorizedValuesChartScalesParams {
+export interface BarChartScalesParams extends CategorizedValuesChartScalesSharedParams {
     readonly barGroups: Many<BarGroup>;
 }
 

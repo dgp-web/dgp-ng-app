@@ -3,9 +3,9 @@ import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.const
 import { Many } from "data-modeling";
 import { KVS } from "entity-store";
 import { createCategorizedValuesChartScales } from "../../shared/functions/create-categorized-values-chart-scales.function";
-import { CategorizedValuesChartScalesParams } from "../../shared/models/categorized-values-chart-scales-params.model";
+import { CategorizedValuesChartScalesSharedParams } from "../../shared/models/categorized-values-chart-scales-shared-params.model";
 
-export interface BoxPlotScalesParams extends CategorizedValuesChartScalesParams {
+export interface BoxPlotScalesParams extends CategorizedValuesChartScalesSharedParams {
     readonly boxGroups: Many<BoxGroup>;
     readonly controlLines?: Many<BoxPlotControlLine>;
 }
