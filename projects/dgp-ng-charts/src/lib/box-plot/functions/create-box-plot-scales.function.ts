@@ -5,6 +5,8 @@ import * as d3 from "d3";
 import { createCardinalYAxis, createCategoricalXAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
+import { Many } from "data-modeling";
+import { KVS } from "entity-store";
 
 export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
@@ -81,21 +83,17 @@ export function createBoxPlotScales(payload: {
         - marginLeft
         - config.margin.right;
 
-    const xAxisScale = d3.scaleBand()
-        .domain(boxGroupKeys)
-        .range([0, dataAreaWidth])
-        .padding(0.2);
+    const createXAxisScaleResult = createCategoricalXAxisScale({
+        dataAreaWidth,
+        categories: payload.boxGroups.map(x => x.boxGroupId),
+        subCategoryKVS: payload.boxGroups.reduce((result, boxGroup) => {
+            result[boxGroup.boxGroupId] = boxGroup.boxes.map(x => x.boxId);
+            return result;
+        }, {} as KVS<Many<string>>)
+    });
 
-    const xAxisSubgroupKVS = payload.boxGroups.reduce((previousValue, currentValue) => {
-
-        previousValue[currentValue.boxGroupId] = d3.scaleBand() // TODO: We need to create sub groups based on crap
-            .domain(currentValue.boxes.map(x => x.boxId))
-            .range([0, xAxisScale.bandwidth()])
-            .padding(0.05);
-
-        return previousValue;
-
-    }, {});
+    const xAxisScale = createXAxisScaleResult.xAxisScale;
+    const xAxisSubgroupKVS = createXAxisScaleResult.xAxisSubgroupKVS;
 
     const xAxis = createCategoricalXAxis({
         xAxisScale,
@@ -134,3 +132,38 @@ export function createBoxPlotScales(payload: {
 
 }
 
+
+export function createCategoricalXAxisScale(payload: {
+    readonly categories: Many<string>;
+    /**
+     * Indexed by category
+     */
+    readonly subCategoryKVS?: KVS<Many<string>>;
+    readonly dataAreaWidth: number;
+}): {
+    readonly xAxisScale: d3.ScaleBand<string>;
+    readonly xAxisSubgroupKVS?: KVS<d3.ScaleBand<string>>;
+} {
+    const categories = payload.categories;
+    const subCategoryKVS = payload.subCategoryKVS;
+    const dataAreaWidth = payload.dataAreaWidth;
+
+    const xAxisScale = d3.scaleBand()
+        .domain(categories)
+        .range([0, dataAreaWidth])
+        .padding(0.2);
+
+    const xAxisSubgroupKVS = Object.keys(subCategoryKVS).reduce((previousValue, category) => {
+        const subCategories = subCategoryKVS[category];
+
+        previousValue[category] = d3.scaleBand()
+            .domain(subCategories)
+            .range([0, xAxisScale.bandwidth()])
+            .padding(0.05);
+
+        return previousValue;
+
+    }, {});
+
+    return {xAxisScale, xAxisSubgroupKVS};
+}
