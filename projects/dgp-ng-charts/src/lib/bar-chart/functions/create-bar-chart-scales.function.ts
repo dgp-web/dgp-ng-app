@@ -2,15 +2,14 @@ import * as _ from "lodash";
 import * as d3 from "d3";
 import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
-import { axisTickFormattingService } from "./axis-tick-formatting.service";
-import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { createCardinalYAxis, createCategoricalXAxis, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { CardinalYAxis, ContainerSize, ScaleType } from "../../shared/models";
+import { CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
 
 // TODO: Homogenize with createBoxPlotScales
 export function createBarChartScales(payload: {
     readonly barGroups: ReadonlyArray<BarGroup>;
-} & ContainerSize & CardinalYAxis, config = defaultBarChartConfig): BarChartScales {
+} & ContainerSize & CategoricalXAxis & CardinalYAxis, config = defaultBarChartConfig): BarChartScales {
 
     const barGroupKeys = payload.barGroups.map(x => x.barGroupKey);
 
@@ -83,12 +82,11 @@ export function createBarChartScales(payload: {
 
     }, {});
 
-    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
-        currentXAxisValues: xAxisScale.domain(),
+    const xAxis = createCategoricalXAxis({
+        xAxisScale,
+        xAxisModel: payload,
         containerWidth: payload.containerWidth
     });
-
-    const xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
 
     const yAxis = createCardinalYAxis({
         yAxisScale,
