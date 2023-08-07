@@ -1,13 +1,5 @@
-import { SharedChartConfig, WithCardinalScaleOffset } from "../../shared/models";
+import { CategorizedValuesChartConfig } from "../../shared/models/categorized-values-chart-config.model";
 
-export interface BoxPlotConfig extends SharedChartConfig, WithCardinalScaleOffset {
-    readonly groupPadding: number;
-    readonly subGroupPadding: number;
+export interface BoxPlotConfig extends CategorizedValuesChartConfig {
     readonly jitterWidth: number;
-    /**
-     * Reference length of a character
-     *
-     * default: 10
-     */
-    readonly refTickCharWidth: number;
 }
