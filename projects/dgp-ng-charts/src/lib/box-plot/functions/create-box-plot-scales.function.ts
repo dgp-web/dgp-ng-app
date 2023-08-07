@@ -6,8 +6,8 @@ import { createCategorizedValuesChartScales } from "../../shared/functions/creat
 import { CategorizedValuesChartScalesParams } from "../../shared/models/categorized-values-chart-scales-params.model";
 
 export interface BoxPlotScalesParams extends CategorizedValuesChartScalesParams {
-    readonly boxGroups: ReadonlyArray<BoxGroup>;
-    readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
+    readonly boxGroups: Many<BoxGroup>;
+    readonly controlLines?: Many<BoxPlotControlLine>;
 }
 
 export function createBoxPlotScales(
