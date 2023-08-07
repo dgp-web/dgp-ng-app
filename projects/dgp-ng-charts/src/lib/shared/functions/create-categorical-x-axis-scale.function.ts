@@ -22,17 +22,23 @@ export function createCategoricalXAxisScale(payload: {
         .range([0, dataAreaWidth])
         .padding(0.2);
 
-    const xAxisSubgroupKVS = Object.keys(subCategoryKVS).reduce((previousValue, category) => {
-        const subCategories = subCategoryKVS[category];
+    let xAxisSubgroupKVS: KVS<d3.ScaleBand<string>>;
 
-        previousValue[category] = d3.scaleBand()
-            .domain(subCategories)
-            .range([0, xAxisScale.bandwidth()])
-            .padding(0.05);
+    if (subCategoryKVS) {
 
-        return previousValue;
+        xAxisSubgroupKVS = Object.keys(subCategoryKVS).reduce((previousValue, category) => {
+            const subCategories = subCategoryKVS[category];
 
-    }, {});
+            previousValue[category] = d3.scaleBand()
+                .domain(subCategories)
+                .range([0, xAxisScale.bandwidth()])
+                .padding(0.05);
+
+            return previousValue;
+
+        }, {});
+
+    }
 
     return {xAxisScale, xAxisSubgroupKVS};
 }
