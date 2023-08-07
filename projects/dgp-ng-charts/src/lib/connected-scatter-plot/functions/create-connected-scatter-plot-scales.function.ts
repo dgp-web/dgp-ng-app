@@ -3,12 +3,11 @@ import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../model
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { createCardinalYAxis, createYAxisScale, tryResolveMarginLeft } from "../../shared/functions";
 import { CardinalXAxis, CardinalYAxis } from "../../shared/models";
 import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
 import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
 import { ControlLineAxis } from "../../stroke/models";
-import { tryResolveMarginLeft } from "../../box-plot/functions";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;

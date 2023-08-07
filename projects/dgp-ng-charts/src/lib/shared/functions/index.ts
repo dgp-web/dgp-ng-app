@@ -21,3 +21,4 @@ export { computeT } from "./compute-t.function";
 export { reverseTComputation } from "./reverse-t-computation.function";
 export { createCategoricalXAxis } from "./create-categorical-x-axis.function";
 export { createCategoricalXAxisScale } from "./create-categorical-x-axis-scale.function";
+export { tryResolveMarginLeft } from "./try-resolve-margin-left.function";
