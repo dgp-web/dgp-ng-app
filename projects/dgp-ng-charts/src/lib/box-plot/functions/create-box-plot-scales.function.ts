@@ -1,14 +1,19 @@
 import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
-import { CardinalYAxis, CategoricalXAxis, ContainerSize } from "../../shared/models";
 import { Many } from "data-modeling";
 import { KVS } from "entity-store";
 import { createCategorizedValuesChartScales } from "../../shared/functions/create-categorized-values-chart-scales.function";
+import { CategorizedValuesChartScalesParams } from "../../shared/models/categorized-values-chart-scales-params.model";
 
-export function createBoxPlotScales(payload: {
+export interface BoxPlotScalesParams extends CategorizedValuesChartScalesParams {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
-} & ContainerSize & CategoricalXAxis & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
+}
+
+export function createBoxPlotScales(
+    payload: BoxPlotScalesParams,
+    config = defaultBoxPlotConfig
+): BoxPlotScales {
 
     const valuesForExtremumComputation = payload.boxGroups.reduce((previousValue, currentValue) => {
 
