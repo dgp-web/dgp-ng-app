@@ -1,9 +1,15 @@
 import { BoxGroup, BoxPlotControlLine, BoxPlotScales } from "../models";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 import * as _ from "lodash";
-import { createCardinalYAxis, createCategoricalXAxis, createCategoricalXAxisScale, createYAxisScale } from "../../shared/functions";
+import {
+    createCardinalYAxis,
+    createCategoricalXAxis,
+    createCategoricalXAxisScale,
+    createYAxisScale,
+    toReferenceTickLength
+} from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
+import { CardinalD3AxisScale, CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType, SharedChartConfig } from "../../shared/models";
 import { Many } from "data-modeling";
 import { KVS } from "entity-store";
 
@@ -11,9 +17,6 @@ export function createBoxPlotScales(payload: {
     readonly boxGroups: ReadonlyArray<BoxGroup>;
     readonly controlLines?: ReadonlyArray<BoxPlotControlLine>;
 } & ContainerSize & CategoricalXAxis & CardinalYAxis, config = defaultBoxPlotConfig): BoxPlotScales {
-
-    const boxGroupKeys = payload.boxGroups.map(x => x.boxGroupId);
-    const boxIds = _.flatten(payload.boxGroups.map(x => x.boxes.map(y => y.boxId)));
 
     const valuesForExtremumComputation = payload.boxGroups.reduce((previousValue, currentValue) => {
 
@@ -54,29 +57,14 @@ export function createBoxPlotScales(payload: {
 
     const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
-    let marginLeft = config.margin.left;
-
-    if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
-        /**
-         * We retrieve the configured formatter or the implicit default
-         * used by d3 which is scale.tickFormat()
-         */
-        const yAxisTickFormat = payload.yAxisTickFormat || yAxisScale.tickFormat();
-
-        /**
-         * Note: If this doesn't produce good results, then we can try to
-         * add additional values between the extrema to estimate this length
-         */
-        const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => yAxisTickFormat(x).length)
-        );
-
-        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
-
-        marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
-            ? config.margin.left
-            : estimatedNeededMaxYTickWidthPx;
-    }
+    const marginLeft = tryResolveMarginLeft({
+        yAxisModel: payload,
+        yMin,
+        yMax,
+        config,
+        yAxisScale,
+        refTickCharWidth: config.refTickCharWidth
+    });
 
     const dataAreaWidth = payload.containerWidth
         - marginLeft
@@ -132,3 +120,42 @@ export function createBoxPlotScales(payload: {
 }
 
 
+export function tryResolveMarginLeft(payload: {
+    readonly yAxisModel: CardinalYAxis;
+    readonly yAxisScale: CardinalD3AxisScale;
+    readonly yMin: number;
+    readonly yMax: number;
+    readonly config: SharedChartConfig;
+    readonly refTickCharWidth: number;
+}) {
+    const yAxisModel = payload.yAxisModel;
+    const yAxisScale = payload.yAxisScale;
+    const yMin = payload.yMin;
+    const yMax = payload.yMax;
+    let marginLeft = payload.config.margin.left;
+    const refTickCharWidth = payload.refTickCharWidth;
+
+    if (yAxisModel.yAxisScaleType !== ScaleType.Logarithmic) {
+        /**
+         * We retrieve the configured formatter or the implicit default
+         * used by d3 which is scale.tickFormat()
+         */
+        const yAxisTickFormat = yAxisModel.yAxisTickFormat || yAxisScale.tickFormat();
+
+        /**
+         * Note: If this doesn't produce good results, then we can try to
+         * add additional values between the extrema to estimate this length
+         */
+        const referenceYDomainLabelLength = _.max(
+            [yMin, yMax].map(x => yAxisTickFormat(x)).map(toReferenceTickLength())
+        );
+
+        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * refTickCharWidth;
+
+        marginLeft = marginLeft >= estimatedNeededMaxYTickWidthPx
+            ? marginLeft
+            : estimatedNeededMaxYTickWidthPx;
+    }
+
+    return marginLeft;
+}

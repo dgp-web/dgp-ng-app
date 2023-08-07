@@ -11,5 +11,6 @@ export const defaultBoxPlotConfig: BoxPlotConfig = {
     },
     groupPadding: 0.2,
     subGroupPadding: 0.05,
-    jitterWidth: 12
+    jitterWidth: 12,
+    refTickCharWidth: 10
 };

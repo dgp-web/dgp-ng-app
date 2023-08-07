@@ -4,4 +4,10 @@ export interface BoxPlotConfig extends SharedChartConfig, WithCardinalScaleOffse
     readonly groupPadding: number;
     readonly subGroupPadding: number;
     readonly jitterWidth: number;
+    /**
+     * Reference length of a character
+     *
+     * default: 10
+     */
+    readonly refTickCharWidth: number;
 }

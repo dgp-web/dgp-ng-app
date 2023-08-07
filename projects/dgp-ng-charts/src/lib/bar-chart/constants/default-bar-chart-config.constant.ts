@@ -6,5 +6,6 @@ export const defaultBarChartConfig: BarChartConfig = {
     ...defaultChartConfig,
     groupPadding: 0.2,
     subGroupPadding: 0.05,
-    cardinalScaleOffset: 0.05
+    cardinalScaleOffset: 0.05,
+    refTickCharWidth: 10
 };

@@ -3,11 +3,12 @@ import { ConnectedScatterGroup, ConnectedScatterPlotControlLine } from "../model
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
-import { createCardinalYAxis, createYAxisScale, toReferenceTickLength } from "../../shared/functions";
-import { CardinalXAxis, CardinalYAxis, ScaleType } from "../../shared/models";
+import { createCardinalYAxis, createYAxisScale } from "../../shared/functions";
+import { CardinalXAxis, CardinalYAxis } from "../../shared/models";
 import { createCardinalXAxis } from "../../shared/functions/create-cardinal-x-axis.function";
 import { createXAxisScale } from "../../shared/functions/create-x-axis-scale.function";
 import { ControlLineAxis } from "../../stroke/models";
+import { tryResolveMarginLeft } from "../../box-plot/functions";
 
 export function createConnectedScatterPlotScales(payload: {
     readonly connectedScatterGroups: ReadonlyArray<ConnectedScatterGroup>;
@@ -72,30 +73,14 @@ export function createConnectedScatterPlotScales(payload: {
 
     const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
-    let marginLeft = config.margin.left;
-
-    if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
-
-        /**
-         * We retrieve the configured formatter or the implicit default
-         * used by d3 which is scale.tickFormat()
-         */
-        const yAxisTickFormat = payload.yAxisTickFormat || yAxisScale.tickFormat();
-
-        /**
-         * Note: If this doesn't produce good results, then we can try to
-         * add additional values between the extrema to estimate this length
-         */
-        const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => yAxisTickFormat(x)).map(toReferenceTickLength())
-        );
-
-        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * config.refTickCharWidth;
-
-        marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
-            ? config.margin.left
-            : estimatedNeededMaxYTickWidthPx;
-    }
+    const marginLeft = tryResolveMarginLeft({
+        yAxisModel: payload,
+        yMin,
+        yMax,
+        config,
+        yAxisScale,
+        refTickCharWidth: config.refTickCharWidth
+    });
 
     const dataAreaWidth = payload.containerWidth
         - marginLeft

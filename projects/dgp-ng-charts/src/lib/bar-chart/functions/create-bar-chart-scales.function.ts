@@ -3,16 +3,15 @@ import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
 import { createCardinalYAxis, createCategoricalXAxis, createCategoricalXAxisScale, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
-import { CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
+import { CardinalYAxis, CategoricalXAxis, ContainerSize } from "../../shared/models";
 import { KVS } from "entity-store";
 import { Many } from "data-modeling";
+import { tryResolveMarginLeft } from "../../box-plot/functions";
 
 // TODO: Homogenize with createBoxPlotScales
 export function createBarChartScales(payload: {
     readonly barGroups: ReadonlyArray<BarGroup>;
 } & ContainerSize & CategoricalXAxis & CardinalYAxis, config = defaultBarChartConfig): BarChartScales {
-
-    const barGroupKeys = payload.barGroups.map(x => x.barGroupKey);
 
     const valuesForExtremumComputation = payload.barGroups.reduce((previousValue, currentValue) => {
 
@@ -39,29 +38,14 @@ export function createBarChartScales(payload: {
 
     const yAxisScale = createYAxisScale({...payload, dataAreaHeight, yMin, yMax});
 
-    let marginLeft = config.margin.left;
-
-    if (payload.yAxisScaleType !== ScaleType.Logarithmic) {
-        /**
-         * We retrieve the configured formatter or the implicit default
-         * used by d3 which is scale.tickFormat()
-         */
-        const yAxisTickFormat = payload.yAxisTickFormat || yAxisScale.tickFormat();
-
-        /**
-         * Note: If this doesn't produce good results, then we can try to
-         * add additional values between the extrema to estimate this length
-         */
-        const referenceYDomainLabelLength = _.max(
-            [yMin, yMax].map(x => yAxisTickFormat(x).length)
-        );
-
-        const estimatedNeededMaxYTickWidthPx = referenceYDomainLabelLength * 10;
-
-        marginLeft = config.margin.left >= estimatedNeededMaxYTickWidthPx
-            ? config.margin.left
-            : estimatedNeededMaxYTickWidthPx;
-    }
+    const marginLeft = tryResolveMarginLeft({
+        yAxisModel: payload,
+        yMin,
+        yMax,
+        config,
+        yAxisScale,
+        refTickCharWidth: config.refTickCharWidth
+    });
 
     const dataAreaWidth = payload.containerWidth
         - marginLeft

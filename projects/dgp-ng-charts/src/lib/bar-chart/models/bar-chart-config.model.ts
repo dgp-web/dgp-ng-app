@@ -13,4 +13,10 @@ export interface BarChartConfig extends SharedChartConfig {
      * default: 0.05
      */
     readonly cardinalScaleOffset: number;
+    /**
+     * Reference length of a character
+     *
+     * default: 10
+     */
+    readonly refTickCharWidth: number;
 }
