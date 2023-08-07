@@ -1,8 +1,7 @@
-import { CardinalYAxis, ChartMargin, DataAreaSize } from "../../shared/models";
-import * as d3 from "d3";
-import { KVS } from "entity-store";
+import { CategorizedValuesChartScales } from "../../shared/models/categorized-values-chart-scales.model";
 
-export interface BoxPlotScales extends DataAreaSize {
+export type BoxPlotScales = CategorizedValuesChartScales;
+/* extends DataAreaSize {
     readonly containerWidth: number;
     readonly containerHeight: number;
     readonly chartMargin: ChartMargin;
@@ -13,3 +12,4 @@ export interface BoxPlotScales extends DataAreaSize {
     readonly yAxis: d3.Axis<any>;
     readonly yAxisModel: CardinalYAxis;
 }
+*/

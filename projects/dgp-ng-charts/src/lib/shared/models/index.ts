@@ -20,3 +20,4 @@ export { NormalParameters } from "./normal/normal-parameters.model";
 export { P } from "./p.model";
 export { X } from "./x.model";
 export { Clamp } from "./clamp.model";
+export { CategoricalD3AxisScale } from "./categorical-d3-axis-scale.model";

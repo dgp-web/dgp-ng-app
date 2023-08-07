@@ -6,3 +6,5 @@ export * from "./get-box-outlier-surrogate-key.function";
 export * from "./get-jitter.function";
 export * from "./get-outlier-x-position.function";
 export * from "./is-brushed.function";
+export { toBoxPlotValuesForExtremumComputation } from "./to-box-plot-values-for-extremum-computation.function";
+export { toBoxPlotSubCategoryKVS } from "./to-box-plot-sub-category-kvs.function";
