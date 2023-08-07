@@ -20,3 +20,4 @@ export { computeDistance } from "./compute-distance.function";
 export { computeT } from "./compute-t.function";
 export { reverseTComputation } from "./reverse-t-computation.function";
 export { createCategoricalXAxis } from "./create-categorical-x-axis.function";
+export { createCategoricalXAxisScale } from "./create-categorical-x-axis-scale.function";

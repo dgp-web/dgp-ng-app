@@ -1,10 +1,11 @@
 import * as _ from "lodash";
-import * as d3 from "d3";
 import { BarChartScales, BarGroup } from "../models";
 import { defaultBarChartConfig } from "../constants";
-import { createCardinalYAxis, createCategoricalXAxis, createYAxisScale } from "../../shared/functions";
+import { createCardinalYAxis, createCategoricalXAxis, createCategoricalXAxisScale, createYAxisScale } from "../../shared/functions";
 import { notNullOrUndefined } from "dgp-ng-app";
 import { CardinalYAxis, CategoricalXAxis, ContainerSize, ScaleType } from "../../shared/models";
+import { KVS } from "entity-store";
+import { Many } from "data-modeling";
 
 // TODO: Homogenize with createBoxPlotScales
 export function createBarChartScales(payload: {
@@ -66,21 +67,17 @@ export function createBarChartScales(payload: {
         - marginLeft
         - config.margin.right;
 
-    const xAxisScale = d3.scaleBand()
-        .domain(barGroupKeys)
-        .range([0, dataAreaWidth])
-        .padding(0.2);
+    const createXAxisScaleResult = createCategoricalXAxisScale({
+        dataAreaWidth,
+        categories: payload.barGroups.map(x => x.barGroupKey),
+        subCategoryKVS: payload.barGroups.reduce((result, boxGroup) => {
+            result[boxGroup.barGroupKey] = boxGroup.bars.map(x => x.barKey);
+            return result;
+        }, {} as KVS<Many<string>>)
+    });
 
-    const xAxisSubgroupKVS = payload.barGroups.reduce((previousValue, currentValue) => {
-
-        previousValue[currentValue.barGroupKey] = d3.scaleBand() // TODO: We need to create sub groups based on crap
-            .domain(currentValue.bars.map(x => x.barKey))
-            .range([0, xAxisScale.bandwidth()])
-            .padding(0.05);
-
-        return previousValue;
-
-    }, {});
+    const xAxisScale = createXAxisScaleResult.xAxisScale;
+    const xAxisSubgroupKVS = createXAxisScaleResult.xAxisSubgroupKVS;
 
     const xAxis = createCategoricalXAxis({
         xAxisScale,
