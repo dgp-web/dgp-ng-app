@@ -7,6 +7,10 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
 
     it(`should round numerical components in formats`, () => {
 
+        /**
+         * - short entries such as 0, 0.05, 1, and 2 should remain as they are
+         * - missing roundings should be detected if more than three consecutive decimal places are the same
+         */
         const input = [
             "0x",
             "0.002777777777777778x",
@@ -41,33 +45,21 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
             .map(x => x.replace("x", ""))
             .map(x => {
 
-                if (x.length <= 3) return x;
+                if (x.length <= 4) return x;
 
                 const parsedNumber = +x;
-                if (parsedNumber > 0) return x;
-
-                const fractionDigits = x.split(".")[1];
-                const trimmedFractionDigits = fractionDigits; // TODO: Remove leading zeros, then apply
-
-                if (fractionDigits.length > 3) return parsedNumber.toPrecision(3);
+                if (parsedNumber > 10) return x;
 
                 return parsedNumber.toPrecision(3);
 
             })
             .map(x => x + "x");
 
-        console.log(xAxis.tickValues());
-        console.log(output);
-
-        /* const result = niceRoundPseudoCategoricalNumberTicks({
-             xAxis
-         });*/
-
         const expectedOutput = [
             "0x",
             "0.00278x",
             "0.00833x",
-            "0.017x",
+            "0.0167x",
             "0.05x",
             "0.167x",
             "0.333x",
@@ -77,6 +69,8 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
             "1.67x",
             "2x"
         ];
+
+        expect(output).toEqual(expectedOutput);
 
     });
 
