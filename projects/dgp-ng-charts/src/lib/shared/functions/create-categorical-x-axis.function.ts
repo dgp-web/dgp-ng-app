@@ -14,16 +14,16 @@ export function createCategoricalXAxis(payload: {
     const xAxisModel = payload.xAxisModel;
     const xAxisScale = payload.xAxisScale;
 
-    const xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
+    let xAxisTickValues = axisTickFormattingService.trimCategoricalXAxisTicks({
         currentXAxisValues: xAxisScale.domain(),
         containerWidth
     });
 
-    let xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
-
     if (notNullOrUndefined(xAxisModel.xAxisTickFormat)) {
-        xAxis = xAxis.tickFormat(xAxisModel.xAxisTickFormat as any);
+        xAxisTickValues = xAxisTickValues.map(x => xAxisModel.xAxisTickFormat(x));
     }
+
+    const xAxis = d3.axisBottom(xAxisScale).tickValues(xAxisTickValues as any);
 
     return xAxis;
 }

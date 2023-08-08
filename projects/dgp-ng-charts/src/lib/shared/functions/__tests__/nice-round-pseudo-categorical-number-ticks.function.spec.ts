@@ -2,6 +2,7 @@ import { niceRoundPseudoCategoricalNumberTicks } from "../nice-round-pseudo-numb
 import { createCategoricalXAxis } from "../create-categorical-x-axis.function";
 import { CategoricalXAxis, ScaleType } from "../../models";
 import { createCategoricalXAxisScale } from "../create-categorical-x-axis-scale.function";
+import { CardinalAxisTickFormat } from "../../models/cardinal-axis-tick-format.model";
 
 describe("niceRoundPseudoCategoricalNumberTicks", () => {
 
@@ -28,7 +29,10 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
 
         const containerWidth = 800;
 
-        const xAxisModel: CategoricalXAxis = {xAxisScaleType: ScaleType.Categorical};
+        const xAxisModel: CategoricalXAxis = {
+            xAxisScaleType: ScaleType.Categorical,
+            xAxisTickFormat: formatCustomTick
+        };
 
         const {xAxisScale} = createCategoricalXAxisScale({
             categories: input,
@@ -41,25 +45,7 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
             containerWidth
         });
 
-        const output = input
-            .map(x => x.replace("x", ""))
-            .map(x => {
-
-                if (x.length <= 4) return x;
-
-                const parsedNumber = +x;
-                if (parsedNumber > 10) return x;
-
-                const elements = x.split(".");
-                const decimalPlaces = elements[1];
-
-                const trimmedDecimalPlaces = roundDecimalPlaces(decimalPlaces);
-
-
-                return elements[0] + "." + trimmedDecimalPlaces;
-
-            })
-            .map(x => x + "x");
+        const output = xAxis.tickValues();
 
         const expectedOutput = [
             "0x",
@@ -82,6 +68,22 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
 
 });
 
+export const formatCustomTick: CardinalAxisTickFormat = (x: string) => {
+
+    const lastChar = x[x.length - 1];
+
+    x = x.replace(lastChar, "");
+
+    const elements = x.split(".");
+    const decimalPlaces = elements[1];
+
+    if (!decimalPlaces) return x + lastChar;
+
+    const trimmedDecimalPlaces = roundDecimalPlaces(decimalPlaces);
+    return elements[0] + "." + trimmedDecimalPlaces + lastChar;
+
+};
+
 export function canKeepLeadingZero(payload: {
     readonly decimalPlace: string;
     readonly result: string;
@@ -96,9 +98,10 @@ export function roundDecimalPlaces(decimalPlaces: string, config = {
     sequenceLength: 2
 }): string {
 
-    let result = "";
-    let count = 0;
     const sequenceLength = config.sequenceLength;
+    let result = "";
+
+    let count = 0;
 
     for (const decimalPlace of decimalPlaces) {
 
