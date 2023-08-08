@@ -12,12 +12,21 @@ export const formatCustomTick: CardinalAxisTickFormat = (x: string) => {
     x = x.replace(lastChar, "");
 
     const elements = x.split(".");
+    const integer = elements[0];
     const decimalPlaces = elements[1];
 
-    if (!decimalPlaces) return x + lastChar;
+    if (!decimalPlaces || decimalPlaces.length <= 2) return x + lastChar;
+
+    if (+integer >= 10) {
+        let result = Number.parseFloat(x).toFixed(2);
+
+        if (result.endsWith(".00")) result = result.replace(".00", "");
+
+        return result + lastChar;
+    }
 
     const trimmedDecimalPlaces = roundDecimalPlaces(decimalPlaces);
-    return elements[0] + "." + trimmedDecimalPlaces + lastChar;
+    return integer + "." + trimmedDecimalPlaces + lastChar;
 
 };
 
@@ -41,10 +50,12 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
             "1x",
             "1.3333333333333333x",
             "1.6666666666666667x",
-            "2x"
+            "2x",
+            "3.046666666666667x",
+            "1848.0002777777777777777777777778x"
         ];
 
-        const containerWidth = 800;
+        const containerWidth = 1000;
 
         const xAxisModel: CategoricalXAxis = {
             xAxisScaleType: ScaleType.Categorical,
@@ -76,7 +87,9 @@ describe("niceRoundPseudoCategoricalNumberTicks", () => {
             "1x",
             "1.33x",
             "1.67x",
-            "2x"
+            "2x",
+            "3.047x",
+            "1848x"
         ];
 
         expect(output).toEqual(expectedOutput);
