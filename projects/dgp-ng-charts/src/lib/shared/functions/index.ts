@@ -22,3 +22,5 @@ export { reverseTComputation } from "./reverse-t-computation.function";
 export { createCategoricalXAxis } from "./create-categorical-x-axis.function";
 export { createCategoricalXAxisScale } from "./create-categorical-x-axis-scale.function";
 export { tryResolveMarginLeft } from "./try-resolve-margin-left.function";
+export { roundDecimalPlaces } from "./round-decimal-places.function";
+export { canKeepLeadingZero } from "./can-keep-leading-zero.function";
