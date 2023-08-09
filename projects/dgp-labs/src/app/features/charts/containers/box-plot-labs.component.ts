@@ -2,6 +2,33 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ModelMetadata } from "data-modeling";
 import { BoxPlot, BoxPlotConfig, BoxPlotRenderer, defaultBoxPlotConfig } from "dgp-ng-charts";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { CardinalAxisTickFormat } from "../../../../../../dgp-ng-charts/src/lib/shared/models/cardinal-axis-tick-format.model";
+import { roundDecimalPlaces } from "../../../../../../dgp-ng-charts/src/lib/shared/functions";
+
+export const formatCustomTick: CardinalAxisTickFormat = (x: string) => {
+
+    const lastChar = x[x.length - 1];
+
+    x = x.replace(lastChar, "");
+
+    const elements = x.split(".");
+    const integer = elements[0];
+    const decimalPlaces = elements[1];
+
+    if (!decimalPlaces || decimalPlaces.length <= 2) return x + lastChar;
+
+    if (+integer >= 10) {
+        let result = Number.parseFloat(x).toFixed(2);
+
+        if (result.endsWith(".00")) result = result.replace(".00", "");
+
+        return result + lastChar;
+    }
+
+    const trimmedDecimalPlaces = roundDecimalPlaces(decimalPlaces);
+    return integer + "." + trimmedDecimalPlaces + lastChar;
+
+};
 
 export const boxPlotMetadata: ModelMetadata<BoxPlot> = {
     label: "Box plot",
@@ -11,11 +38,11 @@ export const boxPlotMetadata: ModelMetadata<BoxPlot> = {
 
 export const testBoxPlot: BoxPlot = {
     model: [{
-        boxGroupId: "boxGroup01",
+        boxGroupId: "123.0003333333x",
         label: "Box group 01",
         boxes: [{
-            boxGroupId: "boxGroup01",
-            boxId: "box01",
+            boxGroupId: "123.0003333333x",
+            boxId: "456x",
             colorHex: "#ff0000",
             quantiles: {
                 max: 13,
@@ -38,7 +65,8 @@ export const testBoxPlot: BoxPlot = {
         }]
     }],
     yAxisMax: 20,
-    yAxisMin: -20
+    yAxisMin: -20,
+    xAxisTickFormat: formatCustomTick
 };
 
 
@@ -61,7 +89,8 @@ export const testBoxPlot: BoxPlot = {
                                   [yAxisMax]="model.yAxisMax"
                                   [yAxisStep]="model.yAxisStep"
                                   [yAxisTitle]="model.yAxisTitle"
-                                  [showYAxisGridLines]="model.showYAxisGridLines"></dgp-box-plot>
+                                  [showYAxisGridLines]="model.showYAxisGridLines"
+                                  [xAxisTickFormat]="model.xAxisTickFormat"></dgp-box-plot>
                 </ng-template>
             </dgp-split-panel-content>
 
