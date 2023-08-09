@@ -55,6 +55,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
             display: flex;
             justify-content: center;
             flex-grow: 1;
+            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

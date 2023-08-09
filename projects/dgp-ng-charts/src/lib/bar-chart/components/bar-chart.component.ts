@@ -71,6 +71,7 @@ import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardi
             display: flex;
             justify-content: center;
             flex-grow: 1;
+            height: 100%;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
