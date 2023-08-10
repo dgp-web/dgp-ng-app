@@ -9,6 +9,7 @@ import { trackByBarGroupId } from "../functions/track-by-bar-group-id.function";
 import { trackByBarId } from "../functions/track-by-bar-id.function";
 import { defaultBarChartConfig } from "../constants";
 import { DgpCardinalYAxisChartComponentBase } from "../../chart/components/cardinal-y-axis-chart.component-base";
+import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-format.model";
 
 @Component({
     selector: "dgp-bar-chart",
@@ -86,7 +87,12 @@ export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase imp
     readonly model$ = observeAttribute$(this as DgpBarChartComponent, "model");
 
     @Input()
+    xAxisTickFormat?: CardinalAxisTickFormat;
+    readonly xAxisTickFormat$ = observeAttribute$(this as DgpBarChartComponent, "xAxisTickFormat");
+
+    @Input()
     config = defaultBarChartConfig;
+    readonly config$ = observeAttribute$(this as DgpBarChartComponent, "config");
 
     readonly trackByBarGroupId = trackByBarGroupId;
     readonly trackByBarId = trackByBarId;
@@ -96,15 +102,18 @@ export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase imp
     readonly scales$ = combineLatest([
         this.size$.pipe(filterNotNullOrUndefined()),
         this.model$,
-        this.yAxis$
+        this.yAxis$,
+        this.xAxisTickFormat$,
+        this.config$
     ]).pipe(
         debounceTime(0),
         map(combination => createBarChartScales({
             containerHeight: combination[0].height,
             containerWidth: combination[0].width,
             barGroups: combination[1] as BarGroups,
-            ...combination[2]
-        })),
+            ...combination[2],
+            xAxisTickFormat: combination[3]
+        }, combination[4])),
         shareReplay(1)
     );
 
