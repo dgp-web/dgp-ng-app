@@ -1,6 +1,6 @@
 {
   "name": "dgp-ng-app",
-  "version": "15.3.1",
+  "version": "15.3.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -43,6 +43,7 @@
     "docs-app:build:prod": "ng build ng-app --configuration production",
     "docs-app:ng-serve": "ng serve ng-app",
     "docs-app:publish": "firebase use dgp-ng-app && firebase deploy --only hosting:dgp-ng-app",
+    "docs-app-15:publish": "firebase use dgp-ng-app-15 && firebase deploy --only hosting:dgp-ng-app-15",
     "dgp-labs:build:prod": "ng build dgp-labs --configuration production",
     "dgp-labs:ng-serve": "ng serve dgp-labs --configuration development",
     "dgp-labs:publish": "firebase use dgp-labs && firebase deploy --only hosting:dgp-labs",
@@ -105,9 +106,9 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "^2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~4.0.0",
+    "karma-jasmine": "~5.1.0",
     "karma-spec-reporter": "0.0.32",
-    "karma-webpack": "^4.0.2",
+    "karma-webpack": "^5.0.0",
     "ng-packagr": "^15.2.2",
     "protractor": "~7.0.0",
     "puppeteer": "^11.0.0",
