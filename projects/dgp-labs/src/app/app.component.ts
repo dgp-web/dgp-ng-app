@@ -14,13 +14,15 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                     <dgp-spacer></dgp-spacer>
                     <button mat-icon-button
                             [disabled]="canOpenAllSections() | negate"
-                            (click)="openAllSections()">
+                            (click)="openAllSections()"
+                            matTooltip="Open all">
                         <mat-icon>unfold_more</mat-icon>
                     </button>
 
                     <button mat-icon-button
                             [disabled]="canCloseAllSections() | negate"
-                            (click)="closeAllSections()">
+                            (click)="closeAllSections()"
+                            matTooltip="Close all">
                         <mat-icon>unfold_less</mat-icon>
                     </button>
                 </dgp-hamburger-menu-header>
@@ -55,10 +57,6 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                                                   route="/charts/bar-chart"
                                                   matIconName="bar_chart"></dgp-hamburger-menu-entry>
 
-                        <dgp-hamburger-menu-entry label="Shapes and patterns"
-                                                  route="/charts/shapes-and-patterns"
-                                                  matIconName="category"></dgp-hamburger-menu-entry>
-
                         <dgp-hamburger-menu-entry label="Box plot"
                                                   route="/charts/box-plot"
                                                   matIconName="candlestick_chart"></dgp-hamburger-menu-entry>
@@ -70,6 +68,15 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                         <dgp-hamburger-menu-entry label="Heatmap"
                                                   route="/charts/heatmap"
                                                   matIconName="view_module"></dgp-hamburger-menu-entry>
+
+                        <dgp-inspector-section label="Utility"
+                                               [(expanded)]="isChartUtilitySectionExpanded">
+
+                            <dgp-hamburger-menu-entry label="Shapes and patterns"
+                                                      route="/charts/shapes-and-patterns"
+                                                      matIconName="category"></dgp-hamburger-menu-entry>
+
+                        </dgp-inspector-section>
                     </dgp-inspector-section>
                 </dgp-hamburger-menu-entries>
             </dgp-hamburger-menu>
@@ -89,28 +96,33 @@ export class AppComponent extends DgpContainer {
     isChartsSectionExpanded = true;
     isLayoutSectionExpanded = true;
     isInteractionSectionExpanded = true;
+    isChartUtilitySectionExpanded = true;
 
     canOpenAllSections(): boolean {
         return !this.isChartsSectionExpanded
-            && !this.isLayoutSectionExpanded
-            && !this.isInteractionSectionExpanded;
+            || !this.isLayoutSectionExpanded
+            || !this.isInteractionSectionExpanded
+            || !this.isChartUtilitySectionExpanded;
     }
 
     openAllSections() {
         this.isChartsSectionExpanded = true;
         this.isLayoutSectionExpanded = true;
         this.isInteractionSectionExpanded = true;
+        this.isChartUtilitySectionExpanded = true;
     }
 
     canCloseAllSections(): boolean {
         return this.isChartsSectionExpanded
             || this.isLayoutSectionExpanded
-            || this.isInteractionSectionExpanded;
+            || this.isInteractionSectionExpanded
+            || this.isChartUtilitySectionExpanded;
     }
 
     closeAllSections() {
         this.isChartsSectionExpanded = false;
         this.isLayoutSectionExpanded = false;
         this.isInteractionSectionExpanded = false;
+        this.isChartUtilitySectionExpanded = false;
     }
 }

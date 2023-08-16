@@ -29,6 +29,7 @@ import { ActionContextLabsModule } from "./features/action-context/charts-labs.m
 import { MatListModule } from "@angular/material/list";
 import { DgpDataExportLabsModule } from "./features/data-export/data-export-labs.module";
 import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -131,7 +132,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         }),
         MatIconModule,
         DgpNegatePipeModule,
-        DgpSpacerModule
+        DgpSpacerModule,
+        MatTooltipModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]
