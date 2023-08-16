@@ -98,7 +98,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         }, {
             path: "**",
             redirectTo: "/docking-layout"
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
 
         StoreModule.forRoot(APP_REDUCER, {
             runtimeChecks: defaultRuntimeChecks
