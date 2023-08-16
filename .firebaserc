@@ -13,6 +13,13 @@
           "dgp-labs"
         ]
       }
-    }
+    },
+    "dgp-ng-app-15": {
+        "hosting": {
+          "dgp-ng-app-15": [
+            "dgp-ng-app-15"
+          ]
+        }
+      }
   }
 }
