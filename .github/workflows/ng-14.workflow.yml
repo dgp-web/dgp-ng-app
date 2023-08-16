@@ -1,4 +1,4 @@
-name: Build and deploy new version for Angular 14
+name: Build and deploy NG 14
 
 on:
   push:
