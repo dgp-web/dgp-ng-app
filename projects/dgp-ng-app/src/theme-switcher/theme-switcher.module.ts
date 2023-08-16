@@ -16,7 +16,7 @@ import {
     themeSwitcherStoreFeature
 } from "./models";
 import { setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
 
 export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");

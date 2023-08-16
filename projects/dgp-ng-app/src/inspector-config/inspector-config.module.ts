@@ -2,13 +2,13 @@ import { NgModule } from "@angular/core";
 import { components } from "./components/components";
 import { DgpInspectorModule } from "../inspector/inspector.module";
 import { AsyncPipe, NgIf } from "@angular/common";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
 import { FormsModule } from "@angular/forms";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatSelectModule } from "@angular/material/select";
-import { MatInputModule } from "@angular/material/input";
+import { MatLegacyFormFieldModule as MatFormFieldModule } from "@angular/material/legacy-form-field";
+import { MatLegacySelectModule as MatSelectModule } from "@angular/material/legacy-select";
+import { MatLegacyInputModule as MatInputModule } from "@angular/material/legacy-input";
 import { containers } from "./containers/containers";
-import { MatSliderModule } from "@angular/material/slider";
+import { MatLegacySliderModule as MatSliderModule } from "@angular/material/legacy-slider";
 import { DgpSpacerModule } from "../spacer/spacer.module";
 
 @NgModule({

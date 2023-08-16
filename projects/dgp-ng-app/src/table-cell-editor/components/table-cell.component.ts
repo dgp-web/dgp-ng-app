@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
 import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "../functions";
 import { DgpTableCellEditorService } from "../service/table-cell-editor.service";

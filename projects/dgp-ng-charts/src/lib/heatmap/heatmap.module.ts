@@ -2,16 +2,16 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { HeatmapComponent } from "./components/heatmap.component";
 import { HeatmapLegendComponent } from "./components/heatmap-legend.component";
-import { MatButtonModule } from "@angular/material/button";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { MatIconModule } from "@angular/material/icon";
-import { MatCardModule } from "@angular/material/card";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
+import { MatLegacyTooltipModule as MatTooltipModule } from "@angular/material/legacy-tooltip";
 import { ExportChartDialogComponent } from "./components/export-chart-dialog.component";
 import { DgpSpacerModule, SafePipeModule } from "dgp-ng-app";
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatLegacyDialogModule as MatDialogModule } from "@angular/material/legacy-dialog";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { DgpChartContainerModule } from "../chart-container/chart-container.module";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatLegacySnackBarModule as MatSnackBarModule } from "@angular/material/legacy-snack-bar";
 import { DgpChartModule } from "../chart/chart.module";
 
 @NgModule({

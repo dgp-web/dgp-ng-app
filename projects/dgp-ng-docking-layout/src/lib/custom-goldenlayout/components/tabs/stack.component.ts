@@ -35,7 +35,7 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
 import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { MatTabGroup } from "@angular/material/tabs";
+import { MatLegacyTabGroup as MatTabGroup } from "@angular/material/legacy-tabs";
 import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indicator.component";
 import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
 

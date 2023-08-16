@@ -111,11 +111,11 @@
     $app-theme: mat.define-light-theme($primary, $accent, $warn);
     $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
 
-    @include mat.all-component-themes($app-theme);
+    @include mat.all-legacy-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
 
     .dark-theme {
-        @include mat.all-component-themes($app-dark-theme);
+        @include mat.all-legacy-component-themes($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
 
