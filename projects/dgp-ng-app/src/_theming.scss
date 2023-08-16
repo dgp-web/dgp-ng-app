@@ -127,7 +127,7 @@
     @include dgp-list-item-theme($app-theme);
 
     .dark-theme {
-        @include mat.all-legacy-component-themes($app-dark-theme);
+        @include mat.all-legacy-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
 
