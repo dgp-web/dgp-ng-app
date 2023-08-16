@@ -23,7 +23,7 @@ import { DgpResizeSensorModule } from "../../../../../dgp-ng-app/src/resize-sens
         RouterModule.forRoot([{
             path: "action-context",
             component: ActionContextLabsPageComponent
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpActionContextModule,

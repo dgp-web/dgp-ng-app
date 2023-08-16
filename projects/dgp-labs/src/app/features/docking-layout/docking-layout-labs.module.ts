@@ -18,7 +18,7 @@ import { FormsModule } from "@angular/forms";
         RouterModule.forRoot([{
             path: "docking-layout",
             component: DockingLayoutLabsPageComponent
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DgpTileModule,
