@@ -2,7 +2,7 @@ name: Build and deploy NG 15
 
 on:
   push:
-    branches: [ support\ng-15 ]
+    branches: [ support/ng-15 ]
 
 jobs:
   build:
@@ -71,6 +71,6 @@ jobs:
 
     - name: build docs-app
       run: npm run docs-app:build:prod
-      
+
     - name: build dgp-labs
       run: npm run dgp-labs:build:prod

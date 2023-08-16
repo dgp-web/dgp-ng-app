@@ -2,7 +2,7 @@ name: Build and deploy NG 14
 
 on:
   push:
-    branches: [ support\ng-14 ]
+    branches: [ support/ng-14 ]
 
 jobs:
   build:

@@ -2,7 +2,7 @@ name: Build and deploy NG 16
 
 on:
   push:
-    branches: [ support\ng-16 ]
+    branches: [ support/ng-16 ]
 
 jobs:
   build:
