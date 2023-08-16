@@ -108,8 +108,20 @@
 
     @include dgp-normalize();
 
-    $app-theme: mat.define-light-theme($primary, $accent, $warn);
-    $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
+    $app-theme: mat.define-light-theme((
+        color: (
+            primary: $primary,
+            accent: $accent,
+            warn: $warn,
+        ),
+    ));
+    $app-dark-theme: mat.define-dark-theme((
+        color: (
+            primary: $primary,
+            accent: $accent,
+            warn: $warn,
+        ),
+    ));
 
     @include mat.all-legacy-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
