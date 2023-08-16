@@ -14,48 +14,47 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
                 <dgp-hamburger-menu-entries>
 
-                    <h3 mat-subheader>Layout</h3>
+                    <dgp-inspector-section label="Layout">
+                        <dgp-hamburger-menu-entry label="Split panel"
+                                                  route="/split-panel"
+                                                  matIconName="view_array"></dgp-hamburger-menu-entry>
 
-                    <dgp-hamburger-menu-entry label="Split panel"
-                                              route="/split-panel"
-                                              matIconName="view_array"></dgp-hamburger-menu-entry>
+                        <dgp-hamburger-menu-entry label="Docking layout"
+                                                  route="/docking-layout"
+                                                  matIconName="view_quilt"></dgp-hamburger-menu-entry>
+                    </dgp-inspector-section>
 
-                    <dgp-hamburger-menu-entry label="Docking layout"
-                                              route="/docking-layout"
-                                              matIconName="view_quilt"></dgp-hamburger-menu-entry>
+                    <dgp-inspector-section label="Nifty interaction">
+                        <dgp-hamburger-menu-entry label="Action context"
+                                                  route="/action-context"
+                                                  matIconName="pie_chart"></dgp-hamburger-menu-entry>
+                    </dgp-inspector-section>
 
-                    <h3 mat-subheader>Nifty interaction</h3>
+                    <dgp-inspector-section label="Charts">
+                        <dgp-hamburger-menu-entry label="Charts"
+                                                  route="/charts/overview"
+                                                  matIconName="pie_chart"></dgp-hamburger-menu-entry>
 
-                    <dgp-hamburger-menu-entry label="Action context"
-                                              route="/action-context"
-                                              matIconName="pie_chart"></dgp-hamburger-menu-entry>
+                        <dgp-hamburger-menu-entry label="Bar chart"
+                                                  route="/charts/bar-chart"
+                                                  matIconName="bar_chart"></dgp-hamburger-menu-entry>
 
-                    <h3 mat-subheader>Charts</h3>
+                        <dgp-hamburger-menu-entry label="Shapes and patterns"
+                                                  route="/charts/shapes-and-patterns"
+                                                  matIconName="category"></dgp-hamburger-menu-entry>
 
-                    <dgp-hamburger-menu-entry label="Charts"
-                                              route="/charts/overview"
-                                              matIconName="pie_chart"></dgp-hamburger-menu-entry>
+                        <dgp-hamburger-menu-entry label="Box plot"
+                                                  route="/charts/box-plot"
+                                                  matIconName="candlestick_chart"></dgp-hamburger-menu-entry>
 
-                    <dgp-hamburger-menu-entry label="Bar chart"
-                                              route="/charts/bar-chart"
-                                              matIconName="bar_chart"></dgp-hamburger-menu-entry>
+                        <dgp-hamburger-menu-entry label="Connected scatter-plot"
+                                                  route="/charts/connected-scatter-plot"
+                                                  matIconName="insights"></dgp-hamburger-menu-entry>
 
-                    <dgp-hamburger-menu-entry label="Shapes and patterns"
-                                              route="/charts/shapes-and-patterns"
-                                              matIconName="category"></dgp-hamburger-menu-entry>
-
-                    <dgp-hamburger-menu-entry label="Box plot"
-                                              route="/charts/box-plot"
-                                              matIconName="candlestick_chart"></dgp-hamburger-menu-entry>
-
-                    <dgp-hamburger-menu-entry label="Connected scatter-plot"
-                                              route="/charts/connected-scatter-plot"
-                                              matIconName="insights"></dgp-hamburger-menu-entry>
-
-                    <dgp-hamburger-menu-entry label="Heatmap"
-                                              route="/charts/heatmap"
-                                              matIconName="view_module"></dgp-hamburger-menu-entry>
-
+                        <dgp-hamburger-menu-entry label="Heatmap"
+                                                  route="/charts/heatmap"
+                                                  matIconName="view_module"></dgp-hamburger-menu-entry>
+                    </dgp-inspector-section>
                 </dgp-hamburger-menu-entries>
             </dgp-hamburger-menu>
 
