@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
 
 @Component({
@@ -63,7 +63,12 @@ export class InspectorSectionComponent {
     @Input()
     metadata: AttributeMetadata<any>;
 
+    @Output()
+    readonly expandedChange = new EventEmitter<boolean>();
+
     updateExpanded(expanded: boolean) {
         this.expanded = expanded;
+
+        this.expandedChange.emit(this.expanded);
     }
 }

@@ -8,9 +8,9 @@ import {
     defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
-    DgpHamburgerShellModule, DgpInspectorModule,
+    DgpHamburgerShellModule, DgpInspectorModule, DgpNegatePipeModule,
     DgpRequestStoreModule,
-    DgpRoutingOverlayModule,
+    DgpRoutingOverlayModule, DgpSpacerModule,
     DgpThemeSwitcherModule,
     InitializationService,
     InitializationServiceProvider
@@ -28,6 +28,7 @@ import { ChartsLabsModule } from "./features/charts/charts-labs.module";
 import { ActionContextLabsModule } from "./features/action-context/charts-labs.module";
 import { MatListModule } from "@angular/material/list";
 import { DgpDataExportLabsModule } from "./features/data-export/data-export-labs.module";
+import { MatIconModule } from "@angular/material/icon";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -127,7 +128,10 @@ export const initializationServiceProvider: InitializationServiceProvider = {
             showFieldIcons: true,
             showFieldDescriptions: true,
             responsive: true
-        })
+        }),
+        MatIconModule,
+        DgpNegatePipeModule,
+        DgpSpacerModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
+
 @Component({
     selector: "app-root",
     template: `
@@ -10,11 +11,24 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
                 <dgp-hamburger-menu-header>
                     DGP labs
+                    <dgp-spacer></dgp-spacer>
+                    <button mat-icon-button
+                            [disabled]="canOpenAllSections() | negate"
+                            (click)="openAllSections()">
+                        <mat-icon>unfold_more</mat-icon>
+                    </button>
+
+                    <button mat-icon-button
+                            [disabled]="canCloseAllSections() | negate"
+                            (click)="closeAllSections()">
+                        <mat-icon>unfold_less</mat-icon>
+                    </button>
                 </dgp-hamburger-menu-header>
 
                 <dgp-hamburger-menu-entries>
 
-                    <dgp-inspector-section label="Layout">
+                    <dgp-inspector-section label="Layout"
+                                           [(expanded)]="isLayoutSectionExpanded">
                         <dgp-hamburger-menu-entry label="Split panel"
                                                   route="/split-panel"
                                                   matIconName="view_array"></dgp-hamburger-menu-entry>
@@ -24,13 +38,15 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                                                   matIconName="view_quilt"></dgp-hamburger-menu-entry>
                     </dgp-inspector-section>
 
-                    <dgp-inspector-section label="Nifty interaction">
+                    <dgp-inspector-section label="Nifty interaction"
+                                           [(expanded)]="isInteractionSectionExpanded">
                         <dgp-hamburger-menu-entry label="Action context"
                                                   route="/action-context"
                                                   matIconName="pie_chart"></dgp-hamburger-menu-entry>
                     </dgp-inspector-section>
 
-                    <dgp-inspector-section label="Charts">
+                    <dgp-inspector-section label="Charts"
+                                           [(expanded)]="isChartsSectionExpanded">
                         <dgp-hamburger-menu-entry label="Charts"
                                                   route="/charts/overview"
                                                   matIconName="pie_chart"></dgp-hamburger-menu-entry>
@@ -70,4 +86,31 @@ export class AppComponent extends DgpContainer {
 
     readonly authenticatedUser$ = this.select(getAuthenticatedUserSelector);
 
+    isChartsSectionExpanded = true;
+    isLayoutSectionExpanded = true;
+    isInteractionSectionExpanded = true;
+
+    canOpenAllSections(): boolean {
+        return !this.isChartsSectionExpanded
+            && !this.isLayoutSectionExpanded
+            && !this.isInteractionSectionExpanded;
+    }
+
+    openAllSections() {
+        this.isChartsSectionExpanded = true;
+        this.isLayoutSectionExpanded = true;
+        this.isInteractionSectionExpanded = true;
+    }
+
+    canCloseAllSections(): boolean {
+        return this.isChartsSectionExpanded
+            || this.isLayoutSectionExpanded
+            || this.isInteractionSectionExpanded;
+    }
+
+    closeAllSections() {
+        this.isChartsSectionExpanded = false;
+        this.isLayoutSectionExpanded = false;
+        this.isInteractionSectionExpanded = false;
+    }
 }
