@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import * as dgp from "dgp-ng-app";
-import { MatButtonModule } from "@angular/material/button";
+import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatListModule } from "@angular/material/list";
+import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
 import { MatIconModule } from "@angular/material/icon";
 
 const sharedModules = [
