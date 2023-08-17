@@ -31,7 +31,7 @@
             ]
         },
         {
-            "target": "dgp-ng-app-16",
+            "target": "dgp-ng-app-16-8d720",
             "public": "dist/ng-app",
             "ignore": [
                 "firebase.json",
