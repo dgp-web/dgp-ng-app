@@ -1,25 +1,39 @@
 {
-  "targets": {
-    "dgp-ng-app": {
-      "hosting": {
-        "dgp-ng-app": [
-          "dgp-ng-app"
-        ]
-      }
-    },
-    "dgp-labs": {
-      "hosting": {
-        "dgp-labs": [
-          "dgp-labs"
-        ]
-      }
-    },
-    "dgp-ng-app-15": {
-        "hosting": {
-          "dgp-ng-app-15": [
-            "dgp-ng-app-15"
-          ]
-        }
-      }
-  }
+	"targets": {
+		"dgp-ng-app": {
+			"hosting": {
+				"dgp-ng-app": [
+					"dgp-ng-app"
+				]
+			}
+		},
+		"dgp-labs": {
+			"hosting": {
+				"dgp-labs": [
+					"dgp-labs"
+				]
+			}
+		},
+		"dgp-ng-app-14": {
+			"hosting": {
+				"dgp-ng-app-14": [
+					"dgp-ng-app-14"
+				]
+			}
+		},
+		"dgp-ng-app-15": {
+			"hosting": {
+				"dgp-ng-app-15": [
+					"dgp-ng-app-15"
+				]
+			}
+		},
+		"dgp-ng-app-16-8d720": {
+			"hosting": {
+				"dgp-ng-app-16-8d720": [
+					"dgp-ng-app-16-8d720"
+				]
+			}
+		}
+	}
 }
