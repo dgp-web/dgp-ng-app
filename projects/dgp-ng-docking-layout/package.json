@@ -15,8 +15,8 @@
         "tslib": "^2"
     },
     "peerDependencies": {
-        "@angular/common": "^14",
-        "@angular/core": "^14",
+        "@angular/common": "^16",
+        "@angular/core": "^16",
         "jquery": "^3",
         "@types/jquery": "^3"
     }

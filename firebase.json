@@ -29,6 +29,21 @@
                     "destination": "/index.html"
                 }
             ]
+        },
+        {
+            "target": "dgp-ng-app-16",
+            "public": "dist/ng-app",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
         }
     ]
 }
