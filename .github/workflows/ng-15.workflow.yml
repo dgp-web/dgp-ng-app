@@ -10,10 +10,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
-        node-version: '14'
-        registry-url: 'https://registry.npmjs.org'
+          node-version: '16.14'
+          registry-url: 'https://registry.npmjs.org'
 
     - name: Install npm packages
       run: npm ci --loglevel=error
@@ -71,6 +71,11 @@ jobs:
 
     - name: build docs-app
       run: npm run docs-app:build:prod
+
+    - name: Publish docs-app to firebase
+      run: npm run docs-app-15:publish
+      env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
     - name: build dgp-labs
       run: npm run dgp-labs:build:prod
