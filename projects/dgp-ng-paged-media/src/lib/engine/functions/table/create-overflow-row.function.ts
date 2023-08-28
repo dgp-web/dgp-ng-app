@@ -5,8 +5,6 @@ export interface OverflowRow {
     readonly tableRow: HTMLTableRowElement;
 }
 
-export function createOverflowRow(payload: {
-    readonly overflowingCells: OverflowingCells;
-}): OverflowRow {
+export function createOverflowRow(payload: OverflowingCells): OverflowRow {
     return null;
 }
