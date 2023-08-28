@@ -6,5 +6,19 @@ export interface OverflowRow {
 }
 
 export function createOverflowRow(payload: OverflowingCells): OverflowRow {
-    return null;
+    const originalRowIndex = payload.originalRowIndex;
+    const cells = payload.cells;
+
+    const tableRow = document.createElement("tr");
+    cells.forEach((cell, index) => {
+
+        if (index !== 0) {
+            tableRow.innerHTML += "<br>";
+        }
+
+        tableRow.innerHTML += cell.tableCell.innerHTML;
+
+    });
+
+    return {tableRow, originalRowIndex};
 }

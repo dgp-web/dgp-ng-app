@@ -3,30 +3,29 @@ import { OverflowingCells } from "../remove-overflowing-cells-from-row.function"
 
 describe("createOverflowRow", () => {
 
-    xit(`should create a row listing cell contents separated by <br>`, () => {
+    const originalRowIndex = 1;
+    const content01 = "Content 01";
+    const content02 = "Content 02";
+
+    it(`should create a row listing cell contents separated by <br>`, () => {
         const tableCell01 = document.createElement("td");
-        tableCell01.innerHTML = "Content 01";
+        tableCell01.innerHTML = content01;
 
         const tableCell02 = document.createElement("td");
-        tableCell02.innerHTML = "Content 02";
-
-        const originalRowIndex = 1;
+        tableCell02.innerHTML = content02;
 
         const payload: OverflowingCells = {
             originalRowIndex,
-            cells: [{
-                columnKey: undefined,
-                tableCell: tableCell01
-            }, {
-                columnKey: undefined,
-                tableCell: tableCell02
-            }]
+            cells: [
+                {tableCell: tableCell01},
+                {tableCell: tableCell02}
+            ]
         };
 
         const result = createOverflowRow(payload);
 
         const tableRow = document.createElement("tr");
-        tableRow.innerHTML = "Content 01 <br>Content 02";
+        tableRow.innerHTML = content01 + "<br>" + content02;
 
         const expectedResult: OverflowRow = {originalRowIndex, tableRow};
 
