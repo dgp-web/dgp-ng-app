@@ -6,7 +6,7 @@ export interface OverflowingColumnsInfo {
     readonly lastVisibleColumnIndex: number;
 }
 
-export function getOverflowingColumnInfos(payload: {
+export function getOverflowingColumnsInfo(payload: {
     readonly table: HTMLTableElement;
     readonly pageContentSize: PageContentSize;
 }): OverflowingColumnsInfo {

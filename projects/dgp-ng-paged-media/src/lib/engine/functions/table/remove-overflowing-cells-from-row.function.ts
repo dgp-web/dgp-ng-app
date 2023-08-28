@@ -1,4 +1,4 @@
-import { OverflowingColumnsInfo } from "./get-overflowing-columns-info.model";
+import { OverflowingColumnsInfo } from "./get-overflowing-columns-info.function";
 import { Many } from "data-modeling";
 
 export interface OverflowingCell {
@@ -6,7 +6,7 @@ export interface OverflowingCell {
     readonly tableCell: HTMLTableCellElement;
 }
 
-export interface OverflowingCells {
+export interface OverflowingCellsInfo {
     readonly originalRowIndex: number;
     readonly cells: Many<OverflowingCell>;
 }
@@ -14,6 +14,6 @@ export interface OverflowingCells {
 export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & {
     readonly tableRow: HTMLTableRowElement;
     readonly originalRowIndex: number;
-}): OverflowingCells {
+}): OverflowingCellsInfo {
     return null;
 }

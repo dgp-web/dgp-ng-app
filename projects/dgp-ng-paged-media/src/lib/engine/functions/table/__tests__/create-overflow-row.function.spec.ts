@@ -1,5 +1,5 @@
 import { createOverflowRow, OverflowRow } from "../create-overflow-row.function";
-import { OverflowingCells } from "../remove-overflowing-cells-from-row.function";
+import { OverflowingCellsInfo } from "../remove-overflowing-cells-from-row.function";
 
 describe("createOverflowRow", () => {
 
@@ -17,7 +17,7 @@ describe("createOverflowRow", () => {
         const tableCell02 = document.createElement("td");
         tableCell02.innerHTML = content02;
 
-        const payload: OverflowingCells = {
+        const payload: OverflowingCellsInfo = {
             originalRowIndex,
             cells: [
                 {tableCell: tableCell01},
@@ -42,7 +42,7 @@ describe("createOverflowRow", () => {
         const tableCell02 = document.createElement("td");
         tableCell02.innerHTML = content02;
 
-        const payload: OverflowingCells = {
+        const payload: OverflowingCellsInfo = {
             originalRowIndex,
             cells: [
                 {tableCell: tableCell01, columnKey: columnKey01},

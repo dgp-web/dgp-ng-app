@@ -1,11 +1,11 @@
-import { OverflowingCells } from "./remove-overflowing-cells-from-row.function";
+import { OverflowingCellsInfo } from "./remove-overflowing-cells-from-row.function";
 
 export interface OverflowRow {
     readonly originalRowIndex: number;
     readonly tableRow: HTMLTableRowElement;
 }
 
-export function createOverflowRow(payload: OverflowingCells): OverflowRow {
+export function createOverflowRow(payload: OverflowingCellsInfo): OverflowRow {
     const originalRowIndex = payload.originalRowIndex;
     const cells = payload.cells;
 
