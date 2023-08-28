@@ -16,6 +16,8 @@ export function createOverflowRow(payload: OverflowingCells): OverflowRow {
             tableRow.innerHTML += "<br>";
         }
 
+        if (cell.columnKey) tableRow.innerHTML += cell.columnKey + ": ";
+
         tableRow.innerHTML += cell.tableCell.innerHTML;
 
     });

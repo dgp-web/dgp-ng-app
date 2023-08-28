@@ -7,6 +7,9 @@ describe("createOverflowRow", () => {
     const content01 = "Content 01";
     const content02 = "Content 02";
 
+    const columnKey01 = "Column 01";
+    const columnKey02 = "Column 02";
+
     it(`should create a row listing cell contents separated by <br>`, () => {
         const tableCell01 = document.createElement("td");
         tableCell01.innerHTML = content01;
@@ -32,8 +35,31 @@ describe("createOverflowRow", () => {
         expect(result).toEqual(expectedResult);
     });
 
-    xit(`should prefix rows with column labels if it exists`, () => {
+    it(`should prefix rows with column labels if it exists`, () => {
+        const tableCell01 = document.createElement("td");
+        tableCell01.innerHTML = content01;
 
+        const tableCell02 = document.createElement("td");
+        tableCell02.innerHTML = content02;
+
+        const payload: OverflowingCells = {
+            originalRowIndex,
+            cells: [
+                {tableCell: tableCell01, columnKey: columnKey01},
+                {tableCell: tableCell02, columnKey: columnKey02}
+            ]
+        };
+
+        const result = createOverflowRow(payload);
+
+        const tableRow = document.createElement("tr");
+        tableRow.innerHTML = columnKey01 + ": " + content01
+            + "<br>"
+            + columnKey02 + ": " + content02;
+
+        const expectedResult: OverflowRow = {originalRowIndex, tableRow};
+
+        expect(result).toEqual(expectedResult);
     });
 
 });
