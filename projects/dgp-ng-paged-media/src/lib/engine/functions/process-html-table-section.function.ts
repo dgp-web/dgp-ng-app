@@ -3,6 +3,7 @@ import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.f
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 import { getOuterHeight } from "./get-outer-height.function";
 import { checkHeight } from "./check-height.function";
+import { moveHorizontalOverflowToRows } from "./table/move-horizontal-overflow-to-rows.function";
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -13,10 +14,15 @@ export function processHTMLTableSection(payload: {
     const htmlSection = payload.htmlSection;
     const pageContentSize = payload.pageContentSize;
 
-    const refTable = htmlSection.nativeElement.querySelector("table");
+    let refTable = htmlSection.nativeElement.querySelector("table");
     const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
+    refTable = moveHorizontalOverflowToRows({
+        table: refTable
+    });
+
     let table = createHTMLWrapperElement("table", pageContentSize);
+
     refTable.classList.forEach(x => {
         table.classList.add(x);
     });
