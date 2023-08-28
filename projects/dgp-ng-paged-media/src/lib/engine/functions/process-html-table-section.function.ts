@@ -11,10 +11,10 @@ export interface OverflowingColumnInfo {
 }
 
 export function getOverflowingColumnInfos(payload: {
-    readonly refTable: HTMLTableElement;
+    readonly table: HTMLTableElement;
     readonly pageContentSize: PageContentSize;
-}): Many<number> {
-    return [];
+}): OverflowingColumnInfo {
+    return null;
 }
 
 export interface OverflowingCell {
@@ -22,12 +22,10 @@ export interface OverflowingCell {
     readonly tableCell: HTMLTableCellElement;
 }
 
-export function removeOverflowingCells(payload: {
-    readonly columnKeys?: Many<string>;
-    readonly lastVisibleColumnIndex: number;
+export function removeOverflowingCells(payload: OverflowingColumnInfo & {
     readonly tableRow: HTMLTableRowElement;
 }): Many<OverflowingCell> {
-
+    return null;
 }
 
 export interface OverflowRow {
@@ -36,16 +34,20 @@ export interface OverflowRow {
 }
 
 export function addOverflowRows(payload: {
-    readonly payload: Many<OverflowRow>;
+    readonly overflowRows: Many<OverflowRow>;
     readonly table: HTMLTableElement;
 }): HTMLTableElement {
+    const table = payload.table;
+    const overflowRows = payload.overflowRows;
 
+    return table;
 }
 
 export function moveHorizontalOverflowToRows(payload: {
     readonly table: HTMLTableElement;
 }): HTMLTableElement {
     const table = payload.table;
+
     return table;
 }
 
