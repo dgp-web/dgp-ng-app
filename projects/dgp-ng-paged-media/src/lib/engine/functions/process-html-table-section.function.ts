@@ -3,6 +3,51 @@ import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.f
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 import { getOuterHeight } from "./get-outer-height.function";
 import { checkHeight } from "./check-height.function";
+import { Many } from "data-modeling";
+
+export interface OverflowingColumnInfo {
+    readonly columnKeys?: Many<string>;
+    readonly lastVisibleColumnIndex: number;
+}
+
+export function getOverflowingColumnInfos(payload: {
+    readonly refTable: HTMLTableElement;
+    readonly pageContentSize: PageContentSize;
+}): Many<number> {
+    return [];
+}
+
+export interface OverflowingCell {
+    readonly columnKey?: string;
+    readonly tableCell: HTMLTableCellElement;
+}
+
+export function removeOverflowingCells(payload: {
+    readonly columnKeys?: Many<string>;
+    readonly lastVisibleColumnIndex: number;
+    readonly tableRow: HTMLTableRowElement;
+}): Many<OverflowingCell> {
+
+}
+
+export interface OverflowRow {
+    readonly originalRowIndex: number;
+    readonly tableRow: HTMLTableRowElement;
+}
+
+export function addOverflowRows(payload: {
+    readonly payload: Many<OverflowRow>;
+    readonly table: HTMLTableElement;
+}): HTMLTableElement {
+
+}
+
+export function moveHorizontalOverflowToRows(payload: {
+    readonly table: HTMLTableElement;
+}): HTMLTableElement {
+    const table = payload.table;
+    return table;
+}
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
