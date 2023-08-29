@@ -15,5 +15,14 @@ export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & 
     readonly tableRow: HTMLTableRowElement;
     readonly originalRowIndex: number;
 }): OverflowingCellsInfo {
-    return null;
+    const tableRow = payload.tableRow;
+    const originalRowIndex = payload.originalRowIndex;
+    const lastVisibleColumnIndex = payload.lastVisibleColumnIndex;
+    const columnKeys = payload.columnKeys;
+
+    const cells = new Array<OverflowingCell>();
+
+    // TODO
+
+    return {originalRowIndex, cells};
 }
