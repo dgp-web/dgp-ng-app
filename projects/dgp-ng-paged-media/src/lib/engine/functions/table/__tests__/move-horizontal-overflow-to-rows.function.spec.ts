@@ -39,7 +39,7 @@ describe("moveHorizontalOverflowToRows", () => {
     const expectedOverflowRow = document.createElement("tr");
     expectedOverflowRow.innerHTML = "<td style='min-width: 160px;' colspan='2'>Attribute 03: Value 03</td";
 
-    expectedTable.append(expectedHeaderRow, expectedRegularRow);
+    expectedTable.append(expectedHeaderRow, expectedRegularRow, expectedOverflowRow);
 
     it(`should move the third column of the regular row to a new row`, () => {
         const result = moveHorizontalOverflowToRows({table, pageContentSize});
