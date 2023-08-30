@@ -18,7 +18,7 @@ import { AttributeMetadata } from "data-modeling";
                 <dgp-docking-layout-item type="column"
                                          width="20">
                     <dgp-docking-layout-container label="Available Items">
-                        <ng-template dgpDockingLayoutContainerLabel>
+                        <ng-template dgp-docking-layout-container-label>
                             {{availableItemsLabel$ | async}}
                         </ng-template>
                         <ng-template>

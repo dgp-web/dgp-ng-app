@@ -3,7 +3,7 @@ import { ComponentConfiguration } from "../../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
 
 
-@Directive({selector: "[dgpDockingLayoutContainerLabel]"})
+@Directive({selector: "[dgpDockingLayoutContainerLabel], [dgp-docking-layout-container-label]"})
 export class DgpDockingLayoutContainerLabelDirective {
 
 }
