@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Input, TemplateRef } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ContentChild, Directive, Input, TemplateRef } from "@angular/core";
 import { ComponentConfiguration } from "../../custom-goldenlayout/types";
 import { createGuid } from "dgp-ng-app";
+
+
+@Directive({selector: "[dgpDockingLayoutContainerLabel], [dgp-docking-layout-container-label]"})
+export class DgpDockingLayoutContainerLabelDirective {
+
+}
+
 
 @Component({
     selector: "dgp-docking-layout-container",
@@ -11,6 +18,9 @@ import { createGuid } from "dgp-ng-app";
 export class DockingLayoutContainerComponent {
 
     @ContentChild(TemplateRef) templateRef: TemplateRef<any>;
+    @ContentChild(DgpDockingLayoutContainerLabelDirective, {
+        read: TemplateRef
+    }) labelTemplateRef: TemplateRef<any>;
 
     closable = false;
     //  @Input() closable = false;
@@ -31,7 +41,8 @@ export class DockingLayoutContainerComponent {
             title: this.label,
             id: this.id,
             componentState: {
-                template: () => this.templateRef
+                template: () => this.templateRef,
+                labelTemplate: this.labelTemplateRef ? () => this.labelTemplateRef : undefined
             }
         };
 
