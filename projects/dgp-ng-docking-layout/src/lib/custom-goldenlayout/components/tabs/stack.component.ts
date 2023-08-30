@@ -51,7 +51,12 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
                          dgpGlDragListener
                          (dragStart$)="onDragStart1($event, componentConfig, i)"
                          class="tab-header">
-                        {{componentConfig.title}}
+                        <ng-container *ngIf="componentConfig.componentState.labelTemplate; else textBasedLabel">
+                            <ng-container [ngTemplateOutlet]="componentConfig.componentState.labelTemplate()"></ng-container>
+                        </ng-container>
+                        <ng-template #textBasedLabel>
+                            {{componentConfig.title}}
+                        </ng-template>
                     </div>
                 </ng-template>
             </mat-tab>

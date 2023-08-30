@@ -6,7 +6,9 @@ The documentation for users can be found here: [https://dgp-ng-app.firebaseapp.c
 
 This file describes how to build this project for contributors.
 
-1. Install npm packages
+Used tools: Node.JS @ ^16.16.0
+
+1. Install npm packages 
 
 ````
 npm install

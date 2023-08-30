@@ -41,7 +41,8 @@ export interface ComponentConfiguration extends ItemConfiguration {
     type: "component";
     componentName: string;
     componentState: {
-        template: () => TemplateRef<any>
+        template: () => TemplateRef<any>,
+        labelTemplate?: () => TemplateRef<any>
     };
 
     isClosable?: boolean;

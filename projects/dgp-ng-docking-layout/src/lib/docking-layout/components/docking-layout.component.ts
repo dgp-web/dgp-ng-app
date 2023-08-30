@@ -117,7 +117,7 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     ngAfterViewInit(): void {
         combineLatest([
             this.allItems.changes,
-            this.allContainers.changes,
+            this.allContainers.changes
         ])
             .subscribe(
                 () => this.redraw()

@@ -6,7 +6,7 @@ import { RowOrColumnComponent } from "../custom-goldenlayout/components/grid/row
 import { StackComponent } from "../custom-goldenlayout/components/tabs/stack.component";
 import { DockingLayoutService } from "../custom-goldenlayout/docking-layout.service";
 import { ComponentRegistry } from "../custom-goldenlayout/services/component-registry";
-import { DockingLayoutContainerComponent } from "./components/docking-layout-container.component";
+import { DgpDockingLayoutContainerLabelDirective, DockingLayoutContainerComponent } from "./components/docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./components/docking-layout-item.component";
 import { DockingLayoutComponent } from "./components/docking-layout.component";
 import { dockingLayoutEntityStore } from "./store";
@@ -65,7 +65,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
         DragListenerDirective,
-        SplitterComponent
+        SplitterComponent,
+        DgpDockingLayoutContainerLabelDirective
     ],
     exports: [
         DockingLayoutContainerComponent,
@@ -80,7 +81,8 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DropTargetIndicatorComponent,
         TabDropPlaceholderComponent,
         DragListenerDirective,
-        SplitterComponent
+        SplitterComponent,
+        DgpDockingLayoutContainerLabelDirective
     ],
     providers: [
         DockingLayoutService,
