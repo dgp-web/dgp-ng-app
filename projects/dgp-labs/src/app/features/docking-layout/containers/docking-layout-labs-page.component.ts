@@ -17,7 +17,10 @@ import { AttributeMetadata } from "data-modeling";
 
                 <dgp-docking-layout-item type="column"
                                          width="20">
-                    <dgp-docking-layout-container label="Available items">
+                    <dgp-docking-layout-container label="Available Items">
+                        <ng-template dgp-docking-layout-container-label>
+                            {{availableItemsLabel$ | async}}
+                        </ng-template>
                         <ng-template>
                             <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
 
@@ -108,6 +111,10 @@ import { AttributeMetadata } from "data-modeling";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DockingLayoutLabsPageComponent {
+
+    readonly availableItemsLabel$ = interval(1000).pipe(
+        map(x => "Available items: " + x)
+    );
 
     readonly metadata: AttributeMetadata<string> = {
         label: "Label",
