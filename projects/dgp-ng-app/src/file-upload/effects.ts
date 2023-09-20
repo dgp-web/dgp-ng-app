@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Inject, Injectable } from "@angular/core";
-import { addFilesViaDrop, closeFileManager, openFileManagerOverlay, removeFile, setConfig } from "./actions";
+import { addFilesViaDrop, closeFileManager, downloadFile, openFileManagerOverlay, removeFile, setConfig } from "./actions";
 import { Store } from "@ngrx/store";
 import { distinctUntilChanged, first, map, switchMap, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
@@ -10,11 +10,12 @@ import { createKVSFromArray } from "entity-store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadQueryParams } from "./models";
 import { getAllDirectories } from "./selectors";
+import { withoutDispatch } from "../utils/without-dispatch.constant";
 
 @Injectable()
 export class FileUploadEffects {
 
-    
+
     readonly openFileManagerOverlay$ = createEffect(() => this.actions$.pipe(
         ofType(openFileManagerOverlay),
         tap(action => {
@@ -59,7 +60,7 @@ export class FileUploadEffects {
         map(() => closeFileManager())
     ));
 
-    
+
     readonly addFilesViaDrop$ = createEffect(() => this.actions$.pipe(
         ofType(addFilesViaDrop),
         switchMap(action => {
@@ -118,7 +119,7 @@ export class FileUploadEffects {
         })
     ));
 
-    
+
     readonly selectFileItem$ = createEffect(() => this.activatedRoute.queryParams.pipe(
         map((x: FileUploadQueryParams) => x.fileItemId),
         distinctUntilChanged(),
@@ -141,7 +142,7 @@ export class FileUploadEffects {
         })
     ));
 
-    
+
     readonly removeFile$ = createEffect(() => this.actions$.pipe(
         ofType(removeFile),
         map(action => fileUploadEntityStore.actions.composeEntityActions({
@@ -150,6 +151,18 @@ export class FileUploadEffects {
             }
         }))
     ));
+
+    readonly downloadFile$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadFile),
+        tap(x => {
+
+            const a = document.createElement("a");
+            a.href = x.fileItem.url;
+            a.target = "_blank";
+            a.click();
+
+        })
+    ), withoutDispatch);
 
     constructor(
         private readonly actions$: Actions,

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { addFilesViaDrop, hideDropTarget, removeFile, showDropTarget } from "../actions";
+import { addFilesViaDrop, downloadFile, hideDropTarget, removeFile, showDropTarget } from "../actions";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "../models";
 import {
     canOpenFileDrawer,
@@ -28,13 +28,19 @@ import { DgpContainer } from "../../utils/container.component-base";
                 <button *ngIf="!isMaximized"
                         mat-icon-button
                         (click)="maximize()"
-                        matTooltip="Maximize">
+                        matTooltip="Maximize"
+                        dgpActionShortcut
+                        shortcutKey="M"
+                        [requireShift]="true">
                     <mat-icon>crop_din</mat-icon>
                 </button>
                 <button *ngIf="isMaximized"
                         mat-icon-button
                         (click)="minimize()"
-                        matTooltip="Minimize">
+                        matTooltip="Minimize"
+                        dgpActionShortcut
+                        shortcutKey="M"
+                        [requireShift]="true">
                     <mat-icon>filter_none</mat-icon>
                 </button>
                 <button mat-icon-button
@@ -49,6 +55,7 @@ import { DgpContainer } from "../../utils/container.component-base";
                 <ng-container dgp-list-details-page-menu>
                     <dgp-file-item-list [model]="fileItemListModel$ | async"
                                         (fileItemRemoved)="removeFileItem($event)"
+                                        (fileItemDownloaded)="downloadFileItem($event)"
                                         [disabled]="isRemoveFilesDisabled$ | async"></dgp-file-item-list>
                     <dgp-spacer></dgp-spacer>
                     <mat-nav-list *ngIf="!(isAddFilesDisabled$ | async)">
@@ -181,6 +188,10 @@ export class FileManagerComponent extends DgpContainer<FileUploadState> implemen
 
     removeFileItem(fileItem: FileItem) {
         this.dispatch(removeFile({fileItem}));
+    }
+
+    downloadFileItem(fileItem: FileItem) {
+        this.dispatch(downloadFile({fileItem}));
     }
 
     onFileSelected(e) {

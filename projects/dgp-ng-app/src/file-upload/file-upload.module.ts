@@ -20,6 +20,7 @@ import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
+import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -50,7 +51,8 @@ export const fileUploadReducerProvider: FactoryProvider = {
         MatMenuModule,
         DgpEmptyStateModule,
         MatTooltipModule,
-        DgpFileViewerModule
+        DgpFileViewerModule,
+        DgpShortcutModule
     ],
     declarations: [
         DragFileListenerDirective,
