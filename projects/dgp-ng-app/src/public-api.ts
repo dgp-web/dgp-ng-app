@@ -196,6 +196,11 @@ export { DgpRoutingOverlayModule } from "./routing-overlay/routing-overlay.modul
 export { SafePipe } from "./safe/safe.pipe";
 export { SafePipeModule } from "./safe/safe-pipe.module";
 
+// shortcuts
+export * from "./shortcuts/models";
+export { DgpActionShortcutDirective } from "./shortcuts/directives/action-shortcut.directive";
+export { DgpShortcutModule } from "./shortcuts/shortcuts.module";
+
 // spacer
 export { SpacerComponent } from "./spacer/components/spacer.component";
 export { DgpSpacerModule } from "./spacer/spacer.module";
@@ -226,6 +231,7 @@ export { AppFeature } from "./utils/app-feature.model";
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
 export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
 export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
+export { DgpDisabledBase } from "./utils/dgp-disabled-base.directive";
 export { DgpEffectsBase } from "./utils/effects-base";
 export { filterEmpty } from "./utils/filter-empty.function";
 export { filterNotNullOrUndefined } from "./utils/filter-not-null-or-undefined.function";
