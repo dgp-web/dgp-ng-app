@@ -47,8 +47,7 @@ export interface FileItemListModel {
 
                         <button mat-icon-button
                                 style="margin-left: 16px;"
-                                [matMenuTriggerFor]="overflowMenu"
-                                [disabled]="disabled">
+                                [matMenuTriggerFor]="overflowMenu">
 
                             <mat-icon>
                                 more_vert
@@ -59,7 +58,14 @@ export interface FileItemListModel {
                         <mat-menu #overflowMenu="matMenu">
                             <button mat-menu-item
                                     (click)="removeFileItem(model.fileItemKVS[fileItemId])"
-                                    [disabled]="disabled">Remove
+                                    [disabled]="disabled">
+                                <mat-icon>delete</mat-icon>
+                                Remove
+                            </button>
+                            <button mat-menu-item
+                                    (click)="downloadFileItem(model.fileItemKVS[fileItemId])">
+                                <mat-icon>file_download</mat-icon>
+                                Download
                             </button>
                         </mat-menu>
 
@@ -87,6 +93,9 @@ export class FileItemListComponent {
     @Output()
     readonly fileItemRemoved = new EventEmitter<FileItem>();
 
+    @Output()
+    readonly fileItemDownloaded = new EventEmitter<FileItem>();
+
     @Input()
     model: FileItemListModel;
 
@@ -98,6 +107,10 @@ export class FileItemListComponent {
         if (this.disabled) return;
 
         this.fileItemRemoved.emit(fileItem);
+    }
+
+    downloadFileItem(fileItem: FileItem) {
+        this.fileItemDownloaded.emit(fileItem);
     }
 
 }

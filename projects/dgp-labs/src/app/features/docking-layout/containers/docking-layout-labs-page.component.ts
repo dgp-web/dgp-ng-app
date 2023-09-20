@@ -18,15 +18,15 @@ import { AttributeMetadata } from "data-modeling";
                 <dgp-docking-layout-item type="column"
                                          width="20">
                     <dgp-docking-layout-container label="Available Items">
-                        <ng-template dgp-docking-layout-container-label>
-                            {{availableItemsLabel$ | async}}
-                        </ng-template>
                         <ng-template>
                             <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
 
                             <dgp-tile label="Test"
                                       externalLink="https://github.com/dgp-web/dgp-ng-app"></dgp-tile>
 
+                        </ng-template>
+                        <ng-template dgp-docking-layout-container-label>
+                            {{availableItemsLabel$ | async}}
                         </ng-template>
                     </dgp-docking-layout-container>
                 </dgp-docking-layout-item>
