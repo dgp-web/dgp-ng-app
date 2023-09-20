@@ -78,7 +78,7 @@ export class DgpActionShortcutDirective extends DgpDisabledBase implements OnIni
         if (this.requireCtrl && !event.ctrlKey) return;
         if (this.requireShift && !event.shiftKey) return;
 
-        if (event.key !== this.shortcutKey) return;
+        if (event.key.toLowerCase() !== this.shortcutKey.toLowerCase()) return;
 
         if (this.triggerEvent === "click") {
             this.elRef.nativeElement.click();
