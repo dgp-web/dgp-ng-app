@@ -7,7 +7,10 @@ import { DgpContainer } from "../../../utils/container.component-base";
     selector: "dgp-hamburger-menu-toggle",
     template: `
         <button mat-icon-button
-                (click)="toggleHamburgerMenu()">
+                (click)="toggleHamburgerMenu()"
+                matTooltip="Toggle menu"
+                dgpActionShortcut
+                shortcutKey="h">
             <mat-icon>menu</mat-icon>
         </button>
     `,
