@@ -10,11 +10,11 @@ import { defaultShortcutConfig, provideShortcutConfig, ShortcutConfig } from "./
         ...directives
     ]
 })
-export class DgpShortcutsModule {
+export class DgpShortcutModule {
 
-    static forRoot(config: ShortcutConfig = defaultShortcutConfig): ModuleWithProviders<DgpShortcutsModule> {
+    static forRoot(config: ShortcutConfig = defaultShortcutConfig): ModuleWithProviders<DgpShortcutModule> {
         return {
-            ngModule: DgpShortcutsModule,
+            ngModule: DgpShortcutModule,
             providers: [provideShortcutConfig(config)]
         };
     }
