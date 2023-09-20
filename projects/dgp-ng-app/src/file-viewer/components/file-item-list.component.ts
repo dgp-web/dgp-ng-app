@@ -47,8 +47,7 @@ export interface FileItemListModel {
 
                         <button mat-icon-button
                                 style="margin-left: 16px;"
-                                [matMenuTriggerFor]="overflowMenu"
-                                [disabled]="disabled">
+                                [matMenuTriggerFor]="overflowMenu">
 
                             <mat-icon>
                                 more_vert
