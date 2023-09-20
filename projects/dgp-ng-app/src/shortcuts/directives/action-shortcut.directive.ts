@@ -1,8 +1,9 @@
-import { Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { DgpDisabledBase } from "../../utils/dgp-disabled-base.directive";
+import { ActionShortcutConfig, SHORTCUT_CONFIG, ShortcutConfig } from "../models";
 
 @Directive({selector: "[dgpActionShortcut]"})
-export class DgpActionShortcutDirective extends DgpDisabledBase implements OnInit, OnDestroy {
+export class DgpActionShortcutDirective extends DgpDisabledBase implements OnInit, OnDestroy, ActionShortcutConfig {
 
     /**
      * The regular disabled input can be used as proxy
@@ -12,26 +13,32 @@ export class DgpActionShortcutDirective extends DgpDisabledBase implements OnIni
      * this input
      */
     @Input()
-    isShortCutDisabled = false;
+    isShortcutDisabled = false;
 
     @Input()
     shortcutKey: string;
 
     @Input()
-    requireAlt = true;
+    requireAlt = this.config.action.requireAlt;
 
     @Input()
-    requireCtrl = true;
+    requireCtrl = this.config.action.requireCtrl;
 
     @Input()
-    requireShift = false;
+    requireShift = this.config.action.requireShift;
+
+    @Input()
+    triggerEvent = this.config.action.triggerEvent;
 
     @Output()
     readonly shortcutTriggered = new EventEmitter();
 
     constructor(
-        private readonly elRef: ElementRef<HTMLElement>
+        private readonly elRef: ElementRef<HTMLElement>,
+        @Inject(SHORTCUT_CONFIG)
+        private readonly config: ShortcutConfig
     ) {
+        super();
     }
 
     ngOnInit(): void {
@@ -43,7 +50,7 @@ export class DgpActionShortcutDirective extends DgpDisabledBase implements OnIni
     }
 
     private onKeyDown = (event: KeyboardEvent) => {
-        if (this.disabled || this.isShortCutDisabled) return;
+        if (this.disabled || this.isShortcutDisabled) return;
         if (!this.shortcutKey) return;
 
         if (this.requireAlt && !event.altKey) return;
@@ -52,7 +59,9 @@ export class DgpActionShortcutDirective extends DgpDisabledBase implements OnIni
 
         if (event.key !== this.shortcutKey) return;
 
-        this.elRef.nativeElement.click();
+        if (this.triggerEvent === "click") {
+            this.elRef.nativeElement.click();
+        }
         this.shortcutTriggered.emit();
     };
 

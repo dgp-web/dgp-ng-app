@@ -197,6 +197,7 @@ export { SafePipe } from "./safe/safe.pipe";
 export { SafePipeModule } from "./safe/safe-pipe.module";
 
 // shortcuts
+export * from "./shortcuts/models";
 export { DgpActionShortcutDirective } from "./shortcuts/directives/action-shortcut.directive";
 export { DgpShortcutsModule } from "./shortcuts/shortcuts.module";
 
