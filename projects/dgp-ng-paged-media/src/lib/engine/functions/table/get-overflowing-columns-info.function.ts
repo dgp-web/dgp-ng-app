@@ -37,7 +37,12 @@ export function getOverflowingColumnsInfo(payload: {
 
             if (isResultFound) return;
 
+            const headerCell = document.createElement("th");
+            headerCell.innerHTML = columnCell.innerHTML;
+            headerRow.appendChild(headerCell);
+
             table.querySelectorAll("tr").forEach((regularRow, regularRowIndex) => {
+
                 if (regularRowIndex === 0) return;
 
                 let utilityTableRow: HTMLTableRowElement;
@@ -48,10 +53,6 @@ export function getOverflowingColumnsInfo(payload: {
                 } else {
                     utilityTableRow = utilityTable.querySelectorAll("tr").item(regularRowIndex);
                 }
-
-                const headerCell = document.createElement("th");
-                headerCell.innerHTML = columnCell.innerHTML;
-                headerRow.appendChild(headerCell);
 
                 regularRow.querySelectorAll("td, th").forEach((cell, cellIndex) => {
                     if (cellIndex !== columnIndex) return;

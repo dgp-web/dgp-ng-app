@@ -1,8 +1,24 @@
-import { getOverflowingColumnsInfo } from "./get-overflowing-columns-info.function";
+import { getOverflowingColumnsInfo, OverflowingColumnsInfo } from "./get-overflowing-columns-info.function";
 import { PageContentSize } from "../../models";
 import { removeOverflowingCellsFromRow } from "./remove-overflowing-cells-from-row.function";
 import { createOverflowRow, OverflowRow } from "./create-overflow-row.function";
 import { addOverflowRows } from "./add-overflow-rows.function";
+
+export function tryTrimHeaderRow(payload: OverflowingColumnsInfo & {
+    readonly headerRow: HTMLTableRowElement;
+}) {
+
+    const headerRow = payload.headerRow;
+
+    headerRow.querySelectorAll("th").forEach((th, index) => {
+
+        if (th.cellIndex > payload.lastVisibleColumnIndex) {
+            th.remove();
+        }
+
+    });
+
+}
 
 export function moveHorizontalOverflowToRows(payload: {
     readonly table: HTMLTableElement;
@@ -16,7 +32,10 @@ export function moveHorizontalOverflowToRows(payload: {
         pageContentSize
     });
 
-    // TODO: try trim header row
+    tryTrimHeaderRow({
+        ...overflowingColumnsInfo,
+        headerRow: table.querySelector("tr")
+    });
 
     const rows = table.querySelectorAll("tr");
 
