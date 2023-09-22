@@ -3,6 +3,8 @@ import { OverflowingCellsInfo } from "../remove-overflowing-cells-from-row.funct
 
 describe("createOverflowRow", () => {
 
+    const lastVisibleColumnIndex = 0;
+
     const originalRowIndex = 1;
     const content01 = "Content 01";
     const content02 = "Content 02";
@@ -18,6 +20,7 @@ describe("createOverflowRow", () => {
         tableCell02.innerHTML = content02;
 
         const payload: OverflowingCellsInfo = {
+            lastVisibleColumnIndex,
             originalRowIndex,
             cells: [
                 {tableCell: tableCell01},
@@ -43,6 +46,7 @@ describe("createOverflowRow", () => {
         tableCell02.innerHTML = content02;
 
         const payload: OverflowingCellsInfo = {
+            lastVisibleColumnIndex,
             originalRowIndex,
             cells: [
                 {tableCell: tableCell01, columnKey: columnKey01},

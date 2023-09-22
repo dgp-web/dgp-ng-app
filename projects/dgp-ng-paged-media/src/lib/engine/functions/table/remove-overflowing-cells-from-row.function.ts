@@ -9,6 +9,7 @@ export interface OverflowingCell {
 export interface OverflowingCellsInfo {
     readonly originalRowIndex: number;
     readonly cells: Many<OverflowingCell>;
+    readonly lastVisibleColumnIndex: number;
 }
 
 export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & {
@@ -22,7 +23,6 @@ export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & 
 
     const cells = new Array<OverflowingCell>();
 
-    // TODO
     tableRow.querySelectorAll("td").forEach(tableCell => {
 
         if (tableCell.cellIndex > lastVisibleColumnIndex) {
@@ -36,5 +36,5 @@ export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & 
 
     });
 
-    return {originalRowIndex, cells};
+    return {originalRowIndex, cells, lastVisibleColumnIndex};
 }

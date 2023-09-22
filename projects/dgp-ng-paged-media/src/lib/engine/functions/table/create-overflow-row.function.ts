@@ -8,17 +8,23 @@ export interface OverflowRow {
 export function createOverflowRow(payload: OverflowingCellsInfo): OverflowRow {
     const originalRowIndex = payload.originalRowIndex;
     const cells = payload.cells;
+    const lastVisibleColumnIndex = payload.lastVisibleColumnIndex;
 
     const tableRow = document.createElement("tr");
+    const tableCell = document.createElement("td");
+    console.log(lastVisibleColumnIndex, "lastVisibleColumnIndex");
+    tableCell.colSpan = lastVisibleColumnIndex + 1;
+    tableRow.appendChild(tableCell);
+
     cells.forEach((cell, index) => {
 
         if (index !== 0) {
-            tableRow.innerHTML += "<br>";
+            tableCell.innerHTML += "<br>";
         }
 
-        if (cell.columnKey) tableRow.innerHTML += cell.columnKey + ": ";
+        if (cell.columnKey) tableCell.innerHTML += cell.columnKey + ": ";
 
-        tableRow.innerHTML += cell.tableCell.innerHTML;
+        tableCell.innerHTML += cell.tableCell.innerHTML;
 
     });
 
