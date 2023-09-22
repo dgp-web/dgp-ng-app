@@ -4,7 +4,7 @@ import { PageContentSize } from "../../../models";
 describe("moveHorizontalOverflowToRows", () => {
 
     const pageContentSize: PageContentSize = {
-        width: 400,
+        width: 250,
         height: 400,
         widthUnit: "px",
         heightUnit: "px"

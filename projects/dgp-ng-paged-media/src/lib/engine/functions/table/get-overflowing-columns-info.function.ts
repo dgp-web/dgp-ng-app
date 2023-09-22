@@ -20,6 +20,7 @@ export function getOverflowingColumnsInfo(payload: {
     };
 
     const utilityTable = document.createElement("table");
+    document.body.append(utilityTable);
 
     const headerRow = document.createElement("tr");
     utilityTable.appendChild(headerRow);
@@ -29,7 +30,7 @@ export function getOverflowingColumnsInfo(payload: {
      */
     table.querySelector("tr")
         .querySelectorAll("th")
-        .forEach((th, columnIndex) => {
+        .forEach((columnCell, columnIndex) => {
 
             table.querySelectorAll("tr").forEach((regularRow, regularRowIndex) => {
                 if (regularRowIndex === 0) return;
@@ -43,10 +44,30 @@ export function getOverflowingColumnsInfo(payload: {
                     utilityTableRow = utilityTable.querySelectorAll("tr").item(regularRowIndex);
                 }
 
-                // TODO
+                const headerCell = document.createElement("th");
+                headerCell.innerHTML = columnCell.innerHTML;
+                headerRow.appendChild(headerCell);
+
+                regularRow.querySelectorAll("td, th").forEach((cell, cellIndex) => {
+                    if (cellIndex !== columnIndex) return;
+
+                    const tag = cell.tagName;
+                    const utilityCell = document.createElement(tag);
+                    utilityCell.innerHTML = cell.innerHTML;
+                    utilityTableRow.appendChild(utilityCell);
+
+                });
+
             });
 
+            if (utilityTable.clientWidth > pageContentSize.width) {
+                console.log("Width exceeded");
+            }
+
         });
+
+
+    utilityTable.remove();
 
     return result;
 }
