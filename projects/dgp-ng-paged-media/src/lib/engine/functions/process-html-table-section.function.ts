@@ -18,7 +18,7 @@ export function processHTMLTableSection(payload: {
     const htmlItems = extractHTMLItemsFromSection(htmlSection);
 
     refTable = moveHorizontalOverflowToRows({
-        table: refTable
+        table: refTable, pageContentSize
     });
 
     let table = createHTMLWrapperElement("table", pageContentSize);
