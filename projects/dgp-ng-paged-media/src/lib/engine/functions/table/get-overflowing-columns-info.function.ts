@@ -1,5 +1,6 @@
 import { PageContentSize } from "../../models";
 import { Many, Mutable } from "data-modeling";
+import { toColumnKey } from "./to-column-key.function";
 
 export interface OverflowingColumnsInfo {
     readonly columnKeys?: Many<string>;
@@ -25,12 +26,16 @@ export function getOverflowingColumnsInfo(payload: {
     const headerRow = document.createElement("tr");
     utilityTable.appendChild(headerRow);
 
+    let isResultFound = false;
+
     /**
      * Iterate over the header cells
      */
     table.querySelector("tr")
         .querySelectorAll("th")
         .forEach((columnCell, columnIndex) => {
+
+            if (isResultFound) return;
 
             table.querySelectorAll("tr").forEach((regularRow, regularRowIndex) => {
                 if (regularRowIndex === 0) return;
@@ -61,7 +66,20 @@ export function getOverflowingColumnsInfo(payload: {
             });
 
             if (utilityTable.clientWidth > pageContentSize.width) {
-                console.log("Width exceeded");
+                result.lastVisibleColumnIndex = columnIndex - 1;
+
+                table.querySelector("tr")
+                    .querySelectorAll("th")
+                    .forEach((tableCell) => {
+                        const tableCellIndex = tableCell.cellIndex;
+
+                        if (tableCellIndex > result.lastVisibleColumnIndex) {
+                            result.columnKeys.push(toColumnKey(tableCell));
+                        }
+
+                    });
+
+                isResultFound = true;
             }
 
         });
@@ -71,3 +89,4 @@ export function getOverflowingColumnsInfo(payload: {
 
     return result;
 }
+
