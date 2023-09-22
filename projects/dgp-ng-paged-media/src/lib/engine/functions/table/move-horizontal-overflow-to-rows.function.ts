@@ -24,6 +24,8 @@ export function moveHorizontalOverflowToRows(payload: {
 
     rows.forEach((tableRow, originalRowIndex) => {
 
+        if (originalRowIndex === 0) return;
+
         const overflowingCellsInfo = removeOverflowingCellsFromRow({
             ...overflowingColumnsInfo,
             tableRow,

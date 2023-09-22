@@ -1,3 +1,3 @@
 export function toColumnKey(payload: HTMLTableCellElement) {
-    return "Column " + payload.cellIndex;
+    return payload.innerHTML;
 }

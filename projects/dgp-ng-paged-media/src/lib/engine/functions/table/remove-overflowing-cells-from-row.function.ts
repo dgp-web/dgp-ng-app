@@ -23,6 +23,18 @@ export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & 
     const cells = new Array<OverflowingCell>();
 
     // TODO
+    tableRow.querySelectorAll("td").forEach(tableCell => {
+
+        if (tableCell.cellIndex > lastVisibleColumnIndex) {
+            tableCell.remove();
+
+            cells.push({
+                tableCell,
+                columnKey: columnKeys[tableCell.cellIndex - lastVisibleColumnIndex]
+            });
+        }
+
+    });
 
     return {originalRowIndex, cells};
 }
