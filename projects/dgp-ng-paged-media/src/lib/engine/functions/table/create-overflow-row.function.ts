@@ -12,7 +12,6 @@ export function createOverflowRow(payload: OverflowingCellsInfo): OverflowRow {
 
     const tableRow = document.createElement("tr");
     const tableCell = document.createElement("td");
-    console.log(lastVisibleColumnIndex, "lastVisibleColumnIndex");
     tableCell.colSpan = lastVisibleColumnIndex + 1;
     tableRow.appendChild(tableCell);
 
