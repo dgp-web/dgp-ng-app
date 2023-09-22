@@ -30,7 +30,7 @@ export function removeOverflowingCellsFromRow(payload: OverflowingColumnsInfo & 
 
             cells.push({
                 tableCell,
-                columnKey: columnKeys[cellIndex - lastVisibleColumnIndex]
+                columnKey: columnKeys[cellIndex - lastVisibleColumnIndex - 1]
             });
         }
 
