@@ -34,7 +34,16 @@ export function getOverflowingColumnsInfo(payload: {
             table.querySelectorAll("tr").forEach((regularRow, regularRowIndex) => {
                 if (regularRowIndex === 0) return;
 
-                
+                let utilityTableRow: HTMLTableRowElement;
+
+                if (columnIndex === 0) {
+                    utilityTableRow = document.createElement("tr");
+                    utilityTable.appendChild(utilityTableRow);
+                } else {
+                    utilityTableRow = utilityTable.querySelectorAll("tr").item(regularRowIndex);
+                }
+
+                // TODO
             });
 
         });
