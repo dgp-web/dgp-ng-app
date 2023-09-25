@@ -127,4 +127,29 @@ $default-dgp-A4-page-config: (
 
 .dgp-overflow-table-rows {
 
+    .dgp-overflow-table-row__list-box {
+        padding: 16px;
+        font-size: small;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .dgp-overflow-table-row__list-item {
+        display: flex;
+        margin-right: 8px;
+    }
+
+    .dgp-overflow-table-row__list-item__column-key {
+        font-weight: bold;
+    }
+
+    .dgp-overflow-table-row__list-item__column-key::after {
+        content: ": ";
+        margin-right: 4px;
+    }
+
+    .dgp-overflow-table-row__list-item__value {
+
+    }
+
 }

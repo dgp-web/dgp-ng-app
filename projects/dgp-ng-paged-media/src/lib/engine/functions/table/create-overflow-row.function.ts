@@ -12,21 +12,38 @@ export function createOverflowRow(payload: OverflowingCellsInfo): OverflowRow {
 
     const tableRow = document.createElement("tr");
     const tableCell = document.createElement("td");
-    tableCell.style.padding = "16px";
-    tableCell.style.fontSize = "small";
+    const listBox = document.createElement("div");
+    listBox.classList.add("dgp-overflow-table-row__list-box");
+    tableCell.appendChild(listBox);
+
     tableCell.colSpan = lastVisibleColumnIndex + 1;
     tableRow.appendChild(tableCell);
 
     cells.forEach((cell, index) => {
 
-        if (index !== 0) {
-           // tableCell.innerHTML += "<br>";
-            tableCell.innerHTML += "; ";
+        const listItem = document.createElement("div");
+        listItem.classList.add("dgp-overflow-table-row__list-item");
+        listBox.appendChild(listItem);
+        /*
+
+                if (index !== 0) {
+                    // tableCell.innerHTML += "<br>";
+                    listItem.innerHTML += "; ";
+                }
+        */
+
+        if (cell.columnKey) {
+            const columnKey = document.createElement("div");
+            columnKey.classList.add("dgp-overflow-table-row__list-item__column-key");
+            listItem.appendChild(columnKey);
+
+            columnKey.innerHTML = cell.columnKey;
         }
+        const value = document.createElement("div");
+        value.classList.add("dgp-overflow-table-row__list-item__value");
+        listItem.appendChild(value);
 
-        if (cell.columnKey) tableCell.innerHTML += "<strong>" + cell.columnKey + "</strong>: ";
-
-        tableCell.innerHTML += cell.tableCell.innerHTML;
+        value.innerHTML = cell.tableCell.innerHTML;
 
     });
 
