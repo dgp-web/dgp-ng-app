@@ -25,7 +25,7 @@ export function createOverflowRow(payload: OverflowingCellsInfo): OverflowRow {
         listItem.classList.add("dgp-overflow-table-row__list-item");
         listBox.appendChild(listItem);
 
-        if (cell.columnKey) {
+        if (cell.columnKey && cell.tableCell.innerText.length > 0) {
             const columnKey = document.createElement("div");
             columnKey.classList.add("dgp-overflow-table-row__list-item__column-key");
             listItem.appendChild(columnKey);

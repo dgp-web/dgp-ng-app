@@ -35,6 +35,9 @@ export function processHTMLTableSection(payload: {
     htmlItems.forEach(htmlItem => {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
         helpTable.appendChild(htmlItem);
+        refTable.classList.forEach(x => {
+            helpTable.classList.add(x);
+        });
 
         const height = getOuterHeight(table);
         const height02 = getOuterHeight(helpTable);
