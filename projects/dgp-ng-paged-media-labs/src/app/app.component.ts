@@ -116,11 +116,11 @@ export class AppComponent implements AfterViewInit {
             this.pagedHTML = computePagedHTML({
                 pageContentSize: pageContentSizeA4,
                 htmlSections: [{
-                    type: "text",
-                    nativeElement: textElRef.nativeElement
-                }, {
                     type: "table",
                     nativeElement: tableElRef.nativeElement
+                }, {
+                    type: "text",
+                    nativeElement: textElRef.nativeElement
                 }, {
                     type: "singleItem",
                     nativeElement: h1Element
