@@ -15,9 +15,15 @@ export function processHTMLTableSection(payload: {
     const pageContentSize = payload.pageContentSize;
 
     let refTable = htmlSection.nativeElement.querySelector("table");
-    refTable = moveHorizontalOverflowToRows({
-        table: refTable, pageContentSize
-    });
+
+    if (refTable.classList.contains("dgp-overflow-table-rows")) {
+
+        refTable = moveHorizontalOverflowToRows({
+            table: refTable, pageContentSize
+        });
+
+    }
+
     const htmlItems = extractHTMLItemsFromTableSection(refTable);
 
     let table = createHTMLWrapperElement("table", pageContentSize);

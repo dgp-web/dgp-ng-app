@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 @Component({
     selector: "dgp-blind-table",
     template: `
-        <table class="test">
+        <table class="test dgp-overflow-table-rows">
             <tr>
                 <th>Column 01</th>
                 <th>Column 02</th>
