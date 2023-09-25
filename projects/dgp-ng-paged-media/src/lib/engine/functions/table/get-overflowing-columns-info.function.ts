@@ -22,6 +22,7 @@ export function getOverflowingColumnsInfo(payload: {
 
     const utilityTable = document.createElement("table");
     document.body.append(utilityTable);
+    utilityTable.style.width = pageContentSize.width + pageContentSize.widthUnit;
 
     const headerRow = document.createElement("tr");
     utilityTable.appendChild(headerRow);
