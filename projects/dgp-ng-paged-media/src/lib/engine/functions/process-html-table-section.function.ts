@@ -1,8 +1,9 @@
 import { HTMLSection, PageContentSize, PagedHTMLComputationEngine } from "../models";
-import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
 import { getOuterHeight } from "./get-outer-height.function";
 import { checkHeight } from "./check-height.function";
+import { moveHorizontalOverflowToRows } from "./table/move-horizontal-overflow-to-rows.function";
+import { extractHTMLItemsFromTableSection } from "./extract-html-items-from-table-section.function";
 
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -13,10 +14,20 @@ export function processHTMLTableSection(payload: {
     const htmlSection = payload.htmlSection;
     const pageContentSize = payload.pageContentSize;
 
-    const refTable = htmlSection.nativeElement.querySelector("table");
-    const htmlItems = extractHTMLItemsFromSection(htmlSection);
+    let refTable = htmlSection.nativeElement.querySelector("table");
+
+    if (refTable.classList.contains("dgp-overflow-table-rows")) {
+
+        refTable = moveHorizontalOverflowToRows({
+            table: refTable, pageContentSize
+        });
+
+    }
+
+    const htmlItems = extractHTMLItemsFromTableSection(refTable);
 
     let table = createHTMLWrapperElement("table", pageContentSize);
+
     refTable.classList.forEach(x => {
         table.classList.add(x);
     });
@@ -24,6 +35,9 @@ export function processHTMLTableSection(payload: {
     htmlItems.forEach(htmlItem => {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
         helpTable.appendChild(htmlItem);
+        refTable.classList.forEach(x => {
+            helpTable.classList.add(x);
+        });
 
         const height = getOuterHeight(table);
         const height02 = getOuterHeight(helpTable);
