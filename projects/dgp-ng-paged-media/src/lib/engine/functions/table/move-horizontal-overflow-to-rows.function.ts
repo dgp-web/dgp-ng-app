@@ -3,6 +3,7 @@ import { PageContentSize } from "../../models";
 import { removeOverflowingCellsFromRow } from "./remove-overflowing-cells-from-row.function";
 import { createOverflowRow, OverflowRow } from "./create-overflow-row.function";
 import { addOverflowRows } from "./add-overflow-rows.function";
+import { isNullOrUndefined } from "dgp-ng-app";
 
 export function tryTrimHeaderRow(payload: OverflowingColumnsInfo & {
     readonly headerRow: HTMLTableRowElement;
@@ -31,6 +32,8 @@ export function moveHorizontalOverflowToRows(payload: {
         table,
         pageContentSize
     });
+
+    if (isNullOrUndefined(overflowingColumnsInfo.lastVisibleColumnIndex)) return table;
 
     tryTrimHeaderRow({
         ...overflowingColumnsInfo,
