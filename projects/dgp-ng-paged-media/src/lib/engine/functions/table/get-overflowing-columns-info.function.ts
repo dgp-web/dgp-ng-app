@@ -22,7 +22,7 @@ export function getOverflowingColumnsInfo(payload: {
 
     const utilityTable = document.createElement("table");
     document.body.append(utilityTable);
-    utilityTable.style.width = pageContentSize.width + pageContentSize.widthUnit;
+    utilityTable.style.maxWidth = pageContentSize.width + pageContentSize.widthUnit;
 
     const headerRow = document.createElement("tr");
     utilityTable.appendChild(headerRow);
@@ -60,6 +60,7 @@ export function getOverflowingColumnsInfo(payload: {
 
                     const tag = cell.tagName;
                     const utilityCell = document.createElement(tag);
+                    utilityCell.style.width = cell.clientWidth + "px";
                     utilityCell.innerHTML = cell.innerHTML;
                     utilityTableRow.appendChild(utilityCell);
 
@@ -67,7 +68,10 @@ export function getOverflowingColumnsInfo(payload: {
 
             });
 
-            if (utilityTable.clientWidth > pageContentSize.width) {
+            console.log("utilityTable.clientWidth", utilityTable.clientWidth);
+            console.log("utilityTable.scrollWidth", utilityTable.scrollWidth);
+
+            if (utilityTable.clientWidth >= Math.floor(pageContentSize.width)) {
                 result.lastVisibleColumnIndex = columnIndex - 1;
 
                 table.querySelector("tr")
