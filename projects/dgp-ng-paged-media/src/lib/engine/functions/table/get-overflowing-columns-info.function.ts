@@ -55,21 +55,20 @@ export function getOverflowingColumnsInfo(payload: {
                     utilityTableRow = utilityTable.querySelectorAll("tr").item(regularRowIndex);
                 }
 
-                regularRow.querySelectorAll("td, th").forEach((cell, cellIndex) => {
+                regularRow.querySelectorAll("td, th").forEach((cell: HTMLElement, cellIndex) => {
                     if (cellIndex !== columnIndex) return;
 
                     const tag = cell.tagName;
                     const utilityCell = document.createElement(tag);
                     utilityCell.style.width = cell.clientWidth + "px";
+                    utilityCell.style.minWidth = cell.style.minWidth;
+                    utilityCell.style.maxWidth = cell.style.maxWidth;
                     utilityCell.innerHTML = cell.innerHTML;
                     utilityTableRow.appendChild(utilityCell);
 
                 });
 
             });
-
-            console.log("utilityTable.clientWidth", utilityTable.clientWidth);
-            console.log("utilityTable.scrollWidth", utilityTable.scrollWidth);
 
             if (utilityTable.clientWidth >= Math.floor(pageContentSize.width)) {
                 result.lastVisibleColumnIndex = columnIndex - 1;

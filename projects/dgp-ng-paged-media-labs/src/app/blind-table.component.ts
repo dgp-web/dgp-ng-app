@@ -29,18 +29,22 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         </table>
     `,
     styles: [`
-        :host {
-            display: flex;
-            flex-direction: column;
-        }
+      :host {
+        display: flex;
+        flex-direction: column;
+      }
 
-       /* th {
-            min-width: 160px;
-        }
+      th {
+        min-width: 120px;
+        width: 120px;
+        max-width: 160px;
+      }
 
-        td {
-          min-width: 160px;
-        }*/
+      td {
+        min-width: 120px;
+        width: 120px;
+        max-width: 160px;
+      }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
