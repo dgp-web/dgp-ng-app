@@ -5,6 +5,10 @@ import { checkHeight } from "./check-height.function";
 import { moveHorizontalOverflowToRows } from "./table/move-horizontal-overflow-to-rows.function";
 import { extractHTMLItemsFromTableSection } from "./extract-html-items-from-table-section.function";
 
+export function tryGetTableHeaderRow(payload: HTMLTableElement): HTMLTableRowElement {
+    return payload.querySelector("tr");
+}
+
 export function processHTMLTableSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
     readonly htmlSection: HTMLSection;
@@ -22,6 +26,12 @@ export function processHTMLTableSection(payload: {
             table: refTable, pageContentSize
         });
 
+    }
+
+    let headerRow: HTMLTableRowElement;
+
+    if (refTable.classList.contains("dgp-repeated-table-header-row")) {
+        headerRow = tryGetTableHeaderRow(refTable);
     }
 
     const htmlItems = extractHTMLItemsFromTableSection(refTable);
@@ -54,6 +64,11 @@ export function processHTMLTableSection(payload: {
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
+            if (refTable.classList.contains("dgp-repeated-table-header-row")) {
+                const repeatedHeaderRow = document.createElement("tr");
+                repeatedHeaderRow.innerHTML = headerRow.innerHTML;
+                table.appendChild(repeatedHeaderRow);
+            }
             table.appendChild(htmlItem);
         }
 
