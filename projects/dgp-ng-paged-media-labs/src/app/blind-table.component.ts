@@ -34,7 +34,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         flex-direction: column;
       }
 
-      th {
+    /*  th {
         min-width: 120px;
         width: 120px;
         max-width: 160px;
@@ -44,7 +44,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         min-width: 120px;
         width: 120px;
         max-width: 160px;
-      }
+      }*/
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
