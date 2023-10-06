@@ -30,7 +30,7 @@ export function createOverflowRow(payload: OverflowingCellsInfo): OverflowRow {
             columnKey.classList.add("dgp-overflow-table-row__list-item__column-key");
             listItem.appendChild(columnKey);
 
-            columnKey.innerHTML = cell.columnKey;
+            columnKey.innerHTML = cell.columnKey.trimStart().trimEnd();
         }
         const value = document.createElement("div");
         value.classList.add("dgp-overflow-table-row__list-item__value");
