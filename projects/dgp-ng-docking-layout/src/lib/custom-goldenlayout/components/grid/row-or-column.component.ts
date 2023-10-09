@@ -177,60 +177,15 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         }
     }
 
-    private tryResizeContentItems(newContentItem: RowOrColumnComponent | StackComponent, suspendResize: boolean) {
-        if (suspendResize === true) return;
-        this.resizeContentItems(newContentItem);
-    }
-
-    private setSizeOfNewContentItem(newContentItem: RowOrColumnComponent | StackComponent,
-                                    newItemSize: number) {
-        newContentItem.config[this._dimension] = newItemSize;
-    }
-
-    private setSizeOfOtherContentItem(otherContentItem: RowOrColumnComponent | StackComponent,
-                                      newItemSize: number) {
-        const itemSize = otherContentItem.config[this._dimension] *= (100 - newItemSize) / 100;
-        otherContentItem.config[this._dimension] = itemSize;
-    }
-
-    private applyNewItemSizeToConfigs(
-        newContentItem: RowOrColumnComponent | StackComponent,
-        newItemSize: number
-    ) {
-        this.contentItems.forEach(contentItem => {
-            if (contentItem === newContentItem) {
-                this.setSizeOfNewContentItem(contentItem, newItemSize);
-                return;
-            }
-
-            this.setSizeOfOtherContentItem(contentItem, newItemSize);
-        });
-    }
-
-    private resizeContentItems(contentItem: RowOrColumnComponent | StackComponent) {
-        const newItemSize = this.getNewItemSize();
-        this.applyNewItemSizeToConfigs(contentItem, newItemSize);
-        /**
-         * Resize UI
-         */
-        this.callDownwards("setSize");
-    }
-
     /**
      * Add a new contentItem to the Row or Column
      */
-    addChild(newContentItem: RowOrColumnComponent | StackComponent, index: number, suspendResize: boolean) {
+    addChild(newContentItem: RowOrColumnComponent | StackComponent, index: number) {
         index = this.tryInitIndex(index);
 
         this.addContentItemToView(newContentItem, index);
         this.registerContentItem(newContentItem, index);
         this.linkWithParentItemAndInit(newContentItem);
-
-        this.tryResizeContentItems(newContentItem, suspendResize);
-    }
-
-    private getNewItemSize(): number {
-        return (1 / this.contentItems.length) * 100;
     }
 
     /**

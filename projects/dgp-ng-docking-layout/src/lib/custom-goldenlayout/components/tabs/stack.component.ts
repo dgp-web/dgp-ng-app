@@ -328,8 +328,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
         this.parent.replaceChild(this, rowOrColumn);
 
-        rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
-        rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
+        rowOrColumn.addChild(stack, insertBefore ? 0 : undefined);
+        rowOrColumn.addChild(this, insertBefore ? undefined : 0);
 
         this.config[dimension] = 50;
         stack.config[dimension] = 50;
@@ -346,7 +346,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const dimension = payload.dimension;
 
         const index = this.parent.contentItems.indexOf(this);
-        this.parent.addChild(stack, insertBefore ? index : index + 1, true);
+        this.parent.addChild(stack, insertBefore ? index : index + 1);
         this.config[dimension] *= 0.5;
         stack.config[dimension] = this.config[dimension];
         this.parent.callDownwards("setSize");

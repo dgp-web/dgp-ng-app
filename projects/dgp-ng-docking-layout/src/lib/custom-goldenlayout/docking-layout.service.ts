@@ -177,14 +177,14 @@ export class DockingLayoutService extends EventEmitter {
             if (column.config.type !== type) {
                 const rowOrColumn = this.createContentItem<RowOrColumnComponent>({type}, this.root);
                 this.root.addChild(column, rowOrColumn);
-                rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
-                rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
+                rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined);
+                rowOrColumn.addChild(column, insertBefore ? undefined : 0);
                 column.config[dimension] = 50;
                 contentItem.config[dimension] = 50;
                 rowOrColumn.callDownwards("setSize");
             } else {
                 const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
-                column.addChild(contentItem, insertBefore ? 0 : undefined, true);
+                column.addChild(contentItem, insertBefore ? 0 : undefined);
                 sibling.config[dimension] *= 0.5;
                 contentItem.config[dimension] = sibling.config[dimension];
                 column.callDownwards("setSize");
