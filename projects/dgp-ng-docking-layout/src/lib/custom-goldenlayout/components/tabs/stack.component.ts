@@ -183,7 +183,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     remove() {
-        this.parent.removeChild(this, undefined);
+        this.parent.removeChild(this);
     }
 
     hide() {
@@ -247,7 +247,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         if (this.config.content.length > 0) {
         } else if (this.config.isClosable === true) {
-            this.parent.removeChild(this, undefined);
+            this.parent.removeChild(this);
         }
 
         if (this.config.activeItemId === componentId) {

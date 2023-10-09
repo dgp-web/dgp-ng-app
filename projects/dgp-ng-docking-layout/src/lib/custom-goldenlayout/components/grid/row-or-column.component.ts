@@ -212,32 +212,27 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         }
     }
 
-    private destroyAndUnregisterItem(contentItem: RowOrColumnContentItemComponent, index: number) {
-
-        if (keepChild !== true) {
-            this.contentItems[index].destroy();
-        }
-
+    private destroyAndUnregisterItem(index: number) {
+        this.contentItems[index].destroy();
         this.contentItems.splice(index, 1);
         this.config.content.splice(index, 1);
-
     }
 
     /**
      * Removes a child of this element
      */
-    removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
+    removeChild(contentItem: RowOrColumnContentItemComponent) {
         const index = this.contentItems.indexOf(contentItem);
 
         this.tryRemoveSplitter(index);
         this.resizeAfterRemovingItem(contentItem);
-        this.destroyAndUnregisterItem(contentItem, index);
+        this.destroyAndUnregisterItem(index);
 
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
         } else if (this.config.isClosable === true) {
             if (this.parent.config.type === "column" || this.parent.config.type === "row") {
-                (this.parent as RowOrColumnComponent).removeChild(this, undefined);
+                (this.parent as RowOrColumnComponent).removeChild(this);
             }
         }
 
@@ -337,7 +332,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     remove() {
         if (this.parent.config.type === "column" || this.parent.config.type === "row") {
-            (this.parent as RowOrColumnComponent).removeChild(this, undefined);
+            (this.parent as RowOrColumnComponent).removeChild(this);
         }
     }
 
