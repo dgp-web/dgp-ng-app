@@ -218,6 +218,13 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         this.config.content.splice(index, 1);
     }
 
+    private tryRemoveSelfIfEmpty() {
+        if (this.contentItems.length !== 0) return;
+        if (!(this.parent.config.type === "column" || this.parent.config.type === "row")) return;
+
+        (this.parent as RowOrColumnComponent).removeChild(this);
+    }
+
     /**
      * Removes a child of this element
      */
@@ -228,21 +235,19 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         this.resizeAfterRemovingItem(contentItem);
         this.destroyAndUnregisterItem(index);
 
-        if (this.contentItems.length > 0) {
-            this.callDownwards("setSize");
-        } else if (this.config.isClosable === true) {
-            if (this.parent.config.type === "column" || this.parent.config.type === "row") {
-                (this.parent as RowOrColumnComponent).removeChild(this);
+        if (this.config.isClosable === true) {
+            this.tryRemoveSelfIfEmpty();
+
+          /*  if (this.contentItems.length === 1) {
+                const childItem = this.contentItems[0];
+                this.contentItems = [];
+                this.parent.replaceChild(this, childItem as RowOrColumnComponent);
             }
+*/
         }
 
-        if (this.contentItems.length === 1 && this.config.isClosable === true) {
-            const childItem = this.contentItems[0];
-            this.contentItems = [];
-            this.parent.replaceChild(this, childItem as RowOrColumnComponent);
-        } else {
-            this.callDownwards("setSize");
-        }
+        this.callDownwards("setSize");
+
     }
 
     destroy() {
