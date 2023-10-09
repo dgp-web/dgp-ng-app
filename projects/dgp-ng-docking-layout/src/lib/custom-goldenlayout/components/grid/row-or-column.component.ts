@@ -80,8 +80,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     readonly element = $(this.elementRef.nativeElement);
     readonly childElementContainer = this.element;
 
-    public readonly splitterSize: number;
-    public readonly splitterGrabSize: number;
+    public readonly splitterSize = 5;
+    public readonly splitterGrabSize = 15;
     public readonly _dimension: string;
 
     public readonly splitters = new Array<SplitterComponent>();
@@ -115,8 +115,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         if (config.content) this.createContentItems(config);
 
         this.childElementContainer = this.element;
-        this.splitterSize = 5;
-        this.splitterGrabSize = 15;
         this._dimension = isColumn ? "height" : "width";
     }
 
