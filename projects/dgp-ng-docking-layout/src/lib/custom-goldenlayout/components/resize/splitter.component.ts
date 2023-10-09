@@ -1,5 +1,4 @@
-import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
@@ -36,7 +35,7 @@ import { DragEvent } from "../../models/drag-event.model";
         </ng-container>
     `
 })
-export class SplitterComponent  {
+export class SplitterComponent {
 
     @Output()
     readonly dragStart$ = new EventEmitter<Vector2>();
@@ -46,10 +45,10 @@ export class SplitterComponent  {
     readonly drag$ = new EventEmitter<DragEvent>();
 
     @Input()
-    size: number;
+    size = 5;
 
     @Input()
-    grabSize: number;
+    grabSize = 15;
 
     @Input()
     isVertical: boolean;

@@ -38,7 +38,7 @@ export interface SplitterComponents {
     selector: "dgp-row-or-column",
     template: `
 
-        <!--<ng-container *ngFor="let itemConfig of config.content">
+        <!--<ng-container *ngFor="let itemConfig of config.content; let i = index; let last = isLast;">
 
             <ng-container [ngSwitch]="itemConfig.type">
 
@@ -56,6 +56,12 @@ export interface SplitterComponents {
                 </dgp-stack>
 
             </ng-container>
+
+            <ng-container *ngIf="!last">
+                <dgp-gl-splitter [isVertical]="isColumn"
+                                 [size]="splitterSize"></dgp-gl-splitter>
+
+            </container>
 
         </ng-container>-->
     `,
@@ -80,16 +86,19 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     readonly childElementContainer = this.element;
 
     public readonly splitterSize = 5;
-    public readonly splitterGrabSize = 15;
     public readonly _dimension: string;
 
-    public readonly splitters = new Array<SplitterComponent>();
+    private readonly splitters = new Array<SplitterComponent>();
+
     private currentSplitterPosition: number = null;
     private currentSplitterMinPosition: number = null;
     private currentSplitterMaxPosition: number = null;
 
     @ViewChildren("#child")
     contentItems1: QueryList<RowOrColumnContentItemComponent>;
+
+    @ViewChildren("#child1")
+    splitters1: QueryList<SplitterComponent>;
 
     contentItems: RowOrColumnContentItemComponent[] = [];
 
@@ -354,7 +363,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
          */
         splitter.isVertical = this.isColumn;
         splitter.size = this.splitterSize;
-        splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
     }
 
     private subscribeToSplitterOutputs(splitter: SplitterComponent) {
