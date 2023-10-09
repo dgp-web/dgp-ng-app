@@ -398,15 +398,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
-        const items = this.getItemsForSplitter(splitter),
-            minSize = 10;
-
-        const beforeMinSize = 0;
-        const afterMinSize = 0;
+        const items = this.getItemsForSplitter(splitter);
+        const minSize = 10;
 
         this.splitterPosition = 0;
-        this.splitterMinPosition = -1 * (items.before.element[this._dimension]() - (beforeMinSize || minSize));
-        this.splitterMaxPosition = items.after.element[this._dimension]() - (afterMinSize || minSize);
+        this.splitterMinPosition = -1 * (items.before.element[this._dimension]() - minSize);
+        this.splitterMaxPosition = items.after.element[this._dimension]() - minSize;
     }
 
     private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
