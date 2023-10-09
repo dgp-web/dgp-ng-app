@@ -186,39 +186,33 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         this.linkWithParentItemAndInit(newContentItem);
     }
 
-    /**
-     * Removes a child of this element
-     */
-    removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
-        let index = this.contentItems.indexOf(contentItem);
-        const removedItemSize = contentItem.config[this._dimension];
-        let childItem: RowOrColumnContentItemComponent;
-
-        /**
-         * Try remove splitter
-         */
-        const splitterIndex = Math.max(index - 1, 0);
-
+    private tryRemoveSplitter(contentItemIndex: number) {
+        const splitterIndex = Math.max(contentItemIndex - 1, 0);
         /**
          * Remove the splitter before the item or after if the item happens
          * to be the first in the row/column
          */
         if (this.splitters[splitterIndex]) {
-            this.splitters[splitterIndex].destroy();
-            this.splitters.splice(splitterIndex, 1);
+            this.removeSplitter(splitterIndex);
         }
+    }
 
-        /**
-         * Resize items
-         */
-        /**
-         * Allocate the space that the removed item occupied to the remaining items
-         */
+    private removeSplitter(splitterIndex: number) {
+        this.splitters[splitterIndex].destroy();
+        this.splitters.splice(splitterIndex, 1);
+
+    }
+
+    private resizeAfterRemovingItem(contentItem: RowOrColumnContentItemComponent) {
+        const removedItemSize = contentItem.config[this._dimension];
         for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i] !== contentItem) {
                 this.contentItems[i].config[this._dimension] += removedItemSize / (this.contentItems.length - 1);
             }
         }
+    }
+
+    private destroyAndUnregisterItem(contentItem: RowOrColumnContentItemComponent, index: number) {
 
         if (keepChild !== true) {
             this.contentItems[index].destroy();
@@ -226,6 +220,18 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
         this.contentItems.splice(index, 1);
         this.config.content.splice(index, 1);
+
+    }
+
+    /**
+     * Removes a child of this element
+     */
+    removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
+        const index = this.contentItems.indexOf(contentItem);
+
+        this.tryRemoveSplitter(index);
+        this.resizeAfterRemovingItem(contentItem);
+        this.destroyAndUnregisterItem(contentItem, index);
 
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
@@ -236,7 +242,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         }
 
         if (this.contentItems.length === 1 && this.config.isClosable === true) {
-            childItem = this.contentItems[0];
+            const childItem = this.contentItems[0];
             this.contentItems = [];
             this.parent.replaceChild(this, childItem as RowOrColumnComponent);
         } else {
