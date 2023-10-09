@@ -137,16 +137,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         return index;
     }
 
-    /**
-     * Add a new contentItem to the Row or Column
-     */
-    addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
-
-        index = this.tryInitIndex(index);
-
-        /**
-         * Add content-item HTML
-         */
+    private addContentItemToView(contentItem: RowOrColumnComponent | StackComponent, index: number) {
         if (this.contentItems.length > 0) {
             const contentItemIndex = Math.max(0, index - 1);
             const splitter = this.createAndRegisterSplitter(contentItemIndex);
@@ -162,10 +153,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         } else {
             this.childElementContainer.append(contentItem.element);
         }
+    }
 
-        /**
-         * Register content item
-         */
+    private registerContentItem(contentItem: RowOrColumnComponent | StackComponent, index: number) {
         this.contentItems.splice(index, 0, contentItem);
 
         /**
@@ -173,6 +163,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
          */
         if (this.config.content === undefined) this.config.content = [];
         this.config.content.splice(index, 0, contentItem.config);
+    }
+
+    private linkWithParentItemAndInit(contentItem: RowOrColumnComponent | StackComponent) {
 
         /**
          * Link with parent and init
@@ -182,33 +175,58 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
             contentItem.init();
         }
+    }
 
-        /**
-         * Try resize
-         */
-        if (_$suspendResize === true) return;
+    private tryResizeContentItems(newContentItem: RowOrColumnComponent | StackComponent, suspendResize: boolean) {
+        if (suspendResize === true) return;
+        this.resizeContentItems(newContentItem);
+    }
 
-        /**
-         * Resize
-         */
-        const newItemSize = this.getNewItemSize();
+    private setSizeOfNewContentItem(newContentItem: RowOrColumnComponent | StackComponent,
+                                    newItemSize: number) {
+        newContentItem.config[this._dimension] = newItemSize;
+    }
 
-        /**
-         * Resize config
-         */
-        for (let i = 0; i < this.contentItems.length; i++) {
-            if (this.contentItems[i] === contentItem) {
-                contentItem.config[this._dimension] = newItemSize;
-            } else {
-                const itemSize = this.contentItems[i].config[this._dimension] *= (100 - newItemSize) / 100;
-                this.contentItems[i].config[this._dimension] = itemSize;
+    private setSizeOfOtherContentItem(otherContentItem: RowOrColumnComponent | StackComponent,
+                                      newItemSize: number) {
+        const itemSize = otherContentItem.config[this._dimension] *= (100 - newItemSize) / 100;
+        otherContentItem.config[this._dimension] = itemSize;
+    }
+
+    private applyNewItemSizeToConfigs(
+        newContentItem: RowOrColumnComponent | StackComponent,
+        newItemSize: number
+    ) {
+        this.contentItems.forEach(contentItem => {
+            if (contentItem === newContentItem) {
+                this.setSizeOfNewContentItem(contentItem, newItemSize);
+                return;
             }
-        }
 
+            this.setSizeOfOtherContentItem(contentItem, newItemSize);
+        });
+    }
+
+    private resizeContentItems(contentItem: RowOrColumnComponent | StackComponent) {
+        const newItemSize = this.getNewItemSize();
+        this.applyNewItemSizeToConfigs(contentItem, newItemSize);
         /**
-         * Apply sizes
+         * Resize UI
          */
         this.callDownwards("setSize");
+    }
+
+    /**
+     * Add a new contentItem to the Row or Column
+     */
+    addChild(newContentItem: RowOrColumnComponent | StackComponent, index: number, suspendResize: boolean) {
+        index = this.tryInitIndex(index);
+
+        this.addContentItemToView(newContentItem, index);
+        this.registerContentItem(newContentItem, index);
+        this.linkWithParentItemAndInit(newContentItem);
+
+        this.tryResizeContentItems(newContentItem, suspendResize);
     }
 
     private getNewItemSize(): number {
