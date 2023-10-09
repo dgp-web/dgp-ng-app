@@ -247,13 +247,30 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         this.element.remove();
     }
 
+    private tryInitContentItem(contentItem: RowOrColumnContentItemComponent) {
+        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
+            contentItem.init();
+        }
+    }
+
+    copySizeToNewChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent) {
+        const size = oldChild.config[this._dimension];
+        newChild.config[this._dimension] = size;
+    }
+
+    replaceRegisteredChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent) {
+
+        const index = this.contentItems.indexOf(oldChild);
+        this.contentItems[index] = newChild;
+
+    }
+
     /**
      * Replaces a child of this Row or Column with another contentItem
      */
     replaceChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent, destroyOldChild?: boolean) {
-        const size = oldChild.config[this._dimension];
 
-        const index = this.contentItems.indexOf(oldChild);
+
         const parentNode = oldChild.element[0].parentNode;
 
         parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
@@ -263,14 +280,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             oldChild.destroy();
         }
 
-        this.contentItems[index] = newChild;
+        this.replaceRegisteredChild(oldChild, newChild);
+
         newChild.parent = this;
+        this.tryInitContentItem(newChild);
+        this.copySizeToNewChild(oldChild, newChild);
 
-        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
-            newChild.init();
-        }
-
-        newChild.config[this._dimension] = size;
         this.callDownwards("setSize");
     }
 
