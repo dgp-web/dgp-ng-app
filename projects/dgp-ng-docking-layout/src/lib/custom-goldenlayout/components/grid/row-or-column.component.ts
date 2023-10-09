@@ -132,6 +132,11 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     }
 
+    private tryInitIndex(index?: number): number {
+        if (index === undefined) index = this.contentItems.length;
+        return index;
+    }
+
     /**
      * Add a new contentItem to the Row or Column
      */
@@ -141,9 +146,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         let itemSize: number;
         let splitterElement: JQuery<HTMLElement>;
 
-        if (index === undefined) {
-            index = this.contentItems.length;
-        }
+        index = this.tryInitIndex(index);
 
         if (this.contentItems.length > 0) {
             const contentItemIndex = Math.max(0, index - 1);
@@ -159,11 +162,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             }
         } else {
             this.childElementContainer.append(contentItem.element);
-        }
-
-
-        if (index === undefined) {
-            index = this.contentItems.length;
         }
 
         this.contentItems.splice(index, 0, contentItem);
@@ -355,7 +353,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         splitter.isVertical = this.isColumn;
         splitter.size = this.splitterSize;
         splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
-
     }
 
     private subscribeToSplitterOutputs(splitter: SplitterComponent) {
@@ -366,18 +363,16 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             .drag$
             .subscribe(x => this.onSplitterDrag(splitter, x.x, x.y));
 
-        this.subscriptions.push(dragSub);
-
         const splitterDragStartSubscription = splitter
             .dragStart$
             .subscribe(x => this.onSplitterDragStart(splitter));
-
-        this.subscriptions.push(splitterDragStartSubscription);
 
         const splitterDragStopSubscription = splitter
             .dragStop$
             .subscribe(() => this.onSplitterDragStop(splitter));
 
+        this.subscriptions.push(dragSub);
+        this.subscriptions.push(splitterDragStartSubscription);
         this.subscriptions.push(splitterDragStopSubscription);
     }
 
