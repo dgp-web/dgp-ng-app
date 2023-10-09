@@ -81,12 +81,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     @HostBinding("class.lm_column")
     readonly isColumn = this.config.type === "column";
+    private readonly _dimension: "width" | "height" = this.isColumn ? "height" : "width";
 
     readonly element = $(this.elementRef.nativeElement);
     readonly childElementContainer = this.element;
 
     public readonly splitterSize = 5;
-    public readonly _dimension: string;
 
     private readonly splitters = new Array<SplitterComponent>();
 
@@ -116,13 +116,10 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     ) {
         super();
 
-        const isColumn = config.type === "column";
-
         this.config = {...itemDefaultConfig, ...config};
         if (config.content) this.createContentItems(config);
 
         this.childElementContainer = this.element;
-        this._dimension = isColumn ? "height" : "width";
     }
 
     init(): void {
