@@ -16,7 +16,6 @@ import {
     PARENT_ITEM_COMPONENT,
     RowConfiguration
 } from "../../types";
-import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
@@ -27,6 +26,7 @@ import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
 import { calculateRelativeSizes } from "../../functions/grid/calculate-relative-sizes.function";
 import { DockingLayoutService } from "../../docking-layout.service";
+import { timer } from "rxjs";
 
 export interface SplitterComponents {
     before: RowOrColumnContentItemComponent;
@@ -87,7 +87,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     private currentSplitterPosition: number = null;
     private currentSplitterMinPosition: number = null;
     private currentSplitterMaxPosition: number = null;
-    public layoutManagerUtilities = new LayoutManagerUtilities();
 
     @ViewChildren("#child")
     contentItems1: QueryList<RowOrColumnContentItemComponent>;
@@ -166,7 +165,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     }
 
     private linkWithParentItemAndInit(contentItem: RowOrColumnComponent | StackComponent) {
-
         /**
          * Link with parent and init
          */
@@ -192,10 +190,14 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
      * Removes a child of this element
      */
     removeChild(contentItem: RowOrColumnContentItemComponent, keepChild: boolean) {
-        let index = this.layoutManagerUtilities.indexOf(contentItem, this.contentItems);
+        let index = this.contentItems.indexOf(contentItem);
         const removedItemSize = contentItem.config[this._dimension];
-        const splitterIndex = Math.max(index - 1, 0);
         let childItem: RowOrColumnContentItemComponent;
+
+        /**
+         * Try remove splitter
+         */
+        const splitterIndex = Math.max(index - 1, 0);
 
         /**
          * Remove the splitter before the item or after if the item happens
@@ -207,6 +209,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         }
 
         /**
+         * Resize items
+         */
+        /**
          * Allocate the space that the removed item occupied to the remaining items
          */
         for (let i = 0; i < this.contentItems.length; i++) {
@@ -215,20 +220,15 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             }
         }
 
-
-        index = this.contentItems.indexOf(contentItem);
-
         if (keepChild !== true) {
             this.contentItems[index].destroy();
         }
 
         this.contentItems.splice(index, 1);
-
         this.config.content.splice(index, 1);
 
         if (this.contentItems.length > 0) {
             this.callDownwards("setSize");
-
         } else if (this.config.isClosable === true) {
             if (this.parent.config.type === "column" || this.parent.config.type === "row") {
                 (this.parent as RowOrColumnComponent).removeChild(this, undefined);
@@ -443,7 +443,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
         splitter.element.css({top: 0, left: 0});
 
-        this.layoutManagerUtilities.animFrame(() => this.callDownwards("setSize"));
+        timer(0).subscribe(() => {
+            this.callDownwards("setSize");
+        });
     }
 
 
