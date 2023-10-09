@@ -85,9 +85,9 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     public readonly _dimension: string;
 
     public readonly splitters = new Array<SplitterComponent>();
-    private splitterPosition: number = null;
-    private splitterMinPosition: number = null;
-    private splitterMaxPosition: number = null;
+    private currentSplitterPosition: number = null;
+    private currentSplitterMinPosition: number = null;
+    private currentSplitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
     @ViewChildren("#child")
@@ -398,19 +398,23 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
+        this.computeCurrentSplitterPositions(splitter);
+    }
+
+    private computeCurrentSplitterPositions(splitter: SplitterComponent) {
         const items = this.getItemsForSplitter(splitter);
         const minSize = 10;
 
-        this.splitterPosition = 0;
-        this.splitterMinPosition = -1 * (items.before.element[this._dimension]() - minSize);
-        this.splitterMaxPosition = items.after.element[this._dimension]() - minSize;
+        this.currentSplitterPosition = 0;
+        this.currentSplitterMinPosition = -1 * (items.before.element[this._dimension]() - minSize);
+        this.currentSplitterMaxPosition = items.after.element[this._dimension]() - minSize;
     }
 
     private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
         const offset = this.isColumn ? offsetY : offsetX;
 
-        if (offset > this.splitterMinPosition && offset < this.splitterMaxPosition) {
-            this.splitterPosition = offset;
+        if (offset > this.currentSplitterMinPosition && offset < this.currentSplitterMaxPosition) {
+            this.currentSplitterPosition = offset;
             splitter.element.css(this.isColumn ? "top" : "left", offset);
         }
     }
@@ -419,7 +423,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         const items = this.getItemsForSplitter(splitter),
             sizeBefore = items.before.element[this._dimension](),
             sizeAfter = items.after.element[this._dimension](),
-            splitterPositionInRange = (this.splitterPosition + sizeBefore) / (sizeBefore + sizeAfter),
+            splitterPositionInRange = (this.currentSplitterPosition + sizeBefore) / (sizeBefore + sizeAfter),
             totalRelativeSize = items.before.config[this._dimension] + items.after.config[this._dimension];
 
         items.before.config[this._dimension] = splitterPositionInRange * totalRelativeSize;
