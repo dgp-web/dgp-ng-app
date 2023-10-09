@@ -121,14 +121,21 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
         this.contentItems.forEach((item, index) => {
             this.childElementContainer.append(item.element);
+
+            /**
+             * If not last item
+             */
             if (index !== this.contentItems.length - 1) {
-                const splitter = this.createAndRegisterSplitter(index);
-                item.element.after(splitter.element);
+                this.addSplitterBeforeItem(item, index);
             }
         });
 
         this.isInitialised = true;
+    }
 
+    private addSplitterBeforeItem(item: RowOrColumnContentItemComponent, index: number) {
+        const splitter = this.createAndRegisterSplitter(index);
+        item.element.after(splitter.element);
     }
 
     private tryInitIndex(index?: number): number {
@@ -335,12 +342,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
         configs.forEach((item, index) => {
             this.contentItems[index].config = item as any;
         });
-    }
-
-    remove() {
-        if (this.parent.config.type === "column" || this.parent.config.type === "row") {
-            (this.parent as RowOrColumnComponent).removeChild(this);
-        }
     }
 
     private createContentItems(config: ItemConfiguration) {
