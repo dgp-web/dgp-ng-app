@@ -142,16 +142,15 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
      */
     addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
 
-        let newItemSize: number;
-        let itemSize: number;
-        let splitterElement: JQuery<HTMLElement>;
-
         index = this.tryInitIndex(index);
 
+        /**
+         * Add content-item HTML
+         */
         if (this.contentItems.length > 0) {
             const contentItemIndex = Math.max(0, index - 1);
             const splitter = this.createAndRegisterSplitter(contentItemIndex);
-            splitterElement = splitter.element;
+            const splitterElement = splitter.element;
 
             if (index > 0) {
                 this.contentItems[index - 1].element.after(splitterElement);
@@ -164,35 +163,56 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
             this.childElementContainer.append(contentItem.element);
         }
 
+        /**
+         * Register content item
+         */
         this.contentItems.splice(index, 0, contentItem);
 
-        if (this.config.content === undefined) {
-            this.config.content = [];
-        }
-
+        /**
+         * Set inputs
+         */
+        if (this.config.content === undefined) this.config.content = [];
         this.config.content.splice(index, 0, contentItem.config);
+
+        /**
+         * Link with parent and init
+         */
         contentItem.parent = this;
 
         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
             contentItem.init();
         }
 
-        newItemSize = (1 / this.contentItems.length) * 100;
+        /**
+         * Try resize
+         */
+        if (_$suspendResize === true) return;
 
-        if (_$suspendResize === true) {
-            return;
-        }
+        /**
+         * Resize
+         */
+        const newItemSize = this.getNewItemSize();
 
+        /**
+         * Resize config
+         */
         for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i] === contentItem) {
                 contentItem.config[this._dimension] = newItemSize;
             } else {
-                itemSize = this.contentItems[i].config[this._dimension] *= (100 - newItemSize) / 100;
+                const itemSize = this.contentItems[i].config[this._dimension] *= (100 - newItemSize) / 100;
                 this.contentItems[i].config[this._dimension] = itemSize;
             }
         }
 
+        /**
+         * Apply sizes
+         */
         this.callDownwards("setSize");
+    }
+
+    private getNewItemSize(): number {
+        return (1 / this.contentItems.length) * 100;
     }
 
     /**
