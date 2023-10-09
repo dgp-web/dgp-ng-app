@@ -1,5 +1,4 @@
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
     ElementRef,
@@ -66,7 +65,7 @@ export interface SplitterComponents {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
+export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -124,7 +123,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.contentItems.forEach((item, index) => {
             this.childElementContainer.append(item.element);
             if (index !== this.contentItems.length - 1) {
-                item.element.after(this.createSplitter(index).element);
+                const splitter = this.createAndRegisterSplitter(index);
+                item.element.after(splitter.element);
             }
         });
 
@@ -132,24 +132,23 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
     }
 
-    ngAfterViewInit(): void {
-    }
-
     /**
      * Add a new contentItem to the Row or Column
      */
     addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
 
-        let newItemSize: number,
-            itemSize: number,
-            splitterElement: JQuery<HTMLElement>;
+        let newItemSize: number;
+        let itemSize: number;
+        let splitterElement: JQuery<HTMLElement>;
 
         if (index === undefined) {
             index = this.contentItems.length;
         }
 
         if (this.contentItems.length > 0) {
-            splitterElement = this.createSplitter(Math.max(0, index - 1)).element;
+            const contentItemIndex = Math.max(0, index - 1);
+            const splitter = this.createAndRegisterSplitter(contentItemIndex);
+            splitterElement = splitter.element;
 
             if (index > 0) {
                 this.contentItems[index - 1].element.after(splitterElement);
@@ -349,15 +348,20 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
-    private createSplitter(index: number): SplitterComponent {
-        const vcRef = this.viewContainerRef;
-        const splitterComponentRef = vcRef.createComponent(SplitterComponent);
-        const splitter = splitterComponentRef.instance;
-
+    private setSplitterInputs(splitter: SplitterComponent) {
+        /**
+         * Set ng inputs
+         */
         splitter.isVertical = this.isColumn;
         splitter.size = this.splitterSize;
         splitter.grabSize = this.splitterGrabSize < this.splitterSize ? this.splitterSize : this.splitterGrabSize;
 
+    }
+
+    private subscribeToSplitterOutputs(splitter: SplitterComponent) {
+        /**
+         * Subscribe to ng outputs
+         */
         const dragSub = splitter
             .drag$
             .subscribe(x => this.onSplitterDrag(splitter, x.x, x.y));
@@ -375,8 +379,30 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
             .subscribe(() => this.onSplitterDragStop(splitter));
 
         this.subscriptions.push(splitterDragStopSubscription);
+    }
 
-        this.splitters.splice(index, 0, splitter);
+    private registerSplitter(splitter: SplitterComponent, contentItemIndex: number) {
+        this.splitters.splice(contentItemIndex, 0, splitter);
+    }
+
+    private createSplitter(): SplitterComponent {
+        const vcRef = this.viewContainerRef;
+        const splitterComponentRef = vcRef.createComponent(SplitterComponent);
+        const splitter = splitterComponentRef.instance;
+
+        this.setSplitterInputs(splitter);
+        this.subscribeToSplitterOutputs(splitter);
+
+        return splitter;
+    }
+
+    private createAndRegisterSplitter(contentItemIndex: number): SplitterComponent {
+        const splitter = this.createSplitter();
+        this.registerSplitter(splitter, contentItemIndex);
+
+        /**
+         * Return the created element
+         */
         return splitter;
     }
 
@@ -389,10 +415,10 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     private getItemsForSplitter(splitter: SplitterComponent): SplitterComponents {
         const index = this.splitters.indexOf(splitter);
 
-        return {
-            before: this.contentItems[index],
-            after: this.contentItems[index + 1]
-        };
+        const before = this.contentItems[index];
+        const after = this.contentItems[index + 1];
+
+        return {before, after};
     }
 
     private onSplitterDragStart(splitter: SplitterComponent): void {
@@ -418,11 +444,11 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private onSplitterDragStop(splitter: SplitterComponent): void {
-        const items = this.getItemsForSplitter(splitter),
-            sizeBefore = items.before.element[this._dimension](),
-            sizeAfter = items.after.element[this._dimension](),
-            splitterPositionInRange = (this.currentSplitterPosition + sizeBefore) / (sizeBefore + sizeAfter),
-            totalRelativeSize = items.before.config[this._dimension] + items.after.config[this._dimension];
+        const items = this.getItemsForSplitter(splitter);
+        const sizeBefore = items.before.element[this._dimension]();
+        const sizeAfter = items.after.element[this._dimension]();
+        const splitterPositionInRange = (this.currentSplitterPosition + sizeBefore) / (sizeBefore + sizeAfter);
+        const totalRelativeSize = items.before.config[this._dimension] + items.after.config[this._dimension];
 
         items.before.config[this._dimension] = splitterPositionInRange * totalRelativeSize;
         items.after.config[this._dimension] = (1 - splitterPositionInRange) * totalRelativeSize;
