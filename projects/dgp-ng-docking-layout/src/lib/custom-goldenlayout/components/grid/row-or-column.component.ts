@@ -268,21 +268,15 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     /**
      * Replaces a child of this Row or Column with another contentItem
      */
-    replaceChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent, destroyOldChild?: boolean) {
-
-
+    replaceChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent) {
         const parentNode = oldChild.element[0].parentNode;
 
         parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
 
-        if (destroyOldChild === true) {
-            oldChild.parent = null;
-            oldChild.destroy();
-        }
-
         this.replaceRegisteredChild(oldChild, newChild);
 
         newChild.parent = this;
+
         this.tryInitContentItem(newChild);
         this.copySizeToNewChild(oldChild, newChild);
 
