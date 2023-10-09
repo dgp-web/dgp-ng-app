@@ -77,11 +77,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     readonly bindings = true;
 
     @HostBinding("class.lm_row")
-    readonly isRow = this.config.type === "row";
+    isRow: boolean;
 
     @HostBinding("class.lm_column")
-    readonly isColumn = this.config.type === "column";
-    private readonly _dimension: "width" | "height" = this.isColumn ? "height" : "width";
+    isColumn: boolean;
+
+    private _dimension: "width" | "height";
 
     readonly element = $(this.elementRef.nativeElement);
     childElementContainer = this.element;
@@ -121,6 +122,11 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
 
     initStep0() {
         this.config = {...itemDefaultConfig, ...this.config};
+
+        this.isColumn = this.config.type === "column";
+        this.isRow = this.config.type === "row";
+        this._dimension = this.isColumn ? "height" : "width";
+
         if (this.config.content) this.createContentItems(this.config);
 
         this.childElementContainer = this.element;
