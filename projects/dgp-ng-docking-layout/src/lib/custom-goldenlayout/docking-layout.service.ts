@@ -126,17 +126,6 @@ export class DockingLayoutService extends EventEmitter {
             typedInstance.parent = parentItem as RowOrColumnParentComponent;
             typedInstance.initialize();
 
-            typedInstance.tryRemoveSelfIfEmptyTriggered.subscribe(() => {
-                const typedParent = parentItem as RowOrColumnParentComponent;
-                if (typedInstance.contentItems.length !== 0) return;
-
-                if (["column", "row"].includes(typedParent.config.type)) {
-                    (typedParent as RowOrColumnComponent).removeChild(typedInstance);
-                }
-                // else empty spaces remain
-                typedInstance.callDownwards("setSize");
-            });
-
             typedInstance.tryInitContentItemTriggered.subscribe(x => {
                 const typedParent = parentItem as RowOrColumnParentComponent;
                 if (typedParent.isInitialised === true && x.isInitialised === false) {

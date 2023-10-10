@@ -118,9 +118,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     parent: RowOrColumnParentComponent;
 
     @Output()
-    readonly tryRemoveSelfIfEmptyTriggered = new EventEmitter<void>();
-
-    @Output()
     readonly tryInitContentItemTriggered = new EventEmitter<RowOrColumnContentItemComponent>();
 
     constructor(
@@ -257,7 +254,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private doTryRemoveSelfIfEmpty() {
-        this.tryRemoveSelfIfEmptyTriggered.emit();
+        const typedParent = this.parent as RowOrColumnParentComponent;
+        if (this.contentItems.length !== 0) return;
+
+        if (["column", "row"].includes(typedParent.config.type)) {
+            (typedParent as RowOrColumnComponent).removeChild(this);
+        }
     }
 
     /**
