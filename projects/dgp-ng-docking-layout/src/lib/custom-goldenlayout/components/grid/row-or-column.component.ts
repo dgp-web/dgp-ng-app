@@ -461,8 +461,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private onSplitterDragStop(splitter: SplitterComponent): void {
-        const items = this.getItemsForSplitter(splitter);
-
         /**
          * Get current size from view
          */
@@ -474,6 +472,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
          */
         const splitterPositionInRange = (this.currentSplitterPosition + sizeBefore) / (sizeBefore + sizeAfter);
 
+        const items = this.getItemsForSplitter(splitter);
         /**
          * Get relative position from config
          */
