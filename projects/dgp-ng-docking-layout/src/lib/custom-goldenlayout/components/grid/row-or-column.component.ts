@@ -129,7 +129,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     ngAfterViewInit(): void {
-        // this.init();
+        this.init();
     }
 
     initialize() {
