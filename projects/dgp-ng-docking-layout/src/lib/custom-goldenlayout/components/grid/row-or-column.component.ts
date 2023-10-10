@@ -4,19 +4,12 @@ import {
     Component,
     ElementRef,
     HostBinding,
-    Inject,
+    Input,
     QueryList,
     ViewChildren,
     ViewContainerRef
 } from "@angular/core";
-import {
-    ColumnConfiguration,
-    ITEM_CONFIG,
-    ItemConfiguration,
-    itemDefaultConfig,
-    PARENT_ITEM_COMPONENT,
-    RowConfiguration
-} from "../../types";
+import { ColumnConfiguration, ItemConfiguration, itemDefaultConfig, RowConfiguration } from "../../types";
 import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
@@ -113,19 +106,18 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
     isInitialised = false;
 
+    @Input()
+    config: RowConfiguration | ColumnConfiguration;
+
+    @Input()
+    parent: RowOrColumnParentComponent;
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
         private readonly viewContainerRef: ViewContainerRef,
-        @Inject(ITEM_CONFIG)
-        public config: RowConfiguration | ColumnConfiguration,
-        @Inject(PARENT_ITEM_COMPONENT)
-        public parent: RowOrColumnParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
-
-        this.initialize();
     }
 
     ngAfterViewInit(): void {

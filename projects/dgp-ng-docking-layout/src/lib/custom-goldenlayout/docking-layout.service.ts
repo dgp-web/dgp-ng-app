@@ -1,11 +1,13 @@
 import { Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
 import {
+    ColumnConfiguration,
     ComponentConfiguration,
     ITEM_CONFIG,
     ItemConfiguration,
     LayoutConfiguration,
     PARENT_ITEM_COMPONENT,
+    RowConfiguration,
     StackConfiguration
 } from "./types";
 import { EventEmitter } from "./utilities";
@@ -21,6 +23,7 @@ import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placehol
 import { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
 import { StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
+import { RowOrColumnParentComponent } from "./models/row-parent-component.model";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -121,7 +124,17 @@ export class DockingLayoutService extends EventEmitter {
 
         const componentType = typeToComponentMap[itemConfig.type];
 
-        return this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
+        const instance = this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
+
+        if (componentType === RowOrColumnComponent) {
+            const typedInstance = instance as RowOrColumnComponent;
+
+            typedInstance.config = itemConfig as RowConfiguration | ColumnConfiguration;
+            typedInstance.parent = parentItem as RowOrColumnParentComponent;
+            typedInstance.initialize();
+        }
+
+        return instance;
     }
 
     destroy() {
