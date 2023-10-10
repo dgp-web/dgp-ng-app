@@ -133,7 +133,8 @@ export class DockingLayoutService extends EventEmitter {
                 if (["column", "row"].includes(typedParent.config.type)) {
                     (typedParent as RowOrColumnComponent).removeChild(typedInstance);
                 }
-
+                // else empty spaces remain
+                typedInstance.callDownwards("setSize");
             });
 
             typedInstance.tryInitContentItemTriggered.subscribe(x => {

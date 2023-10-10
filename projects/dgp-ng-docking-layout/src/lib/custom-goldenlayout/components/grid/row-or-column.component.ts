@@ -257,14 +257,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private doTryRemoveSelfIfEmpty() {
-        const typedParent = this.parent as RowOrColumnParentComponent;
-        if (this.contentItems.length !== 0) return;
-
-        if (["column", "row"].includes(typedParent.config.type)) {
-            (typedParent as RowOrColumnComponent).removeChild(this);
-        }
-        // TODO This doesn't work in some scenarios
-        // this.tryRemoveSelfIfEmptyTriggered.emit();
+        this.tryRemoveSelfIfEmptyTriggered.emit();
     }
 
     /**
