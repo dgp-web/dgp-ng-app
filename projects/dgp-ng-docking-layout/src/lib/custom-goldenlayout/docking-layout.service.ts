@@ -138,7 +138,7 @@ export class DockingLayoutService extends EventEmitter {
 
     destroy() {
         if (this.isInitialised === false) return;
-    }
+    } 
 
     private createRootComponent(config: LayoutConfiguration): void {
         const injector = Injector.create({
