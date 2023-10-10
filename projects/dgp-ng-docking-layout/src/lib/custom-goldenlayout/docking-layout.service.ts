@@ -4,6 +4,7 @@ import {
     ColumnConfiguration,
     ComponentConfiguration,
     ItemConfiguration,
+    itemDefaultConfig,
     LayoutConfiguration,
     RowConfiguration,
     StackConfiguration
@@ -122,7 +123,7 @@ export class DockingLayoutService extends EventEmitter {
         if (componentType === RowOrColumnComponent) {
             const typedInstance = instance as RowOrColumnComponent;
 
-            typedInstance.config = itemConfig as RowConfiguration | ColumnConfiguration;
+            typedInstance.config = {...itemDefaultConfig, ...itemConfig} as RowConfiguration | ColumnConfiguration;
             typedInstance.parent = parentItem as RowOrColumnParentComponent;
             typedInstance.initialize();
 
@@ -132,7 +133,6 @@ export class DockingLayoutService extends EventEmitter {
                     x.init();
                 }
             });
-
 
 
         } else if (componentType === StackComponent) {

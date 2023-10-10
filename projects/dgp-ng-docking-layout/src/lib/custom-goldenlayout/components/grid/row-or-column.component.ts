@@ -11,7 +11,7 @@ import {
     ViewChildren,
     ViewContainerRef
 } from "@angular/core";
-import { ColumnConfiguration, ItemConfiguration, itemDefaultConfig, RowConfiguration } from "../../types";
+import { ColumnConfiguration, ItemConfiguration, RowConfiguration } from "../../types";
 import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
@@ -89,12 +89,18 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     readonly bindings = true;
 
     @HostBinding("class.lm_row")
-    isRow: boolean;
+    get isRow(): boolean {
+        return this.config?.type === "row";
+    }
 
     @HostBinding("class.lm_column")
-    isColumn: boolean;
+    get isColumn(): boolean {
+        return this.config?.type === "column";
+    }
 
-    private _dimension: "width" | "height";
+    private get _dimension(): "width" | "height" {
+        return this.isColumn ? "height" : "width";
+    }
 
     readonly element = $(this.elementRef.nativeElement);
     childElementContainer = this.element;
@@ -133,14 +139,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     initialize() {
-        this.config = {...itemDefaultConfig, ...this.config};
-
-        this.isColumn = this.config.type === "column";
-        this.isRow = this.config.type === "row";
-        this._dimension = this.isColumn ? "height" : "width";
-
         if (this.config.content) this.createContentItems(this.config);
-
         this.childElementContainer = this.element;
     }
 
