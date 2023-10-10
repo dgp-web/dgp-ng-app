@@ -125,6 +125,24 @@ export class DockingLayoutService extends EventEmitter {
             typedInstance.config = itemConfig as RowConfiguration | ColumnConfiguration;
             typedInstance.parent = parentItem as RowOrColumnParentComponent;
             typedInstance.initialize();
+
+            typedInstance.tryRemoveSelfIfEmptyTriggered.subscribe(() => {
+                const typedParent = parentItem as RowOrColumnParentComponent;
+                if (typedInstance.contentItems.length !== 0) return;
+
+                if (["column", "row"].includes(typedParent.config.type)) {
+                    (typedParent as RowOrColumnComponent).removeChild(typedInstance);
+                }
+
+            });
+
+            typedInstance.tryInitContentItemTriggered.subscribe(x => {
+                const typedParent = parentItem as RowOrColumnParentComponent;
+                if (typedParent.isInitialised === true && x.isInitialised === false) {
+                    x.init();
+                }
+            });
+
         } else if (componentType === StackComponent) {
             const typedInstance = instance as StackComponent;
 
@@ -138,7 +156,7 @@ export class DockingLayoutService extends EventEmitter {
 
     destroy() {
         if (this.isInitialised === false) return;
-    } 
+    }
 
     private createRootComponent(config: LayoutConfiguration): void {
         const injector = Injector.create({

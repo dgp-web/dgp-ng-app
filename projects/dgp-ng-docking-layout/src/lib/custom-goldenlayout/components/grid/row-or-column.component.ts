@@ -3,8 +3,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
+    EventEmitter,
     HostBinding,
     Input,
+    Output,
     QueryList,
     ViewChildren,
     ViewContainerRef
@@ -37,15 +39,18 @@ export interface SplitterComponents {
             <ng-container [ngSwitch]="itemConfig.type">
 
                 <dgp-row-or-column *ngSwitchCase="'row'"
-                                   #child>
+                                   #child
+                                   [config]="itemConfig">
                     Row
                 </dgp-row-or-column>
                 <dgp-row-or-column *ngSwitchCase="'column'"
-                                   #child>
+                                   #child
+                                   [config]="itemConfig">
                     Column
                 </dgp-row-or-column>
                 <dgp-stack *ngSwitchCase="'stack'"
-                           #child>
+                           #child
+                           [config]="itemConfig">
                     Stack
                 </dgp-stack>
 
@@ -71,7 +76,7 @@ export interface SplitterComponents {
 })
 export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
 
-    @ViewChildren(RowOrColumnComponent)
+    @ViewChildren("child")
     contentItems1: QueryList<RowOrColumnContentItemComponent>;
 
     @ViewChildren(StackComponent)
@@ -111,6 +116,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
     @Input()
     parent: RowOrColumnParentComponent;
+
+    @Output()
+    readonly tryRemoveSelfIfEmptyTriggered = new EventEmitter<void>();
+
+    @Output()
+    readonly tryInitContentItemTriggered = new EventEmitter<RowOrColumnContentItemComponent>();
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
@@ -245,11 +256,15 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.config.content.splice(index, 1);
     }
 
-    private tryRemoveSelfIfEmpty() {
+    private doTryRemoveSelfIfEmpty() {
+        const typedParent = this.parent as RowOrColumnParentComponent;
         if (this.contentItems.length !== 0) return;
-        if (!(this.parent.config.type === "column" || this.parent.config.type === "row")) return;
 
-        (this.parent as RowOrColumnComponent).removeChild(this);
+        if (["column", "row"].includes(typedParent.config.type)) {
+            (typedParent as RowOrColumnComponent).removeChild(this);
+        }
+        // TODO This doesn't work in some scenarios
+        // this.tryRemoveSelfIfEmptyTriggered.emit();
     }
 
     /**
@@ -262,7 +277,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.resizeAfterRemovingItem(contentItem);
         this.destroyAndUnregisterItem(index);
 
-        this.tryRemoveSelfIfEmpty();
+        this.doTryRemoveSelfIfEmpty();
 
         this.callDownwards("setSize");
 
@@ -275,9 +290,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private tryInitContentItem(contentItem: RowOrColumnContentItemComponent) {
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem.init();
-        }
+        this.tryInitContentItemTriggered.emit(contentItem);
     }
 
     private copySizeToNewChild(oldChild: RowOrColumnContentItemComponent, newChild: RowOrColumnContentItemComponent) {
