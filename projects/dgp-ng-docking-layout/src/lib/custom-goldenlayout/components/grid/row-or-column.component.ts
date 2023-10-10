@@ -103,7 +103,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     readonly element = $(this.elementRef.nativeElement);
-    childElementContainer = this.element;
 
     public readonly splitterSize = 5;
 
@@ -140,14 +139,13 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
     initialize() {
         if (this.config.content) this.createContentItems(this.config);
-        this.childElementContainer = this.element;
     }
 
     init(): void {
         if (this.isInitialised === true) return;
 
         this.contentItems.forEach((item, index) => {
-            this.childElementContainer.append(item.element);
+            this.element.append(item.element);
 
             /**
              * If not last item
@@ -184,7 +182,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
                 splitterElement.before(contentItem.element);
             }
         } else {
-            this.childElementContainer.append(contentItem.element);
+            this.element.append(contentItem.element);
         }
     }
 
