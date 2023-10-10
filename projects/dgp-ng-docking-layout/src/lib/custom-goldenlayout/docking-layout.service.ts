@@ -3,10 +3,8 @@ import { ComponentRegistry } from "./services/component-registry";
 import {
     ColumnConfiguration,
     ComponentConfiguration,
-    ITEM_CONFIG,
     ItemConfiguration,
     LayoutConfiguration,
-    PARENT_ITEM_COMPONENT,
     RowConfiguration,
     StackConfiguration
 } from "./types";
@@ -24,6 +22,7 @@ import { DockingLayoutItemComponent } from "./models/docking-layout-item-compone
 import { StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 import { RowOrColumnParentComponent } from "./models/row-parent-component.model";
+import { StackParentComponent } from "./models/stack-parent-component.model";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -104,12 +103,6 @@ export class DockingLayoutService extends EventEmitter {
 
         const injector = Injector.create({
             providers: [{
-                provide: ITEM_CONFIG,
-                useValue: itemConfig
-            }, {
-                provide: PARENT_ITEM_COMPONENT,
-                useValue: parentItem
-            }, {
                 provide: ViewContainerRef,
                 useValue: this.viewContainerRef
             }, {
@@ -131,6 +124,12 @@ export class DockingLayoutService extends EventEmitter {
 
             typedInstance.config = itemConfig as RowConfiguration | ColumnConfiguration;
             typedInstance.parent = parentItem as RowOrColumnParentComponent;
+            typedInstance.initialize();
+        } else if (componentType === StackComponent) {
+            const typedInstance = instance as StackComponent;
+
+            typedInstance.config = itemConfig as StackConfiguration;
+            typedInstance.parent = parentItem as StackParentComponent;
             typedInstance.initialize();
         }
 

@@ -4,20 +4,13 @@ import {
     Component,
     ElementRef,
     HostBinding,
-    Inject,
+    Input,
     QueryList,
     ViewChild,
     ViewChildren
 } from "@angular/core";
 import { DockingLayoutService } from "../../docking-layout.service";
-import {
-    ComponentConfiguration,
-    HeaderConfig,
-    ITEM_CONFIG,
-    itemDefaultConfig,
-    PARENT_ITEM_COMPONENT,
-    StackConfiguration
-} from "../../types";
+import { ComponentConfiguration, HeaderConfig, itemDefaultConfig, StackConfiguration } from "../../types";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
@@ -123,18 +116,19 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     readonly hasHeaders = this.dockingLayoutService.config.settings.hasHeaders;
 
+    @Input()
+    config: StackConfiguration;
+
+    @Input()
+    parent: StackParentComponent;
+
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
         private readonly dropTargetIndicator: DropTargetIndicatorComponent,
         private readonly tabDropPlaceholder: TabDropPlaceholderComponent,
-        @Inject(ITEM_CONFIG)
-        public config: StackConfiguration,
-        @Inject(PARENT_ITEM_COMPONENT)
-        public parent: StackParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>,
         private readonly cd: ChangeDetectorRef
     ) {
-        this.initialize();
     }
 
     onDragStart1(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
