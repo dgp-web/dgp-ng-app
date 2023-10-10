@@ -200,14 +200,8 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private linkWithParentItemAndInit(contentItem: RowOrColumnComponent | StackComponent) {
-        /**
-         * Link with parent and init
-         */
-        contentItem.parent = this;
-
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem.init();
-        }
+        this.setAsOwnChild(contentItem);
+        this.tryInitContentItem(contentItem);
     }
 
     /**

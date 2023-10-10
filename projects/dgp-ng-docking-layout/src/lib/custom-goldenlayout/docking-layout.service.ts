@@ -133,6 +133,8 @@ export class DockingLayoutService extends EventEmitter {
                 }
             });
 
+
+
         } else if (componentType === StackComponent) {
             const typedInstance = instance as StackComponent;
 
