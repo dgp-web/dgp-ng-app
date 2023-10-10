@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
     ElementRef,
@@ -20,7 +21,7 @@ import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
-import type { StackComponent } from "../tabs/stack.component";
+import { StackComponent } from "../tabs/stack.component";
 import { Many } from "data-modeling";
 import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-sizes.function";
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
@@ -75,7 +76,16 @@ export interface SplitterComponents {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RowOrColumnComponent extends DockingLayoutEngineObject {
+export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
+
+    @ViewChildren(RowOrColumnComponent)
+    contentItems1: QueryList<RowOrColumnContentItemComponent>;
+
+    @ViewChildren(StackComponent)
+    stacks: QueryList<StackComponent>;
+
+    @ViewChildren(SplitterComponent)
+    splitters1: QueryList<SplitterComponent>;
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
@@ -99,12 +109,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     private currentSplitterMinPosition: number = null;
     private currentSplitterMaxPosition: number = null;
 
-    @ViewChildren("#child")
-    contentItems1: QueryList<RowOrColumnContentItemComponent>;
-
-    @ViewChildren("#child1")
-    splitters1: QueryList<SplitterComponent>;
-
     contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
@@ -121,10 +125,14 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject {
     ) {
         super();
 
-        this.initStep0();
+        this.initialize();
     }
 
-    initStep0() {
+    ngAfterViewInit(): void {
+        // this.init();
+    }
+
+    initialize() {
         this.config = {...itemDefaultConfig, ...this.config};
 
         this.isColumn = this.config.type === "column";
