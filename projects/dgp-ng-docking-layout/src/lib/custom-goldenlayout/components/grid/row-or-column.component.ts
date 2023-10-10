@@ -58,8 +58,12 @@ export interface SplitterComponents {
             </ng-container>
 
             <ng-container *ngIf="!last">
-                <dgp-gl-splitter [isVertical]="isColumn"
-                                 [size]="splitterSize"></dgp-gl-splitter>
+                <dgp-gl-splitter #splitter
+                                 [isVertical]="isColumn"
+                                 [size]="splitterSize"
+                                 (drag$)="onSplitterDrag($event, splitter)"
+                                 (dragStart$)="onSplitterDragStart(splitter)"
+                                 (dragStop$)="onSplitterDragStop(splitter)"></dgp-gl-splitter>
 
             </container>
 
