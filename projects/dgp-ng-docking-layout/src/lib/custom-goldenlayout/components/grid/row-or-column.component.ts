@@ -441,12 +441,14 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private computeCurrentSplitterPositions(splitter: SplitterComponent) {
-        const items = this.getItemsForSplitter(splitter);
         const minSize = 10;
 
+        const before = splitter.element.prev()[this._dimension]();
+        const after = splitter.element.next()[this._dimension]();
+
         this.currentSplitterPosition = 0;
-        this.currentSplitterMinPosition = -1 * (items.before.element[this._dimension]() - minSize);
-        this.currentSplitterMaxPosition = items.after.element[this._dimension]() - minSize;
+        this.currentSplitterMinPosition = -1 * (before - minSize);
+        this.currentSplitterMaxPosition = after - minSize;
     }
 
     private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
@@ -460,11 +462,26 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
     private onSplitterDragStop(splitter: SplitterComponent): void {
         const items = this.getItemsForSplitter(splitter);
-        const sizeBefore = items.before.element[this._dimension]();
-        const sizeAfter = items.after.element[this._dimension]();
+
+        /**
+         * Get current size from view
+         */
+        const sizeBefore = splitter.element.prev()[this._dimension]();
+        const sizeAfter = splitter.element.next()[this._dimension]();
+
+        /**
+         * Get absolute position from view
+         */
         const splitterPositionInRange = (this.currentSplitterPosition + sizeBefore) / (sizeBefore + sizeAfter);
+
+        /**
+         * Get relative position from config
+         */
         const totalRelativeSize = items.before.config[this._dimension] + items.after.config[this._dimension];
 
+        /**
+         * Update absolute positions
+         */
         items.before.config[this._dimension] = splitterPositionInRange * totalRelativeSize;
         items.after.config[this._dimension] = (1 - splitterPositionInRange) * totalRelativeSize;
 
