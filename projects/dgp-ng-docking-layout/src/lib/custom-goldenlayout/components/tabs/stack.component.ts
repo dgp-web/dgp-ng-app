@@ -27,7 +27,6 @@ import { GlComponent } from "../component.component";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
 import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
-import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { MatTabGroup } from "@angular/material/tabs";
@@ -116,7 +115,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
     isStack = true;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
 
-    readonly hasHeaders = this.dockingLayoutService.config.settings.hasHeaders;
+    @Input()
+    hasHeaders: boolean;
 
     @Input()
     config: StackConfiguration;
@@ -149,9 +149,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
-        const cfg = this.dockingLayoutService.config;
         this._header = {
-            show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
+            show: this.hasHeaders === true && this.config.hasHeaders !== false,
         };
 
         this.setupHeaderPosition();
@@ -281,22 +280,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     onDrop(contentItem: GlComponent) {
         this.componentDropped.emit(contentItem);
-    }
-
-    addStackToExistingRowOrColumn(payload: {
-        readonly stack: StackComponent;
-        readonly insertBefore: boolean;
-        readonly dimension: "width" | "height";
-    }) {
-        const stack = payload.stack;
-        const insertBefore = payload.insertBefore;
-        const dimension = payload.dimension;
-
-        const index = this.parent.contentItems.indexOf(this);
-        this.parent.addChild(stack, insertBefore ? index : index + 1);
-        this.config[dimension] *= 0.5;
-        stack.config[dimension] = this.config[dimension];
-        this.parent.callDownwards("setSize");
     }
 
     /**

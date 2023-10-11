@@ -142,14 +142,15 @@ export class DockingLayoutService extends EventEmitter {
 
             typedInstance.config = itemConfig as StackConfiguration;
             typedInstance.parent = parentItem as StackParentComponent;
+            typedInstance.hasHeaders = this.config.settings.hasHeaders;
             typedInstance.initialize();
 
             typedInstance.componentDropped.subscribe(contentItem => {
 
-                /*
-       * The item was dropped on the header area. Just add it as a child of this stack and
-       * get the hell out of this logic
-       */
+                /**
+                 * The item was dropped on the header area. Just add it as a child of this stack and
+                 * get the hell out of this logic
+                 */
                 if (typedInstance.dropSegment === DropSegment.Header) {
                     typedInstance.resetHeaderDropZone();
                     typedInstance.addChild(contentItem, typedInstance.dropIndex);
@@ -181,7 +182,7 @@ export class DockingLayoutService extends EventEmitter {
                  * layd out in the correct way. Just add it as a child
                  */
                 if (hasCorrectParent) {
-                    typedInstance.addStackToExistingRowOrColumn({stack, dimension, insertBefore});
+                    this.addStackToExistingRowOrColumn({self: typedInstance, stack, dimension, insertBefore});
                     /*
                      * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
                      * to create the appropriate contentItem for them to live in
@@ -219,6 +220,24 @@ export class DockingLayoutService extends EventEmitter {
         self.config[dimension] = 50;
         otherStack.config[dimension] = 50;
         rowOrColumn.callDownwards("setSize");
+    }
+
+    private addStackToExistingRowOrColumn(payload: {
+        readonly self: StackComponent;
+        readonly stack: StackComponent;
+        readonly insertBefore: boolean;
+        readonly dimension: "width" | "height";
+    }) {
+        const self = payload.self;
+        const stack = payload.stack;
+        const insertBefore = payload.insertBefore;
+        const dimension = payload.dimension;
+
+        const index = self.parent.contentItems.indexOf(self);
+        self.parent.addChild(stack, insertBefore ? index : index + 1);
+        self.config[dimension] *= 0.5;
+        stack.config[dimension] = self.config[dimension];
+        self.parent.callDownwards("setSize");
     }
 
 
