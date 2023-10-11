@@ -153,7 +153,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     onDragStart(componentConfig: string) {
-        this.removeChild(componentConfig, true);
+        this.removeChild(componentConfig);
     }
 
     private resetHeaderDropZone() {
@@ -229,28 +229,40 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.cd.markForCheck();
     }
 
-    removeChild(componentId: string, keepChild: boolean) {
+    private getContentItemIndexForComponent(componentId: string): number {
         const contentItem = this.config.content.find(x => x.id === componentId);
-        let index = this.config.content.indexOf(contentItem);
+        return this.config.content.indexOf(contentItem);
+    }
 
-        if (keepChild !== true) {
-            // this.contentItems[index].destroy();
-        }
+    private unregisterContentItem(contentIdemIndex: number) {
+        this.config.content.splice(contentIdemIndex, 1);
+    }
 
-        this.config.content.splice(index, 1);
-
-        if (this.config.content.length > 0) {
-        } else if (this.config.isClosable === true) {
+    private tryRemoveSelfFromParent() {
+        if (this.config.content.length === 0
+            && this.config.isClosable === true) {
             this.parent.removeChild(this);
         }
+    }
 
+    private tryAdjustActiveContentItem(componentId: string, contentIdemIndex: number) {
         if (this.config.activeItemId === componentId) {
             if (this.config.content.length > 0) {
-                this.setActiveContentItem(this.config.content[Math.max(index - 1, 0)].id);
+                const otherItemIndex = Math.max(contentIdemIndex - 1, 0);
+                const otherItemId = this.config.content[otherItemIndex].id;
+                this.setActiveContentItem(otherItemId);
             } else {
                 this.activeContentItem = null;
             }
         }
+    }
+
+    removeChild(componentId: string) {
+        const contentIdemIndex = this.getContentItemIndexForComponent(componentId);
+
+        this.unregisterContentItem(contentIdemIndex);
+        this.tryRemoveSelfFromParent();
+        this.tryAdjustActiveContentItem(componentId, contentIdemIndex);
     }
 
     destroy() {
@@ -592,6 +604,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     processSelectedContentItemChange(index: number) {
         const x = this.config.content[index];
+        if (!x) return;
         if (x.id === this.config.activeItemId) return;
         this.setActiveContentItem(x.id);
     }
