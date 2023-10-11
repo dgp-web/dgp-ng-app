@@ -26,6 +26,7 @@ import { RowOrColumnParentComponent } from "./models/row-parent-component.model"
 import { StackParentComponent } from "./models/stack-parent-component.model";
 import { DropSegment } from "./models/drop-segment.model";
 import { GlComponent } from "./components/component.component";
+import { DragProxy } from "./components/drag-and-drop/drag-proxy.component";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -144,6 +145,21 @@ export class DockingLayoutService extends EventEmitter {
             typedInstance.parent = parentItem as StackParentComponent;
             typedInstance.hasHeaders = this.config.settings.hasHeaders;
             typedInstance.initialize();
+
+            typedInstance.dragStart.subscribe(x => {
+                if (!x.dragListener) return;
+                const resolved = typedInstance.contentItems?.find(y => y.config.id === x.contentItem.id);
+
+                if (!resolved) return;
+
+                return new DragProxy(
+                    x.coordinates,
+                    x.dragListener,
+                    this,
+                    resolved,
+                    typedInstance
+                );
+            });
 
             typedInstance.componentDropped.subscribe(contentItem => {
 

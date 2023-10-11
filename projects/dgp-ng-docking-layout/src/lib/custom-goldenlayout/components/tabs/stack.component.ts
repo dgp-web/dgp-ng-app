@@ -11,7 +11,6 @@ import {
     ViewChild,
     ViewChildren
 } from "@angular/core";
-import { DockingLayoutService } from "../../docking-layout.service";
 import { ComponentConfiguration, HeaderConfig, itemDefaultConfig, StackConfiguration } from "../../types";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
@@ -25,7 +24,6 @@ import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
-import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
@@ -90,7 +88,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private matTabDraglisteners: QueryList<DragListenerDirective>;
 
     @ViewChildren(GlComponent)
-    private contentItems: QueryList<GlComponent>;
+    contentItems: QueryList<GlComponent>;
 
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
@@ -127,8 +125,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
     @Output()
     readonly componentDropped = new EventEmitter<GlComponent>();
 
+    @Output()
+    readonly dragStart = new EventEmitter<{ readonly contentItem: ComponentConfiguration } & DragStartEvent>();
+
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
         private readonly dropTargetIndicator: DropTargetIndicatorComponent,
         private readonly tabDropPlaceholder: TabDropPlaceholderComponent,
         private readonly elementRef: ElementRef<HTMLElement>,
@@ -501,20 +501,9 @@ export class StackComponent implements DropTarget, AfterViewInit {
         });
     }
 
+
     processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
-        if (!x.dragListener) return;
-
-        const resolved = this.contentItems?.find(y => y.config.id === x.contentItem.id);
-
-        if (!resolved) return;
-
-        return new DragProxy(
-            x.coordinates,
-            x.dragListener,
-            this.dockingLayoutService,
-            resolved,
-            this
-        );
+        this.dragStart.emit(x);
     }
 
     processSelectedContentItemChange(index: number) {
