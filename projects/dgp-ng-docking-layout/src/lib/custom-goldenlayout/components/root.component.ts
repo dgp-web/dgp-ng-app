@@ -1,15 +1,4 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostBinding,
-    Inject,
-    InjectionToken,
-    Input,
-    Output
-} from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, Output } from "@angular/core";
 import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
@@ -17,8 +6,6 @@ import { ItemConfiguration } from "../types";
 import type { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
 import { DockingLayoutService } from "../docking-layout.service";
-
-export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
 
 export interface RootDropEvent {
     contentItem: any;
@@ -28,10 +15,14 @@ export interface RootDropEvent {
 @Component({
     selector: "dgp-gl-root",
     template: `
-        <!-- <ng-container *ngFor="let itemConfig of config.content">
-             <dgp-row-or-column [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row-or-column>
-             <dgp-row-or-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-row-or-column>
-         </ng-container>-->
+        <!--        <ng-container *ngFor="let itemConfig of config.content">
+                    <dgp-row-or-column [ngSwitch]="itemConfig.type === 'row'"
+                                       [config]="itemConfig"
+                                       [parent]="this">Row</dgp-row-or-column>
+                    <dgp-row-or-column [ngSwitch]="itemConfig.type === 'column'"
+                                       [config]="itemConfig"
+                                       [parent]="this">Column</dgp-row-or-column>
+                </ng-container>-->
     `,
     styles: [`
         :host {
@@ -63,14 +54,14 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
     @Output()
     readonly drop = new EventEmitter<RootDropEvent>();
 
+    @Input()
+    containerElement: JQuery<HTMLElement>;
+
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
-        @Inject(ROOT_CONTAINER_ELEMENT)
-        private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
     ) {
         super();
-
     }
 
     ngAfterViewInit() {

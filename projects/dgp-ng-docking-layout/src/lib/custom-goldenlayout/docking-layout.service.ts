@@ -11,7 +11,7 @@ import {
 } from "./types";
 import { EventEmitter } from "./utilities";
 import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
-import { ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
+import { RootComponent } from "./components/root.component";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
 import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
@@ -153,9 +153,6 @@ export class DockingLayoutService extends EventEmitter {
     private createRootComponent(config: LayoutConfiguration): void {
         const injector = Injector.create({
             providers: [{
-                provide: ROOT_CONTAINER_ELEMENT,
-                useValue: this.container
-            }, {
                 provide: DropTargetIndicatorComponent,
                 useValue: this.dropTargetIndicator
             }, {
@@ -168,6 +165,7 @@ export class DockingLayoutService extends EventEmitter {
         rootComponentRef.instance.config = {content: config.content};
         rootComponentRef.changeDetectorRef.markForCheck();
         this.root = rootComponentRef.instance;
+        this.root.containerElement = this.container;
 
         this.root.initialized.subscribe(() => this.registerInitialization());
 
