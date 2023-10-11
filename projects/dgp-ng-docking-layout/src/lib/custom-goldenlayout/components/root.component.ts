@@ -147,13 +147,4 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
         this.callDownwards("setSize");
     }
 
-
-    replaceChild(oldChild: RowOrColumnComponent, newChild: RowOrColumnComponent) {
-        this.addChild(oldChild, newChild);
-
-        oldChild.parent = null;
-        oldChild.destroy();
-    }
-
-
 }
