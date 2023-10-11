@@ -3,8 +3,10 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
+    EventEmitter,
     HostBinding,
     Input,
+    Output,
     QueryList,
     ViewChild,
     ViewChildren
@@ -104,8 +106,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
     isInitialised = false;
 
     private activeContentItem: GlComponent = null;
-    private dropSegment: keyof ContentAreaDimensions = null;
-    private dropIndex: number = null;
+    dropSegment: keyof ContentAreaDimensions = null;
+    dropIndex: number = null;
     private subscription: Subscription;
     @ViewChild(MatTabGroup, {read: ElementRef})
     private headerComponent: ElementRef<HTMLElement>;
@@ -121,6 +123,9 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     @Input()
     parent: StackParentComponent;
+
+    @Output()
+    readonly componentDropped = new EventEmitter<GlComponent>();
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
@@ -156,7 +161,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.removeChild(componentConfig);
     }
 
-    private resetHeaderDropZone() {
+    resetHeaderDropZone() {
         this.tabDropPlaceholder.remove();
     }
 
@@ -273,76 +278,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
     }
 
+
     onDrop(contentItem: GlComponent) {
-        /*
-         * The item was dropped on the header area. Just add it as a child of this stack and
-         * get the hell out of this logic
-         */
-        if (this.dropSegment === DropSegment.Header) {
-            this.resetHeaderDropZone();
-            this.addChild(contentItem, this.dropIndex);
-            return;
-        }
-
-        /*
-         * The stack is empty. Let's just add the element.
-         */
-        if (this.dropSegment === DropSegment.Body) {
-            this.addChild(contentItem);
-            return;
-        }
-
-        /*
-         * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
-         * aggregate some conditions to make the if statements later on more readable
-         */
-        const isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom;
-        const isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right;
-        const insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left;
-        const hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow);
-        const dimension = isVertical ? "height" : "width";
-
-        const stack = this.createAndInitStack(contentItem);
-
-        /*
-         * If the item is dropped on top or bottom of a column or left and right of a row, it's already
-         * layd out in the correct way. Just add it as a child
-         */
-        if (hasCorrectParent) {
-            this.addStackToExistingRowOrColumn({stack, dimension, insertBefore});
-            /*
-             * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
-             * to create the appropriate contentItem for them to live in
-             */
-        } else {
-            this.addStackToNewRowOrColumn({stack, dimension, insertBefore, isVertical});
-        }
+        this.componentDropped.emit(contentItem);
     }
 
-    private addStackToNewRowOrColumn(payload: {
-        readonly stack: StackComponent;
-        readonly isVertical: boolean;
-        readonly insertBefore: boolean;
-        readonly dimension: "width" | "height";
-    }) {
-        const stack = payload.stack;
-        const insertBefore = payload.insertBefore;
-        const dimension = payload.dimension;
-        const isVertical = payload.isVertical;
-
-        const type = isVertical ? "column" : "row";
-        const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
-        this.parent.replaceChild(this, rowOrColumn);
-
-        rowOrColumn.addChild(stack, insertBefore ? 0 : undefined);
-        rowOrColumn.addChild(this, insertBefore ? undefined : 0);
-
-        this.config[dimension] = 50;
-        stack.config[dimension] = 50;
-        rowOrColumn.callDownwards("setSize");
-    }
-
-    private addStackToExistingRowOrColumn(payload: {
+    addStackToExistingRowOrColumn(payload: {
         readonly stack: StackComponent;
         readonly insertBefore: boolean;
         readonly dimension: "width" | "height";
@@ -356,15 +297,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.config[dimension] *= 0.5;
         stack.config[dimension] = this.config[dimension];
         this.parent.callDownwards("setSize");
-    }
-
-    private createAndInitStack(component: GlComponent): StackComponent {
-        const stack = this.dockingLayoutService.createContentItem<StackComponent>({
-            type: "stack",
-        }, this);
-        stack.init();
-        stack.addChild(component);
-        return stack;
     }
 
     /**
