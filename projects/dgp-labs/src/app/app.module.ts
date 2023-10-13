@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { FactoryProvider, Injectable, InjectionToken, NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, FactoryProvider, Injectable, InjectionToken, NgModule } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { DgpDockingLayoutModule, DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import {
@@ -8,9 +8,12 @@ import {
     defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
-    DgpHamburgerShellModule, DgpInspectorModule, DgpNegatePipeModule,
+    DgpHamburgerShellModule,
+    DgpInspectorModule,
+    DgpNegatePipeModule,
     DgpRequestStoreModule,
-    DgpRoutingOverlayModule, DgpSpacerModule,
+    DgpRoutingOverlayModule,
+    DgpSpacerModule,
     DgpThemeSwitcherModule,
     InitializationService,
     InitializationServiceProvider
@@ -136,7 +139,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         MatTooltipModule
     ],
     providers: [appReducerProvider],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 

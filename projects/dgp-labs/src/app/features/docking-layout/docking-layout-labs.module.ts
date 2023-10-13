@@ -1,7 +1,13 @@
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { DockingLayoutLabsPageComponent } from "./containers/docking-layout-labs-page.component";
 import { DgpDockingLayoutModule } from "dgp-ng-docking-layout";
-import { DgpHamburgerMenuToggleModule, DgpInputFieldModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
+import {
+    DgpEmptyStateModule,
+    DgpHamburgerMenuToggleModule,
+    DgpInputFieldModule,
+    DgpPageHeaderModule,
+    DgpThemeSwitcherModule
+} from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
 import { DgpTileModule } from "../../../../../dgp-ng-app/src/tile/tile.module";
 import { CommonModule } from "@angular/common";
@@ -26,11 +32,13 @@ import { FormsModule } from "@angular/forms";
         ScrollingModule,
         ExperimentalScrollingModule,
         DgpInputFieldModule,
-        FormsModule
+        FormsModule,
+        DgpEmptyStateModule
     ],
     declarations: [
         DockingLayoutLabsPageComponent
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DockingLayoutLabsModule {
 }

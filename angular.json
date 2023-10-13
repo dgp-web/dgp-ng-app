@@ -565,6 +565,106 @@
                     }
                 }
             }
+        },
+        "dgp-ng-app-wcs": {
+          "projectType": "application",
+          "schematics": {
+            "@schematics/angular:component": {
+              "style": "scss"
+            }
+          },
+          "root": "projects/dgp-ng-app-wcs",
+          "sourceRoot": "projects/dgp-ng-app-wcs/src",
+          "prefix": "app",
+          "architect": {
+            "build": {
+              "builder": "@angular-devkit/build-angular:browser",
+              "options": {
+                "outputPath": "dist/dgp-ng-app-wcs",
+                "index": "projects/dgp-ng-app-wcs/src/index.html",
+                "main": "projects/dgp-ng-app-wcs/src/main.ts",
+                "polyfills": "projects/dgp-ng-app-wcs/src/polyfills.ts",
+                "tsConfig": "projects/dgp-ng-app-wcs/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                  "projects/dgp-ng-app-wcs/src/favicon.ico",
+                  "projects/dgp-ng-app-wcs/src/assets"
+                ],
+                "styles": [
+                  "projects/dgp-ng-app-wcs/src/styles.scss"
+                ],
+                "scripts": []
+              },
+              "configurations": {
+                "production": {
+                  "budgets": [
+                    {
+                      "type": "initial",
+                      "maximumWarning": "500kb",
+                      "maximumError": "1mb"
+                    },
+                    {
+                      "type": "anyComponentStyle",
+                      "maximumWarning": "2kb",
+                      "maximumError": "4kb"
+                    }
+                  ],
+                  "fileReplacements": [
+                    {
+                      "replace": "projects/dgp-ng-app-wcs/src/environments/environment.ts",
+                      "with": "projects/dgp-ng-app-wcs/src/environments/environment.prod.ts"
+                    }
+                  ],
+                  "outputHashing": "all"
+                },
+                "development": {
+                  "buildOptimizer": false,
+                  "optimization": false,
+                  "vendorChunk": true,
+                  "extractLicenses": false,
+                  "sourceMap": true,
+                  "namedChunks": true
+                }
+              },
+              "defaultConfiguration": "production"
+            },
+            "serve": {
+              "builder": "@angular-devkit/build-angular:dev-server",
+              "configurations": {
+                "production": {
+                  "browserTarget": "dgp-ng-app-wcs:build:production"
+                },
+                "development": {
+                  "browserTarget": "dgp-ng-app-wcs:build:development"
+                }
+              },
+              "defaultConfiguration": "development"
+            },
+            "extract-i18n": {
+              "builder": "@angular-devkit/build-angular:extract-i18n",
+              "options": {
+                "browserTarget": "dgp-ng-app-wcs:build"
+              }
+            },
+            "test": {
+              "builder": "@angular-devkit/build-angular:karma",
+              "options": {
+                "main": "projects/dgp-ng-app-wcs/src/test.ts",
+                "polyfills": "projects/dgp-ng-app-wcs/src/polyfills.ts",
+                "tsConfig": "projects/dgp-ng-app-wcs/tsconfig.spec.json",
+                "karmaConfig": "projects/dgp-ng-app-wcs/karma.conf.js",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                  "projects/dgp-ng-app-wcs/src/favicon.ico",
+                  "projects/dgp-ng-app-wcs/src/assets"
+                ],
+                "styles": [
+                  "projects/dgp-ng-app-wcs/src/styles.scss"
+                ],
+                "scripts": []
+              }
+            }
+          }
         }
     }
 }

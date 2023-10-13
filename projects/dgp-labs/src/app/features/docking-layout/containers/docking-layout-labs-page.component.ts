@@ -24,6 +24,16 @@ import { AttributeMetadata } from "data-modeling";
                             <dgp-tile label="Test"
                                       externalLink="https://github.com/dgp-web/dgp-ng-app"></dgp-tile>
 
+                            <dgp-empty-state title="NG Component"
+                                             matIconName="info">
+                                Content
+                            </dgp-empty-state>
+
+                            <dgpw-empty-state title="Web Component"
+                                              mat-icon-name="info">
+                                Content
+                            </dgpw-empty-state>
+
                         </ng-template>
                         <ng-template dgp-docking-layout-container-label>
                             {{availableItemsLabel$ | async}}
@@ -141,4 +151,5 @@ export class DockingLayoutLabsPageComponent {
     selectedItem(itemId: string) {
         console.log(itemId);
     }
+
 }
