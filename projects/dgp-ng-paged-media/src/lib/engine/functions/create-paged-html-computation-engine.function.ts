@@ -2,20 +2,16 @@ import { HTMLPageContent, PageContentSize, PagedHTMLComputationEngine, PagedHTML
 import { createPagedHTMLComputationEngineState } from "./create-paged-html-computation-engine-state.function";
 import { getOuterHeight } from "./get-outer-height.function";
 import { notNullOrUndefined } from "dgp-ng-app";
+import * as _ from "lodash";
+import { isLonelyItemCandidate } from "./lonely-items/is-lonely-item-candidate.function";
 
 // TODO: don't remove if there are no other items on the page
 
-export function isLonelyItemCandidate(element: Element) {
-    return element.tagName === "H1"
-        || element.tagName === "H2"
-        || element.tagName === "H3"
-        || element.tagName === "H4"
-        || element.tagName === "H5"
-        || element.classList.contains("dgp-not-last-item-on-page");
-}
-
 export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
+    const backup = _.cloneDeep(currentPage);
+
     const resultContainer = document.createElement("div");
+
     const itemsThatWantContent = new Array<HTMLElement>();
 
     let isSearchActive = true;
@@ -61,15 +57,20 @@ export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
 
     currentPage.itemsOnPage = currentPage.itemsOnPage.filter(notNullOrUndefined);
 
+    itemsThatWantContent.reverse();
+
     if (itemsThatWantContent.length === 0) return null;
 
-    // TODO
+    // TODO: check
     /**
      * Revert if there is nothing more on the page
      */
-
-    itemsThatWantContent.reverse();
-    itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
+    if (currentPage.itemsOnPage.length === 0 || currentPage.itemsOnPage[0].children.length === 0) {
+        Object.assign(currentPage, backup);
+        return null;
+    } else {
+        itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
+    }
 
     return resultContainer;
 }
