@@ -49,7 +49,7 @@ export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
             }
 
             if (lastHtmlItem.children.length === 0) {
-                currentPage.itemsOnPage = null;
+                currentPage.itemsOnPage[i] = null;
             }
 
             if (!isLonelyChildFound) {
@@ -60,19 +60,23 @@ export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
 
     }
 
-    if (itemsThatWantContent.length === 0) return null;
+    itemsThatWantContent.reverse();
 
     currentPage.itemsOnPage = currentPage.itemsOnPage.filter(notNullOrUndefined);
+
+    if (itemsThatWantContent.length === 0) return null;
 
     /**
      * Revert if there is nothing more on the page
      */
-    if (currentPage.itemsOnPage.length === 0 || currentPage.itemsOnPage[0].children.length === 0) {
-        Object.assign(currentPage, backup);
-        return null;
-    } else {
-        itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
-    }
+    /*  if (currentPage.itemsOnPage.length === 0 || currentPage.itemsOnPage[0].children.length === 0) {
+          Object.assign(currentPage, backup);
+          return null;
+      } else {
+          itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
+      }*/
+
+    itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
 
     return resultContainer;
 }
