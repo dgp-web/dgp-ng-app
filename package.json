@@ -21,6 +21,7 @@
         "dgp-ng-app:build:watch": "ng build dgp-ng-app --watch",
         "dgp-ng-app:publish": "npm publish ./dist/dgp-ng-app",
         "dgp-ng-app:test:watch": "ng test dgp-ng-app --watch",
+        "dgp-ng-app-wcs:build:watch": "ng build dgp-ng-app-wcs --watch",
         "dgp-ng-docking-layout:build:watch": "ng build dgp-ng-docking-layout --watch",
         "dgp-ng-docking-layout:build:prod": "ng build dgp-ng-docking-layout --configuration production",
         "postdgp-ng-docking-layout:build:prod": "cpx projects/dgp-ng-docking-layout/src/lib/_theming.scss dist/dgp-ng-docking-layout",
