@@ -2,7 +2,6 @@ import { HTMLPageContent, PageContentSize, PagedHTMLComputationEngine, PagedHTML
 import { createPagedHTMLComputationEngineState } from "./create-paged-html-computation-engine-state.function";
 import { getOuterHeight } from "./get-outer-height.function";
 import { notNullOrUndefined } from "dgp-ng-app";
-import * as _ from "lodash";
 
 // TODO: don't remove if there are no other items on the page
 
@@ -16,10 +15,7 @@ export function isLonelyItemCandidate(element: Element) {
 }
 
 export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
-    const backup = _.cloneDeep(currentPage);
-
     const resultContainer = document.createElement("div");
-
     const itemsThatWantContent = new Array<HTMLElement>();
 
     let isSearchActive = true;
@@ -28,11 +24,16 @@ export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
         const lastHtmlItem = currentPage.itemsOnPage[i];
         if (!isSearchActive) continue outer;
 
+        /**
+         * Check item itself
+         */
         if (isLonelyItemCandidate(lastHtmlItem)) {
-            // isSearchActive = false;
             currentPage.itemsOnPage[i] = null;
             itemsThatWantContent.push(lastHtmlItem as HTMLElement);
         } else {
+            /**
+             * Check children
+             */
             let isLonelyChildFound = false;
 
             inner: for (let j = lastHtmlItem.children.length - 1; j >= 0; j--) {
@@ -48,34 +49,26 @@ export function extractLonelyItems(currentPage: HTMLPageContent): HTMLElement {
                 }
             }
 
-            if (lastHtmlItem.children.length === 0) {
-                currentPage.itemsOnPage[i] = null;
-            }
-
             if (!isLonelyChildFound) {
                 isSearchActive = false;
+            } else {
+                if (lastHtmlItem.children.length === 0) {
+                    currentPage.itemsOnPage[i] = null;
+                }
             }
         }
-
-
     }
-
-    itemsThatWantContent.reverse();
 
     currentPage.itemsOnPage = currentPage.itemsOnPage.filter(notNullOrUndefined);
 
     if (itemsThatWantContent.length === 0) return null;
 
+    // TODO
     /**
      * Revert if there is nothing more on the page
      */
-    /*  if (currentPage.itemsOnPage.length === 0 || currentPage.itemsOnPage[0].children.length === 0) {
-          Object.assign(currentPage, backup);
-          return null;
-      } else {
-          itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
-      }*/
 
+    itemsThatWantContent.reverse();
     itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
 
     return resultContainer;
