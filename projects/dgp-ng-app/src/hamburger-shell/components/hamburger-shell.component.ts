@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { closeHamburgerMenu } from "../actions";
 import { hamburgerMenuModeSelector, isHamburgerMenuOpenSelector } from "../selectors";
@@ -64,7 +64,7 @@ import { HamburgerShellState } from "../models";
             height: auto;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HamburgerShellComponent {

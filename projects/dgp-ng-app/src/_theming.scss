@@ -155,7 +155,7 @@
         }
     }
 
-    .hamburger-menu-drawer-content > *:not(router-outlet) {
+    .hamburger-menu-drawer-content > *:not(router-outlet, slot) {
         display: flex;
         flex-direction: column;
         height: 100%;

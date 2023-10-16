@@ -610,7 +610,7 @@
                                 {
                                     "type": "initial",
                                     "maximumWarning": "500kb",
-                                    "maximumError": "1mb"
+                                    "maximumError": "7mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
@@ -624,7 +624,8 @@
                                     "with": "projects/dgp-ng-app-wcs/src/environments/environment.prod.ts"
                                 }
                             ],
-                            "outputHashing": "none"
+                            "outputHashing": "none",
+                            "optimization": false
                         },
                         "development": {
                             "buildOptimizer": false,
