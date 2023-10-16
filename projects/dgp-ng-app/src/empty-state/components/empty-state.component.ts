@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { EmptyState } from "../models";
 
 @Component({
     selector: "dgp-empty-state",
@@ -27,8 +28,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-export class EmptyStateComponent {
+export class EmptyStateComponent implements EmptyState {
 
     @Input()
     matIconName: string;

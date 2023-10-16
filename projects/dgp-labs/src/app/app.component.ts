@@ -1,5 +1,4 @@
-import { Component, Injector } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { Component } from "@angular/core";
 import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
 
@@ -99,15 +98,6 @@ export class AppComponent extends DgpContainer {
     isLayoutSectionExpanded = true;
     isInteractionSectionExpanded = true;
     isChartUtilitySectionExpanded = true;
-
-    constructor(
-        protected readonly store: Store<any>,
-        private readonly injector: Injector
-    ) {
-        super(store);
-
-
-    }
 
     canOpenAllSections(): boolean {
         return !this.isChartsSectionExpanded

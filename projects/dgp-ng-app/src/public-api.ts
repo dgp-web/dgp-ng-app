@@ -74,6 +74,7 @@ export { DgpPageHeaderContextActionsModule } from "./context-action-slot/page-he
 
 // empty-state
 export { EmptyStateComponent } from "./empty-state/components/empty-state.component";
+export * from "./empty-state/models";
 export { DgpEmptyStateModule } from "./empty-state/empty-state.module";
 
 // expansion-toggle
