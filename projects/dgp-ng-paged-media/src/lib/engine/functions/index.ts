@@ -11,3 +11,7 @@ export { processHTMLSingleItemSection } from "./process-html-single-item-section
 export { checkHeight } from "./check-height.function";
 export { getOuterHeight } from "./get-outer-height.function";
 export { isLonelyItemCandidate } from "./lonely-items/is-lonely-item-candidate.function";
+export { areAllHtmlChildrenLonely } from "./lonely-items/are-all-html-children-lonely.function";
+export { hasOnlyLonelyItems } from "./lonely-items/has-only-lonely-items.function";
+export { tryExtractLonelyItems } from "./lonely-items/extract-lonely-items.function";
+export { tryAddLonelyItemsToNewPage } from "./lonely-items/add-lonely-items-to-new-page.function";
