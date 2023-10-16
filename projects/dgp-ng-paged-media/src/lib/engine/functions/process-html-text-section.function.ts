@@ -23,6 +23,11 @@ export function processHTMLTextSection(payload: {
 
     htmlItems.forEach(htmlItem => {
         const helpDiv = createHTMLWrapperElement("div", pageContentSize);
+        /**
+         * Needed for correct height computation that includes margins
+         */
+        helpDiv.style.display = "flex";
+        helpDiv.style.flexDirection = "column";
         helpDiv.appendChild(htmlItem);
 
         const height = getOuterHeight(div);

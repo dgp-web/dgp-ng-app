@@ -1,5 +1,6 @@
 import { HTMLPageContent, PageContentSize, PagedHTMLComputationEngine } from "../models";
 import { createPagedHTMLComputationEngineState } from "./create-paged-html-computation-engine-state.function";
+import { getOuterHeight } from "./get-outer-height.function";
 
 export function extractLonelyHeadings(currentPage: HTMLPageContent): HTMLElement {
     const resultContainer = document.createElement("div");
@@ -16,7 +17,6 @@ export function extractLonelyHeadings(currentPage: HTMLPageContent): HTMLElement
         if (item.tagName === "H1") {
             lastHtmlItem.removeChild(item);
             itemsThatWantContent.push(item as HTMLElement);
-            console.log("Should remove h1");
         } else {
             isSearchActive = false;
         }
@@ -25,8 +25,6 @@ export function extractLonelyHeadings(currentPage: HTMLPageContent): HTMLElement
     if (itemsThatWantContent.length === 0) return null;
 
     itemsThatWantContent.forEach(x => resultContainer.appendChild(x));
-
-    console.log(resultContainer);
 
     return resultContainer;
 }
@@ -44,11 +42,22 @@ export function createPagedHTMLComputationEngine(payload: {
         engine.pages.push(engine.currentPage);
         state.currentPage = {itemsOnPage: []};
 
-        if (containerDiv) {
-            state.currentPage.itemsOnPage.push(containerDiv);
-        }
-
         state.currentPageRemainingHeight = payload.pageContentSize.height;
+
+        if (containerDiv) {
+            const bodyElement = document.querySelector("body");
+            /**
+             * Needed for correct height computation that includes margins
+             */
+            containerDiv.style.display = "flex";
+            containerDiv.style.flexDirection = "column";
+            bodyElement.append(containerDiv);
+            const containerHeight = getOuterHeight(containerDiv);
+            bodyElement.removeChild(containerDiv);
+
+            state.currentPage.itemsOnPage.push(containerDiv);
+            state.currentPageRemainingHeight -= containerHeight;
+        }
     };
 
     return engine as PagedHTMLComputationEngine;
