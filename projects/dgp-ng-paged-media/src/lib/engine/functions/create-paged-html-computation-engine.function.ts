@@ -10,16 +10,23 @@ export function createPagedHTMLComputationEngine(payload: {
 
     const engine: Partial<PagedHTMLComputationEngine> = state;
 
-    engine.finishPage = () => {
-        const lonelyItemsContainer = tryExtractLonelyItems(engine.currentPage);
+    engine.finishPage = (isLastPage?: boolean) => {
+        let lonelyItemsContainer: HTMLElement;
+        if (!isLastPage) {
+            lonelyItemsContainer = tryExtractLonelyItems(engine.currentPage);
+        }
 
         engine.pages.push(engine.currentPage);
         state.currentPage = {itemsOnPage: []};
 
         state.currentPageRemainingHeight = payload.pageContentSize.height;
 
-        tryAddLonelyItemsToNewPage({lonelyItemsContainer, state});
+        if (!isLastPage) {
+            tryAddLonelyItemsToNewPage({lonelyItemsContainer, state});
+        }
+
     };
+
 
     return engine as PagedHTMLComputationEngine;
 
