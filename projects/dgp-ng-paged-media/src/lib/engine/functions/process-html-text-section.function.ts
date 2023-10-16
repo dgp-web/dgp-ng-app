@@ -1,8 +1,8 @@
 import { HTMLSection, PageContentSize, PagedHTMLComputationEngine } from "../models";
-import { extractHTMLItemsFromSection } from "./extract-html-items-from-section.function";
 import { checkHeight } from "./check-height.function";
 import { getOuterHeight } from "./get-outer-height.function";
 import { createHTMLWrapperElement } from "./create-html-wrapper-element.function";
+import { extractHTMLItemsFromTextSection } from "./extract-html-items-from-text-section.function";
 
 export function processHTMLTextSection(payload: {
     readonly engine: PagedHTMLComputationEngine;
@@ -14,7 +14,7 @@ export function processHTMLTextSection(payload: {
     const pageContentSize = payload.pageContentSize;
 
     const refElement = htmlSection.nativeElement;
-    const htmlItems = extractHTMLItemsFromSection(htmlSection);
+    const htmlItems = extractHTMLItemsFromTextSection(htmlSection.nativeElement) as NodeListOf<HTMLElement>;
 
     let div = createHTMLWrapperElement("div", pageContentSize);
     refElement.classList.forEach(x => {
@@ -23,6 +23,11 @@ export function processHTMLTextSection(payload: {
 
     htmlItems.forEach(htmlItem => {
         const helpDiv = createHTMLWrapperElement("div", pageContentSize);
+        /**
+         * Needed for correct height computation that includes margins
+         */
+        helpDiv.style.display = "flex";
+        helpDiv.style.flexDirection = "column";
         helpDiv.appendChild(htmlItem);
 
         const height = getOuterHeight(div);

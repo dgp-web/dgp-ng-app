@@ -25,7 +25,7 @@ export function computePagedHTML(payload: {
 
     });
 
-    engine.finishPage();
+    engine.finishPage(true);
     return {pages: engine.pages};
 }
 
