@@ -29,11 +29,6 @@ import { AttributeMetadata } from "data-modeling";
                                 Content
                             </dgp-empty-state>
 
-                            <dgpw-empty-state title="Web Component"
-                                              mat-icon-name="info">
-                                Content
-                            </dgpw-empty-state>
-
                         </ng-template>
                         <ng-template dgp-docking-layout-container-label>
                             {{availableItemsLabel$ | async}}

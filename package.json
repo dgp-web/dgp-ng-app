@@ -51,7 +51,8 @@
         "dgp-labs:ng-serve": "ng serve dgp-labs --configuration development",
         "dgp-labs:publish": "firebase use dgp-labs && firebase deploy --only hosting:dgp-labs",
         "dgp-labs:test": "ng test dgp-labs",
-        "dgp-labs:test:prod": "ng test dgp-labs --single-run"
+        "dgp-labs:test:prod": "ng test dgp-labs --single-run",
+        "dgp-wcs-labs": "ng serve dgp-wcs-labs"
     },
     "private": true,
     "dependencies": {

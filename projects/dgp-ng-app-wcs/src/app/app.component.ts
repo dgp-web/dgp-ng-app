@@ -1,6 +1,6 @@
 import { Component, Injector } from "@angular/core";
 import { createCustomElement } from "@angular/elements";
-import { EmptyState, EmptyStateComponent } from "dgp-ng-app";
+import { EmptyState, EmptyStateComponent, HamburgerMenuEntryComponent } from "dgp-ng-app";
 
 @Component({
     selector: "dgp-ng-app-wcs",
@@ -16,6 +16,7 @@ export class AppComponent {
         private readonly injector: Injector
     ) {
         this.registerEmptyState();
+        this.registerHamburgerShell();
     }
 
     private registerEmptyState() {
@@ -23,5 +24,12 @@ export class AppComponent {
             injector: this.injector
         });
         customElements.define("dgpw-empty-state", EmptyStateElement);
+    }
+
+    private registerHamburgerShell() {
+        const HamburgerMenuEntryElement = createCustomElement<EmptyState>(HamburgerMenuEntryComponent, {
+            injector: this.injector
+        });
+        customElements.define("dgpw-hamburger-menu-entry", HamburgerMenuEntryElement);
     }
 }
