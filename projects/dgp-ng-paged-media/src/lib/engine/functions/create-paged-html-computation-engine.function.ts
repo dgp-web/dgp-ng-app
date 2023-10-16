@@ -2,6 +2,17 @@ import { HTMLPageContent, PageContentSize, PagedHTMLComputationEngine } from "..
 import { createPagedHTMLComputationEngineState } from "./create-paged-html-computation-engine-state.function";
 import { getOuterHeight } from "./get-outer-height.function";
 
+// TODO: don't remove if there are no other items on the page
+
+export function isLonelyItemCandidate(element: Element) {
+    return element.tagName === "H1"
+        || element.tagName === "H2"
+        || element.tagName === "H3"
+        || element.tagName === "H4"
+        || element.tagName === "H5"
+        || element.classList.contains("dgp-not-last-item-on-page");
+}
+
 export function extractLonelyHeadings(currentPage: HTMLPageContent): HTMLElement {
     const resultContainer = document.createElement("div");
 
@@ -10,16 +21,19 @@ export function extractLonelyHeadings(currentPage: HTMLPageContent): HTMLElement
     const itemsThatWantContent = new Array<HTMLElement>();
     let isSearchActive = true;
 
+    if (isLonelyItemCandidate(lastHtmlItem)) {
+        isSearchActive = false;
+
+        currentPage.itemsOnPage = currentPage.itemsOnPage
+            .filter((x, i) => i !== currentPage.itemsOnPage.length - 1);
+        itemsThatWantContent.push(lastHtmlItem as HTMLElement);
+    }
+
     for (let i = lastHtmlItem.children.length - 1; i >= 0; i--) {
         if (!isSearchActive) continue;
 
         const item = lastHtmlItem.children.item(i);
-        if (item.tagName === "H1"
-            || item.tagName === "H2"
-            || item.tagName === "H3"
-            || item.tagName === "H4"
-            || item.tagName === "H5"
-            || item.classList.contains("dgp-not-last-item-on-page")) {
+        if (isLonelyItemCandidate(item)) {
             lastHtmlItem.removeChild(item);
             itemsThatWantContent.push(item as HTMLElement);
         } else {
