@@ -14,7 +14,12 @@ export function extractLonelyHeadings(currentPage: HTMLPageContent): HTMLElement
         if (!isSearchActive) continue;
 
         const item = lastHtmlItem.children.item(i);
-        if (item.tagName === "H1") {
+        if (item.tagName === "H1"
+            || item.tagName === "H2"
+            || item.tagName === "H3"
+            || item.tagName === "H4"
+            || item.tagName === "H5"
+            || item.classList.contains("dgp-not-last-item-on-page")) {
             lastHtmlItem.removeChild(item);
             itemsThatWantContent.push(item as HTMLElement);
         } else {
