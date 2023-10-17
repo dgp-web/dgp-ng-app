@@ -42,7 +42,7 @@ export function processHTMLTableSection(payload: {
         table.classList.add(x);
     });
 
-    htmlItems.forEach(htmlItem => {
+    htmlItems.forEach((htmlItem, index) => {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
         helpTable.appendChild(htmlItem);
         refTable.classList.forEach(x => {
@@ -64,7 +64,8 @@ export function processHTMLTableSection(payload: {
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
-            if (refTable.classList.contains("dgp-repeated-table-header-row")) {
+            const isFirstPage = index === 0;
+            if (refTable.classList.contains("dgp-repeated-table-header-row") && !isFirstPage) {
                 const repeatedHeaderRow = document.createElement("tr");
                 repeatedHeaderRow.innerHTML = headerRow.innerHTML;
                 table.appendChild(repeatedHeaderRow);
