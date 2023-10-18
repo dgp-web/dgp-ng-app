@@ -440,6 +440,14 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.computeCurrentSplitterPositions(splitter);
     }
 
+    private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
+        this.updateCurrentSplitterPosition(splitter, offsetX, offsetY);
+    }
+
+    private onSplitterDragStop(splitter: SplitterComponent): void {
+        this.resizeSplitItems(splitter);
+    }
+
     private computeCurrentSplitterPositions(splitter: SplitterComponent) {
         const minSize = 10;
 
@@ -451,7 +459,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.currentSplitterMaxPosition = after - minSize;
     }
 
-    private onSplitterDrag(splitter: SplitterComponent, offsetX?: number, offsetY?: number): void {
+    private updateCurrentSplitterPosition(splitter: SplitterComponent, offsetX?: number, offsetY?: number) {
         const offset = this.isColumn ? offsetY : offsetX;
 
         if (offset > this.currentSplitterMinPosition && offset < this.currentSplitterMaxPosition) {
@@ -460,7 +468,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         }
     }
 
-    private onSplitterDragStop(splitter: SplitterComponent): void {
+    private resizeSplitItems(splitter: SplitterComponent) {
         /**
          * Get current size from view
          */
@@ -490,6 +498,5 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
             this.callDownwards("setSize");
         });
     }
-
 
 }
