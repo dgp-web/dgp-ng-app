@@ -57,7 +57,14 @@ export function processHTMLTableSection(payload: {
             table.appendChild(tableRow);
         } else {
             if (table.children.length > 0) {
-                engine.currentPage.itemsOnPage.push(table);
+                const body = table.querySelector("tbody");
+                if (body) {
+                    if (body.children.length > 0) {
+                        engine.currentPage.itemsOnPage.push(table);
+                    }
+                } else {
+                    engine.currentPage.itemsOnPage.push(table);
+                }
             }
             engine.finishPage();
 
@@ -70,7 +77,7 @@ export function processHTMLTableSection(payload: {
             if (refTable.classList.contains("dgp-repeated-table-header-row") && !isFirstRow) {
                 const repeatedHeaderRow = document.createElement("tr");
                 repeatedHeaderRow.innerHTML = headerRow.innerHTML;
-                // console.log("Repeating header row for index", rowIndex, repeatedHeaderRow);
+                console.log("Repeating header row for index", rowIndex, repeatedHeaderRow);
                 table.appendChild(repeatedHeaderRow);
             }
             table.appendChild(tableRow);
