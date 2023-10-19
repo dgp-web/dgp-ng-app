@@ -29,7 +29,7 @@ export function calculateAbsoluteSizes(payload: {
     if (isColumn) {
         totalHeight -= totalSplitterSize;
     } else {
-        totalWidth -= totalSplitterSize;
+        totalWidth -= totalSplitterSize; 
     }
 
     for (i = 0; i < itemConfigs.length; i++) {
