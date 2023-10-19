@@ -1,4 +1,4 @@
-import { HTMLSection, PagedHTMLContent, PageContentSize } from "../models";
+import { HTMLSection, PageContentSize, PagedHTMLContent } from "../models";
 import { Many } from "data-modeling";
 import { createPagedHTMLComputationEngine } from "./create-paged-html-computation-engine.function";
 import { processHTMLTextSection } from "./process-html-text-section.function";
