@@ -1,3 +1,3 @@
-export function extractHTMLItemsFromTableSection(payload: HTMLElement): any {
+export function extractHTMLItemsFromTableSection(payload: HTMLElement): NodeListOf<HTMLTableRowElement> {
     return payload.querySelectorAll("tr");
 }

@@ -34,7 +34,7 @@ export function processHTMLTableSection(payload: {
         headerRow = tryGetTableHeaderRow(refTable);
     }
 
-    const htmlItems = extractHTMLItemsFromTableSection(refTable);
+    const tableRows = extractHTMLItemsFromTableSection(refTable);
 
     let table = createHTMLWrapperElement("table", pageContentSize);
 
@@ -42,9 +42,9 @@ export function processHTMLTableSection(payload: {
         table.classList.add(x);
     });
 
-    htmlItems.forEach((htmlItem, index) => {
+    tableRows.forEach((tableRow, rowIndex) => {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
-        helpTable.appendChild(htmlItem);
+        helpTable.appendChild(tableRow);
         refTable.classList.forEach(x => {
             helpTable.classList.add(x);
         });
@@ -54,9 +54,11 @@ export function processHTMLTableSection(payload: {
         checkHeight({height, pageContentSize});
 
         if (height + height02 <= engine.currentPageRemainingHeight) {
-            table.appendChild(htmlItem);
+            table.appendChild(tableRow);
         } else {
-            engine.currentPage.itemsOnPage.push(table);
+            if (table.children.length > 0) {
+                engine.currentPage.itemsOnPage.push(table);
+            }
             engine.finishPage();
 
             document.body.removeChild(table);
@@ -64,13 +66,14 @@ export function processHTMLTableSection(payload: {
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
-            const isFirstPage = index === 0;
-            if (refTable.classList.contains("dgp-repeated-table-header-row") && !isFirstPage) {
+            const isFirstRow = rowIndex === 0;
+            if (refTable.classList.contains("dgp-repeated-table-header-row") && !isFirstRow) {
                 const repeatedHeaderRow = document.createElement("tr");
                 repeatedHeaderRow.innerHTML = headerRow.innerHTML;
+                // console.log("Repeating header row for index", rowIndex, repeatedHeaderRow);
                 table.appendChild(repeatedHeaderRow);
             }
-            table.appendChild(htmlItem);
+            table.appendChild(tableRow);
         }
 
         document.body.removeChild(helpTable);
