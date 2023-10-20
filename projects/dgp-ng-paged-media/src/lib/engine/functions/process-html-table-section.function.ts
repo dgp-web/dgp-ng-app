@@ -4,6 +4,7 @@ import { getOuterHeight } from "./get-outer-height.function";
 import { checkHeight } from "./check-height.function";
 import { moveHorizontalOverflowToRows } from "./table/move-horizontal-overflow-to-rows.function";
 import { extractHTMLItemsFromTableSection } from "./extract-html-items-from-table-section.function";
+import { isTableWithOnlyHeaderRow } from "./lonely-items/is-lonely-item-candidate.function";
 
 export function tryGetTableHeaderRow(payload: HTMLTableElement): HTMLTableRowElement {
     return payload.querySelector("tr");
@@ -34,7 +35,7 @@ export function processHTMLTableSection(payload: {
         headerRow = tryGetTableHeaderRow(refTable);
     }
 
-    const htmlItems = extractHTMLItemsFromTableSection(refTable);
+    const tableRows = extractHTMLItemsFromTableSection(refTable);
 
     let table = createHTMLWrapperElement("table", pageContentSize);
 
@@ -42,9 +43,9 @@ export function processHTMLTableSection(payload: {
         table.classList.add(x);
     });
 
-    htmlItems.forEach(htmlItem => {
+    tableRows.forEach((tableRow, rowIndex) => {
         const helpTable = createHTMLWrapperElement("table", pageContentSize);
-        helpTable.appendChild(htmlItem);
+        helpTable.appendChild(tableRow);
         refTable.classList.forEach(x => {
             helpTable.classList.add(x);
         });
@@ -54,22 +55,29 @@ export function processHTMLTableSection(payload: {
         checkHeight({height, pageContentSize});
 
         if (height + height02 <= engine.currentPageRemainingHeight) {
-            table.appendChild(htmlItem);
+            table.appendChild(tableRow);
         } else {
-            engine.currentPage.itemsOnPage.push(table);
-            engine.finishPage();
+            const hasOnlyHeaderRow = isTableWithOnlyHeaderRow(table);
+
+            if (!hasOnlyHeaderRow) engine.currentPage.itemsOnPage.push(table);
 
             document.body.removeChild(table);
+            engine.finishPage();
+
+            if (hasOnlyHeaderRow) engine.currentPage.itemsOnPage.push(table);
+
             table = createHTMLWrapperElement("table", pageContentSize);
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
-            if (refTable.classList.contains("dgp-repeated-table-header-row")) {
+
+            if (!hasOnlyHeaderRow && refTable.classList.contains("dgp-repeated-table-header-row")) {
                 const repeatedHeaderRow = document.createElement("tr");
                 repeatedHeaderRow.innerHTML = headerRow.innerHTML;
                 table.appendChild(repeatedHeaderRow);
             }
-            table.appendChild(htmlItem);
+
+            table.appendChild(tableRow);
         }
 
         document.body.removeChild(helpTable);

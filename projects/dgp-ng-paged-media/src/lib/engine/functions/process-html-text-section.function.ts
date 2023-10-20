@@ -37,7 +37,9 @@ export function processHTMLTextSection(payload: {
         if (height + height02 <= engine.currentPageRemainingHeight) {
             div.appendChild(htmlItem);
         } else {
-            engine.currentPage.itemsOnPage.push(div);
+            if (div.children.length > 0) {
+                engine.currentPage.itemsOnPage.push(div);
+            }
             engine.finishPage();
 
             document.body.removeChild(div);
