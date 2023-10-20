@@ -4,6 +4,7 @@ import { getOuterHeight } from "./get-outer-height.function";
 import { checkHeight } from "./check-height.function";
 import { moveHorizontalOverflowToRows } from "./table/move-horizontal-overflow-to-rows.function";
 import { extractHTMLItemsFromTableSection } from "./extract-html-items-from-table-section.function";
+import { isTableWithOnlyHeaderRow } from "./lonely-items/is-lonely-item-candidate.function";
 
 export function tryGetTableHeaderRow(payload: HTMLTableElement): HTMLTableRowElement {
     return payload.querySelector("tr");
@@ -56,23 +57,26 @@ export function processHTMLTableSection(payload: {
         if (height + height02 <= engine.currentPageRemainingHeight) {
             table.appendChild(tableRow);
         } else {
-            if (table.children.length > 0) {
-                engine.currentPage.itemsOnPage.push(table);
-            }
-            engine.finishPage();
+            const hasOnlyHeaderRow = isTableWithOnlyHeaderRow(table);
+
+            if (!hasOnlyHeaderRow) engine.currentPage.itemsOnPage.push(table);
 
             document.body.removeChild(table);
+            engine.finishPage();
+
+            if (hasOnlyHeaderRow) engine.currentPage.itemsOnPage.push(table);
+
             table = createHTMLWrapperElement("table", pageContentSize);
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
-            const isFirstRow = rowIndex === 0;
-            if (refTable.classList.contains("dgp-repeated-table-header-row") && !isFirstRow) {
+
+            if (!hasOnlyHeaderRow && refTable.classList.contains("dgp-repeated-table-header-row")) {
                 const repeatedHeaderRow = document.createElement("tr");
                 repeatedHeaderRow.innerHTML = headerRow.innerHTML;
-                // console.log("Repeating header row for index", rowIndex, repeatedHeaderRow);
                 table.appendChild(repeatedHeaderRow);
             }
+
             table.appendChild(tableRow);
         }
 
