@@ -4,6 +4,7 @@ import { getOuterHeight } from "./get-outer-height.function";
 import { checkHeight } from "./check-height.function";
 import { moveHorizontalOverflowToRows } from "./table/move-horizontal-overflow-to-rows.function";
 import { extractHTMLItemsFromTableSection } from "./extract-html-items-from-table-section.function";
+import { isTableWithOnlyHeaderRow } from "./lonely-items/is-lonely-item-candidate.function";
 
 export function tryGetTableHeaderRow(payload: HTMLTableElement): HTMLTableRowElement {
     return payload.querySelector("tr");
@@ -56,19 +57,25 @@ export function processHTMLTableSection(payload: {
         if (height + height02 <= engine.currentPageRemainingHeight) {
             table.appendChild(tableRow);
         } else {
+            // TODO: This needs to be worked on to handle
+            // - adding the first header row by default on the next page
+            // - only repeating header rows if the previous point has not been applied
             if (table.children.length > 0) {
-                const body = table.querySelector("tbody");
+                if (!isTableWithOnlyHeaderRow(table)) {
+                    engine.currentPage.itemsOnPage.push(table);
+                }
+              /*  const body = table.querySelector("tbody");
                 if (body) {
                     if (body.children.length > 0) {
                         engine.currentPage.itemsOnPage.push(table);
                     }
                 } else {
                     engine.currentPage.itemsOnPage.push(table);
-                }
+                }*/
             }
+            document.body.removeChild(table);
             engine.finishPage();
 
-            document.body.removeChild(table);
             table = createHTMLWrapperElement("table", pageContentSize);
             refTable.classList.forEach(x => {
                 table.classList.add(x);
