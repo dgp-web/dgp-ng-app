@@ -57,36 +57,26 @@ export function processHTMLTableSection(payload: {
         if (height + height02 <= engine.currentPageRemainingHeight) {
             table.appendChild(tableRow);
         } else {
-            // TODO: This needs to be worked on to handle
-            // - adding the first header row by default on the next page
-            // - only repeating header rows if the previous point has not been applied
-            if (table.children.length > 0) {
-                if (!isTableWithOnlyHeaderRow(table)) {
-                    engine.currentPage.itemsOnPage.push(table);
-                }
-              /*  const body = table.querySelector("tbody");
-                if (body) {
-                    if (body.children.length > 0) {
-                        engine.currentPage.itemsOnPage.push(table);
-                    }
-                } else {
-                    engine.currentPage.itemsOnPage.push(table);
-                }*/
-            }
+            const hasOnlyHeaderRow = isTableWithOnlyHeaderRow(table);
+
+            if (!hasOnlyHeaderRow) engine.currentPage.itemsOnPage.push(table);
+
             document.body.removeChild(table);
             engine.finishPage();
+
+            if (hasOnlyHeaderRow) engine.currentPage.itemsOnPage.push(table);
 
             table = createHTMLWrapperElement("table", pageContentSize);
             refTable.classList.forEach(x => {
                 table.classList.add(x);
             });
-            const isFirstRow = rowIndex === 0;
-            if (refTable.classList.contains("dgp-repeated-table-header-row") && !isFirstRow) {
+
+            if (!hasOnlyHeaderRow && refTable.classList.contains("dgp-repeated-table-header-row")) {
                 const repeatedHeaderRow = document.createElement("tr");
                 repeatedHeaderRow.innerHTML = headerRow.innerHTML;
-                console.log("Repeating header row for index", rowIndex, repeatedHeaderRow);
                 table.appendChild(repeatedHeaderRow);
             }
+
             table.appendChild(tableRow);
         }
 

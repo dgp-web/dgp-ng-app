@@ -16,7 +16,5 @@ export function isLonelyItemCandidate(element: Element) {
         || element.tagName === "H3"
         || element.tagName === "H4"
         || element.tagName === "H5"
-        // TODO: This can probably be removed since those are not added
-        || isTableWithOnlyHeaderRow(element)
         || element.classList.contains("dgp-not-last-item-on-page");
 }
