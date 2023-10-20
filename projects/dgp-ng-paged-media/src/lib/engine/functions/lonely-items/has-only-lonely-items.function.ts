@@ -6,6 +6,7 @@ export function hasOnlyLonelyItems(currentPage: HTMLPageContent): boolean {
 
     return currentPage.itemsOnPage.every(itemOnPage => {
 
+        // TODO: check if we have a table with only one row with THs are lonely
         if (isLonelyItemCandidate(itemOnPage)) return true;
         if (areAllHtmlChildrenLonely(itemOnPage)) return true;
 
