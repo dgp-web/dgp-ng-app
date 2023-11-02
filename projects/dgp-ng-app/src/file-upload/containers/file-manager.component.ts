@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject, } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { addFilesViaDrop, downloadFile, hideDropTarget, removeFile, showDropTarget } from "../actions";
+import { addFilesViaDrop, downloadFile, removeFile } from "../actions";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "../models";
 import {
     canOpenFileDrawer,
@@ -86,30 +86,7 @@ import { DgpContainer } from "../../utils/container.component-base";
         </ng-container>
 
         <ng-template #dropTarget>
-
-            <dgp-empty-state title="Drop file here"
-                             matIconName="get_app"
-                             class="drop-target">
-                Drop one or more files into this zone to upload them.
-                <br>
-                You can preview them afterward.
-                <br>
-                <button mat-button
-                        [disabled]="isAddFilesDisabled$ | async"
-                        (click)="filePicker.click()"
-                        style="display: flex; max-width: 480px; width: 100%; justify-content: center; margin-top: 16px;">
-                    <mat-icon style="margin-right: 4px;">open_in_new</mat-icon>
-                    Choose file via picker
-                </button>
-
-                <input hidden
-                       multiple
-                       (change)="onFileSelected($event)"
-                       type="file"
-                       #filePicker>
-
-            </dgp-empty-state>
-
+            <dgp-current-file-drop-zone></dgp-current-file-drop-zone>
         </ng-template>
     `,
     styles: [`
@@ -121,15 +98,10 @@ import { DgpContainer } from "../../utils/container.component-base";
             height: 100%;
         }
 
-        .drop-target {
-            border: 2px dashed white;
-            max-height: 100%;
-        }
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileManagerComponent extends DgpContainer<FileUploadState> implements AfterViewInit, OnDestroy {
+export class FileManagerComponent extends DgpContainer<FileUploadState> {
 
     isMaximized = false;
 
@@ -140,50 +112,13 @@ export class FileManagerComponent extends DgpContainer<FileUploadState> implemen
     readonly isAddFilesDisabled$ = this.select(isAddFilesDisabled);
     readonly canOpenFileDrawer$ = this.select(canOpenFileDrawer);
 
-    readonly dragEnterHandler = (e) => {
-        e.preventDefault();
-        this.dispatch(showDropTarget());
-    };
-
-    readonly dragLeaveHandler = (e) => {
-        e.preventDefault();
-        this.dispatch(hideDropTarget());
-    };
-
-    readonly dragOverHandler = (e) => {
-        e.preventDefault();
-    };
-
-    readonly dropHandler = (e) => {
-        e.preventDefault();
-
-        const fileItems = getFileItemsFromFileList(e.dataTransfer.files);
-        this.store.dispatch(hideDropTarget());
-        this.store.dispatch(addFilesViaDrop({fileItems}));
-    };
-
     constructor(
         protected readonly store: Store<FileUploadState>,
-        private readonly elementRef: ElementRef,
         private readonly dialogRef: MatDialogRef<FileManagerComponent>,
         @Inject(FILE_UPLOAD_CONFIG)
         private readonly moduleConfig: FileUploadConfig
     ) {
         super(store);
-    }
-
-    ngAfterViewInit(): void {
-        this.elementRef.nativeElement.addEventListener("dragenter", this.dragEnterHandler);
-        this.elementRef.nativeElement.addEventListener("dragleave", this.dragLeaveHandler);
-        this.elementRef.nativeElement.addEventListener("drop", this.dropHandler);
-        this.elementRef.nativeElement.addEventListener("dragover", this.dragOverHandler);
-    }
-
-    ngOnDestroy(): void {
-        this.elementRef.nativeElement.removeEventListener("dragenter", this.dragEnterHandler);
-        this.elementRef.nativeElement.removeEventListener("dragleave", this.dragLeaveHandler);
-        this.elementRef.nativeElement.removeEventListener("drop", this.dropHandler);
-        this.elementRef.nativeElement.removeEventListener("dragover", this.dragOverHandler);
     }
 
     removeFileItem(fileItem: FileItem) {

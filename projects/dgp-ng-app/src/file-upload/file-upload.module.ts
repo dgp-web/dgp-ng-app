@@ -21,6 +21,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
+import { CurrentFileDropZoneComponent } from "./containers/current-file-drop-zone.component";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -57,7 +58,8 @@ export const fileUploadReducerProvider: FactoryProvider = {
     declarations: [
         DragFileListenerDirective,
         OpenFileManagerViaShortKeyDirective,
-        FileManagerComponent
+        FileManagerComponent,
+        CurrentFileDropZoneComponent
     ],
     exports: [
         DragFileListenerDirective,
