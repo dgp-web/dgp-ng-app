@@ -96,8 +96,8 @@ export * from "./file-viewer/file-viewer.module";
 
 // file-upload
 export * from "./file-upload/actions";
-export * from "./file-upload/directive/drag-file-listener.directive";
-export * from "./file-upload/directive/open-file-manager-via-short-key.directive";
+export * from "./file-upload/directives/drag-file-listener.directive";
+export * from "./file-upload/directives/open-file-manager-via-short-key.directive";
 export * from "./file-upload/functions";
 export * from "./file-upload/models";
 export * from "./file-upload/selectors";

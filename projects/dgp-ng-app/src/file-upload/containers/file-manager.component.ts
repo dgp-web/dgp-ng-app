@@ -1,44 +1,21 @@
-import { ChangeDetectionStrategy, Component, } from "@angular/core";
-import { addFilesViaDrop } from "../actions";
+import { Component, } from "@angular/core";
 import { FileUploadState } from "../models";
-import { canOpenFileDrawer, getSelectedFileItem, isAddFilesDisabled, isDropTargetVisible } from "../selectors";
-import { getFileItemsFromFileList } from "../functions";
+import { canOpenFileDrawer, getSelectedFileItem, isDropTargetVisible } from "../selectors";
 import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({
     selector: "dgp-file-manager",
     template: `
-
         <ng-container *ngIf="(isDropTargetVisible$ | async) === false; else dropTarget">
 
-            <!-- dgp-file-manager-dialog-header -->
-            <div style="display: flex; align-items: center">
-                <dgp-spacer></dgp-spacer>
-                <dgp-maximize-dialog-button></dgp-maximize-dialog-button>
-                <dgp-close-dialog-button></dgp-close-dialog-button>
-            </div>
+            <dgp-file-manager-dialog-header></dgp-file-manager-dialog-header>
 
             <dgp-list-details-page *ngIf="canOpenFileDrawer$ | async; else singleFileMode">
 
                 <ng-container dgp-list-details-page-menu>
                     <dgp-current-file-item-list></dgp-current-file-item-list>
                     <dgp-spacer></dgp-spacer>
-                    <mat-nav-list *ngIf="!(isAddFilesDisabled$ | async)">
-                        <a mat-list-item
-                           (click)="filePicker.click()">
-                            <mat-icon>
-                                open_in_new
-                            </mat-icon>
-                            <div matLine>
-                                Choose file via picker
-                            </div>
-                            <input hidden
-                                   multiple
-                                   (change)="onFileSelected($event)"
-                                   type="file"
-                                   #filePicker>
-                        </a>
-                    </mat-nav-list>
+                    <dgp-current-add-file-list-item></dgp-current-add-file-list-item>
                 </ng-container>
 
                 <dgp-file-viewer [fileItem]="selectedFileItem$ | async"></dgp-file-viewer>
@@ -61,22 +38,12 @@ import { DgpContainer } from "../../utils/container.component-base";
             width: 100%;
             height: 100%;
         }
-
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    `]
 })
 export class FileManagerComponent extends DgpContainer<FileUploadState> {
 
-    isMaximized = false;
-
     readonly isDropTargetVisible$ = this.select(isDropTargetVisible);
     readonly selectedFileItem$ = this.select(getSelectedFileItem);
-    readonly isAddFilesDisabled$ = this.select(isAddFilesDisabled);
     readonly canOpenFileDrawer$ = this.select(canOpenFileDrawer);
-
-    onFileSelected(e) {
-        const fileItems = getFileItemsFromFileList(e.target.files);
-        this.dispatch(addFilesViaDrop({fileItems}));
-    }
 
 }
