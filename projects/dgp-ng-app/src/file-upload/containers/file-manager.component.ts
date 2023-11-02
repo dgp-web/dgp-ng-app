@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Inject, } from "@angular/core";
-import { Store } from "@ngrx/store";
+import { ChangeDetectionStrategy, Component, } from "@angular/core";
 import { addFilesViaDrop, downloadFile, removeFile } from "../actions";
-import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "../models";
+import { FileUploadState } from "../models";
 import {
     canOpenFileDrawer,
     getFileItemListModel,
@@ -11,7 +10,6 @@ import {
     isRemoveFilesDisabled
 } from "../selectors";
 import { getFileItemsFromFileList } from "../functions";
-import { MatDialogRef } from "@angular/material/dialog";
 import { FileItem } from "../../file-viewer/models";
 import { DgpContainer } from "../../utils/container.component-base";
 
@@ -24,28 +22,7 @@ import { DgpContainer } from "../../utils/container.component-base";
             <!-- dgp-file-manager-dialog-header -->
             <div style="display: flex; align-items: center">
                 <dgp-spacer></dgp-spacer>
-                <!-- TODO: Extract dgp-maximize-button -->
-                <button *ngIf="!isMaximized"
-                        class="--compact"
-                        mat-icon-button
-                        (click)="maximize()"
-                        matTooltip="Maximize"
-                        dgpActionShortcut
-                        shortcutKey="M"
-                        [requireShift]="true">
-                    <mat-icon>crop_din</mat-icon>
-                </button>
-                <!-- TODO: Extract dgp-minimize-button -->
-                <button *ngIf="isMaximized"
-                        class="--compact"
-                        mat-icon-button
-                        (click)="minimize()"
-                        matTooltip="Minimize"
-                        dgpActionShortcut
-                        shortcutKey="M"
-                        [requireShift]="true">
-                    <mat-icon>filter_none</mat-icon>
-                </button>
+                <dgp-maximize-dialog-button></dgp-maximize-dialog-button>
                 <dgp-close-dialog-button></dgp-close-dialog-button>
             </div>
 
@@ -111,15 +88,6 @@ export class FileManagerComponent extends DgpContainer<FileUploadState> {
     readonly isAddFilesDisabled$ = this.select(isAddFilesDisabled);
     readonly canOpenFileDrawer$ = this.select(canOpenFileDrawer);
 
-    constructor(
-        protected readonly store: Store<FileUploadState>,
-        private readonly dialogRef: MatDialogRef<FileManagerComponent>,
-        @Inject(FILE_UPLOAD_CONFIG)
-        private readonly moduleConfig: FileUploadConfig
-    ) {
-        super(store);
-    }
-
     removeFileItem(fileItem: FileItem) {
         this.dispatch(removeFile({fileItem}));
     }
@@ -133,13 +101,4 @@ export class FileManagerComponent extends DgpContainer<FileUploadState> {
         this.dispatch(addFilesViaDrop({fileItems}));
     }
 
-    maximize() {
-        this.dialogRef.addPanelClass(this.moduleConfig.maximizedClass);
-        this.isMaximized = true;
-    }
-
-    minimize() {
-        this.dialogRef.removePanelClass(this.moduleConfig.maximizedClass);
-        this.isMaximized = false;
-    }
 }
