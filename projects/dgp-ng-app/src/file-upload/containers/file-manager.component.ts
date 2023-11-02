@@ -21,11 +21,12 @@ import { DgpContainer } from "../../utils/container.component-base";
 
         <ng-container *ngIf="(isDropTargetVisible$ | async) === false; else dropTarget">
 
-            <h2 mat-dialog-title
-                style="display: flex; align-items: center">
-                File manager
+            <!-- dgp-file-manager-dialog-header -->
+            <div style="display: flex; align-items: center">
                 <dgp-spacer></dgp-spacer>
+                <!-- TODO: Extract dgp-maximize-button -->
                 <button *ngIf="!isMaximized"
+                        class="--compact"
                         mat-icon-button
                         (click)="maximize()"
                         matTooltip="Maximize"
@@ -34,7 +35,9 @@ import { DgpContainer } from "../../utils/container.component-base";
                         [requireShift]="true">
                     <mat-icon>crop_din</mat-icon>
                 </button>
+                <!-- TODO: Extract dgp-minimize-button -->
                 <button *ngIf="isMaximized"
+                        class="--compact"
                         mat-icon-button
                         (click)="minimize()"
                         matTooltip="Minimize"
@@ -43,12 +46,8 @@ import { DgpContainer } from "../../utils/container.component-base";
                         [requireShift]="true">
                     <mat-icon>filter_none</mat-icon>
                 </button>
-                <button mat-icon-button
-                        mat-dialog-close
-                        matTooltip="Close dialog">
-                    <mat-icon>close</mat-icon>
-                </button>
-            </h2>
+                <dgp-close-dialog-button></dgp-close-dialog-button>
+            </div>
 
             <dgp-list-details-page *ngIf="canOpenFileDrawer$ | async; else singleFileMode">
 

@@ -23,6 +23,7 @@ import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
 import { CurrentFileDropZoneComponent } from "./containers/current-file-drop-zone.component";
 import { FileDropZoneComponent } from "./containers/file-drop-zone.component";
+import { components } from "./components/components";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -61,7 +62,8 @@ export const fileUploadReducerProvider: FactoryProvider = {
         OpenFileManagerViaShortKeyDirective,
         FileManagerComponent,
         CurrentFileDropZoneComponent,
-        FileDropZoneComponent
+        FileDropZoneComponent,
+        ...components
     ],
     exports: [
         DragFileListenerDirective,
