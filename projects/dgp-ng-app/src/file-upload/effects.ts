@@ -7,75 +7,52 @@ import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FILE_UPLOAD_CONFIG, FileUploadConfig } from "./models";
+import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "./models";
 import { getAllDirectories } from "./selectors";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
+import { selectFileItem } from "../file-viewer/select-file-item.action";
+import { DgpContainer } from "../utils/container.component-base";
+import { FileSystem } from "./file-system.model";
+import { cacheFileSystem } from "./cache-file-system.action";
+import { openFileItemInNewTab } from "./open-file-item-in-new-tab.function";
 
 @Injectable()
-export class FileUploadEffects {
-
+export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
     readonly openFileManagerOverlay$ = createEffect(() => this.actions$.pipe(
         ofType(openFileManagerOverlay),
         tap(action => {
-
             if (action.fileItems) {
-                this.store.dispatch(
-                    fileUploadEntityStore.actions.composeEntityActions({
-                        set: {
-                            fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId),
-                            directory: createKVSFromArray(action.directories, x => x.directoryId),
-                        }
-                    })
-                );
+                this.dispatch(cacheFileSystem(action as FileSystem));
             }
 
             if (action.config) {
-                this.store.dispatch(setConfig({
-                        config: action.config
-                    })
-                );
+                this.dispatch(setConfig({config: action.config}));
             }
-
         }),
-        switchMap(action => {
-
-            const dialogRef = this.matDialog
-                .open(FileManagerComponent, action.config ? action.config.fileManagerMatDialogConfig : this.moduleConfig.fileManagerMatDialogConfig);
-
-            if (action.selectedFileItemId) {
-                this.store.dispatch(
-                    fileUploadEntityStore.actions.composeEntityActions({
-                        select: {
-                            fileItem: [action.selectedFileItemId]
-                        }
-                    })
-                );
-            }
-
-            return dialogRef.afterClosed();
-
-        }),
+        switchMap(action => this.matDialog.open(
+            FileManagerComponent,
+            action.config
+                ? action.config.fileManagerMatDialogConfig
+                : this.config.fileManagerMatDialogConfig
+        ).afterClosed()),
         map(() => closeFileManager())
     ));
-
 
     readonly addFilesViaDrop$ = createEffect(() => this.actions$.pipe(
         ofType(addFilesViaDrop),
         switchMap(action => {
-            return this.store.select(getAllDirectories).pipe(
+            return this.select(getAllDirectories).pipe(
                 first(),
                 map(directories => {
                     if (directories.length > 0) {
 
                         const directory = directories[0];
 
-                        this.router.navigate([], {
-                            queryParams: {
-                                fileItemId: action.fileItems[0].fileItemId
-                            }
-                        });
+                        this.dispatch(selectFileItem({
+                            fileItemId: action.fileItems[0].fileItemId
+                        }));
+
 
                         return fileUploadEntityStore.actions.composeEntityActions({
                             add: {
@@ -94,11 +71,9 @@ export class FileUploadEffects {
 
                     } else {
 
-                        this.router.navigate([], {
-                            queryParams: {
-                                fileItemId: action.fileItems[0].fileItemId
-                            }
-                        });
+                        this.dispatch(selectFileItem({
+                            fileItemId: action.fileItems[0].fileItemId
+                        }));
 
                         return fileUploadEntityStore.actions.composeEntityActions({
                             add: {
@@ -131,28 +106,20 @@ export class FileUploadEffects {
 
     readonly downloadFile$ = createEffect(() => this.actions$.pipe(
         ofType(downloadFile),
-        tap(x => {
-
-            const a = document.createElement("a");
-            a.href = x.fileItem.url;
-            a.target = "_blank";
-            a.click();
-
-        })
+        tap(x => openFileItemInNewTab(x.fileItem))
     ), withoutDispatch);
 
     constructor(
         private readonly actions$: Actions,
-        private readonly store: Store<any>,
+        protected readonly store: Store<FileUploadState>,
         private readonly matDialog: MatDialog,
-        private readonly activatedRoute: ActivatedRoute,
-        private readonly router: Router,
         @Inject(FILE_UPLOAD_CONFIG)
-        private readonly moduleConfig: FileUploadConfig
+        private readonly config: FileUploadConfig
     ) {
-        this.store.dispatch(setConfig({
-            config: moduleConfig
-        }));
+        super(store);
+
+        this.dispatch(setConfig({config}));
     }
 
 }
+

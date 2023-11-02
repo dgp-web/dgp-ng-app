@@ -4,9 +4,9 @@ import { getFileItemSizeLabel } from "../functions";
 import { KVS } from "entity-store";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../../file-upload/models";
-import { fileUploadEntityStore } from "../../file-upload/store";
 import { getSelectedFileItem } from "../../file-upload/selectors";
 import { map } from "rxjs/operators";
+import { selectFileItem } from "../select-file-item.action";
 
 export interface FileItemListModel {
     readonly fileItemKVS: KVS<FileItem>;
@@ -115,13 +115,7 @@ export class FileItemListComponent extends DgpContainer<FileUploadState> {
     }
 
     selectFileItem(fileItemId: string) {
-        this.dispatch(
-            fileUploadEntityStore.actions.composeEntityActions({
-                select: {
-                    fileItem: [fileItemId]
-                }
-            })
-        );
+        this.dispatch(selectFileItem({fileItemId}));
     }
 
     isSelected$(fileItemId: string) {
@@ -130,3 +124,4 @@ export class FileItemListComponent extends DgpContainer<FileUploadState> {
         );
     }
 }
+

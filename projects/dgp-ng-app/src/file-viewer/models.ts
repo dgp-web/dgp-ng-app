@@ -1,7 +1,10 @@
 import { InjectionToken, Type } from "@angular/core";
 
-export interface FileItem {
+export interface FileItemId {
     readonly fileItemId: string;
+}
+
+export interface FileItem extends FileItemId {
     readonly fileName: string;
     readonly extension: string;
     /**
