@@ -4,6 +4,7 @@ import { FileDropZoneComponent } from "./file-drop-zone.component";
 import { CurrentFileItemListComponent } from "./current-file-item-list.component";
 import { CurrentAddFileListItemComponent } from "./current-add-file-list-item.component";
 import { FileManagerDialogHeaderComponent } from "./file-manager-dialog-header.component";
+import { CurrentFileViewerComponent } from "./current-file-viewer.component";
 
 export const containers = [
     FileManagerComponent,
@@ -11,5 +12,6 @@ export const containers = [
     FileDropZoneComponent,
     CurrentFileItemListComponent,
     CurrentAddFileListItemComponent,
-    FileManagerDialogHeaderComponent
+    FileManagerDialogHeaderComponent,
+    CurrentFileViewerComponent
 ];
