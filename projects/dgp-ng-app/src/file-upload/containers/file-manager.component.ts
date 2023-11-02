@@ -11,17 +11,10 @@ import { DgpContainer } from "../../utils/container.component-base";
 
         <ng-template #fileViewer>
             <ng-container *ngIf="canOpenFileDrawer$ | async; else singleFileViewer">
-
                 <dgp-file-manager-dialog-header></dgp-file-manager-dialog-header>
 
                 <dgp-list-details-page *ngIf="canOpenFileDrawer$ | async; ">
-
-                    <ng-container dgp-list-details-page-menu>
-                        <dgp-current-file-item-list></dgp-current-file-item-list>
-                        <dgp-spacer></dgp-spacer>
-                        <dgp-current-add-file-list-item></dgp-current-add-file-list-item>
-                    </ng-container>
-
+                    <dgp-current-file-item-list dgp-list-details-page-menu></dgp-current-file-item-list>
                     <dgp-current-file-viewer></dgp-current-file-viewer>
                 </dgp-list-details-page>
             </ng-container>

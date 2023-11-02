@@ -12,6 +12,8 @@ import { downloadFile, removeFile } from "../actions";
                             (fileItemRemoved)="removeFileItem($event)"
                             (fileItemDownloaded)="downloadFileItem($event)"
                             [disabled]="isRemoveFilesDisabled$ | async"></dgp-file-item-list>
+        <dgp-spacer></dgp-spacer>
+        <dgp-current-add-file-list-item></dgp-current-add-file-list-item>
     `
 })
 export class CurrentFileItemListComponent extends DgpContainer<FileUploadState> {
