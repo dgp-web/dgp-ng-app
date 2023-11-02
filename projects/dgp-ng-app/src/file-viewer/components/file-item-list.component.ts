@@ -2,6 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Directory, FileItem } from "../models";
 import { getFileItemSizeLabel } from "../functions";
 import { KVS } from "entity-store";
+import { DgpContainer } from "../../utils/container.component-base";
+import { FileUploadState } from "../../file-upload/models";
+import { fileUploadEntityStore } from "../../file-upload/store";
+import { getSelectedFileItem } from "../../file-upload/selectors";
+import { map } from "rxjs/operators";
 
 export interface FileItemListModel {
     readonly fileItemKVS: KVS<FileItem>;
@@ -13,17 +18,13 @@ export interface FileItemListModel {
     template: `
         <mat-nav-list style="overflow: auto;">
             <ng-container *ngFor="let directory of model.directories">
-                <h3 mat-subheader>{{ directory.label }}</h3>
-
                 <a *ngFor="let fileItemId of directory.fileItemIds"
                    mat-list-item
-                   [routerLink]="[]"
-                   routerLinkActive="dgp-list-item --selected"
-                   [queryParams]="{ fileItemId: model.fileItemKVS[fileItemId].fileItemId }"
-                   queryParamsHandling="merge"
+                   (click)="selectFileItem(fileItemId)"
                    [matTooltip]="model.fileItemKVS[fileItemId].fileName"
                    matTooltipShowDelay="500"
-                   (keydown.delete)="removeFileItem(model.fileItemKVS[fileItemId])">
+                   class="dgp-list-item"
+                   [class.--selected]="isSelected$(fileItemId) | async">
                     <mat-icon matListIcon>
                         insert_drive_file
                     </mat-icon>
@@ -85,7 +86,7 @@ export interface FileItemListModel {
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileItemListComponent {
+export class FileItemListComponent extends DgpContainer<FileUploadState> {
 
     @Input()
     disabled: boolean;
@@ -113,4 +114,19 @@ export class FileItemListComponent {
         this.fileItemDownloaded.emit(fileItem);
     }
 
+    selectFileItem(fileItemId: string) {
+        this.dispatch(
+            fileUploadEntityStore.actions.composeEntityActions({
+                select: {
+                    fileItem: [fileItemId]
+                }
+            })
+        );
+    }
+
+    isSelected$(fileItemId: string) {
+        return this.select(getSelectedFileItem).pipe(
+            map(x => x?.fileItemId === fileItemId)
+        );
+    }
 }
