@@ -2,13 +2,13 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Inject, Injectable } from "@angular/core";
 import { addFilesViaDrop, closeFileManager, downloadFile, openFileManagerOverlay, removeFile, setConfig } from "./actions";
 import { Store } from "@ngrx/store";
-import { distinctUntilChanged, first, map, switchMap, tap } from "rxjs/operators";
+import { first, map, switchMap, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadQueryParams } from "./models";
+import { FILE_UPLOAD_CONFIG, FileUploadConfig } from "./models";
 import { getAllDirectories } from "./selectors";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
 
@@ -116,29 +116,6 @@ export class FileUploadEffects {
                     }
                 })
             );
-        })
-    ));
-
-
-    readonly selectFileItem$ = createEffect(() => this.activatedRoute.queryParams.pipe(
-        map((x: FileUploadQueryParams) => x.fileItemId),
-        distinctUntilChanged(),
-        map(fileItemId => {
-
-            if (!fileItemId) {
-                return fileUploadEntityStore.actions.composeEntityActions({
-                    select: {
-                        fileItem: []
-                    }
-                });
-            }
-
-            return fileUploadEntityStore.actions.composeEntityActions({
-                select: {
-                    fileItem: [fileItemId]
-                }
-            });
-
         })
     ));
 
