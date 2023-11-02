@@ -10,7 +10,8 @@ import { getSelectedFileItem } from "../../file-upload/selectors";
     selector: "dgp-file-item-list",
     template: `
         <dgp-inspector style="overflow: auto;"
-                       [responsive]="false">
+                       [responsive]="false"
+                       [showFieldIcons]="true">
             <dgp-inspector-section [expandable]="false"
                                    label="Files">
                 <ng-container actions>
@@ -28,16 +29,18 @@ import { getSelectedFileItem } from "../../file-upload/selectors";
 
                 <ng-container *ngFor="let directory of model.directories">
                     <dgp-inspector-item
-                        *ngFor="let fileItemId of directory.fileItemIds"
-                        label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"
-                        matIconName="insert_drive_file"
-                        dgpActionContext
-                        actionContextType="fileItem"
-                        [actionContextValue]="model.fileItemKVS[fileItemId]"
-                        description="{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}">
+                            *ngFor="let fileItemId of directory.fileItemIds"
+                            label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"
+                            matIconName="insert_drive_file"
+                            dgpActionContext
+                            actionContextType="fileItem"
+                            [actionContextValue]="model.fileItemKVS[fileItemId]"
+                            description="{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}">
 
                         <dgp-spacer></dgp-spacer>
-                        {{ getFileItemSize(model.fileItemKVS[fileItemId]) }}
+                        <small>
+                            {{ getFileItemSize(model.fileItemKVS[fileItemId]) }}
+                        </small>
 
                     </dgp-inspector-item>
 
