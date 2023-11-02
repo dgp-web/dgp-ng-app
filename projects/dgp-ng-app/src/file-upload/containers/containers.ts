@@ -5,6 +5,7 @@ import { CurrentFileItemListComponent } from "./current-file-item-list.component
 import { CurrentAddFileListItemComponent } from "./current-add-file-list-item.component";
 import { FileManagerDialogHeaderComponent } from "./file-manager-dialog-header.component";
 import { CurrentFileViewerComponent } from "./current-file-viewer.component";
+import { CurrentListFileViewerComponent } from "./current-list-file-viewer.component";
 
 export const containers = [
     FileManagerComponent,
@@ -13,5 +14,6 @@ export const containers = [
     CurrentFileItemListComponent,
     CurrentAddFileListItemComponent,
     FileManagerDialogHeaderComponent,
-    CurrentFileViewerComponent
+    CurrentFileViewerComponent,
+    CurrentListFileViewerComponent
 ];
