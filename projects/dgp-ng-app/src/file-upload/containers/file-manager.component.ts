@@ -1,16 +1,8 @@
 import { ChangeDetectionStrategy, Component, } from "@angular/core";
-import { addFilesViaDrop, downloadFile, removeFile } from "../actions";
+import { addFilesViaDrop } from "../actions";
 import { FileUploadState } from "../models";
-import {
-    canOpenFileDrawer,
-    getFileItemListModel,
-    getSelectedFileItem,
-    isAddFilesDisabled,
-    isDropTargetVisible,
-    isRemoveFilesDisabled
-} from "../selectors";
+import { canOpenFileDrawer, getSelectedFileItem, isAddFilesDisabled, isDropTargetVisible } from "../selectors";
 import { getFileItemsFromFileList } from "../functions";
-import { FileItem } from "../../file-viewer/models";
 import { DgpContainer } from "../../utils/container.component-base";
 
 @Component({
@@ -29,10 +21,7 @@ import { DgpContainer } from "../../utils/container.component-base";
             <dgp-list-details-page *ngIf="canOpenFileDrawer$ | async; else singleFileMode">
 
                 <ng-container dgp-list-details-page-menu>
-                    <dgp-file-item-list [model]="fileItemListModel$ | async"
-                                        (fileItemRemoved)="removeFileItem($event)"
-                                        (fileItemDownloaded)="downloadFileItem($event)"
-                                        [disabled]="isRemoveFilesDisabled$ | async"></dgp-file-item-list>
+                    <dgp-current-file-item-list></dgp-current-file-item-list>
                     <dgp-spacer></dgp-spacer>
                     <mat-nav-list *ngIf="!(isAddFilesDisabled$ | async)">
                         <a mat-list-item
@@ -53,7 +42,6 @@ import { DgpContainer } from "../../utils/container.component-base";
                 </ng-container>
 
                 <dgp-file-viewer [fileItem]="selectedFileItem$ | async"></dgp-file-viewer>
-
             </dgp-list-details-page>
 
             <ng-template #singleFileMode>
@@ -82,19 +70,9 @@ export class FileManagerComponent extends DgpContainer<FileUploadState> {
     isMaximized = false;
 
     readonly isDropTargetVisible$ = this.select(isDropTargetVisible);
-    readonly fileItemListModel$ = this.select(getFileItemListModel);
     readonly selectedFileItem$ = this.select(getSelectedFileItem);
-    readonly isRemoveFilesDisabled$ = this.select(isRemoveFilesDisabled);
     readonly isAddFilesDisabled$ = this.select(isAddFilesDisabled);
     readonly canOpenFileDrawer$ = this.select(canOpenFileDrawer);
-
-    removeFileItem(fileItem: FileItem) {
-        this.dispatch(removeFile({fileItem}));
-    }
-
-    downloadFileItem(fileItem: FileItem) {
-        this.dispatch(downloadFile({fileItem}));
-    }
 
     onFileSelected(e) {
         const fileItems = getFileItemsFromFileList(e.target.files);

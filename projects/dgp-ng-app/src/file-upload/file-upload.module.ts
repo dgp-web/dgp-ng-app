@@ -24,6 +24,7 @@ import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
 import { CurrentFileDropZoneComponent } from "./containers/current-file-drop-zone.component";
 import { FileDropZoneComponent } from "./containers/file-drop-zone.component";
 import { components } from "./components/components";
+import { CurrentFileItemListComponent } from "./containers/current-file-item-list.component";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -63,6 +64,7 @@ export const fileUploadReducerProvider: FactoryProvider = {
         FileManagerComponent,
         CurrentFileDropZoneComponent,
         FileDropZoneComponent,
+        CurrentFileItemListComponent,
         ...components
     ],
     exports: [
