@@ -1,7 +1,7 @@
 import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { EffectsModule } from "@ngrx/effects";
-import { FileUploadEffects } from "./effects";
+import { FileUploadEffects } from "./file-upload.effects";
 import { MatDialogModule } from "@angular/material/dialog";
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";

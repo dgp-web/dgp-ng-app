@@ -1,80 +1,50 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { Directory, FileItem } from "../models";
+import { FileItem, FileItemListModel } from "../models";
 import { getFileItemSizeLabel } from "../functions";
-import { KVS } from "entity-store";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../../file-upload/models";
+import { firstAsPromise } from "../../utils/first-as-promise";
 import { getSelectedFileItem } from "../../file-upload/selectors";
-import { map } from "rxjs/operators";
-import { selectFileItem } from "../select-file-item.action";
-
-export interface FileItemListModel {
-    readonly fileItemKVS: KVS<FileItem>;
-    readonly directories: ReadonlyArray<Directory>;
-}
 
 @Component({
     selector: "dgp-file-item-list",
     template: `
-        <mat-nav-list style="overflow: auto;">
-            <ng-container *ngFor="let directory of model.directories">
-                <a *ngFor="let fileItemId of directory.fileItemIds"
-                   mat-list-item
-                   (click)="selectFileItem(fileItemId)"
-                   [matTooltip]="model.fileItemKVS[fileItemId].fileName"
-                   matTooltipShowDelay="500"
-                   class="dgp-list-item"
-                   [class.--selected]="isSelected$(fileItemId) | async">
-                    <mat-icon matListIcon>
-                        insert_drive_file
-                    </mat-icon>
-                    <div matLine
-                         style="display: flex; align-items: center;">
+        <dgp-inspector style="overflow: auto;"
+                       [responsive]="false">
+            <dgp-inspector-section [expandable]="false"
+                                   label="Files">
+                <ng-container actions>
+                    <dgp-remove-current-file-item-action></dgp-remove-current-file-item-action>
 
-                        <div style="flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
+                    <button mat-icon-button
+                            class="--compact"
+                            (click)="downloadCurrentFileItem()"
+                            matTooltip="Download selected file"
+                            dgpActionShortcut
+                            shortcutKey="d">
+                        <mat-icon>file_download</mat-icon>
+                    </button>
+                </ng-container>
 
-                            <div style="flex-grow: 1; display: flex;">
-                                {{ model.fileItemKVS[fileItemId].fileName }}
-                                <dgp-spacer></dgp-spacer>
-                                <small>{{ model.fileItemKVS[fileItemId].extension }}</small>
-                            </div>
+                <ng-container *ngFor="let directory of model.directories">
+                    <dgp-inspector-item
+                        *ngFor="let fileItemId of directory.fileItemIds"
+                        label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"
+                        matIconName="insert_drive_file"
+                        dgpActionContext
+                        actionContextType="fileItem"
+                        [actionContextValue]="model.fileItemKVS[fileItemId]"
+                        description="{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}">
 
-                            <div style="display: flex;">
-                                <small>{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}</small>
-                                <dgp-spacer></dgp-spacer>
-                                <small>{{ getFileItemSize(model.fileItemKVS[fileItemId]) }}</small>
-                            </div>
-                        </div>
+                        <dgp-spacer></dgp-spacer>
+                        {{ getFileItemSize(model.fileItemKVS[fileItemId]) }}
 
-                        <button mat-icon-button
-                                style="margin-left: 16px;"
-                                [matMenuTriggerFor]="overflowMenu">
+                    </dgp-inspector-item>
 
-                            <mat-icon>
-                                more_vert
-                            </mat-icon>
+                </ng-container>
 
-                        </button>
-
-                        <mat-menu #overflowMenu="matMenu">
-                            <button mat-menu-item
-                                    (click)="removeFileItem(model.fileItemKVS[fileItemId])"
-                                    [disabled]="disabled">
-                                <mat-icon>delete</mat-icon>
-                                Remove
-                            </button>
-                            <button mat-menu-item
-                                    (click)="downloadFileItem(model.fileItemKVS[fileItemId])">
-                                <mat-icon>file_download</mat-icon>
-                                Download
-                            </button>
-                        </mat-menu>
-
-                    </div>
-                </a>
-
-            </ng-container>
-        </mat-nav-list>
+            </dgp-inspector-section>
+        </dgp-inspector>
     `,
     styles: [`
         :host {
@@ -114,14 +84,9 @@ export class FileItemListComponent extends DgpContainer<FileUploadState> {
         this.fileItemDownloaded.emit(fileItem);
     }
 
-    selectFileItem(fileItemId: string) {
-        this.dispatch(selectFileItem({fileItemId}));
-    }
-
-    isSelected$(fileItemId: string) {
-        return this.select(getSelectedFileItem).pipe(
-            map(x => x?.fileItemId === fileItemId)
-        );
+    async downloadCurrentFileItem() {
+        const fileItem = await firstAsPromise(this.select(getSelectedFileItem));
+        this.downloadFileItem(fileItem);
     }
 }
 
