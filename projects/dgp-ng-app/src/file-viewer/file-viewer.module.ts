@@ -3,7 +3,7 @@ import { PdfViewerComponent } from "./components/pdf-viewer.component";
 import { PngViewerComponent } from "./components/png-viewer.component";
 import { FileViewerComponent } from "./components/file-viewer.component";
 import { FallbackFileViewerComponent } from "./components/fallback-file-viewer.component";
-import { FileItemListComponent } from "./components/file-item-list.component";
+import { FileItemListComponent } from "./components/list/file-item-list.component";
 import { JpgViewerComponent } from "./components/jpg-viewer.component";
 import { SvgViewerComponent } from "./components/svg-viewer.component";
 import { PlatformModule } from "@angular/cdk/platform";
@@ -22,8 +22,9 @@ import { SafePipeModule } from "../safe/safe-pipe.module";
 import { DgpActionContextModule } from "../action-context/action-context.module";
 import { DgpInspectorModule } from "../inspector/inspector.module";
 import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
-import { RemoveCurrentFileItemActionComponent } from "./components/remove-current-file-item-action.component";
+import { RemoveCurrentFileItemActionComponent } from "./components/list/remove-current-file-item-action.component";
 import { DgpNegatePipeModule } from "../negate/negate-pipe.module";
+import { DownloadCurrentFileItemComponent } from "./components/list/download-current-file-item.component";
 
 // TODO: Add bmp
 
@@ -60,7 +61,8 @@ export const defaultFileViewerConfig: FileViewerConfig = {
         FallbackFileViewerComponent,
         FileItemListComponent,
         DynamicFileViewerComponent,
-        RemoveCurrentFileItemActionComponent
+        RemoveCurrentFileItemActionComponent,
+        DownloadCurrentFileItemComponent
     ],
     exports: [
         PdfViewerComponent,

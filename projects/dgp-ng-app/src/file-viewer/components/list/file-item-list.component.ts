@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { FileItem, FileItemListModel } from "../models";
-import { getFileItemSizeLabel } from "../functions";
-import { DgpContainer } from "../../utils/container.component-base";
-import { FileUploadState } from "../../file-upload/models";
-import { firstAsPromise } from "../../utils/first-as-promise";
-import { getSelectedFileItem } from "../../file-upload/selectors";
+import { FileItem, FileItemListModel } from "../../models";
+import { getFileItemSizeLabel } from "../../functions";
+import { DgpContainer } from "../../../utils/container.component-base";
+import { FileUploadState } from "../../../file-upload/models";
+import { firstAsPromise } from "../../../utils/first-as-promise";
+import { getSelectedFileItem } from "../../../file-upload/selectors";
 
 @Component({
     selector: "dgp-file-item-list",
@@ -16,18 +16,11 @@ import { getSelectedFileItem } from "../../file-upload/selectors";
                                    label="Files">
                 <ng-container actions>
                     <dgp-remove-current-file-item-action></dgp-remove-current-file-item-action>
-
-                    <button mat-icon-button
-                            class="--compact"
-                            (click)="downloadCurrentFileItem()"
-                            matTooltip="Download selected file"
-                            dgpActionShortcut
-                            shortcutKey="d">
-                        <mat-icon>file_download</mat-icon>
-                    </button>
+                    <dgp-download-current-file-item></dgp-download-current-file-item>
                 </ng-container>
 
                 <ng-container *ngFor="let directory of model.directories">
+
                     <dgp-inspector-item
                             *ngFor="let fileItemId of directory.fileItemIds"
                             label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"

@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { DgpContainer } from "../../utils/container.component-base";
-import { FileUploadState } from "../../file-upload/models";
-import { firstAsPromise } from "../../utils/first-as-promise";
-import { getSelectedFileItem } from "../../file-upload/selectors";
-import { removeFile } from "../../file-upload/actions";
+import { DgpContainer } from "../../../utils/container.component-base";
+import { FileUploadState } from "../../../file-upload/models";
+import { firstAsPromise } from "../../../utils/first-as-promise";
+import { getSelectedFileItem } from "../../../file-upload/selectors";
+import { removeFile } from "../../../file-upload/actions";
 import { createSelector } from "@ngrx/store";
-import { notNullOrUndefined } from "../../utils/null-checking.functions";
+import { notNullOrUndefined } from "../../../utils/null-checking.functions";
 
 export const canRemoveCurrentFileItem = createSelector(
     getSelectedFileItem, x => notNullOrUndefined(x)
