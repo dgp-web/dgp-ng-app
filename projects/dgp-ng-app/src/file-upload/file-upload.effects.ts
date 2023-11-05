@@ -15,6 +15,8 @@ import { DgpContainer } from "../utils/container.component-base";
 import { FileSystem } from "./file-system.model";
 import { cacheFileSystem } from "./cache-file-system.action";
 import { openFileItemInNewTab } from "./open-file-item-in-new-tab.function";
+import { directoryMetadata } from "./constants/directory-metadata.constant";
+import { fileItemMetadata } from "./constants/file-item-metadata.constant";
 
 @Injectable()
 export class FileUploadEffects extends DgpContainer<FileUploadState> {
@@ -56,7 +58,7 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
                         return fileUploadEntityStore.actions.composeEntityActions({
                             add: {
-                                fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId)
+                                fileItem: createKVSFromArray(action.fileItems, fileItemMetadata.id)
                             },
                             update: {
                                 directory: {
@@ -77,7 +79,7 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
                         return fileUploadEntityStore.actions.composeEntityActions({
                             add: {
-                                fileItem: createKVSFromArray(action.fileItems, x => x.fileItemId),
+                                fileItem: createKVSFromArray(action.fileItems, fileItemMetadata.id),
                                 directory: {
                                     ["Files"]: {
                                         directoryId: "Files",
@@ -111,7 +113,7 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
                         fileItem: [action.fileItem.fileItemId]
                     },
                     update: {
-                        directory: createKVSFromArray(updatedDirectories, x => x.directoryId)
+                        directory: createKVSFromArray(updatedDirectories, directoryMetadata.id)
                     }
                 });
             })
