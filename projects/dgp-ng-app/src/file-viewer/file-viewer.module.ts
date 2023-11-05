@@ -25,6 +25,7 @@ import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
 import { RemoveCurrentFileItemActionComponent } from "./components/list/remove-current-file-item-action.component";
 import { DgpNegatePipeModule } from "../negate/negate-pipe.module";
 import { DownloadCurrentFileItemComponent } from "./components/list/download-current-file-item.component";
+import { FileItemListItemComponent } from "./components/list/file-item-list-item.component";
 
 // TODO: Add bmp
 
@@ -62,7 +63,8 @@ export const defaultFileViewerConfig: FileViewerConfig = {
         FileItemListComponent,
         DynamicFileViewerComponent,
         RemoveCurrentFileItemActionComponent,
-        DownloadCurrentFileItemComponent
+        DownloadCurrentFileItemComponent,
+        FileItemListItemComponent
     ],
     exports: [
         PdfViewerComponent,

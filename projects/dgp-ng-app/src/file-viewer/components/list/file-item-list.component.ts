@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { FileItem, FileItemListModel } from "../../models";
-import { getFileItemSizeLabel } from "../../functions";
+import { FileItemListModel } from "../../models";
 import { DgpContainer } from "../../../utils/container.component-base";
 import { FileUploadState } from "../../../file-upload/models";
 
@@ -17,25 +16,14 @@ import { FileUploadState } from "../../../file-upload/models";
                     <dgp-download-current-file-item></dgp-download-current-file-item>
                 </ng-container>
 
-                <ng-container *ngFor="let directory of model.directories">
+                <div *ngFor="let directory of model.directories"
+                     style="overflow: auto;">
 
-                    <dgp-inspector-item
-                        *ngFor="let fileItemId of directory.fileItemIds"
-                        label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"
-                        matIconName="insert_drive_file"
-                        dgpActionContext
-                        actionContextType="fileItem"
-                        [actionContextValue]="model.fileItemKVS[fileItemId]"
-                        description="{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}">
+                    <dgp-file-item-list-item
+                            *ngFor="let fileItemId of directory.fileItemIds"
+                            [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
 
-                        <dgp-spacer></dgp-spacer>
-                        <small>
-                            {{ getFileItemSize(model.fileItemKVS[fileItemId]) }}
-                        </small>
-
-                    </dgp-inspector-item>
-
-                </ng-container>
+                </div>
 
             </dgp-inspector-section>
         </dgp-inspector>
@@ -57,10 +45,6 @@ export class FileItemListComponent extends DgpContainer<FileUploadState> {
 
     @Input()
     model: FileItemListModel;
-
-    getFileItemSize(fileItem: FileItem) {
-        return getFileItemSizeLabel(fileItem.size);
-    }
 
 }
 
