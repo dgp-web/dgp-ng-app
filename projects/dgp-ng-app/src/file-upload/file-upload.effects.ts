@@ -97,11 +97,25 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
     readonly removeFile$ = createEffect(() => this.actions$.pipe(
         ofType(removeFile),
-        map(action => fileUploadEntityStore.actions.composeEntityActions({
-            remove: {
-                fileItem: [action.fileItem.fileItemId]
-            }
-        }))
+        switchMap(action => this.select(getAllDirectories).pipe(
+            first(),
+            map(directories => {
+                const updatedDirectories = directories.map(directory => {
+                    return {
+                        ...directory,
+                        fileItemIds: directory.fileItemIds.filter(x => x !== action.fileItem.fileItemId)
+                    };
+                });
+                return fileUploadEntityStore.actions.composeEntityActions({
+                    remove: {
+                        fileItem: [action.fileItem.fileItemId]
+                    },
+                    update: {
+                        directory: createKVSFromArray(updatedDirectories, x => x.directoryId)
+                    }
+                });
+            })
+        ))
     ));
 
     readonly downloadFile$ = createEffect(() => this.actions$.pipe(

@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { FileItem, FileItemListModel } from "../../models";
 import { getFileItemSizeLabel } from "../../functions";
 import { DgpContainer } from "../../../utils/container.component-base";
 import { FileUploadState } from "../../../file-upload/models";
-import { firstAsPromise } from "../../../utils/first-as-promise";
-import { getSelectedFileItem } from "../../../file-upload/selectors";
 
 @Component({
     selector: "dgp-file-item-list",
@@ -22,13 +20,13 @@ import { getSelectedFileItem } from "../../../file-upload/selectors";
                 <ng-container *ngFor="let directory of model.directories">
 
                     <dgp-inspector-item
-                            *ngFor="let fileItemId of directory.fileItemIds"
-                            label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"
-                            matIconName="insert_drive_file"
-                            dgpActionContext
-                            actionContextType="fileItem"
-                            [actionContextValue]="model.fileItemKVS[fileItemId]"
-                            description="{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}">
+                        *ngFor="let fileItemId of directory.fileItemIds"
+                        label="{{model.fileItemKVS[fileItemId].fileName}} ({{model.fileItemKVS[fileItemId].extension}})"
+                        matIconName="insert_drive_file"
+                        dgpActionContext
+                        actionContextType="fileItem"
+                        [actionContextValue]="model.fileItemKVS[fileItemId]"
+                        description="{{ model.fileItemKVS[fileItemId].creationDate | date:'hh:mm, dd MMMM yyyy' }}">
 
                         <dgp-spacer></dgp-spacer>
                         <small>
@@ -57,12 +55,6 @@ export class FileItemListComponent extends DgpContainer<FileUploadState> {
     @Input()
     disabled: boolean;
 
-    @Output()
-    readonly fileItemRemoved = new EventEmitter<FileItem>();
-
-    @Output()
-    readonly fileItemDownloaded = new EventEmitter<FileItem>();
-
     @Input()
     model: FileItemListModel;
 
@@ -70,19 +62,5 @@ export class FileItemListComponent extends DgpContainer<FileUploadState> {
         return getFileItemSizeLabel(fileItem.size);
     }
 
-    removeFileItem(fileItem: FileItem) {
-        if (this.disabled) return;
-
-        this.fileItemRemoved.emit(fileItem);
-    }
-
-    downloadFileItem(fileItem: FileItem) {
-        this.fileItemDownloaded.emit(fileItem);
-    }
-
-    async downloadCurrentFileItem() {
-        const fileItem = await firstAsPromise(this.select(getSelectedFileItem));
-        this.downloadFileItem(fileItem);
-    }
 }
 
