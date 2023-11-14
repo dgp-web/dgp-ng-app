@@ -12,12 +12,81 @@
             font-size: 20px;
         }
     }
-    
+
 }
 
+@mixin dgp-compact-list-theme() {
+
+    .mat-list-avatar {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    /**
+     * Makes styling of material lists compact
+     */
+    mat-nav-list, mat-selection-list, mat-list {
+
+        padding-top: 0 !important;
+
+        .mat-list-item, mat-list-option {
+            height: auto !important;
+            word-break: break-all !important;
+            display: flex !important;
+            font-size: smaller !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            min-height: 32px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+
+            .mat-list-item-content {
+                flex-grow: 1;
+            }
+
+            .mat-line {
+                white-space: normal !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                display: flex !important;
+                box-sizing: border-box !important;
+            }
+
+        }
+
+        .mat-subheader {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            height: 32px;
+            display: block;
+            font-size: smaller;
+            padding: 12px !important;
+        }
+
+    }
+}
+
+@mixin dgp-compact-tab-theme() {
+
+    /**
+     * Tab labels for ng material are fat bastards so we limit their height
+     * and decrease the exaggerated min-width
+     */
+    .mat-tab-label {
+        height: 36px !important;
+        min-width: 100px !important;
+    }
+}
 
 @mixin dgp-compact-theme() {
 
     @include dgp-compact-button-theme();
+    @include dgp-compact-list-theme();
+    @include dgp-compact-tab-theme();
 
 }
+
