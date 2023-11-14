@@ -206,6 +206,12 @@
 
 }
 
+.dgp-file-manager-overlay {
+    mat-dialog-container {
+        padding: 0;
+    }
+}
+
 .dgp-file-manager-overlay--maximized {
     width: 100% !important;
     height: 100% !important;
@@ -252,4 +258,24 @@ dgp-inspector-section {
 
 .dgp-routing-overlay-backdrop {
     background: #00000022;
+}
+
+/**
+ * Compact theme
+ */
+
+/**
+ * Compact theming for various components
+ */
+button[mat-icon-button].--compact {
+    width: 24px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+
+    mat-icon {
+        line-height: 20px;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+    }
 }

@@ -84,7 +84,7 @@ export { DgpExpansionToggleModule } from "./expansion-toggle/expansion-toggle.mo
 export * from "./file-viewer/models";
 export * from "./file-viewer/functions";
 export * from "./file-viewer/components/fallback-file-viewer.component";
-export * from "./file-viewer/components/file-item-list.component";
+export * from "./file-viewer/components/list/file-item-list.component";
 export * from "./file-viewer/components/file-viewer.component-base";
 export * from "./file-viewer/components/file-viewer.component";
 export * from "./file-viewer/components/dynamic-file-viewer.component";
@@ -96,8 +96,8 @@ export * from "./file-viewer/file-viewer.module";
 
 // file-upload
 export * from "./file-upload/actions";
-export * from "./file-upload/directive/drag-file-listener.directive";
-export * from "./file-upload/directive/open-file-manager-via-short-key.directive";
+export * from "./file-upload/directives/drag-file-listener.directive";
+export * from "./file-upload/directives/open-file-manager-via-short-key.directive";
 export * from "./file-upload/functions";
 export * from "./file-upload/models";
 export * from "./file-upload/selectors";
@@ -272,4 +272,5 @@ export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-pan
 export * from "./dgp-ng-app.module";
 export { Size } from "./resize-sensor/models/size.model";
 export { ResizeSensor, defaultResizeSensorConfig, ResizeSensorConfig } from "./resize-sensor/services/resize-sensor.service";
+export { selectFileItem } from "./file-viewer/select-file-item.action";
 

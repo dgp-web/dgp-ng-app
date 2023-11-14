@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { JpgViewerComponent } from "./jpg-viewer.component";
-import { DgpFileViewerModule } from "../file-viewer.module";
+import { SvgViewerComponent } from "../svg-viewer.component";
+import { DgpFileViewerModule } from "../../file-viewer.module";
 
-describe(JpgViewerComponent.name, () => {
+describe(SvgViewerComponent.name, () => {
 
-    let fixture: ComponentFixture<JpgViewerComponent>;
-    let component: JpgViewerComponent;
+    let fixture: ComponentFixture<SvgViewerComponent>;
+    let component: SvgViewerComponent;
 
     beforeEach(waitForAsync(async () => {
 
@@ -15,8 +15,8 @@ describe(JpgViewerComponent.name, () => {
             ]
         });
         await testBed.compileComponents();
-        
-        fixture = testBed.createComponent(JpgViewerComponent);
+
+        fixture = testBed.createComponent(SvgViewerComponent);
         component = fixture.componentInstance;
 
     }));

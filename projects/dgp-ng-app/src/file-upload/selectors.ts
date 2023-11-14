@@ -1,7 +1,9 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { FileUploadState, fileUploadStoreFeature } from "./models";
-import { getAll, getFirstSelected } from "entity-store";
-import { FileItemListModel } from "../file-viewer/components/file-item-list.component";
+import { getAll } from "entity-store";
+import { getSelectedActionContextValue } from "../action-context/selectors/get-selected-action-context-value.selector";
+import { getSelectedActionContextType } from "../action-context/selectors/get-selected-action-context-type.selector";
+import { FileItem, FileItemListModel } from "../file-viewer/models";
 
 export const fileUploadFeatureSelector = createFeatureSelector<FileUploadState>(fileUploadStoreFeature);
 
@@ -18,8 +20,17 @@ export const getFileItemListModel = createSelector(
             directories, fileItemKVS
         } as FileItemListModel;
     });
+ 
+export const getSelectedFileItem = createSelector(
+    getSelectedActionContextValue,
+    getSelectedActionContextType, (value, type) => {
 
-export const getSelectedFileItem = createSelector(getFileItemState, x => getFirstSelected(x));
+        if (type !== "fileItem") return null;
+        if (!value) return null;
+
+        return value as FileItem;
+    }
+);
 
 export const isFileManagerOpen = createSelector(fileUploadFeatureSelector, x => x.isFileManagerOpen);
 
