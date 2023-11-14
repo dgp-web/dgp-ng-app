@@ -132,6 +132,11 @@
         height: 36px !important;
         min-width: 100px !important;
     }
+
+    dgp-stack > mat-tab-group {
+        height: 36px !important;
+    }
+
 }
 
 @mixin dgp-compact-mat-toolbar-theme() {
