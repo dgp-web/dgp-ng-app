@@ -6,7 +6,8 @@ import { AttributeMetadata } from "data-modeling";
     template: `
         <details>
             <summary>
-                <div class="summary-content">
+                <div class="summary-content"
+                     (click)="$event.preventDefault()">
                     <span class="label">
                     {{ label || metadata?.label }}
                     </span>
@@ -17,6 +18,7 @@ import { AttributeMetadata } from "data-modeling";
                     <dgp-spacer></dgp-spacer>
                     <ng-content select="[actions]"></ng-content>
                 </div>
+                <!-- TODO: Add our expansion toggle here! -->
             </summary>
             <ng-content></ng-content>
         </details>
