@@ -15,6 +15,26 @@
 
 }
 
+@mixin dgp-compact-empty-state-theme() {
+
+    dgp-empty-state {
+        margin-top: 16px;
+        margin-bottom: 16px;
+        max-height: initial !important;
+
+        h1 {
+            margin: 0 !important;
+            font-size: initial !important;
+        }
+
+        mat-icon {
+            font-size: 32px !important;
+            width: 32px !important;
+            height: 32px !important;
+        }
+    }
+}
+
 @mixin dgp-compact-mat-list-theme() {
 
     .mat-list-avatar {
@@ -126,6 +146,7 @@
 @mixin dgp-compact-theme() {
 
     @include dgp-compact-mat-button-theme();
+    @include dgp-compact-empty-state-theme();
     @include dgp-compact-mat-list-theme();
     @include dgp-compact-mat-slide-toggle-theme();
     @include dgp-compact-mat-tab-theme();
