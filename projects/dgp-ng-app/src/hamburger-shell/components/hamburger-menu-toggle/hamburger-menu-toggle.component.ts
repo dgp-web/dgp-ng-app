@@ -17,6 +17,8 @@ import { DgpContainer } from "../../../utils/container.component-base";
     styles: [`
         :host {
             margin-right: 8px;
+            display: flex;
+            align-items: center;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
