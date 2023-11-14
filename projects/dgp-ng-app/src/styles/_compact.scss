@@ -1,4 +1,4 @@
-@mixin dgp-compact-button-theme() {
+@mixin dgp-compact-mat-button-theme() {
 
     button[mat-icon-button] {
         width: 24px !important;
@@ -15,7 +15,7 @@
 
 }
 
-@mixin dgp-compact-list-theme() {
+@mixin dgp-compact-mat-list-theme() {
 
     .mat-list-avatar {
         display: flex !important;
@@ -70,7 +70,7 @@
     }
 }
 
-@mixin dgp-compact-tab-theme() {
+@mixin dgp-compact-mat-tab-theme() {
 
     /**
      * Tab labels for ng material are fat bastards so we limit their height
@@ -82,11 +82,21 @@
     }
 }
 
+@mixin dgp-compact-mat-toolbar-theme() {
+
+    .mat-toolbar {
+        height: 40px;
+        font-size: 14px;
+    }
+
+}
+
 @mixin dgp-compact-theme() {
 
-    @include dgp-compact-button-theme();
-    @include dgp-compact-list-theme();
-    @include dgp-compact-tab-theme();
+    @include dgp-compact-mat-button-theme();
+    @include dgp-compact-mat-list-theme();
+    @include dgp-compact-mat-tab-theme();
+    @include dgp-compact-mat-toolbar-theme();
 
 }
 
