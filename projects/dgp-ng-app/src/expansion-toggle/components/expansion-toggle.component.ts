@@ -6,26 +6,15 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
     template: `
         <button mat-icon-button
                 (click)="setModel(!model)">
-            <mat-icon class="mat-icon--small">
-                <ng-container *ngIf="model">navigate_next</ng-container>
-                <ng-container *ngIf="!model">expand_more</ng-container>
+            <mat-icon>
+                <ng-container *ngIf="model">expand_more</ng-container>
+                <ng-container *ngIf="!model">navigate_next</ng-container>
             </mat-icon>
         </button>
     `,
     styles: [`
         :host {
             display: flex;
-            height: 32px;
-            width: 32px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        button {
-            display: flex;
-            height: 32px;
-            width: 32px;
-            line-height: 32px;
             justify-content: center;
             align-items: center;
         }

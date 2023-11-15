@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
+import { observeAttribute$ } from "../../utils/observe-input";
 
 // TODO: old theme back and as default
 // TODO: allow overriding with plain theme
@@ -7,10 +8,11 @@ import { AttributeMetadata } from "data-modeling";
 @Component({
     selector: "dgp-inspector-section",
     template: `
-        <details>
-            <summary>
-                <div class="summary-content"
-                     (click)="$event.preventDefault()">
+        <details #details
+                 (toggle)="onToggle($event)">
+            <summary (click)="$event.preventDefault()"
+                     tabindex="-1">
+                <div class="summary-content">
                     <span class="label">
                     {{ label || metadata?.label }}
                     </span>
@@ -24,7 +26,6 @@ import { AttributeMetadata } from "data-modeling";
                 <dgp-expansion-toggle *ngIf="expandable"
                                       [model]="expanded"
                                       (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
-                <!-- TODO: Add our expansion toggle here! -->
             </summary>
             <ng-content></ng-content>
         </details>
@@ -59,14 +60,6 @@ import { AttributeMetadata } from "data-modeling";
             display: none;
         }
 
-        summary::after {
-            content: ' ►';
-        }
-
-        details[open] summary:after {
-            content: " ▼";
-        }
-
         .summary-content {
             display: flex;
             align-items: center;
@@ -95,7 +88,12 @@ import { AttributeMetadata } from "data-modeling";
 
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InspectorSectionComponent {
+export class InspectorSectionComponent implements AfterViewInit {
+
+    readonly expanded$ = observeAttribute$(this as InspectorSectionComponent, "expanded");
+
+    @ViewChild("details")
+    detailsElementRef: ElementRef<HTMLDetailsElement>;
 
     @Input()
     matIconName: string;
@@ -115,9 +113,22 @@ export class InspectorSectionComponent {
     @Output()
     readonly expandedChange = new EventEmitter<boolean>();
 
-    updateExpanded(expanded: boolean) {
-        this.expanded = expanded;
+    ngAfterViewInit(): void {
+        this.expanded$.subscribe(expanded => {
+            this.detailsElementRef.nativeElement.open = expanded;
+        });
+    }
 
+    updateExpanded(expanded: boolean) {
+        if (expanded === this.expanded) return;
+
+        this.expanded = expanded;
         this.expandedChange.emit(this.expanded);
+    }
+
+    // noinspection JSUnusedLocalSymbols
+    onToggle($event: Event) {
+        const isExpanded = this.detailsElementRef.nativeElement.open;
+        this.updateExpanded(isExpanded);
     }
 }
