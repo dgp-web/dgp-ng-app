@@ -35,6 +35,15 @@
     }
 }
 
+@mixin dgp-compact-mat-dialog-theme() {
+
+    mat-dialog-container {
+        padding: 0;
+        border-radius: 0 !important;
+    }
+
+}
+
 @mixin dgp-compact-mat-list-theme() {
 
     .mat-list-avatar {
@@ -150,8 +159,16 @@
 
 @mixin dgp-compact-theme() {
 
-    @include dgp-compact-mat-button-theme();
+    /**
+     * dgp components
+     */
     @include dgp-compact-empty-state-theme();
+
+    /**
+     * Angular material components
+     */
+    @include dgp-compact-mat-button-theme();
+    @include dgp-compact-mat-dialog-theme();
     @include dgp-compact-mat-list-theme();
     @include dgp-compact-mat-slide-toggle-theme();
     @include dgp-compact-mat-tab-theme();

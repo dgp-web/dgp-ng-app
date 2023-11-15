@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { AttributeMetadata } from "data-modeling";
 
+// TODO: old theme back and as default
+// TODO: allow overriding with plain theme
+
 @Component({
     selector: "dgp-inspector-section",
     template: `
@@ -18,6 +21,9 @@ import { AttributeMetadata } from "data-modeling";
                     <dgp-spacer></dgp-spacer>
                     <ng-content select="[actions]"></ng-content>
                 </div>
+                <dgp-expansion-toggle *ngIf="expandable"
+                                      [model]="expanded"
+                                      (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
                 <!-- TODO: Add our expansion toggle here! -->
             </summary>
             <ng-content></ng-content>

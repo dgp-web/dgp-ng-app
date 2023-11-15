@@ -7,7 +7,7 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
         <button mat-icon-button
                 (click)="setModel(!model)">
             <mat-icon class="mat-icon--small">
-                <ng-container *ngIf="model">expand_less</ng-container>
+                <ng-container *ngIf="model">navigate_next</ng-container>
                 <ng-container *ngIf="!model">expand_more</ng-container>
             </mat-icon>
         </button>
