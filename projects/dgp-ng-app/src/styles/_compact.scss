@@ -35,6 +35,21 @@
     }
 }
 
+@mixin dgp-compact-inspector-item-theme() {
+
+    dgp-inspector-item {
+
+        .inspector-item-content {
+            min-height: 32px;
+        }
+
+        .info {
+            height: 32px;
+        }
+
+    }
+}
+
 @mixin dgp-compact-mat-dialog-theme() {
 
     mat-dialog-container {

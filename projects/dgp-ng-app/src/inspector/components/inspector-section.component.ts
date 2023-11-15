@@ -31,7 +31,9 @@ import { observeAttribute$ } from "../../utils/observe-input";
                                           (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
                 </ng-container>
             </summary>
-            <ng-content></ng-content>
+            <div class="details-content">
+                <ng-content></ng-content>
+            </div>
         </details>
     `,
     styles: [`
@@ -53,6 +55,10 @@ import { observeAttribute$ } from "../../utils/observe-input";
             display: flex;
             align-items: center;
             flex-grow: 1;
+        }
+
+        .details-content {
+
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -128,7 +128,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         DgpInspectorModule.forRoot({
             showFieldIcons: true,
             showFieldDescriptions: true,
-            responsive: true
+            responsive: true,
+            maxContentWidth: "120px"
         }),
         MatIconModule,
         DgpNegatePipeModule,
