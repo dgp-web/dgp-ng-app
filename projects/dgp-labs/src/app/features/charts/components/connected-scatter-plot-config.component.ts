@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, HostBinding } from "@angular/core";
 import { DgpModelEditorComponentBase, isNullOrUndefined } from "dgp-ng-app";
 import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ScaleType, Shape } from "dgp-ng-charts";
 import { BehaviorSubject } from "rxjs";
@@ -16,9 +16,9 @@ import {
             <dgp-inspector-section label="General"
                                    matIconName="info">
                 <dgp-inspector-item [metadata]="cspMetadata.attributes.chartTitle">
-                                    <textarea [disabled]="disabled"
-                                              [ngModel]="model.chartTitle"
-                                              (ngModelChange)="updateChartTitle($event)"></textarea>
+                    <input [disabled]="disabled"
+                           [ngModel]="model.chartTitle"
+                           (ngModelChange)="updateChartTitle($event)">
                 </dgp-inspector-item>
 
 
@@ -76,10 +76,10 @@ import {
 
 
                 <dgp-connected-scatter-group-form
-                    *ngIf="selectedDataGroup$ | async as selectedDataGroup"
-                    [model]="selectedDataGroup"
-                    (modelChange)="updateSelectedGroup($event)"
-                    [disabled]="disabled"></dgp-connected-scatter-group-form>
+                        *ngIf="selectedDataGroup$ | async as selectedDataGroup"
+                        [model]="selectedDataGroup"
+                        (modelChange)="updateSelectedGroup($event)"
+                        [disabled]="disabled"></dgp-connected-scatter-group-form>
 
             </dgp-inspector-section>
 
@@ -138,6 +138,9 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
+
+    @HostBinding("class.--indent")
+    readonly bindings = true;
 
     readonly cspMetadata = connectedScatterPlotMetadata;
 

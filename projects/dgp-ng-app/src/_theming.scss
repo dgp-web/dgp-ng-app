@@ -33,6 +33,12 @@
         background: mat.get-color-from-palette($accent, 300) !important;
     }
 
+    dgp-inspector-section.--indent,  .--indent dgp-inspector-section {
+        .details-content {
+            padding-left: 40px;
+        }
+    }
+
     .inspector-item-content.--responsive {
         flex-wrap: wrap;
     }

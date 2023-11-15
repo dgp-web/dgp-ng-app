@@ -8,9 +8,12 @@ import {
     defaultRuntimeChecks,
     DgpAuthenticationModule,
     DgpHamburgerMenuModule,
-    DgpHamburgerShellModule, DgpInspectorModule, DgpNegatePipeModule,
+    DgpHamburgerShellModule,
+    DgpInspectorModule,
+    DgpNegatePipeModule,
     DgpRequestStoreModule,
-    DgpRoutingOverlayModule, DgpSpacerModule,
+    DgpRoutingOverlayModule,
+    DgpSpacerModule,
     DgpThemeSwitcherModule,
     InitializationService,
     InitializationServiceProvider
@@ -126,10 +129,10 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         MatListModule,
         DgpDataExportLabsModule,
         DgpInspectorModule.forRoot({
-            showFieldIcons: true,
+            showFieldIcons: false,
             showFieldDescriptions: true,
             responsive: true,
-            maxContentWidth: "120px"
+            maxContentWidth: "140px"
         }),
         MatIconModule,
         DgpNegatePipeModule,

@@ -40,13 +40,19 @@
     dgp-inspector-item {
 
         .inspector-item-content {
-            min-height: 32px;
+            min-height: 24px;
         }
 
         .info {
-            height: 32px;
+            height: 24px;
         }
 
+    }
+
+    dgp-inspector-section.--indent, .--indent dgp-inspector-section {
+        .details-content {
+            padding-left: 24px;
+        }
     }
 }
 
@@ -178,6 +184,7 @@
      * dgp components
      */
     @include dgp-compact-empty-state-theme();
+    @include dgp-compact-inspector-item-theme();
 
     /**
      * Angular material components
