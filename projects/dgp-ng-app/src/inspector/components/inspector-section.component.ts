@@ -9,6 +9,11 @@ import { observeAttribute$ } from "../../utils/observe-input";
                  (toggle)="onToggle($event)">
             <summary (click)="$event.preventDefault()"
                      tabindex="-1">
+                <ng-container *ngIf="togglePosition === 'start'">
+                    <dgp-expansion-toggle *ngIf="expandable"
+                                          [model]="expanded"
+                                          (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
+                </ng-container>
                 <div class="summary-content">
                     <span class="label">
                     {{ label || metadata?.label }}
@@ -20,14 +25,21 @@ import { observeAttribute$ } from "../../utils/observe-input";
                     <dgp-spacer></dgp-spacer>
                     <ng-content select="[actions]"></ng-content>
                 </div>
-                <dgp-expansion-toggle *ngIf="expandable"
-                                      [model]="expanded"
-                                      (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
+                <ng-container *ngIf="togglePosition === 'end'">
+                    <dgp-expansion-toggle *ngIf="expandable"
+                                          [model]="expanded"
+                                          (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
+                </ng-container>
             </summary>
             <ng-content></ng-content>
         </details>
     `,
     styles: [`
+        :host {
+            display: flex;
+            flex-direction: column;
+        }
+
         details > summary {
             list-style: none;
             display: flex;
@@ -63,6 +75,9 @@ export class InspectorSectionComponent implements AfterViewInit {
 
     @Input()
     expandable = true;
+
+    @Input()
+    togglePosition: "start" | "end" = "start";
 
     @Input()
     metadata: AttributeMetadata<any>;
