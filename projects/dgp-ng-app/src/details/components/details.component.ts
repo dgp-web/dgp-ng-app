@@ -25,7 +25,8 @@ import { Details } from "../models/details.model";
                                           (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
                 </ng-container>
             </summary>
-            <div class="details-content">
+            <div class="details-content"
+                 [class.--indent]="indent">
                 <ng-content></ng-content>
             </div>
         </details>
@@ -72,6 +73,9 @@ export class DgpDetailsComponent implements AfterViewInit, Details {
 
     @Input()
     expandable = true;
+
+    @Input()
+    indent = false;
 
     @Input()
     togglePosition: ExpansionTogglePosition = "start";

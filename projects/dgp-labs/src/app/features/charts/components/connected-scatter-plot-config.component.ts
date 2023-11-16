@@ -11,7 +11,7 @@ import {
 @Component({
     selector: "dgp-connected-scatter-plot-config",
     template: `
-        <dgp-inspector class="--dynamic-form-fields"
+        <dgp-inspector class="--dynamic-form-fields --indent"
                        [responsive]="true">
             <dgp-inspector-section label="General"
                                    matIconName="info">
