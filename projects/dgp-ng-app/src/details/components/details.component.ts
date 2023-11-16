@@ -1,9 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { observeAttribute$ } from "../../utils/observe-input";
 import { ExpansionTogglePosition } from "../models";
+import { Details } from "../models/details.model";
 
 @Component({
-    selector: "dgp-details.component",
+    selector: "dgp-details",
     template: `
         <details #details
                  (toggle)="onToggle($event)">
@@ -56,7 +57,7 @@ import { ExpansionTogglePosition } from "../models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpDetailsComponent implements AfterViewInit {
+export class DgpDetailsComponent implements AfterViewInit, Details {
 
     readonly expanded$ = observeAttribute$(this as DgpDetailsComponent, "expanded");
 
@@ -97,3 +98,4 @@ export class DgpDetailsComponent implements AfterViewInit {
         this.updateExpanded(isExpanded);
     }
 }
+

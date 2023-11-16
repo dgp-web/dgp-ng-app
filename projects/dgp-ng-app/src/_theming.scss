@@ -106,6 +106,16 @@
 
 }
 
+@mixin dgp-details-theme($app-theme) {
+
+    dgp-details.--indent,  .--indent dgp-details {
+        .details-content {
+            padding-left: 40px;
+        }
+    }
+
+}
+
 @mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
 
     @include dgp-normalize();
@@ -115,6 +125,7 @@
 
     @include mat.all-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
+    @include dgp-details-theme($app-theme);
 
     .dark-theme {
         @include mat.all-component-themes($app-dark-theme);

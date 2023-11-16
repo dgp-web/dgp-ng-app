@@ -15,6 +15,15 @@
 
 }
 
+@mixin dgp-details-compact-theme() {
+
+    dgp-details.--indent, .--indent dgp-details {
+        .details-content {
+            padding-left: 24px;
+        }
+    }
+
+}
 @mixin dgp-compact-empty-state-theme() {
 
     dgp-empty-state {
@@ -49,12 +58,9 @@
 
     }
 
-    dgp-inspector-section.--indent, .--indent dgp-inspector-section {
-        .details-content {
-            padding-left: 24px;
-        }
-    }
 }
+
+
 
 @mixin dgp-compact-mat-dialog-theme() {
 
@@ -183,6 +189,7 @@
     /**
      * dgp components
      */
+    @include dgp-details-compact-theme();
     @include dgp-compact-empty-state-theme();
     @include dgp-compact-inspector-item-theme();
 
