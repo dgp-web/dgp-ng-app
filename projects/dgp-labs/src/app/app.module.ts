@@ -129,10 +129,9 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         MatListModule,
         DgpDataExportLabsModule,
         DgpInspectorModule.forRoot({
-            showFieldIcons: false,
+            showFieldIcons: true,
             showFieldDescriptions: true,
-            responsive: true,
-            maxContentWidth: "140px"
+            responsive: true
         }),
         MatIconModule,
         DgpNegatePipeModule,
