@@ -2,6 +2,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmi
 import { AttributeMetadata } from "data-modeling";
 import { observeAttribute$ } from "../../utils/observe-input";
 
+export type ExpansionTogglePosition = "start" | "end";
+
 @Component({
     selector: "dgp-inspector-section",
     template: `
@@ -83,7 +85,7 @@ export class InspectorSectionComponent implements AfterViewInit {
     expandable = true;
 
     @Input()
-    togglePosition: "start" | "end" = "start";
+    togglePosition: ExpansionTogglePosition = "start";
 
     @Input()
     metadata: AttributeMetadata<any>;
