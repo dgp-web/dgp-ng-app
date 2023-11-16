@@ -52,7 +52,8 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
                                          width="20">
                     <dgp-docking-layout-container label="Config">
                         <ng-template>
-                            <dgp-inspector class="--dynamic-form-fields"
+                            <dgp-inspector dgpCompactThemeHost
+                                           class="--dynamic-form-fields"
                                            [responsive]="true">
                                 <dgp-inspector-item label="Renderer"
                                                     matIconName="label">
@@ -73,7 +74,8 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
 
                             </dgp-inspector>
 
-                            <dgp-connected-scatter-plot-config [model]="model"
+                            <dgp-connected-scatter-plot-config dgpCompactThemeHost
+                                                               [model]="model"
                                                                (modelChange)="setPlot($event)"></dgp-connected-scatter-plot-config>
                         </ng-template>
                     </dgp-docking-layout-container>

@@ -220,6 +220,7 @@ export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 // theme-switcher
 export { setIsDarkModeActive, toggleDarkMode } from "./theme-switcher/actions";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
+export { DgpCompactThemeHostDirective } from "./theme-switcher/directives/compact-theme-host.directive";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
 export { ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature } from "./theme-switcher/models";
 export {

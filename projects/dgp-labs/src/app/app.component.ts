@@ -92,7 +92,7 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 export class AppComponent extends DgpContainer {
 
     @HostBinding("class.--compact")
-    readonly bindings = true;
+    readonly bindings = false;
 
     readonly authenticatedUser$ = this.select(getAuthenticatedUserSelector);
 

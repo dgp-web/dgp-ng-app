@@ -18,6 +18,7 @@ import {
 import { setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
+import { DgpCompactThemeHostDirective } from "./directives/compact-theme-host.directive";
 
 export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");
 
@@ -45,11 +46,13 @@ export const themeSwitcherReducerProvider: FactoryProvider = {
     ],
     declarations: [
         DarkModeToggleComponent,
-        ThemeHostDirective
+        ThemeHostDirective,
+        DgpCompactThemeHostDirective
     ],
     exports: [
         DarkModeToggleComponent,
-        ThemeHostDirective
+        ThemeHostDirective,
+        DgpCompactThemeHostDirective
     ],
     providers: [
         themeSwitcherReducerProvider
@@ -57,7 +60,12 @@ export const themeSwitcherReducerProvider: FactoryProvider = {
 })
 export class DgpThemeSwitcherModule {
 
-    static forRoot(config: ThemeSwitcherConfig = defaultThemeSwitcherConfig): ModuleWithProviders<DgpThemeSwitcherModule> {
+    static forRoot(config: Partial<ThemeSwitcherConfig> = defaultThemeSwitcherConfig): ModuleWithProviders<DgpThemeSwitcherModule> {
+
+        config = {
+            ...config,
+            ...defaultThemeSwitcherConfig
+        };
 
         return {
             ngModule: DgpThemeSwitcherModule,
