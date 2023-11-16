@@ -15,10 +15,11 @@ import {
     ThemeSwitcherState,
     themeSwitcherStoreFeature
 } from "./models";
-import { setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
+import { setIsCompactThemeActive, setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
 import { DgpCompactThemeHostDirective } from "./directives/compact-theme-host.directive";
+import { CompactThemeToggleComponent } from "./components/compact-theme-toggle.component";
 
 export const THEME_SWITCHER_REDUCER = new InjectionToken<ActionReducer<ThemeSwitcherState>>("ThemeSwitcherReducer");
 
@@ -47,12 +48,14 @@ export const themeSwitcherReducerProvider: FactoryProvider = {
     declarations: [
         DarkModeToggleComponent,
         ThemeHostDirective,
-        DgpCompactThemeHostDirective
+        DgpCompactThemeHostDirective,
+        CompactThemeToggleComponent
     ],
     exports: [
         DarkModeToggleComponent,
         ThemeHostDirective,
-        DgpCompactThemeHostDirective
+        DgpCompactThemeHostDirective,
+        CompactThemeToggleComponent
     ],
     providers: [
         themeSwitcherReducerProvider
@@ -85,6 +88,12 @@ export class DgpThemeSwitcherModule {
         if (notNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
             this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
+        }
+
+        const useCompactThemeJSON = localStorage.getItem("useCompactTheme");
+        if (notNullOrUndefined(useCompactThemeJSON)) {
+            const useCompactTheme = JSON.parse(useCompactThemeJSON);
+            this.store.dispatch(setIsCompactThemeActive({useCompactTheme}));
         }
 
         if (themeSwitcherConfig.components.includes("inspector")) {

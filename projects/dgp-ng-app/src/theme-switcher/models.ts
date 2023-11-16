@@ -4,6 +4,7 @@ import { Many } from "data-modeling";
 
 export interface ThemeSwitcherState {
     readonly useDarkMode: boolean;
+    readonly useCompactTheme: boolean;
     /**
      * Components
      */

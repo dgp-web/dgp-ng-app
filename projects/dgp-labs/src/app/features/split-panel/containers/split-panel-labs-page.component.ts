@@ -20,6 +20,7 @@ export interface SampleItem {
                     <div class="panel-content">
                         A
                         <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+                        <dgp-compact-theme-toggle></dgp-compact-theme-toggle>
 
                         <dgp-input-field [model]="stringInputModel"
                                          [metadata]="stringInputMetadata">
