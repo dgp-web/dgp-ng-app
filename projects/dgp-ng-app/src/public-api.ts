@@ -66,6 +66,11 @@ export {
 } from "./confirm-dialog/containers/confirm-dialog.component";
 export { DgpConfirmDialogModule } from "./confirm-dialog/confirm-dialog.module";
 
+// details
+export * from "./details/models";
+export { DgpDetailsComponent } from "./details/components/details.component";
+export { DgpDetailsModule } from "./details/details.module";
+
 // page-header-context-actions
 export {
     DgpPageHeaderContextActionsComponent

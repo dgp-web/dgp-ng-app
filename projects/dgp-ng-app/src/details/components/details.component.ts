@@ -1,10 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
-import { AttributeMetadata } from "data-modeling";
 import { observeAttribute$ } from "../../utils/observe-input";
-import { ExpansionTogglePosition } from "../../details/models";
+import { ExpansionTogglePosition } from "../models";
 
 @Component({
-    selector: "dgp-inspector-section",
+    selector: "dgp-details.component",
     template: `
         <details #details
                  (toggle)="onToggle($event)">
@@ -16,15 +15,8 @@ import { ExpansionTogglePosition } from "../../details/models";
                                           (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
                 </ng-container>
                 <div class="summary-content">
-                    <span class="label">
-                    {{ label || metadata?.label }}
-                    </span>
-                    <mat-icon style="margin-left: 8px;"
-                              class="section-icon mat-icon--small">
-                        {{matIconName || metadata?.icon}}
-                    </mat-icon>
-                    <dgp-spacer></dgp-spacer>
-                    <ng-content select="[actions]"></ng-content>
+                    {{ summary }}
+                    <ng-content select="[summary]"></ng-content>
                 </div>
                 <ng-container *ngIf="togglePosition === 'end'">
                     <dgp-expansion-toggle *ngIf="expandable"
@@ -64,18 +56,15 @@ import { ExpansionTogglePosition } from "../../details/models";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InspectorSectionComponent implements AfterViewInit {
+export class DgpDetailsComponent implements AfterViewInit {
 
-    readonly expanded$ = observeAttribute$(this as InspectorSectionComponent, "expanded");
+    readonly expanded$ = observeAttribute$(this as DgpDetailsComponent, "expanded");
 
     @ViewChild("details")
     detailsElementRef: ElementRef<HTMLDetailsElement>;
 
     @Input()
-    matIconName: string;
-
-    @Input()
-    label: string;
+    summary: string;
 
     @Input()
     expanded = true;
@@ -85,9 +74,6 @@ export class InspectorSectionComponent implements AfterViewInit {
 
     @Input()
     togglePosition: ExpansionTogglePosition = "start";
-
-    @Input()
-    metadata: AttributeMetadata<any>;
 
     @Output()
     readonly expandedChange = new EventEmitter<boolean>();
