@@ -8,7 +8,7 @@ import { ExpansionTogglePosition } from "../../details/models";
         <dgp-details [expandable]="expandable"
                      [expanded]="expanded"
                      (expandedChange)="updateExpanded($event)"
-                     togglePosition="end">
+                     [togglePosition]="togglePosition">
 
             <ng-container summary>
                   <span class="label">
@@ -49,7 +49,7 @@ export class InspectorSectionComponent {
     expandable = true;
 
     @Input()
-    togglePosition: ExpansionTogglePosition = "start";
+    togglePosition: ExpansionTogglePosition = "end";
 
     @Input()
     metadata: AttributeMetadata<any>;
