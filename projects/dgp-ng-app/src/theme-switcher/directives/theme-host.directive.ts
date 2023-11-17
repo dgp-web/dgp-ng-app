@@ -1,8 +1,8 @@
 import { Directive, ElementRef, Inject, Renderer2 } from "@angular/core";
 import { select, Store } from "@ngrx/store";
 import { OverlayContainer } from "@angular/cdk/overlay";
-import { ThemeSwitcherState, THEME_SWITCHER_CONFIG, ThemeSwitcherConfig } from "../models";
-import { isDarkModeActiveSelector } from "../selectors";
+import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig, ThemeSwitcherState } from "../models";
+import { isCompactThemeActive, isDarkModeActiveSelector } from "../selectors";
 
 @Directive({
     selector: "[dgpThemeHost]",
@@ -33,6 +33,25 @@ export class ThemeHostDirective {
                     this.overlayContainer.getContainerElement()
                         .classList
                         .remove(this.config.darkThemeClassName);
+                }
+
+            });
+
+        this.store.pipe(
+            select(isCompactThemeActive)
+        )
+            .subscribe(useCompactTheme => {
+
+                if (useCompactTheme) {
+                    this.renderer.addClass(elRef.nativeElement, this.config.compactThemeClassName);
+                    this.overlayContainer.getContainerElement()
+                        .classList
+                        .add(this.config.compactThemeClassName);
+                } else {
+                    this.renderer.removeClass(elRef.nativeElement, this.config.compactThemeClassName);
+                    this.overlayContainer.getContainerElement()
+                        .classList
+                        .remove(this.config.compactThemeClassName);
                 }
 
             });

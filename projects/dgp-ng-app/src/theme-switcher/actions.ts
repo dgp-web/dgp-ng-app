@@ -9,3 +9,7 @@ export const updateCurrentInspectorConfig = createAction(
         readonly inspectorConfig?: InspectorConfig;
     }>()
 );
+export const toggleCompactTheme = createAction("[ThemeSwitcher] ToggleCompactTheme");
+export const setIsCompactThemeActive = createAction("[ThemeSwitcher] SetIsCompactThemeActive", props<{
+    readonly useCompactTheme: boolean
+}>());

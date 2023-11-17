@@ -66,6 +66,11 @@ export {
 } from "./confirm-dialog/containers/confirm-dialog.component";
 export { DgpConfirmDialogModule } from "./confirm-dialog/confirm-dialog.module";
 
+// details
+export * from "./details/models";
+export { DgpDetailsComponent } from "./details/components/details.component";
+export { DgpDetailsModule } from "./details/details.module";
+
 // page-header-context-actions
 export {
     DgpPageHeaderContextActionsComponent
@@ -214,7 +219,9 @@ export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
 export { setIsDarkModeActive, toggleDarkMode } from "./theme-switcher/actions";
+export { CompactThemeToggleComponent } from "./theme-switcher/components/compact-theme-toggle.component";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
+export { DgpCompactThemeHostDirective } from "./theme-switcher/directives/compact-theme-host.directive";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
 export { ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature } from "./theme-switcher/models";
 export {

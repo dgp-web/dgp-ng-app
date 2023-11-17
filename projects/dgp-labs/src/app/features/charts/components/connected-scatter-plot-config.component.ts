@@ -16,9 +16,9 @@ import {
             <dgp-inspector-section label="General"
                                    matIconName="info">
                 <dgp-inspector-item [metadata]="cspMetadata.attributes.chartTitle">
-                                    <textarea [disabled]="disabled"
-                                              [ngModel]="model.chartTitle"
-                                              (ngModelChange)="updateChartTitle($event)"></textarea>
+                    <input [disabled]="disabled"
+                           [ngModel]="model.chartTitle"
+                           (ngModelChange)="updateChartTitle($event)">
                 </dgp-inspector-item>
 
 
