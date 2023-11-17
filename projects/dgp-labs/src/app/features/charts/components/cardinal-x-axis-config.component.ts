@@ -13,9 +13,9 @@ import {
 
                 <dgp-inspector-item label="Title"
                                     matIconName="label">
-                                    <textarea [disabled]="disabled"
-                                              [ngModel]="model.xAxisTitle"
-                                              (ngModelChange)="updateXAxisTitle($event)"></textarea>
+                    <input [disabled]="disabled"
+                           [ngModel]="model.xAxisTitle"
+                           (ngModelChange)="updateXAxisTitle($event)">
                 </dgp-inspector-item>
 
                 <dgp-inspector-item label="Scale"

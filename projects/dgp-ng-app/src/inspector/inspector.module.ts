@@ -11,6 +11,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { DgpNegatePipeModule } from "../negate/negate-pipe.module";
 import { InspectorConfig } from "./models";
 import { provideDefaultInspectorConfig } from "./functions";
+import { DgpDetailsModule } from "../details/details.module";
 
 const components = [
     InspectorComponent,
@@ -26,7 +27,8 @@ const components = [
         MatIconModule,
         DgpExpansionToggleModule,
         MatTooltipModule,
-        DgpNegatePipeModule
+        DgpNegatePipeModule,
+        DgpDetailsModule
     ],
     declarations: [
         ...components

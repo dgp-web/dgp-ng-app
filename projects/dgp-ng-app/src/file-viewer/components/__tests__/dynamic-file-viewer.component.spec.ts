@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { FallbackFileViewerComponent } from "./fallback-file-viewer.component";
-import { DgpFileViewerModule } from "../file-viewer.module";
+import { DynamicFileViewerComponent } from "../dynamic-file-viewer.component";
+import { DgpFileViewerModule } from "../../file-viewer.module";
 
-describe(FallbackFileViewerComponent.name, () => {
+describe(DynamicFileViewerComponent.name, () => {
 
-    let fixture: ComponentFixture<FallbackFileViewerComponent>;
-    let component: FallbackFileViewerComponent;
+    let fixture: ComponentFixture<DynamicFileViewerComponent>;
+    let component: DynamicFileViewerComponent;
 
     beforeEach(waitForAsync(async () => {
 
@@ -16,7 +16,7 @@ describe(FallbackFileViewerComponent.name, () => {
         });
         await testBed.compileComponents();
 
-        fixture = testBed.createComponent(FallbackFileViewerComponent);
+        fixture = testBed.createComponent(DynamicFileViewerComponent);
         component = fixture.componentInstance;
 
     }));

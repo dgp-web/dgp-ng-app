@@ -18,13 +18,13 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
 @Component({
     selector: "dgp-inspector-item",
     template: `
-        <mat-list-item [class.--responsive]="responsive$ | async">
+        <div [class.--responsive]="responsive$ | async"
+             class="inspector-item-content">
             <div class="info"
                  [matTooltip]="description || metadata?.description"
                  matTooltipPosition="left"
                  [matTooltipDisabled]="hasHoverDescription$ | async | negate">
                 <mat-icon *ngIf="showIcon$ | async"
-                          class="mat-icon--small"
                           [color]="labelThemeColor$ | async">
                     {{matIconName || metadata?.icon}}
                 </mat-icon>
@@ -43,7 +43,7 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
                  [style.max-width]="maxContentWidth$ | async">
                 <ng-content></ng-content>
             </div>
-        </mat-list-item>
+        </div>
 
         <p *ngIf="hasPermanentDescription$ | async"
            class="description"
@@ -53,12 +53,11 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
     `,
     styles: [`
         :host {
-            margin-bottom: 8px;
             display: flex;
             flex-direction: column;
         }
 
-        mat-list-item {
+        .inspector-item-content {
             height: auto !important;
             min-height: 32px;
             display: flex !important;
@@ -78,7 +77,6 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
         }
 
         .label {
-            font-size: smaller;
             flex-shrink: 0;
         }
 

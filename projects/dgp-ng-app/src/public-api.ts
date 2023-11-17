@@ -66,6 +66,11 @@ export {
 } from "./confirm-dialog/containers/confirm-dialog.component";
 export { DgpConfirmDialogModule } from "./confirm-dialog/confirm-dialog.module";
 
+// details
+export * from "./details/models";
+export { DgpDetailsComponent } from "./details/components/details.component";
+export { DgpDetailsModule } from "./details/details.module";
+
 // page-header-context-actions
 export {
     DgpPageHeaderContextActionsComponent
@@ -84,7 +89,7 @@ export { DgpExpansionToggleModule } from "./expansion-toggle/expansion-toggle.mo
 export * from "./file-viewer/models";
 export * from "./file-viewer/functions";
 export * from "./file-viewer/components/fallback-file-viewer.component";
-export * from "./file-viewer/components/file-item-list.component";
+export * from "./file-viewer/components/list/file-item-list.component";
 export * from "./file-viewer/components/file-viewer.component-base";
 export * from "./file-viewer/components/file-viewer.component";
 export * from "./file-viewer/components/dynamic-file-viewer.component";
@@ -96,8 +101,8 @@ export * from "./file-viewer/file-viewer.module";
 
 // file-upload
 export * from "./file-upload/actions";
-export * from "./file-upload/directive/drag-file-listener.directive";
-export * from "./file-upload/directive/open-file-manager-via-short-key.directive";
+export * from "./file-upload/directives/drag-file-listener.directive";
+export * from "./file-upload/directives/open-file-manager-via-short-key.directive";
 export * from "./file-upload/functions";
 export * from "./file-upload/models";
 export * from "./file-upload/selectors";
@@ -214,7 +219,9 @@ export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
 export { setIsDarkModeActive, toggleDarkMode } from "./theme-switcher/actions";
+export { CompactThemeToggleComponent } from "./theme-switcher/components/compact-theme-toggle.component";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
+export { DgpCompactThemeHostDirective } from "./theme-switcher/directives/compact-theme-host.directive";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
 export { ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature } from "./theme-switcher/models";
 export {
@@ -272,4 +279,5 @@ export { DgpVirtualListPanelModule } from "./virtual-list-panel/virtual-list-pan
 export * from "./dgp-ng-app.module";
 export { Size } from "./resize-sensor/models/size.model";
 export { ResizeSensor, defaultResizeSensorConfig, ResizeSensorConfig } from "./resize-sensor/services/resize-sensor.service";
+export { selectFileItem } from "./file-viewer/select-file-item.action";
 

@@ -1,9 +1,7 @@
 import { FactoryProvider, InjectionToken, ModuleWithProviders, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { DragFileListenerDirective } from "./directive/drag-file-listener.directive";
 import { EffectsModule } from "@ngrx/effects";
-import { FileUploadEffects } from "./effects";
-import { FileManagerComponent } from "./containers/file-manager.component";
+import { FileUploadEffects } from "./file-upload.effects";
 import { MatDialogModule } from "@angular/material/dialog";
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-details-page/list-details-page.module";
@@ -18,9 +16,12 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
+import { components } from "./components/components";
+import { DgpNegatePipeModule } from "../negate/negate-pipe.module";
+import { containers } from "./containers/containers";
+import { directives } from "./directives/directives";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -52,16 +53,16 @@ export const fileUploadReducerProvider: FactoryProvider = {
         DgpEmptyStateModule,
         MatTooltipModule,
         DgpFileViewerModule,
-        DgpShortcutModule
+        DgpShortcutModule,
+        DgpNegatePipeModule
     ],
     declarations: [
-        DragFileListenerDirective,
-        OpenFileManagerViaShortKeyDirective,
-        FileManagerComponent
+        ...containers,
+        ...components,
+        ...directives
     ],
     exports: [
-        DragFileListenerDirective,
-        OpenFileManagerViaShortKeyDirective
+        ...directives
     ],
     providers: [
         fileUploadReducerProvider, {
