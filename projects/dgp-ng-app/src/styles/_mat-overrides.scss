@@ -6,7 +6,8 @@
      */
     .mat-tooltip {
         font-size: 13px !important;
-        white-space: pre-line;
+        white-space: pre-line !important;
+        word-break: break-all !important;
     }
 }
 

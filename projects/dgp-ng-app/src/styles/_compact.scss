@@ -15,6 +15,17 @@
 
 }
 
+@mixin dgp-compact-mat-icon-theme() {
+
+    mat-icon {
+        line-height: 20px !important;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+    }
+
+}
+
 @mixin dgp-details-compact-theme() {
 
     dgp-details.--indent, .--indent dgp-details {
@@ -24,6 +35,7 @@
     }
 
 }
+
 @mixin dgp-compact-empty-state-theme() {
 
     dgp-empty-state {
@@ -59,7 +71,6 @@
     }
 
 }
-
 
 
 @mixin dgp-compact-mat-dialog-theme() {
@@ -198,6 +209,7 @@
      */
     @include dgp-compact-mat-button-theme();
     @include dgp-compact-mat-dialog-theme();
+    @include dgp-compact-mat-icon-theme();
     @include dgp-compact-mat-list-theme();
     @include dgp-compact-mat-slide-toggle-theme();
     @include dgp-compact-mat-tab-theme();
