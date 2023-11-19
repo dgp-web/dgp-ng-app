@@ -23,7 +23,18 @@
     }
 }
 
+@mixin dgp-mat-form-field-overrides() {
+
+    /**
+     * Make form-fields fit the width of their container
+     */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
 @mixin dgp-mat-overrides() {
-    @include dgp-mat-tooltip-overrides();
     @include dgp-mat-button-overrides();
+    @include dgp-mat-form-field-overrides();
+    @include dgp-mat-tooltip-overrides();
 }

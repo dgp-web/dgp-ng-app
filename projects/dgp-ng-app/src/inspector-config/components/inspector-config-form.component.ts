@@ -80,13 +80,7 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
 
         </dgp-inspector>
     `,
-    styles: [`
-        mat-form-field {
-            width: 100%;
-            font-size: smaller;
-        }
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DgpInspectorConfigFormComponent extends DgpModelEditorComponentBase<InspectorConfig> {
 
