@@ -82,6 +82,14 @@
 
 }
 
+@mixin dgp-compact-mat-form-field-theme() {
+
+    mat-form-field {
+        font-size: smaller;
+    }
+
+}
+
 @mixin dgp-compact-mat-list-theme() {
 
     .mat-list-avatar {
@@ -209,6 +217,7 @@
      */
     @include dgp-compact-mat-button-theme();
     @include dgp-compact-mat-dialog-theme();
+    @include dgp-compact-mat-form-field-theme();
     @include dgp-compact-mat-icon-theme();
     @include dgp-compact-mat-list-theme();
     @include dgp-compact-mat-slide-toggle-theme();

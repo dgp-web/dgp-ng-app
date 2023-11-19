@@ -167,6 +167,7 @@
     $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
 
     @include mat.all-component-themes($app-theme);
+
     @include dgp-list-item-theme($app-theme);
     @include dgp-inspector-theme($app-theme);
     @include dgp-details-theme($app-theme);
@@ -175,6 +176,7 @@
         @include mat.all-component-themes($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
+    @include dgp-mat-overrides();
 
     .compact-theme {
         @include dgp-compact-theme();
