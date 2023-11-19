@@ -34,7 +34,7 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
                         {{ label }}
                     </div>
                     <mat-divider class="divider"></mat-divider>
-                    <div>
+                    <div class="description__text">
                         {{ description }}
                     </div>
                 </mat-card-content>
