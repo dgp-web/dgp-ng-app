@@ -218,14 +218,15 @@ export { DgpTableCellEditorService } from "./table-cell-editor/service/table-cel
 export { DgpTableCellModule } from "./table-cell-editor/table-cell.module";
 
 // theme-switcher
-export { setIsDarkModeActive, toggleDarkMode } from "./theme-switcher/actions";
+export { setIsDarkModeActive, toggleDarkMode, toggleCompactTheme } from "./theme-switcher/actions";
 export { CompactThemeToggleComponent } from "./theme-switcher/components/compact-theme-toggle.component";
 export { DarkModeToggleComponent } from "./theme-switcher/components/dark-mode-toggle.component";
 export { DgpCompactThemeHostDirective } from "./theme-switcher/directives/compact-theme-host.directive";
 export { ThemeHostDirective } from "./theme-switcher/directives/theme-host.directive";
 export { ThemeSwitcherConfig, ThemeSwitcherState, themeSwitcherStoreFeature } from "./theme-switcher/models";
 export {
-    themeSwitcherFeatureSelector, isDarkModeActiveSelector, isDarkModeActive
+    themeSwitcherFeatureSelector, isDarkModeActiveSelector, isDarkModeActive,
+    isCompactThemeActive,
 } from "./theme-switcher/selectors";
 export { DgpThemeSwitcherModule } from "./theme-switcher/theme-switcher.module";
 
