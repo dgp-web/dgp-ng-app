@@ -32,8 +32,12 @@ export class BarChartBarDirective implements OnChanges {
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "x", x.toString());
             this.renderer.setAttribute(this.elementRef.nativeElement, "y", y.toString());
-            this.renderer.setAttribute(this.elementRef.nativeElement, "width", width.toString());
-            this.renderer.setAttribute(this.elementRef.nativeElement, "height", height.toString());
+            if (width >= 0) {
+                this.renderer.setAttribute(this.elementRef.nativeElement, "width", width.toString());
+            }
+            if (height >= 0) {
+                this.renderer.setAttribute(this.elementRef.nativeElement, "height", height.toString());
+            }
 
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke", this.bar.colorHex);
             this.renderer.setAttribute(this.elementRef.nativeElement, "stroke-width", "2");
