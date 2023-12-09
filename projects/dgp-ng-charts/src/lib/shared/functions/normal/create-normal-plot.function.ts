@@ -69,6 +69,7 @@ export function createNormalPlot(
                 csg.series[0],
                 {
                     connectedScatterSeriesId: csg.connectedScatterGroupId + ".Fitted distribution",
+                    label: "Fitted distribution",
                     showVertices: false,
                     showEdges: true,
                     dots: getFittedNormalDistributionLine({X, P, totalP})

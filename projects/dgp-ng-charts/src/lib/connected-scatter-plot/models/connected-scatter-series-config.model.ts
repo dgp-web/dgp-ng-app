@@ -26,4 +26,5 @@ export interface ConnectedScatterSeriesConfig {
      * default value: undefined == false
      */
     readonly showVertices?: boolean;
+    readonly label?: string;
 }

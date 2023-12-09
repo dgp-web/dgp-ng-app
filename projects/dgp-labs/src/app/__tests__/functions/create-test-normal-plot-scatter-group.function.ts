@@ -15,5 +15,7 @@ export function createTestNormalPlotScatterGroup(payload: {
         return "Dot " + (i + 1);
     });
 
-    return createNormalConnectedScatterGroup({values, labels});
+    return createNormalConnectedScatterGroup({values, labels}, {
+        label: "Test data group"
+    });
 }

@@ -28,7 +28,7 @@ import * as _ from "lodash";
             <ng-container *ngFor="let csGroup of model.model; let groupIndex = index;">
                 <tr>
                     <th>
-                        Group {{ groupIndex }}
+                        {{ csGroup.label || 'Group ' + (groupIndex + 1) }}
                     </th>
                 </tr>
                 <tr *ngFor="let series of csGroup.series; let seriesIndex = index;">

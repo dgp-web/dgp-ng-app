@@ -20,8 +20,10 @@ export function createNormalConnectedScatterGroup(payload: {
 
     const result: ConnectedScatterGroup = {
         connectedScatterGroupId,
+        label: config.label,
         series: [{
             connectedScatterSeriesId: connectedScatterGroupId + ".Data",
+            label: "Values",
             colorHex: config.colorHex || "#00ff0066",
             showVertices: config.showVertices || true,
             showEdges: config.showEdges || false,
