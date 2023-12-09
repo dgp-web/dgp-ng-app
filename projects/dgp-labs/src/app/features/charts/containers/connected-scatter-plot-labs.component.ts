@@ -12,6 +12,7 @@ import { connectedScatterPlotMetadata } from "../../../../../../dgp-ng-charts/sr
 import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/create-test-normal-plot-scatter-group.function";
 import { map, shareReplay } from "rxjs/operators";
 import { createKVSFromArray, KVS } from "entity-store";
+import * as _ from "lodash";
 
 @Component({
     selector: "dgp-connected-scatter-plot-data-table",
@@ -54,14 +55,13 @@ export class ConnectedScatterPlotDataTable extends DgpModelEditorComponentBase<C
 
     readonly resolvedX$ = this.model$.pipe(
         distinctUntilHashChanged(),
-        map(model => model.model
+        map(model => _.sortBy(model.model
             .map(x => x.series)
             .reduce(matrixToMany, [])
             .map(x => x.dots)
             .reduce(matrixToMany, [])
             .map(x => x.x)
-            .filter(byUnique)
-            .sort()
+            .filter(byUnique))
         ),
         shareReplay(1)
     );
