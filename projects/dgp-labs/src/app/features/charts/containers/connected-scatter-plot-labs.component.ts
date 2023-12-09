@@ -22,20 +22,21 @@ import * as _ from "lodash";
             <tr>
                 <th></th>
                 <th *ngFor="let x of resolvedX$ | async">
-                    {{ x }}
+                    {{ x.toPrecision(3) }}
                 </th>
             </tr>
             <ng-container *ngFor="let csGroup of model.model; let groupIndex = index;">
                 <tr>
-                    <th>
+                    <th style="white-space: nowrap;">
                         {{ csGroup.label || 'Group ' + (groupIndex + 1) }}
                     </th>
+                    <th [attr.colspan]="(resolvedX$ | async).length"></th>
                 </tr>
                 <tr *ngFor="let series of csGroup.series; let seriesIndex = index;">
-                    <td>{{ series.label || 'Series ' + seriesIndex }}</td>
+                    <td style="white-space: nowrap;">{{ series.label || 'Series ' + seriesIndex }}</td>
                     <ng-container *ngIf="toDotKVS(series) as dotKVS">
                         <td *ngFor="let x of resolvedX$ | async">
-                            {{ dotKVS[x]?.y }}
+                            {{ dotKVS[x]?.y.toPrecision(3) }}
                         </td>
                     </ng-container>
                 </tr>
@@ -48,6 +49,22 @@ import * as _ from "lodash";
             flex-direction: column;
             overflow: auto;
             height: 100%;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid gray;
+        }
+
+        th {
+            padding: 4px 8px;
+        }
+
+        td {
+            padding: 4px 8px;
         }
     `]
 })
