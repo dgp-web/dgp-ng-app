@@ -9,7 +9,7 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
     template: `
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            {{cspMetadata.label}}
+            {{ cspMetadata.label }}
         </dgp-page-header>
 
         <dgp-docking-layout>
@@ -17,35 +17,42 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
 
                 <dgp-docking-layout-item type="column"
                                          width="80">
-                    <dgp-docking-layout-container label="Plot">
-                        <ng-template>
-                            <dgp-connected-scatter-plot [model]="model.model"
-                                                        [renderer]="renderer"
-                                                        [chartTitle]="model.chartTitle"
-                                                        [xAxisTitle]="model.xAxisTitle"
-                                                        [xAxisMin]="model.xAxisMin"
-                                                        [xAxisMax]="model.xAxisMax"
-                                                        [xAxisStep]="model.xAxisStep"
-                                                        [xAxisTickFormat]="model.xAxisTickFormat"
-                                                        [xAxisScaleType]="model.xAxisScaleType"
-                                                        [showXAxisGridLines]="model.showXAxisGridLines"
-                                                        [showDataAreaOutline]="true"
-                                                        [yAxisTitle]="model.yAxisTitle"
-                                                        [yAxisScaleType]="model.yAxisScaleType"
-                                                        [yAxisMin]="model.yAxisMin"
-                                                        [yAxisMax]="model.yAxisMax"
-                                                        [yAxisStep]="model.yAxisStep"
-                                                        [yAxisInterpolator]="model.yAxisInterpolator"
-                                                        [yAxisTickValues]="model.yAxisTickValues"
-                                                        [yAxisTickFormat]="model.yAxisTickFormat"
-                                                        [showYAxisGridLines]="model.showYAxisGridLines"
-                                                        [controlLines]="model.controlLines"
-                                                        [dotSize]="model.dotSize"
-                                                        [lineWidth]="model.lineWidth"
-                                                        [showDotTooltips]="model.showDotTooltips"></dgp-connected-scatter-plot>
-                        </ng-template>
+                    <dgp-docking-layout-item type="stack">
+                        <dgp-docking-layout-container label="Plot">
+                            <ng-template>
+                                <dgp-connected-scatter-plot [model]="model.model"
+                                                            [renderer]="renderer"
+                                                            [chartTitle]="model.chartTitle"
+                                                            [xAxisTitle]="model.xAxisTitle"
+                                                            [xAxisMin]="model.xAxisMin"
+                                                            [xAxisMax]="model.xAxisMax"
+                                                            [xAxisStep]="model.xAxisStep"
+                                                            [xAxisTickFormat]="model.xAxisTickFormat"
+                                                            [xAxisScaleType]="model.xAxisScaleType"
+                                                            [showXAxisGridLines]="model.showXAxisGridLines"
+                                                            [showDataAreaOutline]="true"
+                                                            [yAxisTitle]="model.yAxisTitle"
+                                                            [yAxisScaleType]="model.yAxisScaleType"
+                                                            [yAxisMin]="model.yAxisMin"
+                                                            [yAxisMax]="model.yAxisMax"
+                                                            [yAxisStep]="model.yAxisStep"
+                                                            [yAxisInterpolator]="model.yAxisInterpolator"
+                                                            [yAxisTickValues]="model.yAxisTickValues"
+                                                            [yAxisTickFormat]="model.yAxisTickFormat"
+                                                            [showYAxisGridLines]="model.showYAxisGridLines"
+                                                            [controlLines]="model.controlLines"
+                                                            [dotSize]="model.dotSize"
+                                                            [lineWidth]="model.lineWidth"
+                                                            [showDotTooltips]="model.showDotTooltips"></dgp-connected-scatter-plot>
+                            </ng-template>
 
-                    </dgp-docking-layout-container>
+                        </dgp-docking-layout-container>
+                        <dgp-docking-layout-container label="Data">
+                            <ng-template>
+                                
+                            </ng-template>
+                        </dgp-docking-layout-container>
+                    </dgp-docking-layout-item>
                 </dgp-docking-layout-item>
 
                 <dgp-docking-layout-item type="column"
