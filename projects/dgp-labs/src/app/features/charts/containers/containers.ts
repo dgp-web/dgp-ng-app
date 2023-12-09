@@ -1,4 +1,4 @@
-import { ConnectedScatterPlotLabsComponent } from "./connected-scatter-plot-labs.component";
+import { ConnectedScatterPlotDataTable, ConnectedScatterPlotLabsComponent } from "./connected-scatter-plot-labs.component";
 import { ChartsLabsComponent } from "./charts-labs.component";
 import { BoxPlotLabsComponent } from "./box-plot-labs.component";
 import { BarChartLabsComponent } from "./bar-chart-labs.component";
@@ -11,5 +11,6 @@ export const containers = [
     ChartsLabsComponent,
     ConnectedScatterPlotLabsComponent,
     HeatmapLabsComponent,
-    ShapesAndPatternLabsComponent
+    ShapesAndPatternLabsComponent,
+    ConnectedScatterPlotDataTable
 ];
