@@ -20,8 +20,9 @@ import * as _ from "lodash";
         <table>
             <!-- TODO: compute total columns -->
             <tr>
-                <th></th>
-                <th *ngFor="let x of resolvedX$ | async">
+                <th style="position: sticky; top: 0; background: #303030;  background-clip: padding-box;"></th>
+                <th *ngFor="let x of resolvedX$ | async"
+                    style="position: sticky; top: 0; background: #303030;  background-clip: padding-box;">
                     {{ x.toPrecision(3) }}
                 </th>
             </tr>
@@ -49,6 +50,7 @@ import * as _ from "lodash";
             flex-direction: column;
             overflow: auto;
             height: 100%;
+            position: relative;
         }
 
         table {
@@ -57,6 +59,7 @@ import * as _ from "lodash";
 
         th, td {
             border: 1px solid gray;
+            /* outline: 1px solid gray;*/
         }
 
         th {
