@@ -61,6 +61,7 @@ import * as _ from "lodash";
 
         th {
             padding: 4px 8px;
+            text-align: start;
         }
 
         td {
