@@ -70,6 +70,12 @@ import * as _ from "lodash";
         td {
             padding: 4px 8px;
         }
+
+        .sticky-column {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
     `]
 })
 export class ConnectedScatterPlotDataTable extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
