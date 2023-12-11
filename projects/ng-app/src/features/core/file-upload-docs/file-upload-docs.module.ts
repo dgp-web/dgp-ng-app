@@ -4,6 +4,7 @@ import { DocsPageModule } from "../../shared";
 import { FileUploadDocsPageComponent } from "./containers/file-upload-docs-page.component";
 import { DgpFileUploadModule } from "dgp-ng-app";
 import { DgpFileViewerModule } from "dgp-ng-app";
+import { UiSharedModule } from "../../../ui";
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { DgpFileViewerModule } from "dgp-ng-app";
         }]),
         DocsPageModule,
         DgpFileViewerModule.forRoot(),
-        DgpFileUploadModule.forRoot()
+        DgpFileUploadModule.forRoot(),
+        UiSharedModule
     ],
     declarations: [
         FileUploadDocsPageComponent

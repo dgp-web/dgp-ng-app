@@ -20,7 +20,14 @@ import { DgpView } from "../../../utils/view";
             </small>
 
         </dgp-inspector-item>
-    `
+    `,
+    styles: [`
+        :host {
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+    `]
 })
 export class FileItemListItemComponent extends DgpView<FileItem> {
 

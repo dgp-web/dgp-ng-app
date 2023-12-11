@@ -17,6 +17,8 @@ import { cacheFileSystem } from "./cache-file-system.action";
 import { openFileItemInNewTab } from "./open-file-item-in-new-tab.function";
 import { directoryMetadata } from "./constants/directory-metadata.constant";
 import { fileItemMetadata } from "./constants/file-item-metadata.constant";
+import { selectActionContext } from "../action-context/actions/select-action-context.action";
+import { deselectActionContext } from "../action-context/actions/deselect-action-context.action";
 
 @Injectable()
 export class FileUploadEffects extends DgpContainer<FileUploadState> {
@@ -26,7 +28,21 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
         tap(action => {
             if (action.fileItems) {
                 this.dispatch(cacheFileSystem(action as FileSystem));
+
+                if (action.selectedFileItemId) {
+                    this.dispatch(selectActionContext({
+                        actionContext: {
+                            key: undefined,
+                            label: undefined,
+                            type: "fileItem",
+                            value: action.fileItems.find(x => x.fileItemId === action.selectedFileItemId)
+                        }
+                    }));
+                } else {
+                    this.dispatch(deselectActionContext({}));
+                }
             }
+
 
             if (action.config) {
                 this.dispatch(setConfig({config: action.config}));
