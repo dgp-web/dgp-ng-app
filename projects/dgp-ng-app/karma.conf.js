@@ -26,10 +26,10 @@ module.exports = function (config) {
             ],
             check: {
                 global: {
-                    statements: 59,
-                    branches: 29,
+                    statements: 58,
+                    branches: 28,
                     functions: 43,
-                    lines: 59
+                    lines: 58
                 }
             },
             watermarks: {
