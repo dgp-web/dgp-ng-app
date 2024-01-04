@@ -19,8 +19,10 @@
                     "options": {
                         "allowedCommonJsDependencies": [
                             "css-element-queries",
+                            "data-modeling",
                             "entity-store",
                             "highlight.js",
+                            "lodash",
                             "@angularclass/hmr"
                         ],
                         "outputPath": "dist/ng-app",
@@ -30,6 +32,7 @@
                         "tsConfig": "projects/ng-app/tsconfig.app.json",
                         "aot": true,
                         "progress": false,
+                        "optimization": false,
                         "assets": [
                             "projects/ng-app/src/favicon.ico",
                             "projects/ng-app/src/assets"
