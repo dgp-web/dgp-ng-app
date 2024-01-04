@@ -3,7 +3,7 @@ import { EffectsMetadata, EffectsModule, getEffectsMetadata } from "@ngrx/effect
 import { ReplaySubject } from "rxjs";
 import { StoreModule } from "@ngrx/store";
 import { provideMockActions } from "@ngrx/effects/testing";
-import { FileUploadEffects } from "./effects";
+import { FileUploadEffects } from "./file-upload.effects";
 import { RouterTestingModule } from "@angular/router/testing";
 import { MatLegacyDialogModule as MatDialogModule } from "@angular/material/legacy-dialog";
 import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG } from "./models";

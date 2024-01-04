@@ -1,0 +1,305 @@
+@mixin dgp-compact-mat-button-theme() {
+
+    button[mat-icon-button] {
+        width: 24px !important;
+        height: 24px !important;
+        line-height: 24px !important;
+
+        mat-icon {
+            line-height: 20px !important;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+        }
+    }
+
+    .mat-button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+        line-height: 28px !important;
+        font-size: smaller;
+        padding: 0 8px !important;
+    }
+
+}
+
+/**
+ * TODO: This only works when overriding with !important but that breaks other styles
+ */
+@mixin dgp-compact-mat-card-theme() {
+
+    /*.mat-card {
+        padding: 12px !important;
+    }*/
+
+}
+
+/**
+ * TODO: This only works when overriding with !important but that breaks other styles
+ */
+@mixin dgp-compact-mat-icon-theme() {
+
+    /*  .mat-icon {
+          line-height: 20px;
+          width: 20px;
+          height: 20px;
+          font-size: 20px;
+      }*/
+
+}
+
+@mixin dgp-compact-details-theme() {
+
+    dgp-details.--indent, .--indent dgp-details {
+        .details-content {
+            padding-left: 24px;
+        }
+    }
+
+}
+
+@mixin dgp-compact-empty-state-theme() {
+
+    dgp-empty-state {
+        margin-top: 16px;
+        margin-bottom: 16px;
+        max-height: initial !important;
+
+        h1 {
+            margin: 0 !important;
+            font-size: initial !important;
+        }
+
+        mat-icon {
+            font-size: 32px !important;
+            width: 32px !important;
+            height: 32px !important;
+        }
+    }
+}
+
+@mixin dgp-compact-hamburger-menu-theme() {
+
+    dgp-hamburger-menu-entry {
+        mat-icon {
+            margin-right: 8px !important;
+        }
+    }
+
+    .hamburger-menu-drawer {
+        max-width: 200px !important;
+    }
+
+}
+
+@mixin dgp-compact-inspector-item-theme() {
+
+    dgp-inspector-item {
+
+        .inspector-item-content {
+            min-height: 24px;
+        }
+
+        .info {
+            height: 24px;
+        }
+
+    }
+
+}
+
+
+@mixin dgp-compact-tile-theme() {
+
+    dgp-tile {
+        mat-card {
+            padding: 12px !important;
+        }
+
+        .container {
+            max-height: 194px !important;
+            min-height: 194px !important;
+            max-width: 194px !important;
+            min-width: 194px !important;
+            margin: 8px !important;
+        }
+
+        mat-icon {
+            font-size: 32px !important;
+            height: 48px !important;
+            width: 48px !important;
+            border-radius: 24px !important;
+            margin-bottom: 8px !important;
+        }
+
+
+        .divider {
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .label {
+            font-size: initial !important;
+        }
+
+        .description__text {
+            font-size: smaller !important;
+        }
+    }
+
+}
+
+@mixin dgp-compact-mat-dialog-theme() {
+
+    mat-dialog-container {
+        padding: 12px;
+        border-radius: 0 !important;
+    }
+
+}
+
+@mixin dgp-compact-mat-form-field-theme() {
+
+    mat-form-field {
+        font-size: smaller;
+    }
+
+}
+
+@mixin dgp-compact-mat-list-theme() {
+
+    .mat-list-avatar {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    /**
+     * Makes styling of material lists compact
+     */
+    mat-nav-list, mat-selection-list, mat-list {
+
+        padding-top: 0 !important;
+
+        .mat-list-item, mat-list-option {
+            height: auto !important;
+            word-break: break-all !important;
+            display: flex !important;
+            font-size: smaller !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            min-height: 28px !important;
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+
+            .mat-list-item-content {
+                flex-grow: 1;
+                padding: 0 8px !important;
+            }
+
+            .mat-line {
+                white-space: normal !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                display: flex !important;
+                box-sizing: border-box !important;
+            }
+
+        }
+
+        .mat-subheader {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            height: 32px;
+            display: block;
+            font-size: smaller;
+            padding: 12px !important;
+        }
+
+    }
+}
+
+@mixin dgp-compact-mat-slide-toggle-theme() {
+
+    /**
+    * source: https://stackoverflow.com/questions/60325562/size-angular-material-slide-toggle-small-medium-large
+     */
+    .mat-slide-toggle {
+
+        .mat-slide-toggle-bar {
+            height: 7px !important;
+            width: 28px !important;
+        }
+
+        .mat-slide-toggle-thumb {
+            height: 10px !important;
+            width: 10px !important;
+        }
+
+        .mat-slide-toggle-thumb-container {
+            width: 12px !important;
+            height: 12px !important;
+            top: -2px !important;
+            left: 0 !important;
+        }
+
+    }
+
+    .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+        transform: translate3d(18px, 0, 0) !important;
+    }
+
+}
+
+@mixin dgp-compact-mat-tab-theme() {
+
+    /**
+     * Tab labels for ng material are fat bastards so we limit their height
+     * and decrease the exaggerated min-width
+     */
+    .mat-tab-label {
+        height: 36px !important;
+        min-width: 100px !important;
+    }
+
+    dgp-stack > mat-tab-group {
+        height: 36px !important;
+    }
+
+}
+
+@mixin dgp-compact-mat-toolbar-theme() {
+
+    .mat-toolbar {
+        height: 40px;
+        font-size: 14px;
+    }
+
+}
+
+@mixin dgp-compact-theme() {
+
+    /**
+     * dgp components
+     */
+    @include dgp-compact-details-theme();
+    @include dgp-compact-empty-state-theme();
+    @include dgp-compact-hamburger-menu-theme();
+    @include dgp-compact-inspector-item-theme();
+    @include dgp-compact-tile-theme();
+
+    /**
+     * Angular material components
+     */
+    @include dgp-compact-mat-button-theme();
+    @include dgp-compact-mat-card-theme();
+    @include dgp-compact-mat-dialog-theme();
+    @include dgp-compact-mat-form-field-theme();
+    @include dgp-compact-mat-icon-theme();
+    @include dgp-compact-mat-list-theme();
+    @include dgp-compact-mat-slide-toggle-theme();
+    @include dgp-compact-mat-tab-theme();
+    @include dgp-compact-mat-toolbar-theme();
+
+}

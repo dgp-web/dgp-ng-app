@@ -2,8 +2,8 @@ import { Inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { filter, first, skip, switchMap, tap } from "rxjs/operators";
 import { select, Store } from "@ngrx/store";
-import { toggleDarkMode } from "./actions";
-import { getCurrentInspectorConfig, isDarkModeActiveSelector } from "./selectors";
+import { toggleCompactTheme, toggleDarkMode } from "./actions";
+import { getCurrentInspectorConfig, isCompactThemeActive, isDarkModeActiveSelector } from "./selectors";
 import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig, ThemeSwitcherState } from "./models";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
 import { DgpContainer } from "../utils/container.component-base";
@@ -22,6 +22,21 @@ export class ThemeSwitcherEffects extends DgpContainer<ThemeSwitcherState> {
                 first(),
                 tap(isDarkModeActive => {
                     localStorage.setItem("isDarkModeActive", JSON.stringify(isDarkModeActive));
+                })
+            );
+
+        })
+    ), withoutDispatch);
+
+    readonly toggleCompactTheme$ = createEffect(() => this.actions$.pipe(
+        ofType(toggleCompactTheme),
+        switchMap(() => {
+
+            return this.store.pipe(
+                select(isCompactThemeActive),
+                first(),
+                tap(useCompactTheme => {
+                    localStorage.setItem("useCompactTheme", JSON.stringify(useCompactTheme));
                 })
             );
 

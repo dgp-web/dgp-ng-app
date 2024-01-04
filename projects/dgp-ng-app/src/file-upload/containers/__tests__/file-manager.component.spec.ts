@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { FileManagerComponent } from "./file-manager.component";
-import { DgpFileUploadModule } from "../file-upload.module";
+import { FileManagerComponent } from "../file-manager.component";
+import { DgpFileUploadModule } from "../../file-upload.module";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { RouterTestingModule } from "@angular/router/testing";

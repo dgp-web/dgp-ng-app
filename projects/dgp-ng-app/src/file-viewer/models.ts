@@ -1,7 +1,11 @@
 import { InjectionToken, Type } from "@angular/core";
+import { KVS } from "entity-store";
 
-export interface FileItem {
+export interface FileItemId {
     readonly fileItemId: string;
+}
+
+export interface FileItem extends FileItemId {
     readonly fileName: string;
     readonly extension: string;
     /**
@@ -37,3 +41,9 @@ export const FILE_VIEWER_CONFIG = new InjectionToken<FileViewerConfig>("DgpFileV
 export interface FileViewerConfig {
     readonly fileTypeViewerMap: FileTypeViewerMap;
 }
+
+export interface FileItemListModel {
+    readonly fileItemKVS: KVS<FileItem>;
+    readonly directories: ReadonlyArray<Directory>;
+}
+
