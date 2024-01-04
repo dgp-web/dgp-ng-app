@@ -4,6 +4,7 @@ import { Many } from "data-modeling";
 
 export interface ThemeSwitcherState {
     readonly useDarkMode: boolean;
+    readonly useCompactTheme: boolean;
     /**
      * Components
      */
@@ -12,11 +13,13 @@ export interface ThemeSwitcherState {
 
 export interface ThemeSwitcherConfig {
     readonly darkThemeClassName: string;
+    readonly compactThemeClassName: string;
     readonly components: Many<string>;
 }
 
 export const defaultThemeSwitcherConfig: ThemeSwitcherConfig = {
     darkThemeClassName: "dark-theme",
+    compactThemeClassName: "compact-theme",
     components: []
 };
 

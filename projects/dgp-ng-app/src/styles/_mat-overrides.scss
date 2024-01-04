@@ -1,0 +1,40 @@
+@mixin dgp-mat-tooltip-overrides() {
+    /**
+     * The default mat tooltip is so small it's barely visible.
+     *
+     * We make it larger so even a normal person can read it comfortably.
+     */
+    .mat-tooltip {
+        font-size: 13px !important;
+        white-space: pre-line !important;
+        word-break: break-word !important;
+    }
+}
+
+@mixin dgp-mat-button-overrides() {
+
+    /**
+     * Make icons on mat-button usable without always setting margin-right
+     */
+    button[mat-button], button[mat-raised-button] {
+        mat-icon {
+            margin-right: 8px;
+        }
+    }
+}
+
+@mixin dgp-mat-form-field-overrides() {
+
+    /**
+     * Make form-fields fit the width of their container
+     */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
+@mixin dgp-mat-overrides() {
+    @include dgp-mat-button-overrides();
+    @include dgp-mat-form-field-overrides();
+    @include dgp-mat-tooltip-overrides();
+}

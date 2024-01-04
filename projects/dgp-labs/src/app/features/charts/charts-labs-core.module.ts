@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { DgpHamburgerMenuToggleModule, DgpInspectorModule, DgpPageHeaderModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpInspectorModule, DgpPageHeaderModule, DgpThemeSwitcherModule } from "dgp-ng-app";
 import {
     DgpBarChartModule,
     DgpBoxPlotModule,
@@ -42,7 +42,8 @@ import { components } from "./components/components";
         DgpSVGSymbolsModule,
         DgpFillPatternIconModule,
         MatSlideToggleModule,
-        DgpDockingLayoutModule
+        DgpDockingLayoutModule,
+        DgpThemeSwitcherModule
     ],
     declarations: [
         ...components,

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, HostBinding } from "@angular/core";
 import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
 
@@ -90,6 +90,9 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
     ]
 })
 export class AppComponent extends DgpContainer {
+
+    @HostBinding("class.--compact")
+    readonly bindings = false;
 
     readonly authenticatedUser$ = this.select(getAuthenticatedUserSelector);
 
