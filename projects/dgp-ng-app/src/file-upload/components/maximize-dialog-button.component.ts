@@ -1,6 +1,6 @@
 import { Component, Inject } from "@angular/core";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig } from "../models";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
 
 @Component({
     selector: "dgp-maximize-dialog-button",
