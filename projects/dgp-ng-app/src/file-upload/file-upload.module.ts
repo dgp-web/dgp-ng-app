@@ -16,7 +16,6 @@ import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/lega
 import { MatLegacyMenuModule as MatMenuModule } from "@angular/material/legacy-menu";
 import { DgpEmptyStateModule } from "../empty-state/empty-state.module";
 import { MatLegacyTooltipModule as MatTooltipModule } from "@angular/material/legacy-tooltip";
-import { OpenFileManagerViaShortKeyDirective } from "./directive/open-file-manager-via-short-key.directive";
 import { DgpFileViewerModule } from "../file-viewer/file-viewer.module";
 import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
 import { components } from "./components/components";
