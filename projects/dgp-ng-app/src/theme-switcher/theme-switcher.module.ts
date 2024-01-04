@@ -16,7 +16,7 @@ import {
     themeSwitcherStoreFeature
 } from "./models";
 import { setIsCompactThemeActive, setIsDarkModeActive, updateCurrentInspectorConfig } from "./actions";
-import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { notNullOrUndefined } from "../utils/null-checking.functions";
 import { DgpCompactThemeHostDirective } from "./directives/compact-theme-host.directive";
 import { CompactThemeToggleComponent } from "./components/compact-theme-toggle.component";

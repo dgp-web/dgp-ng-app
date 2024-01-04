@@ -4,7 +4,7 @@ import { DgpFileUploadModule } from "../../file-upload.module";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 import { RouterTestingModule } from "@angular/router/testing";
-import { MatLegacyDialogModule as MatDialogModule, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 
 describe(FileManagerComponent.name, () => {
 

@@ -182,13 +182,13 @@
         ),
     ));
 
-    @include mat.all-legacy-component-themes($app-theme);
+    @include mat.all-component-themes($app-theme);
     @include dgp-list-item-theme($app-theme);
     @include dgp-inspector-theme($app-theme);
     @include dgp-details-theme($app-theme);
 
     .dark-theme {
-        @include mat.all-legacy-component-colors($app-dark-theme);
+        @include mat.all-component-colors($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
     @include dgp-mat-overrides();
@@ -220,7 +220,7 @@
     .dgp-cl--warn {
         color: mat.get-color-from-palette($warn) !important;
     }
-
+    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
     mat-dialog-actions {
         display: flex;
         justify-content: flex-end;
@@ -258,11 +258,12 @@
 
     dgp-input-field {
         dgp-inspector-item {
+            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
             mat-list-item {
                 padding-bottom: 8px !important;
                 padding-top: 8px !important;
             }
-
+            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
             .mat-list-item-content {
                 align-items: flex-start !important;
 
@@ -285,6 +286,7 @@
 }
 
 .dgp-file-manager-overlay {
+    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
     mat-dialog-container {
         padding: 0;
     }
@@ -314,7 +316,10 @@
 
 
 dgp-inspector-item {
+    /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+    /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
     mat-list-item {
+        /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
         .mat-list-item-content {
             flex-grow: 1 !important;
         }
@@ -322,12 +327,13 @@ dgp-inspector-item {
 }
 
 dgp-inspector-section {
-    .mat-subheader:first-child {
+    .mat-mdc-subheader:first-child {
         margin-top: 0 !important;
     }
 }
 
 .dgp-routing-overlay-dialog-panel {
+    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
     mat-dialog-container {
         background: transparent !important;
         box-shadow: none !important;

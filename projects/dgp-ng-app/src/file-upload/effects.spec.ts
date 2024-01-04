@@ -5,7 +5,7 @@ import { StoreModule } from "@ngrx/store";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { FileUploadEffects } from "./file-upload.effects";
 import { RouterTestingModule } from "@angular/router/testing";
-import { MatLegacyDialogModule as MatDialogModule } from "@angular/material/legacy-dialog";
+import { MatDialogModule } from "@angular/material/dialog";
 import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG } from "./models";
 
 describe(FileUploadEffects.name, () => {

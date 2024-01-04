@@ -2,9 +2,9 @@ import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
 import { RoutingOverlayComponent } from "./components/routing-overlay.component";
 import { RoutingOverlayEffects } from "./effects";
-import { MatLegacyProgressBarModule as MatProgressBarModule } from "@angular/material/legacy-progress-bar";
-import { MatLegacyDialogModule as MatDialogModule } from "@angular/material/legacy-dialog";
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from "@angular/material/legacy-progress-spinner";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @NgModule({
     imports: [

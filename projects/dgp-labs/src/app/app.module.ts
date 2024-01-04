@@ -20,7 +20,7 @@ import {
 } from "dgp-ng-app";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
-import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
+import { MatButtonModule } from "@angular/material/button";
 import { createEntityStore } from "entity-store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { SplitPanelLabsModule } from "./features/split-panel/split-panel-labs.module";
@@ -29,7 +29,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { ChartsLabsModule } from "./features/charts/charts-labs.module";
 import { ActionContextLabsModule } from "./features/action-context/charts-labs.module";
-import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
+import { MatListModule } from "@angular/material/list";
 import { DgpDataExportLabsModule } from "./features/data-export/data-export-labs.module";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";

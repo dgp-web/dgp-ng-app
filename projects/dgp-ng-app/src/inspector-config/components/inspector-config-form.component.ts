@@ -73,7 +73,7 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
                                 [min]="160"
                                 [max]="480"
                                 [step]="1"
-                                style="width: 160px;"></mat-slider>
+                                style="width: 160px;"><input matSliderThumb /></mat-slider>
                 </dgp-inspector-item>
 
             </dgp-inspector-section>

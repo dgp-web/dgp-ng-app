@@ -35,7 +35,7 @@ import { DragStartEvent } from "../../models/drag-start-event.model";
 import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { MatLegacyTabGroup as MatTabGroup } from "@angular/material/legacy-tabs";
+import { MatTabGroup } from "@angular/material/tabs";
 import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indicator.component";
 import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
 
@@ -74,6 +74,7 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
             flex-direction: column;
         }
 
+        /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
         mat-tab-group {
             flex-shrink: 0;
             height: 50px;
