@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DynamicFileViewerComponent } from "../dynamic-file-viewer.component";
 import { DgpFileViewerModule } from "../../file-viewer.module";
+import { StoreModule } from "@ngrx/store";
 
 describe(DynamicFileViewerComponent.name, () => {
 
@@ -11,6 +12,7 @@ describe(DynamicFileViewerComponent.name, () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
+                StoreModule.forRoot(),
                 DgpFileViewerModule
             ]
         });
