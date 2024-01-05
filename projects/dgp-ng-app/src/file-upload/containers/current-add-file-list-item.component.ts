@@ -8,13 +8,12 @@ import { addFilesViaDrop } from "../actions";
 @Component({
     selector: "dgp-current-add-file-list-item",
     template: `
-        <mat-nav-list *ngIf="isAddFilesDisabled$ | async | negate">
-            <a mat-list-item
-               (click)="filePicker.click()">
-                <mat-icon>
+        <mat-action-list *ngIf="isAddFilesDisabled$ | async | negate">
+            <mat-list-item (click)="filePicker.click()">
+                <mat-icon matListItemIcon>
                     open_in_new
                 </mat-icon>
-                <div matLine>
+                <div matListItemTitle>
                     Choose file via picker
                 </div>
                 <input hidden
@@ -22,8 +21,8 @@ import { addFilesViaDrop } from "../actions";
                        (change)="onFileSelected($event)"
                        type="file"
                        #filePicker>
-            </a>
-        </mat-nav-list>
+            </mat-list-item>
+        </mat-action-list>
     `
 })
 export class CurrentAddFileListItemComponent extends DgpContainer<FileUploadState> {
