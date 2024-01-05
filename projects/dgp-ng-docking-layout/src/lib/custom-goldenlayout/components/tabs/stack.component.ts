@@ -74,12 +74,6 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
             flex-direction: column;
         }
 
-        /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-        mat-tab-group {
-            flex-shrink: 0;
-            height: 50px;
-        }
-
         .tab-header {
             height: 100%;
             width: 100%;
