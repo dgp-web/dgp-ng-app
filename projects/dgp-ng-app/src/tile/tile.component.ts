@@ -5,8 +5,9 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
     template: `
         <a *ngIf="route"
            [routerLink]="route"
-           class="container">
-            <mat-card appearance="outlined" matRipple
+           class="container"
+           matRipple>
+            <mat-card appearance="outlined"
                       class="tile-card">
                 <mat-card-content class="description">
                     <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
@@ -54,6 +55,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
             width: 100%;
             text-decoration: inherit;
             margin: 8px;
+            color: inherit;
         }
 
         .tile-card {
