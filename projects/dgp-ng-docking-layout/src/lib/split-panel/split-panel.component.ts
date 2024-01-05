@@ -23,11 +23,12 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
 @Component({
     selector: "dgp-split-panel",
     template: `
-        <mat-card appearance="outlined" #host
-                  dgpResizeSensor
-                  (sizeChanged)="updateLayout()">
+        <div #host
+             dgpResizeSensor
+             (sizeChanged)="updateLayout()"
+             style="display: flex; height: 100%; overflow: hidden; flex-grow: 1;">
             <ng-content></ng-content>
-        </mat-card>`,
+        </div>`,
     styles: [`
         :host {
             display: flex;
@@ -38,14 +39,6 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
             flex-grow: 1;
         }
 
-        /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-        mat-card {
-            padding: 0 !important;
-            border-radius: 0 !important;
-            flex-grow: 1 !important;
-            display: flex !important;
-            height: 100% !important;
-        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
