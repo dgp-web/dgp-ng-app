@@ -7,8 +7,7 @@ import {
     Input,
     Output,
     TemplateRef,
-    ViewChild,
-    ViewEncapsulation
+    ViewChild
 } from "@angular/core";
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
@@ -23,14 +22,13 @@ import { DgpTableCellEditorService } from "../service/table-cell-editor.service"
                 mat-button
                 [disabled]="disabled"
                 (click)="openCellEditorDialog()"
-                class="mat-table-cell-editor-trigger-button">
+                class="mat-mdc-table-cell-editor-trigger-button">
             <ng-content></ng-content>
         </button>
 
     `,
     styles: [`
-
-        dgp-table-cell {
+        :host {
             display: flex;
             flex-grow: 1;
         }
@@ -43,22 +41,8 @@ import { DgpTableCellEditorService } from "../service/table-cell-editor.service"
             font-weight: initial;
         }
 
-        /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-        .mat-table-cell-editor-trigger-button .mat-button-wrapper {
-            flex-grow: 1;
-            justify-content: flex-start;
-            display: flex;
-        }
-
-        /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
-        .mat-dialog-no-backdrop {
-            background: initial;
-        }
-
-
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class DgpTableCellComponent {

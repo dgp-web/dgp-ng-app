@@ -11,15 +11,15 @@ import { DgpContainer } from "../../utils/container.component-base";
             <a mat-list-item
                *ngFor="let logEntry of logEntries$ | async"
                [routerLink]="['/logEntries', logEntry.timeStamp.toString()]">
-                <mat-icon mat-list-icon
+                <mat-icon matListItemIcon
                           *ngIf="logEntry.severity === severityEnum.Error">
                     error
                 </mat-icon>
-                <div mat-line>
+                <div matListItemTitle>
                     {{ logEntry.title }}
                 </div>
-                <div mat-line>
-                    {{ logEntry.timeStamp | date:'medium'}}
+                <div matListItemLine>
+                    {{ logEntry.timeStamp | date:'medium' }}
                 </div>
             </a>
         </mat-nav-list>
