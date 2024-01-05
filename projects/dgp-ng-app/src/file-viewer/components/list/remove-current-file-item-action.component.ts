@@ -15,7 +15,6 @@ export const canRemoveCurrentFileItem = createSelector(
     selector: "dgp-remove-current-file-item-action",
     template: `
         <button mat-icon-button
-                class="--compact"
                 (click)="removeCurrentFileItem()"
                 [disabled]="canRemoveCurrentFileItem$ | async | negate"
                 matTooltip="Remove selected file"

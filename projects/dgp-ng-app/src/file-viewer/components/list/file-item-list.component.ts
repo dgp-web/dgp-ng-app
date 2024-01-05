@@ -16,14 +16,14 @@ import { FileUploadState } from "../../../file-upload/models";
                     <dgp-download-current-file-item></dgp-download-current-file-item>
                 </ng-container>
 
-                <div *ngFor="let directory of model.directories"
-                     style="overflow: auto;">
+                <mat-nav-list *ngFor="let directory of model.directories"
+                              style="overflow: auto;">
 
                     <dgp-file-item-list-item
-                            *ngFor="let fileItemId of directory.fileItemIds"
-                            [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
+                        *ngFor="let fileItemId of directory.fileItemIds"
+                        [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
 
-                </div>
+                </mat-nav-list>
 
             </dgp-inspector-section>
         </dgp-inspector>
