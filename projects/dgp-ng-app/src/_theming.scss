@@ -144,7 +144,7 @@
 
                 dgp-expansion-toggle {
 
-                    button[mat-icon-button] {
+                   /* button[mat-icon-button] {
                         width: 32px !important;
                         height: 32px !important;
                         line-height: 32px !important;
@@ -155,7 +155,7 @@
                             height: 20px;
                             font-size: 20px;
                         }
-                    }
+                    }*/
                 }
             }
         }
@@ -167,6 +167,7 @@
 
     @include dgp-normalize();
     @include dgp-mat-overrides();
+    $density: -3;
 
     *[dgpThemeHost] {
 
@@ -176,6 +177,7 @@
                 accent: $accent,
                 warn: $warn,
             ),
+            density: $density
         ));
         $app-dark-theme: mat.define-dark-theme((
             color: (
@@ -183,12 +185,13 @@
                 accent: $accent,
                 warn: $warn,
             ),
+            density: $density
         ));
 
-        @include mat.all-component-themes($app-theme);
-        @include dgp-list-item-theme($app-theme);
-        @include dgp-inspector-theme($app-theme);
-        @include dgp-details-theme($app-theme);
+    @include mat.all-component-themes($app-theme);
+    @include dgp-list-item-theme($app-theme);
+    @include dgp-inspector-theme($app-theme);
+    @include dgp-details-theme($app-theme);
 
         .dark-theme, &.dark-theme {
             @include mat.all-component-themes($app-dark-theme);

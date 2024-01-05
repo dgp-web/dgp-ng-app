@@ -18,7 +18,7 @@ $app-primary: mat.define-palette(mat.$light-green-palette);
 $app-accent: mat.define-palette(mat.$green-palette);
 
 @include dgp-ng-app-theme($app-primary, $app-accent);
-@include dgp-compact-theme();
+//@include dgp-compact-theme();
 
 .dgp-bg--primary {
     background: mat.get-color-from-palette($app-primary) !important;

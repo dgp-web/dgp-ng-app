@@ -1,9 +1,11 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
     selector: "dgp-hamburger-menu-entries",
     template: `
-        <ng-content></ng-content>
+        <mat-nav-list>
+            <ng-content></ng-content>
+        </mat-nav-list>
     `,
     styles: [`
         :host {
@@ -12,8 +14,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             overflow: auto;
             flex-grow: 1;
         }
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+
+        mat-nav-list {
+            flex-grow: 1;
+        }
+    `]
 })
 export class HamburgerMenuEntriesComponent {
 
