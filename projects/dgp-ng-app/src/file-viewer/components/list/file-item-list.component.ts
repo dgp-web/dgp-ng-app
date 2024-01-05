@@ -6,27 +6,24 @@ import { FileUploadState } from "../../../file-upload/models";
 @Component({
     selector: "dgp-file-item-list",
     template: `
-        <dgp-inspector style="overflow: auto;"
-                       [responsive]="false"
-                       [showFieldIcons]="true">
-            <dgp-inspector-section [expandable]="false"
-                                   label="Files">
-                <ng-container actions>
-                    <dgp-remove-current-file-item-action></dgp-remove-current-file-item-action>
-                    <dgp-download-current-file-item></dgp-download-current-file-item>
-                </ng-container>
+        <mat-nav-list style="overflow: auto;">
 
-                <mat-nav-list *ngFor="let directory of model.directories"
-                              style="overflow: auto;">
+            <h3 mat-subheader>
+                Files
+                <dgp-spacer></dgp-spacer>
+                <dgp-remove-current-file-item-action></dgp-remove-current-file-item-action>
+                <dgp-download-current-file-item></dgp-download-current-file-item>
+            </h3>
 
-                    <dgp-file-item-list-item
-                        *ngFor="let fileItemId of directory.fileItemIds"
-                        [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
+            <ng-container *ngFor="let directory of model.directories">
 
-                </mat-nav-list>
+                <dgp-file-item-list-item
+                    *ngFor="let fileItemId of directory.fileItemIds"
+                    [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
 
-            </dgp-inspector-section>
-        </dgp-inspector>
+            </ng-container>
+
+        </mat-nav-list>
     `,
     styles: [`
         :host {
@@ -34,6 +31,12 @@ import { FileUploadState } from "../../../file-upload/models";
             flex-direction: column;
             flex-grow: 1;
             overflow: auto;
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid gray;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
