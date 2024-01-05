@@ -144,18 +144,18 @@
 
                 dgp-expansion-toggle {
 
-                   /* button[mat-icon-button] {
-                        width: 32px !important;
-                        height: 32px !important;
-                        line-height: 32px !important;
+                    /* button[mat-icon-button] {
+                         width: 32px !important;
+                         height: 32px !important;
+                         line-height: 32px !important;
 
-                        mat-icon {
-                            line-height: 20px !important;
-                            width: 20px;
-                            height: 20px;
-                            font-size: 20px;
-                        }
-                    }*/
+                         mat-icon {
+                             line-height: 20px !important;
+                             width: 20px;
+                             height: 20px;
+                             font-size: 20px;
+                         }
+                     }*/
                 }
             }
         }
@@ -266,6 +266,7 @@
                 padding-bottom: 8px !important;
                 padding-top: 8px !important;
             }
+
             /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
             .mat-list-item-content {
                 align-items: flex-start !important;
@@ -286,13 +287,6 @@
         }
     }
 
-}
-
-.dgp-file-manager-overlay {
-    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
-    mat-dialog-container {
-        padding: 0;
-    }
 }
 
 .dgp-file-manager-overlay--maximized {
@@ -318,17 +312,6 @@
 }
 
 
-dgp-inspector-item {
-    /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
-    /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
-    mat-list-item {
-        /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
-        .mat-list-item-content {
-            flex-grow: 1 !important;
-        }
-    }
-}
-
 dgp-inspector-section {
     .mat-mdc-subheader:first-child {
         margin-top: 0 !important;
@@ -336,9 +319,8 @@ dgp-inspector-section {
 }
 
 .dgp-routing-overlay-dialog-panel {
-    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
-    mat-dialog-container {
-        background: transparent !important;
+    .mat-mdc-dialog-container {
+        --mdc-dialog-container-color: transparent !important;
         box-shadow: none !important;
     }
 }
