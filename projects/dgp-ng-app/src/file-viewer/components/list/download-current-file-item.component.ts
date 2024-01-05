@@ -9,7 +9,6 @@ import { downloadFile } from "../../../file-upload/actions";
     selector: "dgp-download-current-file-item",
     template: `
         <button mat-icon-button
-                class="--compact"
                 (click)="downloadCurrentFileItem()"
                 matTooltip="Download selected file"
                 dgpActionShortcut

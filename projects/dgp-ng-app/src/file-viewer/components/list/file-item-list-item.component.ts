@@ -6,20 +6,21 @@ import { DgpView } from "../../../utils/view";
 @Component({
     selector: "dgp-file-item-list-item",
     template: `
-        <dgp-inspector-item
-            label="{{model.fileName}} ({{model.extension}})"
-            matIconName="insert_drive_file"
-            dgpActionContext
-            actionContextType="fileItem"
-            [actionContextValue]="model"
-            description="{{ model.creationDate | date:'hh:mm, dd MMMM yyyy' }}">
 
-            <dgp-spacer></dgp-spacer>
-            <small>
+        <a mat-list-item
+           dgpActionContext
+           actionContextType="fileItem"
+           [actionContextValue]="model">
+            <mat-icon matListItemIcon>insert_drive_file</mat-icon>
+            <div matListItemTitle>{{ model.fileName }} ({{ model.extension }})</div>
+            <div matListItemLine>
                 {{ getFileItemSize() }}
-            </small>
+            </div>
+            <div matListItemLine>
+                {{ model.creationDate | date:'hh:mm, dd MMMM yyyy' }}
+            </div>
 
-        </dgp-inspector-item>
+        </a>
     `,
     styles: [`
         :host {
