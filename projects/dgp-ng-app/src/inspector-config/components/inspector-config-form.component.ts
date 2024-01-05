@@ -69,7 +69,6 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
                     <dgp-spacer></dgp-spacer>
                     <mat-slider [ngModel]="maxContentWidth$ | async"
                                 (ngModelChange)="updateMaxContentWidth($event)"
-                                [thumbLabel]="true"
                                 [min]="160"
                                 [max]="480"
                                 [step]="1"
