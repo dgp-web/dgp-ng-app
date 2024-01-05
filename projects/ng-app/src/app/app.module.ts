@@ -48,7 +48,7 @@ import { DocsDocsModule } from "../features/docs/docs-docs.module";
                 state => authenticateUser({user: state[authenticationStoreFeature].user})]
         }),
 
-        StoreDevtoolsModule.instrument(),
+        StoreDevtoolsModule.instrument({connectInZone: true}),
 
         DgpAuthenticationModule.forRoot({
             authenticationApiClientProvider,

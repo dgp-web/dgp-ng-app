@@ -107,7 +107,7 @@ export const initializationServiceProvider: InitializationServiceProvider = {
             runtimeChecks: defaultRuntimeChecks
         }),
         EffectsModule.forRoot([]),
-        StoreDevtoolsModule.instrument(),
+        StoreDevtoolsModule.instrument({connectInZone: true}),
         DgpAuthenticationModule.forRoot({
             authenticationApiClientProvider,
             initializationServiceProvider
