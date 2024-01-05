@@ -39,8 +39,8 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                 </mat-nav-list>
 
                 <dgp-docs-section-title>
-                    1: Import DgpRoutingOverlayModule into an application using @ngrx/store
-                    and @ngrx/effects.
+                    1: Import DgpRoutingOverlayModule into an application using &#64;ngrx/store
+                    and &#64;ngrx/effects.
                 </dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="moduleImportCode"></dgp-docs-code-block>
