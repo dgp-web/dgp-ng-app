@@ -6,7 +6,6 @@ import { MatDialogRef } from "@angular/material/dialog";
     selector: "dgp-maximize-dialog-button",
     template: `
         <button *ngIf="!isMaximized"
-                class="--compact"
                 mat-icon-button
                 (click)="maximize()"
                 matTooltip="Maximize"
@@ -16,7 +15,6 @@ import { MatDialogRef } from "@angular/material/dialog";
             <mat-icon>crop_din</mat-icon>
         </button>
         <button *ngIf="isMaximized"
-                class="--compact"
                 mat-icon-button
                 (click)="minimize()"
                 matTooltip="Minimize"
