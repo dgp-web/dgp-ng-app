@@ -72,3 +72,12 @@ https://dgp-ng-app.firebaseapp.com and https://dgp-labs.firebaseapp.com.
 NOTE: Make sure to increment the versions in the ``package.json`` files of all libraries
 before committing changes to the ``master`` branch, else the build is going to fail.
 
+## Migrations
+
+dgp-ng-app and its packages use the same major version as Angular. So, say you're using Angular 14, you want to use dgp-ng-app at version 14 too.
+
+### Migrating to version 17 with the new MDC components
+
+At the moment we're working on providing version 17 of dgp-ng-app. This is the first Angular version that no longer supports the legacy components from Angular Material and we have to switch to them as well.
+
+We've experienced a couple of issues and list what you probably have to do when updating an application to Angular 17 that uses dgp-ng-app.
