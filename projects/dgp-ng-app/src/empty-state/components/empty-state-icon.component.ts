@@ -16,9 +16,9 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
         .icon {
             color: gray;
-            font-size: 64px;
-            width: 64px;
-            height: 64px;
+            font-size: 32px;
+            width: 32px;
+            height: 32px;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,

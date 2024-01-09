@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
-@import '@angular/material/theming';
-@import './styles/compact';
+@import '@angular/material';
 @import './styles/mat-overrides';
 
 @mixin dgp-normalize {
@@ -150,7 +149,6 @@
 @mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
 
     @include dgp-normalize();
-    @include dgp-mat-overrides();
     $density: -3;
 
     *[dgpThemeHost] {
@@ -182,13 +180,9 @@
             @include dgp-list-item-theme($app-dark-theme);
         }
 
-        .compact-theme, &.compact-theme {
-            @include dgp-compact-theme();
-        }
-
-        .dgp-bg--primary {
-            background: mat.get-color-from-palette($primary) !important;
-        }
+    .dgp-bg--primary {
+        background: mat.get-color-from-palette($primary) !important;
+    }
 
         .dgp-bg--accent {
             background: mat.get-color-from-palette($accent) !important;
