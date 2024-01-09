@@ -16,7 +16,7 @@
     "dgp-ng-charts:test": "ng test dgp-ng-charts --code-coverage",
     "dgp-ng-charts:publish": "npm publish ./dist/dgp-ng-charts",
     "dgp-ng-app:build:prod": "ng build dgp-ng-app --configuration production",
-    "postdgp-ng-app:build:prod": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app && cpx projects/dgp-ng-app/src/styles/_mat-overrides.scss dist/dgp-ng-app/styles",
+    "postdgp-ng-app:build:prod": "cpx projects/dgp-ng-app/src/_theming.scss dist/dgp-ng-app && cpx projects/dgp-ng-app/src/styles/_component-themes.scss dist/dgp-ng-app/styles && cpx projects/dgp-ng-app/src/styles/_mat-overrides.scss dist/dgp-ng-app/styles",
     "dgp-ng-app:test:prod": "ng test dgp-ng-app --no-watch",
     "dgp-ng-app:build:watch": "ng build dgp-ng-app --watch",
     "dgp-ng-app:publish": "npm publish ./dist/dgp-ng-app",
