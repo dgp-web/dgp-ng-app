@@ -20,10 +20,9 @@
 
 }
 
-@mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
+@mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette), $density: -3) {
 
     @include dgp-normalize();
-    $density: -3;
 
     $app-theme: mat.define-light-theme((
         color: (
