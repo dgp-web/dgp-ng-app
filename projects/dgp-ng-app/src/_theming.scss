@@ -141,14 +141,6 @@
 
 }
 
-.dgp-file-manager-overlay--maximized {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-}
-
-
 .dgp-dynamic-virtual-scroll-viewport {
     height: 100%;
     width: 100%;
@@ -163,26 +155,3 @@
     }
 }
 
-
-dgp-inspector-section {
-    .mat-mdc-subheader:first-child {
-        margin-top: 0 !important;
-    }
-}
-
-.dgp-routing-overlay-dialog-panel {
-    .mat-mdc-dialog-container {
-        --mdc-dialog-container-color: transparent !important;
-        box-shadow: none !important;
-    }
-}
-
-.dgp-routing-overlay-backdrop {
-    background: #00000022;
-}
-
-dgp-inspector-section {
-    dgp-inspector-section {
-        padding-left: 8px;
-    }
-}
