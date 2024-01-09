@@ -1,5 +1,60 @@
 @use '@angular/material' as mat;
 
+@mixin dgp-details-theme($app-theme) {
+
+    dgp-details.--indent, .--indent dgp-details {
+        .details-content {
+            padding-left: 40px;
+        }
+    }
+
+}
+
+@mixin dgp-file-manager-theme() {
+
+    .dgp-file-manager-overlay--maximized {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
+
+}
+
+@mixin dgp-inspector-theme($app-theme) {
+
+    dgp-inspector-item {
+        .info {
+            mat-icon {
+                line-height: 20px !important;
+                width: 20px;
+                height: 20px;
+                font-size: 20px;
+            }
+
+            .label {
+                font-size: smaller;
+            }
+        }
+    }
+
+    dgp-inspector-section {
+        & > dgp-details > details > summary {
+            opacity: 0.7;
+            border-bottom: 1px solid gray;
+            font-size: smaller;
+            padding-left: 8px;
+        }
+    }
+
+    dgp-inspector-section {
+        dgp-inspector-section {
+            padding-left: 8px;
+        }
+    }
+
+}
+
 @mixin dgp-list-item-theme($theme) {
 
     $primary: map-get($theme, primary);
@@ -36,60 +91,26 @@
 
 }
 
-@mixin dgp-details-theme($app-theme) {
+@mixin dgp-routing-overlay-theme() {
 
-    dgp-details.--indent, .--indent dgp-details {
-        .details-content {
-            padding-left: 40px;
+    .dgp-routing-overlay-dialog-panel {
+        .mat-mdc-dialog-container {
+            --mdc-dialog-container-color: transparent !important;
+            box-shadow: none !important;
         }
     }
 
-}
-
-@mixin dgp-inspector-theme($app-theme) {
-
-    dgp-inspector-item {
-        .info {
-            mat-icon {
-                line-height: 20px !important;
-                width: 20px;
-                height: 20px;
-                font-size: 20px;
-            }
-
-            .label {
-                font-size: smaller;
-            }
-        }
-    }
-
-    dgp-inspector-section {
-
-        & > dgp-details > details > summary {
-            opacity: 0.7;
-            border-bottom: 1px solid gray;
-            font-size: smaller;
-            padding-left: 8px;
-        }
-
-        dgp-details {
-            summary {
-                .summary-content {
-
-                }
-
-                dgp-expansion-toggle {
-
-                }
-            }
-        }
+    .dgp-routing-overlay-backdrop {
+        background: #00000022;
     }
 
 }
 
 @mixin dgp-all-component-themes($app-theme) {
 
-    @include dgp-list-item-theme($app-theme);
-    @include dgp-inspector-theme($app-theme);
     @include dgp-details-theme($app-theme);
+    @include dgp-file-manager-theme();
+    @include dgp-inspector-theme($app-theme);
+    @include dgp-list-item-theme($app-theme);
+    @include dgp-routing-overlay-theme();
 }
