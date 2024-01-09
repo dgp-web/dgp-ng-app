@@ -53,46 +53,6 @@
         pointer-events: none;
     }
 
-    /*.--compact {
-        dgp-inspector-item {
-
-            .inspector-item-content {
-                min-height: 32px;
-            }
-
-            .description {
-                margin-left: 34px;
-                margin-right: 8px;
-                margin-top: 4px;
-                margin-bottom: 8px;
-            }
-
-            .info {
-                height: 32px;
-
-                mat-icon {
-                    font-size: 18px;
-                    width: 18px;
-                    height: 18px;
-
-                    margin-right: 8px;
-                }
-            }
-
-            .content {
-                margin-left: 26px;
-            }
-        }
-
-        dgp-input-error-info {
-            .host {
-                margin-left: 34px;
-                margin-right: 8px;
-            }
-        }
-
-    }*/
-
 }
 
 @mixin dgp-details-theme($app-theme) {
