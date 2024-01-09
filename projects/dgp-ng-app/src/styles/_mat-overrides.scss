@@ -1,15 +1,3 @@
-@mixin dgp-mat-tooltip-overrides() {
-    /**
-     * The default mat tooltip is so small it's barely visible.
-     *
-     * We make it larger so even a normal person can read it comfortably.
-     */
-    .mat-mdc-tooltip {
-        font-size: 13px !important;
-        white-space: pre-line !important;
-        word-break: break-word !important;
-    }
-}
 
 @mixin dgp-mat-button-overrides() {
 
@@ -50,5 +38,4 @@
     @include dgp-mat-button-overrides();
     @include dgp-mat-form-field-overrides();
     @include dgp-mat-tab-overrides();
-    @include dgp-mat-tooltip-overrides();
 }
