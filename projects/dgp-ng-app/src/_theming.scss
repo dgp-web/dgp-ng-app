@@ -81,25 +81,6 @@
         justify-content: flex-end;
     }
 
-    .page-menu-drawer-container {
-        .mat-drawer-inner-container {
-            display: flex;
-            flex-direction: column;
-        }
-    }
-
-    .hamburger-menu-drawer-content > *:not(router-outlet) {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        flex-grow: 1;
-        overflow: auto;
-    }
-
-    .dgp-action-context.--selected {
-        outline: 1px dashed mat.get-color-from-palette($accent, 300);
-    }
-
     .dgp-bg--accent {
         background: mat.get-color-from-palette($accent, 100) !important;
     }

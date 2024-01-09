@@ -1,5 +1,15 @@
 @use '@angular/material' as mat;
 
+@mixin dgp-action-context-theme($app-theme) {
+
+    $accent: map-get($app-theme, accent);
+
+    .dgp-action-context.--selected {
+        outline: 1px dashed mat.get-color-from-palette($accent, 300);
+    }
+
+}
+
 @mixin dgp-details-theme($app-theme) {
 
     dgp-details.--indent, .--indent dgp-details {
@@ -17,6 +27,25 @@
         height: 100% !important;
         max-width: 100% !important;
         max-height: 100% !important;
+    }
+
+}
+
+@mixin dgp-hamburger-shell-theme() {
+
+    .page-menu-drawer-container {
+        .mat-drawer-inner-container {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .hamburger-menu-drawer-content > *:not(router-outlet) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        flex-grow: 1;
+        overflow: auto;
     }
 
 }
@@ -108,8 +137,10 @@
 
 @mixin dgp-all-component-themes($app-theme) {
 
+    @include dgp-action-context-theme($app-theme);
     @include dgp-details-theme($app-theme);
     @include dgp-file-manager-theme();
+    @include dgp-hamburger-shell-theme();
     @include dgp-inspector-theme($app-theme);
     @include dgp-list-item-theme($app-theme);
     @include dgp-routing-overlay-theme();
