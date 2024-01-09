@@ -1,0 +1,95 @@
+@use '@angular/material' as mat;
+
+@mixin dgp-list-item-theme($theme) {
+
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+
+    .dgp-bg--primary {
+        background: mat.get-color-from-palette($primary, 300) !important;
+    }
+
+    .dgp-bg--accent {
+        background: mat.get-color-from-palette($accent, 300) !important;
+    }
+
+    .inspector-item-content.--responsive {
+        flex-wrap: wrap;
+    }
+
+    .dgp-list-item.--selected {
+        border-left-color: mat.get-color-from-palette($primary, 300);
+        border-left-width: 4px;
+        border-left-style: solid;
+    }
+
+    .dgp-list-item.--not-clickable {
+        pointer-events: none;
+    }
+
+    .dgp-list-item--selected {
+        border-left-color: mat.get-color-from-palette($primary, 300);
+        border-left-width: 4px;
+        border-left-style: solid;
+        pointer-events: none;
+    }
+
+}
+
+@mixin dgp-details-theme($app-theme) {
+
+    dgp-details.--indent, .--indent dgp-details {
+        .details-content {
+            padding-left: 40px;
+        }
+    }
+
+}
+
+@mixin dgp-inspector-theme($app-theme) {
+
+    dgp-inspector-item {
+        .info {
+            mat-icon {
+                line-height: 20px !important;
+                width: 20px;
+                height: 20px;
+                font-size: 20px;
+            }
+
+            .label {
+                font-size: smaller;
+            }
+        }
+    }
+
+    dgp-inspector-section {
+
+        & > dgp-details > details > summary {
+            opacity: 0.7;
+            border-bottom: 1px solid gray;
+            font-size: smaller;
+            padding-left: 8px;
+        }
+
+        dgp-details {
+            summary {
+                .summary-content {
+
+                }
+
+                dgp-expansion-toggle {
+
+                }
+            }
+        }
+    }
+
+}
+
+@mixin dgp-all-component-themes($app-theme) {
+
+    @include dgp-list-item-theme($app-theme);
+    @include dgp-inspector-theme($app-theme);
+    @include dgp-details-theme($app-theme);
+}
