@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
 @import '@angular/material';
-@import './styles/compact';
 @import './styles/mat-overrides';
 
 @mixin dgp-normalize {
@@ -179,10 +178,6 @@
         @include dgp-list-item-theme($app-dark-theme);
     }
     @include dgp-mat-overrides();
-
-    .compact-theme {
-        @include dgp-compact-theme();
-    }
 
     .dgp-bg--primary {
         background: mat.get-color-from-palette($primary) !important;

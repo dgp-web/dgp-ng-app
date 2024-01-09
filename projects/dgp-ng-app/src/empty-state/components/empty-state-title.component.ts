@@ -12,6 +12,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             display: inline-flex;
             color: gray;
         }
+        
+        h1 {
+            margin: 0 !important;
+            font-size: initial !important;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
