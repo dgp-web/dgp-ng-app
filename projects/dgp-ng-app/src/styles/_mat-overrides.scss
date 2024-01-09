@@ -33,8 +33,22 @@
     }
 }
 
+@mixin dgp-mat-tab-overrides() {
+
+    /**
+     * Tab labels for ng material stretch to fill their width which we don't want
+     *
+     * Height is controlled by density so we don't need to mess with it
+     */
+    .mat-mdc-tab.mdc-tab {
+        flex-grow: 0 !important;
+    }
+
+}
+
 @mixin dgp-mat-overrides() {
     @include dgp-mat-button-overrides();
     @include dgp-mat-form-field-overrides();
+    @include dgp-mat-tab-overrides();
     @include dgp-mat-tooltip-overrides();
 }
