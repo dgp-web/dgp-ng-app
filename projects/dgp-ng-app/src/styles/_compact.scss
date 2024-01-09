@@ -237,12 +237,14 @@
             height: 7px !important;
             width: 28px !important;
         }
+
         /*TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.
  */
         .mat-slide-toggle-thumb {
             height: 10px !important;
             width: 10px !important;
         }
+
         /*TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.
  */
         .mat-slide-toggle-thumb-container {
@@ -257,34 +259,6 @@
  */
     .mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
         transform: translate3d(18px, 0, 0) !important;
-    }
-
-}
-
-@mixin dgp-compact-mat-tab-theme() {
-
-    /**
-     * Tab labels for ng material are fat bastards so we limit their height
-     * and decrease the exaggerated min-width
-     */
-    /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
- */
-    .mat-tab-label {
-        height: 36px !important;
-        min-width: 100px !important;
-    }
-
-    dgp-stack > mat-tab-group {
-        height: 36px !important;
-    }
-
-}
-
-@mixin dgp-compact-mat-toolbar-theme() {
-
-    .mat-toolbar {
-        height: 40px;
-        font-size: 14px;
     }
 
 }
@@ -310,7 +284,5 @@
     @include dgp-compact-mat-icon-theme();
     @include dgp-compact-mat-list-theme();
     @include dgp-compact-mat-slide-toggle-theme();
-    @include dgp-compact-mat-tab-theme();
-    @include dgp-compact-mat-toolbar-theme();
 
 }
