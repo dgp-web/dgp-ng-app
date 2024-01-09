@@ -11,6 +11,15 @@
     }
 }
 
+@mixin dgp-mat-dialog-overrides() {
+
+    .mat-mdc-dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+}
+
 @mixin dgp-mat-form-field-overrides() {
 
     /**
@@ -36,6 +45,7 @@
 
 @mixin dgp-mat-overrides() {
     @include dgp-mat-button-overrides();
+    @include dgp-mat-dialog-overrides();
     @include dgp-mat-form-field-overrides();
     @include dgp-mat-tab-overrides();
 }

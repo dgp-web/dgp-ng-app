@@ -52,67 +52,6 @@
 
     @include dgp-mat-overrides();
 
-    .dgp-bg--primary {
-        background: mat.get-color-from-palette($primary) !important;
-    }
-
-    .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent) !important;
-    }
-
-    .dgp-bg--warn {
-        background: mat.get-color-from-palette($warn) !important;
-    }
-
-    .dgp-cl--primary {
-        color: mat.get-color-from-palette($primary) !important;
-    }
-
-    .dgp-cl--accent {
-        color: mat.get-color-from-palette($accent) !important;
-    }
-
-    .dgp-cl--warn {
-        color: mat.get-color-from-palette($warn) !important;
-    }
-    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
-    mat-dialog-actions {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent, 100) !important;
-    }
-
-    dgp-input-field {
-        dgp-inspector-item {
-            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
-            mat-list-item {
-                padding-bottom: 8px !important;
-                padding-top: 8px !important;
-            }
-
-            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
-            .mat-list-item-content {
-                align-items: flex-start !important;
-
-                .label {
-                    // margin-top: 8px;
-                }
-
-                mat-icon {
-                    // margin-top: 6px;
-                }
-
-                .content {
-                    padding-top: 8px;
-                }
-
-            }
-        }
-    }
-
 }
 
 .dgp-dynamic-virtual-scroll-viewport {
