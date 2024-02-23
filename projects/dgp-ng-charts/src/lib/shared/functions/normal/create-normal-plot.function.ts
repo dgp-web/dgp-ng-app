@@ -54,7 +54,12 @@ export function createNormalPlot(
         pMax,
     });
 
-    const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
+    let yAxisTickValues = createNormalYAxisTickValues({P: totalP});
+    yAxisTickValues = yAxisTickValues.filter(tickValue => {
+        if ((notNullOrUndefined(yAxisMin) && tickValue < yAxisMin) || tickValue < toPercent(pMin)) return false;
+        if ((notNullOrUndefined(yAxisMax) && tickValue > yAxisMax) || tickValue > toPercent(pMax)) return false;
+        return true;
+    });
 
     model = model.map(csg => {
         // TODO: Handle case for more than 1 series
@@ -97,6 +102,5 @@ export function createNormalPlot(
         }
     };
 
-    // TODO: This mergeing is crap
     return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }
