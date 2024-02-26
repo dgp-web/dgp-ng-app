@@ -45,7 +45,6 @@ export function createNormalPlot(
     }*/
 
     let yAxisTickValues = createNormalYAxisTickValues({P: totalP});
-    console.log("yAxisTickValues", yAxisTickValues, JSON.stringify(yAxisTickValues));
     // TODO: This filters out all excess values on our labs page which is not what we want
     /*  yAxisTickValues = yAxisTickValues.filter(tickValue => {
           if ((notNullOrUndefined(yAxisMin) && tickValue < yAxisMin) || tickValue < toPercent(pMin)) return false;
@@ -78,12 +77,11 @@ export function createNormalPlot(
                     connectedScatterSeriesId: csg.connectedScatterGroupId + ".Fitted distribution",
                     showVertices: false,
                     showEdges: true,
-                    dots: getFittedNormalDistributionLine({X, P, totalP})
+                    dots: getFittedNormalDistributionLine({X, totalPMin: pMin, totalPMax: pMax})
                 }
             ]
         };
     });
-    console.log("yAxisTickValues1", yAxisTickValues, JSON.stringify(yAxisTickValues));
 
     const result: ConnectedScatterPlot = {
         yAxisInterpolator,
@@ -106,5 +104,5 @@ export function createNormalPlot(
         }
     };
 
-    return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax, yAxisTickValues});
+    return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }
