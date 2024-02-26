@@ -1,13 +1,12 @@
-import { ConnectedScatterPlot, ControlLineAxis, createNormalInterpolator, ScaleType, Stroke } from "dgp-ng-charts";
+import { ConnectedScatterPlot, ControlLineAxis, createNormalInterpolatorFactory, ScaleType, Stroke } from "dgp-ng-charts";
 import { testConnectedScatterGroups } from "../../features/charts/constants/test-connected-scatter-groups.constant";
-import { matrixToMany } from "dgp-ng-app";
 
-export const yAxisInterpolator = createNormalInterpolator({
-   /* pValues: testConnectedScatterGroups.map(group => {
-        return group.series.map(series => series.dots.map(dot => {
-            return dot.y;
-        })).reduce(matrixToMany, []);
-    }).reduce(matrixToMany, [])*/
+export const yAxisInterpolator = createNormalInterpolatorFactory({
+    /* pValues: testConnectedScatterGroups.map(group => {
+         return group.series.map(series => series.dots.map(dot => {
+             return dot.y;
+         })).reduce(matrixToMany, []);
+     }).reduce(matrixToMany, [])*/
 });
 
 export const testConnectedScatterPlot: ConnectedScatterPlot = {

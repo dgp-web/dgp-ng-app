@@ -8,7 +8,7 @@ import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-p
 import { computeTotalP } from "../compute-total-p.function";
 import { notNullOrUndefined } from "dgp-ng-app";
 
-import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
+import { createNormalInterpolatorWithBoundariesFactory } from "./create-normal-interpolator-with-boundaries-factory.function";
 import { getNormalPMin } from "./get-normal-p-min.function";
 import { getNormalPMax } from "./get-normal-p-max.function";
 import { ScaleType } from "../../models";
@@ -52,7 +52,7 @@ export function createNormalPlot(
           return true;
       });*/
 
-    const yAxisInterpolator = createNormalInterpolatorWithBoundaries({
+    const yAxisInterpolator = createNormalInterpolatorWithBoundariesFactory({
         P: totalP,
         /**
          * pMin and pMax can be overridden which corresponds to zooming into the data

@@ -1,10 +1,10 @@
-import { createNormalInterpolator } from "../create-normal-interpolator.function";
+import { createNormalInterpolatorFactory } from "../create-normal-interpolator-factory.function";
 
-describe("createNormalInterpolator", () => {
+describe("createNormalInterpolatorFactory", () => {
 
     describe(`without passed P and a range between 0 and 400 px`, () => {
 
-        const createInterpolator = createNormalInterpolator();
+        const createInterpolator = createNormalInterpolatorFactory();
 
         const a = 0;
         const b = 400;
@@ -38,7 +38,7 @@ describe("createNormalInterpolator", () => {
 
         const P = [0.005, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.995];
 
-        const createInterpolator = createNormalInterpolator({P});
+        const createInterpolator = createNormalInterpolatorFactory({P});
 
         const a = 0;
         const b = 400;

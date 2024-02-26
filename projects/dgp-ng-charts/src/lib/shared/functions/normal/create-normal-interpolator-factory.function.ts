@@ -6,7 +6,7 @@ import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 import { computeDistance } from "../compute-distance.function";
 import { reverseTComputation } from "../reverse-t-computation.function";
 
-export function createNormalInterpolator(payload: {
+export function createNormalInterpolatorFactory(payload: {
     readonly P?: Many<number>;
 } = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
