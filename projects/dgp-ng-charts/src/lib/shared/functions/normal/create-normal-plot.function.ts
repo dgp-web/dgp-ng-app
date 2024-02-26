@@ -12,7 +12,7 @@ import { createNormalInterpolatorWithBoundariesFactory } from "./create-normal-i
 import { getNormalPMin } from "./get-normal-p-min.function";
 import { getNormalPMax } from "./get-normal-p-max.function";
 import { ScaleType } from "../../models";
-import * as d3 from "d3";
+import { probabilityPlotTickFormat } from "../../constants";
 
 export function createNormalPlot(
     payload: {
@@ -84,15 +84,9 @@ export function createNormalPlot(
         yAxisScaleType: ScaleType.Normal,
         yAxisTickValues,
         showDotTooltips: true,
-        yAxisTickFormat: (x: number) => {
-            if (x >= 1 && x <= 99) return d3.format("d")(x);
-            return x.toString();
-            if (x > 99) return x.toPrecision(3);
-            if (x < 1) return x.toPrecision(3);
-
-            return;
-        }
+        yAxisTickFormat: probabilityPlotTickFormat
     };
 
     return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }
+
