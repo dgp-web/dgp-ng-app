@@ -1,6 +1,7 @@
 import { Many } from "data-modeling";
 import { defaultProbabilityChartPMin } from "../../constants";
 import { getProbabilityChartPBoundaryExponent } from "./get-probability-chart-p-boundary-exponent.function";
+import { getPValueByExponent } from "./get-p-value-by-exponent.function";
 
 export function getProbabilityChartPMin(payload?: {
     readonly P?: Many<number>;
@@ -13,7 +14,7 @@ export function getProbabilityChartPMin(payload?: {
     if (!P) return pMin;
 
     const exponent = getProbabilityChartPBoundaryExponent({PLength: P.length});
-    const computedPMin = 1 / (10 ** exponent);
+    const computedPMin = getPValueByExponent({exponent});
 
     if (computedPMin < pMin) pMin = computedPMin;
 
