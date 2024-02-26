@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { Many } from "data-modeling";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
+import { getNormalPMax } from "./get-normal-p-max.function";
+import { getNormalPMin } from "./get-normal-p-min.function";
 import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 import { computeDistance } from "../compute-distance.function";
 import { reverseTComputation } from "../reverse-t-computation.function";
@@ -11,8 +11,8 @@ export function createNormalInterpolator(payload: {
 } = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
-    const pMin = getProbabilityChartPMin({P});
-    const pMax = getProbabilityChartPMax({P});
+    const pMin = getNormalPMin({P});
+    const pMax = getNormalPMax({P});
 
     const pMinY = getNormalYCoordinate({p: pMin});
     const pMaxY = getNormalYCoordinate({p: pMax});

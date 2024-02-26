@@ -1,7 +1,7 @@
 import { Many } from "data-modeling";
 import * as d3 from "d3";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { getNormalPMin } from "./get-normal-p-min.function";
+import { getNormalPMax } from "./get-normal-p-max.function";
 import { computeT } from "../compute-t.function";
 import { computeDistance } from "../compute-distance.function";
 import { reverseTComputation } from "../reverse-t-computation.function";
@@ -19,8 +19,8 @@ export function createNormalInterpolatorWithBoundaries(payload: {
     const pMin = payload.pMin;
     const pMax = payload.pMax;
 
-    const pRefMin = getProbabilityChartPMin({P});
-    const pRefMax = getProbabilityChartPMax({P});
+    const pRefMin = getNormalPMin({P});
+    const pRefMax = getNormalPMax({P});
 
     const tPMin = computeT({value: pMin, min: pRefMin, max: pRefMax});
     const tPMax = computeT({value: pMax, min: pRefMin, max: pRefMax});

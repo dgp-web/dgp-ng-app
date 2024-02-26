@@ -1,16 +1,16 @@
 import * as d3 from "d3";
 import { getWeibullYCoordinate } from "./get-weibull-y-coordinate.function";
 import { Many } from "data-modeling";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { getNormalPMin } from "../normal/get-normal-p-min.function";
+import { getNormalPMax } from "../normal/get-normal-p-max.function";
 
 export function createWeibullInterpolator(payload?: {
     readonly P?: Many<number>;
 }): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
-    const pMin = getProbabilityChartPMin({P});
-    const pMax = getProbabilityChartPMax({P});
+    const pMin = getNormalPMin({P});
+    const pMax = getNormalPMax({P});
 
     const minQuantile = getWeibullYCoordinate({p: pMin});
     const maxQuantile = getWeibullYCoordinate({p: pMax});

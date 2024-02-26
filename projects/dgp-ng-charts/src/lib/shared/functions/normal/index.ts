@@ -17,3 +17,5 @@ export { getFittedNormalDistributionLine } from "./get-fitted-normal-distributio
 export { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-plot-config.function";
 export { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 export { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
+export { getExcessTickCountPerBoundary } from "./get-excess-tick-count-per-boundary.function";
+export { getNormalExcessTicks } from "./get-normal-excess-ticks.function";

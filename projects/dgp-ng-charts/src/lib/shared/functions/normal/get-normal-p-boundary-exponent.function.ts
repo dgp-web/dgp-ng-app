@@ -1,4 +1,4 @@
-export function getProbabilityChartPBoundaryExponent(payload?: {
+export function getNormalPBoundaryExponent(payload?: {
     readonly PLength: number;
 }): number {
     const PLength = payload.PLength;

@@ -9,8 +9,8 @@ import { computeTotalP } from "../compute-total-p.function";
 import { notNullOrUndefined } from "dgp-ng-app";
 
 import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { getNormalPMin } from "./get-normal-p-min.function";
+import { getNormalPMax } from "./get-normal-p-max.function";
 import { ScaleType } from "../../models";
 import * as d3 from "d3";
 
@@ -30,8 +30,8 @@ export function createNormalPlot(
 
     const totalP = computeTotalP(model);
 
-    let pMin = getProbabilityChartPMin({P: totalP});
-    let pMax = getProbabilityChartPMax({P: totalP});
+    let pMin = getNormalPMin({P: totalP});
+    let pMax = getNormalPMax({P: totalP});
 
     if (notNullOrUndefined(yAxisMin)) {
         pMin = fromPercent(yAxisMin);
