@@ -1,5 +1,4 @@
 import { createNormalInterpolator } from "../create-normal-interpolator.function";
-import { defaultProbabilityChartPMax, defaultProbabilityChartPMin } from "../../../constants";
 
 describe("createNormalInterpolator", () => {
 
@@ -12,17 +11,15 @@ describe("createNormalInterpolator", () => {
 
         const interpolate = createInterpolator(a, b);
 
-        // TODO: I think this doesn't work anyway
-        xit(`should return b for the default pMin`, () => {
-            const pMin = defaultProbabilityChartPMin;
-            const result = interpolate(pMin);
+        it(`should return b for tMin=0`, () => {
+            const tMin = 0;
+            const result = interpolate(tMin);
             const expectedResult = b;
             expect(result).toEqual(expectedResult);
         });
 
-        // TODO: I think this doesn't work anyway
-        xit(`should return a for the default pMax`, () => {
-            const pMax = defaultProbabilityChartPMax;
+        it(`should return a for the default tMax=1`, () => {
+            const pMax = 1;
             const result = interpolate(pMax);
             const expectedResult = a;
             expect(result).toEqual(expectedResult);
@@ -48,18 +45,16 @@ describe("createNormalInterpolator", () => {
 
         const interpolate = createInterpolator(a, b);
 
-        // TODO: I think this doesn't work anyway
-        xit(`should return b for the minimum value in P`, () => {
-            const pMin = Math.min(...P);
-            const result = interpolate(pMin);
+        it(`should return b for tMin=0`, () => {
+            const tMin = 0;
+            const result = interpolate(tMin);
             const expectedResult = b;
             expect(result).toEqual(expectedResult);
         });
 
-        // TODO: I think this doesn't work anyway
-        xit(`should return a for the maximum value in P`, () => {
-            const pMin = Math.max(...P);
-            const result = interpolate(pMin);
+        it(`should return a for tMax=1`, () => {
+            const tMax = 1;
+            const result = interpolate(tMax);
             const expectedResult = a;
             expect(result).toEqual(expectedResult);
         });

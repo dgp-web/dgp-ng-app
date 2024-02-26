@@ -32,7 +32,7 @@ export function createNormalInterpolator(payload: {
             /**
              * Note that the value t already gets transformed by d3.
              *
-             * It's the computed distance of an input value between the domain boundaries.
+             * It's the computed distance of an input value between the domain boundaries and always lies in [0, 100].
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */
