@@ -1,27 +1,30 @@
 import { Many } from "data-modeling";
-import { toPercent } from "../to-percent.function";
-import * as d3 from "d3";
+import { getExcessTickCountPerBoundary } from "./get-excess-tick-count-per-boundary.function";
+import { getNormalExcessTicks } from "./get-normal-excess-ticks.function";
+import { OverriddenYAxisBoundaries } from "../../models";
+import { tryAddOverriddenYBoundaries } from "./try-add-overridden-y-boundaries.function";
 
 export const defaultNormalYAxisTickValues = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
 
 export function createNormalYAxisTickValues(payload: {
     readonly P: Many<number>;
-}): Many<number> {
+} & OverriddenYAxisBoundaries): Many<number> {
+    const P = payload.P;
+    const yAxisMin = payload.yAxisMin;
+    const yAxisMax = payload.yAxisMax;
 
-    const resolvedP = payload.P.map(toPercent);
+    let result = [...defaultNormalYAxisTickValues] as Many<number>;
 
-    const result = [...defaultNormalYAxisTickValues];
+    const excessTickCountPerBoundary = getExcessTickCountPerBoundary({P});
+    if (excessTickCountPerBoundary > 0) {
+        const excessTicks = getNormalExcessTicks({excessTickCountPerBoundary});
 
-    const min = d3.min(resolvedP);
-    const max = d3.max(resolvedP);
-
-    if (min < result[0]) {
-        result.splice(0, 0, min);
+        result = excessTicks.lower
+            .concat(result)
+            .concat(excessTicks.upper);
     }
 
-    if (max > result[result.length - 1]) {
-        result.splice(result.length - 1, 1, max);
-    }
+    result = tryAddOverriddenYBoundaries({result, yAxisMin, yAxisMax});
 
     return result;
 }

@@ -1,18 +1,18 @@
 import * as d3 from "d3";
 import { Many } from "data-modeling";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
+import { getNormalPMax } from "./get-normal-p-max.function";
+import { getNormalPMin } from "./get-normal-p-min.function";
 import { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 import { computeDistance } from "../compute-distance.function";
 import { reverseTComputation } from "../reverse-t-computation.function";
 
-export function createNormalInterpolator(payload: {
+export function createNormalInterpolatorFactory(payload: {
     readonly P?: Many<number>;
 } = {}): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
 
-    const pMin = getProbabilityChartPMin({P});
-    const pMax = getProbabilityChartPMax({P});
+    const pMin = getNormalPMin({P});
+    const pMax = getNormalPMax({P});
 
     const pMinY = getNormalYCoordinate({p: pMin});
     const pMaxY = getNormalYCoordinate({p: pMax});
@@ -32,7 +32,7 @@ export function createNormalInterpolator(payload: {
             /**
              * Note that the value t already gets transformed by d3.
              *
-             * It's the computed distance of an input value between the domain boundaries.
+             * It's the computed distance of an input value between the domain boundaries and always lies in [0, 100].
              *
              * For us, this means that values between 0 and 100 are transformed back into values between 0 and 1.
              */

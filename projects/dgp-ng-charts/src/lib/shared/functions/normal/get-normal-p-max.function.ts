@@ -1,7 +1,8 @@
 import { Many } from "data-modeling";
 import { defaultProbabilityChartPMax } from "../../constants";
+import { getComputedNormalPMax } from "./get-computed-normal-p-max.function";
 
-export function getProbabilityChartPMax(payload?: {
+export function getNormalPMax(payload?: {
     readonly P?: Many<number>;
 }): number {
 
@@ -11,7 +12,7 @@ export function getProbabilityChartPMax(payload?: {
     const P = payload.P;
     if (!P) return pMax;
 
-    const computedPMax = Math.max(...P);
+    const computedPMax = getComputedNormalPMax({P});
     if (computedPMax > pMax) pMax = computedPMax;
 
     return pMax;

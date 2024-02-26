@@ -1,33 +1,42 @@
 import { Many } from "data-modeling";
 import * as d3 from "d3";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { getNormalPMin } from "./get-normal-p-min.function";
+import { getNormalPMax } from "./get-normal-p-max.function";
 import { computeT } from "../compute-t.function";
 import { computeDistance } from "../compute-distance.function";
 import { reverseTComputation } from "../reverse-t-computation.function";
-import { createNormalInterpolator } from "./create-normal-interpolator.function";
+import { createNormalInterpolatorFactory } from "./create-normal-interpolator-factory.function";
+import { isNullOrUndefined } from "dgp-ng-app";
 
-export function createNormalInterpolatorWithBoundaries(payload: {
+export function createNormalInterpolatorWithBoundariesFactory(payload: {
     readonly P?: Many<number>;
     /**
      * Configured domain limits
      */
-    readonly pMin: number;
-    readonly pMax: number;
+    readonly pMin?: number;
+    readonly pMax?: number;
 }): d3.InterpolatorFactory<number, number> {
     const P = payload.P;
-    const pMin = payload.pMin;
-    const pMax = payload.pMax;
+    let pMin = payload.pMin;
+    let pMax = payload.pMax;
 
-    const pRefMin = getProbabilityChartPMin({P});
-    const pRefMax = getProbabilityChartPMax({P});
+    const pRefMin = getNormalPMin({P});
+    const pRefMax = getNormalPMax({P});
+
+    if (isNullOrUndefined(pMin)) {
+        pMin = pRefMin;
+    }
+
+    if (isNullOrUndefined(pMax)) {
+        pMax = pRefMax;
+    }
 
     const tPMin = computeT({value: pMin, min: pRefMin, max: pRefMax});
     const tPMax = computeT({value: pMax, min: pRefMin, max: pRefMax});
 
     return (rangeStart: number, rangeTarget: number) => {
 
-        const getPxOnRefScale = createNormalInterpolator({P})(rangeStart, rangeTarget);
+        const getPxOnRefScale = createNormalInterpolatorFactory({P})(rangeStart, rangeTarget);
 
         const pMinYPx = getPxOnRefScale(tPMin);
         const pMaxYPx = getPxOnRefScale(tPMax);
