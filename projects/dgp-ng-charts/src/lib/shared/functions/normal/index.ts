@@ -18,3 +18,4 @@ export { getNormalYCoordinate } from "./get-normal-y-coordinate.function";
 export { createNormalInterpolatorWithBoundariesFactory } from "./create-normal-interpolator-with-boundaries-factory.function";
 export { getExcessTickCountPerBoundary } from "./get-excess-tick-count-per-boundary.function";
 export { getNormalExcessTicks } from "./get-normal-excess-ticks.function";
+export { tryAddOverriddenYBoundaries } from "./try-add-overridden-y-boundaries.function";
