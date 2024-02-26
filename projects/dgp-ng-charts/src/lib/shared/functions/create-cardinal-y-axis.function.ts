@@ -29,10 +29,12 @@ export function createCardinalYAxis(payload: {
                 assumedTickHeight: 24
             });
 
-            while (yAxisTickValues.length > yTickCount) {
-                yAxisTickValues = yAxisTickValues.filter((x, i) => {
-                    return i % 2 === 0;
-                });
+            if (yTickCount > 2) {
+                while (yAxisTickValues.length > yTickCount) {
+                    yAxisTickValues = yAxisTickValues.filter((x, i) => {
+                        return i % 2 === 0;
+                    });
+                }
             }
 
             yAxis = yAxis.tickValues(yAxisTickValues as Array<number>);
