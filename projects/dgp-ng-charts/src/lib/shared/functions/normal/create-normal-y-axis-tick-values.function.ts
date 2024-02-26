@@ -25,17 +25,12 @@ export function createNormalYAxisTickValues(payload: {
         const excessTicks = Array.from(Array(excessTicksPerDirection)).map((x, i) => {
             const _exponent = (i + 1) + 2;
             const value = 1 / (10 ** _exponent);
-            const valueP = value * 100;
-            return valueP;
+            return value * 100;
         });
-
-        console.log("excessTicks", excessTicks);
 
         const maxExcessTicks = excessTicks.map(x => {
             return 100 - x;
         });
-
-        console.log("maxExcessTicks", maxExcessTicks);
 
         result = _.sortBy(excessTicks.concat(defaultNormalYAxisTickValues).concat(maxExcessTicks));
     } else {
@@ -49,8 +44,6 @@ export function createNormalYAxisTickValues(payload: {
       if (max > result[result.length - 1]) {
           result.splice(result.length - 1, 1, max);
       }*/
-
-    console.log(result);
 
     return result;
 }

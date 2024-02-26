@@ -118,7 +118,9 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
 
     updateN(n: number) {
         this.group = createTestNormalPlotScatterGroup({n: this.n});
-        const model = createNormalPlot({model: [this.group]}, this.model);
+        const model = createNormalPlot({model: [this.group]}, {
+            ...this.model, yAxisTickValues: undefined
+        });
         this.setModel(model);
         this.n = n;
     }
