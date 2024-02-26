@@ -1,7 +1,8 @@
 import { Many } from "data-modeling";
 import { defaultProbabilityChartPMin } from "../../constants";
+import { getComputedNormalPMin } from "./get-computed-normal-p-min.function";
 
-export function getProbabilityChartPMin(payload?: {
+export function getNormalPMin(payload?: {
     readonly P?: Many<number>;
 }): number {
 
@@ -11,7 +12,7 @@ export function getProbabilityChartPMin(payload?: {
     const P = payload.P;
     if (!P) return pMin;
 
-    const computedPMin = Math.min(...P);
+    const computedPMin = getComputedNormalPMin({P});
     if (computedPMin < pMin) pMin = computedPMin;
 
     return pMin;

@@ -9,7 +9,7 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
     template: `
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            {{cspMetadata.label}}
+            {{ cspMetadata.label }}
         </dgp-page-header>
 
         <dgp-docking-layout>
@@ -57,9 +57,9 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
                                 <dgp-inspector-item label="Renderer"
                                                     matIconName="label">
                                     <dgp-connected-scatter-plot-renderer-select
-                                            [disabled]="disabled"
-                                            [model]="renderer"
-                                            (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                        [disabled]="disabled"
+                                        [model]="renderer"
+                                        (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item label="Items"
@@ -110,13 +110,17 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     }
 
     setPlot(payload: ConnectedScatterPlotConfig) {
-        const model = createNormalPlot({model: [this.group]}, payload);
+        const model = createNormalPlot({model: [this.group]}, {
+            ...payload, yAxisTickValues: undefined
+        });
         this.setModel(model);
     }
 
     updateN(n: number) {
         this.group = createTestNormalPlotScatterGroup({n: this.n});
-        const model = createNormalPlot({model: [this.group]}, this.model);
+        const model = createNormalPlot({model: [this.group]}, {
+            ...this.model, yAxisTickValues: undefined
+        });
         this.setModel(model);
         this.n = n;
     }

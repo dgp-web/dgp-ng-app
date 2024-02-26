@@ -21,3 +21,5 @@ export { P } from "./p.model";
 export { X } from "./x.model";
 export { Clamp } from "./clamp.model";
 export { CategoricalD3AxisScale } from "./categorical-d3-axis-scale.model";
+export { NormalExcessTicks } from "./normal/normal-excess-ticks.model";
+export { OverriddenYAxisBoundaries } from "./overridden-y-axis-boundaries.model";

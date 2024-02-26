@@ -8,12 +8,11 @@ import { resolveConnectedScatterPlotConfig } from "./resolve-connected-scatter-p
 import { computeTotalP } from "../compute-total-p.function";
 import { notNullOrUndefined } from "dgp-ng-app";
 
-import { createNormalInterpolatorWithBoundaries } from "./create-normal-interpolator-with-boundaries.function";
-import { toPercent } from "../to-percent.function";
-import { getProbabilityChartPMin } from "../probability-chart/get-probability-chart-p-min.function";
-import { getProbabilityChartPMax } from "../probability-chart/get-probability-chart-p-max.function";
+import { createNormalInterpolatorWithBoundariesFactory } from "./create-normal-interpolator-with-boundaries-factory.function";
+import { getNormalPMin } from "./get-normal-p-min.function";
+import { getNormalPMax } from "./get-normal-p-max.function";
 import { ScaleType } from "../../models";
-import * as d3 from "d3";
+import { probabilityPlotTickFormat } from "../../constants";
 
 export function createNormalPlot(
     payload: {
@@ -26,35 +25,32 @@ export function createNormalPlot(
 
     let model = payload.model;
 
-    let yAxisMin = config.yAxisMin;
-    let yAxisMax = config.yAxisMax;
+    const yAxisMin = config.yAxisMin;
+    const yAxisMax = config.yAxisMax;
 
     const totalP = computeTotalP(model);
 
-    let pMin = getProbabilityChartPMin({P: totalP});
-    let pMax = getProbabilityChartPMax({P: totalP});
+    let pMin = getNormalPMin({P: totalP});
+    let pMax = getNormalPMax({P: totalP});
 
     if (notNullOrUndefined(yAxisMin)) {
         pMin = fromPercent(yAxisMin);
-    } else {
-        yAxisMin = toPercent(pMin);
     }
     if (notNullOrUndefined(yAxisMax)) {
         pMax = fromPercent(yAxisMax);
-    } else {
-        yAxisMax = toPercent(pMax);
     }
 
-    const yAxisInterpolator = createNormalInterpolatorWithBoundaries({
+    const yAxisTickValues = createNormalYAxisTickValues({P: totalP, yAxisMin, yAxisMax});
+
+    const yAxisInterpolator = createNormalInterpolatorWithBoundariesFactory({
         P: totalP,
         /**
          * pMin and pMax can be overridden which corresponds to zooming into the data
          */
         pMin,
-        pMax,
+        pMax
     });
 
-    const yAxisTickValues = createNormalYAxisTickValues({P: totalP});
 
     model = model.map(csg => {
         // TODO: Handle case for more than 1 series
@@ -71,7 +67,7 @@ export function createNormalPlot(
                     connectedScatterSeriesId: csg.connectedScatterGroupId + ".Fitted distribution",
                     showVertices: false,
                     showEdges: true,
-                    dots: getFittedNormalDistributionLine({X, P, totalP})
+                    dots: getFittedNormalDistributionLine({X, totalPMin: pMin, totalPMax: pMax})
                 }
             ]
         };
@@ -88,15 +84,9 @@ export function createNormalPlot(
         yAxisScaleType: ScaleType.Normal,
         yAxisTickValues,
         showDotTooltips: true,
-        yAxisTickFormat: (x: number) => {
-            if (x >= 1 && x <= 95) return d3.format("d")(x);
-            if (x > 95) return x.toPrecision(3);
-            if (x < 1) return x.toPrecision(3);
-
-            return;
-        }
+        yAxisTickFormat: probabilityPlotTickFormat
     };
 
-    // TODO: This mergeing is crap
     return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});
 }
+
