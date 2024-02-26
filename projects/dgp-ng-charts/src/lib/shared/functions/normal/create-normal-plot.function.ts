@@ -45,6 +45,15 @@ export function createNormalPlot(
         yAxisMax = toPercent(pMax);
     }
 
+    let yAxisTickValues = createNormalYAxisTickValues({P: totalP});
+    console.log("yAxisTickValues", yAxisTickValues);
+    // TODO: This filters out all excess values on our labs page which is not what we want
+    /*  yAxisTickValues = yAxisTickValues.filter(tickValue => {
+          if ((notNullOrUndefined(yAxisMin) && tickValue < yAxisMin) || tickValue < toPercent(pMin)) return false;
+          if ((notNullOrUndefined(yAxisMax) && tickValue > yAxisMax) || tickValue > toPercent(pMax)) return false;
+          return true;
+      });*/
+
     const yAxisInterpolator = createNormalInterpolatorWithBoundaries({
         P: totalP,
         /**
@@ -54,12 +63,6 @@ export function createNormalPlot(
         pMax,
     });
 
-    let yAxisTickValues = createNormalYAxisTickValues({P: totalP});
-    yAxisTickValues = yAxisTickValues.filter(tickValue => {
-        if ((notNullOrUndefined(yAxisMin) && tickValue < yAxisMin) || tickValue < toPercent(pMin)) return false;
-        if ((notNullOrUndefined(yAxisMax) && tickValue > yAxisMax) || tickValue > toPercent(pMax)) return false;
-        return true;
-    });
 
     model = model.map(csg => {
         // TODO: Handle case for more than 1 series
@@ -94,8 +97,9 @@ export function createNormalPlot(
         yAxisTickValues,
         showDotTooltips: true,
         yAxisTickFormat: (x: number) => {
-            if (x >= 1 && x <= 95) return d3.format("d")(x);
-            if (x > 95) return x.toPrecision(3);
+            if (x >= 1 && x <= 99) return d3.format("d")(x);
+            return x.toString();
+            if (x > 99) return x.toPrecision(3);
             if (x < 1) return x.toPrecision(3);
 
             return;
