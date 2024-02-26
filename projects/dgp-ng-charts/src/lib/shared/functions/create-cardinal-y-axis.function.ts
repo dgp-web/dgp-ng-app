@@ -19,6 +19,25 @@ export function createCardinalYAxis(payload: {
     const yAxisScale = payload.yAxisScale;
 
     switch (yAxisModel.yAxisScaleType) {
+        case ScaleType.Normal:
+            yAxis = d3.axisLeft(yAxisScale);
+            let yAxisTickValues = yAxisModel.yAxisTickValues;
+
+            const yTickCount = axisTickFormattingService.estimateContinuousYAxisTickCount({
+                containerHeight: payload.containerHeight
+            }, {
+                assumedTickHeight: 24
+            });
+
+            while (yAxisTickValues.length > yTickCount) {
+                yAxisTickValues = yAxisTickValues.filter((x, i) => {
+                    return i % 2 === 0;
+                });
+            }
+
+            yAxis = yAxis.tickValues(yAxisTickValues as Array<number>);
+
+            break;
         default:
         case ScaleType.Linear:
 
