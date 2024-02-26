@@ -25,8 +25,8 @@ export function createNormalPlot(
 
     let model = payload.model;
 
-    let yAxisMin = config.yAxisMin;
-    let yAxisMax = config.yAxisMax;
+    const yAxisMin = config.yAxisMin;
+    const yAxisMax = config.yAxisMax;
 
     const totalP = computeTotalP(model);
 
@@ -35,22 +35,12 @@ export function createNormalPlot(
 
     if (notNullOrUndefined(yAxisMin)) {
         pMin = fromPercent(yAxisMin);
-    }/* else {
-        yAxisMin = toPercent(pMin);
-    }*/
+    }
     if (notNullOrUndefined(yAxisMax)) {
         pMax = fromPercent(yAxisMax);
-    }/* else {
-        yAxisMax = toPercent(pMax);
-    }*/
+    }
 
-    let yAxisTickValues = createNormalYAxisTickValues({P: totalP});
-    // TODO: This filters out all excess values on our labs page which is not what we want
-    /*  yAxisTickValues = yAxisTickValues.filter(tickValue => {
-          if ((notNullOrUndefined(yAxisMin) && tickValue < yAxisMin) || tickValue < toPercent(pMin)) return false;
-          if ((notNullOrUndefined(yAxisMax) && tickValue > yAxisMax) || tickValue > toPercent(pMax)) return false;
-          return true;
-      });*/
+    const yAxisTickValues = createNormalYAxisTickValues({P: totalP, yAxisMin, yAxisMax});
 
     const yAxisInterpolator = createNormalInterpolatorWithBoundariesFactory({
         P: totalP,
@@ -58,7 +48,7 @@ export function createNormalPlot(
          * pMin and pMax can be overridden which corresponds to zooming into the data
          */
         pMin,
-        pMax,
+        pMax
     });
 
 
