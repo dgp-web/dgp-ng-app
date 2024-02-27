@@ -44,7 +44,7 @@ import { BehaviorSubject } from "rxjs";
              class="tooltip"
              [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
              [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
-            {{getCurrentTooltip()}}
+            {{ getCurrentTooltip() }}
         </div>
 
     `,
@@ -130,7 +130,15 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
             if (result) result += "; ";
             result += dot.label + ": ";
         }
-        result += "(" + dot.x.toPrecision(3) + ", " + dot.y.toPrecision(3) + ")";
+
+        result += "(" + dot.x.toPrecision(3) + ", ";
+        if (notNullOrUndefined(this.scales.yAxisModel.yAxisTickFormat)) {
+            result += this.scales.yAxisModel.yAxisTickFormat(dot.y);
+        } else {
+            result += dot.y.toPrecision(3);
+        }
+        result += ")";
+
         return result;
     }
 
