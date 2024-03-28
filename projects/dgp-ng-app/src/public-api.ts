@@ -56,9 +56,10 @@ export { heartbeatBroadcastChannelId } from "./broadcast/constants/heartbeat-bro
 export { actionBroadcastChannelId } from "./broadcast/constants/action-broadcast-channel-id.constant";
 export * from "./broadcast/models";
 export {
-    BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector
+    BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector,
+    broadcastReducer
 } from "./broadcast/store";
-export { DgpBroadcastStoreModule } from "./broadcast/broadcast-store.module";
+export { DgpBroadcastStoreModule, BROADCAST_REDUCER, broadcastReducerProvider } from "./broadcast/broadcast-store.module";
 
 // confirm-dialog
 export {
