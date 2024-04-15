@@ -120,8 +120,8 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
 
                         if (series.showVertices) {
                             series.dots.forEach(dot => {
-                                ctx.beginPath();
 
+                                ctx.beginPath();
                                 switch (series.shape) {
                                     default:
                                     case Shape.Circle:
@@ -129,7 +129,6 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                         const centerY = this.scales.yAxisScale(dot.y);
                                         const radius = dotSize / 2;
 
-                                        ctx.beginPath();
                                         ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
                                         break;
                                     case Shape.Rectangle:
@@ -140,7 +139,6 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                         const x = this.scales.xAxisScale(dot.x) - xOffset;
                                         const y = this.scales.yAxisScale(dot.y) - yOffset;
 
-                                        ctx.beginPath();
                                         ctx.rect(x, y, width, height);
                                         break;
                                     case Shape.Star:
@@ -168,11 +166,10 @@ export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit
                                         break;
                                 }
 
-
                                 ctx.fill();
-                                ctx.stroke();
-
                             });
+
+                            ctx.stroke();
                         }
 
                         if (series.showEdges) {

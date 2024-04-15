@@ -7,3 +7,4 @@ export interface NormalPlotOptimizationState {
      */
     readonly Ps: KVS<Many<number>>;
 }
+
