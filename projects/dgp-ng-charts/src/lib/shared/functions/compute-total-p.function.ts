@@ -3,8 +3,10 @@ import { P } from "../models";
 import { matrixToMany } from "dgp-ng-app";
 import { fromPercent } from "./from-percent.function";
 import * as _ from "lodash";
+import { WithNormalPlotOptimizationState } from "../../normal/optimization/models";
 
-export function computeTotalP(payload: ConnectedScatterPlotModel): P {
+export function computeTotalP(payload: ConnectedScatterPlotModel & Partial<WithNormalPlotOptimizationState>): P {
+
     let result = payload.map(x => x.series)
         .reduce(matrixToMany, [])
         .map(x => x.dots)
