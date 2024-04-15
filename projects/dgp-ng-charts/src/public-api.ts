@@ -184,6 +184,7 @@ export { VerticalLinesMaskDirective } from "./lib/masks/directives/vertical-line
  * -----
  */
 export { DgpNormalPlotOptimizationModule } from "./lib/normal/optimization/normal-plot-optimization.module";
+export * from "./lib/normal/optimization/actions";
 export * from "./lib/normal/optimization/constants";
 export * from "./lib/normal/optimization/functions";
 export * from "./lib/normal/optimization/models";

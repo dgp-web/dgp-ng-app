@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialNormalPlotState } from "../constants";
 import { NormalPlotOptimizationState } from "../models";
-import { cacheNormalP } from "../actions";
+import { cacheNormalP, cacheNormalPs } from "../actions";
 
 export const normalPlotOptimizationReducer = createReducer<NormalPlotOptimizationState>(
     initialNormalPlotState,
@@ -10,5 +10,18 @@ export const normalPlotOptimizationReducer = createReducer<NormalPlotOptimizatio
             ...state,
             [action.P.length]: action.P
         };
+    }),
+    on(cacheNormalPs, (state, action) => {
+
+        let updatedState = {...state};
+
+        action.Ps.forEach(P => {
+            updatedState = {
+                ...updatedState,
+                [P.length]: P
+            };
+        });
+
+        return updatedState;
     })
 );
