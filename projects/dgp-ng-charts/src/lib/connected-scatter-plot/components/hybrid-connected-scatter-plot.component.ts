@@ -8,7 +8,7 @@ import {
     Dot,
     DotHoverEvent
 } from "../models";
-import { notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
+import { observeAttribute$, Size } from "dgp-ng-app";
 import {
     defaultConnectedScatterPlotConfig,
     trackByConnectedPlotControlLineId,
@@ -17,6 +17,7 @@ import {
 } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { BehaviorSubject } from "rxjs";
+import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-scatter-plot-dot-tooltip.function";
 
 @Component({
     selector: "dgp-hybrid-connected-scatter-plot",
@@ -124,25 +125,15 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
     }
 
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
-        let result = "";
-        if (notNullOrUndefined(series.label)) result += series.label + ": ";
-        if (notNullOrUndefined(dot.label)) {
-            if (result) result += "; ";
-            result += dot.label + ": ";
-        }
-
-        result += "(" + dot.x.toPrecision(3) + ", ";
-        if (notNullOrUndefined(this.scales.yAxisModel.yAxisTickFormat)) {
-            result += this.scales.yAxisModel.yAxisTickFormat(dot.y);
-        } else {
-            result += dot.y.toPrecision(3);
-        }
-        result += ")";
-
-        return result;
+        return getConnectedScatterPlotDotTooltip({
+            group, series, dot,
+            xAxisTickFormat: this.scales.xAxisModel.xAxisTickFormat,
+            yAxisTickFormat: this.scales.yAxisModel.yAxisTickFormat,
+        });
     }
 
     showTooltip(payload: DotHoverEvent) {
         this.hoverEvent$.next(payload);
     }
 }
+

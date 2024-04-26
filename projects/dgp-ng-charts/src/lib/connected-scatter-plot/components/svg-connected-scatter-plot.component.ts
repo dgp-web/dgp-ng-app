@@ -9,6 +9,7 @@ import {
     trackByConnectedScatterSeriesId
 } from "../constants";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
+import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-scatter-plot-dot-tooltip.function";
 
 @Component({
     selector: "dgp-svg-connected-scatter-plot",
@@ -118,14 +119,11 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
     scales: ConnectedScatterPlotScales;
 
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
-        let result = "";
-        if (notNullOrUndefined(series.label)) result += series.label + ": ";
-        if (notNullOrUndefined(dot.label)) {
-            if (result) result += "; ";
-            result += dot.label + ": ";
-        }
-        result += "(" + dot.x.toPrecision(3) + ", " + dot.y.toPrecision(3) + ")";
-        return result;
+        return getConnectedScatterPlotDotTooltip({
+            group, series, dot,
+            xAxisTickFormat: this.scales.xAxisModel.xAxisTickFormat,
+            yAxisTickFormat: this.scales.yAxisModel.yAxisTickFormat,
+        });
     }
 
 }
