@@ -1,7 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { DgpCardinalXYAxisChartComponentBase } from "../../chart/components/cardinal-xy-axis-chart.component-base";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, ConnectedScatterSeries, Dot } from "../models";
-import { notNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
+import {
+    ConnectedScatterGroup,
+    ConnectedScatterPlot,
+    ConnectedScatterPlotControlLine,
+    ConnectedScatterSeries,
+    Dot,
+    DotTooltipFormat
+} from "../models";
+import { observeAttribute$, Size } from "dgp-ng-app";
 import {
     defaultConnectedScatterPlotConfig,
     trackByConnectedPlotControlLineId,
@@ -99,6 +106,9 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
     dotSize: number;
 
     @Input()
+    dotTooltipFormat: DotTooltipFormat;
+
+    @Input()
     lineWidth = 1.5;
 
     @Input()
@@ -121,6 +131,8 @@ export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartC
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         return getConnectedScatterPlotDotTooltip({
             group, series, dot,
+            yAxisTickValues: this.scales.yAxisModel.yAxisTickValues,
+            dotTooltipFormat: this.dotTooltipFormat,
             xAxisTickFormat: this.scales.xAxisModel.xAxisTickFormat,
             yAxisTickFormat: this.scales.yAxisModel.yAxisTickFormat,
         });

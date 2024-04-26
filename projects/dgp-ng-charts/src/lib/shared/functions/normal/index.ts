@@ -19,3 +19,4 @@ export { createNormalInterpolatorWithBoundariesFactory } from "./create-normal-i
 export { getExcessTickCountPerBoundary } from "./get-excess-tick-count-per-boundary.function";
 export { getNormalExcessTicks } from "./get-normal-excess-ticks.function";
 export { tryAddOverriddenYBoundaries } from "./try-add-overridden-y-boundaries.function";
+export * from "./normal-plot-tooltip-format.constant";

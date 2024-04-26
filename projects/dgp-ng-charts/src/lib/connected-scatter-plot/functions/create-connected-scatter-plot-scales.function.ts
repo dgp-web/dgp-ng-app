@@ -117,7 +117,8 @@ export function createConnectedScatterPlotScales(payload: {
             yAxisMin: payload.yAxisMin,
             yAxisScaleType: payload.yAxisScaleType,
             yAxisStep: payload.yAxisStep,
-            yAxisTickFormat: payload.yAxisTickFormat
+            yAxisTickFormat: payload.yAxisTickFormat,
+            yAxisTickValues: payload.yAxisTickValues
         },
         xAxisModel: {
             xAxisMax: payload.xAxisMax,

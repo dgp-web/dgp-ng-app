@@ -6,7 +6,8 @@ import {
     ConnectedScatterPlotControlLine,
     ConnectedScatterSeries,
     Dot,
-    DotHoverEvent
+    DotHoverEvent,
+    DotTooltipFormat
 } from "../models";
 import { observeAttribute$, Size } from "dgp-ng-app";
 import {
@@ -95,6 +96,9 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
     dotSize: number;
 
     @Input()
+    dotTooltipFormat: DotTooltipFormat;
+
+    @Input()
     lineWidth: number;
 
     @Input()
@@ -127,6 +131,8 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
     getTooltip(group: ConnectedScatterGroup, series: ConnectedScatterSeries, dot: Dot) {
         return getConnectedScatterPlotDotTooltip({
             group, series, dot,
+            yAxisTickValues: this.scales.yAxisModel.yAxisTickValues,
+            dotTooltipFormat: this.dotTooltipFormat,
             xAxisTickFormat: this.scales.xAxisModel.xAxisTickFormat,
             yAxisTickFormat: this.scales.yAxisModel.yAxisTickFormat,
         });
