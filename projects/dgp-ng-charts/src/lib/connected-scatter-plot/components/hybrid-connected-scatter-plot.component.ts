@@ -82,6 +82,7 @@ import { map } from "rxjs/operators";
             align-items: center;
             width: 160px;
             font-size: smaller;
+            white-space: pre-line;
         }
 
         dgp-connected-scatter-plot-data-canvas {

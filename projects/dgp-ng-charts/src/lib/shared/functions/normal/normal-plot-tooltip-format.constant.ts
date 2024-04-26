@@ -25,7 +25,7 @@ export const normalPlotTooltipFormat: DotTooltipFormat = payload => {
         result += dot.x.toPrecision(3);
     }
 
-    result += ", ";
+    result += "/";
 
     result += yValueFormat(dot.y);
 
