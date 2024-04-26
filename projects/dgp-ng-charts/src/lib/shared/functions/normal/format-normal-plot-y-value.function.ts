@@ -14,34 +14,22 @@ export function formatNormalPlotYValue(payload: {
         }
         if (x > 99) {
 
-            /**
-             * This replaces issues like 99.999000001
-             */
-            const trimmedNumber = +x.toString().replace(/(0+1+)+/, "");
-            /**
-             * If x is a tick value, don't use special handling
-             */
-            if (yAxisTickValues.includes(trimmedNumber)) return trimmedNumber.toString();
 
             let refIndex = yAxisTickValues.length - 1;
             let revValue = yAxisTickValues[refIndex];
-            let smallestDistance = Math.abs(trimmedNumber - revValue);
+            let nextValue = yAxisTickValues[refIndex - 1];
             while (
-                revValue > trimmedNumber
-                && Math.abs(trimmedNumber - yAxisTickValues[refIndex - 1]) < smallestDistance
+                nextValue > x
                 && refIndex < yAxisTickValues.length
                 ) {
                 refIndex--;
                 revValue = yAxisTickValues[refIndex];
-                smallestDistance = Math.abs(trimmedNumber - revValue);
+                nextValue = yAxisTickValues[refIndex - 1];
             }
 
-            if (trimmedNumber > revValue) {
-                revValue = yAxisTickValues[refIndex + 1];
-            }
 
             const numberOfDecimalPlaces = revValue.toString().split(".")[1]?.length || 1;
-            return trimmedNumber.toFixed(numberOfDecimalPlaces);
+            return x.toFixed(numberOfDecimalPlaces);
 
         }
     };
