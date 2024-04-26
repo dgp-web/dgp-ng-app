@@ -9,7 +9,7 @@ import {
     DotHoverEvent,
     DotTooltipFormat
 } from "../models";
-import { observeAttribute$, Size } from "dgp-ng-app";
+import { filterNotNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
 import {
     defaultConnectedScatterPlotConfig,
     trackByConnectedPlotControlLineId,
@@ -19,6 +19,8 @@ import {
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { BehaviorSubject } from "rxjs";
 import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-scatter-plot-dot-tooltip.function";
+import { DialogPosition } from "@angular/material/dialog";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: "dgp-hybrid-connected-scatter-plot",
@@ -42,12 +44,16 @@ import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-sc
                                                 [lineWidth]="lineWidth"
                                                 (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
 
-        <div *ngIf="showDotTooltips && hoverEvent$.value"
-             class="tooltip"
-             [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
-             [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
-            {{ getCurrentTooltip() }}
-        </div>
+        <ng-container *ngIf="showDotTooltips && hoverEvent$.value">
+            <div *ngIf="tooltipPosition$ | async as pos"
+                 class="tooltip"
+                 [style.top]="pos.top"
+                 [style.left]="pos.left"
+                 [style.bottom]="pos.bottom"
+                 [style.right]="pos.right">
+                {{ getCurrentTooltip() }}
+            </div>
+        </ng-container>
 
     `,
     styles: [`
@@ -74,6 +80,8 @@ import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-sc
             padding: 8px 12px;
             display: flex;
             align-items: center;
+            width: 160px;
+            font-size: smaller;
         }
 
         dgp-connected-scatter-plot-data-canvas {
@@ -120,6 +128,14 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
 
     readonly hoverEvent$ = new BehaviorSubject<DotHoverEvent>(null);
 
+    readonly tooltipPosition$ = this.hoverEvent$.pipe(
+        filterNotNullOrUndefined(),
+        map(x => getDotTooltipPosition({
+            hoverPosition: x,
+            configuredWidth: 160
+        }))
+    );
+
     getCurrentTooltip() {
         return this.getTooltip(
             this.hoverEvent$.value.group,
@@ -143,3 +159,75 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
     }
 }
 
+export interface DotTooltipPosition {
+    readonly top?: string;
+    readonly bottom?: string;
+    readonly left?: string;
+    readonly right?: string;
+}
+
+export interface DotTooltipSizes {
+    readonly offsetTop: number;
+    readonly offsetLeft: number;
+    readonly offsetRight: number;
+    readonly availableSpace: {
+        readonly left: number;
+        readonly right: number;
+        readonly top: number;
+        readonly bottom: number;
+    };
+}
+
+export function getDotTooltipPosition(payload: {
+    readonly hoverPosition: {
+        readonly absoluteDomXPx: number;
+        readonly absoluteDomYPx: number;
+    };
+    readonly configuredWidth: number;
+}): DotTooltipPosition {
+    const hoverPosition = payload.hoverPosition;
+
+    const configureDialogWidth = payload.configuredWidth;
+
+    const sizes: DotTooltipSizes = {
+        offsetTop: hoverPosition.absoluteDomYPx,
+        offsetLeft: hoverPosition.absoluteDomXPx,
+        offsetRight: window.innerWidth - hoverPosition.absoluteDomXPx,
+        availableSpace: {
+            left: hoverPosition.absoluteDomXPx,
+            right: window.innerWidth - (hoverPosition.absoluteDomXPx),
+            bottom: window.innerHeight - hoverPosition.absoluteDomYPx,
+            top: hoverPosition.absoluteDomYPx
+        }
+    };
+
+
+    let result: DialogPosition = {
+        top: sizes.offsetTop + "px",
+        left: sizes.offsetLeft + "px",
+        bottom: null,
+        right: null
+    };
+
+
+    if (sizes.availableSpace.right < configureDialogWidth
+        && sizes.availableSpace.left >= configureDialogWidth) {
+        result = {
+            ...result,
+            left: (sizes.offsetLeft - configureDialogWidth) + "px"
+        };
+    }
+
+    if (sizes.availableSpace.bottom < 100
+        && sizes.availableSpace.top >= 100) {
+        result = {
+            ...result,
+            top: null,
+            bottom: null,
+            left: null,
+            right: null
+        };
+    }
+
+    return result;
+}
