@@ -12,10 +12,22 @@ export function createNormalConnectedScatterGroup(payload: {
     readonly labels?: Many<string>;
 } & Partial<NormalPlotOptimizationState>, config: Partial<ConnectedScatterGroup> = {}): ConnectedScatterGroup {
     const values = payload.values;
-    const labels = payload.labels;
+    let labels = payload.labels;
     const Ps = payload.Ps;
 
-    const X = _.sortBy(values);
+    let X: Many<number>;
+
+    if (labels) {
+        let valueLabelCombis = values.map((x, i) => {
+            return {value: x, label: labels[i]};
+        });
+        valueLabelCombis = _.sortBy(valueLabelCombis, x => x.value);
+        X = valueLabelCombis.map(x => x.value);
+        labels = valueLabelCombis.map(x => x.label);
+    } else {
+        X = _.sortBy(values);
+    }
+
     const collectionLength = X.length;
 
     let P = tryGetCachedNormalP({collectionLength, Ps});
