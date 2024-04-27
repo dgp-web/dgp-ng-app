@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { debounceTime, map, shareReplay, take } from "rxjs/operators";
-import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine } from "../models";
+import { ConnectedScatterGroup, ConnectedScatterPlot, ConnectedScatterPlotControlLine, DotTooltipFormat } from "../models";
 import { createConnectedScatterPlotScales, resolveConnectedScatterGroups } from "../functions";
 import { defaultConnectedScatterPlotConfig } from "../constants";
 import { filterNotNullOrUndefined, observeAttribute$, Size } from "dgp-ng-app";
@@ -33,6 +33,7 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                             [showDataAreaOutline]="showDataAreaOutline"
                                             [config]="config"
                                             [dotSize]="dotSize"
+                                            [dotTooltipFormat]="dotTooltipFormat"
                                             [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-svg-connected-scatter-plot>
 
             <dgp-hybrid-connected-scatter-plot *ngIf="renderer === rendererEnum.Hybrid"
@@ -46,6 +47,7 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
                                                [showDataAreaOutline]="showDataAreaOutline"
                                                [config]="config"
                                                [dotSize]="dotSize"
+                                               [dotTooltipFormat]="dotTooltipFormat"
                                                [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-hybrid-connected-scatter-plot>
 
         </dgp-chart>
@@ -72,6 +74,9 @@ export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComp
 
     @Input()
     showDotTooltips = true;
+
+    @Input()
+    dotTooltipFormat: DotTooltipFormat;
 
     @Input()
     autoResize = true;
