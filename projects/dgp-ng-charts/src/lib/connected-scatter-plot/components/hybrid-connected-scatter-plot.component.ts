@@ -80,7 +80,7 @@ import { map } from "rxjs/operators";
             padding: 8px 12px;
             display: flex;
             align-items: center;
-            width: 160px;
+            width: 200px;
             font-size: smaller;
             white-space: pre-line;
         }
@@ -133,7 +133,7 @@ export class DgpHybridConnectedScatterPlotComponent extends DgpCardinalXYAxisCha
         filterNotNullOrUndefined(),
         map(x => getDotTooltipPosition({
             hoverPosition: x,
-            configuredWidth: 160
+            configuredWidth: 200
         }))
     );
 
