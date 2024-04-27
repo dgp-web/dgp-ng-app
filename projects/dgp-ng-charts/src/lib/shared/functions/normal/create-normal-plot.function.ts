@@ -13,6 +13,7 @@ import { getNormalPMin } from "./get-normal-p-min.function";
 import { getNormalPMax } from "./get-normal-p-max.function";
 import { ScaleType } from "../../models";
 import { probabilityPlotTickFormat } from "../../constants";
+import { normalPlotTooltipFormat } from "./normal-plot-tooltip-format.constant";
 
 export function createNormalPlot(
     payload: {
@@ -84,7 +85,8 @@ export function createNormalPlot(
         yAxisScaleType: ScaleType.Normal,
         yAxisTickValues,
         showDotTooltips: true,
-        yAxisTickFormat: probabilityPlotTickFormat
+        yAxisTickFormat: probabilityPlotTickFormat,
+        dotTooltipFormat: normalPlotTooltipFormat
     };
 
     return _.merge(result, config, {yAxisInterpolator, yAxisMin, yAxisMax});

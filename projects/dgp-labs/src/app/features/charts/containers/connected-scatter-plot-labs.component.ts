@@ -3,6 +3,7 @@ import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot, ConnectedScatterPlotConfig, ConnectedScatterPlotRenderer, createNormalPlot } from "dgp-ng-charts";
 import { connectedScatterPlotMetadata } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants";
 import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/create-test-normal-plot-scatter-group.function";
+import { normalPlotTooltipFormat } from "../../../../../../dgp-ng-charts/src/lib/shared/functions";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
@@ -42,7 +43,8 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
                                                         [controlLines]="model.controlLines"
                                                         [dotSize]="model.dotSize"
                                                         [lineWidth]="model.lineWidth"
-                                                        [showDotTooltips]="model.showDotTooltips"></dgp-connected-scatter-plot>
+                                                        [showDotTooltips]="model.showDotTooltips"
+                                                        [dotTooltipFormat]="dotTooltipFormat"></dgp-connected-scatter-plot>
                         </ng-template>
 
                     </dgp-docking-layout-container>
@@ -97,6 +99,7 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 
     readonly cspMetadata = connectedScatterPlotMetadata;
+    readonly dotTooltipFormat = normalPlotTooltipFormat;
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
 
