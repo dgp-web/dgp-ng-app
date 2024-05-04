@@ -168,6 +168,10 @@ export { DgpInspectorModule } from "./inspector/inspector.module";
 export { DgpInspectorConfigFormComponent } from "./inspector-config/components/inspector-config-form.component";
 export { DgpInspectorConfigComponent } from "./inspector-config/containers/inspector-config.component";
 export { DgpInspectorConfigModule } from "./inspector-config/inspector-config.module";
+ 
+// lazy-rendered
+export { DgpLazyRenderedModule } from "./lazy-rendered/lazy-rendered.module";
+export { DgpLazyRenderedComponent } from "./lazy-rendered/components/lazy-rendered.component";
 
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";

@@ -8,7 +8,11 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             Lazy rendered
         </dgp-page-header>
 
-        <div class="content"></div>
+        <div class="content">
+
+            <dgp-lazy-rendered></dgp-lazy-rendered>
+
+        </div>
     `,
     styles: [`
         :host {
