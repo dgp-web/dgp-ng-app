@@ -16,6 +16,10 @@ import { observeAttribute$ } from "../../utils/observe-input";
 import { distinctUntilHashChanged } from "../../utils/distinct-until-hash-changed.function";
 import { Subscription } from "rxjs";
 
+export enum LazyRenderedContentDisplayStrategy {
+    WhileInView = "whileInView"
+}
+
 @Component({
     selector: "dgp-lazy-rendered",
     template: `
@@ -23,6 +27,8 @@ import { Subscription } from "rxjs";
     `,
     styles: [`
         :host {
+            display: flex;
+            flex-direction: column;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,9 +47,16 @@ export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
         read: TemplateRef
     }) placeholderTemplateRef: TemplateRef<any>;
 
-    @Input() displayRegionSelector: string;
+    /**
+     * default: parent element
+     */
+    @Input()
+    displayRegionSelector: string;
 
     showContent = false;
+
+    @Input()
+    contentDisplayStrategy = LazyRenderedContentDisplayStrategy.WhileInView;
 
     private readonly showContent$ = observeAttribute$(
         this as DgpLazyRenderedComponent, "showContent"
@@ -65,7 +78,11 @@ export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
             if (this.embeddedViewRef) {
                 this.embeddedViewRef.destroy();
             }
-            this.embeddedViewRef = this.vcRef.createEmbeddedView(this.contentTemplateRef);
+            if (showContent) {
+                this.embeddedViewRef = this.vcRef.createEmbeddedView(this.contentTemplateRef);
+            } else {
+                this.embeddedViewRef = this.vcRef.createEmbeddedView(this.placeholderTemplateRef);
+            }
         });
     }
 
@@ -85,9 +102,10 @@ export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
             displayRegion = this.elRef.nativeElement.parentElement;
         }
 
+        // TODO: Make this an input
         const options: IntersectionObserverInit = {
             root: displayRegion,
-            rootMargin: "0px",
+            rootMargin: "240px 0px 0px 0px",
             threshold: 0
         };
 

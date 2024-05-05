@@ -10,15 +10,18 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
         <div class="content">
 
-            <dgp-lazy-rendered>
+            <dgp-lazy-rendered *ngFor="let item of items">
 
                 <ng-template dgpLazyRenderedPlaceholder>
-                    <dgp-empty-state title="Not loaded"
-                                     matIconName="info"></dgp-empty-state>
+                    <div style="display: block; width: 100%; height: 240px; background: blue; flex-shrink: 0;">
+                        Placeholder is rendered
+                    </div>
                 </ng-template>
 
                 <ng-template dgpLazyRenderedContent>
-                    Content is rendered
+                    <div style="display: block; width: 100%; height: 400px; background: red; flex-shrink: 0;">
+                        Content is rendered
+                    </div>
                 </ng-template>
 
 
@@ -45,5 +48,5 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LazyRenderedLabsPageComponent {
-
+    items = new Array(100);
 }

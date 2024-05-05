@@ -3,6 +3,7 @@ import { containers } from "./containers/containers";
 import { RouterModule } from "@angular/router";
 import { LazyRenderedLabsPageComponent } from "./containers/lazy-rendered-labs-page.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpLazyRenderedModule, DgpEmptyStateModule } from "dgp-ng-app";
+import { NgForOf } from "@angular/common";
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpLazyRenderedModul
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
         DgpLazyRenderedModule,
-        DgpEmptyStateModule
+        DgpEmptyStateModule,
+        NgForOf
     ],
     declarations: [
         ...containers
