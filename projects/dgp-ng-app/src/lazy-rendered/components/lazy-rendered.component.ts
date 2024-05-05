@@ -3,7 +3,9 @@ import {
     ChangeDetectionStrategy,
     Component,
     ContentChild,
+    ElementRef,
     EmbeddedViewRef,
+    Input,
     OnDestroy,
     TemplateRef,
     ViewContainerRef
@@ -17,13 +19,19 @@ import { Subscription } from "rxjs";
 @Component({
     selector: "dgp-lazy-rendered",
     template: `
+        <ng-content></ng-content>
     `,
     styles: [`
-
+        :host {
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
+
+    private showContentSubscription: Subscription;
+    private embeddedViewRef: EmbeddedViewRef<any>;
+    private intersectionObserver: IntersectionObserver;
 
     @ContentChild(DgpLazyRenderedContentDirective, {
         read: TemplateRef
@@ -33,8 +41,7 @@ export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
         read: TemplateRef
     }) placeholderTemplateRef: TemplateRef<any>;
 
-    private showContentSubscription: Subscription;
-    private embeddedViewRef: EmbeddedViewRef<any>;
+    @Input() displayRegionSelector: string;
 
     showContent = false;
 
@@ -43,11 +50,15 @@ export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
     );
 
     constructor(
-        private readonly vcRef: ViewContainerRef
+        private readonly vcRef: ViewContainerRef,
+        private readonly elRef: ElementRef<HTMLElement>
     ) {
     }
 
     ngAfterViewInit(): void {
+        // TODO
+        this.checkIntersectionWithDisplayRegion();
+
         this.showContentSubscription = this.showContent$.pipe(
             distinctUntilHashChanged()
         ).subscribe(showContent => {
@@ -62,6 +73,35 @@ export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
         if (this.showContentSubscription && !this.showContentSubscription.closed) {
             this.showContentSubscription.unsubscribe();
         }
+        this.intersectionObserver?.disconnect();
+    }
+
+    private checkIntersectionWithDisplayRegion() {
+
+        let displayRegion: Element;
+        if (this.displayRegionSelector) {
+            displayRegion = document.querySelector(this.displayRegionSelector);
+        } else {
+            displayRegion = this.elRef.nativeElement.parentElement;
+        }
+
+        const options: IntersectionObserverInit = {
+            root: displayRegion,
+            rootMargin: "0px",
+            threshold: 0
+        };
+
+        this.intersectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+
+                // TODO
+                this.showContent = entry.isIntersecting;
+
+            });
+        }, options);
+
+        const target = this.elRef.nativeElement;
+        this.intersectionObserver.observe(target);
     }
 
 }

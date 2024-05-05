@@ -10,7 +10,19 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
 
         <div class="content">
 
-            <dgp-lazy-rendered></dgp-lazy-rendered>
+            <dgp-lazy-rendered>
+
+                <ng-template dgpLazyRenderedPlaceholder>
+                    <dgp-empty-state title="Not loaded"
+                                     matIconName="info"></dgp-empty-state>
+                </ng-template>
+
+                <ng-template dgpLazyRenderedContent>
+                    Content is rendered
+                </ng-template>
+
+
+            </dgp-lazy-rendered>
 
         </div>
     `,
