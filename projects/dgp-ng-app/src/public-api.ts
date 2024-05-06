@@ -169,6 +169,12 @@ export { DgpInspectorConfigFormComponent } from "./inspector-config/components/i
 export { DgpInspectorConfigComponent } from "./inspector-config/containers/inspector-config.component";
 export { DgpInspectorConfigModule } from "./inspector-config/inspector-config.module";
 
+// lazy-rendered
+export { DgpLazyRenderedModule } from "./lazy-rendered/lazy-rendered.module";
+export { DgpLazyRenderedComponent } from "./lazy-rendered/components/lazy-rendered.component";
+export { DgpLazyRenderedContentDirective } from "./lazy-rendered/directives/dgp-lazy-rendered-content.directive";
+export { DgpLazyRenderedPlaceholderDirective } from "./lazy-rendered/directives/dgp-lazy-rendered-placeholder.directive";
+
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
 export { LogEntry, Severity } from "./log/models";

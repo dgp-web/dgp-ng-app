@@ -45,6 +45,10 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
                         <dgp-hamburger-menu-entry label="Action context"
                                                   route="/action-context"
                                                   matIconName="pie_chart"></dgp-hamburger-menu-entry>
+
+                        <dgp-hamburger-menu-entry label="Lazy rendered"
+                                                  route="/lazy-rendered"
+                                                  matIconName="preview"></dgp-hamburger-menu-entry>
                     </dgp-inspector-section>
 
                     <dgp-inspector-section label="Charts"
