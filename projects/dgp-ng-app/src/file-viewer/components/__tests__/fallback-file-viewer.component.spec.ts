@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { FallbackFileViewerComponent } from "../fallback-file-viewer.component";
 import { DgpFileViewerModule } from "../../file-viewer.module";
+import { StoreModule } from "@ngrx/store";
 
 describe(FallbackFileViewerComponent.name, () => {
 
@@ -11,6 +12,7 @@ describe(FallbackFileViewerComponent.name, () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
+                StoreModule.forRoot({}),
                 DgpFileViewerModule
             ]
         });
