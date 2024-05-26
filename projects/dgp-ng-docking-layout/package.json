@@ -19,5 +19,8 @@
         "@angular/core": "^14",
         "jquery": "^3",
         "@types/jquery": "^3"
+    },
+    "ng-update": {
+        "migrations": "./schematics/migrations.json"
     }
 }

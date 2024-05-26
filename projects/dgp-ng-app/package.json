@@ -37,5 +37,8 @@
         "entity-store": "^2",
         "lodash": "4",
         "rxjs": "^6"
+    },
+    "ng-update": {
+        "migrations": "./schematics/migrations.json"
     }
 }
