@@ -19,5 +19,8 @@
         "@angular/common": "^14",
         "@angular/core": "^14",
         "highlight.js": "^9"
+    },
+    "ng-update": {
+        "migrations": "./schematics/migrations.json"
     }
 }
