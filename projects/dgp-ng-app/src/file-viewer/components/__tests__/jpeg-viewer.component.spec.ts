@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { JpgViewerComponent } from "../jpg-viewer.component";
 import { DgpFileViewerModule } from "../../file-viewer.module";
+import { StoreModule } from "@ngrx/store";
 
 describe(JpgViewerComponent.name, () => {
 
@@ -11,6 +12,7 @@ describe(JpgViewerComponent.name, () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
+                StoreModule.forRoot({}),
                 DgpFileViewerModule
             ]
         });
