@@ -4,16 +4,35 @@ import { toMedianRank } from "../to-median-rank.function";
 import { toProbabilityChartDots } from "../to-probability-chart-dots.function";
 import { createGuid } from "dgp-ng-app";
 import * as _ from "lodash";
+import { NormalPlotOptimizationState } from "../../../normal/optimization/models";
+import { tryGetCachedNormalP } from "../../../normal/optimization/functions";
 
 export function createNormalConnectedScatterGroup(payload: {
     readonly values: Many<number>;
     readonly labels?: Many<string>;
-}, config: Partial<ConnectedScatterGroup> = {}): ConnectedScatterGroup {
+} & Partial<NormalPlotOptimizationState>, config: Partial<ConnectedScatterGroup> = {}): ConnectedScatterGroup {
     const values = payload.values;
-    const labels = payload.labels;
+    let labels = payload.labels;
+    const Ps = payload.Ps;
 
-    const X = _.sortBy(values);
-    const P = X.map(toMedianRank);
+    let X: Many<number>;
+
+    if (labels) {
+        let valueLabelCombis = values.map((x, i) => {
+            return {value: x, label: labels[i]};
+        });
+        valueLabelCombis = _.sortBy(valueLabelCombis, x => x.value);
+        X = valueLabelCombis.map(x => x.value);
+        labels = valueLabelCombis.map(x => x.label);
+    } else {
+        X = _.sortBy(values);
+    }
+
+    const collectionLength = X.length;
+
+    let P = tryGetCachedNormalP({collectionLength, Ps});
+    if (!P) P = X.map(toMedianRank);
+
     const dots = toProbabilityChartDots({X, P, labels});
 
     const connectedScatterGroupId = createGuid();

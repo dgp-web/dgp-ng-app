@@ -33,6 +33,7 @@ import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-l
 import { DgpDataExportLabsModule } from "./features/data-export/data-export-labs.module";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { LazyRenderedLabsModule } from "./features/lazy-rendered/lazy-rendered-labs.module";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -136,7 +137,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         MatIconModule,
         DgpNegatePipeModule,
         DgpSpacerModule,
-        MatTooltipModule
+        MatTooltipModule,
+        LazyRenderedLabsModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

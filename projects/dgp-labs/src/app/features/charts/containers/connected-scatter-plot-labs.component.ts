@@ -3,13 +3,14 @@ import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { ConnectedScatterPlot, ConnectedScatterPlotConfig, ConnectedScatterPlotRenderer, createNormalPlot } from "dgp-ng-charts";
 import { connectedScatterPlotMetadata } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/constants";
 import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/create-test-normal-plot-scatter-group.function";
+import { normalPlotTooltipFormat } from "../../../../../../dgp-ng-charts/src/lib/shared/functions";
 
 @Component({
     selector: "dgp-connected-scatter-plot-labs",
     template: `
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            {{cspMetadata.label}}
+            {{ cspMetadata.label }}
         </dgp-page-header>
 
         <dgp-docking-layout>
@@ -42,7 +43,8 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
                                                         [controlLines]="model.controlLines"
                                                         [dotSize]="model.dotSize"
                                                         [lineWidth]="model.lineWidth"
-                                                        [showDotTooltips]="model.showDotTooltips"></dgp-connected-scatter-plot>
+                                                        [showDotTooltips]="model.showDotTooltips"
+                                                        [dotTooltipFormat]="dotTooltipFormat"></dgp-connected-scatter-plot>
                         </ng-template>
 
                     </dgp-docking-layout-container>
@@ -57,9 +59,9 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
                                 <dgp-inspector-item label="Renderer"
                                                     matIconName="label">
                                     <dgp-connected-scatter-plot-renderer-select
-                                            [disabled]="disabled"
-                                            [model]="renderer"
-                                            (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
+                                        [disabled]="disabled"
+                                        [model]="renderer"
+                                        (modelChange)="updateRenderer($event)"></dgp-connected-scatter-plot-renderer-select>
                                 </dgp-inspector-item>
 
                                 <dgp-inspector-item label="Items"
@@ -97,6 +99,7 @@ import { createTestNormalPlotScatterGroup } from "../../../__tests__/functions/c
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 
     readonly cspMetadata = connectedScatterPlotMetadata;
+    readonly dotTooltipFormat = normalPlotTooltipFormat;
 
     renderer = ConnectedScatterPlotRenderer.Hybrid;
 
@@ -110,13 +113,17 @@ export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBa
     }
 
     setPlot(payload: ConnectedScatterPlotConfig) {
-        const model = createNormalPlot({model: [this.group]}, payload);
+        const model = createNormalPlot({model: [this.group]}, {
+            ...payload, yAxisTickValues: undefined
+        });
         this.setModel(model);
     }
 
     updateN(n: number) {
         this.group = createTestNormalPlotScatterGroup({n: this.n});
-        const model = createNormalPlot({model: [this.group]}, this.model);
+        const model = createNormalPlot({model: [this.group]}, {
+            ...this.model, yAxisTickValues: undefined
+        });
         this.setModel(model);
         this.n = n;
     }

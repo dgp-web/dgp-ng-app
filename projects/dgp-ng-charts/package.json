@@ -9,5 +9,8 @@
         "@angular/core": "^15",
         "@types/d3": "^5",
         "d3": "^5"
+    },
+    "ng-update": {
+        "migrations": "./schematics/migrations.json"
     }
 }

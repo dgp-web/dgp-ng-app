@@ -17,6 +17,7 @@ export class ThemeHostDirective {
         private readonly config: ThemeSwitcherConfig,
         private readonly overlayContainer: OverlayContainer
     ) {
+        this.overlayContainer.getContainerElement().setAttribute("dgpThemeHost", "");
 
         this.store.pipe(
             select(isDarkModeActiveSelector)

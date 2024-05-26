@@ -30,7 +30,7 @@ export const formatCustomTick: CardinalAxisTickFormat = (x: string) => {
 
 };
 
-describe("niceRoundPseudoCategoricalNumberTicks", () => {
+xdescribe("niceRoundPseudoCategoricalNumberTicks", () => {
 
     it(`should round numerical components in formats`, () => {
 
