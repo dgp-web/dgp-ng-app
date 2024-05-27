@@ -166,6 +166,9 @@
 @mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
 
     @include dgp-normalize();
+    @include dgp-mat-overrides();
+
+    *[dgpThemeHost] {
 
     $app-theme: mat.define-light-theme((
         color: (
@@ -187,13 +190,12 @@
     @include dgp-inspector-theme($app-theme);
     @include dgp-details-theme($app-theme);
 
-    .dark-theme {
-        @include mat.all-legacy-component-colors($app-dark-theme);
+    .dark-theme, &.dark-theme {
+        @include mat.all-component-themes($app-dark-theme);
         @include dgp-list-item-theme($app-dark-theme);
     }
-    @include dgp-mat-overrides();
 
-    .compact-theme {
+    .compact-theme, &.compact-theme {
         @include dgp-compact-theme();
     }
 
@@ -280,6 +282,8 @@
 
             }
         }
+    }
+
     }
 
 }

@@ -26,17 +26,17 @@ module.exports = function (config) {
             ],
             check: {
                 global: {
-                    statements: 58,
-                    branches: 28,
+                    statements: 57,
+                    branches: 29,
                     functions: 43,
-                    lines: 58
+                    lines: 59
                 }
             },
             watermarks: {
-                statements: [63, 64],
-                branches: [37, 38],
-                functions: [50, 51],
-                lines: [64, 65]
+                statements: [58, 59],
+                branches: [30, 31],
+                functions: [44, 45],
+                lines: [60, 61]
             }
         },
         reporters: ["spec"],

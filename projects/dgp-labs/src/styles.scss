@@ -29,6 +29,12 @@ $app-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400);
     @include dgp-compact-theme();
 }
 
+.theme-2 {
+    $theme-2-primary: mat.define-palette(mat.$blue-grey-palette, 800, 900);
+    $theme-2-accent: mat.define-palette(mat.$light-blue-palette, A200, A100, A400);
+
+    @include dgp-ng-app-theme($theme-2-primary, $theme-2-accent);
+}
 /*
 
 .--dynamic-form-fields {

@@ -12,7 +12,7 @@ describe(FileViewerComponent.name, () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
-                StoreModule.forRoot(),
+                StoreModule.forRoot({}),
                 DgpFileViewerModule
             ]
         });
