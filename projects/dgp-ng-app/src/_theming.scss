@@ -166,109 +166,114 @@
 @mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
 
     @include dgp-normalize();
-
-    $app-theme: mat.define-light-theme($primary, $accent, $warn);
-    $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
-
-    @include mat.all-component-themes($app-theme);
-
-    @include dgp-list-item-theme($app-theme);
-    @include dgp-inspector-theme($app-theme);
-    @include dgp-details-theme($app-theme);
-
-    .dark-theme {
-        @include mat.all-component-themes($app-dark-theme);
-        @include dgp-list-item-theme($app-dark-theme);
-    }
     @include dgp-mat-overrides();
 
-    .compact-theme {
-        @include dgp-compact-theme();
-    }
+    *[dgpThemeHost] {
 
-    .dgp-bg--primary {
-        background: mat.get-color-from-palette($primary) !important;
-    }
+        $app-theme: mat.define-light-theme($primary, $accent, $warn);
+        $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
 
-    .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent) !important;
-    }
+        @include mat.all-component-themes($app-theme);
 
-    .dgp-bg--warn {
-        background: mat.get-color-from-palette($warn) !important;
-    }
+        @include dgp-list-item-theme($app-theme);
+        @include dgp-inspector-theme($app-theme);
+        @include dgp-details-theme($app-theme);
 
-    .dgp-cl--primary {
-        color: mat.get-color-from-palette($primary) !important;
-    }
+        .dark-theme, &.dark-theme {
+            @include mat.all-component-themes($app-dark-theme);
+            @include dgp-list-item-theme($app-dark-theme);
+        }
 
-    .dgp-cl--accent {
-        color: mat.get-color-from-palette($accent) !important;
-    }
 
-    .dgp-cl--warn {
-        color: mat.get-color-from-palette($warn) !important;
-    }
+        .compact-theme, &.compact-theme {
+            @include dgp-compact-theme();
+        }
 
-    mat-dialog-actions {
-        display: flex;
-        justify-content: flex-end;
-    }
+        .dgp-bg--primary {
+            background: mat.get-color-from-palette($primary) !important;
+        }
 
-    .page-menu-drawer-container {
-        .mat-drawer-inner-container {
+        .dgp-bg--accent {
+            background: mat.get-color-from-palette($accent) !important;
+        }
+
+        .dgp-bg--warn {
+            background: mat.get-color-from-palette($warn) !important;
+        }
+
+        .dgp-cl--primary {
+            color: mat.get-color-from-palette($primary) !important;
+        }
+
+        .dgp-cl--accent {
+            color: mat.get-color-from-palette($accent) !important;
+        }
+
+        .dgp-cl--warn {
+            color: mat.get-color-from-palette($warn) !important;
+        }
+
+        mat-dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .page-menu-drawer-container {
+            .mat-drawer-inner-container {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .hamburger-menu-drawer-content > *:not(router-outlet) {
             display: flex;
             flex-direction: column;
+            height: 100%;
+            flex-grow: 1;
+            overflow: auto;
         }
-    }
 
-    .hamburger-menu-drawer-content > *:not(router-outlet) {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        flex-grow: 1;
-        overflow: auto;
-    }
+        .dgp-action-context.--selected {
+            outline: 1px dashed mat.get-color-from-palette($accent, 300);
+        }
 
-    .dgp-action-context.--selected {
-        outline: 1px dashed mat.get-color-from-palette($accent, 300);
-    }
+        .dgp-bg--accent {
+            background: mat.get-color-from-palette($accent, 100) !important;
+        }
 
-    .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent, 100) !important;
-    }
-
-    .mat-icon--small {
-        height: 20px !important;
-        width: 20px !important;
-        font-size: 20px !important;
-    }
+        .mat-icon--small {
+            height: 20px !important;
+            width: 20px !important;
+            font-size: 20px !important;
+        }
 
 
-    dgp-input-field {
-        dgp-inspector-item {
-            mat-list-item {
-                padding-bottom: 8px !important;
-                padding-top: 8px !important;
-            }
-
-            .mat-list-item-content {
-                align-items: flex-start !important;
-
-                .label {
-                    // margin-top: 8px;
+        dgp-input-field {
+            dgp-inspector-item {
+                mat-list-item {
+                    padding-bottom: 8px !important;
+                    padding-top: 8px !important;
                 }
 
-                mat-icon {
-                    // margin-top: 6px;
-                }
+                .mat-list-item-content {
+                    align-items: flex-start !important;
 
-                .content {
-                    padding-top: 8px;
-                }
+                    .label {
+                        // margin-top: 8px;
+                    }
 
+                    mat-icon {
+                        // margin-top: 6px;
+                    }
+
+                    .content {
+                        padding-top: 8px;
+                    }
+
+                }
             }
         }
+
     }
 
 }

@@ -7,3 +7,4 @@ export { defaultWeibullParameters } from "./weibull/default-weibull-parameters.c
 export { defaultNormalParameters } from "./normal/default-normal-parameters.constant";
 export { defaultProbabilityChartPMin } from "./probability-chart/default-probability-chart-p-min.constant";
 export { defaultProbabilityChartPMax } from "./probability-chart/default-probability-chart-p-max.constant";
+export { probabilityPlotTickFormat } from "./normal/probability-plot-tick-format.constant";

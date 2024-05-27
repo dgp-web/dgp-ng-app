@@ -56,9 +56,10 @@ export { heartbeatBroadcastChannelId } from "./broadcast/constants/heartbeat-bro
 export { actionBroadcastChannelId } from "./broadcast/constants/action-broadcast-channel-id.constant";
 export * from "./broadcast/models";
 export {
-    BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector
+    BroadcastState, broadcastStoreFeature, broadcastStoreFeatureSelector, getOwnBroadcastRoleSelector,
+    broadcastReducer
 } from "./broadcast/store";
-export { DgpBroadcastStoreModule } from "./broadcast/broadcast-store.module";
+export { DgpBroadcastStoreModule, BROADCAST_REDUCER, broadcastReducerProvider } from "./broadcast/broadcast-store.module";
 
 // confirm-dialog
 export {
@@ -167,6 +168,12 @@ export { DgpInspectorModule } from "./inspector/inspector.module";
 export { DgpInspectorConfigFormComponent } from "./inspector-config/components/inspector-config-form.component";
 export { DgpInspectorConfigComponent } from "./inspector-config/containers/inspector-config.component";
 export { DgpInspectorConfigModule } from "./inspector-config/inspector-config.module";
+
+// lazy-rendered
+export { DgpLazyRenderedModule } from "./lazy-rendered/lazy-rendered.module";
+export { DgpLazyRenderedComponent } from "./lazy-rendered/components/lazy-rendered.component";
+export { DgpLazyRenderedContentDirective } from "./lazy-rendered/directives/dgp-lazy-rendered-content.directive";
+export { DgpLazyRenderedPlaceholderDirective } from "./lazy-rendered/directives/dgp-lazy-rendered-placeholder.directive";
 
 // log
 export { addLogEntry, logError, LogErrorAction, logErrorActionType } from "./log/actions";
