@@ -55,7 +55,7 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
                             <ng-container [ngTemplateOutlet]="componentConfig.componentState.labelTemplate()"></ng-container>
                         </ng-container>
                         <ng-template #textBasedLabel>
-                            {{componentConfig.title}}
+                            {{ componentConfig.title }}
                         </ng-template>
                     </div>
                 </ng-template>
@@ -150,6 +150,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
+        // TODO: Check how we can pass this differently
         const cfg = this.dockingLayoutService.config;
         this._header = {
             show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
@@ -445,6 +446,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             return this.getAreaInternal(this.element);
         }
 
+        // TODO: Extract function updateContentAreaDimensions
         this.contentAreaDimensions.left = {
             hoverArea: {
                 ...contentArea,
@@ -512,6 +514,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             tabWidth: number,
             halfX: number;
 
+        // TODO: extract methods for the individual cases
         // Empty stack
         if (tabsLength === 0) {
             headerOffset = headerElement.offset();
@@ -587,6 +590,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         if (!resolved) return;
 
+        // TODO: Creating a DragProxy comes with a lot of layout changes that are handled in its constructor
         return new DragProxy(
             x.coordinates,
             x.dragListener,
