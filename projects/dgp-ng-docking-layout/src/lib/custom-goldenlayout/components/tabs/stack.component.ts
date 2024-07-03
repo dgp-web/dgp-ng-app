@@ -214,7 +214,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     }
 
-    setActiveContentItem(componentId: string) {
+    private setActiveContentItem(componentId: string) {
         const item = this.config.content.find(x => x.id === componentId);
         const index = this.config.content.indexOf(item);
         this.config.activeItemId = componentId;
@@ -234,7 +234,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.cd.markForCheck();
     }
 
-    removeChild(componentId: string, keepChild: boolean) {
+    private removeChild(componentId: string, keepChild: boolean) {
         const contentItem = this.config.content.find(x => x.id === componentId);
         let index = this.config.content.indexOf(contentItem);
 
@@ -371,6 +371,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         for (segment in this.contentAreaDimensions) {
             area = this.contentAreaDimensions[segment].hoverArea;
 
+            // TODO: Extract isInArea(payload: {area: AreaSides; point: Point});
             if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
 
                 if (segment === DropSegment.Header) {
@@ -389,9 +390,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     /**
      * Returns the area the component currently occupies in the format
      */
-    private getAreaInternal<T = number>(element?: JQuery): Area {
-        element = element || this.element;
-
+    private getAreaForElement<T = number>(element: JQuery): Area {
         const offset = element.offset(),
             width = element.width(),
             height = element.height();
@@ -406,13 +405,21 @@ export class StackComponent implements DropTarget, AfterViewInit {
         };
     }
 
+    private getAreaForOwnElement() {
+        return this.getAreaForElement(this.element);
+    }
+
+    private getAreaForHeaderElement() {
+        return this.getAreaForElement($(this.headerComponent.nativeElement));
+    }
+
     getArea(): Area {
         if (this.element.is(":visible") === false) {
             return null;
         }
 
-        const headerArea = this.getAreaInternal($(this.headerComponent.nativeElement)),
-            contentArea = this.getAreaInternal(),
+        const headerArea = this.getAreaForHeaderElement(),
+            contentArea = this.getAreaForOwnElement(),
             contentWidth = contentArea.x2 - contentArea.x1,
             contentHeight = contentArea.y2 - contentArea.y1;
 
@@ -441,7 +448,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
                 highlightArea: contentArea
             };
 
-            return this.getAreaInternal(this.element);
+            return this.getAreaForElement(this.element);
         }
 
         // TODO: Extract function updateContentAreaDimensions
@@ -493,7 +500,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             }
         };
 
-        return this.getAreaInternal(this.element);
+        return this.getAreaForElement(this.element);
     }
 
     private highlightHeaderDropZone(x: number) {
@@ -566,7 +573,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         });
     }
 
-    processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
+    private processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
         if (!x.dragListener) return;
 
         const resolved = this.contentItems?.find(y => y.config.id === x.contentItem.id);
@@ -583,7 +590,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         );
     }
 
-    processSelectedContentItemChange(index: number) {
+    protected processSelectedContentItemChange(index: number) {
         const x = this.config.content[index];
         if (x.id === this.config.activeItemId) return;
         this.setActiveContentItem(x.id);
