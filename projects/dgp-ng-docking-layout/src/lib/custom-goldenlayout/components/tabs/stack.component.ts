@@ -311,10 +311,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private addStackToNewRowOrColumn(payload: {
         readonly stack: StackComponent;
-        readonly isVertical: boolean;
-        readonly insertBefore: boolean;
-        readonly dimension: "width" | "height";
-    }) {
+    } & StackOnDropAssignmentInfo) {
         const stack = payload.stack;
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
@@ -335,9 +332,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private addStackToExistingRowOrColumn(payload: {
         readonly stack: StackComponent;
-        readonly insertBefore: boolean;
-        readonly dimension: "width" | "height";
-    }) {
+    } & StackOnDropAssignmentInfo) {
         const stack = payload.stack;
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
