@@ -182,6 +182,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     remove() {
+        // TODO: REplace
         this.parent.removeChild(this, undefined);
     }
 
@@ -246,6 +247,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         if (this.config.content.length > 0) {
         } else if (this.config.isClosable === true) {
+            // TODO: Replace parent call
             this.parent.removeChild(this, undefined);
         }
 
@@ -289,9 +291,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
          * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
          * aggregate some conditions to make the if statements later on more readable
          */
+
+        // TODO: Extract to StackOnDropCreationInfo
         const isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom;
         const isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right;
         const insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left;
+        // TODO: Replace with model info about parent
         const hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow);
         const dimension = isVertical ? "height" : "width";
 
@@ -325,6 +330,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         const type = isVertical ? "column" : "row";
         const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
+        // TODO: Replace with event emitter
         this.parent.replaceChild(this, rowOrColumn);
 
         rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
@@ -344,6 +350,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
 
+        // TODO: Replace with event emitter
         const index = this.parent.contentItems.indexOf(this);
         this.parent.addChild(stack, insertBefore ? index : index + 1, true);
         this.config[dimension] *= 0.5;
