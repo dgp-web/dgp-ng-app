@@ -103,7 +103,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     readonly bindings = true;
 
     _side: boolean | DropSegment;
-    _sided: boolean;
     _header: HeaderConfig;
 
     element = $(this.elementRef.nativeElement);
@@ -170,7 +169,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     private setupHeaderPosition() {
         const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
         this._side = side;
-        this._sided = [DropSegment.Right, DropSegment.Left].indexOf(this._side as DropSegment) >= 0;
         this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
             this.element.addClass("lm_" + this._side);
@@ -377,7 +375,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
                 if (segment === DropSegment.Header) {
                     this.dropSegment = DropSegment.Header;
-                    this.highlightHeaderDropZone(this._sided ? y : x);
+                    this.highlightHeaderDropZone(x);
                 } else {
                     this.resetHeaderDropZone();
                     this.highlightBodyDropZone(segment);
@@ -532,15 +530,11 @@ export class StackComponent implements DropTarget, AfterViewInit {
         for (i = 0; i < tabsLength; i++) {
             tabElement = $(this.matTabDraglisteners.toArray()[i].elementRef.nativeElement);
             offset = tabElement.offset();
-            if (this._sided) {
-                tabLeft = offset.top;
-                tabTop = offset.left;
-                tabWidth = tabElement.height();
-            } else {
-                tabLeft = offset.left;
-                tabTop = offset.top;
-                tabWidth = tabElement.width();
-            }
+
+            tabLeft = offset.left;
+            tabTop = offset.top;
+            tabWidth = tabElement.width();
+
 
             if (x > tabLeft && x < tabLeft + tabWidth) {
                 isAboveTab = true;
@@ -562,17 +556,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
             tabElement.after(this.tabDropPlaceholder.$element);
         }
 
-
-        if (this._sided) {
-            placeHolderTop = this.tabDropPlaceholder.offset().top;
-            this.dropTargetIndicator.highlightArea({
-                x1: tabTop,
-                x2: tabTop + tabElement.innerHeight(),
-                y1: placeHolderTop,
-                y2: placeHolderTop + this.tabDropPlaceholder.width()
-            });
-            return;
-        }
         placeHolderLeft = this.tabDropPlaceholder.offset().left;
 
         this.dropTargetIndicator.highlightArea({

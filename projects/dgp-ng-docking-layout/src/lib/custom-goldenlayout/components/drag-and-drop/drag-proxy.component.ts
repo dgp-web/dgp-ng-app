@@ -20,7 +20,6 @@ import { StackComponent } from "../tabs/stack.component";
  */
 export class DragProxy extends EventEmitter {
 
-    private readonly sided: boolean;
 
     private readonly offset = this.dockingLayoutService.container.offset();
     private readonly min: Vector2 = {
@@ -61,7 +60,6 @@ export class DragProxy extends EventEmitter {
         this.subscriptions.push(dragStopSubscription);
 
         if (originalParent && originalParent._side) {
-            this.sided = originalParent._sided;
             this.element.addClass(createDropSegmentClassName(originalParent._side as DropSegment));
             if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
                 const content = this.element.find("." + lmContentClassName);
@@ -178,8 +176,7 @@ export class DragProxy extends EventEmitter {
 
         $x.size(this.element, {x: width, y: height});
 
-        width -= (this.sided ? dimensions.headerHeight : 0);
-        height -= (!this.sided ? dimensions.headerHeight : 0);
+        height -= dimensions.headerHeight;
 
         $x.size(this.childElementContainer, {x: width, y: height});
     }
