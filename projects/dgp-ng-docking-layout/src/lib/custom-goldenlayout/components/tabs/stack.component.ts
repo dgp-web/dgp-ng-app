@@ -287,33 +287,25 @@ export class StackComponent implements DropTarget, AfterViewInit {
             return;
         }
 
-        /*
-         * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
-         * aggregate some conditions to make the if statements later on more readable
-         */
-
-        // TODO: Extract to StackOnDropCreationInfo
-        const isVertical = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Bottom;
-        const isHorizontal = this.dropSegment === DropSegment.Left || this.dropSegment === DropSegment.Right;
-        const insertBefore = this.dropSegment === DropSegment.Top || this.dropSegment === DropSegment.Left;
-        // TODO: Replace with model info about parent
-        const hasCorrectParent = (isVertical && this.parent.isColumn) || (isHorizontal && this.parent.isRow);
-        const dimension = isVertical ? "height" : "width";
-
         const stack = this.createAndInitStack(contentItem);
+
+        const assignmentInfo = computeStackOnDropAssignmentInfo({
+            dropSegment: this.dropSegment as DropSegment,
+            parentType: this.parent.isColumn ? "column" : "row"
+        });
 
         /*
          * If the item is dropped on top or bottom of a column or left and right of a row, it's already
-         * layd out in the correct way. Just add it as a child
+         * laid out in the correct way. Just add it as a child
          */
-        if (hasCorrectParent) {
-            this.addStackToExistingRowOrColumn({stack, dimension, insertBefore});
+        if (assignmentInfo.hasCorrectParent) {
+            this.addStackToExistingRowOrColumn({...assignmentInfo, stack});
             /*
              * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
              * to create the appropriate contentItem for them to live in
              */
         } else {
-            this.addStackToNewRowOrColumn({stack, dimension, insertBefore, isVertical});
+            this.addStackToNewRowOrColumn({...assignmentInfo, stack});
         }
     }
 
@@ -604,3 +596,33 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 }
 
+export interface StackOnDropAssignmentInfo {
+    readonly dimension: "height" | "width";
+    readonly hasCorrectParent: boolean;
+    readonly insertBefore: boolean;
+    readonly isHorizontal: boolean;
+    readonly isVertical: boolean;
+}
+
+export function computeStackOnDropAssignmentInfo(payload: {
+    readonly dropSegment: DropSegment;
+    readonly parentType: "row" | "column";
+}): StackOnDropAssignmentInfo {
+
+    const dropSegment = payload.dropSegment;
+    const parentType = payload.parentType;
+
+    const isVertical = dropSegment === DropSegment.Top || dropSegment === DropSegment.Bottom;
+    const isHorizontal = dropSegment === DropSegment.Left || dropSegment === DropSegment.Right;
+    const insertBefore = dropSegment === DropSegment.Top || dropSegment === DropSegment.Left;
+    const hasCorrectParent = (isVertical && parentType === "column") || (isHorizontal && parentType === "row");
+    const dimension = isVertical ? "height" : "width";
+
+    return {
+        isVertical,
+        isHorizontal,
+        insertBefore,
+        hasCorrectParent,
+        dimension
+    };
+}
