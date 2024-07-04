@@ -159,7 +159,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     onDragStart(componentConfig: string) {
-        this.removeChild(componentConfig, true);
+        this.removeChild(componentConfig);
     }
 
     private resetHeaderDropZone() {
@@ -182,7 +182,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     remove() {
-        // TODO: REplace 
+        // TODO: REplace
         this.parent.removeChild(this, undefined);
     }
 
@@ -235,13 +235,9 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.cd.markForCheck();
     }
 
-    private removeChild(componentId: string, keepChild: boolean) {
+    private removeChild(componentId: string) {
         const contentItem = this.config.content.find(x => x.id === componentId);
         let index = this.config.content.indexOf(contentItem);
-
-        if (keepChild !== true) {
-            // this.contentItems[index].destroy();
-        }
 
         this.config.content.splice(index, 1);
 
