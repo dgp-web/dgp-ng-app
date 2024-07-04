@@ -182,7 +182,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     remove() {
-        // TODO: REplace
+        // TODO: REplace 
         this.parent.removeChild(this, undefined);
     }
 
