@@ -79,3 +79,4 @@ export interface ColumnConfiguration extends ItemConfiguration {
 
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
 export const PARENT_ITEM_COMPONENT = new InjectionToken("parentItemCOmponent");
+export const LAYOUT_CONFIG = new InjectionToken("layoutConfig");

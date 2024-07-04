@@ -15,6 +15,8 @@ import {
     HeaderConfig,
     ITEM_CONFIG,
     itemDefaultConfig,
+    LAYOUT_CONFIG,
+    LayoutConfiguration,
     PARENT_ITEM_COMPONENT,
     StackConfiguration
 } from "../../types";
@@ -49,7 +51,7 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
                 <ng-template mat-tab-label>
                     <div #tabHeader
                          dgpGlDragListener
-                         (dragStart$)="onDragStart1($event, componentConfig, i)"
+                         (dragStart$)="onTabDragStart($event, componentConfig, i)"
                          class="tab-header">
                         <ng-container *ngIf="componentConfig.componentState.labelTemplate; else textBasedLabel">
                             <ng-container [ngTemplateOutlet]="componentConfig.componentState.labelTemplate()"></ng-container>
@@ -120,12 +122,14 @@ export class StackComponent implements DropTarget, AfterViewInit {
     isStack = true;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
 
-    readonly hasHeaders = this.dockingLayoutService.config.settings.hasHeaders;
+    readonly hasHeaders = this.layoutConfig.settings.hasHeaders;
 
     constructor(
         private readonly dockingLayoutService: DockingLayoutService,
         private readonly dropTargetIndicator: DropTargetIndicatorComponent,
         private readonly tabDropPlaceholder: TabDropPlaceholderComponent,
+        @Inject(LAYOUT_CONFIG)
+        public layoutConfig: LayoutConfiguration,
         @Inject(ITEM_CONFIG)
         public config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
@@ -136,7 +140,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.initialize();
     }
 
-    onDragStart1(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
+    onTabDragStart(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
         const dragListener = this.matTabDraglisteners.get(tabIndex);
         this.processDragStart({coordinates, contentItem, dragListener});
     }
@@ -149,10 +153,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
-        // TODO: Check how we can pass this differently
-        const cfg = this.dockingLayoutService.config;
         this._header = {
-            show: cfg.settings.hasHeaders === true && this.config.hasHeaders !== false,
+            show: this.layoutConfig.settings.hasHeaders === true && this.config.hasHeaders !== false,
         };
 
         this.setupHeaderPosition();

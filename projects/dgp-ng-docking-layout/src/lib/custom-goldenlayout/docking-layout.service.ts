@@ -4,6 +4,7 @@ import {
     ComponentConfiguration,
     ITEM_CONFIG,
     ItemConfiguration,
+    LAYOUT_CONFIG,
     LayoutConfiguration,
     PARENT_ITEM_COMPONENT,
     StackConfiguration
@@ -106,6 +107,9 @@ export class DockingLayoutService extends EventEmitter {
             }, {
                 provide: PARENT_ITEM_COMPONENT,
                 useValue: parentItem
+            }, {
+                provide: LAYOUT_CONFIG,
+                useValue: this.config
             }, {
                 provide: ViewContainerRef,
                 useValue: this.viewContainerRef
