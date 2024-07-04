@@ -241,8 +241,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config.content.splice(index, 1);
 
-        if (this.config.content.length > 0) {
-        } else if (this.config.isClosable === true) {
+        if (this.config.content.length === 0 && this.config.isClosable === true) {
             // TODO: Replace parent call
             this.parent.removeChild(this, undefined);
         }
@@ -582,6 +581,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     protected processSelectedContentItemChange(index: number) {
         const x = this.config.content[index];
+        if (!x) return;
         if (x.id === this.config.activeItemId) return;
         this.setActiveContentItem(x.id);
     }
