@@ -4,7 +4,7 @@ import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-c
 import { ItemContainerComponent } from "../custom-goldenlayout/components/grid/item-container.component";
 import { RowOrColumnComponent } from "../custom-goldenlayout/components/grid/row-or-column.component";
 import { StackComponent } from "../custom-goldenlayout/components/tabs/stack.component";
-import { DockingLayoutService } from "../custom-goldenlayout/docking-layout.service";
+import { ContentItemCreationService, DockingLayoutService } from "../custom-goldenlayout/docking-layout.service";
 import { ComponentRegistry } from "../custom-goldenlayout/services/component-registry";
 import { DgpDockingLayoutContainerLabelDirective, DockingLayoutContainerComponent } from "./components/docking-layout-container.component";
 import { DockingLayoutItemComponent } from "./components/docking-layout-item.component";
@@ -89,6 +89,7 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
         DockingLayoutService,
         DragProxyFactory,
         ComponentRegistry,
+        ContentItemCreationService,
         dockingLayoutReducerProvider
     ]
 })

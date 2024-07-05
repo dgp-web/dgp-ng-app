@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewChildren
 } from "@angular/core";
-import { DockingLayoutService } from "../../docking-layout.service";
+import { ContentItemCreationService } from "../../docking-layout.service";
 import {
     ComponentConfiguration,
     HeaderConfig,
@@ -126,7 +126,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
     readonly hasHeaders = this.layoutConfig.settings.hasHeaders;
 
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
         private readonly dropTargetIndicator: DropTargetIndicatorComponent,
         private readonly tabDropPlaceholder: TabDropPlaceholderComponent,
         @Inject(LAYOUT_CONFIG)
@@ -139,6 +138,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
         private readonly cd: ChangeDetectorRef,
         @Inject(forwardRef(() => DragProxyFactory))
         private readonly dragProxyFactory: DragProxyFactory,
+        @Inject(forwardRef(() => ContentItemCreationService))
+        private readonly contentItemCreationService: ContentItemCreationService,
     ) {
         this.initialize();
     }
@@ -318,7 +319,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const isVertical = payload.isVertical;
 
         const type = isVertical ? "column" : "row";
-        const rowOrColumn = this.dockingLayoutService.createContentItem<RowOrColumnComponent>({type}, this);
+        const rowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, this);
         // TODO: Replace with event emitter
         this.parent.replaceChild(this, rowOrColumn);
 
@@ -346,7 +347,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     private createAndInitStack(component: GlComponent): StackComponent {
-        const stack = this.dockingLayoutService.createContentItem<StackComponent>({
+        const stack = this.contentItemCreationService.createContentItem<StackComponent>({
             type: "stack",
         }, this);
         stack.init();

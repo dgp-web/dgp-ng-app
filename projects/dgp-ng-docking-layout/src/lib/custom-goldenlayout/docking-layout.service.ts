@@ -23,6 +23,61 @@ import { DockingLayoutItemComponent } from "./models/docking-layout-item-compone
 import { StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 
+export interface ContentItemCreationServiceInit {
+    readonly viewContainerRef: ViewContainerRef;
+    readonly dropTargetIndicator: DropTargetIndicatorComponent;
+    readonly tabDropPlaceholder: TabDropPlaceholderComponent;
+    readonly injector: Injector;
+    readonly layoutConfig: LayoutConfiguration;
+}
+
+@Injectable()
+export class ContentItemCreationService {
+
+    private config: ContentItemCreationServiceInit;
+
+    init(config: ContentItemCreationServiceInit) {
+        this.config = config;
+    }
+
+    createContentItem<T extends DockingLayoutItemComponent>(
+        itemConfig: ItemConfiguration,
+        parentItem: DockingLayoutItemComponent
+    ): T {
+
+        if (shouldWrapInStack({itemConfig, parentItem})) {
+            itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
+        }
+
+        const injector = Injector.create({
+            providers: [{
+                provide: ITEM_CONFIG,
+                useValue: itemConfig
+            }, {
+                provide: PARENT_ITEM_COMPONENT,
+                useValue: parentItem
+            }, {
+                provide: LAYOUT_CONFIG,
+                useValue: this.config.layoutConfig
+            }, {
+                provide: ViewContainerRef,
+                useValue: this.config.viewContainerRef
+            }, {
+                provide: DropTargetIndicatorComponent,
+                useValue: this.config.dropTargetIndicator
+            }, {
+                provide: TabDropPlaceholderComponent,
+                useValue: this.config.tabDropPlaceholder
+            }],
+            parent: this.config.injector
+        });
+
+        const componentType = typeToComponentMap[itemConfig.type];
+
+        return this.config.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
+    }
+}
+
 /**
  * The main class that will be exposed as GoldenLayout.
  */
@@ -44,7 +99,8 @@ export class DockingLayoutService extends EventEmitter {
     constructor(
         private readonly componentRegistry: ComponentRegistry,
         private readonly areaService: AreaService,
-        private readonly injector: Injector
+        private readonly injector: Injector,
+        private readonly contentItemCreationService: ContentItemCreationService,
     ) {
         super();
     }
@@ -69,6 +125,15 @@ export class DockingLayoutService extends EventEmitter {
         const dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
         dropTargetIndicatorComponentRef.changeDetectorRef.markForCheck();
         this.dropTargetIndicator = dropTargetIndicatorComponentRef.instance;
+
+        this.contentItemCreationService.init({
+            layoutConfig: this.config,
+            dropTargetIndicator: this.dropTargetIndicator,
+            viewContainerRef: this.viewContainerRef,
+            tabDropPlaceholder: this.tabDropPlaceholder,
+            injector: this.injector
+        });
+
         this.updateSize();
         this.createRootComponent(this.config);
     }
