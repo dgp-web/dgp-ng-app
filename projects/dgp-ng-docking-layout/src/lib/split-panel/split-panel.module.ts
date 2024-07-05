@@ -5,6 +5,7 @@ import { ComponentRegistry, DockingLayoutService } from "../custom-goldenlayout"
 import { SplitPanelContentComponent } from "./split-panel-content.component";
 import { SplitPanelComponent } from "./split-panel.component";
 import { DgpResizeSensorModule } from "dgp-ng-app";
+import { DragProxyFactory } from "../custom-goldenlayout/services/drag-proxy.factory";
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { DgpResizeSensorModule } from "dgp-ng-app";
     ],
     providers: [
         DockingLayoutService,
+        DragProxyFactory,
         ComponentRegistry
     ]
 })

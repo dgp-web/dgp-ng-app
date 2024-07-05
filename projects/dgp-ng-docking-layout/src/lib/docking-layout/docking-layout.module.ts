@@ -25,6 +25,7 @@ import { SplitterComponent } from "../custom-goldenlayout/components/resize/spli
 import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatLegacyTabsModule as MatTabsModule } from "@angular/material/legacy-tabs";
+import { DragProxyFactory } from "../custom-goldenlayout/services/drag-proxy.factory";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"
@@ -86,6 +87,7 @@ export const dockingLayoutReducerProvider: FactoryProvider = {
     ],
     providers: [
         DockingLayoutService,
+        DragProxyFactory,
         ComponentRegistry,
         dockingLayoutReducerProvider
     ]

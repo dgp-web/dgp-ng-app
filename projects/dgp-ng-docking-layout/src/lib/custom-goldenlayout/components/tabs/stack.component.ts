@@ -3,6 +3,7 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
+    forwardRef,
     HostBinding,
     Inject,
     QueryList,
@@ -32,7 +33,6 @@ import { DropTarget } from "../../models/drop-target.model";
 import { Area, AreaSides } from "../../models/area.model";
 import { GlComponent } from "../component.component";
 import { StackParentComponent } from "../../models/stack-parent-component.model";
-import { DragProxy } from "../drag-and-drop/drag-proxy.component";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 import { Vector2 } from "../../../common";
@@ -40,6 +40,7 @@ import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive"
 import { MatLegacyTabGroup as MatTabGroup } from "@angular/material/legacy-tabs";
 import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indicator.component";
 import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
+import { DragProxyFactory } from "../../services/drag-proxy.factory";
 
 @Component({
     selector: "dgp-stack",
@@ -135,7 +136,9 @@ export class StackComponent implements DropTarget, AfterViewInit {
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: StackParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>,
-        private readonly cd: ChangeDetectorRef
+        private readonly cd: ChangeDetectorRef,
+        @Inject(forwardRef(() => DragProxyFactory))
+        private readonly dragProxyFactory: DragProxyFactory,
     ) {
         this.initialize();
     }
@@ -572,13 +575,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
         if (!resolved) return;
 
         // TODO: Creating a DragProxy comes with a lot of layout changes that are handled in its constructor
-        return new DragProxy(
-            x.coordinates,
-            x.dragListener,
-            this.dockingLayoutService,
-            resolved,
-            this
-        );
+        return this.dragProxyFactory.create({
+            coordinates: x.coordinates,
+            dragListener: x.dragListener,
+            contentItem: resolved,
+            originalParent: this
+        });
     }
 
     protected processSelectedContentItemChange(index: number) {
@@ -588,6 +590,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.setActiveContentItem(x.id);
     }
 }
+
 
 export interface StackOnDropAssignmentInfo {
     readonly dimension: "height" | "width";
