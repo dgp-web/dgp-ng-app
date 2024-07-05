@@ -10,7 +10,6 @@ import {
     ViewChild,
     ViewChildren
 } from "@angular/core";
-import { ContentItemCreationService } from "../../docking-layout.service";
 import {
     ComponentConfiguration,
     HeaderConfig,
@@ -41,6 +40,7 @@ import { MatLegacyTabGroup as MatTabGroup } from "@angular/material/legacy-tabs"
 import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indicator.component";
 import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
 import { DragProxyFactory } from "../../services/drag-proxy.factory";
+import { ContentItemCreationService } from "../../services/content-item-creation.service";
 
 @Component({
     selector: "dgp-stack",

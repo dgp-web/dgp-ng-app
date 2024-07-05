@@ -23,3 +23,5 @@ export { EventSubscription } from "./models/events/event-subscription.model";
 export { ALL_EVENT } from "./constants/event-types/all-event.constant";
 export { createEventSubscriptionKVS } from "./functions/create-event-subscription-kvs.function";
 export { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
+export { ContentItemCreationService } from "./services/content-item-creation.service";
+export { ContentItemCreationServiceInit } from "./services/content-item-creation.service";
