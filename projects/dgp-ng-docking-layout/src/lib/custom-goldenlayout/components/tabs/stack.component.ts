@@ -106,7 +106,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     readonly bindings = true;
 
     _side: boolean | DropSegment;
-    _header: HeaderConfig;
+    private headerConfig: HeaderConfig;
 
     element = $(this.elementRef.nativeElement);
 
@@ -157,7 +157,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
-        this._header = {
+        this.headerConfig = {
             show: this.layoutConfig.settings.hasHeaders === true && this.config.hasHeaders !== false,
         };
 
@@ -173,7 +173,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     private setupHeaderPosition() {
-        const side = sides.indexOf(this._header.show as DropSegment) >= 0 && this._header.show;
+        const side = sides.indexOf(this.headerConfig.show as DropSegment) >= 0 && this.headerConfig.show;
         this._side = side;
         this.element.removeClass(lmLeftClassName + " " + lmRightClassName + " " + lmBottomClassName);
         if (this._side) {
