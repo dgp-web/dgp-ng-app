@@ -305,7 +305,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         const assignmentInfo = computeStackOnDropAssignmentInfo({
             dropSegment: this.dropSegment as DropSegment,
-            parentType: this.parent.isColumn ? "column" : "row"
+            parentType: this.parent.config.type
         });
 
         /*
