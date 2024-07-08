@@ -142,16 +142,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
      */
     addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
 
-        let newItemSize: number,
-            itemSize: number,
-            splitterElement: JQuery<HTMLElement>;
-
         if (index === undefined) {
             index = this.contentItems.length;
         }
 
         if (this.contentItems.length > 0) {
-            splitterElement = this.createSplitter(Math.max(0, index - 1)).element;
+            const splitterElement = this.createSplitter(Math.max(0, index - 1)).element;
 
             if (index > 0) {
                 this.contentItems[index - 1].element.after(splitterElement);
@@ -163,7 +159,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         } else {
             this.childElementContainer.append(contentItem.element);
         }
-
 
         if (index === undefined) {
             index = this.contentItems.length;
@@ -182,17 +177,20 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
             contentItem.init();
         }
 
-        newItemSize = (1 / this.contentItems.length) * 100;
+        if (_$suspendResize === true) return;
 
-        if (_$suspendResize === true) {
-            return;
-        }
+        this.resizeContentItems(contentItem);
+    }
+
+    private resizeContentItems(contentItem: RowOrColumnComponent | StackComponent) {
+
+        const newItemSize = (1 / this.contentItems.length) * 100;
 
         for (let i = 0; i < this.contentItems.length; i++) {
             if (this.contentItems[i] === contentItem) {
                 contentItem.config[this._dimension] = newItemSize;
             } else {
-                itemSize = this.contentItems[i].config[this._dimension] *= (100 - newItemSize) / 100;
+                const itemSize = this.contentItems[i].config[this._dimension] *= (100 - newItemSize) / 100;
                 this.contentItems[i].config[this._dimension] = itemSize;
             }
         }
