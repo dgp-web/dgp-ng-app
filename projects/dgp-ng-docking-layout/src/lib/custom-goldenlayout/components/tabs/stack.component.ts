@@ -251,17 +251,26 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config.content.splice(index, 1);
 
+        this.tryResetActiveContentItem(componentId);
+
         if (this.config.content.length === 0 && this.config.isClosable === true) {
             // TODO: Replace parent call
             this.parent.removeChild(this, undefined);
         }
 
-        if (this.config.activeItemId === componentId) {
-            if (this.config.content.length > 0) {
-                this.setActiveContentItem(this.config.content[Math.max(index - 1, 0)].id);
-            } else {
-                this.activeContentItem = null;
-            }
+    }
+
+    private tryResetActiveContentItem(removedComponentId: string) {
+        if (this.config.activeItemId === removedComponentId) {
+            this.resetActiveContentItem();
+        }
+    }
+
+    private resetActiveContentItem() {
+        if (this.config.content.length > 0) {
+            this.setActiveContentItem(this.config.content[0].id);
+        } else {
+            this.activeContentItem = null;
         }
     }
 
@@ -304,17 +313,17 @@ export class StackComponent implements DropTarget, AfterViewInit {
          * laid out in the correct way. Just add it as a child
          */
         if (assignmentInfo.hasCorrectParent) {
-            this.addStackToExistingRowOrColumn({...assignmentInfo, stack});
+            this.addStackToParentRowOrColumn({...assignmentInfo, stack});
             /*
              * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
              * to create the appropriate contentItem for them to live in
              */
         } else {
-            this.addStackToNewRowOrColumn({...assignmentInfo, stack});
+            this.addStackWithNewParentToParentRowOrColumn({...assignmentInfo, stack});
         }
     }
 
-    private addStackToNewRowOrColumn(payload: {
+    private addStackWithNewParentToParentRowOrColumn(payload: {
         readonly stack: StackComponent;
     } & StackOnDropAssignmentInfo) {
         const stack = payload.stack;
@@ -335,7 +344,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         rowOrColumn.callLifecycleHookDownwards("setSize");
     }
 
-    private addStackToExistingRowOrColumn(payload: {
+    private addStackToParentRowOrColumn(payload: {
         readonly stack: StackComponent;
     } & StackOnDropAssignmentInfo) {
         const stack = payload.stack;
