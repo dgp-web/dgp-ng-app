@@ -75,7 +75,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
 
     ngAfterViewInit() {
         this.containerElement.append(this.element);
-        this.callDownwards("init");
+        this.callLifecycleHookDownwards("init");
         this.initialized.emit();
     }
 
@@ -144,7 +144,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
             newChild.init();
         }
 
-        this.callDownwards("setSize");
+        this.callLifecycleHookDownwards("setSize");
     }
 
 

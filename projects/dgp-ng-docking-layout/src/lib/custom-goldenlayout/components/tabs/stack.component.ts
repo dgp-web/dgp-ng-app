@@ -332,7 +332,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config[dimension] = 50;
         stack.config[dimension] = 50;
-        rowOrColumn.callDownwards("setSize");
+        rowOrColumn.callLifecycleHookDownwards("setSize");
     }
 
     private addStackToExistingRowOrColumn(payload: {
@@ -347,7 +347,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.parent.addChild(stack, insertBefore ? index : index + 1, true);
         this.config[dimension] *= 0.5;
         stack.config[dimension] = this.config[dimension];
-        this.parent.callDownwards("setSize");
+        this.parent.callLifecycleHookDownwards("setSize");
     }
 
     private createAndInitStack(component: GlComponent): StackComponent {

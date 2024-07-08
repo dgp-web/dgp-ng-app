@@ -93,7 +93,7 @@ export class DockingLayoutService extends EventEmitter {
         }
 
         if (this.isInitialised) {
-            this.root.callDownwards("setSize", [this.width, this.height]);
+            this.root.callLifecycleHookDownwards("setSize", [this.width, this.height]);
         }
     }
 
@@ -191,13 +191,13 @@ export class DockingLayoutService extends EventEmitter {
                 rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
                 column.config[dimension] = 50;
                 contentItem.config[dimension] = 50;
-                rowOrColumn.callDownwards("setSize");
+                rowOrColumn.callLifecycleHookDownwards("setSize");
             } else {
                 const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
                 column.addChild(contentItem, insertBefore ? 0 : undefined, true);
                 sibling.config[dimension] *= 0.5;
                 contentItem.config[dimension] = sibling.config[dimension];
-                column.callDownwards("setSize");
+                column.callLifecycleHookDownwards("setSize");
             }
         });
     }

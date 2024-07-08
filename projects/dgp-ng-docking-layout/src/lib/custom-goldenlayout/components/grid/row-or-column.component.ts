@@ -197,7 +197,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
             }
         }
 
-        this.callDownwards("setSize");
+        this.callLifecycleHookDownwards("setSize");
     }
 
     /**
@@ -239,7 +239,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.config.content.splice(index, 1);
 
         if (this.contentItems.length > 0) {
-            this.callDownwards("setSize");
+            this.callLifecycleHookDownwards("setSize");
 
         } else if (this.config.isClosable === true) {
             if (this.parent.config.type === "column" || this.parent.config.type === "row") {
@@ -252,13 +252,13 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
             this.contentItems = [];
             this.parent.replaceChild(this, childItem as RowOrColumnComponent);
         } else {
-            this.callDownwards("setSize");
+            this.callLifecycleHookDownwards("setSize");
         }
     }
 
     destroy() {
         this.unsubscribe();
-        this.callDownwards("destroy", [], true, true);
+        this.callLifecycleHookUpwards("destroy", []);
         this.element.remove();
     }
 
@@ -286,7 +286,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         }
 
         newChild.config[this._dimension] = size;
-        this.callDownwards("setSize");
+        this.callLifecycleHookDownwards("setSize");
     }
 
     setSize() {
@@ -430,7 +430,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
         splitter.element.css({top: 0, left: 0});
 
-        this.layoutManagerUtilities.animFrame(() => this.callDownwards("setSize"));
+        this.layoutManagerUtilities.animFrame(() => this.callLifecycleHookDownwards("setSize"));
     }
 
 

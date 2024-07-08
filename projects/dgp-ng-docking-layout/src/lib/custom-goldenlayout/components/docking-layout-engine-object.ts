@@ -5,20 +5,24 @@ export class DockingLayoutEngineObject extends EventEmitter implements ObjectTre
 
     contentItems = [];
 
-    callDownwards(functionName: string,
-                  functionArguments?: any[],
-                  bottomUp?: boolean,
-                  skipSelf?: boolean) {
-        if (bottomUp !== true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
-        }
+    callLifecycleHookDownwards(functionName: string,
+                               functionArguments?: any[]) {
+        this[functionName].apply(this, functionArguments || []);
+
         for (let i = 0; i < this.contentItems.length; i++) {
-            if (this.contentItems[i].callDownwards) {
-                this.contentItems[i].callDownwards(functionName, functionArguments, bottomUp);
+            if (this.contentItems[i].callLifecycleHookDownwards) {
+                this.contentItems[i].callLifecycleHookDownwards(functionName, functionArguments);
             }
         }
-        if (bottomUp === true && skipSelf !== true) {
-            this[functionName].apply(this, functionArguments || []);
+    }
+
+    callLifecycleHookUpwards(functionName: string,
+                             functionArguments?: any[],) {
+
+        for (let i = 0; i < this.contentItems.length; i++) {
+            if (this.contentItems[i].callLifecycleHookUpwards) {
+                this.contentItems[i].callLifecycleHookUpwards(functionName, functionArguments);
+            }
         }
     }
 
