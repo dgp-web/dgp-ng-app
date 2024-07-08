@@ -41,6 +41,10 @@ import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indic
 import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
 import { DragProxyFactory } from "../../services/drag-proxy.factory";
 import { ContentItemCreationService } from "../../services/content-item-creation.service";
+import { StackOnDropAssignmentInfo } from "../../models/stack-on-drop-assignment-info.model";
+import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-on-drop-assignment-info.function";
+import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
+import { isInArea } from "../../functions/areas/is-in-area.function";
 
 @Component({
     selector: "dgp-stack",
@@ -366,8 +370,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         for (segment in this.contentAreaDimensions) {
             area = this.contentAreaDimensions[segment].hoverArea;
 
-            // TODO: Extract isInArea(payload: {area: AreaSides; point: Point});
-            if (area.x1 < x && area.x2 > x && area.y1 < y && area.y2 > y) {
+            if (isInArea({area, point: {x, y}})) {
 
                 if (segment === DropSegment.Header) {
                     this.dropSegment = DropSegment.Header;
@@ -446,53 +449,13 @@ export class StackComponent implements DropTarget, AfterViewInit {
             return this.getAreaForElement(this.element);
         }
 
-        // TODO: Extract function updateContentAreaDimensions
-        this.contentAreaDimensions.left = {
-            hoverArea: {
-                ...contentArea,
-                x2: contentArea.x1 + contentWidth * 0.25
-            },
-            highlightArea: {
-                ...contentArea,
-                x2: contentArea.x1 + contentWidth * 0.5
-            }
-        };
+        const updates = computeContentAreaDimensionUpdates({
+            contentArea, contentHeight, contentWidth
+        });
 
-        this.contentAreaDimensions.top = {
-            hoverArea: {
-                ...contentArea,
-                x1: contentArea.x1 + contentWidth * 0.25,
-                x2: contentArea.x1 + contentWidth * 0.75,
-                y2: contentArea.y1 + contentHeight * 0.5
-            },
-            highlightArea: {
-                ...contentArea,
-                y2: contentArea.y1 + contentHeight * 0.5
-            }
-        };
-
-        this.contentAreaDimensions.right = {
-            hoverArea: {
-                ...contentArea,
-                x1: contentArea.x1 + contentWidth * 0.75
-            },
-            highlightArea: {
-                ...contentArea,
-                x1: contentArea.x1 + contentWidth * 0.5
-            }
-        };
-
-        this.contentAreaDimensions.bottom = {
-            hoverArea: {
-                ...contentArea,
-                x1: contentArea.x1 + contentWidth * 0.25,
-                y1: contentArea.y1 + contentHeight * 0.5,
-                x2: contentArea.x1 + contentWidth * 0.75
-            },
-            highlightArea: {
-                ...contentArea,
-                y1: contentArea.y1 + contentHeight * 0.5
-            }
+        this.contentAreaDimensions = {
+            ...this.contentAreaDimensions,
+            ...updates
         };
 
         return this.getAreaForElement(this.element);
@@ -593,33 +556,3 @@ export class StackComponent implements DropTarget, AfterViewInit {
 }
 
 
-export interface StackOnDropAssignmentInfo {
-    readonly dimension: "height" | "width";
-    readonly hasCorrectParent: boolean;
-    readonly insertBefore: boolean;
-    readonly isHorizontal: boolean;
-    readonly isVertical: boolean;
-}
-
-export function computeStackOnDropAssignmentInfo(payload: {
-    readonly dropSegment: DropSegment;
-    readonly parentType: "row" | "column";
-}): StackOnDropAssignmentInfo {
-
-    const dropSegment = payload.dropSegment;
-    const parentType = payload.parentType;
-
-    const isVertical = dropSegment === DropSegment.Top || dropSegment === DropSegment.Bottom;
-    const isHorizontal = dropSegment === DropSegment.Left || dropSegment === DropSegment.Right;
-    const insertBefore = dropSegment === DropSegment.Top || dropSegment === DropSegment.Left;
-    const hasCorrectParent = (isVertical && parentType === "column") || (isHorizontal && parentType === "row");
-    const dimension = isVertical ? "height" : "width";
-
-    return {
-        isVertical,
-        isHorizontal,
-        insertBefore,
-        hasCorrectParent,
-        dimension
-    };
-}
