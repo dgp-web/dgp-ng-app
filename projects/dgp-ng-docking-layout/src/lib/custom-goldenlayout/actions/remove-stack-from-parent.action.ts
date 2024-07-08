@@ -15,3 +15,13 @@ export const addStackToParentRowOrColumn = createAction(
         readonly stack: StackComponent;
     }>()
 );
+
+export const addStackWithNewParentToParentRowOrColumn = createAction(
+    "[CustomGoldenLayout] AddStackToParentRowOrColumn",
+    props<ItemId & {
+        readonly dimension: "height" | "width";
+        readonly insertBefore: boolean;
+        readonly stack: StackComponent;
+        readonly isVertical: boolean;
+    }>()
+);

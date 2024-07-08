@@ -24,7 +24,11 @@ import { StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 import { ContentItemCreationService } from "./services/content-item-creation.service";
 import { Actions, ofType } from "@ngrx/effects";
-import { addStackToParentRowOrColumn, removeStackFromParent } from "./actions/remove-stack-from-parent.action";
+import {
+    addStackToParentRowOrColumn,
+    addStackWithNewParentToParentRowOrColumn,
+    removeStackFromParent
+} from "./actions/remove-stack-from-parent.action";
 import { tap } from "rxjs/operators";
 
 /**
@@ -130,6 +134,42 @@ export class DockingLayoutService extends EventEmitter {
                             child.config[dimension] *= 0.5;
                             stack.config[dimension] = child.config[dimension];
                             parent.callLifecycleHookDownwards("setSize");
+                        }
+
+                    });
+                });
+
+            })
+        ).subscribe();
+
+        this.actions$.pipe(
+            ofType(addStackWithNewParentToParentRowOrColumn),
+            tap(x => {
+                const stackId = x.id;
+
+                this.root.contentItems.forEach(rowOrColumn => {
+
+                    const parent = this.findParentRowOrColumnForStack(x, rowOrColumn);
+
+                    if (!parent) return;
+                    parent.contentItems.forEach((child: StackComponent) => {
+
+                        if (child.config.id === stackId) {
+                            const stack = x.stack;
+                            const insertBefore = x.insertBefore;
+                            const dimension = x.dimension;
+                            const isVertical = x.isVertical;
+                            const type = isVertical ? "column" : "row";
+                            const newRowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, stack);
+                            // TODO: Replace with event emitter
+                            rowOrColumn.replaceChild(child, newRowOrColumn);
+
+                            newRowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
+                            newRowOrColumn.addChild(child, insertBefore ? undefined : 0, true);
+
+                            child.config[dimension] = 50;
+                            stack.config[dimension] = 50;
+                            newRowOrColumn.callLifecycleHookDownwards("setSize");
                         }
 
                     });
