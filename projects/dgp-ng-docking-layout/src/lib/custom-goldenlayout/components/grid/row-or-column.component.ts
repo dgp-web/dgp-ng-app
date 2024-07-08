@@ -28,6 +28,7 @@ import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
 import { calculateRelativeSizes } from "../../functions/grid/calculate-relative-sizes.function";
 import { DockingLayoutService } from "../../docking-layout.service";
+import { createGuid } from "dgp-ng-app";
 
 export interface SplitterComponents {
     before: RowOrColumnContentItemComponent;

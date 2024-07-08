@@ -27,9 +27,12 @@ export interface LayoutConfiguration {
     readonly content?: ItemConfiguration[];
 }
 
-export interface ItemConfiguration {
-    type?: ItemType;
+export interface ItemId {
     id?: string;
+}
+
+export interface ItemConfiguration extends ItemId {
+    type?: ItemType;
     width?: number;
     height?: number;
     isClosable?: boolean;

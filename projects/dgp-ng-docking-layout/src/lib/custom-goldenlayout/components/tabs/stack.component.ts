@@ -21,7 +21,7 @@ import {
     StackConfiguration
 } from "../../types";
 import { Subscription } from "rxjs";
-import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
+import { createGuid, notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
 import { DropSegment } from "../../models/drop-segment.model";
 import { ContentAreaDimensions } from "../../models/content-area-dimensions.model";
@@ -45,6 +45,8 @@ import { StackOnDropAssignmentInfo } from "../../models/stack-on-drop-assignment
 import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-on-drop-assignment-info.function";
 import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
 import { isInArea } from "../../functions/areas/is-in-area.function";
+import { Store } from "@ngrx/store";
+import { removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
 
 @Component({
     selector: "dgp-stack",
@@ -144,6 +146,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         private readonly dragProxyFactory: DragProxyFactory,
         @Inject(forwardRef(() => ContentItemCreationService))
         private readonly contentItemCreationService: ContentItemCreationService,
+        private readonly store: Store
     ) {
         this.initialize();
     }
@@ -160,6 +163,10 @@ export class StackComponent implements DropTarget, AfterViewInit {
     initialize(): void {
 
         this.config = {...itemDefaultConfig, ...this.config};
+
+        if (!this.config.id) {
+            this.config.id = createGuid();
+        }
 
         this.headerConfig = {
             show: this.layoutConfig.settings.hasHeaders === true && this.config.hasHeaders !== false,
@@ -192,8 +199,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
     }
 
     remove() {
-        // TODO: REplace
-        this.parent.removeChild(this, undefined);
+        this.store.dispatch(removeStackFromParent(this.config));
     }
 
     hide() {
@@ -254,8 +260,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.tryResetActiveContentItem(componentId);
 
         if (this.config.content.length === 0 && this.config.isClosable === true) {
-            // TODO: Replace parent call
-            this.parent.removeChild(this, undefined);
+            this.remove();
         }
 
     }

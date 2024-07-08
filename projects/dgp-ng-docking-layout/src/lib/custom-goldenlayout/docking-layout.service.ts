@@ -3,6 +3,7 @@ import {
     ComponentConfiguration,
     ITEM_CONFIG,
     ItemConfiguration,
+    ItemId,
     LAYOUT_CONFIG,
     LayoutConfiguration,
     PARENT_ITEM_COMPONENT,
@@ -22,6 +23,9 @@ import { DockingLayoutItemComponent } from "./models/docking-layout-item-compone
 import { StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 import { ContentItemCreationService } from "./services/content-item-creation.service";
+import { Actions, ofType } from "@ngrx/effects";
+import { removeStackFromParent } from "./actions/remove-stack-from-parent.action";
+import { tap } from "rxjs/operators";
 
 /**
  * The main class that will be exposed as GoldenLayout.
@@ -45,6 +49,7 @@ export class DockingLayoutService extends EventEmitter {
         private readonly areaService: AreaService,
         private readonly injector: Injector,
         private readonly contentItemCreationService: ContentItemCreationService,
+        private readonly actions$: Actions
     ) {
         super();
     }
@@ -77,6 +82,47 @@ export class DockingLayoutService extends EventEmitter {
 
         this.updateSize();
         this.createRootComponent(this.config);
+        this.registerEffects();
+    }
+
+    private registerEffects() {
+        this.actions$.pipe(
+            ofType(removeStackFromParent),
+            tap(x => {
+                const stackId = x.id;
+
+                this.root.contentItems.forEach(rowOrColumn => {
+
+                    const parent = this.findParentRowOrColumnForStack(x, rowOrColumn);
+
+                    if (!parent) return;
+                    parent.contentItems.forEach((child: StackComponent) => {
+
+                        if (child.config.id === stackId) {
+                            parent.removeChild(child, undefined);
+                        }
+
+                    });
+                });
+
+            })
+        ).subscribe();
+    }
+
+    private findParentRowOrColumnForStack(payload: ItemId, rowOrColumn: RowOrColumnComponent, result?: RowOrColumnComponent): RowOrColumnComponent {
+        if (result) return result;
+
+        for (let child of rowOrColumn.contentItems) {
+            if (child.config.type === "stack" && child.config.id === payload.id) {
+                result = rowOrColumn;
+            }
+
+            if (child.config.type === "row" || child.config.type === "column") {
+                result = this.findParentRowOrColumnForStack(payload, child as RowOrColumnComponent, result);
+            }
+        }
+
+        return result;
     }
 
     private registerInitialization() {
