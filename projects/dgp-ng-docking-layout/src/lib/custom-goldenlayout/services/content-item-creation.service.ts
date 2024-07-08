@@ -8,6 +8,7 @@ import {
     LAYOUT_CONFIG,
     LayoutConfiguration,
     PARENT_ITEM_COMPONENT,
+    PARENT_ITEM_CONFIG,
     StackConfiguration
 } from "../types";
 import { DockingLayoutItemComponent } from "../models/docking-layout-item-component.model";
@@ -48,6 +49,9 @@ export class ContentItemCreationService {
             }, {
                 provide: PARENT_ITEM_COMPONENT,
                 useValue: parentItem
+            }, {
+                provide: PARENT_ITEM_CONFIG,
+                useValue: parentItem.config
             }, {
                 provide: LAYOUT_CONFIG,
                 useValue: this.config.layoutConfig

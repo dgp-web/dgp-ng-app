@@ -11,6 +11,7 @@ import {
     ViewChildren
 } from "@angular/core";
 import {
+    ColumnConfiguration,
     ComponentConfiguration,
     HeaderConfig,
     ITEM_CONFIG,
@@ -18,6 +19,8 @@ import {
     LAYOUT_CONFIG,
     LayoutConfiguration,
     PARENT_ITEM_COMPONENT,
+    PARENT_ITEM_CONFIG,
+    RowConfiguration,
     StackConfiguration
 } from "../../types";
 import { Subscription } from "rxjs";
@@ -143,6 +146,8 @@ export class StackComponent implements DropTarget, AfterViewInit {
         public config: StackConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: StackParentComponent,
+        @Inject(PARENT_ITEM_CONFIG)
+        public parentConfig: RowConfiguration | ColumnConfiguration,
         private readonly elementRef: ElementRef<HTMLElement>,
         private readonly cd: ChangeDetectorRef,
         @Inject(forwardRef(() => DragProxyFactory))
@@ -313,7 +318,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         const assignmentInfo = computeStackOnDropAssignmentInfo({
             dropSegment: this.dropSegment as DropSegment,
-            parentType: this.parent.config.type
+            parentType: this.parentConfig.type
         });
 
         /*

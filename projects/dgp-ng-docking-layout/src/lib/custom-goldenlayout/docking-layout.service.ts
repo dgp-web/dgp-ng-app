@@ -1,21 +1,10 @@
 import { Injectable, Injector, ViewContainerRef } from "@angular/core";
-import {
-    ComponentConfiguration,
-    ITEM_CONFIG,
-    ItemConfiguration,
-    ItemId,
-    LAYOUT_CONFIG,
-    LayoutConfiguration,
-    PARENT_ITEM_COMPONENT,
-    StackConfiguration
-} from "./types";
+import { ItemConfiguration, ItemId, LayoutConfiguration } from "./types";
 import { EventEmitter } from "./utilities";
 import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
 import { ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/root.component";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
 import { Area } from "./models/area.model";
-import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
-import { wrapInStack } from "./functions/wrap-in-stack.function";
 import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
@@ -217,37 +206,7 @@ export class DockingLayoutService extends EventEmitter {
         itemConfig: ItemConfiguration,
         parentItem: DockingLayoutItemComponent
     ): T {
-
-        if (shouldWrapInStack({itemConfig, parentItem})) {
-            itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
-        }
-
-        const injector = Injector.create({
-            providers: [{
-                provide: ITEM_CONFIG,
-                useValue: itemConfig
-            }, {
-                provide: PARENT_ITEM_COMPONENT,
-                useValue: parentItem
-            }, {
-                provide: LAYOUT_CONFIG,
-                useValue: this.config
-            }, {
-                provide: ViewContainerRef,
-                useValue: this.viewContainerRef
-            }, {
-                provide: DropTargetIndicatorComponent,
-                useValue: this.dropTargetIndicator
-            }, {
-                provide: TabDropPlaceholderComponent,
-                useValue: this.tabDropPlaceholder
-            }],
-            parent: this.injector
-        });
-
-        const componentType = typeToComponentMap[itemConfig.type];
-
-        return this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
+        return this.contentItemCreationService.createContentItem(itemConfig, parentItem);
     }
 
     destroy() {
