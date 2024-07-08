@@ -24,7 +24,7 @@ import { StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/row-or-column.component";
 import { ContentItemCreationService } from "./services/content-item-creation.service";
 import { Actions, ofType } from "@ngrx/effects";
-import { removeStackFromParent } from "./actions/remove-stack-from-parent.action";
+import { addStackToParentRowOrColumn, removeStackFromParent } from "./actions/remove-stack-from-parent.action";
 import { tap } from "rxjs/operators";
 
 /**
@@ -100,6 +100,36 @@ export class DockingLayoutService extends EventEmitter {
 
                         if (child.config.id === stackId) {
                             parent.removeChild(child, undefined);
+                        }
+
+                    });
+                });
+
+            })
+        ).subscribe();
+
+        this.actions$.pipe(
+            ofType(addStackToParentRowOrColumn),
+            tap(x => {
+                const stackId = x.id;
+
+                this.root.contentItems.forEach(rowOrColumn => {
+
+                    const parent = this.findParentRowOrColumnForStack(x, rowOrColumn);
+
+                    if (!parent) return;
+                    parent.contentItems.forEach((child: StackComponent) => {
+
+                        if (child.config.id === stackId) {
+
+                            const stack = x.stack;
+                            const insertBefore = x.insertBefore;
+                            const dimension = x.dimension;
+                            const index = parent.contentItems.indexOf(child);
+                            parent.addChild(stack, insertBefore ? index : index + 1, true);
+                            child.config[dimension] *= 0.5;
+                            stack.config[dimension] = child.config[dimension];
+                            parent.callLifecycleHookDownwards("setSize");
                         }
 
                     });

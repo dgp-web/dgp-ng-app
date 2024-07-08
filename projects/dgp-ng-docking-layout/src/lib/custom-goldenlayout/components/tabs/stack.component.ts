@@ -46,7 +46,7 @@ import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-
 import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
 import { isInArea } from "../../functions/areas/is-in-area.function";
 import { Store } from "@ngrx/store";
-import { removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
+import { addStackToParentRowOrColumn, removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
 
 @Component({
     selector: "dgp-stack",
@@ -356,12 +356,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
 
-        // TODO: Replace with event emitter
-        const index = this.parent.contentItems.indexOf(this);
-        this.parent.addChild(stack, insertBefore ? index : index + 1, true);
-        this.config[dimension] *= 0.5;
-        stack.config[dimension] = this.config[dimension];
-        this.parent.callLifecycleHookDownwards("setSize");
+        this.store.dispatch(addStackToParentRowOrColumn({
+            id: this.config.id,
+            insertBefore,
+            dimension,
+            stack
+        }));
     }
 
     private createAndInitStack(component: GlComponent): StackComponent {
