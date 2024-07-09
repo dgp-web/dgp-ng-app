@@ -48,11 +48,8 @@ import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-
 import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
 import { isInArea } from "../../functions/areas/is-in-area.function";
 import { Store } from "@ngrx/store";
-import {
-    addStackToParentRowOrColumn,
-    addStackWithNewParentToParentRowOrColumn,
-    removeStackFromParent
-} from "../../actions/remove-stack-from-parent.action";
+import { removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
+import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 
 @Component({
     selector: "dgp-stack",
@@ -344,13 +341,25 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const dimension = payload.dimension;
         const isVertical = payload.isVertical;
 
-        this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
-            id: this.config.id,
-            insertBefore,
-            dimension,
-            stack,
-            isVertical
-        }));
+        /* this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
+             id: this.config.id,
+             insertBefore,
+             dimension,
+             stack,
+             isVertical
+         }));*/
+
+        const type = isVertical ? "column" : "row";
+        const rowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, this);
+        // TODO: Replace with event emitter
+        this.parent.replaceChild(this, rowOrColumn);
+
+        rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
+        rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
+
+        this.config[dimension] = 50;
+        stack.config[dimension] = 50;
+        rowOrColumn.callLifecycleHookDownwards("setSize");
     }
 
     private addStackToParentRowOrColumn(payload: {
@@ -360,12 +369,18 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
 
-        this.store.dispatch(addStackToParentRowOrColumn({
-            id: this.config.id,
-            insertBefore,
-            dimension,
-            stack
-        }));
+        /* this.store.dispatch(addStackToParentRowOrColumn({
+             id: this.config.id,
+             insertBefore,
+             dimension,
+             stack
+         }));*/
+
+        const index = this.parent.contentItems.indexOf(this);
+        this.parent.addChild(stack, insertBefore ? index : index + 1, true);
+        this.config[dimension] *= 0.5;
+        stack.config[dimension] = this.config[dimension];
+        this.parent.callLifecycleHookDownwards("setSize");
     }
 
     private createAndInitStack(component: GlComponent): StackComponent {
