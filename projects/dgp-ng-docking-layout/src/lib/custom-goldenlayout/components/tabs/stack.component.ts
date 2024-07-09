@@ -48,7 +48,7 @@ import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-
 import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
 import { isInArea } from "../../functions/areas/is-in-area.function";
 import { Store } from "@ngrx/store";
-import { removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
+import { addStackToParentRowOrColumn, removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
 import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 
 @Component({
@@ -369,13 +369,13 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
 
-        /* this.store.dispatch(addStackToParentRowOrColumn({
+         this.store.dispatch(addStackToParentRowOrColumn({
              id: this.config.id,
              insertBefore,
              dimension,
              stack
-         }));*/
-
+         }));
+        return;
         const index = this.parent.contentItems.indexOf(this);
         this.parent.addChild(stack, insertBefore ? index : index + 1, true);
         this.config[dimension] *= 0.5;
