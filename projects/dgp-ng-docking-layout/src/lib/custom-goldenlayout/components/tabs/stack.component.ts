@@ -48,8 +48,11 @@ import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-
 import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
 import { isInArea } from "../../functions/areas/is-in-area.function";
 import { Store } from "@ngrx/store";
-import { addStackToParentRowOrColumn, addStackWithNewParentToParentRowOrColumn, removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
-import type { RowOrColumnComponent } from "../grid/row-or-column.component";
+import {
+    addStackToParentRowOrColumn,
+    addStackWithNewParentToParentRowOrColumn,
+    removeStackFromParent
+} from "../../actions/remove-stack-from-parent.action";
 
 @Component({
     selector: "dgp-stack",
@@ -341,26 +344,13 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const dimension = payload.dimension;
         const isVertical = payload.isVertical;
 
-     /*    this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
-             id: this.config.id,
-             insertBefore,
-             dimension,
-             stack,
-             isVertical
-         }));
-         return;*/
-
-        const type = isVertical ? "column" : "row";
-        const rowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, this);
-        // TODO: Replace with event emitter
-        this.parent.replaceChild(this, rowOrColumn);
-
-        rowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
-        rowOrColumn.addChild(this, insertBefore ? undefined : 0, true);
-
-        this.config[dimension] = 50;
-        stack.config[dimension] = 50;
-        rowOrColumn.callLifecycleHookDownwards("setSize");
+        this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
+            id: this.config.id,
+            insertBefore,
+            dimension,
+            stack,
+            isVertical
+        }));
     }
 
     private addStackToParentRowOrColumn(payload: {
@@ -370,18 +360,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
 
-         this.store.dispatch(addStackToParentRowOrColumn({
-             id: this.config.id,
-             insertBefore,
-             dimension,
-             stack
-         }));
-        return;
-        const index = this.parent.contentItems.indexOf(this);
-        this.parent.addChild(stack, insertBefore ? index : index + 1, true);
-        this.config[dimension] *= 0.5;
-        stack.config[dimension] = this.config[dimension];
-        this.parent.callLifecycleHookDownwards("setSize");
+        this.store.dispatch(addStackToParentRowOrColumn({
+            id: this.config.id,
+            insertBefore,
+            dimension,
+            stack
+        }));
     }
 
     private createAndInitStack(component: GlComponent): StackComponent {
@@ -504,17 +488,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
             isAboveTab = false,
             tabTop: number,
             tabLeft: number,
-            offset: JQuery.Coordinates,
-            placeHolderTop: number,
-            placeHolderLeft: number,
-            headerOffset: JQuery.Coordinates,
-            tabWidth: number,
-            halfX: number;
+            tabWidth: number;
 
         // TODO: extract methods for the individual cases
         // Empty stack
         if (tabsLength === 0) {
-            headerOffset = headerElement.offset();
+            const headerOffset = headerElement.offset();
 
             this.dropTargetIndicator.highlightArea({
                 x1: headerOffset.left,
@@ -528,7 +507,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         for (i = 0; i < tabsLength; i++) {
             tabElement = $(this.matTabDraglisteners.toArray()[i].elementRef.nativeElement);
-            offset = tabElement.offset();
+            const offset = tabElement.offset();
 
             tabLeft = offset.left;
             tabTop = offset.top;
@@ -541,11 +520,9 @@ export class StackComponent implements DropTarget, AfterViewInit {
             }
         }
 
-        if (isAboveTab === false && x < tabLeft) {
-            return;
-        }
+        if (isAboveTab === false && x < tabLeft) return;
 
-        halfX = tabLeft + tabWidth / 2;
+        const halfX = tabLeft + tabWidth / 2;
 
         if (x < halfX) {
             this.dropIndex = i;
@@ -555,7 +532,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
             tabElement.after(this.tabDropPlaceholder.$element);
         }
 
-        placeHolderLeft = this.tabDropPlaceholder.offset().left;
+        const placeHolderLeft = this.tabDropPlaceholder.offset().left;
 
         this.dropTargetIndicator.highlightArea({
             x1: placeHolderLeft,
