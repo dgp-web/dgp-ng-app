@@ -149,9 +149,9 @@ export class DockingLayoutService extends EventEmitter {
                             const dimension = x.dimension;
                             const isVertical = x.isVertical;
                             const type = isVertical ? "column" : "row";
-                            const newRowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, stack);
+                            const newRowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, child);
                             // TODO: Replace with event emitter
-                            rowOrColumn.replaceChild(child, newRowOrColumn);
+                            parent.replaceChild(child, newRowOrColumn);
 
                             newRowOrColumn.addChild(stack, insertBefore ? 0 : undefined, true);
                             newRowOrColumn.addChild(child, insertBefore ? undefined : 0, true);

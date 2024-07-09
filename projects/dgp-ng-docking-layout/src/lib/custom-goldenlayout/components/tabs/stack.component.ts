@@ -48,7 +48,7 @@ import { computeStackOnDropAssignmentInfo } from "../../functions/compute-stack-
 import { computeContentAreaDimensionUpdates } from "../../functions/areas/compute-content-area-dimension-updates.function";
 import { isInArea } from "../../functions/areas/is-in-area.function";
 import { Store } from "@ngrx/store";
-import { addStackToParentRowOrColumn, removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
+import { addStackToParentRowOrColumn, addStackWithNewParentToParentRowOrColumn, removeStackFromParent } from "../../actions/remove-stack-from-parent.action";
 import type { RowOrColumnComponent } from "../grid/row-or-column.component";
 
 @Component({
@@ -341,13 +341,14 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const dimension = payload.dimension;
         const isVertical = payload.isVertical;
 
-        /* this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
+         this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
              id: this.config.id,
              insertBefore,
              dimension,
              stack,
              isVertical
-         }));*/
+         }));
+         return;
 
         const type = isVertical ? "column" : "row";
         const rowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, this);
