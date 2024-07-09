@@ -17,7 +17,7 @@ export const addStackToParentRowOrColumn = createAction(
 );
 
 export const addStackWithNewParentToParentRowOrColumn = createAction(
-    "[CustomGoldenLayout] AddStackToParentRowOrColumn",
+    "[CustomGoldenLayout] AddStackWithNewParentToParentRowOrColumn",
     props<ItemId & {
         readonly dimension: "height" | "width";
         readonly insertBefore: boolean;

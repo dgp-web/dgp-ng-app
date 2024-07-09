@@ -341,14 +341,14 @@ export class StackComponent implements DropTarget, AfterViewInit {
         const dimension = payload.dimension;
         const isVertical = payload.isVertical;
 
-         this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
+     /*    this.store.dispatch(addStackWithNewParentToParentRowOrColumn({
              id: this.config.id,
              insertBefore,
              dimension,
              stack,
              isVertical
          }));
-         return;
+         return;*/
 
         const type = isVertical ? "column" : "row";
         const rowOrColumn = this.contentItemCreationService.createContentItem<RowOrColumnComponent>({type}, this);
