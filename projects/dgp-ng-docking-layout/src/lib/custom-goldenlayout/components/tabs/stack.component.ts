@@ -429,7 +429,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         return this.getAreaForElement($(this.headerComponent.nativeElement));
     }
 
-    getArea(): Area {
+    computeAndGetArea(): Area {
         if (this.element.is(":visible") === false) {
             return null;
         }
