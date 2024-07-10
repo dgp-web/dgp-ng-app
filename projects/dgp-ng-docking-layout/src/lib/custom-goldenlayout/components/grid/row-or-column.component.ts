@@ -79,12 +79,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     @HostBinding("class.lm_column")
     readonly isColumn = this.config.type === "column";
 
-    readonly element = $(this.elementRef.nativeElement);
-    readonly childElementContainer = this.element;
+    element = $(this.elementRef.nativeElement);
+    childElementContainer = this.element;
 
-    public readonly splitterSize: number;
-    public readonly splitterGrabSize: number;
-    public readonly _dimension: string;
+    public splitterSize: number;
+    public splitterGrabSize: number;
+    public _dimension: string;
 
     public readonly splitters = new Array<SplitterComponent>();
     private splitterPosition: number = null;
@@ -99,7 +99,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
     isInitialised = false;
 
-
     constructor(
         private readonly contentItemCreationService: ContentItemCreationService,
         private readonly viewContainerRef: ViewContainerRef,
@@ -111,19 +110,20 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         private readonly store: Store
     ) {
         super();
+    }
 
-        const isColumn = config.type === "column";
+    init(): void {
 
-        this.config = {...itemDefaultConfig, ...config};
-        if (config.content) this.createContentItems(config);
+        const isColumn = this.config.type === "column";
+
+        this.config = {...itemDefaultConfig, ...this.config};
+        if (this.config.content) this.createContentItems(this.config);
 
         this.childElementContainer = this.element;
         this.splitterSize = 5;
         this.splitterGrabSize = 15;
         this._dimension = isColumn ? "height" : "width";
-    }
 
-    init(): void {
         if (this.isInitialised === true) return;
 
         this.contentItems.forEach((item, index) => {
