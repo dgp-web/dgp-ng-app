@@ -16,7 +16,7 @@ import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration } from "../types";
 import type { RowOrColumnComponent } from "./grid/row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
-import { DockingLayoutService } from "../docking-layout.service";
+import { ContentItemCreationService } from "../services/content-item-creation.service";
 
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
 
@@ -64,7 +64,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
     readonly drop = new EventEmitter<RootDropEvent>();
 
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
+        private readonly contentItemCreationService: ContentItemCreationService,
         @Inject(ROOT_CONTAINER_ELEMENT)
         private readonly containerElement: JQuery<HTMLElement>,
         private readonly elRef: ElementRef
@@ -82,7 +82,7 @@ export class RootComponent extends DockingLayoutEngineObject implements AfterVie
     init(): void {
 
         observeAttribute$(this as RootComponent, "config").subscribe(config => {
-            this.contentItems = this.config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
+            this.contentItems = this.config.content.map(x => this.contentItemCreationService.createContentItem(x, this));
             this.contentItems.forEach(contentItem => {
                 this.element.append(contentItem.element);
             });

@@ -178,7 +178,6 @@ export class DockingLayoutService extends EventEmitter {
                 }
 
                 if (rowOrColumn.contentItems.length > 0) {
-                    // @ts-ignore
                     const splitterElement = rowOrColumn.createSplitter(Math.max(0, index - 1)).element;
 
                     if (index > 0) {
@@ -213,7 +212,7 @@ export class DockingLayoutService extends EventEmitter {
                 }
 
                 if (_$suspendResize === true) return;
-                // @ts-ignore
+
                 rowOrColumn.resizeContentItems(contentItem);
 
             })

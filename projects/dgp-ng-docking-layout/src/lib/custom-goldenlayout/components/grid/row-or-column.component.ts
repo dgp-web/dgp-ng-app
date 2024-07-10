@@ -144,53 +144,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
      * Add a new contentItem to the Row or Column
      */
     addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
-
         this.store.dispatch(addChildToRowOrColumn({
             contentItem, index, _$suspendResize, rowOrColumn: this
         }));
-        return;
-
-        /* if (index === undefined) {
-             index = this.contentItems.length;
-         }
-
-         if (this.contentItems.length > 0) {
-             const splitterElement = this.createSplitter(Math.max(0, index - 1)).element;
-
-             if (index > 0) {
-                 this.contentItems[index - 1].element.after(splitterElement);
-                 splitterElement.after(contentItem.element);
-             } else {
-                 this.contentItems[0].element.before(splitterElement);
-                 splitterElement.before(contentItem.element);
-             }
-         } else {
-             this.childElementContainer.append(contentItem.element);
-         }
-
-         if (index === undefined) {
-             index = this.contentItems.length;
-         }
-
-         this.contentItems.splice(index, 0, contentItem);
-
-         if (this.config.content === undefined) {
-             this.config.content = [];
-         }
-
-         this.config.content.splice(index, 0, contentItem.config);
-         contentItem.parent = this;
-
-         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-             contentItem.init();
-         }
-
-         if (_$suspendResize === true) return;
-
-         this.resizeContentItems(contentItem);*/
     }
 
-    private resizeContentItems(contentItem: RowOrColumnComponent | StackComponent) {
+    resizeContentItems(contentItem: RowOrColumnComponent | StackComponent) {
 
         const newItemSize = (1 / this.contentItems.length) * 100;
 
@@ -361,7 +320,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.contentItems = config.content.map(x => this.contentItemCreationService.createContentItem(x, this));
     }
 
-    private createSplitter(index: number): SplitterComponent {
+    createSplitter(index: number): SplitterComponent {
         const vcRef = this.viewContainerRef;
         const splitterComponentRef = vcRef.createComponent(SplitterComponent);
         const splitter = splitterComponentRef.instance;
