@@ -479,8 +479,21 @@ export class StackComponent implements DropTarget, AfterViewInit {
         return this.getAreaForElement(this.element);
     }
 
-    private highlightHeaderDropZone(x: number) {
+    private highlightHeaderDropZoneForEmptyStack() {
+
         const headerElement = $(this.headerComponent.nativeElement);
+        const headerOffset = headerElement.offset();
+
+        this.dropTargetIndicator.highlightArea({
+            x1: headerOffset.left,
+            x2: headerOffset.left + 100,
+            y1: headerOffset.top + headerElement.height() - 20,
+            y2: headerOffset.top + headerElement.height()
+        });
+
+    }
+
+    private findTabElementAtPointerPosition(xPointerPosition: number) {
         const tabsLength = this.matTabDraglisteners.length;
 
         let i: number,
@@ -489,21 +502,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
             tabTop: number,
             tabLeft: number,
             tabWidth: number;
-
-        // TODO: extract methods for the individual cases
-        // Empty stack
-        if (tabsLength === 0) {
-            const headerOffset = headerElement.offset();
-
-            this.dropTargetIndicator.highlightArea({
-                x1: headerOffset.left,
-                x2: headerOffset.left + 100,
-                y1: headerOffset.top + headerElement.height() - 20,
-                y2: headerOffset.top + headerElement.height()
-            });
-
-            return;
-        }
 
         for (i = 0; i < tabsLength; i++) {
             tabElement = $(this.matTabDraglisteners.toArray()[i].elementRef.nativeElement);
@@ -514,23 +512,54 @@ export class StackComponent implements DropTarget, AfterViewInit {
             tabWidth = tabElement.width();
 
 
-            if (x > tabLeft && x < tabLeft + tabWidth) {
+            if (xPointerPosition > tabLeft && xPointerPosition < tabLeft + tabWidth) {
                 isAboveTab = true;
                 break;
             }
         }
 
-        if (isAboveTab === false && x < tabLeft) return;
+        return {
+            i,
+            tabElement,
+            tabLeft,
+            tabTop,
+            tabWidth,
+            isAboveTab
+        };
+    }
+
+    private positionTabDropPlaceholderAndDropIndex(payload: {
+        i: number,
+        tabElement: JQuery<HTMLElement>,
+        tabsLength: number,
+        tabWidth: number,
+        tabLeft: number,
+        xMousePos: number
+    }) {
+        const xMousePos = payload.xMousePos;
+        const tabLeft = payload.tabLeft;
+        const tabElement = payload.tabElement;
+        const tabWidth = payload.tabWidth;
+        const tabsLength = payload.tabsLength;
+        const i = payload.i;
 
         const halfX = tabLeft + tabWidth / 2;
 
-        if (x < halfX) {
+        if (xMousePos < halfX) {
             this.dropIndex = i;
             tabElement.before(this.tabDropPlaceholder.$element);
         } else {
             this.dropIndex = Math.min(i + 1, tabsLength);
             tabElement.after(this.tabDropPlaceholder.$element);
         }
+    }
+
+    private highlightTabDropPlaceholderArea(payload: {
+        readonly tabTop: number;
+        readonly tabElement: JQuery<HTMLElement>;
+    }) {
+        const tabTop = payload.tabTop;
+        const tabElement = payload.tabElement;
 
         const placeHolderLeft = this.tabDropPlaceholder.offset().left;
 
@@ -540,6 +569,44 @@ export class StackComponent implements DropTarget, AfterViewInit {
             y1: tabTop,
             y2: tabTop + tabElement.innerHeight()
         });
+    }
+
+    private highlightHeaderDropZone(xMousePos: number) {
+        const tabsLength = this.matTabDraglisteners.length;
+
+        if (tabsLength === 0) {
+            this.highlightHeaderDropZoneForEmptyStack();
+            return;
+        }
+
+        const {
+            i,
+            tabElement,
+            isAboveTab,
+            tabWidth,
+            tabTop,
+            tabLeft
+        } = this.findTabElementAtPointerPosition(xMousePos);
+
+        /**
+         * Stop if the mouse is too far left of the tabs
+         */
+        if (isAboveTab === false && xMousePos < tabLeft) return;
+
+        /**
+         * Position the placeholder to the left or right of the tab
+         * and update the drop index
+         */
+        this.positionTabDropPlaceholderAndDropIndex({
+            i,
+            tabElement,
+            tabWidth,
+            tabLeft,
+            tabsLength,
+            xMousePos
+        });
+
+        this.highlightTabDropPlaceholderArea({tabTop, tabElement});
     }
 
     private processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
