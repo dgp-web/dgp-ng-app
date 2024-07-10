@@ -144,8 +144,6 @@ export class StackComponent implements DropTarget, AfterViewInit {
         public layoutConfig: LayoutConfiguration,
         @Inject(ITEM_CONFIG)
         public config: StackConfiguration,
-        @Inject(PARENT_ITEM_COMPONENT)
-        public parent: StackParentComponent,
         @Inject(PARENT_ITEM_CONFIG)
         public parentConfig: RowConfiguration | ColumnConfiguration,
         private readonly elementRef: ElementRef<HTMLElement>,
