@@ -28,7 +28,7 @@ export interface RootDropEvent {
 @Component({
     selector: "dgp-gl-root",
     template: `
-        <!-- <ng-container *ngFor="let itemConfig of config.content">
+       <!--  <ng-container *ngFor="let itemConfig of config.content">
              <dgp-row-or-column [ngSwitch]="itemConfig.type === 'row'">Row</dgp-row-or-column>
              <dgp-row-or-column [ngSwitch]="itemConfig.type === 'column'">Column</dgp-row-or-column>
          </ng-container>-->

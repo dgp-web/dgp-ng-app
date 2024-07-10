@@ -19,7 +19,7 @@ import {
 } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
-import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
+import type { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
 import { RowOrColumnContentItemComponent } from "../../models/row-or-column-content-item-component.model";
 import { DockingLayoutEngineObject } from "../docking-layout-engine-object";
 import type { StackComponent } from "../tabs/stack.component";
