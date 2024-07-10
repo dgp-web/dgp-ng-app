@@ -14,6 +14,7 @@ import { RowOrColumnComponent } from "./components/grid/row-or-column.component"
 import { ContentItemCreationService } from "./services/content-item-creation.service";
 import { Actions, ofType } from "@ngrx/effects";
 import {
+    addChildToRowOrColumn,
     addStackToParentRowOrColumn,
     addStackWithNewParentToParentRowOrColumn,
     removeStackFromParent
@@ -163,6 +164,57 @@ export class DockingLayoutService extends EventEmitter {
 
                     });
                 });
+
+            })
+        ).subscribe();
+
+        this.actions$.pipe(
+            ofType(addChildToRowOrColumn),
+            tap(x => {
+                let {index, contentItem, rowOrColumn, _$suspendResize} = x;
+
+                if (index === undefined) {
+                    index = rowOrColumn.contentItems.length;
+                }
+
+                if (rowOrColumn.contentItems.length > 0) {
+                    // @ts-ignore
+                    const splitterElement = rowOrColumn.createSplitter(Math.max(0, index - 1)).element;
+
+                    if (index > 0) {
+                        rowOrColumn.contentItems[index - 1].element.after(splitterElement);
+                        splitterElement.after(contentItem.element);
+                    } else {
+                        rowOrColumn.contentItems[0].element.before(splitterElement);
+                        splitterElement.before(contentItem.element);
+                    }
+                } else {
+                    rowOrColumn.childElementContainer.append(contentItem.element);
+                }
+
+                if (index === undefined) {
+                    index = rowOrColumn.contentItems.length;
+                }
+
+                rowOrColumn.contentItems.splice(index, 0, contentItem);
+
+                if (rowOrColumn.config.content === undefined) {
+                    rowOrColumn.config.content = [];
+                }
+
+                rowOrColumn.config.content.splice(index, 0, contentItem.config);
+                // TODO not needed for stack
+                if (contentItem.config.type !== "stack") {
+                    (contentItem as RowOrColumnComponent).parent = rowOrColumn;
+                }
+
+                if (rowOrColumn.isInitialised === true && contentItem.isInitialised === false) {
+                    contentItem.init();
+                }
+
+                if (_$suspendResize === true) return;
+                // @ts-ignore
+                rowOrColumn.resizeContentItems(contentItem);
 
             })
         ).subscribe();

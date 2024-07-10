@@ -27,8 +27,9 @@ import { Many } from "data-modeling";
 import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-sizes.function";
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
 import { calculateRelativeSizes } from "../../functions/grid/calculate-relative-sizes.function";
-import { DockingLayoutService } from "../../docking-layout.service";
-import { createGuid } from "dgp-ng-app";
+import { ContentItemCreationService } from "../../services/content-item-creation.service";
+import { Store } from "@ngrx/store";
+import { addChildToRowOrColumn } from "../../actions/remove-stack-from-parent.action";
 
 export interface SplitterComponents {
     before: RowOrColumnContentItemComponent;
@@ -100,13 +101,14 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
 
 
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
+        private readonly contentItemCreationService: ContentItemCreationService,
         private readonly viewContainerRef: ViewContainerRef,
         @Inject(ITEM_CONFIG)
         public config: RowConfiguration | ColumnConfiguration,
         @Inject(PARENT_ITEM_COMPONENT)
         public parent: RowOrColumnParentComponent,
-        private readonly elementRef: ElementRef<HTMLElement>
+        private readonly elementRef: ElementRef<HTMLElement>,
+        private readonly store: Store
     ) {
         super();
 
@@ -143,44 +145,49 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
      */
     addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
 
-        if (index === undefined) {
-            index = this.contentItems.length;
-        }
+        this.store.dispatch(addChildToRowOrColumn({
+            contentItem, index, _$suspendResize, rowOrColumn: this
+        }));
+        return;
 
-        if (this.contentItems.length > 0) {
-            const splitterElement = this.createSplitter(Math.max(0, index - 1)).element;
+        /* if (index === undefined) {
+             index = this.contentItems.length;
+         }
 
-            if (index > 0) {
-                this.contentItems[index - 1].element.after(splitterElement);
-                splitterElement.after(contentItem.element);
-            } else {
-                this.contentItems[0].element.before(splitterElement);
-                splitterElement.before(contentItem.element);
-            }
-        } else {
-            this.childElementContainer.append(contentItem.element);
-        }
+         if (this.contentItems.length > 0) {
+             const splitterElement = this.createSplitter(Math.max(0, index - 1)).element;
 
-        if (index === undefined) {
-            index = this.contentItems.length;
-        }
+             if (index > 0) {
+                 this.contentItems[index - 1].element.after(splitterElement);
+                 splitterElement.after(contentItem.element);
+             } else {
+                 this.contentItems[0].element.before(splitterElement);
+                 splitterElement.before(contentItem.element);
+             }
+         } else {
+             this.childElementContainer.append(contentItem.element);
+         }
 
-        this.contentItems.splice(index, 0, contentItem);
+         if (index === undefined) {
+             index = this.contentItems.length;
+         }
 
-        if (this.config.content === undefined) {
-            this.config.content = [];
-        }
+         this.contentItems.splice(index, 0, contentItem);
 
-        this.config.content.splice(index, 0, contentItem.config);
-        contentItem.parent = this;
+         if (this.config.content === undefined) {
+             this.config.content = [];
+         }
 
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
-            contentItem.init();
-        }
+         this.config.content.splice(index, 0, contentItem.config);
+         contentItem.parent = this;
 
-        if (_$suspendResize === true) return;
+         if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
+             contentItem.init();
+         }
 
-        this.resizeContentItems(contentItem);
+         if (_$suspendResize === true) return;
+
+         this.resizeContentItems(contentItem);*/
     }
 
     private resizeContentItems(contentItem: RowOrColumnComponent | StackComponent) {
@@ -273,14 +280,18 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
 
         if (destroyOldChild === true) {
-            oldChild.parent = null;
+            if (oldChild.config.type !== "stack") {
+                (oldChild as RowOrColumnComponent).parent = null;
+            }
             oldChild.destroy();
         }
 
         this.contentItems[index] = newChild;
-        newChild.parent = this;
+        if (newChild.config.type !== "stack") {
+            (newChild as RowOrColumnComponent).parent = this;
+        }
 
-        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
+        if (this.isInitialised === true && newChild.isInitialised === false) {
             newChild.init();
         }
 
@@ -347,7 +358,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     }
 
     private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
+        this.contentItems = config.content.map(x => this.contentItemCreationService.createContentItem(x, this));
     }
 
     private createSplitter(index: number): SplitterComponent {
