@@ -110,9 +110,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         private readonly store: Store
     ) {
         super();
-    }
-
-    init(): void {
 
         const isColumn = this.config.type === "column";
 
@@ -123,6 +120,10 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         this.splitterSize = 5;
         this.splitterGrabSize = 15;
         this._dimension = isColumn ? "height" : "width";
+
+    }
+
+    init(): void {
 
         if (this.isInitialised === true) return;
 
