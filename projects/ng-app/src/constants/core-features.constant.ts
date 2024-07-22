@@ -1,4 +1,4 @@
-import {AppFeature} from "../models/app-feature.model";
+import { AppFeature } from "../models/app-feature.model";
 
 export const coreFeatures: ReadonlyArray<AppFeature> = [{
     route: "/authentication",
@@ -10,6 +10,11 @@ export const coreFeatures: ReadonlyArray<AppFeature> = [{
     matIconName: "dynamic_feed",
     label: "Broadcasting",
     description: "Bidirectional data sync between windows and tabs."
+}, {
+    route: "/component-primitives",
+    matIconName: "hub",
+    label: "Component primitives",
+    description: "Utilities and patterns for building components."
 }, {
     route: "/empty-state",
     matIconName: "texture",
