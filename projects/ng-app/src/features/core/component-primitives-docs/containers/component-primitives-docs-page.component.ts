@@ -13,7 +13,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             <dgp-docs-page-content>
 
                 <dgp-docs-chapter-title>
-                    Broadcasting
+                    Component primitives
                 </dgp-docs-chapter-title>
 
                 <p>
@@ -24,7 +24,43 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                     Overview
                 </dgp-docs-section-title>
 
+                <p>
+                    <code>dgp-ng-app</code> includes several base classes for components.
+                </p>
+
+                <p>
+                    They include some basic functionality such as standardized input names
+                    or proxy methods and they help classify components into certain categories.
+                </p>
+
+                <p>
+                    Note that those base classes help implement certain patterns more easily
+                    but are not meant to be an exhaustive list.
+                </p>
+
                 <dgp-component-primitive-overview-table></dgp-component-primitive-overview-table>
+
+
+                <dgp-docs-section-title>
+                    View
+                </dgp-docs-section-title>
+
+                <p>
+                    Views help visualize a model. They receive a model as input and can access it
+                    synchronously or asynchronously via a <code>model$</code>:
+                </p>
+
+                <p>
+                    They also offer a <code>disabled</code> input in case the display needs to
+                    be handled adjusted when the component is disabled.
+                </p>
+
+                Implementation
+                <dgp-docs-code-block [code]="viewImplSampleCode"></dgp-docs-code-block>
+
+                Usage
+                <dgp-docs-code-block [code]="viewUsageSampleCode"
+                                     language="html"></dgp-docs-code-block>
 
             </dgp-docs-page-content>
         </dgp-docs-page>
@@ -35,5 +71,20 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentPrimitivesDocsPageComponent {
+    readonly viewImplSampleCode =
+        `import { User } from "../../models/user.model";
 
+@Component({
+    selector: "dgp-user-label",
+    template: '
+        <div class="name">{{model.lastName}} {{model.firstName}}</div>
+        <div *ngIf="!disabled"
+             class="age">{{(model$ | async).age}}</div>
+   '
+})
+export class UserLabelComponent extends DgpView<User> {}
+`;
+    readonly viewUsageSampleCode =
+        `<dgp-user-label [model]="user"
+                [disabled]="disabled"></dgp-user-label>`;
 }
