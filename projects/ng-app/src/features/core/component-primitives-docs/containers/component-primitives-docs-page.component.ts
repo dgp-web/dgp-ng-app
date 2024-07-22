@@ -48,6 +48,41 @@ import { Component } from "@angular/core";
 
                 <dgp-hybrid-primitive-docs-section></dgp-hybrid-primitive-docs-section>
 
+                <dgp-docs-section-title>
+                    When to use which pattern
+                </dgp-docs-section-title>
+
+                <ul>
+                    <li>
+                        Don't add more capabilities to your components than necessary. If a view fits your needs, don't make it
+                        a model editor.
+                    </li>
+                    <li>
+                        Help others and your future self understand the purpose of the component at one glance.
+                    </li>
+                    <li>
+                        Break down your components. The smaller your components the easier it is to pick a primitive for them.
+                    </li>
+                </ul>
+
+                <dgp-docs-section-title>
+                    Common errors
+                </dgp-docs-section-title>
+
+                <ul>
+                    <li>
+                        Adding <code>@Input() disabled</code>: all primitives except the container already have it.
+                    </li>
+                    <li>
+                        Adding inputs for data other than model instead of enriching it from the store. This clutters your
+                        data handling in most cases.
+                    </li>
+                    <li>
+                        Mutating models in place. <code>dgp-ng-app</code>'s primitives are geared towards redux-style
+                        data architectures that derive new states from old ones..
+                    </li>
+                </ul>
+
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
