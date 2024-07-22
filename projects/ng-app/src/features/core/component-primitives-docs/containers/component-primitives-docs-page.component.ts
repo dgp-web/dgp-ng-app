@@ -42,6 +42,39 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 
                 <dgp-view-primitive-docs-section></dgp-view-primitive-docs-section>
 
+                <dgp-docs-section-title>
+                    Model editor
+                </dgp-docs-section-title>
+
+                <p>
+                    Model editors are views with update capabilities.
+                </p>
+
+                <p>
+                    They support non-mutating update patterns via two methods:
+                    <code>setModel</code> and <code>updateModel</code>.
+                </p>
+
+                <ul>
+                    <li>
+                        Non-mutating means that the passed object is not modified
+                        but a new object is created or derived from the previous
+                        one and then published via the <code>modelChange</code> output.
+                    </li>
+                    <li>
+                        <code>setModel</code> replaces an existing model.
+                    </li>
+                    <li>
+                        <code>updateModels</code> updates specific attributes but
+                        leaves all others as they are via <code>Object.assign</code>.
+                    </li>
+                </ul>
+
+                Implementation
+                <dgp-docs-code-block [code]="modelEditorImplSampleCode"></dgp-docs-code-block>
+
+                Usage
+
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
@@ -51,5 +84,24 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentPrimitivesDocsPageComponent {
+    readonly modelEditorImplSampleCode =
+        `import { DgpModelEditorComponentBase } from "dgp-ng-app";
+import { User } from "../../models/user.model";
 
+@Component({
+    selector: "dgp-user-name-input",
+    template: '
+        <input [ngModel]="model.firstName"
+               (ngModelChange)="updateFirstName($event)">
+   '
+})
+export class UserNameInputComponent extends DgpModelEditorComponentBase<User> {
+
+    updateFirstName(firstName: string) {
+        // updateModel takes Partial<User> as payload
+        this.updateModel({firstName});
+    }
+
+}
+`;
 }
