@@ -43,6 +43,22 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
                 <dgp-view-primitive-docs-section></dgp-view-primitive-docs-section>
 
                 <dgp-model-editor-primitive-docs-section></dgp-model-editor-primitive-docs-section>
+
+                <dgp-container-primitive-docs-section></dgp-container-primitive-docs-section>
+
+                <dgp-docs-section-title>
+                    Hybrid
+                </dgp-docs-section-title>
+
+                <p>
+                    Hybrid components combine the capabilities of a model editor and a container.
+                </p>
+
+                <p>
+                    Often they user their model to enrich further data for it from the store or they
+                    dispatch actions internally because processing updates via outputs gets unwieldy.
+                </p>
+
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
