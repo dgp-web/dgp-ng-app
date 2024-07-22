@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
     selector: "dgp-component-primitives-docs-page",
@@ -46,26 +46,14 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 
                 <dgp-container-primitive-docs-section></dgp-container-primitive-docs-section>
 
-                <dgp-docs-section-title>
-                    Hybrid
-                </dgp-docs-section-title>
-
-                <p>
-                    Hybrid components combine the capabilities of a model editor and a container.
-                </p>
-
-                <p>
-                    Often they user their model to enrich further data for it from the store or they
-                    dispatch actions internally because processing updates via outputs gets unwieldy.
-                </p>
+                <dgp-hybrid-primitive-docs-section></dgp-hybrid-primitive-docs-section>
 
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
     styles: [`
 
-    `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    `]
 })
 export class ComponentPrimitivesDocsPageComponent {
 
