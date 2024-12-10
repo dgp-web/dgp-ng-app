@@ -43,16 +43,16 @@
             density: $density
         ));
 
-    @include mat.all-component-themes($app-theme);
-    @include dgp-all-component-themes($app-theme);
+        @include mat.all-component-themes($app-theme);
+        @include dgp-all-component-themes($app-theme);
 
-    .dark-theme, &.dark-theme {
-        @include mat.all-component-themes($app-dark-theme);
-        @include dgp-all-component-themes($app-dark-theme);
+        .dark-theme, &.dark-theme {
+            @include mat.all-component-themes($app-dark-theme);
+            @include dgp-all-component-themes($app-dark-theme);
+        }
+
+        @include dgp-mat-overrides();
     }
-
-    @include dgp-mat-overrides();
-}
 }
 
 .dgp-dynamic-virtual-scroll-viewport {
