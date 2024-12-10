@@ -188,10 +188,10 @@
             density: $density
         ));
 
-    @include mat.all-component-themes($app-theme);
-    @include dgp-list-item-theme($app-theme);
-    @include dgp-inspector-theme($app-theme);
-    @include dgp-details-theme($app-theme);
+        @include mat.all-component-themes($app-theme);
+        @include dgp-list-item-theme($app-theme);
+        @include dgp-inspector-theme($app-theme);
+        @include dgp-details-theme($app-theme);
 
         .dark-theme, &.dark-theme {
             @include mat.all-component-themes($app-dark-theme);
@@ -225,6 +225,7 @@
         .dgp-cl--warn {
             color: mat.get-color-from-palette($warn) !important;
         }
+
         /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
         mat-dialog-actions {
             display: flex;
@@ -268,6 +269,7 @@
                     padding-bottom: 8px !important;
                     padding-top: 8px !important;
                 }
+
                 /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
                 .mat-list-item-content {
                     align-items: flex-start !important;
