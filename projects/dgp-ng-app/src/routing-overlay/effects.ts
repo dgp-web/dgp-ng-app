@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { distinctUntilKeyChanged, filter, map, switchMap, tap } from "rxjs/operators";
 import { of, timer } from "rxjs";
 import { ActivationStart, NavigationCancel, NavigationEnd, NavigationError, Router } from "@angular/router";
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { showLoadingSpinner } from "./actions";
 import { RoutingOverlayComponent } from "./components/routing-overlay.component";
 import { isNullOrUndefined } from "../utils/null-checking.functions";

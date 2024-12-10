@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { FactoryProvider, InjectionToken, NgModule } from "@angular/core";
-import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
+import { MatCardModule } from "@angular/material/card";
 import { ItemContainerComponent } from "../custom-goldenlayout/components/grid/item-container.component";
 import { RowOrColumnComponent } from "../custom-goldenlayout/components/grid/row-or-column.component";
 import { StackComponent } from "../custom-goldenlayout/components/tabs/stack.component";
@@ -22,9 +22,9 @@ import { DgpResizeSensorModule } from "dgp-ng-app";
 import { TabComponent } from "../custom-goldenlayout/components/tabs/tab.component";
 import { DragListenerDirective } from "../custom-goldenlayout/components/drag-and-drop/drag-listener.directive";
 import { SplitterComponent } from "../custom-goldenlayout/components/resize/splitter.component";
-import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
+import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { MatLegacyTabsModule as MatTabsModule } from "@angular/material/legacy-tabs";
+import { MatTabsModule } from "@angular/material/tabs";
 
 export const DOCKING_LAYOUT_REDUCER = new InjectionToken<typeof dockingLayoutEntityStore.reducers>(
     "DockingLayoutReducer"

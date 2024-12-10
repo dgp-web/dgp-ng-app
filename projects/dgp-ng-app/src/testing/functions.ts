@@ -1,4 +1,4 @@
-import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { of } from "rxjs";
 
 export function createTestMatDialogRef<T, TResult>(dialogResult: TResult): MatDialogRef<T, TResult> {

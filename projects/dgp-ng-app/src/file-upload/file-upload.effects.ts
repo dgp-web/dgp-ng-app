@@ -4,7 +4,7 @@ import { addFilesViaDrop, closeFileManager, downloadFile, openFileManagerOverlay
 import { Store } from "@ngrx/store";
 import { first, map, switchMap, tap } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "./models";

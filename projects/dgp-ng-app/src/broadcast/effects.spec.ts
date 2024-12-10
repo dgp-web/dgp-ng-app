@@ -5,7 +5,7 @@ import { Action, Store, StoreModule } from "@ngrx/store";
 import { EffectsMetadata, getEffectsMetadata } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
 
-import { MatLegacySnackBarModule as MatSnackBarModule } from "@angular/material/legacy-snack-bar";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { BroadcastEffects } from "./effects";
 import { BroadcastFunctionsTestData } from "./functions/__tests__/broadcast-functions.test-data.spec";

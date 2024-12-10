@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from "@angular/core";
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
 import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "../functions";
 import { DgpTableCellEditorService } from "../service/table-cell-editor.service";
@@ -35,7 +35,7 @@ import { DgpTableCellEditorService } from "../service/table-cell-editor.service"
             flex-grow: 1;
         }
 
-        .mat-table-cell-editor-trigger-button {
+        .mat-mdc-table-cell-editor-trigger-button {
             flex-grow: 1;
             justify-content: flex-start;
             padding: initial;
@@ -43,12 +43,14 @@ import { DgpTableCellEditorService } from "../service/table-cell-editor.service"
             font-weight: initial;
         }
 
+        /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
         .mat-table-cell-editor-trigger-button .mat-button-wrapper {
             flex-grow: 1;
             justify-content: flex-start;
             display: flex;
         }
 
+        /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
         .mat-dialog-no-backdrop {
             background: initial;
         }

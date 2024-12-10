@@ -13,7 +13,7 @@
         }
     }
 
-    .mat-button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+    .mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button {
         line-height: 28px !important;
         font-size: smaller;
         padding: 0 8px !important;
@@ -110,6 +110,8 @@
 @mixin dgp-compact-tile-theme() {
 
     dgp-tile {
+        /*TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.
+ */
         mat-card {
             padding: 12px !important;
         }
@@ -148,7 +150,8 @@
 }
 
 @mixin dgp-compact-mat-dialog-theme() {
-
+    /*TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.
+ */
     mat-dialog-container {
         padding: 12px;
         border-radius: 0 !important;
@@ -166,7 +169,7 @@
 
 @mixin dgp-compact-mat-list-theme() {
 
-    .mat-list-avatar {
+    .mat-mdc-list-item-avatar {
         display: flex !important;
         justify-content: center;
         align-items: center;
@@ -180,8 +183,9 @@
     mat-nav-list, mat-selection-list, mat-list {
 
         padding-top: 0 !important;
-
-        .mat-list-item, mat-list-option {
+        /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.
+ */
+        .mat-mdc-list-item, mat-list-option {
             height: auto !important;
             word-break: break-all !important;
             display: flex !important;
@@ -191,7 +195,8 @@
             min-height: 28px !important;
             margin-top: 4px !important;
             margin-bottom: 4px !important;
-
+            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.
+ */
             .mat-list-item-content {
                 flex-grow: 1;
                 padding: 0 8px !important;
@@ -207,7 +212,7 @@
 
         }
 
-        .mat-subheader {
+        .mat-mdc-subheader {
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -225,18 +230,21 @@
     /**
     * source: https://stackoverflow.com/questions/60325562/size-angular-material-slide-toggle-small-medium-large
      */
-    .mat-slide-toggle {
-
+    .mat-mdc-slide-toggle {
+        /*TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.
+ */
         .mat-slide-toggle-bar {
             height: 7px !important;
             width: 28px !important;
         }
-
+        /*TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.
+ */
         .mat-slide-toggle-thumb {
             height: 10px !important;
             width: 10px !important;
         }
-
+        /*TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.
+ */
         .mat-slide-toggle-thumb-container {
             width: 12px !important;
             height: 12px !important;
@@ -245,8 +253,9 @@
         }
 
     }
-
-    .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+    /*TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.
+ */
+    .mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
         transform: translate3d(18px, 0, 0) !important;
     }
 
@@ -258,6 +267,8 @@
      * Tab labels for ng material are fat bastards so we limit their height
      * and decrease the exaggerated min-width
      */
+    /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
     .mat-tab-label {
         height: 36px !important;
         min-width: 100px !important;

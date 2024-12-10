@@ -1,4 +1,4 @@
-import { LegacyDialogPosition as DialogPosition } from "@angular/material/legacy-dialog";
+import { DialogPosition } from "@angular/material/dialog";
 import { TableCellEditorSizes } from "./models";
 
 export function computeTableCellEditorSizes(payload: {

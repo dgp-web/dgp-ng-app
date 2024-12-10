@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy } from "@angular/core";
 import { Store, StoreModule } from "@ngrx/store";
 import { themeSwitcherReducer } from "../reducers";
 import { FormsModule } from "@angular/forms";
-import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { toggleDarkMode } from "../actions";
 import { DarkModeToggleComponent } from "./dark-mode-toggle.component";
 import { ThemeSwitcherState, themeSwitcherStoreFeature } from "../models";

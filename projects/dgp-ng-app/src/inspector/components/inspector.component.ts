@@ -19,6 +19,7 @@ import { filter } from "rxjs/operators";
             flex-shrink: 0;
         }
 
+        /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
         mat-list {
             padding: 0;
         }

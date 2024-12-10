@@ -16,8 +16,8 @@ import { DgpListDetailsPageModule } from "../hamburger-shell/components/list-det
 import { DgpPageHeaderModule } from "../hamburger-shell/components/page-header/page-header.module";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
-import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
-import { MatLegacySnackBarModule as MatSnackBarModule } from "@angular/material/legacy-snack-bar";
+import { MatListModule } from "@angular/material/list";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { SafePipeModule } from "../safe/safe-pipe.module";
 
 export const LOG_STORE_REDUCER = new InjectionToken<typeof logStore.reducers>("LogStoreReducer");

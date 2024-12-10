@@ -5,7 +5,7 @@ import { directives } from "./directives/directives";
 import { DgpResizeSensorModule } from "dgp-ng-app";
 import { CommonModule } from "@angular/common";
 import { DgpSVGSymbolsModule } from "../shapes/svg-shape.module";
-import { MatLegacyTooltipModule as MatTooltipModule } from "@angular/material/legacy-tooltip";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { pipes } from "./pipes/pipes";
 import { DgpPlotContainerModule } from "../plot-container/dgp-plot-container.module";
 import { DgpDotModule } from "../dot/dot.module";

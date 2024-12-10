@@ -5,7 +5,7 @@ import { Component, HostBinding } from "@angular/core";
     template: `
         <ng-content></ng-content>
 
-        <mat-card class="controls">
+        <mat-card appearance="outlined" class="controls">
             <ng-content select="[chart-actions]"></ng-content>
         </mat-card>
     `,
