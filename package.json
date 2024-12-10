@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app",
-    "version": "16.8.0-mdc",
+    "version": "16.8.1-mdc",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
