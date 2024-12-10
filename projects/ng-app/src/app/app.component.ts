@@ -12,7 +12,7 @@ import { coreFeatures } from "../constants/core-features.constant";
             <dgp-hamburger-menu dgp-hamburger-menu>
 
                 <dgp-hamburger-menu-header>
-                    DGP NG APP (v16)
+                    DGP NG APP (v16 mdc)
                 </dgp-hamburger-menu-header>
 
                 <dgp-hamburger-menu-entries>
