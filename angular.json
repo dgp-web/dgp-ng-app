@@ -79,18 +79,18 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "ng-app:build"
+                      "buildTarget": "ng-app:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "ng-app:build:production"
+                          "buildTarget": "ng-app:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "ng-app:build"
+                      "buildTarget": "ng-app:build"
                     }
                 },
                 "test": {
@@ -294,21 +294,21 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "dgp-labs:build"
+                      "buildTarget": "dgp-labs:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "dgp-labs:build:production"
+                          "buildTarget": "dgp-labs:build:production"
                         },
                         "development": {
-                            "browserTarget": "dgp-labs:build:development"
+                          "buildTarget": "dgp-labs:build:development"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "dgp-labs:build"
+                      "buildTarget": "dgp-labs:build"
                     }
                 },
                 "test": {
@@ -535,10 +535,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "dgp-ng-paged-media-labs:build:production"
+                          "buildTarget": "dgp-ng-paged-media-labs:build:production"
                         },
                         "development": {
-                            "browserTarget": "dgp-ng-paged-media-labs:build:development"
+                          "buildTarget": "dgp-ng-paged-media-labs:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -546,7 +546,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "dgp-ng-paged-media-labs:build"
+                      "buildTarget": "dgp-ng-paged-media-labs:build"
                     }
                 },
                 "test": {

@@ -71,7 +71,7 @@ import { Component } from "@angular/core";
 
                 <ul>
                     <li>
-                        Adding <code>@Input() disabled</code>: all primitives except the container already have it.
+                        Adding <code>&#64;Input() disabled</code>: all primitives except the container already have it.
                     </li>
                     <li>
                         Adding inputs for data other than model instead of enriching it from the store. This clutters your
