@@ -5,7 +5,7 @@
     $accent: map-get($app-theme, accent);
 
     .dgp-action-context.--selected {
-        outline: 1px dashed mat.get-color-from-palette($accent, 300);
+        outline: 1px dashed mat.m2-get-color-from-palette($accent, 300);
     }
 
 }
@@ -122,11 +122,11 @@
     $accent: map-get($theme, accent);
 
     .dgp-bg--primary {
-        background: mat.get-color-from-palette($primary, 300) !important;
+        background: mat.m2-get-color-from-palette($primary, 300) !important;
     }
 
     .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent, 300) !important;
+        background: mat.m2-get-color-from-palette($accent, 300) !important;
     }
 
     .inspector-item-content.--responsive {
@@ -134,7 +134,7 @@
     }
 
     .dgp-list-item.--selected {
-        border-left-color: mat.get-color-from-palette($primary, 300);
+        border-left-color: mat.m2-get-color-from-palette($primary, 300);
         border-left-width: 4px;
         border-left-style: solid;
     }
@@ -144,7 +144,7 @@
     }
 
     .dgp-list-item--selected {
-        border-left-color: mat.get-color-from-palette($primary, 300);
+        border-left-color: mat.m2-get-color-from-palette($primary, 300);
         border-left-width: 4px;
         border-left-style: solid;
         pointer-events: none;
@@ -176,31 +176,31 @@
     $accent: map-get($app-theme, accent);
 
     .dgp-bg--primary {
-        background: mat.get-color-from-palette($primary) !important;
+        background: mat.m2-get-color-from-palette($primary) !important;
     }
 
     .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent) !important;
+        background: mat.m2-get-color-from-palette($accent) !important;
     }
 
     .dgp-bg--warn {
-        background: mat.get-color-from-palette($warn) !important;
+        background: mat.m2-get-color-from-palette($warn) !important;
     }
 
     .dgp-cl--primary {
-        color: mat.get-color-from-palette($primary) !important;
+        color: mat.m2-get-color-from-palette($primary) !important;
     }
 
     .dgp-cl--accent {
-        color: mat.get-color-from-palette($accent) !important;
+        color: mat.m2-get-color-from-palette($accent) !important;
     }
 
     .dgp-cl--warn {
-        color: mat.get-color-from-palette($warn) !important;
+        color: mat.m2-get-color-from-palette($warn) !important;
     }
 
     .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent, 100) !important;
+        background: mat.m2-get-color-from-palette($accent, 100) !important;
     }
 
 }
