@@ -2,7 +2,10 @@ import { Directive } from "@angular/core";
 import { SVGPatternBaseDirective } from "./svg-pattern-base.directive";
 import { checkerboardPattern } from "../constants";
 
-@Directive({selector: "[dgpCheckerboardPattern]"})
+@Directive({
+    selector: "[dgpCheckerboardPattern]",
+    standalone: false
+})
 export class CheckerboardPatternDirective extends SVGPatternBaseDirective {
 
     model = checkerboardPattern;

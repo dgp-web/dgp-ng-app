@@ -117,6 +117,7 @@ import { InternalExportChartConfig } from "../../heatmap/models/internal-export-
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpExportChartDialogComponent {
 

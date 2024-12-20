@@ -2,7 +2,10 @@ import { Pipe, PipeTransform, TrackByFunction } from "@angular/core";
 import { Box } from "../models";
 import { trackByBoxOutlierKey } from "../constants";
 
-@Pipe({name: "trackByBoxOutlierKey"})
+@Pipe({
+    name: "trackByBoxOutlierKey",
+    standalone: false
+})
 export class TrackByBoxOutlierKeyPipe implements PipeTransform {
 
     transform<T>(box: Box): TrackByFunction<number> {

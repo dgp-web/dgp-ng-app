@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { BoxPlotScales } from "../models";
 import * as d3 from "d3";
 
-@Directive({selector: "[dgpBoxPlotBottomAxis]"})
+@Directive({
+    selector: "[dgpBoxPlotBottomAxis]",
+    standalone: false
+})
 export class BoxPlotBottomAxisDirective implements OnChanges {
 
     @Input()

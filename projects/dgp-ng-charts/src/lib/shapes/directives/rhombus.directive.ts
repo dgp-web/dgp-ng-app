@@ -6,6 +6,7 @@ import { computeRhombusPoints } from "../functions/compute-rhombus-points.functi
 
 @Directive({
     selector: "[dgpRhombus]",
+    standalone: false
 })
 export class RhombusDirective extends SVGShapeBaseDirective {
 

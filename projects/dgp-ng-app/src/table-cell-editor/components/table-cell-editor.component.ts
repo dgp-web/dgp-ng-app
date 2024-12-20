@@ -14,6 +14,7 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpTableCellEditorComponent {
 

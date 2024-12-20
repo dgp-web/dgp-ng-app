@@ -73,6 +73,7 @@ import { chartFeatures } from "../../../constants/charts/chart-features.constant
         </dgp-docs-page>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomePageComponent {
 

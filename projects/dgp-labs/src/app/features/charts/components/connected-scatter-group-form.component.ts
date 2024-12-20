@@ -40,6 +40,7 @@ import { ConnectedScatterGroup, Shape } from "dgp-ng-charts";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ConnectedScatterGroupFormComponent extends DgpModelEditorComponentBase<ConnectedScatterGroup> {
 

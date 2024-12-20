@@ -109,6 +109,7 @@ import { AttributeMetadata } from "data-modeling";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DockingLayoutLabsPageComponent {
 

@@ -5,6 +5,7 @@ import { computeStarPoints } from "../functions/compute-star-points.function";
 
 @Directive({
     selector: "[dgpStar]",
+    standalone: false
 })
 export class StarDirective extends SVGShapeBaseDirective {
 

@@ -3,7 +3,8 @@ import { Store } from "@ngrx/store";
 import { openFileManager } from "../actions";
 
 @Directive({
-    selector: "[dgpFileDragListener]"
+    selector: "[dgpFileDragListener]",
+    standalone: false
 })
 export class DragFileListenerDirective {
 

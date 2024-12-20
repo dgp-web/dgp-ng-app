@@ -69,7 +69,8 @@ import { ShapeBaseComponent } from "./shape.base-component";
                      [attr.mask]="getMaskForFillPattern()"/>
         </svg>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TriangleDownShapeComponent extends ShapeBaseComponent {
 

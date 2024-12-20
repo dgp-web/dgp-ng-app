@@ -175,6 +175,7 @@ import * as _ from "lodash";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TableCellEditorDocsPageComponent {
 

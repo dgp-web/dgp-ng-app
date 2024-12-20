@@ -1,7 +1,10 @@
 import { Directive, HostListener, Input } from "@angular/core";
 import { DgpTableCellEditorService } from "../service/table-cell-editor.service";
 
-@Directive({selector: "[dgpCloseTableCellEditor]"})
+@Directive({
+    selector: "[dgpCloseTableCellEditor]",
+    standalone: false
+})
 export class DgpCloseTableCellEditorDirective {
 
     @Input()

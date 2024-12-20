@@ -47,7 +47,8 @@ import { BehaviorSubject } from "rxjs";
         }
 
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> {
 

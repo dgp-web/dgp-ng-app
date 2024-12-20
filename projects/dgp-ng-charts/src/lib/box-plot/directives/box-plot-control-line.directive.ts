@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { BoxPlotControlLine, BoxPlotScales } from "../models";
 import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 
-@Directive({selector: "[dgpBoxPlotControlLine]"})
+@Directive({
+    selector: "[dgpBoxPlotControlLine]",
+    standalone: false
+})
 export class BoxPlotControlLineDirective implements OnChanges {
 
     @Input()

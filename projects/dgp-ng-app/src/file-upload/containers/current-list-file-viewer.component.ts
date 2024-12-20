@@ -15,7 +15,8 @@ import { Component } from "@angular/core";
             flex-grow: 1;
             overflow: auto;
         }
-    `]
+    `],
+    standalone: false
 })
 export class CurrentListFileViewerComponent {
 }

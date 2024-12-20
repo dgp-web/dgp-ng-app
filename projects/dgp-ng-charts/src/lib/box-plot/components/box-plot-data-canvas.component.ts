@@ -45,6 +45,7 @@ import { DotConfig } from "../../connected-scatter-plot/models";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpBoxPlotDataCanvasComponent implements AfterViewInit, OnDestroy, DotConfig {
 

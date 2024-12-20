@@ -15,7 +15,8 @@ import { downloadFile } from "../../../file-upload/actions";
                 shortcutKey="d">
             <mat-icon>file_download</mat-icon>
         </button>
-    `
+    `,
+    standalone: false
 })
 export class DownloadCurrentFileItemComponent extends DgpContainer<FileUploadState> {
 

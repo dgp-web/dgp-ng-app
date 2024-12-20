@@ -17,7 +17,8 @@ import { Component } from "@angular/core";
         </p>
 
         <dgp-docs-code-block [code]="hybridImplSampleCode"></dgp-docs-code-block>
-    `
+    `,
+    standalone: false
 })
 export class HybridPrimitiveDocsSectionComponent {
     readonly hybridImplSampleCode =

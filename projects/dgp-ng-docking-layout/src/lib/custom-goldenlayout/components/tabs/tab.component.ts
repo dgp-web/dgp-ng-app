@@ -21,7 +21,8 @@ import { ComponentConfiguration } from "../../types";
                 {{model.title}}
             </a>
         </li>
-    `
+    `,
+    standalone: false
 })
 export class TabComponent extends DgpView<ComponentConfiguration> {
 

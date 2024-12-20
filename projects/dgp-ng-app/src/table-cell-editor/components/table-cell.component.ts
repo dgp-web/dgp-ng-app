@@ -43,7 +43,8 @@ import { DgpTableCellEditorComponent } from "./table-cell-editor.component";
         }
 
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class DgpTableCellComponent {

@@ -43,6 +43,7 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PdfViewerComponent extends FileViewerComponentBase implements OnChanges {
 

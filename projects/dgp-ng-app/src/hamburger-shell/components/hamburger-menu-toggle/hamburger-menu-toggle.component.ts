@@ -22,6 +22,7 @@ import { DgpContainer } from "../../../utils/container.component-base";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class HamburgerMenuToggleComponent extends DgpContainer<HamburgerShellState> {

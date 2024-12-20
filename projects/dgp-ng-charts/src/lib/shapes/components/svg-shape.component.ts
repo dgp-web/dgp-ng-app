@@ -66,7 +66,8 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class SVGShapeComponent extends DgpView<Shape> {
 

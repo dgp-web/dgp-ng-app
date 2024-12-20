@@ -35,7 +35,8 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
             align-items: center;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FileViewerComponent extends FileViewerComponentBase implements OnChanges {
 

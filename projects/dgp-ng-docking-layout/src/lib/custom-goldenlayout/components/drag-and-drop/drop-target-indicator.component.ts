@@ -27,7 +27,8 @@ import { AreaSides } from "../../models/area.model";
             opacity: .1
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DropTargetIndicatorComponent implements AfterViewInit {
 

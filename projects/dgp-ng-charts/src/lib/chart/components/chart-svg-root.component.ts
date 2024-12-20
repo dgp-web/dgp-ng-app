@@ -40,6 +40,7 @@ import { defaultChartConfig } from "../../shared/constants";
             </g>
         </svg:g>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpChartSVGRootComponent {
 

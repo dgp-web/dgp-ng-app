@@ -28,7 +28,8 @@ import { DgpView } from "../../../utils/view";
             display: flex;
             flex-direction: column;
         }
-    `]
+    `],
+    standalone: false
 })
 export class FileItemListItemComponent extends DgpView<FileItem> {
 

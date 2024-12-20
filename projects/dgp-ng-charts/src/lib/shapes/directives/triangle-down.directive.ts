@@ -5,6 +5,7 @@ import { computeTriangleDownPoints } from "../functions/compute-triangle-down-po
 
 @Directive({
     selector: "[dgpTriangleDown]",
+    standalone: false
 })
 export class TriangleDownDirective extends SVGShapeBaseDirective {
 

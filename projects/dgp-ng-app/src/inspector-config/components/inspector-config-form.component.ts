@@ -79,7 +79,8 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
 
         </dgp-inspector>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInspectorConfigFormComponent extends DgpModelEditorComponentBase<InspectorConfig> {
 

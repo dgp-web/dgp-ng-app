@@ -3,7 +3,10 @@ import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { getJitter } from "../functions";
 import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.constant";
 
-@Directive({selector: "[dgpBoxPlotOutlierTooltip]"})
+@Directive({
+    selector: "[dgpBoxPlotOutlierTooltip]",
+    standalone: false
+})
 export class BoxPlotOutlierTooltipDirective implements OnChanges {
 
     @Input()

@@ -23,7 +23,8 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
             line-height: initial !important;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpExpansionToggleComponent extends DgpModelEditorComponentBase<boolean> {
 

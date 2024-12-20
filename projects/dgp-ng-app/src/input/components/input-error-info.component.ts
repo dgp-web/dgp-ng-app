@@ -41,6 +41,7 @@ import { observeAttribute$ } from "../../utils/observe-input";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInputErrorInfoComponent extends DgpView<any> {
 

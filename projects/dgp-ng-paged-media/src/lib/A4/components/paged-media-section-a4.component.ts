@@ -4,7 +4,8 @@ import { Component } from "@angular/core";
     selector: "dgp-paged-media-section-A4",
     template: `
         <ng-content></ng-content>
-    `
+    `,
+    standalone: false
 })
 export class DgpPagedMediaSectionA4Component {
 

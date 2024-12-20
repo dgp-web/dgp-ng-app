@@ -14,7 +14,8 @@ import { getSelectedFileItem } from "../selectors";
             width: 100%;
             height: 100%;
         }
-    `]
+    `],
+    standalone: false
 })
 export class CurrentFileViewerComponent extends DgpContainer<FileUploadState> {
     readonly selectedFileItem$ = this.select(getSelectedFileItem);

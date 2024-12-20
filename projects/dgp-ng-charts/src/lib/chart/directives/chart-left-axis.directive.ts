@@ -4,7 +4,10 @@ import * as d3 from "d3";
 import { AxisScales } from "../../shared/models";
 
 
-@Directive({selector: "[dgpChartLeftAxis]"})
+@Directive({
+    selector: "[dgpChartLeftAxis]",
+    standalone: false
+})
 export class DgpChartLeftAxisDirective implements OnChanges {
 
     @Input()

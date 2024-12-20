@@ -21,7 +21,8 @@ import { getSelectedActionContextLabel } from "../../action-context/selectors/ge
                 {{ label }}
             </mat-toolbar>
         </div>
-    `
+    `,
+    standalone: false
 })
 export class DgpPageHeaderContextActionsComponent extends DgpContainer<ActionContextState> {
     readonly isAnyActionContextSelected$ = this.select(isAnyActionContextSelected);

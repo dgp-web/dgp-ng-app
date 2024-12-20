@@ -15,6 +15,7 @@ import { InspectorConfig } from "../../inspector/models";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInspectorConfigComponent extends DgpContainer<ThemeSwitcherState> {
     readonly inspectorConfig$ = this.select(getCurrentInspectorConfig);

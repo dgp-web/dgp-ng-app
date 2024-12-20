@@ -1,7 +1,10 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { Bar, BarChartScales, BarGroup } from "../models";
 
-@Directive({selector: "[dgpBarChartBar]"})
+@Directive({
+    selector: "[dgpBarChartBar]",
+    standalone: false
+})
 export class BarChartBarDirective implements OnChanges {
 
     @Input()

@@ -61,7 +61,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class DgpBoxPlotComponent extends DgpCardinalYAxisChartComponentBase implements BoxPlot {
 

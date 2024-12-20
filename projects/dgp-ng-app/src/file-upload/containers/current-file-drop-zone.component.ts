@@ -18,7 +18,8 @@ import { Many } from "data-modeling";
             flex-direction: column;
             flex-grow: 1;
         }
-    `]
+    `],
+    standalone: false
 })
 export class CurrentFileDropZoneComponent extends DgpContainer<FileUploadState> {
 

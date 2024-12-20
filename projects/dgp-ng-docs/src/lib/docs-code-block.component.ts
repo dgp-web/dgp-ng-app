@@ -24,6 +24,7 @@ import hljs from "highlight.js";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocsCodeBlockComponent implements OnChanges {
 

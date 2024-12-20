@@ -46,7 +46,8 @@ import { ThemePalette } from "@angular/material/core";
             padding: 0;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInputFieldComponent extends DgpView<any> implements InspectorConfig {
 
