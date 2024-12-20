@@ -57,7 +57,7 @@
   "dependencies": {
     "@angular/animations": "^18.2.13",
     "@angular/cdk": "^18.2.14",
-    "@angular/cdk-experimental": "^17.3.10",
+    "@angular/cdk-experimental": "^18.2.13",
     "@angular/common": "^18.2.13",
     "@angular/compiler": "^18.2.13",
     "@angular/core": "^18.2.13",
@@ -67,9 +67,9 @@
     "@angular/platform-browser-dynamic": "^18.2.13",
     "@angular/router": "^18.2.13",
     "@angularclass/hmr": "^2.1.3",
-    "@ngrx/effects": "^17.2.0",
-    "@ngrx/store": "^17.2.0",
-    "@ngrx/store-devtools": "^17.2.0",
+    "@ngrx/effects": "^18.1.1",
+    "@ngrx/store": "^18.1.1",
+    "@ngrx/store-devtools": "^18.1.1",
     "@stdlib/random-base-weibull": "^0.0.6",
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.5",
@@ -84,7 +84,8 @@
     "rxjs": "~6.6.6",
     "seedrandom": "^3.0.5",
     "tslib": "^2.3.1",
-    "zone.js": "~0.14"
+    "zone.js": "~0.14",
+    "@ngrx/operators": "^18.0.0"
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.1802.12",
