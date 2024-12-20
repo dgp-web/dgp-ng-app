@@ -157,6 +157,9 @@
     .dgp-routing-overlay-dialog-panel {
         .mat-mdc-dialog-container {
             --mdc-dialog-container-color: transparent !important;
+        }
+
+        .mat-mdc-dialog-container .mdc-dialog__surface {
             box-shadow: none !important;
         }
     }
