@@ -13,6 +13,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dial
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
 import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "../functions";
 import { DgpTableCellEditorService } from "../service/table-cell-editor.service";
+import { DgpTableCellEditorComponent } from "./table-cell-editor.component";
 
 @Component({
     selector: "dgp-table-cell",
@@ -97,10 +98,11 @@ export class DgpTableCellComponent {
             tableCellEditorSizes, configureDialogWidth, triggerButtonElement
         });
 
-        this.dialogRef = this.matDialog.open(this.editorTemplate, {
+        this.dialogRef = this.matDialog.open(DgpTableCellEditorComponent, {
             ...this.editDialogConfig,
             position,
             backdropClass: "mat-dialog-no-backdrop",
+            data: this.editorTemplate
         });
         this.service.cacheCurrentEditor(this.dialogRef);
 

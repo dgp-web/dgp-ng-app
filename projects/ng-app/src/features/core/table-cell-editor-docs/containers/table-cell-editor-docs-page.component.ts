@@ -83,11 +83,11 @@ import * as _ from "lodash";
 
                                 {{ model.boolean }}
 
-                                <ng-container *dgpTableCellEditor>
+                                <mat-dialog-content *dgpTableCellEditor>
 
                                     <mat-slide-toggle [(ngModel)]="editedModel"></mat-slide-toggle>
 
-                                </ng-container>
+                                </mat-dialog-content>
 
                             </dgp-table-cell>
                         </td>
@@ -99,7 +99,7 @@ import * as _ from "lodash";
 
                                 {{ model.object.firstName }} {{ model.object.lastName }}
 
-                                <ng-container *dgpTableCellEditor>
+                                <mat-dialog-content *dgpTableCellEditor>
 
                                     <mat-form-field>
                                         <mat-label>
@@ -130,7 +130,7 @@ import * as _ from "lodash";
                                         </mat-hint>
                                     </mat-form-field>
 
-                                </ng-container>
+                                </mat-dialog-content>
 
                             </dgp-table-cell>
                         </td>

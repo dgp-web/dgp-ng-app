@@ -5,6 +5,7 @@ import { DgpTableCellComponent } from "./components/table-cell.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import { DgpCloseTableCellEditorDirective } from "./directives/close-table-cell-editor.directive";
+import { DgpTableCellEditorComponent } from "./components/table-cell-editor.component";
 
 @NgModule({
     imports: [
@@ -15,12 +16,14 @@ import { DgpCloseTableCellEditorDirective } from "./directives/close-table-cell-
     declarations: [
         DgpTableCellComponent,
         DgpTableCelLEditorDirective,
-        DgpCloseTableCellEditorDirective
+        DgpCloseTableCellEditorDirective,
+        DgpTableCellEditorComponent
     ],
     exports: [
         DgpTableCellComponent,
         DgpTableCelLEditorDirective,
-        DgpCloseTableCellEditorDirective
+        DgpCloseTableCellEditorDirective,
+        DgpTableCellEditorComponent
     ]
 })
 export class DgpTableCellModule {
