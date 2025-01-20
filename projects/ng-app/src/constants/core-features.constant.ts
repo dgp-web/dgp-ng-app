@@ -16,6 +16,11 @@ export const coreFeatures: ReadonlyArray<AppFeature> = [{
     label: "Component primitives",
     description: "Utilities and patterns for building components."
 }, {
+    route: "/details",
+    matIconName: "expand_more",
+    label: "Details",
+    description: "Open or close panels with additional information."
+}, {
     route: "/empty-state",
     matIconName: "texture",
     label: "Empty state",

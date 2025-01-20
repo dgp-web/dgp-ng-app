@@ -29,6 +29,7 @@ import { ChartDocsModule } from "../features/charts/chart-docs.module";
 import { DragAndDropDocsModule } from "../features/drag-and-drop/drag-and-drop.module";
 import { DocsDocsModule } from "../features/docs/docs-docs.module";
 import { ComponentPrimitivesDocsModule } from "../features/core/component-primitives-docs/component-primitives-docs.module";
+import { DetailsDocsModule } from "../features/core/details-docs/details-docs.module";
 
 @NgModule({
     imports: [
@@ -94,7 +95,8 @@ import { ComponentPrimitivesDocsModule } from "../features/core/component-primit
         DockingLayoutDocsModule,
         DocsDocsModule,
         DgpInspectorModule,
-        ComponentPrimitivesDocsModule
+        ComponentPrimitivesDocsModule,
+        DetailsDocsModule
     ],
     declarations: [
         AppComponent
