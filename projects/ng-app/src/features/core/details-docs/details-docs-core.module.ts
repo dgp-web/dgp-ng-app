@@ -1,19 +1,25 @@
 import { NgModule } from "@angular/core";
 import { containers } from "./containers/containers";
-import { DgpDetailsModule, DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
+import { DgpDetailsModule, DgpHamburgerMenuToggleModule, DgpPageHeaderModule, SafePipeModule } from "dgp-ng-app";
 import { DocsModule } from "dgp-ng-docs";
+import { MatTabsModule } from "@angular/material/tabs";
+import { components } from "./components/components";
 
 @NgModule({
     imports: [
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
         DocsModule,
-        DgpDetailsModule
+        DgpDetailsModule,
+        MatTabsModule,
+        SafePipeModule
     ],
     declarations: [
+        ...components,
         ...containers
     ],
     exports: [
+        ...components,
         ...containers
     ],
     providers: []

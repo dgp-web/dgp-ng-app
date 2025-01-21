@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { detailsDemoTemplate } from "../components/details-demo.template";
 
 @Component({
     selector: "dgp-details-docs-page",
@@ -20,22 +21,14 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                     Open or close panels with additional information.
                 </p>
 
-                <dgp-docs-section-title>
-                    Demo
-                </dgp-docs-section-title>
-
-                <dgp-details style="margin-top: 8px; margin-bottom: 8px;"
-                             [expanded]="false">
-
-                    <ng-container summary>
-                        John Doe
-                    </ng-container>
-
-                    Has a lot of work to do. He represents male humans
-                    whenever sample data is needed.
-
-                </dgp-details>
-
+                <mat-tab-group>
+                    <mat-tab label="Demo">
+                        <dgp-details-demo/>
+                    </mat-tab>
+                    <mat-tab label="Code">
+                        <dgp-docs-code-block [code]="demoCode"/>
+                    </mat-tab>
+                </mat-tab-group>
 
                 <dgp-docs-section-title>
                     Parameters
@@ -100,6 +93,57 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                             Controls whether the state of the panel can be changed.
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            togglePosition
+                        </td>
+                        <td>
+                            Input
+                        </td>
+                        <td>
+                            "start" | "end"
+                        </td>
+                        <td>
+                            default value: "start"
+                        </td>
+                        <td>
+                            Defines where the caret for opening and closing is placed.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i>regular content</i>
+                        </td>
+                        <td>
+                            content-slot
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            The panel content is just placed between the tags.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            summary
+                        </td>
+                        <td>
+                            content-slot
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            The heading of the panel that is always visible.
+                        </td>
+                    </tr>
                 </table>
 
             </dgp-docs-page-content>
@@ -115,16 +159,12 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             border: 1px solid gray;
         }
 
-        th {
+        th, td {
             text-align: left;
         }
-
-        td {
-            text-align: center;
-        }
-   `],
+    `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailsDocsPageComponent {
-
+    readonly demoCode = detailsDemoTemplate;
 }
