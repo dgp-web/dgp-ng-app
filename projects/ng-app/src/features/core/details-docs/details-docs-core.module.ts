@@ -4,6 +4,7 @@ import { DgpDetailsModule, DgpHamburgerMenuToggleModule, DgpPageHeaderModule, Sa
 import { DocsModule } from "dgp-ng-docs";
 import { MatTabsModule } from "@angular/material/tabs";
 import { components } from "./components/components";
+import { NgForOf, NgIf } from "@angular/common";
 
 @NgModule({
     imports: [
@@ -12,7 +13,9 @@ import { components } from "./components/components";
         DocsModule,
         DgpDetailsModule,
         MatTabsModule,
-        SafePipeModule
+        SafePipeModule,
+        NgForOf,
+        NgIf
     ],
     declarations: [
         ...components,

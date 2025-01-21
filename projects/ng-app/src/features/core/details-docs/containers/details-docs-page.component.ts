@@ -1,5 +1,41 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { detailsDemoTemplate } from "../components/details-demo.template";
+import { ModelMetadata } from "data-modeling";
+import { Details } from "../../../../../../dgp-ng-app/src/details/models";
+import { notNullOrUndefined } from "dgp-ng-app";
+
+export const detailsMetadata: ModelMetadata<Details> = {
+    attributes: {
+        expanded: {
+            label: "expanded",
+            type: "boolean",
+            defaultValue: true,
+            description: `Controls whether the panel is expanded or not.`
+        },
+        expandedChange: {
+            label: "expandedChange",
+            type: "Observable<boolean>",
+            description: `Emits when the panel is opened or closed by the user.`
+        },
+        expandable: {
+            label: "expandable",
+            type: "boolean",
+            defaultValue: true,
+            description: `Controls whether the state of the panel can be changed.`
+        },
+        summary: {
+            label: "summary",
+            type: "string",
+            description: `The heading of the panel that is always visible.`
+        },
+        togglePosition: {
+            label: "togglePosition",
+            type: "'start' | 'end'",
+            defaultValue: "start",
+            description: `Defines where the caret for opening and closing is placed.`
+        }
+    }
+};
 
 @Component({
     selector: "dgp-details-docs-page",
@@ -34,114 +70,29 @@ import { detailsDemoTemplate } from "../components/details-demo.template";
                     Parameters
                 </dgp-docs-section-title>
 
+                <!-- TODO: Extract API table -->
                 <table>
                     <tr>
                         <th>Name</th>
-                        <th>Category</th>
                         <th>Type</th>
                         <th>Metadata</th>
                         <th>Description</th>
                     </tr>
-                    <tr>
+                    <tr *ngFor="let attributeMetadata of attributes">
                         <td>
-                            expanded
+                            {{ attributeMetadata.label }}
                         </td>
                         <td>
-                            Input
+                            {{ attributeMetadata.type }}
                         </td>
                         <td>
-                            boolean
-                        </td>
-                        <td>
-                            default value: true
-                        </td>
-                        <td>
-                            Controls whether the panel is expanded or not.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            expandedChange
-                        </td>
-                        <td>
-                            Output
-                        </td>
-                        <td>
-                            boolean
-                        </td>
-                        <td>
+                            <ng-container *ngIf="hasDefaultValue(attributeMetadata)">
+                                default value: {{ attributeMetadata.defaultValue }}
+                            </ng-container>
 
                         </td>
                         <td>
-                            Emits when the panel is opened or closed by the user.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            expandable
-                        </td>
-                        <td>
-                            Input
-                        </td>
-                        <td>
-                            boolean
-                        </td>
-                        <td>
-                            default value: true
-                        </td>
-                        <td>
-                            Controls whether the state of the panel can be changed.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            togglePosition
-                        </td>
-                        <td>
-                            Input
-                        </td>
-                        <td>
-                            "start" | "end"
-                        </td>
-                        <td>
-                            default value: "start"
-                        </td>
-                        <td>
-                            Defines where the caret for opening and closing is placed.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i>regular content</i>
-                        </td>
-                        <td>
-                            content-slot
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-                            The panel content is just placed between the tags.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            summary
-                        </td>
-                        <td>
-                            content-slot
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-                            The heading of the panel that is always visible.
+                            {{ attributeMetadata.description }}
                         </td>
                     </tr>
                 </table>
@@ -167,4 +118,9 @@ import { detailsDemoTemplate } from "../components/details-demo.template";
 })
 export class DetailsDocsPageComponent {
     readonly demoCode = detailsDemoTemplate;
+    readonly attributes = Object.values(detailsMetadata.attributes);
+
+    hasDefaultValue(attributeMetadata: any) {
+        return notNullOrUndefined(attributeMetadata.defaultValue);
+    }
 }
