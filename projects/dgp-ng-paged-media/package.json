@@ -1,7 +1,15 @@
 {
     "name": "dgp-ng-paged-media",
-    "version": "16.9.4",
+    "version": "16.9.5",
     "license": "MIT",
+    "private": false,
+    "author": {
+        "name": "dgp-web"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dgp-web/dgp-ng-app"
+    },
     "peerDependencies": {
         "@angular/common": "^16",
         "@angular/core": "^16"
