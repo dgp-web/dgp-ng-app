@@ -1,9 +1,10 @@
 {
     "name": "dgp-ng-data-export",
     "version": "0.0.1",
+    "license": "MIT",
     "peerDependencies": {
-        "@angular/common": "^14",
-        "@angular/core": "^14"
+        "@angular/common": "^16",
+        "@angular/core": "^16"
     },
     "dependencies": {
         "tslib": "^2.3.0"
