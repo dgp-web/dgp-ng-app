@@ -1,0 +1,21 @@
+{
+    "name": "dgp-ng-tables",
+    "version": "16.8.4-mdc",
+    "license": "MIT",
+    "private": false,
+    "author": {
+        "name": "dgp-web"
+    },
+    "description": "Create powerful Angular tables for viewing and editing data",
+    "peerDependencies": {
+        "@angular/common": "^16",
+        "@angular/core": "^16"
+    },
+    "dependencies": {
+        "tslib": "^2"
+    },
+    "sideEffects": false,
+    "ng-update": {
+        "migrations": "./schematics/migrations.json"
+    }
+}

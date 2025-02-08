@@ -50,6 +50,9 @@
         "dgp-ng-paged-media": [
           "dist/dgp-ng-paged-media/dgp-ng-paged-media",
           "dist/dgp-ng-paged-media"
+        ],
+        "dgp-ng-tables": [
+          "dist/dgp-ng-tables"
         ]
       },
       "useDefineForClassFields": false
