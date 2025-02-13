@@ -34,6 +34,7 @@ import { DgpDataExportLabsModule } from "./features/data-export/data-export-labs
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { LazyRenderedLabsModule } from "./features/lazy-rendered/lazy-rendered-labs.module";
+import { TableLabsModule } from "./features/tables/table-labs.module";
 
 // TODO: Investigate whtat happens if reducers are passed
 export interface User {
@@ -138,7 +139,8 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         DgpNegatePipeModule,
         DgpSpacerModule,
         MatTooltipModule,
-        LazyRenderedLabsModule
+        LazyRenderedLabsModule,
+        TableLabsModule
     ],
     providers: [appReducerProvider],
     bootstrap: [AppComponent]

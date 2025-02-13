@@ -82,6 +82,13 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
                         </dgp-inspector-section>
                     </dgp-inspector-section>
+
+                    <dgp-inspector-section label="Tables"
+                                           [(expanded)]="isTableSectionExpanded">
+                        <dgp-hamburger-menu-entry label="Editable Table"
+                                                  route="/editable-table"
+                                                  matIconName="grid_on"></dgp-hamburger-menu-entry>
+                    </dgp-inspector-section>
                 </dgp-hamburger-menu-entries>
             </dgp-hamburger-menu>
 
@@ -104,12 +111,14 @@ export class AppComponent extends DgpContainer {
     isLayoutSectionExpanded = true;
     isInteractionSectionExpanded = true;
     isChartUtilitySectionExpanded = true;
+    isTableSectionExpanded = true;
 
     canOpenAllSections(): boolean {
         return !this.isChartsSectionExpanded
             || !this.isLayoutSectionExpanded
             || !this.isInteractionSectionExpanded
-            || !this.isChartUtilitySectionExpanded;
+            || !this.isChartUtilitySectionExpanded
+            || !this.isTableSectionExpanded;
     }
 
     openAllSections() {
@@ -117,13 +126,15 @@ export class AppComponent extends DgpContainer {
         this.isLayoutSectionExpanded = true;
         this.isInteractionSectionExpanded = true;
         this.isChartUtilitySectionExpanded = true;
+        this.isTableSectionExpanded = true;
     }
 
     canCloseAllSections(): boolean {
         return this.isChartsSectionExpanded
             || this.isLayoutSectionExpanded
             || this.isInteractionSectionExpanded
-            || this.isChartUtilitySectionExpanded;
+            || this.isChartUtilitySectionExpanded
+            || this.isTableSectionExpanded;
     }
 
     closeAllSections() {
@@ -131,5 +142,6 @@ export class AppComponent extends DgpContainer {
         this.isLayoutSectionExpanded = false;
         this.isInteractionSectionExpanded = false;
         this.isChartUtilitySectionExpanded = false;
+        this.isTableSectionExpanded = false;
     }
 }
