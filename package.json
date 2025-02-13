@@ -51,7 +51,12 @@
         "dgp-labs:ng-serve": "ng serve dgp-labs --configuration development",
         "dgp-labs:publish": "firebase use dgp-labs && firebase deploy --only hosting:dgp-labs",
         "dgp-labs:test": "ng test dgp-labs",
-        "dgp-labs:test:prod": "ng test dgp-labs --single-run"
+        "dgp-labs:test:prod": "ng test dgp-labs --single-run",
+        "dgp-ng-tables:build:watch": "ng build dgp-ng-tables --watch",
+        "dgp-ng-tables:build:prod": "ng build dgp-ng-tables --configuration production",
+        "postdgp-ng-tables:build:prod": "cpx projects/dgp-ng-tables/src/lib/_styles.scss dist/dgp-ng-tables && cpx projects/dgp-ng-tables/schematics/** dist/dgp-ng-tables/schematics",
+        "dgp-ng-tables:publish": "npm publish ./dist/dgp-ng-tables",
+        "dgp-ng-tables:test": "ng test --code-coverage dgp-ng-tables"
     },
     "private": true,
     "dependencies": {

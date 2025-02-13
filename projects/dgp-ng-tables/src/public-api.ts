@@ -2,6 +2,5 @@
  * Public API Surface of dgp-ng-tables
  */
 
-export * from './lib/dgp-ng-tables.service';
-export * from './lib/dgp-ng-tables.component';
-export * from './lib/dgp-ng-tables.module';
+export { DgpTableEditorModule } from "./lib/editable-table/editable-table.module";
+export { DgpEditableTableComponent } from "./lib/editable-table/components/editable-table.component";
