@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { EditableTable, FormatMaskType, TableCellContent, TableColumn, TableRow } from "dgp-ng-tables";
-import { Many } from "data-modeling";
+import { EditableTable } from "dgp-ng-tables";
 
 @Component({
     selector: "dgp-table-labs-page",
@@ -30,32 +29,15 @@ export class TableLabsPageComponent {
         columns: [{
             columnKey: "label",
             label: "Label",
-            position: 1,
-            formatMask: {
-                type: FormatMaskType.Auto
-            }
         }],
         rows: [{
-            rowKey: "01",
-            position: 1,
+            rowKey: "01"
         }],
         model: [{
             columnKey: "label",
             rowKey: "01",
             value: "Jason",
-        }],
-        canAddRows: true,
-        canAddColumns: true,
-        canEditCellFormatMasks: true,
-        canEditColumnFormatMasks: true,
-        canMoveRows: true,
-        canMoveColumns: true,
-        canRemoveRows: true,
-        canRemoveColumns: true,
-        canResizeColumns: true,
-        canResizeRows: true,
-        sizingStrategy: "default",
-        cells: []
+        }]
     };
 
 }

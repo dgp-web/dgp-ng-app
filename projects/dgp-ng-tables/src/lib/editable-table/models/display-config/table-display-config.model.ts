@@ -1,3 +1,3 @@
 export interface TableDisplayConfig {
-    readonly sizingStrategy: "default" | "stretch";
+    readonly sizingStrategy?: "default" | "stretch";
 }

@@ -1,3 +1,3 @@
 export interface TableCellEditConfig {
-    readonly canEditCellFormatMasks: boolean;
+    readonly canEditCellFormatMasks?: boolean;
 }

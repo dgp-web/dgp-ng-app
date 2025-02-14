@@ -1,13 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from "@angular/core";
 import { Many } from "data-modeling";
-import { TableRow } from "../models/structure/row/table-row.model";
-import { TableColumn } from "../models/structure/column/table-column.model";
-import { TableCell } from "../models/structure/cell/table-cell.model";
-import { TableCellContent } from "../models/model/table-cell-content.model";
-import { EditableTable } from "../models/editable-table.model";
-import { ColumnKey } from "../models/structure/column/column-key.model";
-import { RowKey } from "../models/structure/row/row-key.model";
-import { DgpModelEditorComponentBase, observeAttribute$ } from "dgp-ng-app";
+import { ColumnKey, EditableTable, RowKey, TableCell, TableCellContent, TableColumn, TableRow } from "../models";
+import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { map } from "rxjs/operators";
 
 export const trackByColumnKey: TrackByFunction<ColumnKey> = (index, item) => item.columnKey;
