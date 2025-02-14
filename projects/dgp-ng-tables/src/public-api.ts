@@ -4,3 +4,4 @@
 
 export { DgpTableEditorModule } from "./lib/editable-table/editable-table.module";
 export { DgpEditableTableComponent } from "./lib/editable-table/components/editable-table.component";
+export * from "./lib/editable-table/models";
