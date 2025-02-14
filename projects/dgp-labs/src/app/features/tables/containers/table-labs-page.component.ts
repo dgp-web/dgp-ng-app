@@ -1,4 +1,6 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { EditableTable, FormatMaskType, TableCellContent, TableColumn, TableRow } from "dgp-ng-tables";
+import { Many } from "data-modeling";
 
 @Component({
     selector: "dgp-table-labs-page",
@@ -7,6 +9,9 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             <dgp-hamburger-menu-toggle/>
             Editable table
         </dgp-page-header>
+
+        <dgp-editable-table dgpEditableTableModel
+                            [tableModel]="editableTable"/>
     `,
     styles: [`
         :host {
@@ -20,5 +25,37 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableLabsPageComponent {
+
+    readonly editableTable: EditableTable = {
+        columns: [{
+            columnKey: "label",
+            label: "Label",
+            position: 1,
+            formatMask: {
+                type: FormatMaskType.Auto
+            }
+        }],
+        rows: [{
+            rowKey: "01",
+            position: 1,
+        }],
+        model: [{
+            columnKey: "label",
+            rowKey: "01",
+            value: "Jason",
+        }],
+        canAddRows: true,
+        canAddColumns: true,
+        canEditCellFormatMasks: true,
+        canEditColumnFormatMasks: true,
+        canMoveRows: true,
+        canMoveColumns: true,
+        canRemoveRows: true,
+        canRemoveColumns: true,
+        canResizeColumns: true,
+        canResizeRows: true,
+        sizingStrategy: "default",
+        cells: []
+    };
 
 }

@@ -7,7 +7,7 @@ import { TableCellContent } from "../models/model/table-cell-content.model";
 import { EditableTable } from "../models/editable-table.model";
 import { ColumnKey } from "../models/structure/column/column-key.model";
 import { RowKey } from "../models/structure/row/row-key.model";
-import { observeAttribute$ } from "dgp-ng-app";
+import { DgpModelEditorComponentBase, observeAttribute$ } from "dgp-ng-app";
 import { map } from "rxjs/operators";
 
 export const trackByColumnKey: TrackByFunction<ColumnKey> = (index, item) => item.columnKey;
@@ -32,16 +32,25 @@ export const trackByRowKey: TrackByFunction<RowKey> = (index, item) => item.rowK
         </table>
     `,
     styles: [`
+        table {
+            border-collapse: collapse;
+        }
 
+        th {
+            border: 1px solid gray;
+        }
+
+        td {
+            border: 1px solid gray;
+        }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpEditableTableComponent implements EditableTable {
+export class DgpEditableTableComponent extends DgpModelEditorComponentBase<Many<TableCellContent>> implements EditableTable {
 
     readonly trackByColumnKey = trackByColumnKey;
     readonly trackByRowKey = trackByRowKey;
 
-    readonly model$ = observeAttribute$(this as DgpEditableTableComponent, "model");
     readonly indexedModel$ = this.model$.pipe(
         map(model => {
             if (!model) return {};
@@ -61,10 +70,6 @@ export class DgpEditableTableComponent implements EditableTable {
     // TODO: Add output
     @Input()
     sizingStrategy: "default";
-
-    // TODO: Add output
-    @Input()
-    model: Many<TableCellContent>;
 
     // TODO: Add output
     @Input()

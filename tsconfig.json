@@ -52,6 +52,7 @@
           "dist/dgp-ng-paged-media"
         ],
         "dgp-ng-tables": [
+          "dist/dgp-ng-tables/dgp-ng-tables",
           "dist/dgp-ng-tables"
         ]
       },

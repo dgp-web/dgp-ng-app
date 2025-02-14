@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { components } from "./components/components";
 import { AsyncPipe, NgForOf } from "@angular/common";
+import { directives } from "./directives/directives";
 
 @NgModule({
     imports: [
@@ -8,12 +9,14 @@ import { AsyncPipe, NgForOf } from "@angular/common";
         AsyncPipe
     ],
     declarations: [
-        ...components
+        ...components,
+        ...directives
     ],
     exports: [
-        ...components
+        ...components,
+        ...directives
     ],
     providers: []
 })
-export class DgpTableEditorModule {
+export class DgpEditableTableModule {
 }

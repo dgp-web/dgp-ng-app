@@ -1,3 +1,4 @@
+// TODO: Include table in name
 export enum FormatMaskType {
     Auto = "auto",
     Text = "text",
