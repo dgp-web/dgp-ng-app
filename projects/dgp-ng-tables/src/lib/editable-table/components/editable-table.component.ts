@@ -1,107 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { Many } from "data-modeling";
-
-export interface TableRow {
-    readonly rowKey: string;
-    readonly position: number;
-    readonly label: string;
-}
-
-export enum FormatMaskType {
-    Auto = "auto",
-    Text = "text",
-    Integer = "integer",
-    Float = "float",
-    Boolean = "boolean",
-    Image = "image",
-    Date = "date"
-}
-
-export interface FormatMaskBase {
-    readonly type: FormatMaskType;
-}
-
-export interface TextFormatMask {
-    readonly type: FormatMaskType.Text;
-}
-
-export interface IntegerFormatMask {
-    readonly type: FormatMaskType.Integer;
-}
-
-export interface FloatFormatMask {
-    readonly type: FormatMaskType.Float;
-}
-
-export interface BooleanFormatMask {
-    readonly type: FormatMaskType.Boolean;
-}
-
-export interface ImageFormatMask {
-    readonly type: FormatMaskType.Image;
-}
-
-export interface DateFormatMask {
-    readonly type: FormatMaskType.Date;
-}
-
-export interface AutoFormatMask {
-    readonly type: FormatMaskType.Auto;
-}
-
-export type FormatMask = AutoFormatMask
-    | TextFormatMask
-    | IntegerFormatMask
-    | FloatFormatMask
-    | BooleanFormatMask
-    | ImageFormatMask
-    | DateFormatMask;
-
-export interface TableColumn {
-    readonly columnKey: string;
-    readonly position: number;
-    readonly label: string;
-    readonly formatMask: FormatMask;
-}
-
-export interface TableCell {
-    readonly rowKey: string;
-    readonly columnKey: string;
-    readonly formatMask: FormatMask;
-}
-
-export interface TableCellContent {
-    readonly rowKey: string;
-    readonly columnKey: string;
-    readonly value: any; // TODO
-}
-
-export interface TableDisplayConfig {
-    readonly sizingStrategy: "default" | "stretch";
-}
-
-export interface TableRowEditConfig {
-    readonly canAddRows: boolean;
-    readonly canRemoveRows: boolean;
-    readonly canMoveRows: boolean;
-    readonly canResizeRows: boolean;
-}
-
-export interface TableColumnEditConfig {
-    readonly canAddColumns: boolean;
-    readonly canRemoveColumns: boolean;
-    readonly canMoveColumns: boolean;
-    readonly canResizeColumns: boolean;
-    readonly canEditColumnFormatMasks: boolean;
-}
-
-export interface TableCellEditConfig {
-    readonly canEditCellFormatMasks: boolean;
-}
-
-export interface TableEditConfig extends TableRowEditConfig, TableColumnEditConfig, TableCellEditConfig {
-
-}
+import { TableRow } from "../models/structure/row/table-row.model";
+import { TableColumn } from "../models/structure/column/table-column.model";
+import { TableCell } from "../models/structure/cell/table-cell.model";
+import { TableCellContent } from "../models/model/table-cell-content.model";
+import { EditableTable } from "../models/editable-table.model";
 
 @Component({
     selector: "dgp-editable-table",
@@ -111,13 +14,27 @@ export interface TableEditConfig extends TableRowEditConfig, TableColumnEditConf
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DgpEditableTableComponent {
+export class DgpEditableTableComponent implements EditableTable {
 
+    // TODO: Add output
+    @Input()
+    sizingStrategy: "default";
+
+    // TODO: Add output
+    @Input()
+    model: Many<TableCellContent>;
+
+    // TODO: Add output
     @Input()
     rows: Many<TableRow>;
 
+    // TODO: Add output
     @Input()
     columns: Many<TableColumn>;
+
+    // TODO: Add output
+    @Input()
+    cells: Many<TableCell>;
 
     /**
      * Row editing capabilities
@@ -153,5 +70,12 @@ export class DgpEditableTableComponent {
 
     @Input()
     canEditColumnFormatMasks: boolean;
+
+    /**
+     * Cell editing capabilities
+     */
+
+    @Input()
+    canEditCellFormatMasks: boolean;
 
 }
