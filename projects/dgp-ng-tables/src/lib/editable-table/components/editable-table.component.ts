@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from "@angular/core";
 import { Many } from "data-modeling";
-import { ColumnKey, EditableTable, RowKey, TableCell, TableCellContent, TableColumn, TableRow } from "../models";
+import { ColumnKey, EditableTable, RowKey, TableCell, TableCellContent, TableColumn, TableRow, TableSizingStrategy } from "../models";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { map } from "rxjs/operators";
 
@@ -63,7 +63,7 @@ export class DgpEditableTableComponent extends DgpModelEditorComponentBase<Many<
 
     // TODO: Add output
     @Input()
-    sizingStrategy: "default";
+    sizingStrategy = TableSizingStrategy.Default;
 
     // TODO: Add output
     @Input()
@@ -82,42 +82,42 @@ export class DgpEditableTableComponent extends DgpModelEditorComponentBase<Many<
      */
 
     @Input()
-    canAddRows: boolean;
+    canAddRows = true;
 
     @Input()
-    canRemoveRows: boolean;
+    canRemoveRows = true;
 
     @Input()
-    canMoveRows: boolean;
+    canMoveRows = true;
 
     @Input()
-    canResizeRows: boolean;
+    canResizeRows = true;
 
     /**
      * Column editing capabilities
      */
 
     @Input()
-    canAddColumns: boolean;
+    canAddColumns = true;
 
     @Input()
-    canRemoveColumns: boolean;
+    canRemoveColumns = true;
 
     @Input()
-    canMoveColumns: boolean;
+    canMoveColumns = true;
 
     @Input()
-    canResizeColumns: boolean;
+    canResizeColumns = true;
 
     @Input()
-    canEditColumnFormatMasks: boolean;
+    canEditColumnFormatMasks = true;
 
     /**
      * Cell editing capabilities
      */
 
     @Input()
-    canEditCellFormatMasks: boolean;
+    canEditCellFormatMasks = true;
 
     getCellContent$(row: RowKey, column: ColumnKey) {
         return this.indexedModel$.pipe(
