@@ -1,8 +1,8 @@
-name: Build and deploy NG 16
+name: Build and deploy NG 17
 
 on:
   push:
-    branches: [ support/ng-16 ]
+    branches: [ support/ng-17 ]
 
 jobs:
   build:
