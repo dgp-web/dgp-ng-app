@@ -149,9 +149,12 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-app/src/test.ts",
                         "progress": false,
                         "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/dgp-ng-app/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-app/karma.conf.js"
                     }
