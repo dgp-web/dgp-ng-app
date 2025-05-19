@@ -17,7 +17,7 @@
         },
         {
             "target": "dgp-labs",
-            "public": "dist/dgp-labs",
+            "public": "dist/dgp-labs/browser",
             "ignore": [
                 "firebase.json",
                 "**/.*",
@@ -107,7 +107,7 @@
         },
         {
             "target": "dgp-ng-app-18",
-            "public": "dist/ng-app",
+            "public": "dist/ng-app/browser",
             "ignore": [
                 "firebase.json",
                 "**/.*",
