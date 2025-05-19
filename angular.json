@@ -96,8 +96,10 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/ng-app/src/test.ts",
-                        "polyfills": "projects/ng-app/src/polyfills.ts",
+                        "polyfills": [
+                            "projects/ng-app/src/polyfills.ts",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/ng-app/tsconfig.spec.json",
                         "karmaConfig": "projects/ng-app/karma.conf.js",
                         "assets": [
@@ -323,8 +325,10 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-labs/src/test.ts",
-                        "polyfills": "projects/dgp-labs/src/polyfills.ts",
+                        "polyfills": [
+                            "projects/dgp-labs/src/polyfills.ts",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/dgp-labs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-labs/karma.conf.js",
                         "assets": [
@@ -573,8 +577,10 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-paged-media-labs/src/test.ts",
-                        "polyfills": "projects/dgp-ng-paged-media-labs/src/polyfills.ts",
+                        "polyfills": [
+                            "projects/dgp-ng-paged-media-labs/src/polyfills.ts",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/dgp-ng-paged-media-labs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-paged-media-labs/karma.conf.js",
                         "inlineStyleLanguage": "scss",
