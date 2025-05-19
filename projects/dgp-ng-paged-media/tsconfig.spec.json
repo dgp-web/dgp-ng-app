@@ -5,11 +5,12 @@
         "outDir": "../../out-tsc/spec",
         "types": [
             "jasmine"
+        ],
+        "lib": [
+            "dom",
+            "es2019"
         ]
     },
-    "files": [
-        "src/test.ts"
-    ],
     "include": [
         "**/*.spec.ts",
         "**/*.d.ts"

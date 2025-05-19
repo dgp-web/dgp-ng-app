@@ -182,10 +182,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-docs/src/test.ts",
                         "tsConfig": "projects/dgp-ng-docs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-docs/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -211,10 +214,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-docking-layout/src/test.ts",
                         "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-docking-layout/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -369,11 +375,14 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-charts/src/test.ts",
                         "tsConfig": "projects/dgp-ng-charts/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-charts/karma.conf.js",
                         "progress": false,
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -399,10 +408,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-drag-and-drop/src/test.ts",
                         "tsConfig": "projects/dgp-ng-drag-and-drop/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-drag-and-drop/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -431,10 +443,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-data-export/src/test.ts",
                         "tsConfig": "projects/dgp-ng-data-export/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-data-export/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -463,10 +478,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-paged-media/src/test.ts",
                         "tsConfig": "projects/dgp-ng-paged-media/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-paged-media/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
