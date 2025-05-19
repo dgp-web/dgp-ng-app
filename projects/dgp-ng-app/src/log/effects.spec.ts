@@ -20,7 +20,7 @@ describe(LogEffects.name, () => {
     let actions: ReplaySubject<any>;
     let snackBar: MatSnackBar;
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
@@ -49,7 +49,7 @@ describe(LogEffects.name, () => {
 
         actions = new ReplaySubject(1);
         snackBar = testBed.inject(MatSnackBar);
-    }));
+    });
 
     it("should create", () => {
         expect(effects)
