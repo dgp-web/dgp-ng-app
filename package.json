@@ -9,6 +9,7 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
+        "build-all-libraries": "npm run dgp-ng-app:build:prod && npm run dgp-ng-docs:build:prod && npm run dgp-ng-charts:build:prod && npm run dgp-ng-docking-layout:build:prod && npm run dgp-ng-drag-and-drop:build:prod && npm run dgp-ng-paged-media:build:prod",
         "dgp-ng-charts:build:prod": "ng build dgp-ng-charts --configuration production",
         "postdgp-ng-charts:build:prod": "cpx projects/dgp-ng-charts/src/lib/_styles.scss dist/dgp-ng-charts && cpx projects/dgp-ng-charts/schematics/** dist/dgp-ng-charts/schematics",
         "dgp-ng-charts:build:watch": "ng build dgp-ng-charts --watch",
