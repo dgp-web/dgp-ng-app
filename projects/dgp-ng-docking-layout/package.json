@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-docking-layout",
-    "version": "16.8.4-mdc",
+    "version": "16.8.5-mdc",
     "license": "MIT",
     "description": "Docking layout and split panels for angular apps",
     "private": false,
@@ -15,8 +15,8 @@
         "tslib": "^2"
     },
     "peerDependencies": {
-        "@angular/common": "^16",
-        "@angular/core": "^16",
+        "@angular/common": ">=16",
+        "@angular/core": ">=16",
         "jquery": "^3",
         "@types/jquery": "^3"
     },

@@ -1,12 +1,12 @@
 {
     "name": "dgp-ng-charts",
-    "version": "16.8.4-mdc",
+    "version": "16.8.5-mdc",
     "dependencies": {
         "tslib": "^2"
     },
     "peerDependencies": {
-        "@angular/common": "^16",
-        "@angular/core": "^16",
+        "@angular/common": ">=16",
+        "@angular/core": ">=16",
         "@types/d3": "^5",
         "d3": "^5"
     },
