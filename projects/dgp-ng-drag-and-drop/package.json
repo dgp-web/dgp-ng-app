@@ -2,8 +2,8 @@
     "name": "dgp-ng-drag-and-drop",
     "version": "17.0.2",
     "peerDependencies": {
-        "@angular/common": "^16",
-        "@angular/core": "^16"
+        "@angular/common": ">=17",
+        "@angular/core": ">=17"
     },
     "dependencies": {
         "tslib": "^2"

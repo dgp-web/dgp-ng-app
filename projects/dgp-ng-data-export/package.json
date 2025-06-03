@@ -2,11 +2,11 @@
     "name": "dgp-ng-data-export",
     "version": "0.0.1",
     "peerDependencies": {
-        "@angular/common": "^14",
-        "@angular/core": "^14"
+        "@angular/common": ">=17",
+        "@angular/core": ">=17"
     },
     "dependencies": {
-        "tslib": "^2.3.0"
+        "tslib": "^2"
     },
     "ng-update": {
         "migrations": "./schematics/migrations.json"

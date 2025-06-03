@@ -16,8 +16,8 @@
         "url": "https://github.com/dgp-web/dgp-ng-app"
     },
     "peerDependencies": {
-        "@angular/common": "^16",
-        "@angular/core": "^16",
+        "@angular/common": ">=17",
+        "@angular/core": ">=17",
         "highlight.js": "^11"
     },
     "ng-update": {

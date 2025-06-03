@@ -2,11 +2,11 @@
     "name": "dgp-ng-paged-media",
     "version": "17.0.2",
     "peerDependencies": {
-        "@angular/common": "^16",
-        "@angular/core": "^16"
+        "@angular/common": ">=17",
+        "@angular/core": ">=17"
     },
     "dependencies": {
-        "tslib": "^2.3.0"
+        "tslib": "^2"
     },
     "ng-update": {
         "migrations": "./schematics/migrations.json"
