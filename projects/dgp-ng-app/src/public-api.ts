@@ -67,6 +67,12 @@ export {
 } from "./confirm-dialog/containers/confirm-dialog.component";
 export { DgpConfirmDialogModule } from "./confirm-dialog/confirm-dialog.module";
 
+// dialog-menu
+export { DgpDialogMenuComponent } from "./dialog-menu/components/dialog-menu.component";
+export { DgpDialogMenuTriggerDirective } from "./dialog-menu/directives/dialog-menu-trigger.directive";
+export { DgpDialogMenuService } from "./dialog-menu/services/dialog-menu.service";
+export { DgpDialogMenuModule } from "./dialog-menu/dialog-menu.module";
+
 // details
 export * from "./details/models";
 export { DgpDetailsComponent } from "./details/components/details.component";

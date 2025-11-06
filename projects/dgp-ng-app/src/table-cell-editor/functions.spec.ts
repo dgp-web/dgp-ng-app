@@ -1,6 +1,6 @@
 import { DialogPosition } from "@angular/material/dialog";
-import { TableCellEditorSizes } from "./models";
-import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "./functions";
+import { TriggerElementSizes } from "./models";
+import { computeTriggerElementSizes, getDialogPositionFromTriggerElementSizes } from "./functions";
 
 describe("table-cell-editor functions", () => {
 
@@ -8,8 +8,8 @@ describe("table-cell-editor functions", () => {
     of the dialog from the bottom left corner and compute the total available
     space for the dialog.`, () => {
 
-        const result = computeTableCellEditorSizes({
-            tableCellBoundingRect: {
+        const result = computeTriggerElementSizes({
+            triggerElementBoundingRect: {
                 top: 16,
                 left: 32
             } as ClientRect,
@@ -22,7 +22,7 @@ describe("table-cell-editor functions", () => {
             } as HTMLElement
         });
 
-        const expectedResult: TableCellEditorSizes = {
+        const expectedResult: TriggerElementSizes = {
             offsetTop: 16 + 8,
             offsetLeft: 32,
             offsetRight: undefined,
@@ -42,8 +42,8 @@ describe("table-cell-editor functions", () => {
     it(`getDialogPositionFromTableCellEditorSizes should open the dialog
     under the cell and align its upper left edge with with the lower left edge of the cell.`, () => {
 
-        const result = getDialogPositionFromTableCellEditorSizes({
-            tableCellEditorSizes: {
+        const result = getDialogPositionFromTriggerElementSizes({
+            triggerElementSizes: {
                 offsetTop: 16 + 8,
                 offsetLeft: 32,
                 offsetRight: 0,

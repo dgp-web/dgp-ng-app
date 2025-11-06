@@ -11,7 +11,7 @@ import {
 } from "@angular/core";
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
-import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "../functions";
+import { computeTriggerElementSizes, getDialogPositionFromTriggerElementSizes } from "../functions";
 import { DgpTableCellEditorService } from "../service/table-cell-editor.service";
 import { DgpTableCellEditorComponent } from "./table-cell-editor.component";
 
@@ -90,12 +90,12 @@ export class DgpTableCellComponent {
         const configureDialogWidth = +this.editDialogConfig.width.replace("px", "");
         const tableCellBoundingRect = this.buttonElRef.nativeElement.getBoundingClientRect() as ClientRect;
 
-        const tableCellEditorSizes = computeTableCellEditorSizes({
-            tableCellBoundingRect, triggerButtonElement, window
+        const tableCellEditorSizes = computeTriggerElementSizes({
+            triggerElementBoundingRect: tableCellBoundingRect, triggerButtonElement, window
         });
 
-        const position = getDialogPositionFromTableCellEditorSizes({
-            tableCellEditorSizes, configureDialogWidth, triggerButtonElement
+        const position = getDialogPositionFromTriggerElementSizes({
+            triggerElementSizes: tableCellEditorSizes, configureDialogWidth, triggerButtonElement
         });
 
         this.dialogRef = this.matDialog.open(DgpTableCellEditorComponent, {
