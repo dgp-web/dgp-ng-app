@@ -2,7 +2,7 @@
     "hosting": [
         {
             "target": "dgp-ng-app",
-            "public": "dist/ng-app",
+            "public": "dist/ng-app/browser",
             "ignore": [
                 "firebase.json",
                 "**/.*",
@@ -17,7 +17,7 @@
         },
         {
             "target": "dgp-labs",
-            "public": "dist/dgp-labs",
+            "public": "dist/dgp-labs/browser",
             "ignore": [
                 "firebase.json",
                 "**/.*",
@@ -78,6 +78,36 @@
         {
             "target": "dgp-ng-app-16-mdc",
             "public": "dist/ng-app",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        },
+        {
+            "target": "dgp-ng-app-17",
+            "public": "dist/ng-app",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        },
+        {
+            "target": "dgp-ng-app-18",
+            "public": "dist/ng-app/browser",
             "ignore": [
                 "firebase.json",
                 "**/.*",

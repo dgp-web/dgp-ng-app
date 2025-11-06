@@ -51,8 +51,8 @@ import { timer } from "rxjs";
                 </dgp-empty-state>
 
                 <dgp-docs-section-title>
-                    1: Import DgpRequestStoreModule into an application using @ngrx/store
-                    and @ngrx/effects.
+                    1: Import DgpRequestStoreModule into an application using &#64;ngrx/store
+                    and &#64;ngrx/effects.
                 </dgp-docs-section-title>
 
                 <dgp-docs-code-block [code]="moduleImportCode"></dgp-docs-code-block>

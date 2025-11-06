@@ -1,19 +1,14 @@
 import { ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { ApiClientSettings } from "./api-client-settings";
 
 export interface ApiClientSettingsProvider extends ValueProvider {
     provide: typeof ApiClientSettings;
 }
 
-@NgModule({
-    imports: [
-        HttpClientModule
-    ],
-    providers: [
-        // Add providers for api clients and related services
-    ]
-})
+@NgModule({ imports: [], providers: [
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class ApiClientModule {
 
     static forRoot(

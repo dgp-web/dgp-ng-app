@@ -49,7 +49,7 @@ import { ComponentPrimitivesDocsModule } from "../features/core/component-primit
                 state => authenticateUser({user: state[authenticationStoreFeature].user})]
         }),
 
-        StoreDevtoolsModule.instrument(),
+        StoreDevtoolsModule.instrument({connectInZone: true}),
 
         DgpAuthenticationModule.forRoot({
             authenticationApiClientProvider,
