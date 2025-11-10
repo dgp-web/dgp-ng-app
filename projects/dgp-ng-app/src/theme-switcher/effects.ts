@@ -21,7 +21,7 @@ export class ThemeSwitcherEffects extends DgpContainer<ThemeSwitcherState> {
                 select(isDarkModeActiveSelector),
                 first(),
                 tap(isDarkModeActive => {
-                    localStorage.setItem("isDarkModeActive", JSON.stringify(isDarkModeActive));
+                    localStorage.setItem(this.themeSwitcherConfig.isDarkModeActiveLocalStorageKey, JSON.stringify(isDarkModeActive));
                 })
             );
 

@@ -13,12 +13,15 @@ export interface ThemeSwitcherState {
 
 export interface ThemeSwitcherConfig {
     readonly darkThemeClassName: string;
+    readonly isDarkModeActiveLocalStorageKey?: string;
+
     readonly compactThemeClassName: string;
     readonly components: Many<string>;
 }
 
 export const defaultThemeSwitcherConfig: ThemeSwitcherConfig = {
     darkThemeClassName: "dark-theme",
+    isDarkModeActiveLocalStorageKey: "isDarkModeActive",
     compactThemeClassName: "compact-theme",
     components: []
 };
