@@ -113,7 +113,9 @@ export const initializationServiceProvider: InitializationServiceProvider = {
             authenticationApiClientProvider,
             initializationServiceProvider
         }),
-        DgpThemeSwitcherModule.forRoot(),
+        DgpThemeSwitcherModule.forRoot({
+            isDarkModeActiveLocalStorageKey: "dgpLabsIsDarkModeActive",
+        }),
         DgpHamburgerShellModule.forRoot(),
         DgpRequestStoreModule,
         DgpRoutingOverlayModule,

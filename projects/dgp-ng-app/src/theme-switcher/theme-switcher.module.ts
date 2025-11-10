@@ -66,8 +66,8 @@ export class DgpThemeSwitcherModule {
     static forRoot(config: Partial<ThemeSwitcherConfig> = defaultThemeSwitcherConfig): ModuleWithProviders<DgpThemeSwitcherModule> {
 
         config = {
+            ...defaultThemeSwitcherConfig,
             ...config,
-            ...defaultThemeSwitcherConfig
         };
 
         return {
@@ -84,7 +84,7 @@ export class DgpThemeSwitcherModule {
         @Inject(THEME_SWITCHER_CONFIG)
         private readonly themeSwitcherConfig: ThemeSwitcherConfig
     ) {
-        const isDarkModeActiveJSON = localStorage.getItem("isDarkModeActive");
+        const isDarkModeActiveJSON = localStorage.getItem(themeSwitcherConfig.isDarkModeActiveLocalStorageKey);
         if (notNullOrUndefined(isDarkModeActiveJSON)) {
             const isDarkModeActive = JSON.parse(isDarkModeActiveJSON);
             this.store.dispatch(setIsDarkModeActive({isDarkModeActive}));
