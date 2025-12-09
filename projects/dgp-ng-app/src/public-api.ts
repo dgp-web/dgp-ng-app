@@ -295,4 +295,7 @@ export * from "./dgp-ng-app.module";
 export { Size } from "./resize-sensor/models/size.model";
 export { ResizeSensor, defaultResizeSensorConfig, ResizeSensorConfig } from "./resize-sensor/services/resize-sensor.service";
 export { selectFileItem } from "./file-viewer/select-file-item.action";
+export {
+    DgpListDetailsPageMenuToggleComponent
+} from "./hamburger-shell/components/list-details-page/dgp-list-details-page-menu-toggle.component";
 

@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { closeListDetailsMenu, toggleListDetailsPageMenu } from "../../actions";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { closeListDetailsMenu } from "../../actions";
 import { isPageMenuOpenSelector, pageMenuModeSelector } from "../../selectors";
-import { HamburgerShellState } from "../../models";
+import { HamburgerShellState, ListDetailsPageMenuTogglePosition } from "../../models";
 import { DgpContainer } from "../../../utils/container.component-base";
+
 
 @Component({
     selector: "dgp-list-details-page",
@@ -22,16 +23,10 @@ import { DgpContainer } from "../../../utils/container.component-base";
 
                 <div class="page-menu-drawer-toggle-container">
 
-                    <button mat-icon-button
-                            (click)="togglePageMenuDrawer()"
-                            matTooltip="Toggle menu drawer">
-                        <mat-icon *ngIf="isPageMenuDrawerOpen$ | async; else closedIcon">
-                            arrow_back
-                        </mat-icon>
-                        <ng-template #closedIcon>
-                            <mat-icon>arrow_forward</mat-icon>
-                        </ng-template>
-                    </button>
+                    @if (menuTogglePosition === togglePositionEnum.RightToMenuAndVerticallyCentered) {
+                        <dgp-list-details-page-menu-toggle/>
+                    }
+
 
                 </div>
 
@@ -81,6 +76,11 @@ import { DgpContainer } from "../../../utils/container.component-base";
 
 export class ListDetailsPageComponent extends DgpContainer<HamburgerShellState> {
 
+    readonly togglePositionEnum = ListDetailsPageMenuTogglePosition;
+
+    @Input()
+    menuTogglePosition: ListDetailsPageMenuTogglePosition = ListDetailsPageMenuTogglePosition.RightToMenuAndVerticallyCentered;
+
     readonly pageMenuDrawerMode$ = this.select(pageMenuModeSelector);
     readonly isPageMenuDrawerOpen$ = this.select(isPageMenuOpenSelector);
 
@@ -88,7 +88,5 @@ export class ListDetailsPageComponent extends DgpContainer<HamburgerShellState> 
         this.dispatch(closeListDetailsMenu());
     }
 
-    togglePageMenuDrawer(): void {
-        this.dispatch(toggleListDetailsPageMenu());
-    }
 }
+
