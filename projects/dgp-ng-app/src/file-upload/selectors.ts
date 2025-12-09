@@ -47,13 +47,15 @@ export const canSelectPreviousFile = createSelector(
     getSelectedFileItem,
     getAllFileItems,
     (selected, all) => {
-        return false;
+        const index = all.indexOf(selected);
+        return index > 0;
     }
 );
 export const canSelectNextFile = createSelector(
     getSelectedFileItem,
     getAllFileItems,
     (selected, all) => {
-        return false;
+        const index = all.indexOf(selected);
+        return index < all.length - 1;
     }
 );

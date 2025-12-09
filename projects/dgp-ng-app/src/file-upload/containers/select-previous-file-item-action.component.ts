@@ -19,7 +19,7 @@ import { selectPreviousFile } from "../actions";
                 shortcutKey="ArrowLeft"
                 (click)="selectPreviousFile()"
                 [disabled]="canSelectPreviousFile$ | async | negate">
-            <mat-icon>skip_previous</mat-icon>
+            <mat-icon>chevron_left</mat-icon>
         </button>
     `,
     imports: [

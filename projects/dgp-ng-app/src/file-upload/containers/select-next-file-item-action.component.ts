@@ -19,7 +19,7 @@ import { selectNextFile } from "../actions";
                 shortcutKey="ArrowRight"
                 (click)="selectNextFile()"
                 [disabled]="canSelectNextFile$ | async | negate">
-            <mat-icon>skip_next</mat-icon>
+            <mat-icon>chevron_right</mat-icon>
         </button>
     `,
     imports: [
