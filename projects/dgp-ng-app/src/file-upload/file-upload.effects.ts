@@ -29,6 +29,7 @@ import { fileItemMetadata } from "./constants/file-item-metadata.constant";
 import { selectActionContext } from "../action-context/actions/select-action-context.action";
 import { deselectActionContext } from "../action-context/actions/deselect-action-context.action";
 import { toFileItemActionContext } from "./functions";
+import { getListItemNeighbor } from "../utils/get-list-item-neighbor.function";
 
 @Injectable()
 export class FileUploadEffects extends DgpContainer<FileUploadState> {
@@ -158,10 +159,11 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
             const selected = x[1];
             const all = x[2];
 
-            const index = all.indexOf(selected);
-            const previousIndex = index - 1;
-
-            const item = all[previousIndex];
+            const item = getListItemNeighbor({
+                neighbor: "previous",
+                collection: all,
+                item: selected
+            });
 
             return selectActionContext({
                 actionContext: toFileItemActionContext(item)
@@ -176,10 +178,11 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
             const selected = x[1];
             const all = x[2];
 
-            const index = all.indexOf(selected);
-            const previousIndex = index + 1;
-
-            const item = all[previousIndex];
+            const item = getListItemNeighbor({
+                neighbor: "next",
+                collection: all,
+                item: selected
+            });
 
             return selectActionContext({
                 actionContext: toFileItemActionContext(item)
