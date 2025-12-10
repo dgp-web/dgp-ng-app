@@ -36,22 +36,39 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
     readonly openFileManagerOverlay$ = createEffect(() => this.actions$.pipe(
         ofType(openFileManagerOverlay),
-        tap(action => {
+        withLatestFrom(this.select(getAllFileItems)),
+        tap(x => {
+            const action = x[0];
+            const fileItems = x[1];
+
             if (action.fileItems) {
                 this.dispatch(cacheFileSystem(action as FileSystem));
 
                 if (action.selectedFileItemId) {
+                    const fileItem = action.fileItems.find(x1 => x1.fileItemId === action.selectedFileItemId);
+                    const actionContext = toFileItemActionContext(fileItem);
+
                     this.dispatch(selectActionContext({
-                        actionContext: {
-                            key: undefined,
-                            label: undefined,
-                            type: "fileItem",
-                            value: action.fileItems.find(x => x.fileItemId === action.selectedFileItemId)
-                        }
+                        actionContext
+                    }));
+                } else if (action.fileItems.length > 0) {
+                    const fileItem = action.fileItems[0];
+                    const actionContext = toFileItemActionContext(fileItem);
+                    this.dispatch(selectActionContext({
+                        actionContext
                     }));
                 } else {
                     this.dispatch(deselectActionContext({}));
                 }
+            } else if (fileItems?.length > 0) {
+                /**
+                 * Select first item
+                 */
+                const fileItem = fileItems[0];
+                const actionContext = toFileItemActionContext(fileItem);
+                this.dispatch(selectActionContext({
+                    actionContext
+                }));
             }
 
 
@@ -59,10 +76,10 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
                 this.dispatch(setConfig({config: action.config}));
             }
         }),
-        switchMap(action => this.matDialog.open(
+        switchMap(x => this.matDialog.open(
             FileManagerComponent,
-            action.config
-                ? action.config.fileManagerMatDialogConfig
+            x[0].config
+                ? x[0].config.fileManagerMatDialogConfig
                 : this.config.fileManagerMatDialogConfig
         ).afterClosed()),
         map(() => closeFileManager())
@@ -80,6 +97,13 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
                         this.dispatch(selectFileItem({
                             fileItemId: action.fileItems[0].fileItemId
+                        }));
+
+                        const fileItem = action.fileItems[0];
+                        const actionContext = toFileItemActionContext(fileItem);
+
+                        this.dispatch(selectActionContext({
+                            actionContext
                         }));
 
 
@@ -102,6 +126,13 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
                         this.dispatch(selectFileItem({
                             fileItemId: action.fileItems[0].fileItemId
+                        }));
+
+                        const fileItem = action.fileItems[0];
+                        const actionContext = toFileItemActionContext(fileItem);
+
+                        this.dispatch(selectActionContext({
+                            actionContext
                         }));
 
                         return fileUploadEntityStore.actions.composeEntityActions({
