@@ -20,7 +20,7 @@ export const getFileItemListModel = createSelector(
             directories, fileItemKVS
         } as FileItemListModel;
     });
- 
+
 export const getSelectedFileItem = createSelector(
     getSelectedActionContextValue,
     getSelectedActionContextType, (value, type) => {
@@ -32,6 +32,8 @@ export const getSelectedFileItem = createSelector(
     }
 );
 
+export const hasMoreThanOneFile = createSelector(getAllFileItems, x => x.length > 1);
+
 export const isFileManagerOpen = createSelector(fileUploadFeatureSelector, x => x.isFileManagerOpen);
 
 export const canOpenFileDrawer = createSelector(fileUploadFeatureSelector, x => x.initialConfig.canOpenFileDrawer);
@@ -42,4 +44,20 @@ export const isRemoveFilesDisabled = createSelector(fileUploadFeatureSelector, x
 export const isDropTargetVisible = createSelector(fileUploadFeatureSelector,
     x => x.initialConfig.editingCapabilities.canAddFiles
         && (x.isDropTargetVisible || x.fileItem.ids.length === 0)
+);
+export const canSelectPreviousFile = createSelector(
+    getSelectedFileItem,
+    getAllFileItems,
+    (selected, all) => {
+        const index = all.indexOf(selected);
+        return index > 0;
+    }
+);
+export const canSelectNextFile = createSelector(
+    getSelectedFileItem,
+    getAllFileItems,
+    (selected, all) => {
+        const index = all.indexOf(selected);
+        return index < all.length - 1;
+    }
 );
