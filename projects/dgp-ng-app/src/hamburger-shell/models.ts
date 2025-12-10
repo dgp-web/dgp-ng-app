@@ -86,3 +86,14 @@ export interface HamburgerShellState {
 }
 
 export const hamburgerShellStoreFeature = "HamburgerShell";
+
+export enum ListDetailsPageMenuTogglePosition {
+    /**
+     * Places the toggle to the right of the menu and centers it vertically.
+     */
+    RightToMenuAndVerticallyCentered = "rightToMenuAndVerticallyCentered",
+    /**
+     * Removes the default toggle so the user can place the component elsewhere
+     */
+    Custom = "custom"
+}

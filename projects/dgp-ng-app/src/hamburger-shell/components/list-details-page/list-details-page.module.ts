@@ -6,6 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { ListDetailsPageContentComponent } from "./list-details-page-content.component";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { DgpListDetailsPageMenuToggleComponent } from "./dgp-list-details-page-menu-toggle.component";
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
         MatButtonModule,
         MatIconModule,
         MatSidenavModule,
-        MatTooltipModule
+        MatTooltipModule,
+        DgpListDetailsPageMenuToggleComponent
     ],
     declarations: [
         ListDetailsPageContentComponent,

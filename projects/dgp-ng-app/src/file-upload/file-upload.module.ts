@@ -22,6 +22,11 @@ import { components } from "./components/components";
 import { DgpNegatePipeModule } from "../negate/negate-pipe.module";
 import { containers } from "./containers/containers";
 import { directives } from "./directives/directives";
+import {
+    DgpListDetailsPageMenuToggleComponent
+} from "../hamburger-shell/components/list-details-page/dgp-list-details-page-menu-toggle.component";
+import { DgpSelectPreviousFileItemActionComponent } from "./containers/select-previous-file-item-action.component";
+import { DgpSelectNextFileItemActionComponent } from "./containers/select-next-file-item-action.component";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -54,7 +59,10 @@ export const fileUploadReducerProvider: FactoryProvider = {
         MatTooltipModule,
         DgpFileViewerModule,
         DgpShortcutModule,
-        DgpNegatePipeModule
+        DgpNegatePipeModule,
+        DgpListDetailsPageMenuToggleComponent,
+        DgpSelectPreviousFileItemActionComponent,
+        DgpSelectNextFileItemActionComponent
     ],
     declarations: [
         ...containers,
