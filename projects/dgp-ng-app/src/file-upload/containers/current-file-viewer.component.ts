@@ -1,14 +1,16 @@
 import { Component } from "@angular/core";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
-import { getSelectedFileItem } from "../selectors";
+import { getSelectedFileItem, hasMoreThanOneFile } from "../selectors";
 
 @Component({
     selector: "dgp-current-file-viewer",
     template: `
         <dgp-file-viewer [fileItem]="selectedFileItem$ | async"></dgp-file-viewer>
-        <dgp-select-previous-file-item-action />
-        <dgp-select-next-file-item-action />
+        @if (hasMoreThanOneFile$ | async) {
+            <dgp-select-previous-file-item-action />
+            <dgp-select-next-file-item-action />
+        }
     `,
     styles: [`
         :host {
@@ -33,4 +35,5 @@ import { getSelectedFileItem } from "../selectors";
 })
 export class CurrentFileViewerComponent extends DgpContainer<FileUploadState> {
     readonly selectedFileItem$ = this.select(getSelectedFileItem);
+    readonly hasMoreThanOneFile$ = this.select(hasMoreThanOneFile);
 }

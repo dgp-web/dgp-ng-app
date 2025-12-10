@@ -28,7 +28,7 @@ import { directoryMetadata } from "./constants/directory-metadata.constant";
 import { fileItemMetadata } from "./constants/file-item-metadata.constant";
 import { selectActionContext } from "../action-context/actions/select-action-context.action";
 import { deselectActionContext } from "../action-context/actions/deselect-action-context.action";
-import { getHashCode } from "../utils/get-hash-code.function";
+import { toFileItemActionContext } from "./functions";
 
 @Injectable()
 export class FileUploadEffects extends DgpContainer<FileUploadState> {
@@ -162,13 +162,9 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
             const previousIndex = index - 1;
 
             const item = all[previousIndex];
+
             return selectActionContext({
-                actionContext: {
-                    key: getHashCode(item).toString(),
-                    label: "File",
-                    type: "fileItem",
-                    value: item
-                }
+                actionContext: toFileItemActionContext(item)
             });
         })
     ));
@@ -186,12 +182,7 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
             const item = all[previousIndex];
 
             return selectActionContext({
-                actionContext: {
-                    key: getHashCode(item).toString(),
-                    label: "File",
-                    type: "fileItem",
-                    value: item
-                }
+                actionContext: toFileItemActionContext(item)
             });
         })
     ));

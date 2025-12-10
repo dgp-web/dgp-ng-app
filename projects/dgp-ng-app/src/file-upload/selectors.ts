@@ -32,6 +32,8 @@ export const getSelectedFileItem = createSelector(
     }
 );
 
+export const hasMoreThanOneFile = createSelector(getAllFileItems, x => x.length > 1);
+
 export const isFileManagerOpen = createSelector(fileUploadFeatureSelector, x => x.isFileManagerOpen);
 
 export const canOpenFileDrawer = createSelector(fileUploadFeatureSelector, x => x.initialConfig.canOpenFileDrawer);

@@ -1,6 +1,8 @@
 import { FileItem } from "../file-viewer/models";
 import { createGuid } from "../broadcast/functions/create-guid.function";
 import { Matrix } from "data-modeling";
+import { ActionContext } from "../action-context/models/action-context.model";
+import { getHashCode } from "../utils/get-hash-code.function";
 
 export function parseFileNameWithExtension(fileNameWithExtension: string): {
     readonly extension: string;
@@ -119,4 +121,17 @@ export function parseCSVFile$(fileToRead: File): Promise<Matrix<string>> {
 
     });
 
+}
+
+export function toFileItemActionContextKey(fileItem: FileItem) {
+    return getHashCode(fileItem).toString();
+}
+
+export function toFileItemActionContext(item: FileItem): ActionContext {
+    return {
+        key: toFileItemActionContextKey(item),
+        label: "File",
+        type: "fileItem",
+        value: item
+    };
 }
