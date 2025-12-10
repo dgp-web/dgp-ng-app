@@ -61,3 +61,6 @@ export const canSelectNextFile = createSelector(
         return index < all.length - 1;
     }
 );
+export const isFileManagerMenuDrawerOpen = createSelector(
+    fileUploadFeatureSelector, x => x.fileDrawerLayout.isDrawerOpen
+);

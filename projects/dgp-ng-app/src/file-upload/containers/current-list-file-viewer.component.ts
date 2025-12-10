@@ -1,13 +1,21 @@
 import { Component } from "@angular/core";
-import { ListDetailsPageMenuTogglePosition } from "../../hamburger-shell/models";
+import { DrawerLayoutMenuTogglePosition } from "../../hamburger-shell/models";
+import { isFileManagerMenuDrawerOpen } from "../selectors";
+import { DgpContainer } from "../../utils/container.component-base";
+import { FileUploadState } from "../models";
+
+import { setIsFileDrawerOpen } from "../store";
 
 @Component({
     selector: "dgp-current-list-file-viewer",
     template: `
-        <dgp-list-details-page [menuTogglePosition]="togglePositionEnum.Custom">
-            <dgp-current-file-item-list dgp-list-details-page-menu></dgp-current-file-item-list>
+        <dgp-drawer-layout [menuTogglePosition]="togglePositionEnum.Custom"
+                           [isDrawerOpen]="isFileManagerMenuDrawerOpen$ | async"
+                           (isDrawerOpenChange)="setIsFileDrawerOpen($event)"
+                           [drawerMode]="'side'">
+            <dgp-current-file-item-list dgp-drawer-layout-menu></dgp-current-file-item-list>
             <dgp-current-file-viewer></dgp-current-file-viewer>
-        </dgp-list-details-page>
+        </dgp-drawer-layout>
     `,
     styles: [`
         :host {
@@ -18,6 +26,13 @@ import { ListDetailsPageMenuTogglePosition } from "../../hamburger-shell/models"
         }
     `]
 })
-export class CurrentListFileViewerComponent {
-    readonly togglePositionEnum = ListDetailsPageMenuTogglePosition;
+export class CurrentListFileViewerComponent extends DgpContainer<FileUploadState> {
+    readonly togglePositionEnum = DrawerLayoutMenuTogglePosition;
+    readonly isFileManagerMenuDrawerOpen$ = this.select(isFileManagerMenuDrawerOpen);
+
+
+    setIsFileDrawerOpen(isDrawerOpen: boolean) {
+        this.dispatch(setIsFileDrawerOpen({isDrawerOpen}));
+    }
+
 }

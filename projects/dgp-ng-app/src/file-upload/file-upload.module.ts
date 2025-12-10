@@ -27,6 +27,8 @@ import {
 } from "../hamburger-shell/components/list-details-page/dgp-list-details-page-menu-toggle.component";
 import { DgpSelectPreviousFileItemActionComponent } from "./containers/select-previous-file-item-action.component";
 import { DgpSelectNextFileItemActionComponent } from "./containers/select-next-file-item-action.component";
+import { DgpDrawerLayoutComponent } from "../hamburger-shell/components/drawer-layout/drawer-layout.component";
+import { DgpDrawerLayoutMenuToggleComponent } from "../hamburger-shell/components/drawer-layout/drawer-layout-menu-toggle.component";
 
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
@@ -62,7 +64,9 @@ export const fileUploadReducerProvider: FactoryProvider = {
         DgpNegatePipeModule,
         DgpListDetailsPageMenuToggleComponent,
         DgpSelectPreviousFileItemActionComponent,
-        DgpSelectNextFileItemActionComponent
+        DgpSelectNextFileItemActionComponent,
+        DgpDrawerLayoutComponent,
+        DgpDrawerLayoutMenuToggleComponent
     ],
     declarations: [
         ...containers,

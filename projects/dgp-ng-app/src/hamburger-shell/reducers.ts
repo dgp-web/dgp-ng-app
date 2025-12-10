@@ -1,14 +1,18 @@
 import {
-    closeHamburgerMenu, closeListDetailsMenu, setHamburgerMenuState, setListDetailsPageState,
-    toggleHamburgerMenu, toggleListDetailsPageMenu
+    closeHamburgerMenu,
+    closeListDetailsMenu,
+    setHamburgerMenuState,
+    setListDetailsPageState,
+    toggleHamburgerMenu,
+    toggleListDetailsPageMenu
 } from "./actions";
 import { createReducer, on } from "@ngrx/store";
-import { HamburgerShellState } from "./models";
+import { DrawerMode, HamburgerShellState } from "./models";
 
 export const initialHamburgerShellState: HamburgerShellState = {
     hamburgerMenuMode: "side",
     isHamburgerMenuOpen: true,
-    pageMenuMode: "side",
+    pageMenuMode: DrawerMode.Side,
     isPageMenuOpen: true
 };
 

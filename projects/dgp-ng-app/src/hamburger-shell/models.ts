@@ -75,7 +75,17 @@ export const defaultHamburgerShellConfigProvider: HamburgerShellConfigProvider =
 };
 
 export type HamburgerMenuMode = "side" | "over";
-export type PageMenuMode = "side" | "over";
+export type PageMenuMode = DrawerMode;
+
+export enum DrawerMode {
+    Side = "side",
+    Over = "over"
+}
+
+export interface DrawerLayout {
+    readonly isDrawerOpen: boolean;
+    readonly drawerMode: DrawerMode;
+}
 
 export interface HamburgerShellState {
     readonly isHamburgerMenuOpen: boolean;
@@ -83,11 +93,13 @@ export interface HamburgerShellState {
 
     readonly isPageMenuOpen: boolean;
     readonly pageMenuMode: PageMenuMode;
+
+    // TODO: Add states for pages with a key
 }
 
 export const hamburgerShellStoreFeature = "HamburgerShell";
 
-export enum ListDetailsPageMenuTogglePosition {
+export enum DrawerLayoutMenuTogglePosition {
     /**
      * Places the toggle to the right of the menu and centers it vertically.
      */

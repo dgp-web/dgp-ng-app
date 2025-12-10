@@ -298,4 +298,6 @@ export { selectFileItem } from "./file-viewer/select-file-item.action";
 export {
     DgpListDetailsPageMenuToggleComponent
 } from "./hamburger-shell/components/list-details-page/dgp-list-details-page-menu-toggle.component";
+export { DgpDrawerLayoutMenuToggleComponent } from "./hamburger-shell/components/drawer-layout/drawer-layout-menu-toggle.component";
+export { DgpDrawerLayoutComponent } from "./hamburger-shell/components/drawer-layout/drawer-layout.component";
 
