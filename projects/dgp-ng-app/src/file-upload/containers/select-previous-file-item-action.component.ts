@@ -17,6 +17,9 @@ import { selectPreviousFile } from "../actions";
                 matTooltip="Select previous file"
                 dgpActionShortcut
                 shortcutKey="ArrowLeft"
+                [requireShift]="true"
+                [requireCtrl]="true"
+                [requireAlt]="true"
                 (click)="selectPreviousFile()"
                 [disabled]="canSelectPreviousFile$ | async | negate">
             <mat-icon>chevron_left</mat-icon>

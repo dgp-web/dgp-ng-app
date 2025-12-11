@@ -9,11 +9,12 @@ import {
 } from "./models";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
+import { DrawerMode } from "../drawer-layout/models";
 
 @Injectable()
 export class HamburgerShellEffects {
 
-    
+
     readonly setHamburgerMenuState$ = createEffect(() => of(this.hamburgerShellConfig.hamburgerShellMode)
         .pipe(
             filter(x => x === HamburgerShellMode.Responsive),
@@ -35,7 +36,7 @@ export class HamburgerShellEffects {
             })
         ));
 
-    
+
     readonly setListDetailsPageLayout$ = createEffect(() => of(this.hamburgerShellConfig.listDetailsPageMode)
         .pipe(
             filter(x => x === ListDetailsPageMode.Responsive),
@@ -48,7 +49,7 @@ export class HamburgerShellEffects {
             map(result => {
 
                 const isPageMenuOpen = result.matches;
-                const pageMenuMode = isPageMenuOpen ? "side" : "over";
+                const pageMenuMode = isPageMenuOpen ? DrawerMode.Side : DrawerMode.Over;
 
                 return setListDetailsPageState({
                     isPageMenuOpen,
@@ -80,12 +81,12 @@ export class HamburgerShellEffects {
         if (hamburgerShellConfig.listDetailsPageMode === ListDetailsPageMode.SideNav) {
             this.store.dispatch(setListDetailsPageState({
                 isPageMenuOpen: true,
-                pageMenuMode: "side"
+                pageMenuMode: DrawerMode.Side
             }));
         } else if (hamburgerShellConfig.listDetailsPageMode === ListDetailsPageMode.Overlay) {
             this.store.dispatch(setListDetailsPageState({
                 isPageMenuOpen: false,
-                pageMenuMode: "over"
+                pageMenuMode: DrawerMode.Over
             }));
         }
     }
