@@ -9,7 +9,13 @@ import { addFilesViaDrop } from "../actions";
     selector: "dgp-current-add-file-list-item",
     template: `
         <mat-action-list *ngIf="isAddFilesDisabled$ | async | negate">
-            <mat-list-item (click)="filePicker.click()">
+            <mat-list-item (click)="filePicker.click()"
+                           matTooltip="Click to choose files"
+                           dgpActionShortcut
+                           shortcutKey="p"
+                           [requireShift]="true"
+                           [requireCtrl]="true"
+                           [requireAlt]="true">
                 <mat-icon matListItemIcon>
                     open_in_new
                 </mat-icon>

@@ -17,6 +17,9 @@ import { selectNextFile } from "../actions";
                 matTooltip="Select next file"
                 dgpActionShortcut
                 shortcutKey="ArrowRight"
+                [requireShift]="true"
+                [requireCtrl]="true"
+                [requireAlt]="true"
                 (click)="selectNextFile()"
                 [disabled]="canSelectNextFile$ | async | negate">
             <mat-icon>chevron_right</mat-icon>

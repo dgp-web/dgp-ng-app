@@ -34,3 +34,6 @@ export const selectPreviousFile = createAction(
 export const selectNextFile = createAction(
     "[FileUpload] SelectNextFile"
 );
+export const setIsFileDrawerOpen = createAction("[FileUpload] SetIsFileDrawerOpen", props<{
+    readonly isDrawerOpen: boolean;
+}>());

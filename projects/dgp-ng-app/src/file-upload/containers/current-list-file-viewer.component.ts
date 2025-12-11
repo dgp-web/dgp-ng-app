@@ -4,7 +4,8 @@ import { isFileManagerMenuDrawerOpen } from "../selectors";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
 
-import { setIsFileDrawerOpen } from "../store";
+
+import { setIsFileDrawerOpen } from "../actions";
 
 @Component({
     selector: "dgp-current-list-file-viewer",

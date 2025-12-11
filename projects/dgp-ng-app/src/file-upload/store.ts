@@ -1,7 +1,7 @@
 import { defaultFileUploadConfig, FileUploadEntities, FileUploadState, FileUploadStoreFeature } from "./models";
 import { createEntityStore } from "entity-store";
-import { ActionReducerMap, createAction, props } from "@ngrx/store";
-import { closeFileManager, hideDropTarget, openFileManagerOverlay, setConfig, showDropTarget } from "./actions";
+import { ActionReducerMap } from "@ngrx/store";
+import { closeFileManager, hideDropTarget, openFileManagerOverlay, setConfig, setIsFileDrawerOpen, showDropTarget } from "./actions";
 import { DrawerMode } from "../hamburger-shell/models";
 
 export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileUploadStoreFeature>({
@@ -57,6 +57,3 @@ export const fileUploadReducer: ActionReducerMap<FileUploadState> = {
     }
 };
 
-export const setIsFileDrawerOpen = createAction("[FileUpload] SetIsFileDrawerOpen", props<{
-    readonly isDrawerOpen: boolean;
-}>());

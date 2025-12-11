@@ -2,7 +2,8 @@ import { Component } from "@angular/core";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
 import { isFileManagerMenuDrawerOpen } from "../selectors";
-import { setIsFileDrawerOpen } from "../store";
+
+import { setIsFileDrawerOpen } from "../actions";
 
 @Component({
     selector: "dgp-file-manager-dialog-header",
