@@ -30,6 +30,10 @@ import { DgpSelectNextFileItemActionComponent } from "./containers/select-next-f
 import { DgpDrawerLayoutComponent } from "../hamburger-shell/components/drawer-layout/drawer-layout.component";
 import { DgpDrawerLayoutMenuToggleComponent } from "../hamburger-shell/components/drawer-layout/drawer-layout-menu-toggle.component";
 
+import { DgpFileManagerDrawerLayout } from "./containers/file-manager-drawer-layout.component";
+
+import { DgpFileManagerMenuToggle } from "./containers/file-manager-menu-toggle.component";
+
 export const FILE_UPLOAD_REDUCER = new InjectionToken<FileUploadState>("hamburgerShellReducer");
 
 export function fileUploadReducerFactory() {
@@ -66,7 +70,9 @@ export const fileUploadReducerProvider: FactoryProvider = {
         DgpSelectPreviousFileItemActionComponent,
         DgpSelectNextFileItemActionComponent,
         DgpDrawerLayoutComponent,
-        DgpDrawerLayoutMenuToggleComponent
+        DgpDrawerLayoutMenuToggleComponent,
+        DgpFileManagerDrawerLayout,
+        DgpFileManagerMenuToggle
     ],
     declarations: [
         ...containers,
