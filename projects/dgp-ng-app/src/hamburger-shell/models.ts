@@ -1,6 +1,7 @@
 import { InjectionToken, ValueProvider } from "@angular/core";
 
 import { Breakpoints } from "@angular/cdk/layout";
+import { DrawerMode } from "../drawer-layout/models";
 
 export enum HamburgerShellMode {
     Responsive,
@@ -77,16 +78,6 @@ export const defaultHamburgerShellConfigProvider: HamburgerShellConfigProvider =
 export type HamburgerMenuMode = "side" | "over";
 export type PageMenuMode = DrawerMode;
 
-export enum DrawerMode {
-    Side = "side",
-    Over = "over"
-}
-
-export interface DrawerLayout {
-    readonly isDrawerOpen: boolean;
-    readonly drawerMode: DrawerMode;
-}
-
 export interface HamburgerShellState {
     readonly isHamburgerMenuOpen: boolean;
     readonly hamburgerMenuMode: HamburgerMenuMode;
@@ -99,13 +90,3 @@ export interface HamburgerShellState {
 
 export const hamburgerShellStoreFeature = "HamburgerShell";
 
-export enum DrawerLayoutMenuTogglePosition {
-    /**
-     * Places the toggle to the right of the menu and centers it vertically.
-     */
-    RightToMenuAndVerticallyCentered = "rightToMenuAndVerticallyCentered",
-    /**
-     * Removes the default toggle so the user can place the component elsewhere
-     */
-    Custom = "custom"
-}

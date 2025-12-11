@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { DgpDrawerLayoutMenuToggleComponent } from "../../hamburger-shell/components/drawer-layout/drawer-layout-menu-toggle.component";
+import { DgpDrawerLayoutMenuToggleComponent } from "../../drawer-layout/drawer-layout-menu-toggle.component";
 import { AsyncPipe } from "@angular/common";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";

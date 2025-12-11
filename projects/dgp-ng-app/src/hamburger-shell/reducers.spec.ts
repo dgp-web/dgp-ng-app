@@ -7,7 +7,8 @@ import {
     toggleHamburgerMenu,
     toggleListDetailsPageMenu
 } from "./actions";
-import { DrawerMode, HamburgerShellState } from "./models";
+import { HamburgerShellState } from "./models";
+import { DrawerMode } from "../drawer-layout/models";
 
 describe("hamburgerShellReducer", () => {
 

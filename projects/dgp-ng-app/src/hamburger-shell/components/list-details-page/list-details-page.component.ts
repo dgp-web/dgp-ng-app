@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { closeListDetailsMenu } from "../../actions";
 import { isPageMenuOpenSelector, pageMenuModeSelector } from "../../selectors";
-import { DrawerLayoutMenuTogglePosition, HamburgerShellState } from "../../models";
+import { HamburgerShellState } from "../../models";
 import { DgpContainer } from "../../../utils/container.component-base";
+import { DrawerLayoutMenuTogglePosition } from "../../../drawer-layout/models";
 
 @Component({
     selector: "dgp-list-details-page",

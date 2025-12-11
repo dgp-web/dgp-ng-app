@@ -1,8 +1,8 @@
 import { defaultFileUploadConfig, FileUploadEntities, FileUploadState, FileUploadStoreFeature } from "./models";
 import { createEntityStore } from "entity-store";
-import { ActionReducerMap } from "@ngrx/store";
+import { ActionReducerMap, createReducer, on } from "@ngrx/store";
 import { closeFileManager, hideDropTarget, openFileManagerOverlay, setConfig, setIsFileDrawerOpen, showDropTarget } from "./actions";
-import { DrawerMode } from "../hamburger-shell/models";
+import { DrawerMode } from "../drawer-layout/models";
 
 export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileUploadStoreFeature>({
     storeFeature: "FileUpload",
@@ -14,46 +14,24 @@ export const fileUploadEntityStore = createEntityStore<FileUploadEntities, FileU
 
 export const fileUploadReducer: ActionReducerMap<FileUploadState> = {
     ...fileUploadEntityStore.reducers,
-    isFileManagerOpen: (state = false, action) => {
-
-        switch (action.type) {
-            case openFileManagerOverlay.type:
-                return true;
-            case closeFileManager.type:
-                return false;
-            default:
-                return state;
-        }
-
-    },
-    isDropTargetVisible: (state = false, action) => {
-
-        switch (action.type) {
-            case showDropTarget.type:
-                return true;
-            case hideDropTarget.type:
-                return false;
-            default:
-                return state;
-        }
-
-    },
-    initialConfig: (state = defaultFileUploadConfig, action) => {
-        if (action.type === setConfig.type) {
-            return (action as any).config;
-        } else {
-            return state;
-        }
-    },
-    fileDrawerLayout: (state = {isDrawerOpen: true, drawerMode: DrawerMode.Side}, action) => {
-        if (action.type === setIsFileDrawerOpen.type) {
+    isFileManagerOpen: createReducer(false,
+        on(openFileManagerOverlay, () => true),
+        on(closeFileManager, () => false),
+    ),
+    isDropTargetVisible: createReducer(false,
+        on(showDropTarget, () => true),
+        on(hideDropTarget, () => false),
+    ),
+    initialConfig: createReducer(defaultFileUploadConfig,
+        on(setConfig, (state, action) => action.config)
+    ),
+    fileDrawerLayout: createReducer({isDrawerOpen: true, drawerMode: DrawerMode.Side},
+        on(setIsFileDrawerOpen, (state, action) => {
             return {
                 ...state,
-                isDrawerOpen: (action as any).isDrawerOpen
+                isDrawerOpen: action.isDrawerOpen
             };
-        } else {
-            return state;
-        }
-    }
+        })
+    ),
 };
 

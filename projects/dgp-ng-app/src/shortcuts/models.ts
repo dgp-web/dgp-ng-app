@@ -9,6 +9,10 @@ export interface ActionShortcutConfig {
     readonly triggerEvent?: TriggerEvent;
 }
 
+export interface ActionShortcut extends ActionShortcutConfig {
+    readonly shortcutKey: string;
+}
+
 export const defaultActionShortcutConfig: ActionShortcutConfig = {
     requireAlt: true,
     requireCtrl: true,

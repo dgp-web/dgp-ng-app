@@ -2,7 +2,8 @@ import { EntityStateMap } from "entity-store";
 import { InjectionToken } from "@angular/core";
 import { MatDialogConfig } from "@angular/material/dialog";
 import { Directory, FileItem } from "../file-viewer/models";
-import { DrawerLayout } from "../hamburger-shell/models";
+
+import { DrawerLayout } from "../drawer-layout/models";
 
 export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;
 

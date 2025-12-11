@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { DgpDrawerLayoutComponent } from "../../hamburger-shell/components/drawer-layout/drawer-layout.component";
+import { DgpDrawerLayoutComponent } from "../../drawer-layout/drawer-layout.component";
 import { AsyncPipe } from "@angular/common";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
-import { DrawerLayoutMenuTogglePosition, DrawerMode } from "../../hamburger-shell/models";
 import { isFileManagerMenuDrawerOpen } from "../selectors";
 import { setIsFileDrawerOpen } from "../actions";
+import { DrawerLayoutMenuTogglePosition, DrawerMode } from "../../drawer-layout/models";
 
 @Component({
     selector: "dgp-file-manager-drawer-layout",

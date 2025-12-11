@@ -7,7 +7,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { ListDetailsPageContentComponent } from "./list-details-page-content.component";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { DgpListDetailsPageMenuToggleComponent } from "./dgp-list-details-page-menu-toggle.component";
-import { DgpDrawerLayoutComponent } from "../drawer-layout/drawer-layout.component";
+import { DgpDrawerLayoutComponent } from "../../../drawer-layout/drawer-layout.component";
 
 @NgModule({
     imports: [

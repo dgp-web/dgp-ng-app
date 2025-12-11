@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { hamburgerShellStoreFeature, HamburgerShellState } from "./models";
+import { HamburgerShellState, hamburgerShellStoreFeature } from "./models";
 
 export const hamburgerShellFeatureSelector = createFeatureSelector<HamburgerShellState>(
     hamburgerShellStoreFeature

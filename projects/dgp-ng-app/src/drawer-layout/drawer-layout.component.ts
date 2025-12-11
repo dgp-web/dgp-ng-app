@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { MatDrawer, MatDrawerContainer, MatDrawerContent } from "@angular/material/sidenav";
-import { DrawerLayout, DrawerLayoutMenuTogglePosition, DrawerMode } from "../../models";
 import { DgpDrawerLayoutMenuToggleComponent } from "./drawer-layout-menu-toggle.component";
+import { DrawerLayout, DrawerLayoutMenuTogglePosition, DrawerMode, IsDrawerOpenInfoProperty } from "./models";
 
 @Component({
     selector: "dgp-drawer-layout",
@@ -78,7 +78,7 @@ import { DgpDrawerLayoutMenuToggleComponent } from "./drawer-layout-menu-toggle.
     ],
     standalone: true
 })
-export class DgpDrawerLayoutComponent implements DrawerLayout {
+export class DgpDrawerLayoutComponent implements DrawerLayout, IsDrawerOpenInfoProperty {
 
     readonly togglePositionEnum = DrawerLayoutMenuTogglePosition;
 

@@ -7,7 +7,8 @@ import {
     toggleListDetailsPageMenu
 } from "./actions";
 import { createReducer, on } from "@ngrx/store";
-import { DrawerMode, HamburgerShellState } from "./models";
+import { HamburgerShellState } from "./models";
+import { DrawerMode } from "../drawer-layout/models";
 
 export const initialHamburgerShellState: HamburgerShellState = {
     hamburgerMenuMode: "side",

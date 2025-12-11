@@ -5,10 +5,11 @@ import { BreakpointObserver } from "@angular/cdk/layout";
 import { setHamburgerMenuState, setListDetailsPageState } from "./actions";
 import {
     HamburgerShellConfig, HamburgerShellMode, ListDetailsPageMode,
-    HamburgerShellState, HAMBURGER_SHELL_CONFIG, DrawerMode
+    HamburgerShellState, HAMBURGER_SHELL_CONFIG
 } from "./models";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
+import { DrawerMode } from "../drawer-layout/models";
 
 @Injectable()
 export class HamburgerShellEffects {

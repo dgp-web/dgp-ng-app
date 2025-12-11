@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { MatIcon } from "@angular/material/icon";
 import { MatIconButton } from "@angular/material/button";
 import { MatTooltip } from "@angular/material/tooltip";
-import { DgpShortcutModule } from "../../../shortcuts/shortcuts.module";
+import { DgpShortcutModule } from "../shortcuts/shortcuts.module";
+import { ActionShortcut } from "../shortcuts/models";
+import { IsDrawerOpenInfoProperty } from "./models";
 
 @Component({
     selector: "dgp-drawer-layout-menu-toggle",
@@ -34,7 +36,7 @@ import { DgpShortcutModule } from "../../../shortcuts/shortcuts.module";
     ],
     standalone: true
 })
-export class DgpDrawerLayoutMenuToggleComponent {
+export class DgpDrawerLayoutMenuToggleComponent implements ActionShortcut, IsDrawerOpenInfoProperty {
 
     @Output()
     readonly isDrawerOpenChange = new EventEmitter<boolean>();
