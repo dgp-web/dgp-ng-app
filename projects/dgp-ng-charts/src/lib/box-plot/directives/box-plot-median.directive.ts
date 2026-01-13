@@ -1,7 +1,10 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core"
 import { Box, BoxGroup, BoxPlotScales, BoxQuantiles } from "../models";
 
-@Directive({selector: "[dgpBoxPlotMedian]"})
+@Directive({
+    selector: "[dgpBoxPlotMedian]",
+    standalone: false
+})
 export class BoxPlotMedianDirective implements OnChanges {
 
     @Input()

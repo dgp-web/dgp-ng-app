@@ -74,6 +74,7 @@ import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ActionContextLabsPageComponent extends DgpContainer<ActionContextState> {
     readonly selectedActionContext$ = this.select(getSelectedActionContext);

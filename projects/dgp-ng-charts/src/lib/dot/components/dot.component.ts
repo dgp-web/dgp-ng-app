@@ -57,7 +57,8 @@ import { DotConfig } from "../../connected-scatter-plot/models";
                          [height]="dotSize"></svg:polygon>
         </ng-container>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpDotComponent extends DgpView<Shape> implements DotConfig {
     readonly shapeEnum = Shape;

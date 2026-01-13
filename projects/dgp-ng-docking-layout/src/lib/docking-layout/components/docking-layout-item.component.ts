@@ -21,6 +21,7 @@ import { Subject } from "rxjs";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DockingLayoutItemComponent implements AfterViewInit {
 

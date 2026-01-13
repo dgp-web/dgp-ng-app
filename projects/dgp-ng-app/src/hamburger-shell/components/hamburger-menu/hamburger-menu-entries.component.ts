@@ -18,7 +18,8 @@ import { Component } from "@angular/core";
         mat-nav-list {
             flex-grow: 1;
         }
-    `]
+    `],
+    standalone: false
 })
 export class HamburgerMenuEntriesComponent {
 

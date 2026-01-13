@@ -8,7 +8,10 @@ import { byDomain, byInvertedDomain } from "../../shared/functions/by-domain.fun
 import { NumericDomain } from "../../shared/models/numeric-domain.model";
 import { noopTickFormat } from "../constants/noop-tick-format.constant";
 
-@Directive({selector: "[dgpChartYAxisGridLines]"})
+@Directive({
+    selector: "[dgpChartYAxisGridLines]",
+    standalone: false
+})
 export class DgpChartYAxisGridLinesDirective implements OnChanges {
 
     @Input()

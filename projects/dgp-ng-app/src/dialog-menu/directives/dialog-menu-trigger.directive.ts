@@ -5,7 +5,10 @@ import { DgpDialogMenuComponent } from "../components/dialog-menu.component";
 import { DgpDialogMenuService } from "../services/dialog-menu.service";
 
 
-@Directive({selector: "[dgpDialogMenuTrigger]"})
+@Directive({
+    selector: "[dgpDialogMenuTrigger]",
+    standalone: false
+})
 export class DgpDialogMenuTriggerDirective {
 
     @Input()

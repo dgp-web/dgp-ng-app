@@ -41,6 +41,7 @@ import { DgpPlotComponentBase } from "./plot.component-base";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpSvgPlotComponent extends DgpPlotComponentBase {
 

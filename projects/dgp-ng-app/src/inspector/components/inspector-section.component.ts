@@ -33,6 +33,7 @@ import { ExpansionTogglePosition } from "../../details/models";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InspectorSectionComponent {
 

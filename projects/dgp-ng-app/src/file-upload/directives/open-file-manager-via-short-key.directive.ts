@@ -7,7 +7,8 @@ import { isFileManagerOpen } from "../selectors";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig } from "../models";
 
 @Directive({
-    selector: "[dgpOpenFileManagerViaShortKey]"
+    selector: "[dgpOpenFileManagerViaShortKey]",
+    standalone: false
 })
 export class OpenFileManagerViaShortKeyDirective implements OnDestroy {
 

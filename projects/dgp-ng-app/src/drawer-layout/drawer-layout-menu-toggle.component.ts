@@ -33,8 +33,7 @@ import { IsDrawerOpenInfoProperty } from "./models";
         MatIconButton,
         MatTooltip,
         DgpShortcutModule
-    ],
-    standalone: true
+    ]
 })
 export class DgpDrawerLayoutMenuToggleComponent implements ActionShortcut, IsDrawerOpenInfoProperty {
 

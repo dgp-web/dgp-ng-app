@@ -39,7 +39,8 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         <dgp-docs-code-block [code]="modelEditorUsageSampleCode"
                              language="html"></dgp-docs-code-block>
 
-    `
+    `,
+    standalone: false
 })
 export class ModelEditorPrimitiveDocsSectionComponent {
     readonly modelEditorImplSampleCode =

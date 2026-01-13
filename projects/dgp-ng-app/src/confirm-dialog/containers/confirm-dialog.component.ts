@@ -55,7 +55,8 @@ export const confirmButtonConfig: RemovalDialogButtonConfig = {
             width: 360px;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpConfirmDialogComponent {
 

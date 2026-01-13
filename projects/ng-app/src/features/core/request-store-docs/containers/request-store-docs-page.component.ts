@@ -78,6 +78,7 @@ import { timer } from "rxjs";
         </dgp-docs-page>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RequestStoreDocsPageComponent {
 

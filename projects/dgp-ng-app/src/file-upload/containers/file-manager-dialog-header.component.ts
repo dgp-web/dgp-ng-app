@@ -13,7 +13,8 @@ import { Component } from "@angular/core";
             display: flex;
             align-items: center;
         }
-    `]
+    `],
+    standalone: false
 })
 export class FileManagerDialogHeaderComponent {
 

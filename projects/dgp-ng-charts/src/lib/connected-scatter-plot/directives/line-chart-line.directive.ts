@@ -4,7 +4,10 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 import { line } from "d3";
 import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 
-@Directive({selector: "[dgpLineChartLine]"})
+@Directive({
+    selector: "[dgpLineChartLine]",
+    standalone: false
+})
 export class DgpLineChartLineDirective implements AfterViewInit, OnChanges {
 
     @Input()

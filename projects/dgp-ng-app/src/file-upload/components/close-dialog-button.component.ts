@@ -8,7 +8,8 @@ import { Component } from "@angular/core";
                 matTooltip="Close dialog">
             <mat-icon>close</mat-icon>
         </button>
-    `
+    `,
+    standalone: false
 })
 export class CloseDialogButtonComponent {
 

@@ -14,7 +14,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
             height: auto;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpPlotContainerComponent {
 

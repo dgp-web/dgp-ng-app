@@ -5,7 +5,8 @@ import { Component } from "@angular/core";
 
 @Component({
     selector: "dgp-dummy",
-    template: ""
+    template: "",
+    standalone: false
 })
 class TestComponent extends DgpContainer {
 }

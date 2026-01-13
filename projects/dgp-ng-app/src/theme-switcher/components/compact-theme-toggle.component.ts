@@ -19,6 +19,7 @@ import { DgpContainer } from "../../utils/container.component-base";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class CompactThemeToggleComponent extends DgpContainer<ThemeSwitcherState> {

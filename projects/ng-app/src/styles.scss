@@ -3,7 +3,8 @@
 @import '../../dgp-ng-docs/src/lib/styles';
 
 @include mat.all-component-typographies();
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $app-primary: mat.m2-define-palette(mat.$m2-light-green-palette);
 $app-accent: mat.m2-define-palette(mat.$m2-green-palette);

@@ -88,7 +88,8 @@ import { Component } from "@angular/core";
     `,
     styles: [`
 
-    `]
+    `],
+    standalone: false
 })
 export class ComponentPrimitivesDocsPageComponent {
 

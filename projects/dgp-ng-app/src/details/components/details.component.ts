@@ -56,6 +56,7 @@ import { Details } from "../models/details.model";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpDetailsComponent implements AfterViewInit, Details {
 

@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-    name: "negate"
+    name: "negate",
+    standalone: false
 })
 export class DgpNegatePipe implements PipeTransform {
 

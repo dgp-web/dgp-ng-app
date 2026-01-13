@@ -91,7 +91,8 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
     `,
     styleUrls: [
         "./app.component.scss"
-    ]
+    ],
+    standalone: false
 })
 export class AppComponent extends DgpContainer {
 

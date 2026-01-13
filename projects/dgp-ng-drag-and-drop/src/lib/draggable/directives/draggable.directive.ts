@@ -15,7 +15,10 @@ import { WithDragContext } from "../../models";
 import { ModelDragInfo } from "../../models/model-drag-info.model";
 import { DgpDragAndDropService } from "../../data/services/drag-and-drop.service";
 
-@Directive({selector: "[dgpDraggable]"})
+@Directive({
+    selector: "[dgpDraggable]",
+    standalone: false
+})
 export class DgpDraggableDirective<TModel> extends DgpView<TModel> implements AfterViewInit, OnChanges, Mutable<WithDragContext> {
 
     @Input()

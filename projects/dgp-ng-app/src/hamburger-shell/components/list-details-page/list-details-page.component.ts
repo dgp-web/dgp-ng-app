@@ -31,6 +31,7 @@ import { DrawerLayoutMenuTogglePosition } from "../../../drawer-layout/models";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class ListDetailsPageComponent extends DgpContainer<HamburgerShellState> {

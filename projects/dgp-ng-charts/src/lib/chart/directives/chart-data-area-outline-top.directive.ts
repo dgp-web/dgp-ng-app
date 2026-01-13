@@ -1,7 +1,10 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { AxisScales } from "../../shared/models";
 
-@Directive({selector: "[dgpChartDataAreaOutlineTop]"})
+@Directive({
+    selector: "[dgpChartDataAreaOutlineTop]",
+    standalone: false
+})
 export class ChartDataAreaOutlineTopDirective implements OnChanges {
 
     @Input()

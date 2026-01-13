@@ -32,8 +32,7 @@ import { DrawerLayoutMenuTogglePosition, DrawerMode } from "../../drawer-layout/
     imports: [
         DgpDrawerLayoutComponent,
         AsyncPipe
-    ],
-    standalone: true
+    ]
 })
 export class DgpFileManagerDrawerLayout extends DgpContainer<FileUploadState> {
 

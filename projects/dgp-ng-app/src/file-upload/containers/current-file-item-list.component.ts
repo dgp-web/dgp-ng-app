@@ -17,7 +17,8 @@ import { getFileItemListModel, isRemoveFilesDisabled } from "../selectors";
             flex-direction: column;
             flex-grow: 1;
         }
-    `]
+    `],
+    standalone: false
 })
 export class CurrentFileItemListComponent extends DgpContainer<FileUploadState> {
 

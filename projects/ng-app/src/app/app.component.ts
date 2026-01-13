@@ -12,7 +12,7 @@ import { coreFeatures } from "../constants/core-features.constant";
             <dgp-hamburger-menu dgp-hamburger-menu>
 
                 <dgp-hamburger-menu-header>
-                    DGP NG APP (v18)
+                    DGP NG APP (v19)
                 </dgp-hamburger-menu-header>
 
                 <dgp-hamburger-menu-entries>
@@ -55,7 +55,8 @@ import { coreFeatures } from "../constants/core-features.constant";
             display: flex;
             flex-direction: column;
         }
-    `]
+    `],
+    standalone: false
 })
 export class AppComponent {
     readonly coreFeatures$ = of(coreFeatures);

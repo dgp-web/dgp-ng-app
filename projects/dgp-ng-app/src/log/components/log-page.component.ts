@@ -27,6 +27,7 @@ import { filter } from "rxjs/operators";
         </dgp-list-details-page>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class LogPageComponent {

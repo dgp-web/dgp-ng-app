@@ -120,6 +120,7 @@ import { LogEntry, Severity } from "../models";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class LogEntryDetailsComponent {

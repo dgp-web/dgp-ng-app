@@ -78,7 +78,8 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class DgpBarChartComponent extends DgpCardinalYAxisChartComponentBase implements BarChart {
 

@@ -1,7 +1,10 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from "@angular/core";
 import { Box, BoxGroup, BoxPlotScales } from "../models";
 
-@Directive({selector: "[dgpBoxPlotBox]"})
+@Directive({
+    selector: "[dgpBoxPlotBox]",
+    standalone: false
+})
 export class BoxPlotBoxDirective implements OnChanges {
 
     @Input()

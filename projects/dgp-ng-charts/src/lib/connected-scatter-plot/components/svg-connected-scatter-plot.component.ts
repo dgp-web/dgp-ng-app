@@ -92,6 +92,7 @@ import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-sc
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpSvgConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComponentBase implements ConnectedScatterPlot {
 

@@ -7,7 +7,10 @@ import { getMinorLogGridValues } from "../functions/get-minor-log-grid-values.fu
 import { byDomain } from "../../shared/functions/by-domain.function";
 import { NumericDomain } from "../../shared/models/numeric-domain.model";
 
-@Directive({selector: "[dgpChartXAxisGridLines]"})
+@Directive({
+    selector: "[dgpChartXAxisGridLines]",
+    standalone: false
+})
 export class DgpChartXAxisGridLinesDirective implements OnChanges {
 
     @Input()

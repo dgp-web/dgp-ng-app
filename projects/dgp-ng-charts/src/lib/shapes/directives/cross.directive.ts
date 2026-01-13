@@ -5,6 +5,7 @@ import { computeCrossPoints } from "../functions/compute-cross-points.function";
 
 @Directive({
     selector: "[dgpCross]",
+    standalone: false
 })
 export class CrossDirective extends SVGShapeBaseDirective {
 

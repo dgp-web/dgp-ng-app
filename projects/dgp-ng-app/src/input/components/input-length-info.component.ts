@@ -19,6 +19,7 @@ import { observeAttribute$ } from "../../utils/observe-input";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInputLengthInfoComponent extends DgpView<string> {
     @Input()

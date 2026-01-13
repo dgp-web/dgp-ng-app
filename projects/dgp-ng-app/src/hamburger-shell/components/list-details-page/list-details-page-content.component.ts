@@ -17,6 +17,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })export class ListDetailsPageContentComponent {
 
 }

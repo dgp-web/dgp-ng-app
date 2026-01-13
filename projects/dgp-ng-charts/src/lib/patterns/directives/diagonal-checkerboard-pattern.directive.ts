@@ -2,7 +2,10 @@ import { Directive } from "@angular/core";
 import { diagonalCheckerboardPattern } from "../constants";
 import { CheckerboardPatternDirective } from "./checkerboard-pattern.directive";
 
-@Directive({selector: "[dgpDiagonalCheckerboardPattern]"})
+@Directive({
+    selector: "[dgpDiagonalCheckerboardPattern]",
+    standalone: false
+})
 export class DiagonalCheckerboardPatternDirective extends CheckerboardPatternDirective {
 
     model = diagonalCheckerboardPattern;

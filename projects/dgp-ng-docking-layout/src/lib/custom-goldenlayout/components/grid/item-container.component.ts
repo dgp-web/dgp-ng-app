@@ -21,7 +21,8 @@ import { DgpView, observeAttribute$ } from "dgp-ng-app";
         :host {
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ItemContainerComponent extends DgpView<ComponentConfiguration> implements AfterViewInit, ContainerDefinition {
 

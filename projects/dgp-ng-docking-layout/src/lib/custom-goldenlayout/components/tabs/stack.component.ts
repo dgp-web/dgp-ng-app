@@ -83,7 +83,8 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
             padding-left: 8px;
             padding-right: 8px;
         }
-    `]
+    `],
+    standalone: false
 })
 export class StackComponent implements DropTarget, AfterViewInit {
 

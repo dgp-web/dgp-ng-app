@@ -27,7 +27,8 @@ import { filter } from "rxjs/operators";
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         InspectorService
-    ]
+    ],
+    standalone: false
 })
 export class InspectorComponent implements InspectorConfig {
 

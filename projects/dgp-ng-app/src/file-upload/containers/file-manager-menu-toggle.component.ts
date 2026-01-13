@@ -15,7 +15,6 @@ import { setIsFileDrawerOpen } from "../actions";
     styles: [`
 
     `],
-    standalone: true,
     imports: [
         DgpDrawerLayoutMenuToggleComponent,
         AsyncPipe

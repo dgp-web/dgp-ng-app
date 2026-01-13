@@ -5,7 +5,10 @@ import { defaultBoxPlotConfig } from "../constants/default-box-plot-config.const
 import { svgShapeDefaultXOffset, svgShapeDefaultYOffset } from "../../shapes/constants";
 import { DotConfig } from "../../connected-scatter-plot/models";
 
-@Directive({selector: "[dgpBoxPlotOutlier]"})
+@Directive({
+    selector: "[dgpBoxPlotOutlier]",
+    standalone: false
+})
 export class BoxPlotOutlierDirective implements OnChanges, DotConfig {
 
     @Input()

@@ -24,7 +24,8 @@ import { Component } from "@angular/core";
         Implementation
         <dgp-docs-code-block [code]="containerImplSampleCode"></dgp-docs-code-block>
 
-    `
+    `,
+    standalone: false
 })
 export class ContainerPrimitiveDocsSectionComponent {
     readonly containerImplSampleCode =

@@ -43,6 +43,7 @@ import { HTMLPageContent } from "../../engine/models";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpPagedMediaContentViewComponent extends DgpView<HTMLPageContent> {
 

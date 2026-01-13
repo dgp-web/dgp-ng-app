@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from "@angular/core";
 import { resolveConnectedScatterPlotLineWidth } from "../functions/resolve-connected-scatter-plot-line-width.function";
 
 @Pipe({
-    name: "resolveConnectedScatterPlotLineWidth"
+    name: "resolveConnectedScatterPlotLineWidth",
+    standalone: false
 })
 export class ResolveConnectedScatterPlotLineWidthPipe implements PipeTransform {
 

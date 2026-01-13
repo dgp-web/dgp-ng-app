@@ -70,6 +70,7 @@ import {
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CardinalYAxisConfigComponent extends DgpModelEditorComponentBase<CardinalYAxis> {
     readonly metadata = cardinalYAxisMetadata;

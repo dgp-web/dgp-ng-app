@@ -67,6 +67,7 @@ import {
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CardinalXAxisConfigComponent extends DgpModelEditorComponentBase<CardinalXAxis> {
     readonly metadata = cardinalXAxisMetadata;

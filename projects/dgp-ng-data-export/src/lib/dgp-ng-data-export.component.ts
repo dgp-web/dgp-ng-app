@@ -7,7 +7,8 @@ import { Component, OnInit } from "@angular/core";
       dgp-ng-data-export works!
     </p>
   `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class DgpNgDataExportComponent implements OnInit {
 

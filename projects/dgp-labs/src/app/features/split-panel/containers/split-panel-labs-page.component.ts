@@ -145,6 +145,7 @@ export interface SampleItem {
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SplitPanelLabsPageComponent {
 
