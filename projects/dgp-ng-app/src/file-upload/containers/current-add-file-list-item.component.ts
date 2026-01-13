@@ -29,7 +29,8 @@ import { addFilesViaDrop } from "../actions";
                        #filePicker>
             </mat-list-item>
         </mat-action-list>
-    `
+    `,
+    standalone: false
 })
 export class CurrentAddFileListItemComponent extends DgpContainer<FileUploadState> {
     readonly isAddFilesDisabled$ = this.select(isAddFilesDisabled);

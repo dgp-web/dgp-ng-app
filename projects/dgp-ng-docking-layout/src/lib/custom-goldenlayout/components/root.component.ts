@@ -38,7 +38,8 @@ export interface RootDropEvent {
             position: relative;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RootComponent extends DockingLayoutEngineObject implements AfterViewInit, DropTarget {
 

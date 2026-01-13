@@ -3,7 +3,10 @@ import { DgpDisabledBase } from "../../utils/dgp-disabled-base.directive";
 import { ActionShortcut, ActionShortcutConfig, defaultShortcutConfig, SHORTCUT_CONFIG, ShortcutConfig, TriggerEvent } from "../models";
 import { MatTooltip } from "@angular/material/tooltip";
 
-@Directive({selector: "[dgpActionShortcut]"})
+@Directive({
+    selector: "[dgpActionShortcut]",
+    standalone: false
+})
 export class DgpActionShortcutDirective extends DgpDisabledBase implements OnInit, OnDestroy, ActionShortcut {
 
     /**

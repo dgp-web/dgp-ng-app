@@ -37,6 +37,7 @@ import { defaultFileUploadConfig } from "../../../../../../dgp-ng-app/src/file-u
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FileUploadDocsPageComponent extends DgpContainer<FileUploadState> {
 

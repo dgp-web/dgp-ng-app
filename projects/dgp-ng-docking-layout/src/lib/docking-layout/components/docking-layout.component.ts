@@ -48,7 +48,8 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
             flex-grow: 1;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewInit {
 

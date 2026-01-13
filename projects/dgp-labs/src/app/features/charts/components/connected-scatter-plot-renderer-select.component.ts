@@ -22,6 +22,7 @@ import { ConnectedScatterPlotRenderer } from "dgp-ng-charts";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ConnectedScatterPlotRendererSelectComponent extends DgpModelEditorComponentBase<ConnectedScatterPlotRenderer> {
     readonly rendererEnum = ConnectedScatterPlotRenderer;

@@ -23,7 +23,10 @@ function getOutliers(payload: ReadonlyArray<BoxGroup>) {
     return outliers;
 }
 
-@Directive({selector: "[dgpBoxPlotBrushSelector]"})
+@Directive({
+    selector: "[dgpBoxPlotBrushSelector]",
+    standalone: false
+})
 export class BoxPlotBrushSelectorDirective implements OnChanges {
 
     @Input()

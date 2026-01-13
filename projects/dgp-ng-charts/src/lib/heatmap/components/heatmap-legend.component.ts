@@ -45,7 +45,8 @@ import { HeatmapLegend } from "../models/heatmap-legend.model";
         }
 
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HeatmapLegendComponent extends DgpModelEditorComponentBase<HeatmapLegend> {
 

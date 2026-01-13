@@ -44,7 +44,8 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
     providers: [
         DockingLayoutService,
         ComponentRegistry
-    ]
+    ],
+    standalone: false
 })
 export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 

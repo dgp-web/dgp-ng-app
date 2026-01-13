@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from "@angular
 import { BoxPlotScales } from "../models";
 import * as d3 from "d3";
 
-@Directive({selector: "[dgpBoxPlotLeftAxis]"})
+@Directive({
+    selector: "[dgpBoxPlotLeftAxis]",
+    standalone: false
+})
 export class BoxPlotLeftAxisDirective implements OnChanges {
 
     @Input()

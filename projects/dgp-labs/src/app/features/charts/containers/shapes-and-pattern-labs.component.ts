@@ -56,7 +56,8 @@ import { idPrefixProvider } from "../../../../../../dgp-ng-charts/src/lib/shared
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class ShapesAndPatternLabsComponent {
 

@@ -72,6 +72,7 @@ import { openUrlAsPeon } from "../../../../../../dgp-ng-app/src/broadcast/action
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BroadcastingDocsPageComponent {
 

@@ -52,6 +52,7 @@ import { Many } from "data-modeling";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FileDropZoneComponent extends DgpContainer<FileUploadState> implements AfterViewInit, OnDestroy {
 

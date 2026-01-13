@@ -32,8 +32,7 @@ import { selectNextFile } from "../actions";
         MatIcon,
         DgpNegatePipeModule,
         AsyncPipe
-    ],
-    standalone: true
+    ]
 })
 export class DgpSelectNextFileItemActionComponent extends DgpContainer<FileUploadState> {
 

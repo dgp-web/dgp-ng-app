@@ -30,7 +30,8 @@ import { Component, HostBinding } from "@angular/core";
             padding: 4px !important;
         }
 
-    `]
+    `],
+    standalone: false
 })
 export class ChartContainerComponent {
 

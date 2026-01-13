@@ -137,6 +137,7 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ChartsLabsComponent {
 

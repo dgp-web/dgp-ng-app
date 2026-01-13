@@ -22,7 +22,8 @@ import { getHashCode } from "../../utils/get-hash-code.function";
 import { isNullOrUndefined, notNullOrUndefined } from "../../utils/null-checking.functions";
 
 @Directive({
-    selector: "[dgpActionContext]"
+    selector: "[dgpActionContext]",
+    standalone: false
 })
 export class DgpActionContextDirective extends DgpContainer<ActionContextState> implements AfterViewInit, OnChanges, OnDestroy {
 

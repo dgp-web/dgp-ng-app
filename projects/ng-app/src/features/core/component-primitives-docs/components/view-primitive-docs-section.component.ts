@@ -23,7 +23,8 @@ import { Component } from "@angular/core";
         Usage
         <dgp-docs-code-block [code]="viewUsageSampleCode"
                              language="html"></dgp-docs-code-block>
-    `
+    `,
+    standalone: false
 })
 export class ViewPrimitiveDocsSectionComponent {
     readonly viewImplSampleCode =

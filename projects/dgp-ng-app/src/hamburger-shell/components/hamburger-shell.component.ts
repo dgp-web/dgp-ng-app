@@ -65,6 +65,7 @@ import { HamburgerShellState } from "../models";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class HamburgerShellComponent {

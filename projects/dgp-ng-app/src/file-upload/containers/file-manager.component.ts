@@ -37,7 +37,8 @@ import { DgpContainer } from "../../utils/container.component-base";
             flex-direction: column;
             max-height: initial;
         }
-    `]
+    `],
+    standalone: false
 })
 export class FileManagerComponent extends DgpContainer<FileUploadState> {
     readonly isDropTargetVisible$ = this.select(isDropTargetVisible);

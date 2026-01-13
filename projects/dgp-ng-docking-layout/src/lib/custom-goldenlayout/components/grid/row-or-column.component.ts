@@ -64,7 +64,8 @@ export interface SplitterComponents {
         :host {
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
 

@@ -18,7 +18,8 @@ import { observeAttribute$ } from "dgp-ng-app";
             flex-direction: column;
             height: 100%;
         }
-    `]
+    `],
+    standalone: false
 })
 export class GlComponent implements WithDragParent, OnInit, AfterViewInit {
 

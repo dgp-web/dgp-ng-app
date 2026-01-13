@@ -40,6 +40,7 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FallbackFileViewerComponent extends FileViewerComponentBase implements AfterViewInit {
 

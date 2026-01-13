@@ -43,6 +43,7 @@ import { LogErrorAction } from "dgp-ng-app";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LogDocsPageComponent {
 

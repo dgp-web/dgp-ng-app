@@ -75,8 +75,7 @@ import { DrawerLayout, DrawerLayoutMenuTogglePosition, DrawerMode, IsDrawerOpenI
         MatDrawer,
         MatDrawerContent,
         DgpDrawerLayoutMenuToggleComponent
-    ],
-    standalone: true
+    ]
 })
 export class DgpDrawerLayoutComponent implements DrawerLayout, IsDrawerOpenInfoProperty {
 

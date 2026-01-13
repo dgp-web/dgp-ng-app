@@ -8,7 +8,8 @@ import { WithDragContext } from "../../../models";
 
 @Component({
     selector: "dgp-test-dropzone",
-    template: ``
+    template: ``,
+    standalone: false
 })
 export class TestDropzoneComponent extends DgpDropzoneDirectiveBase<any> {
 }

@@ -39,7 +39,8 @@ import { FileUploadState } from "../../../file-upload/models";
             border-bottom: 1px solid gray;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FileItemListComponent extends DgpContainer<FileUploadState> {
 

@@ -31,7 +31,8 @@ import { getSelectedFileItem, hasMoreThanOneFile } from "../selectors";
             align-self: center;
             right: 0;
         }
-    `]
+    `],
+    standalone: false
 })
 export class CurrentFileViewerComponent extends DgpContainer<FileUploadState> {
     readonly selectedFileItem$ = this.select(getSelectedFileItem);

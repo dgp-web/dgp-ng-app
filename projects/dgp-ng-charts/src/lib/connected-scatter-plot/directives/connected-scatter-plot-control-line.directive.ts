@@ -4,7 +4,10 @@ import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-sca
 import { mapStrokeToStrokeDasharray } from "../../stroke/functions";
 import { ControlLineAxis } from "../../stroke/models";
 
-@Directive({selector: "[dgpConnectedScatterPlotControlLine]"})
+@Directive({
+    selector: "[dgpConnectedScatterPlotControlLine]",
+    standalone: false
+})
 export class DgpConnectedScatterPlotControlLineDirective implements OnChanges {
 
     @Input()

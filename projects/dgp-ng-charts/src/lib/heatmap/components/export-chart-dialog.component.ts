@@ -145,6 +145,7 @@ import { InternalExportChartConfig } from "../models/internal-export-chart-confi
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ExportChartDialogComponent {
 

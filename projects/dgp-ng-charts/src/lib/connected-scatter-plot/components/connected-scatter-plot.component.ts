@@ -63,7 +63,8 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class DgpConnectedScatterPlotComponent extends DgpCardinalXYAxisChartComponentBase implements ConnectedScatterPlot {
 

@@ -38,7 +38,8 @@ import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class DgpFillPatternIconComponent extends DgpView<FillPattern> {
     readonly fillPatternEnum = FillPattern;

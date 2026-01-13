@@ -17,7 +17,8 @@ import { computePagedHTML, OffscreenRenderer, pageContentSizeA4, PagedHTMLConten
     `,
     styles: [`
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent implements AfterViewInit {
 

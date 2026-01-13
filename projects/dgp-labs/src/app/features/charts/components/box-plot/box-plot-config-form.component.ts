@@ -24,6 +24,7 @@ import { BoxPlot, BoxPlotConfig } from "dgp-ng-charts";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BoxPlotConfigFormComponent extends DgpModelEditorComponentBase<BoxPlot> {
 

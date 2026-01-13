@@ -49,6 +49,7 @@ import { ControlLineAxis } from "../../stroke/models";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpConnectedScatterPlotDataCanvasComponent implements AfterViewInit, OnDestroy {
 

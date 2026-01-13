@@ -69,6 +69,7 @@ import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpHybridBoxPlotComponent extends DgpCardinalYAxisChartComponentBase implements BoxPlot {
 

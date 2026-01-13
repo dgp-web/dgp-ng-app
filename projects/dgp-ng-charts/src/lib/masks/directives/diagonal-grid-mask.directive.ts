@@ -2,7 +2,10 @@ import { Directive } from "@angular/core";
 import { diagonalGridMask, gridMask } from "../constants";
 import { SVGMaskBaseDirective } from "./svg-mask-base.directive";
 
-@Directive({selector: "[dgpDiagonalGridMask]"})
+@Directive({
+    selector: "[dgpDiagonalGridMask]",
+    standalone: false
+})
 export class DiagonalGridMaskDirective extends SVGMaskBaseDirective {
 
     model = diagonalGridMask;

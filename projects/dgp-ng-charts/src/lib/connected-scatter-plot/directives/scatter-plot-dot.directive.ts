@@ -3,7 +3,10 @@ import { ConnectedScatterSeries, Dot, DotConfig } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 import { svgShapeDefaultXOffset, svgShapeDefaultYOffset } from "../../shapes/constants";
 
-@Directive({selector: "[dgpScatterPlotDot]"})
+@Directive({
+    selector: "[dgpScatterPlotDot]",
+    standalone: false
+})
 export class DgpScatterPlotDotDirective implements OnChanges, DotConfig {
 
     @Input()

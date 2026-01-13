@@ -7,7 +7,8 @@ import { DragEvent } from "../../models/drag-event.model";
 import { createCoordinates } from "../../functions/create-coordinates.function";
 
 @Directive({
-    selector: "[dgpGlDragListener]"
+    selector: "[dgpGlDragListener]",
+    standalone: false
 })
 export class DragListenerDirective {
 

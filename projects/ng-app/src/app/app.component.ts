@@ -55,7 +55,8 @@ import { coreFeatures } from "../constants/core-features.constant";
             display: flex;
             flex-direction: column;
         }
-    `]
+    `],
+    standalone: false
 })
 export class AppComponent {
     readonly coreFeatures$ = of(coreFeatures);

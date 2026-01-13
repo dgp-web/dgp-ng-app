@@ -2,7 +2,10 @@ import { AfterViewInit, Directive, ElementRef, Inject, Renderer2 } from "@angula
 import { THEME_SWITCHER_CONFIG, ThemeSwitcherConfig } from "../models";
 import { OverlayContainer } from "@angular/cdk/overlay";
 
-@Directive({selector: "[dgpCompactThemeHost]"})
+@Directive({
+    selector: "[dgpCompactThemeHost]",
+    standalone: false
+})
 export class DgpCompactThemeHostDirective implements AfterViewInit {
 
     constructor(

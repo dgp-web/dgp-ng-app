@@ -24,7 +24,8 @@ export const canRemoveCurrentFileItem = createSelector(
                 shortcutKey="Delete">
             <mat-icon>delete</mat-icon>
         </button>
-    `
+    `,
+    standalone: false
 })
 export class RemoveCurrentFileItemActionComponent extends DgpContainer<FileUploadState> {
 

@@ -62,6 +62,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
         </dgp-docs-page>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HamburgerShellDocsPageComponent {
 

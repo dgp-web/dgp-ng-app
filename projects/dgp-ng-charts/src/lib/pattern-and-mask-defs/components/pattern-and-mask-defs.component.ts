@@ -35,7 +35,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         <svg:mask xmlns:svg="http://www.w3.org/2000/svg"
                   dgpDiagonalCheckerboardMask></svg:mask>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpPatternAndMaskDefsComponent {
 

@@ -20,6 +20,7 @@ import { VirtualListItemDirective } from "../directives/virtual-list-item.direct
         </cdk-virtual-scroll-viewport>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class VirtualListPanelComponent implements AfterViewInit {

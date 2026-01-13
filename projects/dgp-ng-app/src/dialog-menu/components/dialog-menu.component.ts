@@ -6,7 +6,8 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
     template: `
         <ng-container *ngTemplateOutlet="template"></ng-container>
     `,
-    styles: [``]
+    styles: [``],
+    standalone: false
 })
 export class DgpDialogMenuComponent {
     constructor(

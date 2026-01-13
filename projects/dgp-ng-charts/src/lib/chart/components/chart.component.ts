@@ -94,7 +94,8 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
             display: none !important;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpChartComponent extends DgpChartComponentBase {
 

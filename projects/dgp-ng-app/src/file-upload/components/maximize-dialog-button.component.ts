@@ -23,7 +23,8 @@ import { MatDialogRef } from "@angular/material/dialog";
                 [requireShift]="true">
             <mat-icon>filter_none</mat-icon>
         </button>
-    `
+    `,
+    standalone: false
 })
 export class MaximizeDialogButtonComponent {
 

@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { AttributeMetadata } from "data-modeling";
 import { notNullOrUndefined } from "../../utils/null-checking.functions";
 
-@Directive({selector: "[dgpInputMetadata]"})
+@Directive({
+    selector: "[dgpInputMetadata]",
+    standalone: false
+})
 export class DgpInputMetadataDirective implements OnChanges {
 
     @Input()

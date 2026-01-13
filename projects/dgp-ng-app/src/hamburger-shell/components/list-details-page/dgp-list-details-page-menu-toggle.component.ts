@@ -30,8 +30,7 @@ import { toggleListDetailsPageMenu } from "../../actions";
         MatIcon,
         MatTooltip,
         AsyncPipe
-    ],
-    standalone: true
+    ]
 })
 export class DgpListDetailsPageMenuToggleComponent extends DgpContainer<HamburgerShellState> {
 
