@@ -7,21 +7,25 @@ import { getSelectedActionContextLabel } from "../../action-context/selectors/ge
 @Component({
     selector: "dgp-page-header-context-actions",
     template: `
-        <div *ngIf="isAnyActionContextSelected$ | async"
-             style="position: relative;"
-             class="mat-elevation-z10">
+        @if (isAnyActionContextSelected$ | async) {
+          <div
+            style="position: relative;"
+            class="mat-elevation-z10">
             <mat-toolbar color="accent"
-                         style="flex-grow: 0;">
-                <ng-content></ng-content>
+              style="flex-grow: 0;">
+              <ng-content></ng-content>
             </mat-toolbar>
-            <mat-toolbar *ngIf="currentActionContextLabel$ | async as label"
-                         color="accent"
-                         class="dgp-bg--accent"
-                         style="flex-grow: 0; position: absolute; left: 0; right: 0; height: auto; font-size: small; z-index: 1;">
+            @if (currentActionContextLabel$ | async; as label) {
+              <mat-toolbar
+                color="accent"
+                class="dgp-bg--accent"
+                style="flex-grow: 0; position: absolute; left: 0; right: 0; height: auto; font-size: small; z-index: 1;">
                 {{ label }}
-            </mat-toolbar>
-        </div>
-    `,
+              </mat-toolbar>
+            }
+          </div>
+        }
+        `,
     standalone: false
 })
 export class DgpPageHeaderContextActionsComponent extends DgpContainer<ActionContextState> {

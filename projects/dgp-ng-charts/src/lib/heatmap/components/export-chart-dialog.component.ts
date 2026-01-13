@@ -11,79 +11,95 @@ import { InternalExportChartConfig } from "../models/internal-export-chart-confi
     selector: "dgp-export-chart-dialog",
     template: `
         <mat-dialog-content>
-
-            <div class="chart"
-                 #chartRef>
-                <div *ngIf="model.chartTitle"
-                     class="title">
-                    {{ model.chartTitle }}
+        
+          <div class="chart"
+            #chartRef>
+            @if (model.chartTitle) {
+              <div
+                class="title">
+                {{ model.chartTitle }}
+              </div>
+            }
+        
+            <div class="inner-container">
+              @if (model.yAxisTitle) {
+                <div
+                  class="y-axis-label-container">
+                  <div class="y-axis-label">
+                    {{model.yAxisTitle }}
+                  </div>
                 </div>
-
-                <div class="inner-container">
-                    <div *ngIf="model.yAxisTitle"
-                         class="y-axis-label-container">
-                        <div class="y-axis-label">
-                            {{model.yAxisTitle }}
-                        </div>
-                    </div>
-                    <img [src]="model.serializedChartImageUrl | safe:'url'"/>
-                    <img *ngIf="model.serializedCanvasDataUrl"
-                         [src]="model.serializedCanvasDataUrl | safe:'url'"
-                         class="canvas-img"/>
-                    <img *ngIf="model.serializedCanvasDataUrl"
-                         [src]="model.serializedChartImageUrl | safe:'url'"
-                         class="svg-img"/>
-                    <div class="right-legend"
-                         *ngIf="model.serializedRightLegend && includeLegend">
-                        <div class="dgp-heatmap-legend"
-                             [innerHTML]="model.serializedRightLegend | safe:'html'"></div>
-                    </div>
+              }
+              <img [src]="model.serializedChartImageUrl | safe:'url'"/>
+              @if (model.serializedCanvasDataUrl) {
+                <img
+                  [src]="model.serializedCanvasDataUrl | safe:'url'"
+                  class="canvas-img"/>
+              }
+              @if (model.serializedCanvasDataUrl) {
+                <img
+                  [src]="model.serializedChartImageUrl | safe:'url'"
+                  class="svg-img"/>
+              }
+              @if (model.serializedRightLegend && includeLegend) {
+                <div class="right-legend"
+                  >
+                  <div class="dgp-heatmap-legend"
+                  [innerHTML]="model.serializedRightLegend | safe:'html'"></div>
                 </div>
-
-                <div *ngIf="model.xAxisTitle"
-                     class="x-axis-label">
-                    {{ model.xAxisTitle }}
-                </div>
-
-                <div *ngIf="model.serializedBottomLegend && includeLegend"
-                     class="bottom-legend">
-                    <div [innerHTML]="model.serializedBottomLegend | safe:'html'"></div>
-                </div>
+              }
             </div>
-
+        
+            @if (model.xAxisTitle) {
+              <div
+                class="x-axis-label">
+                {{ model.xAxisTitle }}
+              </div>
+            }
+        
+            @if (model.serializedBottomLegend && includeLegend) {
+              <div
+                class="bottom-legend">
+                <div [innerHTML]="model.serializedBottomLegend | safe:'html'"></div>
+              </div>
+            }
+          </div>
+        
         </mat-dialog-content>
-
+        
         <mat-dialog-actions style="justify-content: center;">
-
-            <mat-button-toggle-group *ngIf="model.serializedRightLegend || model.serializedBottomLegend"
-                                     [(value)]="includeLegend">
-                <mat-button-toggle [value]="false"
-                                   aria-label="Hide legend"
-                                   matTooltip="Hide legend">
-                    <mat-icon>show_chart</mat-icon>
-                </mat-button-toggle>
-                <mat-button-toggle [value]="true"
-                                   aria-label="Show legend"
-                                   matTooltip="Show legend">
-                    <mat-icon>legend_toggle</mat-icon>
-                </mat-button-toggle>
+        
+          @if (model.serializedRightLegend || model.serializedBottomLegend) {
+            <mat-button-toggle-group
+              [(value)]="includeLegend">
+              <mat-button-toggle [value]="false"
+                aria-label="Hide legend"
+                matTooltip="Hide legend">
+                <mat-icon>show_chart</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle [value]="true"
+                aria-label="Show legend"
+                matTooltip="Show legend">
+                <mat-icon>legend_toggle</mat-icon>
+              </mat-button-toggle>
             </mat-button-toggle-group>
-
-            <dgp-spacer></dgp-spacer>
-
-            <button mat-icon-button
-                    matTooltip="Copy to clipboard"
-                    (click)="copyImageToClipboard()">
-                <mat-icon>content_copy</mat-icon>
-            </button>
-
-            <button mat-icon-button
-                    (click)="openImageInNewTab()"
-                    matTooltip="Open in new tab">
-                <mat-icon>open_in_new</mat-icon>
-            </button>
+          }
+        
+          <dgp-spacer></dgp-spacer>
+        
+          <button mat-icon-button
+            matTooltip="Copy to clipboard"
+            (click)="copyImageToClipboard()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        
+          <button mat-icon-button
+            (click)="openImageInNewTab()"
+            matTooltip="Open in new tab">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
         </mat-dialog-actions>
-    `,
+        `,
     styles: [`
         :host {
 

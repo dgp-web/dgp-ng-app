@@ -8,9 +8,9 @@ import { observeAttribute$ } from "../../utils/observe-input";
 @Component({
     selector: "dgp-input-length-info",
     template: `
-        <ng-container *ngIf="hasMax$ | async">
-            {{model?.length || 0}}/{{metadata.max}}
-        </ng-container>`,
+        @if (hasMax$ | async) {
+          {{model?.length || 0}}/{{metadata.max}}
+        }`,
     styles: [`
         :host {
             font-size: smaller;

@@ -3,17 +3,19 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
 @Component({
     selector: "dgp-empty-state",
     template: `
-        <dgp-empty-state-icon *ngIf="matIconName">
+        @if (matIconName) {
+          <dgp-empty-state-icon>
             {{ matIconName }}
-        </dgp-empty-state-icon>
+          </dgp-empty-state-icon>
+        }
         <dgp-empty-state-title>
-            {{ title }}
+          {{ title }}
         </dgp-empty-state-title>
-
+        
         <dgp-empty-state-content>
-            <ng-content></ng-content>
+          <ng-content></ng-content>
         </dgp-empty-state-content>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

@@ -36,8 +36,8 @@ describe(NoPeonGuard.name, () => {
             ]
         });
 
-        noPeonGuard = TestBed.get(NoPeonGuard);
-        store = TestBed.get(Store);
+        noPeonGuard = TestBed.inject(NoPeonGuard);
+        store = TestBed.inject(Store);
 
         store.dispatch(
             new SetOwnBroadcastRoleAction(BroadcastRole.Peon)

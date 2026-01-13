@@ -10,111 +10,115 @@ export interface SampleItem {
     selector: "labs-split-panel-labs-page",
     template: `
         <dgp-page-header>
-            <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            Split panel
-            <dgp-spacer/>
-            <button mat-stroked-button
-                    dgpDialogMenuTrigger
-                    (dialogMenuOpened)="onDialogMenuOpened()"
-                    (dialogMenuClosed)="onDialogMenuClosed()"
-                    [templateRef]="dialog">Test
-            </button>
-            <ng-template #dialog>
-                <mat-dialog-content>
-                    Hello
-                </mat-dialog-content>
-            </ng-template>
+          <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+          Split panel
+          <dgp-spacer/>
+          <button mat-stroked-button
+            dgpDialogMenuTrigger
+            (dialogMenuOpened)="onDialogMenuOpened()"
+            (dialogMenuClosed)="onDialogMenuClosed()"
+            [templateRef]="dialog">Test
+          </button>
+          <ng-template #dialog>
+            <mat-dialog-content>
+              Hello
+            </mat-dialog-content>
+          </ng-template>
         </dgp-page-header>
-
+        
         <dgp-split-panel orientation="horizontal">
-            <dgp-split-panel-content size="20">
-                <ng-template>
-                    <div class="panel-content">
-                        A
-                        <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
-                        <dgp-compact-theme-toggle></dgp-compact-theme-toggle>
-
-                        <dgp-input-field [model]="stringInputModel"
-                                         [metadata]="stringInputMetadata">
-
-                            <input [ngModel]="stringInputModel"
-                                   (ngModelChange)="stringInputModel = $event"
-                                   dgpInputMetadata
-                                   [metadata]="stringInputMetadata">
-
-                        </dgp-input-field>
-
-                        <dgp-input-field [model]="numberInputModel"
-                                         [metadata]="numberInputMetadata">
-
-                            <input [ngModel]="numberInputModel"
-                                   (ngModelChange)="numberInputModel = $event"
-                                   dgpInputMetadata
-                                   type="number"
-                                   [metadata]="numberInputMetadata">
-
-                        </dgp-input-field>
-
-                    </div>
+          <dgp-split-panel-content size="20">
+            <ng-template>
+              <div class="panel-content">
+                A
+                <dgp-dark-mode-toggle></dgp-dark-mode-toggle>
+                <dgp-compact-theme-toggle></dgp-compact-theme-toggle>
+        
+                <dgp-input-field [model]="stringInputModel"
+                  [metadata]="stringInputMetadata">
+        
+                  <input [ngModel]="stringInputModel"
+                    (ngModelChange)="stringInputModel = $event"
+                    dgpInputMetadata
+                    [metadata]="stringInputMetadata">
+        
+                  </dgp-input-field>
+        
+                  <dgp-input-field [model]="numberInputModel"
+                    [metadata]="numberInputMetadata">
+        
+                    <input [ngModel]="numberInputModel"
+                      (ngModelChange)="numberInputModel = $event"
+                      dgpInputMetadata
+                      type="number"
+                      [metadata]="numberInputMetadata">
+        
+                    </dgp-input-field>
+        
+                  </div>
                 </ng-template>
-            </dgp-split-panel-content>
-
-            <dgp-split-panel-content size="30">
+              </dgp-split-panel-content>
+        
+              <dgp-split-panel-content size="30">
                 <ng-template>
-
-                    <div class="list">
-                        <div *ngFor="let item of items01"
-                             class="item"
-                             dgpDraggable
-                             dragContext="default"
-                             [model]="item"
-                             dgpDropzone
-                             (modelDropped)="onModelDropped($event)">
-                            {{ item.label }}
+        
+                  <div class="list">
+                    @for (item of items01; track item) {
+                      <div
+                        class="item"
+                        dgpDraggable
+                        dragContext="default"
+                        [model]="item"
+                        dgpDropzone
+                        (modelDropped)="onModelDropped($event)">
+                        {{ item.label }}
+                      </div>
+                    }
+                  </div>
+        
+                </ng-template>
+              </dgp-split-panel-content>
+        
+              <dgp-split-panel-content size="50">
+                <ng-template>
+        
+                  <dgp-split-panel orientation="vertical">
+                    <dgp-split-panel-content size="50">
+                      <ng-template>
+        
+                        <div class="list">
+                          @for (item of items02; track item) {
+                            <div
+                              class="item"
+                              dgpDraggable
+                              dragContext="default"
+                              [model]="item"
+                              dgpDropzone
+                              (modelDropped)="onModelDropped($event)">
+                              {{ item.label }}
+                            </div>
+                          }
+                          <dgp-dropzone dragContext="default"
+                            (modelDropped)="onModelDropped($event)">
+                            <ng-container dgp-drop-indicator>
+                              Drop me here!!!
+                            </ng-container>
+                          </dgp-dropzone>
                         </div>
-                    </div>
-
+        
+                      </ng-template>
+                    </dgp-split-panel-content>
+        
+                    <dgp-split-panel-content size="50">
+                      <ng-template>
+                      </ng-template>
+                    </dgp-split-panel-content>
+                  </dgp-split-panel>
+        
                 </ng-template>
-            </dgp-split-panel-content>
-
-            <dgp-split-panel-content size="50">
-                <ng-template>
-
-                    <dgp-split-panel orientation="vertical">
-                        <dgp-split-panel-content size="50">
-                            <ng-template>
-
-                                <div class="list">
-                                    <div *ngFor="let item of items02"
-                                         class="item"
-                                         dgpDraggable
-                                         dragContext="default"
-                                         [model]="item"
-                                         dgpDropzone
-                                         (modelDropped)="onModelDropped($event)">
-                                        {{ item.label }}
-                                    </div>
-                                    <dgp-dropzone dragContext="default"
-                                                  (modelDropped)="onModelDropped($event)">
-                                        <ng-container dgp-drop-indicator>
-                                            Drop me here!!!
-                                        </ng-container>
-                                    </dgp-dropzone>
-                                </div>
-
-                            </ng-template>
-                        </dgp-split-panel-content>
-
-                        <dgp-split-panel-content size="50">
-                            <ng-template>
-                            </ng-template>
-                        </dgp-split-panel-content>
-                    </dgp-split-panel>
-
-                </ng-template>
-            </dgp-split-panel-content>
-        </dgp-split-panel>
-    `,
+              </dgp-split-panel-content>
+            </dgp-split-panel>
+        `,
     styles: [`
         :host {
             display: flex;

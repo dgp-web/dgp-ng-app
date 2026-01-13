@@ -7,15 +7,17 @@ import { DgpContainer } from "../../../utils/container.component-base";
     selector: "dgp-page-header",
     template: `
         <mat-toolbar color="primary"
-                     class="toolbar">
-            <div class="progress-bar-container">
-                <mat-progress-bar *ngIf="hasPendingRequests$ | async"
-                                  color="accent"
-                                  mode="query"></mat-progress-bar>
-            </div>
-            <ng-content></ng-content>
+          class="toolbar">
+          <div class="progress-bar-container">
+            @if (hasPendingRequests$ | async) {
+              <mat-progress-bar
+                color="accent"
+              mode="query"></mat-progress-bar>
+            }
+          </div>
+          <ng-content></ng-content>
         </mat-toolbar>
-    `,
+        `,
     styles: [`
         .toolbar {
             position: relative;

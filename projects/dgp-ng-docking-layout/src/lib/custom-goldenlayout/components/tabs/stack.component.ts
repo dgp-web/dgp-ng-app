@@ -42,31 +42,36 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
 @Component({
     selector: "dgp-stack",
     template: `
-        <mat-tab-group *ngIf="hasHeaders"
-                       [selectedIndex]="config.activeItemIndex"
-                       (selectedIndexChange)="processSelectedContentItemChange($event)">
-            <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
+        @if (hasHeaders) {
+          <mat-tab-group
+            [selectedIndex]="config.activeItemIndex"
+            (selectedIndexChange)="processSelectedContentItemChange($event)">
+            @for (componentConfig of config.content; track componentConfig; let i = $index) {
+              <mat-tab>
                 <ng-template mat-tab-label>
-                    <div #tabHeader
-                         dgpGlDragListener
-                         (dragStart$)="onDragStart1($event, componentConfig, i)"
-                         class="tab-header">
-                        <ng-container *ngIf="componentConfig.componentState.labelTemplate; else textBasedLabel">
-                            <ng-container [ngTemplateOutlet]="componentConfig.componentState.labelTemplate()"></ng-container>
-                        </ng-container>
-                        <ng-template #textBasedLabel>
-                            {{componentConfig.title}}
-                        </ng-template>
-                    </div>
+                  <div #tabHeader
+                    dgpGlDragListener
+                    (dragStart$)="onDragStart1($event, componentConfig, i)"
+                    class="tab-header">
+                    @if (componentConfig.componentState.labelTemplate) {
+                      <ng-container [ngTemplateOutlet]="componentConfig.componentState.labelTemplate()"></ng-container>
+                    } @else {
+                      {{componentConfig.title}}
+                    }
+                  </div>
                 </ng-template>
-            </mat-tab>
-        </mat-tab-group>
-
-        <dgp-gl-component *ngFor="let componentConfig of config.content"
-                          [config]="componentConfig"
-                          [isHidden]="config.activeItemId !== componentConfig.id"
-                          (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
-    `,
+              </mat-tab>
+            }
+          </mat-tab-group>
+        }
+        
+        @for (componentConfig of config.content; track componentConfig) {
+          <dgp-gl-component
+            [config]="componentConfig"
+            [isHidden]="config.activeItemId !== componentConfig.id"
+          (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
+        }
+        `,
     styles: [`
         :host {
             overflow: auto;

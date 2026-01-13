@@ -10,37 +10,42 @@ import { getPlotRootTransform } from "../../shared/functions/get-plot-root-trans
 @Component({
     selector: "dgp-chart",
     template: `
-        <div class="title"
-             *ngIf="chartTitle"
-             [innerHTML]="chartTitle | safe:'html'">
-        </div>
-
+        @if (chartTitle) {
+          <div class="title"
+            [innerHTML]="chartTitle | safe:'html'">
+          </div>
+        }
+        
         <div class="inner-container">
+          @if (yAxisTitle) {
             <div class="y-axis-label-container"
-                 *ngIf="yAxisTitle">
-                <div class="y-axis-label"
-                     #yAxisLabelRef>
-                    {{ yAxisTitle }}
-                </div>
+              >
+              <div class="y-axis-label"
+                #yAxisLabelRef>
+                {{ yAxisTitle }}
+              </div>
             </div>
-
-            <dgp-plot-container
-                dgpResizeSensor
-                (sizeChanged)="onResize($event)">
-                <ng-content></ng-content>
-            </dgp-plot-container>
-
-            <div class="right-legend">
-                <ng-content select="[right-legend]"></ng-content>
-            </div>
+          }
+        
+          <dgp-plot-container
+            dgpResizeSensor
+            (sizeChanged)="onResize($event)">
+            <ng-content></ng-content>
+          </dgp-plot-container>
+        
+          <div class="right-legend">
+            <ng-content select="[right-legend]"></ng-content>
+          </div>
         </div>
-
-        <div class="x-axis-label"
-             #xAxisLabelRef
-             *ngIf="xAxisTitle">
+        
+        @if (xAxisTitle) {
+          <div class="x-axis-label"
+            #xAxisLabelRef
+            >
             {{ xAxisTitle }}
-        </div>
-    `,
+          </div>
+        }
+        `,
     styles: [`
         :host {
             display: flex;

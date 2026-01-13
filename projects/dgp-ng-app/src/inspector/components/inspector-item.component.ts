@@ -19,38 +19,44 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
     selector: "dgp-inspector-item",
     template: `
         <div [class.--responsive]="responsive$ | async"
-             class="inspector-item-content">
-            <div class="info"
-                 [matTooltip]="description || metadata?.description"
-                 matTooltipPosition="left"
-                 [matTooltipDisabled]="hasHoverDescription$ | async | negate">
-                <mat-icon *ngIf="showIcon$ | async"
-                          [color]="labelThemeColor$ | async">
-                    {{matIconName || metadata?.icon}}
-                </mat-icon>
-                <div class="label"
-                     [class.dgp-cl--primary]="(labelThemeColor$ | async) === 'primary'"
-                     [class.dgp-cl--accent]="(labelThemeColor$ | async) === 'accent'"
-                     [class.dgp-cl--warn]="(labelThemeColor$ | async) === 'warn'">
-                    {{ label || metadata?.label }}
-                    <span *ngIf="required || metadata?.isRequired"
-                          class="dgp-cl--accent">*</span>
-                </div>
+          class="inspector-item-content">
+          <div class="info"
+            [matTooltip]="description || metadata?.description"
+            matTooltipPosition="left"
+            [matTooltipDisabled]="hasHoverDescription$ | async | negate">
+            @if (showIcon$ | async) {
+              <mat-icon
+                [color]="labelThemeColor$ | async">
+                {{matIconName || metadata?.icon}}
+              </mat-icon>
+            }
+            <div class="label"
+              [class.dgp-cl--primary]="(labelThemeColor$ | async) === 'primary'"
+              [class.dgp-cl--accent]="(labelThemeColor$ | async) === 'accent'"
+              [class.dgp-cl--warn]="(labelThemeColor$ | async) === 'warn'">
+              {{ label || metadata?.label }}
+              @if (required || metadata?.isRequired) {
+                <span
+                class="dgp-cl--accent">*</span>
+              }
             </div>
-            <dgp-spacer></dgp-spacer>
-            <div class="content"
-                 [class.content-icon-margin]="showIcon$ | async"
-                 [style.max-width]="maxContentWidth$ | async">
-                <ng-content></ng-content>
-            </div>
+          </div>
+          <dgp-spacer></dgp-spacer>
+          <div class="content"
+            [class.content-icon-margin]="showIcon$ | async"
+            [style.max-width]="maxContentWidth$ | async">
+            <ng-content></ng-content>
+          </div>
         </div>
-
-        <p *ngIf="hasPermanentDescription$ | async"
-           class="description"
-           [class.description-icon-margin]="showIcon$ | async">
+        
+        @if (hasPermanentDescription$ | async) {
+          <p
+            class="description"
+            [class.description-icon-margin]="showIcon$ | async">
             {{description || metadata?.description}}
-        </p>
-    `,
+          </p>
+        }
+        `,
     styles: [`
         :host {
             display: flex;

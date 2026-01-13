@@ -7,21 +7,23 @@ import { fillPatternMap, fillPatterns } from "../../fill-pattern-icon/constants"
     selector: "dgp-fill-pattern-select",
     template: `
         <mat-form-field>
-            <mat-select [ngModel]="model"
-                        (ngModelChange)="setModel($event)"
-                        [disabled]="disabled">
-                <mat-option [value]="fillPatternEnum.All">
-                    All
-                </mat-option>
-
-                <mat-option *ngFor="let fillPattern of fillPatterns"
-                            [value]="fillPattern">
-                    <dgp-fill-pattern-icon [model]="fillPattern"></dgp-fill-pattern-icon>
-                    {{fillPatternMap.get(fillPattern).label}}
-                </mat-option>
-            </mat-select>
+          <mat-select [ngModel]="model"
+            (ngModelChange)="setModel($event)"
+            [disabled]="disabled">
+            <mat-option [value]="fillPatternEnum.All">
+              All
+            </mat-option>
+        
+            @for (fillPattern of fillPatterns; track fillPattern) {
+              <mat-option
+                [value]="fillPattern">
+                <dgp-fill-pattern-icon [model]="fillPattern"></dgp-fill-pattern-icon>
+                {{fillPatternMap.get(fillPattern).label}}
+              </mat-option>
+            }
+          </mat-select>
         </mat-form-field>
-    `,
+        `,
     styles: [`
         :host {
             width: auto;
