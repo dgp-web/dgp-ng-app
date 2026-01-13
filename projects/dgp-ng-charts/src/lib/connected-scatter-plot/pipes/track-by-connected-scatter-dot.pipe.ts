@@ -1,7 +1,10 @@
 import { Pipe, PipeTransform, TrackByFunction } from "@angular/core";
 import { ConnectedScatterSeries, Dot } from "../models";
 
-@Pipe({name: "trackByConnectedScatterDot"})
+@Pipe({
+    name: "trackByConnectedScatterDot",
+    standalone: false
+})
 export class TrackByConnectedScatterDotPipe implements PipeTransform {
 
     transform<T>(series: ConnectedScatterSeries): TrackByFunction<Dot> {

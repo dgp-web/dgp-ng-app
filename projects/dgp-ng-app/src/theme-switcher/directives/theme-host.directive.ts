@@ -6,6 +6,7 @@ import { isCompactThemeActive, isDarkModeActiveSelector } from "../selectors";
 
 @Directive({
     selector: "[dgpThemeHost]",
+    standalone: false
 })
 export class ThemeHostDirective {
 

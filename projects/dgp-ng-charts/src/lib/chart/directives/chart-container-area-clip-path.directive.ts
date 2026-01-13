@@ -3,7 +3,10 @@ import { AxisScales } from "../../shared/models";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 import { isNullOrUndefined, notNullOrUndefined } from "dgp-ng-app";
 
-@Directive({selector: "[dgpChartContainerAreaClipPath]"})
+@Directive({
+    selector: "[dgpChartContainerAreaClipPath]",
+    standalone: false
+})
 export class DgpChartContainerAreaClipPathDirective implements AfterViewInit, OnChanges {
 
     @Input()

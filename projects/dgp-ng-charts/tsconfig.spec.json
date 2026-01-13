@@ -2,16 +2,12 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "../../out-tsc/spec",
-        "target": "es2020",
         "types": [
             "jasmine",
             "jquery",
             "node"
         ]
     },
-    "files": [
-        "src/test.ts"
-    ],
     "include": [
         "**/*.spec.ts",
         "**/*.d.ts"

@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { ConnectedScatterGroup, ConnectedScatterSeries, Dot } from "../models";
 import { ConnectedScatterPlotScales } from "../models/connected-scatter-plot-scales.model";
 
-@Directive({selector: "[dgpScatterPlotDotTooltip]"})
+@Directive({
+    selector: "[dgpScatterPlotDotTooltip]",
+    standalone: false
+})
 export class DgpScatterPlotDotTooltipDirective implements OnChanges {
 
     @Input()

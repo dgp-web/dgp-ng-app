@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import * as d3 from "d3";
 import { AxisScales } from "../../shared/models";
 
-@Directive({selector: "[dgpChartBottomAxis]"})
+@Directive({
+    selector: "[dgpChartBottomAxis]",
+    standalone: false
+})
 export class DgpChartBottomAxisDirective implements OnChanges {
 
     @Input()

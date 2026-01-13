@@ -3,7 +3,10 @@ import { Box, BoxGroup, BoxPlotScales } from "../models";
 import { getMaskIdForFillPattern } from "../../fill-pattern-icon/functions";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
-@Directive({selector: "[dgpBoxPlotBoxFillPattern]"})
+@Directive({
+    selector: "[dgpBoxPlotBoxFillPattern]",
+    standalone: false
+})
 export class BoxPlotBoxFillPatternDirective implements OnChanges {
 
     @Input()

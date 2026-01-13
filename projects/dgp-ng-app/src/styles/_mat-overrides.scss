@@ -4,7 +4,7 @@
      *
      * We make it larger so even a normal person can read it comfortably.
      */
-    .mat-tooltip {
+    .mat-mdc-tooltip {
         font-size: 13px !important;
         white-space: pre-line !important;
         word-break: break-word !important;
@@ -23,6 +23,15 @@
     }
 }
 
+@mixin dgp-mat-dialog-overrides() {
+
+    .mat-mdc-dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+}
+
 @mixin dgp-mat-form-field-overrides() {
 
     /**
@@ -33,8 +42,23 @@
     }
 }
 
+@mixin dgp-mat-tab-overrides() {
+
+    /**
+     * Tab labels for ng material stretch to fill their width which we don't want
+     *
+     * Height is controlled by density so we don't need to mess with it
+     */
+    .mat-mdc-tab.mdc-tab {
+        flex-grow: 0 !important;
+    }
+
+}
+
 @mixin dgp-mat-overrides() {
     @include dgp-mat-button-overrides();
+    @include dgp-mat-dialog-overrides();
     @include dgp-mat-form-field-overrides();
+    @include dgp-mat-tab-overrides();
     @include dgp-mat-tooltip-overrides();
 }

@@ -28,3 +28,12 @@ export const showDropTarget = createAction("[FileUpload] ShowDropTarget");
 export const hideDropTarget = createAction("[FileUpload] HideDropTarget");
 
 export const setConfig = createAction("[FileUpload] SetConfig", props<{ readonly config: FileUploadConfig; }>());
+export const selectPreviousFile = createAction(
+    "[FileUpload] SelectPreviousFile"
+);
+export const selectNextFile = createAction(
+    "[FileUpload] SelectNextFile"
+);
+export const setIsFileDrawerOpen = createAction("[FileUpload] SetIsFileDrawerOpen", props<{
+    readonly isDrawerOpen: boolean;
+}>());

@@ -104,6 +104,7 @@ import { txtFileItem } from "../constants/txt-file-item.constant";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FileViewerDocsPageComponent {
 

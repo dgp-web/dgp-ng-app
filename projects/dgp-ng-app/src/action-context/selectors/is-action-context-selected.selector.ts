@@ -6,7 +6,6 @@ export function isActionContextSelected(actionContextKey: string) {
     return createSelector(
         getSelectedActionContextKey,
         selectedActionContextKey => {
-
             if (isNullOrUndefined(actionContextKey)) return false;
 
             return selectedActionContextKey === actionContextKey;

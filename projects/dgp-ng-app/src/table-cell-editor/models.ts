@@ -1,4 +1,4 @@
-export interface TableCellEditorSizes {
+export interface TriggerElementSizes {
     readonly offsetTop: number;
     readonly offsetLeft: number;
     readonly offsetRight: number;

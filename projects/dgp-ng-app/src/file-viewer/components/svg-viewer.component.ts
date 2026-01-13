@@ -45,6 +45,7 @@ import { Platform } from "@angular/cdk/platform";
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SvgViewerComponent extends FileViewerComponentBase {
 

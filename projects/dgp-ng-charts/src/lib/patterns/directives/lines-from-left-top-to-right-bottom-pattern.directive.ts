@@ -2,7 +2,10 @@ import { Directive } from "@angular/core";
 import { linesFromLeftTopToRightBottomPattern } from "../constants";
 import { VerticalLinesPatternDirective } from "./vertical-lines-pattern.directive";
 
-@Directive({selector: "[dgpLinesFromLeftTopToRightBottomPattern]"})
+@Directive({
+    selector: "[dgpLinesFromLeftTopToRightBottomPattern]",
+    standalone: false
+})
 export class LinesFromLeftTopToRightBottomPatternDirective extends VerticalLinesPatternDirective {
 
     model = linesFromLeftTopToRightBottomPattern;

@@ -30,7 +30,7 @@ import { ChartsLabsCoreModule } from "./charts-labs-core.module";
         }, {
             path: "charts/heatmap",
             component: HeatmapLabsComponent
-        }], {relativeLinkResolution: "legacy"})
+        }])
     ]
 })
 export class ChartsLabsModule {

@@ -3,6 +3,7 @@ import { SVGShapeBaseDirective } from "./svg-shape.base-directive";
 
 @Directive({
     selector: "[dgpCircle]",
+    standalone: false
 })
 export class CircleDirective extends SVGShapeBaseDirective {
 

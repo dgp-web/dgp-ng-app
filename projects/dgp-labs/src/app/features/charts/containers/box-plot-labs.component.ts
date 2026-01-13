@@ -116,6 +116,7 @@ export const testBoxPlot: BoxPlot = {
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BoxPlotLabsComponent extends DgpModelEditorComponentBase<BoxPlot> {
 

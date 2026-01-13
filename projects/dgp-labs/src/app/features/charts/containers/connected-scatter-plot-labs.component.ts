@@ -95,6 +95,7 @@ import { normalPlotTooltipFormat } from "../../../../../../dgp-ng-charts/src/lib
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ConnectedScatterPlotLabsComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 

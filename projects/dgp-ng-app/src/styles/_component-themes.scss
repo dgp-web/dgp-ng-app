@@ -1,0 +1,217 @@
+@use '@angular/material' as mat;
+
+@mixin dgp-action-context-theme($app-theme) {
+
+    $accent: map-get($app-theme, accent);
+
+    .dgp-action-context.--selected {
+        outline: 1px dashed mat.m2-get-color-from-palette($accent, 300);
+    }
+
+}
+
+@mixin dgp-details-theme($app-theme) {
+
+    dgp-details.--indent, .--indent dgp-details {
+        .details-content {
+            padding-left: 40px;
+        }
+    }
+
+}
+
+@mixin dgp-file-manager-theme() {
+
+    .dgp-file-manager-overlay--maximized {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
+
+}
+
+@mixin dgp-hamburger-shell-theme() {
+
+    .page-menu-drawer-container {
+        .mat-drawer-inner-container {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .hamburger-menu-drawer-content > *:not(router-outlet) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        flex-grow: 1;
+        overflow: auto;
+    }
+
+}
+
+@mixin dgp-input-field-theme() {
+
+    dgp-input-field {
+        dgp-inspector-item {
+            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+            mat-list-item {
+                padding-bottom: 8px !important;
+                padding-top: 8px !important;
+            }
+
+            /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+            .mat-list-item-content {
+                align-items: flex-start !important;
+
+                .label {
+                    // margin-top: 8px;
+                }
+
+                mat-icon {
+                    // margin-top: 6px;
+                }
+
+                .content {
+                    padding-top: 8px;
+                }
+
+            }
+        }
+    }
+
+}
+
+@mixin dgp-inspector-theme($app-theme) {
+
+    dgp-inspector-item {
+        .info {
+            mat-icon {
+                line-height: 20px !important;
+                width: 20px;
+                height: 20px;
+                font-size: 20px;
+            }
+
+            .label {
+                font-size: smaller;
+            }
+        }
+    }
+
+    dgp-inspector-section {
+        & > dgp-details > details > summary {
+            opacity: 0.7;
+            border-bottom: 1px solid gray;
+            font-size: smaller;
+            padding-left: 8px;
+        }
+    }
+
+    dgp-inspector-section {
+        dgp-inspector-section {
+            padding-left: 8px;
+        }
+    }
+
+}
+
+@mixin dgp-list-item-theme($theme) {
+
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+
+    .dgp-bg--primary {
+        background: mat.m2-get-color-from-palette($primary, 300) !important;
+    }
+
+    .dgp-bg--accent {
+        background: mat.m2-get-color-from-palette($accent, 300) !important;
+    }
+
+    .inspector-item-content.--responsive {
+        flex-wrap: wrap;
+    }
+
+    .dgp-list-item.--selected {
+        border-left-color: mat.m2-get-color-from-palette($primary, 300);
+        border-left-width: 4px;
+        border-left-style: solid;
+    }
+
+    .dgp-list-item.--not-clickable {
+        pointer-events: none;
+    }
+
+    .dgp-list-item--selected {
+        border-left-color: mat.m2-get-color-from-palette($primary, 300);
+        border-left-width: 4px;
+        border-left-style: solid;
+        pointer-events: none;
+    }
+
+}
+
+@mixin dgp-routing-overlay-theme() {
+
+    .dgp-routing-overlay-dialog-panel {
+        .mat-mdc-dialog-container {
+            --mdc-dialog-container-color: transparent !important;
+        }
+
+        .mat-mdc-dialog-container .mdc-dialog__surface {
+            box-shadow: none !important;
+        }
+    }
+
+    .dgp-routing-overlay-backdrop {
+        background: #00000022;
+    }
+
+}
+
+@mixin dgp-utils($app-theme) {
+
+    $primary: map-get($app-theme, primary);
+    $accent: map-get($app-theme, accent);
+
+    .dgp-bg--primary {
+        background: mat.m2-get-color-from-palette($primary) !important;
+    }
+
+    .dgp-bg--accent {
+        background: mat.m2-get-color-from-palette($accent) !important;
+    }
+
+    .dgp-bg--warn {
+        background: mat.m2-get-color-from-palette($warn) !important;
+    }
+
+    .dgp-cl--primary {
+        color: mat.m2-get-color-from-palette($primary) !important;
+    }
+
+    .dgp-cl--accent {
+        color: mat.m2-get-color-from-palette($accent) !important;
+    }
+
+    .dgp-cl--warn {
+        color: mat.m2-get-color-from-palette($warn) !important;
+    }
+
+    .dgp-bg--accent {
+        background: mat.m2-get-color-from-palette($accent, 100) !important;
+    }
+
+}
+
+@mixin dgp-all-component-themes($app-theme) {
+
+    @include dgp-action-context-theme($app-theme);
+    @include dgp-details-theme($app-theme);
+    @include dgp-file-manager-theme();
+    @include dgp-hamburger-shell-theme();
+    @include dgp-inspector-theme($app-theme);
+    @include dgp-list-item-theme($app-theme);
+    @include dgp-routing-overlay-theme();
+}

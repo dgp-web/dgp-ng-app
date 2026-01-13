@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { select, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -7,7 +7,7 @@ import { BroadcastState, getOwnBroadcastRoleSelector } from "../store";
 import { BroadcastRole } from "../models";
 
 @Injectable()
-export class NoPeonGuard implements CanActivate {
+export class NoPeonGuard  {
 
     constructor(
         private readonly store: Store<BroadcastState>

@@ -136,6 +136,7 @@ import {
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ConnectedScatterPlotConfigComponent extends DgpModelEditorComponentBase<ConnectedScatterPlot> {
 

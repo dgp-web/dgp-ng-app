@@ -34,7 +34,8 @@ import { DragEvent } from "../../models/drag-event.model";
                      [style.width.px]="handleSize$ | async"></div>
             </div>
         </ng-container>
-    `
+    `,
+    standalone: false
 })
 export class SplitterComponent  {
 

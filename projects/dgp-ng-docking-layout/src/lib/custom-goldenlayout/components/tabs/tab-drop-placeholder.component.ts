@@ -12,6 +12,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef } from "@
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TabDropPlaceholderComponent implements AfterViewInit {
 

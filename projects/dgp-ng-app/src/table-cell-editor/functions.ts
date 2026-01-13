@@ -1,50 +1,50 @@
 import { DialogPosition } from "@angular/material/dialog";
-import { TableCellEditorSizes } from "./models";
+import { TriggerElementSizes } from "./models";
 
-export function computeTableCellEditorSizes(payload: {
-    readonly tableCellBoundingRect: ClientRect;
+export function computeTriggerElementSizes(payload: {
+    readonly triggerElementBoundingRect: ClientRect;
     readonly window: Window;
     readonly triggerButtonElement: HTMLElement;
-}): TableCellEditorSizes {
+}): TriggerElementSizes {
 
     return {
-        offsetTop: (payload.tableCellBoundingRect.top + payload.triggerButtonElement.offsetHeight),
-        offsetLeft: payload.tableCellBoundingRect.left,
-        offsetRight: payload.tableCellBoundingRect.right,
+        offsetTop: (payload.triggerElementBoundingRect.top + payload.triggerButtonElement.offsetHeight),
+        offsetLeft: payload.triggerElementBoundingRect.left,
+        offsetRight: payload.triggerElementBoundingRect.right,
         availableSpace: {
-            left: payload.tableCellBoundingRect.left,
-            right: payload.window.innerWidth - (payload.tableCellBoundingRect.left),
-            bottom: payload.window.innerHeight - (payload.tableCellBoundingRect.top + payload.triggerButtonElement.offsetHeight),
-            top: payload.tableCellBoundingRect.top
+            left: payload.triggerElementBoundingRect.left,
+            right: payload.window.innerWidth - (payload.triggerElementBoundingRect.left),
+            bottom: payload.window.innerHeight - (payload.triggerElementBoundingRect.top + payload.triggerButtonElement.offsetHeight),
+            top: payload.triggerElementBoundingRect.top
         }
     };
 
 }
 
-export function getDialogPositionFromTableCellEditorSizes(payload: {
-    readonly tableCellEditorSizes: TableCellEditorSizes;
+export function getDialogPositionFromTriggerElementSizes(payload: {
+    readonly triggerElementSizes: TriggerElementSizes;
     readonly triggerButtonElement: HTMLElement;
     readonly configureDialogWidth: number;
 }): DialogPosition {
 
     let result: DialogPosition = {
-        top: payload.tableCellEditorSizes.offsetTop + "px",
-        left: payload.tableCellEditorSizes.offsetLeft + "px",
+        top: payload.triggerElementSizes.offsetTop + "px",
+        left: payload.triggerElementSizes.offsetLeft + "px",
         bottom: null,
         right: null
     };
 
 
-    if (payload.tableCellEditorSizes.availableSpace.right < payload.configureDialogWidth
-        && payload.tableCellEditorSizes.availableSpace.left >= payload.configureDialogWidth) {
+    if (payload.triggerElementSizes.availableSpace.right < payload.configureDialogWidth
+        && payload.triggerElementSizes.availableSpace.left >= payload.configureDialogWidth) {
         result = {
             ...result,
-            left: (payload.tableCellEditorSizes.offsetRight - payload.configureDialogWidth) + "px"
+            left: (payload.triggerElementSizes.offsetRight - payload.configureDialogWidth) + "px"
         };
     }
 
-    if (payload.tableCellEditorSizes.availableSpace.bottom < 240
-        && payload.tableCellEditorSizes.availableSpace.top >= 240) {
+    if (payload.triggerElementSizes.availableSpace.bottom < 240
+        && payload.triggerElementSizes.availableSpace.top >= 240) {
         result = {
             ...result,
             top: null,

@@ -2,7 +2,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
 import { BarChartScales, BarGroup } from "../models";
 import { isNullOrUndefined } from "dgp-ng-app";
 
-@Directive({selector: "[dgpBarChartBarGroup]"})
+@Directive({
+    selector: "[dgpBarChartBarGroup]",
+    standalone: false
+})
 export class BarChartBarGroupDirective implements OnChanges {
 
     @Input()

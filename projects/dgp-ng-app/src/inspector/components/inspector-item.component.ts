@@ -104,6 +104,7 @@ export function toOwnOrParentSettings<T>(payload: [T, T]) {
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InspectorItemComponent {
 

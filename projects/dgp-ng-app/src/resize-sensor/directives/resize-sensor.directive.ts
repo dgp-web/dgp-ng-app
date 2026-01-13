@@ -3,7 +3,8 @@ import { Size } from "../models/size.model";
 import { ResizeSensor, ResizeSensorConfig } from "../services/resize-sensor.service";
 
 @Directive({
-    selector: "[dgpResizeSensor]"
+    selector: "[dgpResizeSensor]",
+    standalone: false
 })
 export class DgpResizeSensorDirective implements AfterViewInit, OnDestroy, ResizeSensorConfig {
 

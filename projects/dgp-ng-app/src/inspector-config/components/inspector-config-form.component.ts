@@ -69,18 +69,18 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
                     <dgp-spacer></dgp-spacer>
                     <mat-slider [ngModel]="maxContentWidth$ | async"
                                 (ngModelChange)="updateMaxContentWidth($event)"
-                                [thumbLabel]="true"
                                 [min]="160"
                                 [max]="480"
                                 [step]="1"
-                                style="width: 160px;"></mat-slider>
+                                style="width: 160px;"><input matSliderThumb /></mat-slider>
                 </dgp-inspector-item>
 
             </dgp-inspector-section>
 
         </dgp-inspector>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInspectorConfigFormComponent extends DgpModelEditorComponentBase<InspectorConfig> {
 

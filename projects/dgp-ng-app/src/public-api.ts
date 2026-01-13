@@ -67,6 +67,12 @@ export {
 } from "./confirm-dialog/containers/confirm-dialog.component";
 export { DgpConfirmDialogModule } from "./confirm-dialog/confirm-dialog.module";
 
+// dialog-menu
+export { DgpDialogMenuComponent } from "./dialog-menu/components/dialog-menu.component";
+export { DgpDialogMenuTriggerDirective } from "./dialog-menu/directives/dialog-menu-trigger.directive";
+export { DgpDialogMenuService } from "./dialog-menu/services/dialog-menu.service";
+export { DgpDialogMenuModule } from "./dialog-menu/dialog-menu.module";
+
 // details
 export * from "./details/models";
 export { DgpDetailsComponent } from "./details/components/details.component";
@@ -219,6 +225,7 @@ export { DgpSpacerModule } from "./spacer/spacer.module";
 
 // table-cell
 export { DgpTableCellComponent } from "./table-cell-editor/components/table-cell.component";
+export { DgpTableCellEditorComponent } from "./table-cell-editor/components/table-cell-editor.component";
 export { DgpTableCelLEditorDirective } from "./table-cell-editor/directives/table-cell-editor.directive";
 export { DgpCloseTableCellEditorDirective } from "./table-cell-editor/directives/close-table-cell-editor.directive";
 export { DgpTableCellEditorService } from "./table-cell-editor/service/table-cell-editor.service";
@@ -288,4 +295,12 @@ export * from "./dgp-ng-app.module";
 export { Size } from "./resize-sensor/models/size.model";
 export { ResizeSensor, defaultResizeSensorConfig, ResizeSensorConfig } from "./resize-sensor/services/resize-sensor.service";
 export { selectFileItem } from "./file-viewer/select-file-item.action";
+export {
+    DgpListDetailsPageMenuToggleComponent
+} from "./hamburger-shell/components/list-details-page/dgp-list-details-page-menu-toggle.component";
+export { DgpDrawerLayoutMenuToggleComponent } from "./drawer-layout/drawer-layout-menu-toggle.component";
+export { DgpDrawerLayoutComponent } from "./drawer-layout/drawer-layout.component";
+export { DrawerLayoutMenuTogglePosition } from "./drawer-layout/models";
+export { DrawerLayout } from "./drawer-layout/models";
+export { DrawerMode } from "./drawer-layout/models";
 

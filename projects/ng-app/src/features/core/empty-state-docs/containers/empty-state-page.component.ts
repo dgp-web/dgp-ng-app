@@ -42,6 +42,7 @@ import { moduleImportCodeSample, templateCodeSample } from "../empty-state-code-
         </dgp-docs-page>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EmptyStatePageComponent {
 

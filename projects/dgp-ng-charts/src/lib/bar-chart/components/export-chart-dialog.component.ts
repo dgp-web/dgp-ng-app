@@ -61,6 +61,7 @@ import { InternalExportChartConfig } from "../../heatmap/models/internal-export-
 
         }
 
+        /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
         mat-dialog-content {
             display: flex;
             flex-grow: 1;
@@ -116,6 +117,7 @@ import { InternalExportChartConfig } from "../../heatmap/models/internal-export-
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpExportChartDialogComponent {
 

@@ -12,6 +12,18 @@ export interface SampleItem {
         <dgp-page-header>
             <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
             Split panel
+            <dgp-spacer/>
+            <button mat-stroked-button
+                    dgpDialogMenuTrigger
+                    (dialogMenuOpened)="onDialogMenuOpened()"
+                    (dialogMenuClosed)="onDialogMenuClosed()"
+                    [templateRef]="dialog">Test
+            </button>
+            <ng-template #dialog>
+                <mat-dialog-content>
+                    Hello
+                </mat-dialog-content>
+            </ng-template>
         </dgp-page-header>
 
         <dgp-split-panel orientation="horizontal">
@@ -133,6 +145,7 @@ export interface SampleItem {
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SplitPanelLabsPageComponent {
 
@@ -182,5 +195,13 @@ export class SplitPanelLabsPageComponent {
 
     onModelDropped(item: SampleItem) {
         console.log(item);
+    }
+
+    onDialogMenuOpened() {
+        console.log("onDialogMenuOpened");
+    }
+
+    onDialogMenuClosed() {
+        console.log("onDialogMenuClosed");
     }
 }

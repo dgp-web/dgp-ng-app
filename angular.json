@@ -15,21 +15,27 @@
             "prefix": "app",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-devkit/build-angular:application",
                     "options": {
                         "allowedCommonJsDependencies": [
                             "css-element-queries",
+                            "data-modeling",
                             "entity-store",
                             "highlight.js",
+                            "lodash",
                             "@angularclass/hmr"
                         ],
-                        "outputPath": "dist/ng-app",
+                        "outputPath": {
+                          "base": "dist/ng-app"
+                        },
                         "index": "projects/ng-app/src/index.html",
-                        "main": "projects/ng-app/src/main.ts",
-                        "polyfills": "projects/ng-app/src/polyfills.ts",
+                        "polyfills": [
+                          "projects/ng-app/src/polyfills.ts"
+                        ],
                         "tsConfig": "projects/ng-app/tsconfig.app.json",
                         "aot": true,
                         "progress": false,
+                        "optimization": false,
                         "assets": [
                             "projects/ng-app/src/favicon.ico",
                             "projects/ng-app/src/assets"
@@ -38,7 +44,8 @@
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "projects/ng-app/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "browser": "projects/ng-app/src/main.ts"
                     },
                     "configurations": {
                         "production": {
@@ -56,8 +63,6 @@
                             "sourceMap": false,
                             "namedChunks": false,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -76,25 +81,27 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "ng-app:build"
+                      "buildTarget": "ng-app:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "ng-app:build:production"
+                          "buildTarget": "ng-app:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "ng-app:build"
+                      "buildTarget": "ng-app:build"
                     }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/ng-app/src/test.ts",
-                        "polyfills": "projects/ng-app/src/polyfills.ts",
+                        "polyfills": [
+                            "projects/ng-app/src/polyfills.ts",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/ng-app/tsconfig.spec.json",
                         "karmaConfig": "projects/ng-app/karma.conf.js",
                         "assets": [
@@ -144,9 +151,12 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-app/src/test.ts",
                         "progress": false,
                         "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/dgp-ng-app/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-app/karma.conf.js"
                     }
@@ -174,10 +184,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-docs/src/test.ts",
                         "tsConfig": "projects/dgp-ng-docs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-docs/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -203,10 +216,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-docking-layout/src/test.ts",
                         "tsConfig": "projects/dgp-ng-docking-layout/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-docking-layout/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -223,7 +239,7 @@
             "prefix": "app",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-devkit/build-angular:application",
                     "options": {
                         "allowedCommonJsDependencies": [
                             "css-element-queries",
@@ -232,10 +248,13 @@
                             "@angularclass/hmr",
                             "seedrandom"
                         ],
-                        "outputPath": "dist/dgp-labs",
+                        "outputPath": {
+                          "base": "dist/dgp-labs"
+                        },
                         "index": "projects/dgp-labs/src/index.html",
-                        "main": "projects/dgp-labs/src/main.ts",
-                        "polyfills": "projects/dgp-labs/src/polyfills.ts",
+                        "polyfills": [
+                          "projects/dgp-labs/src/polyfills.ts"
+                        ],
                         "tsConfig": "projects/dgp-labs/tsconfig.app.json",
                         "aot": true,
                         "progress": false,
@@ -248,13 +267,12 @@
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js"
-                        ]
+                        ],
+                        "browser": "projects/dgp-labs/src/main.ts"
                     },
                     "configurations": {
                         "development": {
-                            "buildOptimizer": false,
-                            "optimization": false,
-                            "vendorChunk": true,
+                          "optimization": false,
                             "extractLicenses": false,
                             "sourceMap": true,
                             "namedChunks": true
@@ -271,8 +289,6 @@
                             "sourceMap": false,
                             "namedChunks": false,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -291,28 +307,30 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "dgp-labs:build"
+                      "buildTarget": "dgp-labs:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "dgp-labs:build:production"
+                          "buildTarget": "dgp-labs:build:production"
                         },
                         "development": {
-                            "browserTarget": "dgp-labs:build:development"
+                          "buildTarget": "dgp-labs:build:development"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "dgp-labs:build"
+                      "buildTarget": "dgp-labs:build"
                     }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-labs/src/test.ts",
-                        "polyfills": "projects/dgp-labs/src/polyfills.ts",
+                        "polyfills": [
+                            "projects/dgp-labs/src/polyfills.ts",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/dgp-labs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-labs/karma.conf.js",
                         "assets": [
@@ -361,11 +379,14 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-charts/src/test.ts",
                         "tsConfig": "projects/dgp-ng-charts/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-charts/karma.conf.js",
                         "progress": false,
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -391,10 +412,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-drag-and-drop/src/test.ts",
                         "tsConfig": "projects/dgp-ng-drag-and-drop/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-drag-and-drop/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -423,10 +447,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-data-export/src/test.ts",
                         "tsConfig": "projects/dgp-ng-data-export/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-data-export/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -455,10 +482,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-paged-media/src/test.ts",
                         "tsConfig": "projects/dgp-ng-paged-media/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-paged-media/karma.conf.js",
-                        "codeCoverage": true
+                        "codeCoverage": true,
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ]
                     }
                 }
             }
@@ -478,12 +508,15 @@
             "prefix": "app",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "outputPath": "dist/dgp-ng-paged-media-labs",
+                        "outputPath": {
+                          "base": "dist/dgp-ng-paged-media-labs"
+                        },
                         "index": "projects/dgp-ng-paged-media-labs/src/index.html",
-                        "main": "projects/dgp-ng-paged-media-labs/src/main.ts",
-                        "polyfills": "projects/dgp-ng-paged-media-labs/src/polyfills.ts",
+                        "polyfills": [
+                          "projects/dgp-ng-paged-media-labs/src/polyfills.ts"
+                        ],
                         "tsConfig": "projects/dgp-ng-paged-media-labs/tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
@@ -493,7 +526,8 @@
                         "styles": [
                             "projects/dgp-ng-paged-media-labs/src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "browser": "projects/dgp-ng-paged-media-labs/src/main.ts"
                     },
                     "configurations": {
                         "production": {
@@ -518,9 +552,7 @@
                             "outputHashing": "all"
                         },
                         "development": {
-                            "buildOptimizer": false,
-                            "optimization": false,
-                            "vendorChunk": true,
+                          "optimization": false,
                             "extractLicenses": false,
                             "sourceMap": true,
                             "namedChunks": true
@@ -532,10 +564,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "dgp-ng-paged-media-labs:build:production"
+                          "buildTarget": "dgp-ng-paged-media-labs:build:production"
                         },
                         "development": {
-                            "browserTarget": "dgp-ng-paged-media-labs:build:development"
+                          "buildTarget": "dgp-ng-paged-media-labs:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -543,14 +575,16 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "dgp-ng-paged-media-labs:build"
+                      "buildTarget": "dgp-ng-paged-media-labs:build"
                     }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/dgp-ng-paged-media-labs/src/test.ts",
-                        "polyfills": "projects/dgp-ng-paged-media-labs/src/polyfills.ts",
+                        "polyfills": [
+                            "projects/dgp-ng-paged-media-labs/src/polyfills.ts",
+                            "zone.js/testing"
+                        ],
                         "tsConfig": "projects/dgp-ng-paged-media-labs/tsconfig.spec.json",
                         "karmaConfig": "projects/dgp-ng-paged-media-labs/karma.conf.js",
                         "inlineStyleLanguage": "scss",

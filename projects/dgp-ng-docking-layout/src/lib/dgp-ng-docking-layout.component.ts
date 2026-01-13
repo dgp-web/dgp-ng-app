@@ -88,7 +88,8 @@ import { interval } from "rxjs";
             display: flex;
             flex-direction: column;
         }
-    `]
+    `],
+    standalone: false
 })
 export class DgpNgDockingLayoutComponent implements OnInit {
 

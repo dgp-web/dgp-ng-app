@@ -2,7 +2,10 @@ import { Directive } from "@angular/core";
 import { checkerboardMask, diagonalCheckerboardMask } from "../constants";
 import { SVGMaskBaseDirective } from "./svg-mask-base.directive";
 
-@Directive({selector: "[dgpDiagonalCheckerboardMask]"})
+@Directive({
+    selector: "[dgpDiagonalCheckerboardMask]",
+    standalone: false
+})
 export class DiagonalCheckerboardMaskDirective extends SVGMaskBaseDirective {
 
     model = diagonalCheckerboardMask;

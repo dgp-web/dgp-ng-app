@@ -74,11 +74,6 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
             flex-direction: column;
         }
 
-        mat-tab-group {
-            flex-shrink: 0;
-            height: 50px;
-        }
-
         .tab-header {
             height: 100%;
             width: 100%;
@@ -88,7 +83,8 @@ import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
             padding-left: 8px;
             padding-right: 8px;
         }
-    `]
+    `],
+    standalone: false
 })
 export class StackComponent implements DropTarget, AfterViewInit {
 

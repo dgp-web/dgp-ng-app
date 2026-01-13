@@ -2,7 +2,6 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "../../out-tsc/spec",
-        "target": "es2020",
         "types": [
             "jasmine",
             "node"
@@ -11,9 +10,6 @@
     "angularCompilerOptions": {
         "enableIvy": false
     },
-    "files": [
-        "src/test.ts"
-    ],
     "include": [
         "**/*.spec.ts",
         "**/*.d.ts"

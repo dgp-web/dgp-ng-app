@@ -49,7 +49,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         flex-direction: column;
       }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BlindTextComponent {
 }

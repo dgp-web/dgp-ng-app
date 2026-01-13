@@ -34,6 +34,34 @@
 					"dgp-ng-app-16-8d720"
 				]
 			}
+		},
+		"dgp-ng-app-16-mdc": {
+			"hosting": {
+				"dgp-ng-app-16-mdc": [
+					"dgp-ng-app-16-mdc"
+				]
+			}
+		},
+		"dgp-ng-app-17": {
+			"hosting": {
+				"dgp-ng-app-17": [
+					"dgp-ng-app-17"
+				]
+			}
+		},
+		"dgp-ng-app-18": {
+			"hosting": {
+				"dgp-ng-app-18": [
+					"dgp-ng-app-18"
+				]
+			}
+		},
+		"dgp-ng-app-19": {
+			"hosting": {
+				"dgp-ng-app-19": [
+					"dgp-ng-app-19"
+				]
+			}
 		}
 	}
 }

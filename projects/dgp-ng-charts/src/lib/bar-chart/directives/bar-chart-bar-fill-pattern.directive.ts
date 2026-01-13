@@ -3,7 +3,10 @@ import { Bar, BarChartScales, BarGroup } from "../models";
 import { getMaskIdForFillPattern } from "../../fill-pattern-icon/functions";
 import { ID_PREFIX } from "../../shared/id-prefix-injection-token.constant";
 
-@Directive({selector: "[dgpBarChartBarFillPattern]"})
+@Directive({
+    selector: "[dgpBarChartBarFillPattern]",
+    standalone: false
+})
 export class BarChartBarFillPatternDirective implements OnChanges {
 
     @Input()

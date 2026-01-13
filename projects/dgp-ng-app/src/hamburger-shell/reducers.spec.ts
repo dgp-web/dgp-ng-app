@@ -1,6 +1,14 @@
 import { hamburgerShellReducer, initialHamburgerShellState } from "./reducers";
-import { closeHamburgerMenu, closeListDetailsMenu, setHamburgerMenuState, setListDetailsPageState, toggleHamburgerMenu, toggleListDetailsPageMenu } from "./actions";
+import {
+    closeHamburgerMenu,
+    closeListDetailsMenu,
+    setHamburgerMenuState,
+    setListDetailsPageState,
+    toggleHamburgerMenu,
+    toggleListDetailsPageMenu
+} from "./actions";
 import { HamburgerShellState } from "./models";
+import { DrawerMode } from "../drawer-layout/models";
 
 describe("hamburgerShellReducer", () => {
 
@@ -57,7 +65,7 @@ describe("hamburgerShellReducer", () => {
     it(`setListDetailsPageState should set pageMenuMode and isPageMenuOpen`, () => {
 
         const action = setListDetailsPageState({
-            pageMenuMode: "side",
+            pageMenuMode: DrawerMode.Side,
             isPageMenuOpen: true
         });
 

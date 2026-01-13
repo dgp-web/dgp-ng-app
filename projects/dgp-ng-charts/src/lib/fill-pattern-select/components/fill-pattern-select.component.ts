@@ -32,7 +32,8 @@ import { fillPatternMap, fillPatterns } from "../../fill-pattern-icon/constants"
             width: 100%;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpFillPatternSelectComponent extends DgpModelEditorComponentBase<FillPattern> {
 

@@ -2,7 +2,10 @@ import { Directive } from "@angular/core";
 import { SVGPatternBaseDirective } from "./svg-pattern-base.directive";
 import { horizontalLinesPattern } from "../constants";
 
-@Directive({selector: "[dgpHorizontalLinesPattern]"})
+@Directive({
+    selector: "[dgpHorizontalLinesPattern]",
+    standalone: false
+})
 export class HorizontalLinesPatternDirective extends SVGPatternBaseDirective {
 
     model = horizontalLinesPattern;

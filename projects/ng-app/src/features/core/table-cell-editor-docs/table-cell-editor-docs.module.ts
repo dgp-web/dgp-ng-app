@@ -7,6 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { FormsModule } from "@angular/forms";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { FormsModule } from "@angular/forms";
         MatFormFieldModule,
         MatInputModule,
         FormsModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatDialogModule
     ],
     declarations: [
         TableCellEditorDocsPageComponent

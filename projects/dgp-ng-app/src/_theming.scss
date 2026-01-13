@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
-@import '@angular/material/theming';
-@import './styles/compact';
+@import '@angular/material';
 @import './styles/mat-overrides';
+@import './styles/component-themes';
 
 @mixin dgp-normalize {
 
@@ -20,277 +20,40 @@
 
 }
 
-@mixin dgp-list-item-theme($theme) {
-
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-
-    .dgp-bg--primary {
-        background: mat.get-color-from-palette($primary, 300) !important;
-    }
-
-    .dgp-bg--accent {
-        background: mat.get-color-from-palette($accent, 300) !important;
-    }
-
-    .inspector-item-content.--responsive {
-        flex-wrap: wrap;
-    }
-
-    .dgp-list-item.--selected {
-        border-left-color: mat.get-color-from-palette($primary, 300);
-        border-left-width: 4px;
-        border-left-style: solid;
-    }
-
-    .dgp-list-item.--not-clickable {
-        pointer-events: none;
-    }
-
-    .dgp-list-item--selected {
-        border-left-color: mat.get-color-from-palette($primary, 300);
-        border-left-width: 4px;
-        border-left-style: solid;
-        pointer-events: none;
-
-        &:hover {
-            background-color: mat.get-color-from-palette($accent, 300);
-        }
-    }
-
-    /*.--compact {
-        dgp-inspector-item {
-
-            .inspector-item-content {
-                min-height: 32px;
-            }
-
-            .description {
-                margin-left: 34px;
-                margin-right: 8px;
-                margin-top: 4px;
-                margin-bottom: 8px;
-            }
-
-            .info {
-                height: 32px;
-
-                mat-icon {
-                    font-size: 18px;
-                    width: 18px;
-                    height: 18px;
-
-                    margin-right: 8px;
-                }
-            }
-
-            .content {
-                margin-left: 26px;
-            }
-        }
-
-        dgp-input-error-info {
-            .host {
-                margin-left: 34px;
-                margin-right: 8px;
-            }
-        }
-
-    }*/
-
-}
-
-@mixin dgp-details-theme($app-theme) {
-
-    dgp-details.--indent, .--indent dgp-details {
-        .details-content {
-            padding-left: 40px;
-        }
-    }
-
-}
-
-@mixin dgp-inspector-theme($app-theme) {
-
-    dgp-inspector-item {
-        .info {
-            mat-icon {
-                line-height: 20px !important;
-                width: 20px;
-                height: 20px;
-                font-size: 20px;
-            }
-
-            .label {
-                font-size: smaller;
-            }
-        }
-    }
-
-    dgp-inspector-section {
-
-        & > dgp-details > details > summary {
-            opacity: 0.7;
-            border-bottom: 1px solid gray;
-            font-size: smaller;
-            padding-left: 8px;
-        }
-
-        dgp-details {
-            summary {
-                .summary-content {
-
-                }
-
-                dgp-expansion-toggle {
-
-                    button[mat-icon-button] {
-                        width: 32px !important;
-                        height: 32px !important;
-                        line-height: 32px !important;
-
-                        mat-icon {
-                            line-height: 20px !important;
-                            width: 20px;
-                            height: 20px;
-                            font-size: 20px;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-@mixin dgp-ng-app-theme($primary, $accent, $warn: mat.define-palette(mat.$red-palette)) {
+@mixin dgp-ng-app-theme($primary, $accent, $warn: mat.m2-define-palette(mat.$m2-red-palette), $density: -3) {
 
     @include dgp-normalize();
-    @include dgp-mat-overrides();
 
     *[dgpThemeHost] {
 
-        $app-theme: mat.define-light-theme($primary, $accent, $warn);
-        $app-dark-theme: mat.define-dark-theme($primary, $accent, $warn);
+        $app-theme: mat.m2-define-light-theme((
+            color: (
+                primary: $primary,
+                accent: $accent,
+                warn: $warn,
+            ),
+            density: $density
+        ));
+        $app-dark-theme: mat.m2-define-dark-theme((
+            color: (
+                primary: $primary,
+                accent: $accent,
+                warn: $warn,
+            ),
+            density: $density
+        ));
 
         @include mat.all-component-themes($app-theme);
-
-        @include dgp-list-item-theme($app-theme);
-        @include dgp-inspector-theme($app-theme);
-        @include dgp-details-theme($app-theme);
+        @include dgp-all-component-themes($app-theme);
 
         .dark-theme, &.dark-theme {
             @include mat.all-component-themes($app-dark-theme);
-            @include dgp-list-item-theme($app-dark-theme);
+            @include dgp-all-component-themes($app-dark-theme);
         }
 
-
-        .compact-theme, &.compact-theme {
-            @include dgp-compact-theme();
-        }
-
-        .dgp-bg--primary {
-            background: mat.get-color-from-palette($primary) !important;
-        }
-
-        .dgp-bg--accent {
-            background: mat.get-color-from-palette($accent) !important;
-        }
-
-        .dgp-bg--warn {
-            background: mat.get-color-from-palette($warn) !important;
-        }
-
-        .dgp-cl--primary {
-            color: mat.get-color-from-palette($primary) !important;
-        }
-
-        .dgp-cl--accent {
-            color: mat.get-color-from-palette($accent) !important;
-        }
-
-        .dgp-cl--warn {
-            color: mat.get-color-from-palette($warn) !important;
-        }
-
-        mat-dialog-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .page-menu-drawer-container {
-            .mat-drawer-inner-container {
-                display: flex;
-                flex-direction: column;
-            }
-        }
-
-        .hamburger-menu-drawer-content > *:not(router-outlet) {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            flex-grow: 1;
-            overflow: auto;
-        }
-
-        .dgp-action-context.--selected {
-            outline: 1px dashed mat.get-color-from-palette($accent, 300);
-        }
-
-        .dgp-bg--accent {
-            background: mat.get-color-from-palette($accent, 100) !important;
-        }
-
-        .mat-icon--small {
-            height: 20px !important;
-            width: 20px !important;
-            font-size: 20px !important;
-        }
-
-
-        dgp-input-field {
-            dgp-inspector-item {
-                mat-list-item {
-                    padding-bottom: 8px !important;
-                    padding-top: 8px !important;
-                }
-
-                .mat-list-item-content {
-                    align-items: flex-start !important;
-
-                    .label {
-                        // margin-top: 8px;
-                    }
-
-                    mat-icon {
-                        // margin-top: 6px;
-                    }
-
-                    .content {
-                        padding-top: 8px;
-                    }
-
-                }
-            }
-        }
-
-    }
-
-}
-
-.dgp-file-manager-overlay {
-    mat-dialog-container {
-        padding: 0;
+        @include dgp-mat-overrides();
     }
 }
-
-.dgp-file-manager-overlay--maximized {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-}
-
 
 .dgp-dynamic-virtual-scroll-viewport {
     height: 100%;
@@ -306,54 +69,3 @@
     }
 }
 
-
-dgp-inspector-item {
-    mat-list-item {
-        .mat-list-item-content {
-            flex-grow: 1 !important;
-        }
-    }
-}
-
-dgp-inspector-section {
-    .mat-subheader:first-child {
-        margin-top: 0 !important;
-    }
-}
-
-.dgp-routing-overlay-dialog-panel {
-    mat-dialog-container {
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-}
-
-.dgp-routing-overlay-backdrop {
-    background: #00000022;
-}
-
-/**
- * Compact theme
- */
-
-/**
- * Compact theming for various components
- */
-button[mat-icon-button].--compact {
-    width: 24px !important;
-    height: 24px !important;
-    line-height: 24px !important;
-
-    mat-icon {
-        line-height: 20px;
-        width: 20px;
-        height: 20px;
-        font-size: 20px;
-    }
-}
-
-dgp-inspector-section {
-    dgp-inspector-section {
-        padding-left: 8px;
-    }
-}

@@ -46,7 +46,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
         max-width: 160px;
       }*/
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BlindTableComponent {
 }

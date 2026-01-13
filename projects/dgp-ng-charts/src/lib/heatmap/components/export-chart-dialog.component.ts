@@ -89,6 +89,7 @@ import { InternalExportChartConfig } from "../models/internal-export-chart-confi
 
         }
 
+        /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
         mat-dialog-content {
             display: flex;
             flex-grow: 1;
@@ -144,6 +145,7 @@ import { InternalExportChartConfig } from "../models/internal-export-chart-confi
 
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ExportChartDialogComponent {
 

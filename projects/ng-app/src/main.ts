@@ -17,9 +17,6 @@ if (environment.production) {
 export function main() {
     return platformBrowserDynamic()
         .bootstrapModule(AppModule)
-        .then((ngModuleRef: any) => {
-            return hmrModule(ngModuleRef, module);
-        })
         .catch(err => console.error(err));
 }
 

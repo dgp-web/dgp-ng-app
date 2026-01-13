@@ -35,6 +35,7 @@ export class BroadcastStoreDecorator<T> extends Store<T> {
 
     }
 
+    // @ts-ignore
     dispatch<V extends Action = Action>(action: V): void {
 
         let localAction = action;

@@ -41,11 +41,13 @@ import { ThemePalette } from "@angular/material/core";
         }
 
 
+        /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
         mat-list {
             padding: 0;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInputFieldComponent extends DgpView<any> implements InspectorConfig {
 

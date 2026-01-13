@@ -3,10 +3,11 @@ import { CommonModule } from "@angular/common";
 import { SplitPanelLabsPageComponent } from "./containers/split-panel-labs-page.component";
 import { DgpSplitPanelModule } from "dgp-ng-docking-layout";
 import {
+    DgpDialogMenuModule,
     DgpHamburgerMenuToggleModule,
     DgpInputFieldModule,
     DgpInspectorModule,
-    DgpPageHeaderModule,
+    DgpPageHeaderModule, DgpSpacerModule,
     DgpThemeSwitcherModule
 } from "dgp-ng-app";
 import { RouterModule } from "@angular/router";
@@ -16,6 +17,8 @@ import { DgpDraggableModule } from "../../../../../dgp-ng-drag-and-drop/src/lib/
 import { DgpDropzoneModule } from "../../../../../dgp-ng-drag-and-drop/src/lib/drop-zone/dropzone.module";
 import { DgpDragAndDropModule } from "../../../../../dgp-ng-drag-and-drop/src/lib/data/drag-and-drop.module";
 import { FormsModule } from "@angular/forms";
+import { MatButton } from "@angular/material/button";
+import { MatDialogContent } from "@angular/material/dialog";
 
 @NgModule({
     imports: [
@@ -24,7 +27,7 @@ import { FormsModule } from "@angular/forms";
         RouterModule.forRoot([{
             path: "split-panel",
             component: SplitPanelLabsPageComponent
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
         DgpHamburgerMenuToggleModule,
         DgpPageHeaderModule,
         DragDropModule,
@@ -35,7 +38,11 @@ import { FormsModule } from "@angular/forms";
         DgpDragAndDropModule,
         DgpInputFieldModule,
         DgpInspectorModule,
-        FormsModule
+        FormsModule,
+        MatButton,
+        DgpDialogMenuModule,
+        DgpSpacerModule,
+        MatDialogContent
     ],
     declarations: [
         SplitPanelLabsPageComponent

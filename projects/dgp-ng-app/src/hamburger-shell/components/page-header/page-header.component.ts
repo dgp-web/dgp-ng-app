@@ -29,6 +29,7 @@ import { DgpContainer } from "../../../utils/container.component-base";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class PageHeaderComponent extends DgpContainer<RequestState> {

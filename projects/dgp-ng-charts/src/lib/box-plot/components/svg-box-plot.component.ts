@@ -123,6 +123,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpSVGBoxPlotComponent extends DgpCardinalYAxisChartComponentBase implements BoxPlot {
 

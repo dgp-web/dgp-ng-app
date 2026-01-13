@@ -3,10 +3,10 @@ import { Component } from "@angular/core";
 @Component({
     selector: "dgp-current-list-file-viewer",
     template: `
-        <dgp-list-details-page>
-            <dgp-current-file-item-list dgp-list-details-page-menu></dgp-current-file-item-list>
+        <dgp-file-manager-drawer-layout>
+            <dgp-current-file-item-list dgp-file-manager-file-menu></dgp-current-file-item-list>
             <dgp-current-file-viewer></dgp-current-file-viewer>
-        </dgp-list-details-page>
+        </dgp-file-manager-drawer-layout>
     `,
     styles: [`
         :host {
@@ -15,7 +15,9 @@ import { Component } from "@angular/core";
             flex-grow: 1;
             overflow: auto;
         }
-    `]
+    `],
+    standalone: false
 })
 export class CurrentListFileViewerComponent {
+
 }

@@ -39,7 +39,8 @@ import { map } from "rxjs/operators";
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
         idPrefixProvider
-    ]
+    ],
+    standalone: false
 })
 export class DgpShapeSelectComponent extends DgpHybridComponentBase<Shape, ThemeSwitcherState> {
 

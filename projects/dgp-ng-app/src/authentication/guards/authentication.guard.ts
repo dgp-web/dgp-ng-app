@@ -1,5 +1,5 @@
 import { first } from "rxjs/operators";
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { select, Store } from "@ngrx/store";
 import { cacheInitialUrl } from "../actions";
@@ -7,7 +7,7 @@ import { getIsAuthenticatedSelector, hasCachedInitialUrlSelector } from "../sele
 import { AuthenticationState } from "../models";
 
 @Injectable()
-export class AuthenticationGuard implements CanActivate {
+export class AuthenticationGuard  {
 
     constructor(
         private readonly store: Store<AuthenticationState>,

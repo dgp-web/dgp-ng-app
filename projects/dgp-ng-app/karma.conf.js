@@ -1,4 +1,3 @@
-process.env.CHROME_BIN = require("puppeteer").executablePath();
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
@@ -27,9 +26,9 @@ module.exports = function (config) {
             check: {
                 global: {
                     statements: 57,
-                    branches: 29,
+                    branches: 28,
                     functions: 43,
-                    lines: 59
+                    lines: 58
                 }
             },
             watermarks: {

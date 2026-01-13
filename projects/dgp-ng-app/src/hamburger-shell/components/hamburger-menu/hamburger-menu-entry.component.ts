@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
            [routerLinkActive]="'dgp-list-item--selected'"
            [class.disabled]="disabled"
            [attr.tabindex]="disabled ? -1 : 0">
-            <mat-icon>{{ matIconName }}</mat-icon>
+            <mat-icon matListItemIcon>{{ matIconName }}</mat-icon>
             {{ label }}
         </a>
 
@@ -17,14 +17,15 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
             <a mat-list-item
                class="disabled"
                tabindex="-1">
-                <mat-icon>{{ matIconName }}</mat-icon>
+                <mat-icon matListItemIcon>{{ matIconName }}</mat-icon>
                 {{ label }}
             </a>
         </ng-template>
     `,
     styles: [`
-        mat-icon {
-            margin-right: 16px;
+        :host {
+            display: flex;
+            width: 100%;
         }
 
         .disabled {
@@ -33,6 +34,7 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HamburgerMenuEntryComponent {
 

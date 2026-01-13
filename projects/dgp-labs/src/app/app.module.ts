@@ -102,18 +102,20 @@ export const initializationServiceProvider: InitializationServiceProvider = {
         }, {
             path: "**",
             redirectTo: "/docking-layout"
-        }], {relativeLinkResolution: "legacy"}),
+        }]),
 
         StoreModule.forRoot(APP_REDUCER, {
             runtimeChecks: defaultRuntimeChecks
         }),
         EffectsModule.forRoot([]),
-        StoreDevtoolsModule.instrument(),
+        StoreDevtoolsModule.instrument({connectInZone: true}),
         DgpAuthenticationModule.forRoot({
             authenticationApiClientProvider,
             initializationServiceProvider
         }),
-        DgpThemeSwitcherModule.forRoot(),
+        DgpThemeSwitcherModule.forRoot({
+            isDarkModeActiveLocalStorageKey: "dgpLabsIsDarkModeActive",
+        }),
         DgpHamburgerShellModule.forRoot(),
         DgpRequestStoreModule,
         DgpRoutingOverlayModule,

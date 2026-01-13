@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
     selector: "dgp-hamburger-menu-entries",
@@ -19,7 +19,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
             flex-grow: 1;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HamburgerMenuEntriesComponent {
 

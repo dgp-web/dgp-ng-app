@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-docs",
-    "version": "14.8.2",
+    "version": "18.0.3",
     "license": "MIT",
     "description": "Components for documenting code",
     "keywords": [
@@ -16,9 +16,9 @@
         "url": "https://github.com/dgp-web/dgp-ng-app"
     },
     "peerDependencies": {
-        "@angular/common": "^14",
-        "@angular/core": "^14",
-        "highlight.js": "^9"
+        "@angular/common": ">=18",
+        "@angular/core": ">=18",
+        "highlight.js": "^11"
     },
     "ng-update": {
         "migrations": "./schematics/migrations.json"

@@ -3,6 +3,8 @@ import { InjectionToken } from "@angular/core";
 import { MatDialogConfig } from "@angular/material/dialog";
 import { Directory, FileItem } from "../file-viewer/models";
 
+import { DrawerLayout } from "../drawer-layout/models";
+
 export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;
 
 export interface FileUploadEditingCapabilities {
@@ -53,6 +55,7 @@ export interface FileUploadState extends EntityStateMap<FileUploadEntities> {
     readonly isFileManagerOpen: boolean;
     readonly isDropTargetVisible: boolean;
     readonly initialConfig: FileUploadConfig;
+    readonly fileDrawerLayout: DrawerLayout;
 }
 
 export type FileUploadStoreFeature = "FileUpload";

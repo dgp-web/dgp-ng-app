@@ -20,7 +20,13 @@ import { Many } from "data-modeling";
             <button mat-button
                     [disabled]="disabled"
                     (click)="filePicker.click()"
-                    style="display: flex; max-width: 480px; width: 100%; justify-content: center; margin-top: 16px;">
+                    style="display: flex; max-width: 480px; width: 100%; justify-content: center; margin-top: 16px;"
+                    matTooltip="Click to choose files"
+                    dgpActionShortcut
+                    shortcutKey="p"
+                    [requireShift]="true"
+                    [requireCtrl]="true"
+                    [requireAlt]="true">
                 <mat-icon style="margin-right: 4px;">open_in_new</mat-icon>
                 Choose file via picker
             </button>
@@ -46,6 +52,7 @@ import { Many } from "data-modeling";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FileDropZoneComponent extends DgpContainer<FileUploadState> implements AfterViewInit, OnDestroy {
 

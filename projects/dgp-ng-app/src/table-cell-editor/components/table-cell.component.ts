@@ -7,13 +7,13 @@ import {
     Input,
     Output,
     TemplateRef,
-    ViewChild,
-    ViewEncapsulation
+    ViewChild
 } from "@angular/core";
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { DgpTableCelLEditorDirective } from "../directives/table-cell-editor.directive";
-import { computeTableCellEditorSizes, getDialogPositionFromTableCellEditorSizes } from "../functions";
+import { computeTriggerElementSizes, getDialogPositionFromTriggerElementSizes } from "../functions";
 import { DgpTableCellEditorService } from "../service/table-cell-editor.service";
+import { DgpTableCellEditorComponent } from "./table-cell-editor.component";
 
 @Component({
     selector: "dgp-table-cell",
@@ -23,19 +23,18 @@ import { DgpTableCellEditorService } from "../service/table-cell-editor.service"
                 mat-button
                 [disabled]="disabled"
                 (click)="openCellEditorDialog()"
-                class="mat-table-cell-editor-trigger-button">
+                class="mat-mdc-table-cell-editor-trigger-button">
             <ng-content></ng-content>
         </button>
 
     `,
     styles: [`
-
-        dgp-table-cell {
+        :host {
             display: flex;
             flex-grow: 1;
         }
 
-        .mat-table-cell-editor-trigger-button {
+        .mat-mdc-table-cell-editor-trigger-button {
             flex-grow: 1;
             justify-content: flex-start;
             padding: initial;
@@ -43,20 +42,9 @@ import { DgpTableCellEditorService } from "../service/table-cell-editor.service"
             font-weight: initial;
         }
 
-        .mat-table-cell-editor-trigger-button .mat-button-wrapper {
-            flex-grow: 1;
-            justify-content: flex-start;
-            display: flex;
-        }
-
-        .mat-dialog-no-backdrop {
-            background: initial;
-        }
-
-
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    standalone: false
 })
 
 export class DgpTableCellComponent {
@@ -103,18 +91,19 @@ export class DgpTableCellComponent {
         const configureDialogWidth = +this.editDialogConfig.width.replace("px", "");
         const tableCellBoundingRect = this.buttonElRef.nativeElement.getBoundingClientRect() as ClientRect;
 
-        const tableCellEditorSizes = computeTableCellEditorSizes({
-            tableCellBoundingRect, triggerButtonElement, window
+        const tableCellEditorSizes = computeTriggerElementSizes({
+            triggerElementBoundingRect: tableCellBoundingRect, triggerButtonElement, window
         });
 
-        const position = getDialogPositionFromTableCellEditorSizes({
-            tableCellEditorSizes, configureDialogWidth, triggerButtonElement
+        const position = getDialogPositionFromTriggerElementSizes({
+            triggerElementSizes: tableCellEditorSizes, configureDialogWidth, triggerButtonElement
         });
 
-        this.dialogRef = this.matDialog.open(this.editorTemplate, {
+        this.dialogRef = this.matDialog.open(DgpTableCellEditorComponent, {
             ...this.editDialogConfig,
             position,
             backdropClass: "mat-dialog-no-backdrop",
+            data: this.editorTemplate
         });
         this.service.cacheCurrentEditor(this.dialogRef);
 

@@ -5,6 +5,7 @@ import { computeTriangleRightPoints } from "../functions/compute-triangle-right-
 
 @Directive({
     selector: "[dgpTriangleRight]",
+    standalone: false
 })
 export class TriangleRightDirective extends SVGShapeBaseDirective {
 

@@ -19,13 +19,16 @@ import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            max-height: 640px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            max-height: initial !important;
             height: 100%;
             justify-content: center;
             align-items: center;
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class EmptyStateComponent {

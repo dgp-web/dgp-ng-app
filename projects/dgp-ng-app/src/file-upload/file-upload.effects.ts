@@ -1,14 +1,23 @@
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Inject, Injectable } from "@angular/core";
-import { addFilesViaDrop, closeFileManager, downloadFile, openFileManagerOverlay, removeFile, setConfig } from "./actions";
+import {
+    addFilesViaDrop,
+    closeFileManager,
+    downloadFile,
+    openFileManagerOverlay,
+    removeFile,
+    selectNextFile,
+    selectPreviousFile,
+    setConfig
+} from "./actions";
 import { Store } from "@ngrx/store";
-import { first, map, switchMap, tap } from "rxjs/operators";
+import { first, map, switchMap, tap, withLatestFrom } from "rxjs/operators";
 import { FileManagerComponent } from "./containers/file-manager.component";
 import { MatDialog } from "@angular/material/dialog";
 import { fileUploadEntityStore } from "./store";
 import { createKVSFromArray } from "entity-store";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig, FileUploadState } from "./models";
-import { getAllDirectories } from "./selectors";
+import { getAllDirectories, getAllFileItems, getSelectedFileItem } from "./selectors";
 import { withoutDispatch } from "../utils/without-dispatch.constant";
 import { selectFileItem } from "../file-viewer/select-file-item.action";
 import { DgpContainer } from "../utils/container.component-base";
@@ -19,28 +28,47 @@ import { directoryMetadata } from "./constants/directory-metadata.constant";
 import { fileItemMetadata } from "./constants/file-item-metadata.constant";
 import { selectActionContext } from "../action-context/actions/select-action-context.action";
 import { deselectActionContext } from "../action-context/actions/deselect-action-context.action";
+import { toFileItemActionContext } from "./functions";
+import { getListItemNeighbor } from "../utils/get-list-item-neighbor.function";
 
 @Injectable()
 export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
     readonly openFileManagerOverlay$ = createEffect(() => this.actions$.pipe(
         ofType(openFileManagerOverlay),
-        tap(action => {
+        withLatestFrom(this.select(getAllFileItems)),
+        tap(x => {
+            const action = x[0];
+            const fileItems = x[1];
+
             if (action.fileItems) {
                 this.dispatch(cacheFileSystem(action as FileSystem));
 
                 if (action.selectedFileItemId) {
+                    const fileItem = action.fileItems.find(x1 => x1.fileItemId === action.selectedFileItemId);
+                    const actionContext = toFileItemActionContext(fileItem);
+
                     this.dispatch(selectActionContext({
-                        actionContext: {
-                            key: undefined,
-                            label: undefined,
-                            type: "fileItem",
-                            value: action.fileItems.find(x => x.fileItemId === action.selectedFileItemId)
-                        }
+                        actionContext
+                    }));
+                } else if (action.fileItems.length > 0) {
+                    const fileItem = action.fileItems[0];
+                    const actionContext = toFileItemActionContext(fileItem);
+                    this.dispatch(selectActionContext({
+                        actionContext
                     }));
                 } else {
                     this.dispatch(deselectActionContext({}));
                 }
+            } else if (fileItems?.length > 0) {
+                /**
+                 * Select first item
+                 */
+                const fileItem = fileItems[0];
+                const actionContext = toFileItemActionContext(fileItem);
+                this.dispatch(selectActionContext({
+                    actionContext
+                }));
             }
 
 
@@ -48,10 +76,10 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
                 this.dispatch(setConfig({config: action.config}));
             }
         }),
-        switchMap(action => this.matDialog.open(
+        switchMap(x => this.matDialog.open(
             FileManagerComponent,
-            action.config
-                ? action.config.fileManagerMatDialogConfig
+            x[0].config
+                ? x[0].config.fileManagerMatDialogConfig
                 : this.config.fileManagerMatDialogConfig
         ).afterClosed()),
         map(() => closeFileManager())
@@ -69,6 +97,13 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
                         this.dispatch(selectFileItem({
                             fileItemId: action.fileItems[0].fileItemId
+                        }));
+
+                        const fileItem = action.fileItems[0];
+                        const actionContext = toFileItemActionContext(fileItem);
+
+                        this.dispatch(selectActionContext({
+                            actionContext
                         }));
 
 
@@ -91,6 +126,13 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
 
                         this.dispatch(selectFileItem({
                             fileItemId: action.fileItems[0].fileItemId
+                        }));
+
+                        const fileItem = action.fileItems[0];
+                        const actionContext = toFileItemActionContext(fileItem);
+
+                        this.dispatch(selectActionContext({
+                            actionContext
                         }));
 
                         return fileUploadEntityStore.actions.composeEntityActions({
@@ -140,6 +182,44 @@ export class FileUploadEffects extends DgpContainer<FileUploadState> {
         ofType(downloadFile),
         tap(x => openFileItemInNewTab(x.fileItem))
     ), withoutDispatch);
+
+    readonly selectPreviousFile$ = createEffect(() => this.actions$.pipe(
+        ofType(selectPreviousFile),
+        withLatestFrom(this.select(getSelectedFileItem), this.select(getAllFileItems)),
+        map(x => {
+            const selected = x[1];
+            const all = x[2];
+
+            const item = getListItemNeighbor({
+                neighbor: "previous",
+                collection: all,
+                item: selected
+            });
+
+            return selectActionContext({
+                actionContext: toFileItemActionContext(item)
+            });
+        })
+    ));
+
+    readonly selectNextFile$ = createEffect(() => this.actions$.pipe(
+        ofType(selectNextFile),
+        withLatestFrom(this.select(getSelectedFileItem), this.select(getAllFileItems)),
+        map(x => {
+            const selected = x[1];
+            const all = x[2];
+
+            const item = getListItemNeighbor({
+                neighbor: "next",
+                collection: all,
+                item: selected
+            });
+
+            return selectActionContext({
+                actionContext: toFileItemActionContext(item)
+            });
+        })
+    ));
 
     constructor(
         private readonly actions$: Actions,

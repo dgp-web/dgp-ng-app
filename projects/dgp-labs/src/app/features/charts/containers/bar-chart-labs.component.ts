@@ -39,6 +39,7 @@ import { BarChart } from "dgp-ng-charts";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BarChartLabsComponent {
 

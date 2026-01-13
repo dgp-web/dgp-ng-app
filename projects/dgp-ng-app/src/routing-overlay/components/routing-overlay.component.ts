@@ -20,7 +20,8 @@ import { Component } from "@angular/core";
         mat-progress-spinner {
             opacity: 0.67;
         }
-    `]
+    `],
+    standalone: false
 })
 export class RoutingOverlayComponent {
 }

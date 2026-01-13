@@ -9,14 +9,14 @@ import { downloadFile } from "../../../file-upload/actions";
     selector: "dgp-download-current-file-item",
     template: `
         <button mat-icon-button
-                class="--compact"
                 (click)="downloadCurrentFileItem()"
                 matTooltip="Download selected file"
                 dgpActionShortcut
                 shortcutKey="d">
             <mat-icon>file_download</mat-icon>
         </button>
-    `
+    `,
+    standalone: false
 })
 export class DownloadCurrentFileItemComponent extends DgpContainer<FileUploadState> {
 

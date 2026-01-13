@@ -16,7 +16,8 @@ import { DgpView } from "../../utils/view";
             display: flex;
         }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpInputHintComponent extends DgpView<any> {
 

@@ -31,11 +31,12 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
 @Component({
     selector: "dgp-docking-layout",
     template: `
-        <mat-card #host
-                  dgpResizeSensor
-                  (sizeChanged)="updateLayout()">
+        <div #host
+             dgpResizeSensor
+             (sizeChanged)="updateLayout()"
+             style="display: flex; height: 100%; overflow: hidden; flex-grow: 1;">
             <ng-content></ng-content>
-        </mat-card>
+        </div>
     `,
     styles: [`
         :host {
@@ -46,17 +47,9 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
             overflow: auto;
             flex-grow: 1;
         }
-
-        mat-card {
-            padding: 0 !important;
-            border-radius: 0 !important;
-            flex-grow: 1 !important;
-            display: flex !important;
-            height: 100% !important;
-            overflow: hidden;
-        }
     `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewInit {
 

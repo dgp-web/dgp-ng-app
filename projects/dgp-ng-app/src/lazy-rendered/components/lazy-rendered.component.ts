@@ -36,6 +36,7 @@ export enum LazyRenderedContentDisplayStrategy {
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DgpLazyRenderedComponent implements AfterViewInit, OnDestroy {
 
