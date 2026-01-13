@@ -1,4 +1,4 @@
-import { FactoryProvider, inject, provideAppInitializer } from "@angular/core";
+import { inject, provideAppInitializer } from "@angular/core";
 import { InitializationService } from "./initialization.service";
 import { AuthenticationService } from "./authentication.service";
 import { Store } from "@ngrx/store";
@@ -32,7 +32,7 @@ export function appInitializer<TUser>(authenticationService: AuthenticationServi
 
 }
 
-export const appInitializerProvider: FactoryProvider = provideAppInitializer(() => {
-        const initializerFn = (appInitializer)(inject(AuthenticationService), inject(InitializationService), inject(Store));
-        return initializerFn();
-      });
+export const appInitializerProvider = provideAppInitializer(() => {
+    const initializerFn = (appInitializer)(inject(AuthenticationService), inject(InitializationService), inject(Store));
+    return initializerFn();
+});
