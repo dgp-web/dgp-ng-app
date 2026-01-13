@@ -8,7 +8,8 @@
 @import '../../dgp-ng-drag-and-drop/src/lib/styles';
 
 @include mat.all-component-typographies();
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $app-primary: mat.m2-define-palette(mat.$m2-cyan-palette, 800, 900);
 $app-accent: mat.m2-define-palette(mat.$m2-orange-palette, A200, A100, A400);
