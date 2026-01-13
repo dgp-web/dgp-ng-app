@@ -50,6 +50,7 @@
     "docs-app-16-mdc:publish": "firebase use dgp-ng-app-16-mdc && firebase deploy --only hosting:dgp-ng-app-16-mdc",
     "docs-app-17:publish": "firebase use dgp-ng-app-17 && firebase deploy --only hosting:dgp-ng-app-17",
     "docs-app-18:publish": "firebase use dgp-ng-app-18 && firebase deploy --only hosting:dgp-ng-app-18",
+    "docs-app-19:publish": "firebase use dgp-ng-app-19 && firebase deploy --only hosting:dgp-ng-app-19",
     "dgp-labs:build:prod": "ng build dgp-labs --configuration production",
     "dgp-labs:ng-serve": "ng serve dgp-labs --configuration development",
     "dgp-labs:publish": "firebase use dgp-labs && firebase deploy --only hosting:dgp-labs",

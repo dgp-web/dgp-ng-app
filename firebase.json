@@ -119,6 +119,21 @@
                     "destination": "/index.html"
                 }
             ]
+        },
+        {
+            "target": "dgp-ng-app-19",
+            "public": "dist/ng-app/browser",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
         }
     ]
 }
