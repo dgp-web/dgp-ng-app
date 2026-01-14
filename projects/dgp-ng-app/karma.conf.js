@@ -50,7 +50,7 @@ module.exports = function (config) {
             maxLogLines: 5,
             suppressErrorSummary: false,
             suppressFailed: false,
-            suppressPassed: true,
+            suppressPassed: false,
             suppressSkipped: true,
             showSpecTiming: false,
             failFast: false

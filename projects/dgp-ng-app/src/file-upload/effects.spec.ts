@@ -6,7 +6,12 @@ import { provideMockActions } from "@ngrx/effects/testing";
 import { FileUploadEffects } from "./file-upload.effects";
 import { RouterTestingModule } from "@angular/router/testing";
 import { MatDialogModule } from "@angular/material/dialog";
-import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG } from "./models";
+import { defaultFileUploadConfig, FILE_UPLOAD_CONFIG, fileUploadStoreFeature } from "./models";
+import { fileUploadReducer } from "./store";
+import { defaultRuntimeChecks } from "../utils/default-runtime-checks";
+import { FILE_UPLOAD_REDUCER, fileUploadReducerProvider } from "./file-upload.module";
+import { actionContextStoreFeature } from "../action-context/constants/action-context-store-feature.constant";
+import { actionContextReducer } from "../action-context/reducers/action-context.reducer";
 
 describe(FileUploadEffects.name, () => {
 
@@ -18,18 +23,22 @@ describe(FileUploadEffects.name, () => {
 
         const testBed = TestBed.configureTestingModule({
             imports: [
-                StoreModule.forRoot({}),
+                StoreModule.forRoot({
+                }, {runtimeChecks: defaultRuntimeChecks}),
                 EffectsModule.forRoot([
                     FileUploadEffects
                 ]),
                 RouterTestingModule,
-                MatDialogModule
+                MatDialogModule,
+                StoreModule.forFeature(fileUploadStoreFeature, fileUploadReducer),
+                StoreModule.forFeature(actionContextStoreFeature, actionContextReducer)
             ],
             providers: [
                 provideMockActions(() => actions), {
                     provide: FILE_UPLOAD_CONFIG,
                     useValue: defaultFileUploadConfig
-                }
+                },
+                fileUploadReducerProvider
             ]
         });
 

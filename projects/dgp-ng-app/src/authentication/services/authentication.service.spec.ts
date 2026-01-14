@@ -2,13 +2,8 @@ import { AuthenticationService, AuthenticationServiceImpl } from "./authenticati
 import { TestBed, waitForAsync } from "@angular/core/testing";
 import { Store } from "@ngrx/store";
 import { authenticateUser, registerAuthenticateError } from "../actions";
-import {
-    configureAuthenticationTestingModule,
-    TestAuthenticationApiClient,
-    testError,
-    TestUser,
-    testUser
-} from "../test";
+import { configureAuthenticationTestingModule, TestAuthenticationApiClient, testError, TestUser, testUser } from "../test";
+import { ActionSpy } from "../../testing";
 
 describe(AuthenticationService.name, () => {
 
@@ -41,9 +36,9 @@ describe(AuthenticationService.name, () => {
 
     it(`should dispatch authenticateUser with the user returned from authenticationApiClient.authenticate$()`, async () => {
 
-        spyOn(store, "dispatch");
+        const spy = spyOn(store, "dispatch") as ActionSpy;
         await authenticationService.authenticate$();
-        expect(store.dispatch)
+        expect(spy)
             .toHaveBeenCalledWith(authenticateUser({user: testUser}));
 
     });
@@ -54,9 +49,9 @@ describe(AuthenticationService.name, () => {
         spyOn(authenticationApiClient, "authenticate$")
             .and
             .returnValue(Promise.reject(testError));
-        spyOn(store, "dispatch");
+        const spy = spyOn(store, "dispatch") as ActionSpy;
         await authenticationService.authenticate$();
-        expect(store.dispatch)
+        expect(spy)
             .toHaveBeenCalledWith(registerAuthenticateError({error: testError}));
 
     });
