@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ComponentConfiguration, itemDefaultConfig } from "../types";
-import type { DragProxy } from "./drag-and-drop/drag-proxy.component";
+import type { DragProxy } from "./drag-and-drop/_drag-proxy.component";
 import type { WithDragParent } from "../models/with-drag-parent.model";
 import { observeAttribute$ } from "dgp-ng-app";
 

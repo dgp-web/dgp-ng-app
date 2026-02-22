@@ -1,7 +1,7 @@
 import { Vector2, Vector2Utils } from "../../../common/models";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { $x } from "../../../jquery-extensions";
-import { DockingLayoutService } from "../../docking-layout.service";
+import { DockingLayoutService } from "../../_docking-layout.service";
 import { EventEmitter } from "../../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../../models/drag-event.model";
@@ -11,7 +11,7 @@ import { lmHeaderClassName } from "../../constants/class-names/lm-header-class-n
 import { lmContentClassName } from "../../constants/class-names/lm-content-class-name.constant";
 import { createDropSegmentClassName } from "../../functions/create-drop-segment-class-name.function";
 import { GlComponent } from "../component.component";
-import { StackComponent } from "../tabs/stack.component";
+import { notNullOrUndefined } from "dgp-ng-app";
 
 /**
  * This class creates a temporary container
@@ -19,8 +19,6 @@ import { StackComponent } from "../tabs/stack.component";
  * and handles drag events
  */
 export class DragProxy extends EventEmitter {
-
-    private readonly sided: boolean;
 
     private readonly offset = this.dockingLayoutService.container.offset();
     private readonly min: Vector2 = {
@@ -32,7 +30,7 @@ export class DragProxy extends EventEmitter {
         y: this.dockingLayoutService.container.height() + this.min.y
     };
     private readonly element = $(dockingLayoutViewMap.dragProxy.render({
-        draggedItem: this.contentItem.element[0]
+        draggedItem: this.contentItemComponent.element[0]
     }));
 
     private area: Area;
@@ -44,8 +42,9 @@ export class DragProxy extends EventEmitter {
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly dockingLayoutService: DockingLayoutService,
-                private readonly contentItem: GlComponent,
-                private readonly originalParent: StackComponent) {
+                private readonly contentItemComponent: GlComponent,
+                private readonly side: DropSegment,
+                private readonly sided: boolean,) {
         super();
 
         const dragSub = this.dragListener
@@ -60,10 +59,9 @@ export class DragProxy extends EventEmitter {
 
         this.subscriptions.push(dragStopSubscription);
 
-        if (originalParent && originalParent._side) {
-            this.sided = originalParent._sided;
-            this.element.addClass(createDropSegmentClassName(originalParent._side as DropSegment));
-            if ([DropSegment.Right, DropSegment.Bottom].indexOf(originalParent._side as DropSegment) >= 0) {
+        if (notNullOrUndefined(side)) {
+            this.element.addClass(createDropSegmentClassName(side));
+            if ([DropSegment.Right, DropSegment.Bottom].indexOf(side as DropSegment) >= 0) {
                 const content = this.element.find("." + lmContentClassName);
                 const header = this.element.find("." + lmHeaderClassName);
                 content.after(header);
@@ -126,30 +124,20 @@ export class DragProxy extends EventEmitter {
          * Valid drop area found
          */
         if (this.area !== null) {
-            this.area.contentItem.onDrop(this.contentItem, this.area);
+            this.area.contentItem.onDrop(this.contentItemComponent, this.area);
 
             /**
              * No valid drop area available at present, but one has been found before.
              * Use it
              */
         } else if (this.lastValidArea !== null) {
-            this.lastValidArea.contentItem.onDrop(this.contentItem, this.lastValidArea);
+            this.lastValidArea.contentItem.onDrop(this.contentItemComponent, this.lastValidArea);
 
             /**
              * No valid drop area found during the duration of the drag. Return
              * content item to its original position if a original parent is provided.
              * (Which is not the case if the drag had been initiated by createDragSource)
              */
-        } else if (this.originalParent) {
-            this.originalParent.addChild(this.contentItem);
-
-            /**
-             * The drag didn't ultimately end up with adding the content item to
-             * any container. In order to ensure clean up happens, destroy the
-             * content item.
-             */
-        } else {
-            this.contentItem.destroy();
         }
 
         this.element.remove();
@@ -163,8 +151,8 @@ export class DragProxy extends EventEmitter {
         /**
          * parent is null if the drag had been initiated by a external drag source
          */
-        this.contentItem.startDragging();
-        this.contentItem.setDragParent(this);
+        this.contentItemComponent.startDragging();
+        this.contentItemComponent.setDragParent(this);
     }
 
     /**

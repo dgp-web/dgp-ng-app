@@ -77,5 +77,6 @@ export interface ColumnConfiguration extends ItemConfiguration {
     content: ItemConfiguration[];
 }
 
+export const LAYOUT_SETTINGS = new InjectionToken<LayoutConfiguration["settings"]>("LAYOUT_SETTINGS");
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");
 export const PARENT_ITEM_COMPONENT = new InjectionToken("parentItemCOmponent");

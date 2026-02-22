@@ -1,4 +1,4 @@
-import { RootComponent } from "../../components/root.component";
+import { RootComponent } from "../../components/_root.component";
 import { Area, AreaSides } from "../../models/area.model";
 import { mutatify } from "data-modeling";
 

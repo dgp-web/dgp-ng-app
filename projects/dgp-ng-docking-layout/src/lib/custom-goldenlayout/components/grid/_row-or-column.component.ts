@@ -4,19 +4,13 @@ import {
     Component,
     ElementRef,
     HostBinding,
-    Inject,
+    Input,
+    OnInit,
     QueryList,
     ViewChildren,
     ViewContainerRef
 } from "@angular/core";
-import {
-    ColumnConfiguration,
-    ITEM_CONFIG,
-    ItemConfiguration,
-    itemDefaultConfig,
-    PARENT_ITEM_COMPONENT,
-    RowConfiguration
-} from "../../types";
+import { ColumnConfiguration, ItemConfiguration, itemDefaultConfig, RowConfiguration } from "../../types";
 import { LayoutManagerUtilities } from "../../utilities";
 import { SplitterComponent } from "../resize/splitter.component";
 import { RowOrColumnParentComponent } from "../../models/row-parent-component.model";
@@ -27,7 +21,6 @@ import { Many } from "data-modeling";
 import { calculateAbsoluteSizes } from "../../functions/grid/calculate-absolute-sizes.function";
 import { AbsoluteSizes } from "../../model/grid/absolute-sizes.model";
 import { calculateRelativeSizes } from "../../functions/grid/calculate-relative-sizes.function";
-import { DockingLayoutService } from "../../docking-layout.service";
 
 export interface SplitterComponents {
     before: RowOrColumnContentItemComponent;
@@ -39,22 +32,42 @@ export interface SplitterComponents {
     selector: "dgp-row-or-column",
     template: `
 
-        <!--<ng-container *ngFor="let itemConfig of config.content">
+        <!--  /**
+         * TEMPLATE_BASED: Comment-in
+         */ -->
+       <!-- <ng-container *ngFor="let itemConfig of config.content">
 
             <ng-container [ngSwitch]="itemConfig.type">
 
-                <dgp-row-or-column *ngSwitchCase="'row'"
-                                   #child>
+                <ng-container *ngSwitchCase="'row'">
                     Row
-                </dgp-row-or-column>
-                <dgp-row-or-column *ngSwitchCase="'column'"
-                                   #child>
+                    <dgp-row-or-column [config]="itemConfig"
+                                       [parent]="getParent()"
+                                       #child>
+
+                    </dgp-row-or-column>
+                </ng-container>
+                <ng-container *ngSwitchCase="'column'">
                     Column
-                </dgp-row-or-column>
-                <dgp-stack *ngSwitchCase="'stack'"
-                           #child>
+                    <dgp-row-or-column [config]="itemConfig"
+                                       [parent]="getParent()"
+                                       #child>
+
+                    </dgp-row-or-column>
+                </ng-container>
+                <ng-container *ngSwitchCase="'stack'">
                     Stack
-                </dgp-stack>
+                    <dgp-stack [config]="itemConfig"
+                               #child>
+
+                    </dgp-stack>
+                </ng-container>
+                <ng-container *ngSwitchCase="'component'">
+                    Component
+                    <dgp-gl-component #child
+                                      [config]="itemConfig"
+                                      [isHidden]="false"></dgp-gl-component>
+                </ng-container>
 
             </ng-container>
 
@@ -67,23 +80,21 @@ export interface SplitterComponents {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class RowOrColumnComponent extends DockingLayoutEngineObject implements AfterViewInit {
+export class RowOrColumnComponent extends DockingLayoutEngineObject implements OnInit, AfterViewInit {
 
     @HostBinding("class.lm_item")
     readonly bindings = true;
 
-    @HostBinding("class.lm_row")
-    readonly isRow = this.config.type === "row";
+    isRow: boolean;
 
-    @HostBinding("class.lm_column")
-    readonly isColumn = this.config.type === "column";
+    isColumn: boolean;
 
     readonly element = $(this.elementRef.nativeElement);
-    readonly childElementContainer = this.element;
+    childElementContainer = this.element;
 
-    public readonly splitterSize: number;
-    public readonly splitterGrabSize: number;
-    public readonly _dimension: string;
+    public splitterSize: number;
+    public splitterGrabSize: number;
+    public _dimension: string;
 
     public readonly splitters = new Array<SplitterComponent>();
     private splitterPosition: number = null;
@@ -91,38 +102,79 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
     private splitterMaxPosition: number = null;
     public layoutManagerUtilities = new LayoutManagerUtilities();
 
-    @ViewChildren("#child")
+    @ViewChildren("child")
     contentItems1: QueryList<RowOrColumnContentItemComponent>;
 
     contentItems: RowOrColumnContentItemComponent[] = [];
 
     isInitialised = false;
 
+    @Input()
+    config: RowConfiguration | ColumnConfiguration;
+
+    @Input()
+    parent: RowOrColumnParentComponent;
+
 
     constructor(
-        private readonly dockingLayoutService: DockingLayoutService,
         private readonly viewContainerRef: ViewContainerRef,
-        @Inject(ITEM_CONFIG)
-        public config: RowConfiguration | ColumnConfiguration,
-        @Inject(PARENT_ITEM_COMPONENT)
-        public parent: RowOrColumnParentComponent,
         private readonly elementRef: ElementRef<HTMLElement>
     ) {
         super();
+    }
 
-        const isColumn = config.type === "column";
+    getParent() {
+        return this;
+    }
 
-        this.config = {...itemDefaultConfig, ...config};
-        if (config.content) this.createContentItems(config);
+    init(): void {
+        if (this.isInitialised === true) return;
+
+
+        const isColumn = this.config.type === "column";
+
+        if (isColumn) {
+            this.element.addClass("lm_column");
+            this.isColumn = true;
+            this.isRow = false;
+        } else {
+            this.element.addClass("lm_row");
+            this.isColumn = false;
+            this.isRow = true;
+        }
+
+        this.config = {...itemDefaultConfig, ...this.config};
 
         this.childElementContainer = this.element;
         this.splitterSize = 5;
         this.splitterGrabSize = 15;
         this._dimension = isColumn ? "height" : "width";
+
+        /*this.contentItems.forEach((item, index) => {
+            this.childElementContainer.append(item.element);
+            if (index !== this.contentItems.length - 1) {
+                item.element.after(this.createSplitter(index).element);
+            }
+        });*/
+
+        this.isInitialised = true;
+
     }
 
-    init(): void {
-        if (this.isInitialised === true) return;
+    ngOnInit() {
+        /**
+         * TEMPLATE_BASED: Comment-in
+         */
+        // this.init();
+    }
+
+    ngAfterViewInit(): void {
+
+        /**
+         * TEMPLATE_BASED: Comment-in
+         */
+         // this.contentItems = this.contentItems1.toArray();
+
 
         this.contentItems.forEach((item, index) => {
             this.childElementContainer.append(item.element);
@@ -130,16 +182,13 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
                 item.element.after(this.createSplitter(index).element);
             }
         });
-
-        this.isInitialised = true;
-
-    }
-
-    ngAfterViewInit(): void {
     }
 
     /**
      * Add a new contentItem to the Row or Column
+     *
+     * NOTE: This is not called initially but only when items are added at a later point (e.g. via drag-and-drop) when
+     * the layout is already set up.
      */
     addChild(contentItem: RowOrColumnComponent | StackComponent, index: number, _$suspendResize: boolean) {
 
@@ -177,9 +226,12 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         }
 
         this.config.content.splice(index, 0, contentItem.config);
-        contentItem.parent = this;
 
-        if (contentItem.parent.isInitialised === true && contentItem.isInitialised === false) {
+        if (contentItem.config.type !== "stack") {
+            (contentItem as RowOrColumnComponent).parent = this;
+        }
+
+        if (contentItem.isInitialised === false) {
             contentItem.init();
         }
 
@@ -199,6 +251,7 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         }
 
         this.callDownwards("setSize");
+
     }
 
     /**
@@ -275,14 +328,20 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         parentNode.replaceChild(newChild.element[0], oldChild.element[0]);
 
         if (destroyOldChild === true) {
-            oldChild.parent = null;
+            if (oldChild.config.type !== "stack") {
+                (oldChild as RowOrColumnComponent).parent = null;
+            }
+
             oldChild.destroy();
         }
 
         this.contentItems[index] = newChild;
-        newChild.parent = this;
 
-        if (newChild.parent.isInitialised === true && newChild.isInitialised === false) {
+        if (newChild.config.type !== "stack") {
+            (newChild as RowOrColumnComponent).parent = this;
+        }
+
+        if (newChild.isInitialised === false) {
             newChild.init();
         }
 
@@ -346,10 +405,6 @@ export class RowOrColumnComponent extends DockingLayoutEngineObject implements A
         if (this.parent.config.type === "column" || this.parent.config.type === "row") {
             (this.parent as RowOrColumnComponent).removeChild(this, undefined);
         }
-    }
-
-    private createContentItems(config: ItemConfiguration) {
-        this.contentItems = config.content.map(x => this.dockingLayoutService.createContentItem(x, this));
     }
 
     private createSplitter(index: number): SplitterComponent {

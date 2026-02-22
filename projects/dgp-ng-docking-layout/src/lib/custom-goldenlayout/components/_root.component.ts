@@ -14,9 +14,9 @@ import { Area, AreaSides } from "../models/area.model";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { DropTarget } from "../models/drop-target.model";
 import { ItemConfiguration } from "../types";
-import type { RowOrColumnComponent } from "./grid/row-or-column.component";
+import type { RowOrColumnComponent } from "./grid/_row-or-column.component";
 import { DockingLayoutEngineObject } from "./docking-layout-engine-object";
-import { DockingLayoutService } from "../docking-layout.service";
+import { DockingLayoutService } from "../_docking-layout.service";
 
 export const ROOT_CONTAINER_ELEMENT = new InjectionToken("rootContainerElement");
 
