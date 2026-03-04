@@ -1,5 +1,5 @@
 import { Area } from "../models/area.model";
-import { RootComponent } from "../components/_root.component";
+import { RootComponent } from "../components/root.component";
 import { getAllContentItems } from "../functions/content-item/get-all-content-items.function";
 import { createRootItemAreas } from "../functions/areas/create-content-root-item-areas.function";
 import { findArea } from "../functions/areas/find-area.function";

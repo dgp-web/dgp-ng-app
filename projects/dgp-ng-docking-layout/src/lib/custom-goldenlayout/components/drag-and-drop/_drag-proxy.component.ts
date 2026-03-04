@@ -2,7 +2,6 @@ import { Vector2, Vector2Utils } from "../../../common/models";
 import { dockingLayoutViewMap } from "../../../docking-layout/views";
 import { $x } from "../../../jquery-extensions";
 import { DockingLayoutService } from "../../_docking-layout.service";
-import { EventEmitter } from "../../utilities/event-emitter";
 import { DragListenerDirective } from "./drag-listener.directive";
 import { DragEvent } from "../../models/drag-event.model";
 import { Area } from "../../models/area.model";
@@ -12,13 +11,14 @@ import { lmContentClassName } from "../../constants/class-names/lm-content-class
 import { createDropSegmentClassName } from "../../functions/create-drop-segment-class-name.function";
 import { GlComponent } from "../component.component";
 import { notNullOrUndefined } from "dgp-ng-app";
+import { Subscription } from "rxjs";
 
 /**
  * This class creates a temporary container
  * for the component whilst it is being dragged
  * and handles drag events
  */
-export class DragProxy extends EventEmitter {
+export class DragProxy {
 
     private readonly offset = this.dockingLayoutService.container.offset();
     private readonly min: Vector2 = {
@@ -39,13 +39,15 @@ export class DragProxy extends EventEmitter {
 
     childElementContainer: JQuery<HTMLElement>;
 
+    const;
+    subscriptions = new Array<Subscription>();
+
     constructor(private readonly coordinates: Vector2,
                 private readonly dragListener: DragListenerDirective,
                 private readonly dockingLayoutService: DockingLayoutService,
                 private readonly contentItemComponent: GlComponent,
                 private readonly side: DropSegment,
                 private readonly sided: boolean,) {
-        super();
 
         const dragSub = this.dragListener
             .drag$
@@ -141,7 +143,6 @@ export class DragProxy extends EventEmitter {
         }
 
         this.element.remove();
-        this.dockingLayoutService.updateSize();
     };
 
     /**

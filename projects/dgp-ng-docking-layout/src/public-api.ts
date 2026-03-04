@@ -5,7 +5,7 @@
 export * from "./lib/common";
 export * from "./lib/custom-goldenlayout";
 export { RowOrColumnComponent } from "./lib/custom-goldenlayout/components/grid/_row-or-column.component";
-export { RootComponent } from "./lib/custom-goldenlayout/components/_root.component";
+export { RootComponent } from "./lib/custom-goldenlayout/components/root.component";
 export { TabComponent } from "./lib/custom-goldenlayout/components/tabs/tab.component";
 export { GlComponent } from "./lib/custom-goldenlayout/components/component.component";
 export { DragListenerDirective } from "./lib/custom-goldenlayout/components/drag-and-drop/drag-listener.directive";

@@ -32,9 +32,7 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
     selector: "dgp-docking-layout",
     template: `
         <div #host
-             dgpResizeSensor
-             (sizeChanged)="updateLayout()"
-             style="display: flex; height: 100%; overflow: hidden; flex-grow: 1;">
+             style="display: none; height: 100%; overflow: hidden; flex-grow: 1;">
             <ng-content></ng-content>
         </div>
     `,
@@ -44,7 +42,7 @@ import { DockingLayoutItemComponent } from "./docking-layout-item.component";
             flex-direction: column;
             height: 100%;
             width: 100%;
-            overflow: auto;
+            overflow: hidden;
             flex-grow: 1;
         }
     `],
@@ -56,9 +54,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
     @ContentChildren(DockingLayoutItemComponent) topLevelItems: QueryList<DockingLayoutItemComponent>;
     @ContentChildren(DockingLayoutItemComponent, {descendants: true}) allItems: QueryList<DockingLayoutItemComponent>;
     @ContentChildren(DockingLayoutContainerComponent, {descendants: true}) allContainers: QueryList<DockingLayoutContainerComponent>;
-
-    @ViewChild("host", {read: ElementRef})
-    elementRef: ElementRef;
 
     @Input()
     splitterSize = 4;
@@ -91,7 +86,8 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
     constructor(private readonly vcRef: ViewContainerRef,
                 private readonly dockingLayoutService: DockingLayoutService,
-                private readonly componentRegistry: ComponentRegistry
+                private readonly componentRegistry: ComponentRegistry,
+                private readonly elementRef: ElementRef
     ) {
     }
 
@@ -196,10 +192,6 @@ export class DockingLayoutComponent implements OnChanges, OnDestroy, AfterViewIn
 
     public ngOnChanges(changes: SimpleChanges): void {
 
-    }
-
-    updateLayout(): void {
-        this.dockingLayoutService.updateSize();
     }
 
     private getComponents(content: ItemConfiguration[]): ComponentConfiguration[] {

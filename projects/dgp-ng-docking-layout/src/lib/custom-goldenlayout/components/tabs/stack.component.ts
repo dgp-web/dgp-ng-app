@@ -1,25 +1,16 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
-    EventEmitter,
     HostBinding,
-    Inject,
     Input,
-    Output,
     QueryList,
     ViewChild,
     ViewChildren
 } from "@angular/core";
-import {
-    ComponentConfiguration,
-    HeaderConfig,
-    itemDefaultConfig,
-    LAYOUT_SETTINGS,
-    LayoutConfiguration,
-    StackConfiguration
-} from "../../types";
+import { ComponentConfiguration, HeaderConfig, itemDefaultConfig, StackConfiguration } from "../../types";
 import { Subscription } from "rxjs";
 import { notNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { sides } from "../../constants/sides.constant";
@@ -37,25 +28,11 @@ import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive"
 import { MatTabGroup } from "@angular/material/tabs";
 import { DropTargetIndicatorComponent } from "../drag-and-drop/drop-target-indicator.component";
 import { TabDropPlaceholderComponent } from "./tab-drop-placeholder.component";
-
-export interface ComponentDragStartPayload {
-    readonly coordinates: Vector2;
-    readonly dragListener: DragListenerDirective;
-    readonly contentItemComponent: GlComponent;
-    readonly side: DropSegment;
-    readonly sided: boolean;
-}
-
-export interface RemoveStackEmptyDueToDraggingPayload {
-    readonly stackComponent: StackComponent;
-}
-
-export interface ComponentDroppedOnStackEvent {
-    readonly stackComponent: StackComponent;
-    readonly contentItem: GlComponent;
-    readonly dropSegment: keyof ContentAreaDimensions;
-    readonly dropIndex: number;
-}
+import { Store } from "@ngrx/store";
+import { componentDragStart } from "../../store/actions/component-drag-start.action";
+import { componentDroppedOnStack } from "../../store/actions/component-dropped-on-stack.action";
+import { removeStackEmptyDueToDragging } from "../../store/actions/remove-stack-empty-due-to-dragging.action";
+import { trackByItemId } from "../../constants/track-by-item-id.function";
 
 @Component({
     selector: "dgp-stack",
@@ -63,7 +40,7 @@ export interface ComponentDroppedOnStackEvent {
         <mat-tab-group *ngIf="hasHeaders"
                        [selectedIndex]="config.activeItemIndex"
                        (selectedIndexChange)="processSelectedContentItemChange($event)">
-            <mat-tab *ngFor="let componentConfig of config.content; let i = index;">
+            <mat-tab *ngFor="let componentConfig of config.content; let i = index; trackBy: trackBy">
                 <ng-template mat-tab-label>
                     <div #tabHeader
                          dgpGlDragListener
@@ -80,7 +57,7 @@ export interface ComponentDroppedOnStackEvent {
             </mat-tab>
         </mat-tab-group>
 
-        <dgp-gl-component *ngFor="let componentConfig of config.content"
+        <dgp-gl-component *ngFor="let componentConfig of config.content; trackBy: trackBy"
                           [config]="componentConfig"
                           [isHidden]="config.activeItemId !== componentConfig.id"
                           (dragStart)="onDragStart(componentConfig.id)"></dgp-gl-component>
@@ -90,6 +67,7 @@ export interface ComponentDroppedOnStackEvent {
             overflow: auto;
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
         }
 
         .tab-header {
@@ -105,15 +83,18 @@ export interface ComponentDroppedOnStackEvent {
             user-select: none;
         }
     `],
-    standalone: false
+    standalone: false,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StackComponent implements DropTarget, AfterViewInit {
 
+    readonly trackBy = trackByItemId;
+
     @ViewChildren("tabHeader", {read: DragListenerDirective})
-    private matTabDraglisteners: QueryList<DragListenerDirective>;
+    private matTabDraglistenerQueryList: QueryList<DragListenerDirective>;
 
     @ViewChildren(GlComponent)
-    private contentItems: QueryList<GlComponent>;
+    private contentItemQueryList: QueryList<GlComponent>;
 
     @HostBinding("class.lm_item")
     @HostBinding("class.lm_stack")
@@ -138,19 +119,9 @@ export class StackComponent implements DropTarget, AfterViewInit {
     isStack = true;
     readonly config$ = observeAttribute$(this as StackComponent, "config");
 
-    readonly hasHeaders = this.layoutSettings.hasHeaders;
+    //readonly hasHeaders = this.layoutSettings.hasHeaders;
+    readonly hasHeaders = true;
 
-    @Output()
-    readonly removeStackTriggered = new EventEmitter<StackComponent>();
-
-    @Output()
-    readonly componentDragStart = new EventEmitter<ComponentDragStartPayload>();
-
-    @Output()
-    readonly removeStackEmptyDueToDragging = new EventEmitter<RemoveStackEmptyDueToDraggingPayload>();
-
-    @Output()
-    readonly componentDropped = new EventEmitter<ComponentDroppedOnStackEvent>();
 
     @Input()
     config: StackConfiguration;
@@ -158,16 +129,15 @@ export class StackComponent implements DropTarget, AfterViewInit {
     constructor(
         private readonly dropTargetIndicator: DropTargetIndicatorComponent,
         private readonly tabDropPlaceholder: TabDropPlaceholderComponent,
-        @Inject(LAYOUT_SETTINGS)
-        public layoutSettings: LayoutConfiguration["settings"],
         private readonly elementRef: ElementRef<HTMLElement>,
-        private readonly cd: ChangeDetectorRef
+        readonly cd: ChangeDetectorRef,
+        private readonly store: Store<any>
     ) {
 
     }
 
     onDragStart1(coordinates: Vector2, contentItem: ComponentConfiguration, tabIndex: number) {
-        const dragListener = this.matTabDraglisteners.get(tabIndex);
+        const dragListener = this.matTabDraglistenerQueryList.get(tabIndex);
         this.processDragStart({coordinates, contentItem, dragListener});
     }
 
@@ -180,9 +150,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         this.config = {...itemDefaultConfig, ...this.config};
 
-        const cfg = this.layoutSettings;
+        /* const cfg = this.layoutSettings;
+         this._header = {
+             show: cfg.hasHeaders === true && this.config.hasHeaders !== false,
+         };*/
         this._header = {
-            show: cfg.hasHeaders === true && this.config.hasHeaders !== false,
+            show: true && this.config.hasHeaders !== false,
         };
 
         this.setupHeaderPosition();
@@ -212,7 +185,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         this.dropSegment = segment;
     }
 
-    init() {
+    private init() {
         if (this.isInitialised === true) return;
 
         this.isInitialised = true;
@@ -244,12 +217,12 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
     }
 
-    addChild(contentItem: GlComponent, index?: number) {
+    addChild(contentItemConfig: ComponentConfiguration, index?: number) {
         if (this.config.content === undefined) this.config.content = [];
         if (index === undefined) index = this.config.content.length;
 
-        this.config.content.splice(index, 0, contentItem.config);
-        this.setActiveContentItem(contentItem.config.id);
+        this.config.content.splice(index, 0, contentItemConfig);
+        this.setActiveContentItem(contentItemConfig.id);
         this.cd.markForCheck();
     }
 
@@ -273,9 +246,13 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
         if (this.config.content.length === 0 && this.config.isClosable === true) {
 
-            this.removeStackEmptyDueToDragging.emit({
-                stackComponent: this
+            const action = removeStackEmptyDueToDragging({
+                payload: {
+                    stackConfig: this.config
+                }
             });
+
+            this.store.dispatch(action);
         }
 
     }
@@ -290,12 +267,16 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     onDrop(contentItem: GlComponent) {
 
-        this.componentDropped.emit({
-            stackComponent: this,
-            dropSegment: this.dropSegment,
-            dropIndex: this.dropIndex,
-            contentItem
+        const action = componentDroppedOnStack({
+            payload: {
+                targetTabDropSegment: this.dropSegment,
+                targetTabHeaderDropIndex: this.dropIndex,
+                addedTab: contentItem.config,
+                targetStackConfig: this.config,
+            }
         });
+
+        this.store.dispatch(action);
 
     }
 
@@ -436,7 +417,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
 
     private highlightHeaderDropZone(x: number) {
         const headerElement = $(this.headerComponent.nativeElement);
-        const tabsLength = this.matTabDraglisteners.length;
+        const tabsLength = this.matTabDraglistenerQueryList.length;
 
         let i: number,
             tabElement: JQuery<HTMLElement>,
@@ -465,7 +446,7 @@ export class StackComponent implements DropTarget, AfterViewInit {
         }
 
         for (i = 0; i < tabsLength; i++) {
-            tabElement = $(this.matTabDraglisteners.toArray()[i].elementRef.nativeElement);
+            tabElement = $(this.matTabDraglistenerQueryList.toArray()[i].elementRef.nativeElement);
             offset = tabElement.offset();
             if (this._sided) {
                 tabLeft = offset.top;
@@ -521,21 +502,26 @@ export class StackComponent implements DropTarget, AfterViewInit {
     processDragStart(x: { readonly contentItem: ComponentConfiguration } & DragStartEvent) {
         if (!x.dragListener) return;
 
-        const resolved = this.contentItems?.find(y => y.config.id === x.contentItem.id);
+        const resolved = this.contentItemQueryList?.find(y => y.config.id === x.contentItem.id);
 
         if (!resolved) return;
 
-        this.componentDragStart.emit({
-            coordinates: x.coordinates,
-            dragListener: x.dragListener,
-            contentItemComponent: resolved,
-            side: this._side as DropSegment,
-            sided: this._sided
+        const action = componentDragStart({
+            payload: {
+                coordinates: x.coordinates,
+                dragListener: x.dragListener,
+                contentItemComponent: resolved,
+                side: this._side as DropSegment,
+                sided: this._sided
+            }
         });
+
+        this.store.dispatch(action);
     }
 
     processSelectedContentItemChange(index: number) {
         const x = this.config.content[index];
+        if (!x) return;
         if (x.id === this.config.activeItemId) return;
         this.setActiveContentItem(x.id);
     }

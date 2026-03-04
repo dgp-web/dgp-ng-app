@@ -1,6 +1,6 @@
 import { LayoutConfiguration } from "../../types";
 import { Mutable } from "data-modeling";
-import { RootComponent } from "../../components/_root.component";
+import { RootComponent } from "../../components/root.component";
 
 export function extractLayoutConfig(payload: {
     readonly rootComponent: RootComponent;

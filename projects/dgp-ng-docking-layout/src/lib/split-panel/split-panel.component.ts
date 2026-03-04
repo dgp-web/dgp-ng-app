@@ -24,9 +24,7 @@ import { SplitPanelContentComponent } from "./split-panel-content.component";
     selector: "dgp-split-panel",
     template: `
         <div #host
-             dgpResizeSensor
-             (sizeChanged)="updateLayout()"
-             style="display: flex; height: 100%; overflow: hidden; flex-grow: 1;">
+             style="display: none; height: 100%; overflow: hidden; flex-grow: 1;">
             <ng-content></ng-content>
         </div>`,
     styles: [`
@@ -131,10 +129,6 @@ export class SplitPanelComponent implements OnDestroy, AfterViewInit {
 
     private initLayout() {
         this.dockingLayoutService.init();
-    }
-
-    updateLayout() {
-        this.dockingLayoutService.updateSize();
     }
 
     private destroyLayout() {

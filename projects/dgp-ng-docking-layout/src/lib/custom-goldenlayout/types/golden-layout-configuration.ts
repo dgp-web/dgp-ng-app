@@ -24,7 +24,7 @@ export interface LayoutConfiguration {
         readonly dragProxyHeight?: number;
         readonly borderGrabWidth?: number;
     };
-    readonly content?: ItemConfiguration[];
+    content?: ItemConfiguration[];
 }
 
 export interface ItemConfiguration {
@@ -76,6 +76,8 @@ export interface ColumnConfiguration extends ItemConfiguration {
 
     content: ItemConfiguration[];
 }
+
+export type RowChild = StackConfiguration;
 
 export const LAYOUT_SETTINGS = new InjectionToken<LayoutConfiguration["settings"]>("LAYOUT_SETTINGS");
 export const ITEM_CONFIG = new InjectionToken<ItemConfiguration>("ItemConfig");

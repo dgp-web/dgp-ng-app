@@ -20,16 +20,9 @@ export interface DockingLayoutConfig extends LayoutConfiguration {
     readonly dockingLayoutConfigId: string;
 }
 
-export interface DockingLayoutItem {
-    readonly dockingLayoutItemId: string;
-}
-
 export interface DockingLayoutEntities {
     readonly dockingLayout: DockingLayout;
     readonly dockingLayoutConfig: DockingLayoutConfig;
-}
-
-export interface DockingLayoutState extends EntityStateMap<DockingLayoutEntities> {
 }
 
 export type DockingLayoutStoreFeature = "DockingLayout";
@@ -42,10 +35,6 @@ export interface View<TModel = null> {
 export interface ViewModels {
     [key: string]: any;
 }
-
-export declare type ViewMap<TViewModels extends ViewModels> = {
-    readonly [K in keyof TViewModels]: View<TViewModels[K]>;
-};
 
 export interface HeaderButtonViewModel {
     readonly cssClass: string;

@@ -1,39 +1,37 @@
 import { Injectable, Injector, ViewContainerRef } from "@angular/core";
 import { ComponentRegistry } from "./services/component-registry";
-import {
-    ColumnConfiguration,
-    ComponentConfiguration,
-    ITEM_CONFIG,
-    ItemConfiguration,
-    LAYOUT_SETTINGS,
-    LayoutConfiguration,
-    PARENT_ITEM_COMPONENT,
-    RowConfiguration,
-    StackConfiguration
-} from "./types";
-import { EventEmitter } from "./utilities";
+import { ColumnConfiguration, ItemConfiguration, LayoutConfiguration, RowConfiguration, StackConfiguration } from "./types";
 import { DropTargetIndicatorComponent } from "./components/drag-and-drop/drop-target-indicator.component";
-import { ROOT_CONTAINER_ELEMENT, RootComponent } from "./components/_root.component";
+import { ROOT_CONTAINER_ELEMENT, RootComponent, RootDropEvent } from "./components/root.component";
 import { createLayoutConfig } from "./functions/create-config/create-layout-config.function";
-import { Area } from "./models/area.model";
-import { shouldWrapInStack } from "./functions/should-wrap-in-stack.function";
+import { Area, AreaSides } from "./models/area.model";
 import { wrapInStack } from "./functions/wrap-in-stack.function";
-import { typeToComponentMap } from "./constants/type-to-component-map.constant";
 import { AreaService } from "./services/area.service";
 import { TabDropPlaceholderComponent } from "./components/tabs/tab-drop-placeholder.component";
 import { DockingLayoutItemComponent } from "./models/docking-layout-item-component.model";
-import { ComponentDroppedOnStackEvent, StackComponent } from "./components/tabs/stack.component";
 import { RowOrColumnComponent } from "./components/grid/_row-or-column.component";
 import { DragProxy } from "./components/drag-and-drop/_drag-proxy.component";
-import { GlComponent } from "./components/component.component";
 import { DropSegment } from "./models/drop-segment.model";
-import { RowOrColumnParentComponent } from "./models/row-parent-component.model";
+import { Actions, ofType } from "@ngrx/effects";
+import { tap } from "rxjs/operators";
+import * as _ from "lodash";
+
+import { AddTabToDockingLayoutEvent } from "./models/stack/move-tab-in-docking-layout-event.model";
+import { componentDroppedOnStack } from "./store/actions/component-dropped-on-stack.action";
+import { removeStackEmptyDueToDragging } from "./store/actions/remove-stack-empty-due-to-dragging.action";
+import { componentDragStart } from "./store/actions/component-drag-start.action";
+import { createGuid } from "dgp-ng-app";
+import { addChildToRowOrCol, AddChildToRowOrColPayload } from "./store/actions/add-child-to-row-or-col.action";
+import { removeChildOfRowOrCol, RemoveChildOfRowOrColPayload } from "./store/actions/remove-child-of-row-or-col.action";
+import { ReplaceChildOfRowOrColPayload } from "./store/actions/replace-child-of-row-or-col.action";
+import { StackComponent } from "./components/tabs/stack.component";
+import { addTabToDockingLayout } from "./functions/move-tab-in-docking-layout.function";
 
 /**
  * The main class that will be exposed as GoldenLayout.
  */
 @Injectable()
-export class DockingLayoutService extends EventEmitter {
+export class DockingLayoutService {
 
     config: LayoutConfiguration;
     container: JQuery;
@@ -41,8 +39,6 @@ export class DockingLayoutService extends EventEmitter {
     tabDropPlaceholder: TabDropPlaceholderComponent;
 
     private isInitialised = false;
-    private width: number;
-    private height: number;
     private root: RootComponent;
 
     private viewContainerRef: ViewContainerRef;
@@ -50,13 +46,168 @@ export class DockingLayoutService extends EventEmitter {
     constructor(
         private readonly componentRegistry: ComponentRegistry,
         private readonly areaService: AreaService,
-        private readonly injector: Injector
+        private readonly injector: Injector,
+        private readonly actions$: Actions,
     ) {
-        super();
+
+        /**
+         * Stack
+         */
+        this.actions$.pipe(
+            ofType(componentDragStart),
+            tap(x => {
+                return new DragProxy(
+                    x.payload.coordinates,
+                    x.payload.dragListener,
+                    this,
+                    x.payload.contentItemComponent,
+                    x.payload.side,
+                    x.payload.sided
+                );
+            })
+        ).subscribe();
+
+        this.actions$.pipe(
+            ofType(componentDroppedOnStack),
+            tap(x => {
+                this.handleComponentDroppedOnStack(x.payload);
+            })
+        ).subscribe();
+
+        this.actions$.pipe(
+            ofType(removeStackEmptyDueToDragging),
+            tap(x => {
+                console.log("removeStackEmptyDueToDragging");
+                const stackConfig = x.payload.stackConfig;
+                const stackComponent = this.getItemFromConfig<StackComponent>(stackConfig.id);
+                const stackParent = this.findParentComponentFromRoot(stackComponent);
+                stackParent.removeChild(stackComponent, undefined);
+            })
+        ).subscribe();
+
+        /**
+         * Row or column
+         */
+
+        this.actions$.pipe(
+            ofType(removeChildOfRowOrCol),
+            tap(x => {
+                this.removeChildOfRowOrCol(x);
+            })
+        ).subscribe();
+
     }
 
-    getViewContainerRef() {
-        return this.viewContainerRef;
+    private addChildToRowOrCol(payload: AddChildToRowOrColPayload) {
+        console.log("addChildToRowOrCol", payload);
+        const {parentConfig, contentItemConfig, _$suspendResize} = {...payload};
+        const addedItemConfig = contentItemConfig;
+        const dimension = parentConfig.type === "row" ? "height" : "width";
+
+        let index = payload.index;
+
+        let newItemSize: number,
+            itemSize: number;
+
+        if (index === undefined) {
+            index = parentConfig.content.length;
+        }
+
+        if (parentConfig.content === undefined) {
+            parentConfig.content = [];
+        }
+
+        if (index === undefined) {
+            index = parentConfig.content.length;
+        }
+
+        parentConfig.content.splice(index, 0, addedItemConfig);
+
+        newItemSize = (1 / parentConfig.content.length) * 100;
+
+        if (_$suspendResize === true) {
+            return;
+        }
+
+        for (let itemConfig of parentConfig.content) {
+            if (itemConfig.id === addedItemConfig.id) {
+                itemConfig[dimension] = newItemSize;
+            } else {
+                itemSize = itemConfig[dimension] *= (100 - newItemSize) / 100;
+                itemConfig[dimension] = itemSize;
+            }
+        }
+    }
+
+    private removeChildOfRowOrCol(payload: RemoveChildOfRowOrColPayload) {
+        console.log("removeChildOfRowOrCol");
+        const {parentConfig, contentItemConfig} = {...payload};
+        const dimension = parentConfig.type === "row" ? "height" : "width";
+
+        const removedItemConfig = contentItemConfig;
+
+        const removedItemSize = removedItemConfig[dimension];
+
+
+        /**
+         * Allocate the space that the removed item occupied to the remaining items
+         */
+        for (let itemConfig of parentConfig.content) {
+            if (itemConfig.id !== removedItemConfig.id) {
+                /**
+                 * Resize other items
+                 */
+                itemConfig[dimension] += removedItemSize / (parentConfig.content.length - 1);
+            }
+        }
+
+        const index = _.findIndex(parentConfig.content, x => x.id === removedItemConfig.id);
+        parentConfig.content.splice(index, 1);
+
+        if (parentConfig.content.length === 0
+            && parentConfig.isClosable === true
+            && (parentConfig.type === "column" || parentConfig.type === "row")) {
+
+            const grandParentConfig = this.findParentComponentConfigFromRoot(parentConfig);
+
+            this.removeChildOfRowOrCol({
+                parentConfig: grandParentConfig as any,
+                contentItemConfig: parentConfig as any,
+                keepChild: undefined
+            });
+
+            // TODO: Remove the parent as well if it's empty
+            // (parent.parent as RowOrColumnComponent).removeChild(parent, undefined);
+
+        } else if (parentConfig.content.length === 1 && parentConfig.isClosable === true) {
+            // TODO: Remove redundant rows or columns
+
+            /* let childItem = parent.contentItems[0];
+            parent.contentItems = [];
+            parent.parent.replaceChild(parent, childItem as RowOrColumnComponent);*/
+
+            const grandParentConfig = this.findParentComponentConfigFromRoot(parentConfig);
+            this.replaceChildToRowOrCol({
+                parentConfig: grandParentConfig as any,
+                oldChildConfig: parentConfig as any,
+                newChildConfig: parentConfig.content[0] as any
+            });
+        }
+    }
+
+    private replaceChildToRowOrCol(payload: ReplaceChildOfRowOrColPayload) {
+        console.log("replaceChildToRowOrCol");
+        const {parentConfig, newChildConfig, oldChildConfig, destroyOldChild} = {...payload};
+        const dimension = parentConfig.type === "row" ? "height" : "width";
+
+        const size = oldChildConfig[dimension];
+
+        // TODO: might not work
+        const index = _.findIndex(parentConfig.content, x => x.id === oldChildConfig.id);
+
+        parentConfig.content[index] = newChildConfig;
+
+        newChildConfig[dimension] = size;
     }
 
     createDockingLayout(config: LayoutConfiguration,
@@ -75,225 +226,131 @@ export class DockingLayoutService extends EventEmitter {
         const dropTargetIndicatorComponentRef = this.viewContainerRef.createComponent(DropTargetIndicatorComponent);
         dropTargetIndicatorComponentRef.changeDetectorRef.markForCheck();
         this.dropTargetIndicator = dropTargetIndicatorComponentRef.instance;
-        this.updateSize();
         this.createRootComponent(this.config);
     }
 
-    private registerInitialization() {
-        this.isInitialised = true;
-    }
+    handleComponentDroppedOnStack(payload: AddTabToDockingLayoutEvent): void {
+        const {targetStackConfig, targetTabDropSegment, addedTab, targetTabHeaderDropIndex} = {...payload};
 
-    updateSize(width?: number, height?: number) {
-        if (arguments.length === 2) {
-            this.width = width;
-            this.height = height;
-        } else {
-            this.width = this.container.width();
-            this.height = this.container.height();
-        }
+        const stackConfig = targetStackConfig;
+        const stackComponent = this.getItemFromConfig<StackComponent>(stackConfig.id);
 
-        if (this.isInitialised) {
-            this.root.callDownwards("setSize", [this.width, this.height]);
-        }
-    }
-
-    createContentItem<T extends DockingLayoutItemComponent>(
-        itemConfig: ItemConfiguration,
-        parentItem: DockingLayoutItemComponent
-    ): T {
-
-        if (shouldWrapInStack({itemConfig, parentItem})) {
-            itemConfig = wrapInStack(itemConfig as ComponentConfiguration) as StackConfiguration;
-        }
-
-        const injector = Injector.create({
-            providers: [{
-                provide: ITEM_CONFIG,
-                useValue: itemConfig
-            }, {
-                provide: PARENT_ITEM_COMPONENT,
-                useValue: parentItem
-            }, {
-                provide: ViewContainerRef,
-                useValue: this.viewContainerRef
-            }, {
-                provide: DropTargetIndicatorComponent,
-                useValue: this.dropTargetIndicator
-            }, {
-                provide: TabDropPlaceholderComponent,
-                useValue: this.tabDropPlaceholder
-            }, {
-                provide: LAYOUT_SETTINGS,
-                useValue: this.config.settings
-            }],
-            parent: this.injector
-        });
-
-        const componentType = typeToComponentMap[itemConfig.type];
-
-        const componentInstance = this.viewContainerRef.createComponent<any>(componentType, {injector}).instance;
-
-        this.runComponentInitTasks({componentInstance, itemConfig, parentItem});
-        this.registerComponentEvents({componentInstance, itemConfig});
-
-        return componentInstance;
-
-    }
-
-    runComponentInitTasks(payload: {
-        readonly componentInstance: DockingLayoutItemComponent;
-        readonly itemConfig: ItemConfiguration;
-        readonly parentItem: DockingLayoutItemComponent;
-    }) {
-        const {itemConfig, componentInstance, parentItem} = {...payload};
-
-        if (itemConfig.type === "row" || itemConfig.type === "column") {
-            const rowOrColumn = componentInstance as RowOrColumnComponent;
-
-            rowOrColumn.config = itemConfig as RowConfiguration | ColumnConfiguration;
-            rowOrColumn.parent = parentItem as RowOrColumnParentComponent;
-
-            if (rowOrColumn.config.content) {
-                /**
-                 * TEMPLATE_BASED: Comment-out
-                 */
-                 rowOrColumn.contentItems = rowOrColumn.config.content.map(x => this.createContentItem(x, rowOrColumn));
-            }
-        }
-
-        if (itemConfig.type === "stack") {
-            componentInstance.config = itemConfig as StackConfiguration;
-        }
-    }
-
-    registerComponentEvents(payload: {
-        readonly componentInstance: DockingLayoutItemComponent;
-        readonly itemConfig: ItemConfiguration;
-    }) {
-        const {itemConfig, componentInstance} = {...payload};
-
-        if (itemConfig.type === "stack") {
-            const typedComponent = componentInstance as StackComponent;
-            typedComponent.componentDragStart.subscribe(x => {
-
-                return new DragProxy(
-                    x.coordinates,
-                    x.dragListener,
-                    this,
-                    x.contentItemComponent,
-                    x.side,
-                    x.sided
-                );
-            });
-
-            typedComponent.removeStackEmptyDueToDragging.subscribe(x => {
-                const stackComponent = x.stackComponent;
-                const stackParent = this.findParentComponent(stackComponent, this.root);
-                stackParent.removeChild(stackComponent, undefined);
-            });
-
-            typedComponent.componentDropped.subscribe(x => {
-                this.handleComponentDroppedOnStack(x);
-            });
-        }
-    }
-
-    handleComponentDroppedOnStack(payload: ComponentDroppedOnStackEvent): void {
-        const {stackComponent, dropSegment, contentItem, dropIndex} = {...payload};
-
-        if (dropSegment === DropSegment.Header) {
+        if (targetTabDropSegment === DropSegment.Header) {
+            console.log("Drop on stack header");
             stackComponent.resetHeaderDropZone();
-            stackComponent.addChild(contentItem, dropIndex);
+
+            this.config = addTabToDockingLayout({
+                layout: this.config,
+                event: payload
+            });
+            console.log(this.config);
+
+            this.root.config = {content: this.config.content};
+            this.root.cd.markForCheck();
             return;
         }
 
-        if (dropSegment === DropSegment.Body) {
-            stackComponent.addChild(contentItem);
-            return;
-        }
-
-        const parent = this.findParentComponent(stackComponent, this.root);
+        const parentConfig = this.findParentComponentConfigFromRoot(stackConfig);
 
         /*
         * The item was dropped on the top-, left-, bottom- or right- part of the content. Let's
         * aggregate some conditions to make the if statements later on more readable
         */
-        const isVertical = dropSegment === DropSegment.Top || dropSegment === DropSegment.Bottom;
-        const isHorizontal = dropSegment === DropSegment.Left || dropSegment === DropSegment.Right;
-        const insertBefore = dropSegment === DropSegment.Top || dropSegment === DropSegment.Left;
-        const hasCorrectParent = (isVertical && parent.isColumn) || (isHorizontal && parent.isRow);
+        const isVertical = targetTabDropSegment === DropSegment.Top || targetTabDropSegment === DropSegment.Bottom;
+        const isHorizontal = targetTabDropSegment === DropSegment.Left || targetTabDropSegment === DropSegment.Right;
+        const insertBefore = targetTabDropSegment === DropSegment.Top || targetTabDropSegment === DropSegment.Left;
+        const hasCorrectParent = (isVertical && parentConfig.type === "column") || (isHorizontal && parentConfig.type === "row");
         const dimension = isVertical ? "height" : "width";
-
-        const stack = this.createAndInitStack(contentItem, stackComponent);
 
         /*
          * If the item is dropped on top or bottom of a column or left and right of a row, it's already
          * layd out in the correct way. Just add it as a child
          */
         if (hasCorrectParent) {
-            this.addStackToExistingRowOrColumn({existingStack: stackComponent, stack, dimension, insertBefore});
+            const stackWrapConfig = wrapInStack(addedTab);
+            this.addStackToExistingRowOrColumn({
+                existingStackConfig: stackComponent.config,
+                stackConfig: stackWrapConfig,
+                dimension,
+                insertBefore
+            });
             /*
              * This handles items that are dropped on top or bottom of a row or left / right of a column. We need
              * to create the appropriate contentItem for them to live in
              */
         } else {
-            this.addStackToNewRowOrColumn({existingStack: stackComponent, newStack: stack, dimension, insertBefore, isVertical});
+            const stackWrapConfig = wrapInStack(addedTab);
+            stackConfig.content.push(stackWrapConfig as any);
+
+            this.addStackToNewRowOrColumn({
+                existingStackConfig: stackConfig,
+                newStackConfig: stackWrapConfig,
+                dimension,
+                insertBefore,
+                isVertical
+            });
         }
     }
 
-    createAndInitStack(component: GlComponent, existingStack: StackComponent): StackComponent {
-        const stack = this.createContentItem<StackComponent>({
-            type: "stack",
-        }, existingStack);
-        stack.init();
-        stack.addChild(component);
-        return stack;
-    }
-
     addStackToExistingRowOrColumn(payload: {
-        readonly existingStack: StackComponent;
-        readonly stack: StackComponent;
+        readonly existingStackConfig: StackConfiguration;
+        readonly stackConfig: StackConfiguration;
         readonly insertBefore: boolean;
         readonly dimension: "width" | "height";
     }) {
-        const existingStack = payload.existingStack;
-        const stack = payload.stack;
+        console.log("addStackToExistingRowOrColumn");
+        const existingStackConfig = payload.existingStackConfig;
+        const stackConfig = payload.stackConfig;
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
 
-        const parent = this.findParentComponent(existingStack, this.root);
+        const parent = this.findParentComponentConfigFromRoot(existingStackConfig);
 
-        const index = parent.contentItems.indexOf(existingStack);
-        parent.addChild(stack, insertBefore ? index : index + 1, true);
-        existingStack.config[dimension] *= 0.5;
-        stack.config[dimension] = existingStack.config[dimension];
-        parent.callDownwards("setSize");
+        const index = parent.content.indexOf(existingStackConfig);
+
+        parent.content.splice(insertBefore ? index : index + 1, 0, stackConfig);
+        existingStackConfig[dimension] *= 0.5;
+        stackConfig[dimension] = existingStackConfig[dimension];
     }
 
     addStackToNewRowOrColumn(payload: {
-        readonly existingStack: StackComponent;
-        readonly newStack: StackComponent;
+        readonly existingStackConfig: StackConfiguration;
+        readonly newStackConfig: StackConfiguration;
         readonly isVertical: boolean;
         readonly insertBefore: boolean;
         readonly dimension: "width" | "height";
     }) {
-        const existingStack = payload.existingStack;
-        const newStack = payload.newStack;
+        console.log("addStackToNewRowOrColumn");
+        const existingStack = payload.existingStackConfig;
+        const newStack = payload.newStackConfig;
         const insertBefore = payload.insertBefore;
         const dimension = payload.dimension;
         const isVertical = payload.isVertical;
-        const parent = this.findParentComponent(existingStack, this.root);
+        const parent = this.findParentComponentConfigFromRoot(existingStack);
 
         const type = isVertical ? "column" : "row";
-        const rowOrColumn = this.createContentItem<RowOrColumnComponent>({type}, existingStack);
-        parent.replaceChild(existingStack, rowOrColumn);
 
-        rowOrColumn.addChild(newStack, insertBefore ? 0 : undefined, true);
-        rowOrColumn.addChild(existingStack, insertBefore ? undefined : 0, true);
+        const rowOrColumnConfig: RowConfiguration | ColumnConfiguration = {
+            type,
+            id: createGuid(),
+            isClosable: true,
+            content: [],
+            // TODO: what about the dimension???
+        };
 
-        existingStack.config[dimension] = 50;
-        newStack.config[dimension] = 50;
-        rowOrColumn.callDownwards("setSize");
+        const existingStackIndex = parent.content.indexOf(existingStack);
+        parent.content.splice(existingStackIndex, 1, rowOrColumnConfig);
+
+        rowOrColumnConfig.content.splice(insertBefore ? 0 : undefined, 0, newStack);
+        rowOrColumnConfig.content.splice(insertBefore ? undefined : 0, 0, existingStack);
+
+        /*parent.replaceChild(existingStack, rowOrColumn);
+
+        rowOrColumn.addChild(newStack.config, insertBefore ? 0 : undefined, true);
+        rowOrColumn.addChild(existingStack.config, insertBefore ? undefined : 0, true);
+*/
+        existingStack[dimension] = 50;
+        newStack[dimension] = 50;
     }
 
     findParentComponentFromRoot(stackItem: DockingLayoutItemComponent): RowOrColumnComponent {
@@ -313,6 +370,47 @@ export class DockingLayoutService extends EventEmitter {
         if (root.contentItems) {
             for (const ci of root.contentItems) {
                 const found = this.findParentComponent(stackItem, ci as any);
+                if (found) return found;
+            }
+        }
+
+        return null;
+    }
+
+    private getItemFromConfig<T>(itemId: string): T {
+        const root = this.root;
+
+        return this.getItemFromConfigInt(itemId, root as any);
+    }
+
+    private getItemFromConfigInt<T>(itemId: string, parent: any): T {
+        if (parent.config.id === itemId) return parent as any;
+
+        if (parent.contentItems) {
+            for (const ci of parent.contentItems) {
+                const found = this.getItemFromConfigInt(itemId, ci as any);
+                if (found) return found as any;
+            }
+        }
+    }
+
+    findParentComponentConfigFromRoot(stackItem: ItemConfiguration): ItemConfiguration {
+        return this.findParentComponentConfig(stackItem, this.root.config);
+    }
+
+    /**
+     * TODO: It would feel better to work with IDs but the model structure doesn't have artificially created
+     * stacks if there's only 1 component in them
+     */
+    findParentComponentConfig(stackItem: ItemConfiguration, root: ItemConfiguration): ItemConfiguration {
+
+        if (root.content?.some(x => x.id === stackItem.id)) {
+            return root as any;
+        }
+
+        if (root.content) {
+            for (const ci of root.content) {
+                const found = this.findParentComponentConfig(stackItem, ci as any);
                 if (found) return found;
             }
         }
@@ -343,49 +441,63 @@ export class DockingLayoutService extends EventEmitter {
         rootComponentRef.changeDetectorRef.markForCheck();
         this.root = rootComponentRef.instance;
 
-        this.root.initialized.subscribe(() => this.registerInitialization());
-
         this.root.dragOver.subscribe(area => {
-            this.tabDropPlaceholder.remove();
-            this.dropTargetIndicator.highlightArea(area);
+            this.handelDragOverRoot(area);
         });
 
         this.root.drop.subscribe(event => {
-            let contentItem = event.contentItem;
-            const area = event.area;
-
-            let stack: StackComponent;
-
-            if (contentItem.isComponent) {
-                stack = this.createContentItem({
-                    type: "stack"
-                }, this.root);
-                stack.init();
-                stack.addChild(contentItem);
-                contentItem = stack;
-            }
-
-            const type = area.side[0] === "x" ? "row" : "column";
-            const dimension = area.side[0] === "x" ? "width" : "height";
-            const insertBefore = area.side[1] === "2";
-            const column = this.root.contentItems[0];
-
-            if (column.config.type !== type) {
-                const rowOrColumn = this.createContentItem<RowOrColumnComponent>({type}, this.root);
-                this.root.addChild(column, rowOrColumn);
-                rowOrColumn.addChild(contentItem, insertBefore ? 0 : undefined, true);
-                rowOrColumn.addChild(column, insertBefore ? undefined : 0, true);
-                column.config[dimension] = 50;
-                contentItem.config[dimension] = 50;
-                rowOrColumn.callDownwards("setSize");
-            } else {
-                const sibling = column.contentItems[insertBefore ? 0 : column.contentItems.length - 1];
-                column.addChild(contentItem, insertBefore ? 0 : undefined, true);
-                sibling.config[dimension] *= 0.5;
-                contentItem.config[dimension] = sibling.config[dimension];
-                column.callDownwards("setSize");
-            }
+            this.handleComponentDroppedOnRoot(event);
         });
+    }
+
+    private handelDragOverRoot(area: AreaSides) {
+        this.tabDropPlaceholder.remove();
+        this.dropTargetIndicator.highlightArea(area);
+    }
+
+    private handleComponentDroppedOnRoot(event: RootDropEvent) {
+        let contentItem = event.contentItem;
+        let contentItemConfig = contentItem.config as ItemConfiguration;
+        const area = event.area;
+
+        if (contentItem.isComponent) {
+            console.log("createNewStackInRoot");
+            contentItemConfig = wrapInStack(contentItem.config);
+        }
+
+        const type = area.side[0] === "x" ? "row" : "column";
+        const dimension = area.side[0] === "x" ? "width" : "height";
+        const insertBefore = area.side[1] === "2";
+        const firstRootContentItem = this.root.contentItems[0];
+        const firstRootContentItemConfig = firstRootContentItem.config;
+
+        if (firstRootContentItem.config.type !== type) {
+            console.log("createNewRowOrColumnInRoot");
+
+            const rowOrColumnConfig: RowConfiguration | ColumnConfiguration = {
+                type,
+                content: [firstRootContentItemConfig, contentItemConfig],
+                id: createGuid(),
+                isClosable: true
+            };
+
+            this.root.config.content = [rowOrColumnConfig];
+
+            firstRootContentItemConfig[dimension] = 50;
+            contentItemConfig[dimension] = 50;
+        } else {
+            console.log("sibling in root");
+            const sibling = firstRootContentItem.contentItems[insertBefore ? 0 : firstRootContentItem.contentItems.length - 1];
+            const siblingConfig = sibling.config;
+
+            if (insertBefore) {
+                firstRootContentItemConfig.content = [contentItemConfig, ...firstRootContentItemConfig.content];
+            } else {
+                firstRootContentItemConfig.content = [...firstRootContentItemConfig.content, contentItemConfig];
+            }
+            siblingConfig[dimension] *= 0.5;
+            contentItem.config[dimension] = siblingConfig[dimension];
+        }
     }
 
     getArea(x: number, y: number): Area {

@@ -482,3 +482,9 @@ dgp-stack {
 .lm_column {
     flex-direction: column;
 }
+
+dgp-docking-layout {
+    div[dgpresizesensor] {
+        display: none !important;
+    }
+}

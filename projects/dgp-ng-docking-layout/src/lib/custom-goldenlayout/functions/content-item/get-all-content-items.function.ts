@@ -1,5 +1,5 @@
 import { Many } from "data-modeling";
-import { RootComponent } from "../../components/_root.component";
+import { RootComponent } from "../../components/root.component";
 
 export function getAllContentItems(payload: RootComponent): Many<any> {
     const allContentItems = new Array<any>();

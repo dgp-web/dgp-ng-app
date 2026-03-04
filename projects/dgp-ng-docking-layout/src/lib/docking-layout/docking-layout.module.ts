@@ -14,7 +14,7 @@ import { StoreModule } from "@ngrx/store";
 import { dockingLayoutStoreFeature } from "./models";
 import { EffectsModule } from "@ngrx/effects";
 import { DockingLayoutEffects } from "./effects";
-import { RootComponent } from "../custom-goldenlayout/components/_root.component";
+import { RootComponent } from "../custom-goldenlayout/components/root.component";
 import { GlComponent } from "../custom-goldenlayout/components/component.component";
 import { DropTargetIndicatorComponent } from "../custom-goldenlayout/components/drag-and-drop/drop-target-indicator.component";
 import { TabDropPlaceholderComponent } from "../custom-goldenlayout/components/tabs/tab-drop-placeholder.component";
