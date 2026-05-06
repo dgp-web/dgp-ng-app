@@ -3,8 +3,7 @@ import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
-import { isBrushed } from "../../box-plot/functions";
-import { BrushCoordinates } from "../../box-plot/models";
+import { isRectangleOverlap } from "../../box-plot/functions";
 import { HeatmapRendererPayload, HeatmapSelection } from "../models";
 import { drawHeatmapSegmentOnCanvas } from "./draw-heatmap-segment-on-canvas.function";
 
@@ -94,61 +93,24 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
                 const extent = d3.event.selection;
 
-                let selection: HeatmapSelection = {
-                    tiles: extent ? payload.model.filter(x => isBrushed(
-                        extent,
-                        xAxis(x.x.toString()),
-                        yAxis(x.y.toString())
-                    )) : []
+             
+                const selection: HeatmapSelection = {
+                    tiles: extent ? payload.model.filter(tile => {
+                        const tileX = xAxis(tile.x.toString());
+                        const tileY = yAxis(tile.y.toString());
+                        const tileWidth = xAxis.bandwidth();
+                        const tileHeight = yAxis.bandwidth();
+
+                        // Check if brush rectangle overlaps with tile rectangle
+                        return isRectangleOverlap(
+                            extent[0][0], extent[0][1], extent[1][0] - extent[0][0], extent[1][1] - extent[0][1], // brush
+                            tileX, tileY, tileWidth, tileHeight // tile
+                        );
+                    }) : []
                 };
 
-                const xValues = selection.tiles.map(x => x.x);
-                const yValues = selection.tiles.map(x => x.y);
-
-                const left = _.min(xValues);
-                const right = _.max(xValues);
-
-                const top = _.min(yValues);
-                const bottom = _.max(yValues);
-
-                const upperLeftCorner: Point = {
-                    x: left,
-                    y: top
-                };
-                const lowerRightCorner: Point = {
-                    x: right,
-                    y: bottom
-                };
-
-                if (notNullOrUndefined(upperLeftCorner.x)
-                    && notNullOrUndefined(upperLeftCorner.y)) {
-
-                    const newExtent = [[
-                        xAxis(upperLeftCorner.x.toString()),
-                        yAxis(upperLeftCorner.y.toString())
-                    ], [
-                        xAxis(lowerRightCorner.x.toString()),
-                        yAxis(lowerRightCorner.y.toString())
-                    ]] as BrushCoordinates;
-
-                    if (_.isEqual(extent, newExtent)) {
-
-                        selection = {
-                            tiles: newExtent ? payload.model.filter(x => isBrushed(
-                                newExtent,
-                                xAxis(x.x.toString()),
-                                yAxis(x.y.toString())
-                            )) : []
-                        };
-
-                        selectionPublisher.next(selection);
-                    } else {
-                        d3.select(this)
-                            .transition()
-                            .call(brush.move, newExtent);
-                    }
-
-                }
+                selectionPublisher.next(selection);
+                
             });
 
 
