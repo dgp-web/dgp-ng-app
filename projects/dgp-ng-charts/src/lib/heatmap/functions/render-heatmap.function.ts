@@ -14,7 +14,83 @@ type TileWithPosition = {
     pixelWidth: number;
     pixelHeight: number;
 };
+
 export function renderHeatmap(payload: HeatmapRendererPayload) {
+
+
+    function extentEquals(
+        extent1: [[number, number], [number, number]],
+        extent2: [[number, number], [number, number]]
+    ): boolean {
+        return extent1[0][0] === extent2[0][0] &&
+            extent1[0][1] === extent2[0][1] &&
+            extent1[1][0] === extent2[1][0] &&
+            extent1[1][1] === extent2[1][1];
+    }
+    // Helper to calculate how many tiles the brush covers
+    function calculateTileExtent(
+        brushX: number,
+        brushY: number,
+        brushWidth: number,
+        brushHeight: number
+    ): { width: number; height: number } {
+
+        // Find the range of tile indices covered by the brush
+        const startCol = Math.floor(brushX / xAxis.bandwidth());
+        const endCol = Math.ceil((brushX + brushWidth) / xAxis.bandwidth());
+        const startRow = Math.floor(brushY / yAxis.bandwidth());
+        const endRow = Math.ceil((brushY + brushHeight) / yAxis.bandwidth());
+
+        return {
+            width: Math.max(1, endCol - startCol),
+            height: Math.max(1, endRow - startRow)
+        };
+    }
+
+    // Helper function to constrain brush to tile extent
+    function constrainBrushToTileExtent(
+        extent: [[number, number], [number, number]],
+        maxExtent: { width: number; height: number }
+    ): [[number, number], [number, number]] | null {
+
+        const brushX = extent[0][0];
+        const brushY = extent[0][1];
+        const brushWidth = extent[1][0] - extent[0][0];
+        const brushHeight = extent[1][1] - extent[0][1];
+
+        // Calculate how many tiles the current brush covers
+        const coveredTileExtent = calculateTileExtent(brushX, brushY, brushWidth, brushHeight);
+
+        if (coveredTileExtent.width <= maxExtent.width && coveredTileExtent.height <= maxExtent.height) {
+            return extent; // No constraint needed
+        }
+
+        // Calculate maximum pixel dimensions based on tile extent
+        const maxPixelWidth = maxExtent.width * xAxis.bandwidth();
+        const maxPixelHeight = maxExtent.height * yAxis.bandwidth();
+
+        // Constrain the brush dimensions
+        const constrainedWidth = Math.min(brushWidth, maxPixelWidth);
+        const constrainedHeight = Math.min(brushHeight, maxPixelHeight);
+
+        // Keep brush centered on its current center
+        const centerX = brushX + brushWidth / 2;
+        const centerY = brushY + brushHeight / 2;
+
+        const newBrushX = Math.max(0, Math.min(
+            payload.drawD3ChartInfo.containerWidth - constrainedWidth,
+            centerX - constrainedWidth / 2
+        ));
+        const newBrushY = Math.max(0, Math.min(
+            payload.drawD3ChartInfo.containerHeight - constrainedHeight,
+            centerY - constrainedHeight / 2
+        ));
+
+        return [
+            [newBrushX, newBrushY],
+            [newBrushX + constrainedWidth, newBrushY + constrainedHeight]
+        ];
+    }
 
     // Labels of row and columns
     const columnValues = _.sortBy(uniq(payload.model.map(x => x.x)));
@@ -109,6 +185,19 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
         const brush = d3.brush()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
+            .on("brush", function (event) {
+                // Real-time constraint during brushing
+                const extent = d3.event.selection;
+              //  if (extent && payload.config.maxTileExtent) {
+              // TODO: Add this
+                if (extent && payload.config.maxTileExtent) {
+                    const constrainedExtent = constrainBrushToTileExtent(extent, payload.config.maxTileExtent);
+                    if (constrainedExtent && !extentEquals(constrainedExtent, extent)) {
+                        d3.select(this).call(brush.move, constrainedExtent);
+                        return;
+                    }
+                }
+            })
             .on("end", function (event) {
 
                 const extent = d3.event.selection;
@@ -150,7 +239,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             });
 
 
-        payload.drawD3ChartInfo.svg.call(d3.brush);
+        payload.drawD3ChartInfo.svg.call(brush);
 
         if (payload.selection && payload.selection.tiles) {
 
@@ -175,7 +264,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             if (notNullOrUndefined(upperLeftCorner.x)
                 && notNullOrUndefined(upperLeftCorner.y)) {
 
-                payload.drawD3ChartInfo.svg.call(d3.brush.move, [
+                payload.drawD3ChartInfo.svg.call(brush.move, [
                     [
                         xAxis(upperLeftCorner.x.toString()),
                         yAxis(upperLeftCorner.y.toString())
