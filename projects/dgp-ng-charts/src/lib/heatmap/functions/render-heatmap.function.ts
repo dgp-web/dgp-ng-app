@@ -4,9 +4,16 @@ import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
 import { isRectangleOverlap } from "../../box-plot/functions";
-import { HeatmapRendererPayload, HeatmapSelection } from "../models";
+import { HeatmapRendererPayload, HeatmapSelection, HeatmapTile } from "../models";
 import { drawHeatmapSegmentOnCanvas } from "./draw-heatmap-segment-on-canvas.function";
 
+type TileWithPosition = {
+    tile: HeatmapTile;
+    pixelX: number;
+    pixelY: number;
+    pixelWidth: number;
+    pixelHeight: number;
+};
 export function renderHeatmap(payload: HeatmapRendererPayload) {
 
     // Labels of row and columns
@@ -80,12 +87,25 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     });
 
     if (payload.segments) {
-        payload.segments.forEach(drawHeatmapSegmentOnCanvas({ctx, xAxis, yAxis}));
+        payload.segments.forEach(drawHeatmapSegmentOnCanvas({ ctx, xAxis, yAxis }));
     }
 
     if (payload.selectionMode === "Brush") {
 
         const selectionPublisher = new Subject<HeatmapSelection>();
+
+        const tilesWithPositions: TileWithPosition[] = payload.model.map(tile => ({
+            tile: tile,  // Original tile reference
+            pixelX: xAxis(tile.x.toString()),
+            pixelY: yAxis(tile.y.toString()),
+            pixelWidth: xAxis.bandwidth(),
+            pixelHeight: yAxis.bandwidth()
+        }));
+
+        const quadtree = d3.quadtree<TileWithPosition>()
+            .x(d => d.pixelX)
+            .y(d => d.pixelY)
+            .addAll(tilesWithPositions);
 
         const brush = d3.brush()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
@@ -93,28 +113,44 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
                 const extent = d3.event.selection;
 
-             
                 const selection: HeatmapSelection = {
-                    tiles: extent ? payload.model.filter(tile => {
-                        const tileX = xAxis(tile.x.toString());
-                        const tileY = yAxis(tile.y.toString());
-                        const tileWidth = xAxis.bandwidth();
-                        const tileHeight = yAxis.bandwidth();
+                    tiles: extent ? (() => {
+                        const brushX = extent[0][0];
+                        const brushY = extent[0][1];
+                        const brushWidth = extent[1][0] - extent[0][0];
+                        const brushHeight = extent[1][1] - extent[0][1];
 
-                        // Check if brush rectangle overlaps with tile rectangle
-                        return isRectangleOverlap(
-                            extent[0][0], extent[0][1], extent[1][0] - extent[0][0], extent[1][1] - extent[0][1], // brush
-                            tileX, tileY, tileWidth, tileHeight // tile
-                        );
-                    }) : []
+                        const selectedTileWrappers: TileWithPosition[] = [];
+
+                        quadtree.visit((node, x1, y1, x2, y2) => {
+                            if (brushX >= x2 || brushX + brushWidth <= x1 ||
+                                brushY >= y2 || brushY + brushHeight <= y1) {
+                                return true;
+                            }
+
+                            if (!node.length) {
+                                const wrapper = (node as any).data as TileWithPosition;
+                                if (wrapper && isRectangleOverlap(
+                                    brushX, brushY, brushWidth, brushHeight,
+                                    wrapper.pixelX, wrapper.pixelY, wrapper.pixelWidth, wrapper.pixelHeight
+                                )) {
+                                    selectedTileWrappers.push(wrapper);
+                                }
+                            }
+
+                            return false;
+                        });
+
+                        return selectedTileWrappers.map(wrapper => wrapper.tile);
+                    })() : []
                 };
 
                 selectionPublisher.next(selection);
-                
+
             });
 
 
-        payload.drawD3ChartInfo.svg.call(brush);
+        payload.drawD3ChartInfo.svg.call(d3.brush);
 
         if (payload.selection && payload.selection.tiles) {
 
@@ -139,7 +175,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             if (notNullOrUndefined(upperLeftCorner.x)
                 && notNullOrUndefined(upperLeftCorner.y)) {
 
-                payload.drawD3ChartInfo.svg.call(brush.move, [
+                payload.drawD3ChartInfo.svg.call(d3.brush.move, [
                     [
                         xAxis(upperLeftCorner.x.toString()),
                         yAxis(upperLeftCorner.y.toString())
