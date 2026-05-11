@@ -4,19 +4,21 @@ import {
     BoxPlotSelection,
     BoxValues,
     computeBoxFromValues,
+    defaultDgpHeatmapConfig,
     ExportChartConfig,
     FillPattern,
+    HeatmapConfig,
     HeatmapSegment,
     HeatmapSelection,
     HeatmapTile,
     Shape
 } from "dgp-ng-charts";
-import { testBoxGroups } from "../constants/test-box-groups.constant";
-import { testBarGroups } from "../constants/test-bar-groups.constant";
-import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { BoxPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/box-plot/models";
 import { ConnectedScatterPlotControlLine } from "../../../../../../dgp-ng-charts/src/lib/connected-scatter-plot/models";
 import { ScaleType } from "../../../../../../dgp-ng-charts/src/lib/shared/models";
+import { testBarGroups } from "../constants/test-bar-groups.constant";
+import { testBoxGroups } from "../constants/test-box-groups.constant";
+import { testConnectedScatterGroups } from "../constants/test-connected-scatter-groups.constant";
 import { testLogBoxGroups } from "../constants/test-log-box-groups.constant";
 import { testLogConnectedScatterGroups } from "../constants/test-log-connected-scatter-groups.constant";
 
@@ -91,6 +93,7 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                 </dgp-docs-section-title>
 
                 <dgp-heatmap [model]="heatmapTiles"
+                             [config]="heatmapConfig"
                              chartTitle="Chart title"
                              yAxisTitle="y axis"
                              xAxisTitle="x axis"
@@ -141,6 +144,13 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
 export class ChartsLabsComponent {
 
     readonly boxPlotRenderer = BoxPlotRenderer.Hybrid;
+    readonly heatmapConfig: HeatmapConfig = {
+        ...defaultDgpHeatmapConfig,
+        maxTileExtent: {
+            height: 100,
+            width: 100
+        }
+    }
 
     readonly axisScaleTypeEnum = ScaleType;
     fillPattern = FillPattern.All;

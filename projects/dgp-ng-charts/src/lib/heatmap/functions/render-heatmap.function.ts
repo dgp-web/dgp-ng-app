@@ -188,8 +188,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             .on("brush", function (event) {
                 // Real-time constraint during brushing
                 const extent = d3.event.selection;
-              //  if (extent && payload.config.maxTileExtent) {
-              // TODO: Add this
+                console.log(payload.config.maxTileExtent);
                 if (extent && payload.config.maxTileExtent) {
                     const constrainedExtent = constrainBrushToTileExtent(extent, payload.config.maxTileExtent);
                     if (constrainedExtent && !extentEquals(constrainedExtent, extent)) {
