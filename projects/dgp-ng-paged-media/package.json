@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-paged-media",
-    "version": "18.5.0",
+    "version": "18.5.1",
     "peerDependencies": {
         "@angular/common": ">=18",
         "@angular/core": ">=18"
