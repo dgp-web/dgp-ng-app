@@ -237,6 +237,7 @@ export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { AppFeature } from "./utils/app-feature.model";
+export { areEqualByHashCode } from "./utils/are-equal-by-hash-code.function";
 export { byUnique } from "./utils/by-unique.function";
 export { DgpContainer } from "./utils/container.component-base";
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";

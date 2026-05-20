@@ -188,7 +188,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             .on("brush", function (event) {
                 // Real-time constraint during brushing
                 const extent = d3.event.selection;
-                
+
                 if (extent && payload.config.maxTileExtent) {
                     const constrainedExtent = constrainBrushToTileExtent(extent, payload.config.maxTileExtent);
                     if (constrainedExtent && !extentEquals(constrainedExtent, extent)) {
@@ -269,12 +269,13 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
                         yAxis(upperLeftCorner.y.toString())
                     ],
                     [
-                        xAxis(lowerRightCorner.x.toString()),
-                        yAxis(lowerRightCorner.y.toString())
+
+                        xAxis(lowerRightCorner.x.toString()) + xAxis.bandwidth(), // Add bandwidth for full width
+                        yAxis(lowerRightCorner.y.toString()) + yAxis.bandwidth()
                     ],
                 ]);
             }
-
+ 
         }
 
         selectionPublisher.subscribe(selection => {

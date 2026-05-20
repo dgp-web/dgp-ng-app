@@ -1,5 +1,6 @@
-import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from "@angular/core";
+import { Directive, ElementRef, EventEmitter, Input, OnDestroy, ViewChild } from "@angular/core";
 import * as d3 from "d3";
+import { areEqualByHashCode } from "dgp-ng-app";
 import { from, Subscription, timer } from "rxjs";
 import { debounceTime, switchMap } from "rxjs/operators";
 import { ChartSelectionMode, SharedChartConfig } from "./models";
@@ -13,9 +14,11 @@ export interface DrawD3ChartPayload {
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements OnChanges, OnDestroy {
+export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements OnDestroy {
 
-    @ViewChild("chartElRef", {static: false})
+    protected configValue: TConfig
+
+    @ViewChild("chartElRef", { static: false })
     chartElRef: ElementRef;
 
     @Input()
@@ -36,6 +39,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
     @Input()
     config: TConfig;
 
+
     protected readonly drawChartActionScheduler = new EventEmitter();
 
     private resizeSubscription: Subscription;
@@ -52,10 +56,25 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
 
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.model || changes.config || changes.selectionMode || changes.selection) {
-            this.scheduleDrawChartAction();
-        }
+    setSelectionMode(selectionMode: ChartSelectionMode): void {
+        if (this.selectionMode === selectionMode) return;
+
+        this.selectionMode = selectionMode;
+        this.scheduleDrawChartAction();
+    }
+
+    setConfig(config: TConfig): void {
+        if (areEqualByHashCode(config, this.configValue)) return;
+
+        this.config = config;
+        this.scheduleDrawChartAction();
+    }
+
+    setModel(model: TModel): void {
+        if (areEqualByHashCode(model, this.model)) return;
+
+        this.model = model;
+        this.scheduleDrawChartAction();
     }
 
     ngOnDestroy() {
