@@ -100,6 +100,7 @@ import { testLogConnectedScatterGroups } from "../constants/test-log-connected-s
                              selectionMode="Brush"
                              [exportConfig]="exportConfig"
                              [segments]="heatmapSegments"
+                             [segments]="selection"
                              (selectionChange)="selectTiles($event)">
 
                     <ng-container right-legend>Right</ng-container>
@@ -228,7 +229,11 @@ export class ChartsLabsComponent {
         console.log($event);
     }
 
+    selection: HeatmapSelection;
+
     selectTiles(heatmapTiles: HeatmapSelection) {
+        this.selection = {...heatmapTiles};
+        console.log(this.selection);
         // this.computeBoxes(heatmapTiles.tiles);
     }
 

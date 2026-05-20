@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import * as _ from "lodash";
+import { Many } from "data-modeling";
+import { areEqualByHashCode, Size } from "dgp-ng-app";
+import { BehaviorSubject } from "rxjs";
+import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultDgpHeatmapConfig } from "../constants/default-dgp-heatmap-config.constant";
 import { renderHeatmap } from "../functions/render-heatmap.function";
-import { ChartComponentBase } from "../../shared/chart.component-base";
-import { Many } from "data-modeling";
-import { HeatmapSegment } from "../models/heatmap-segment.model";
-import { HeatmapTile } from "../models/heatmap-tile.model";
-import { HeatmapSelection } from "../models/heatmap-selection.model";
 import { ExportChartConfig } from "../models/export-chart-config.model";
-import { Size } from "dgp-ng-app";
-import { BehaviorSubject } from "rxjs";
+import { HeatmapSegment } from "../models/heatmap-segment.model";
+import { HeatmapSelection } from "../models/heatmap-selection.model";
+import { HeatmapTile } from "../models/heatmap-tile.model";
 
 @Component({
     selector: "dgp-heatmap",
@@ -77,13 +76,17 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
 
     set selection(value: HeatmapSelection) {
 
-        if (_.isEqual(value, this.selectionValue)) {
-            return;
-        }
+        if (areEqualByHashCode(value, this.selectionValue)) return;
 
+        this.selectionValue = value;
+        this.scheduleDrawChartAction();
+    }
+
+    private setSelectionInternally(value: HeatmapSelection) {
         this.selectionValue = value;
         this.selectionChange.emit(value);
     }
+
 
     protected drawD3Chart(payload): void {
         this.svgNode = payload.svg.node().parentNode;
@@ -96,7 +99,7 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
             nativeElement: this.chartElRef.nativeElement,
             selectionMode: this.selectionMode,
             segments: this.segments,
-            updateSelection: selection => this.selection = selection
+            updateSelection: selection => this.setSelectionInternally(selection)
         });
     }
 

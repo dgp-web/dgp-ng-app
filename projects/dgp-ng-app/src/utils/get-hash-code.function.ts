@@ -1,4 +1,6 @@
 
+
+
 export function getHashCode(obj: any): number {
     let hash = 0;
     if (obj === null || typeof obj !== 'object') {
@@ -31,3 +33,5 @@ function hashString(str: string): number {
     }
     return h;
 }
+
+
