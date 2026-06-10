@@ -120,9 +120,20 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             .tickValues([])
             .tickSize(0));
 
-    const colorScale = d3.scaleLinear()
-        .range(payload.config.colorRange as any)
-        .domain(payload.config.domainComputer(payload.model, payload.config.domainOverrides) as any);
+    const colorRange = payload.config.colorRange.map(x => d3.rgb(x));
+    const domain = payload.config.domainComputer(payload.model, payload.config.domainOverrides);
+
+    const rScale = d3.scaleLinear()
+        .range(colorRange.map(x => x.r))
+        .domain(domain as any);
+
+    const gScale = d3.scaleLinear()
+        .range(colorRange.map(x => x.g))
+        .domain(domain as any);
+
+    const bScale = d3.scaleLinear()
+        .range(colorRange.map(x => x.b))
+        .domain(domain as any);
 
 
     /**
@@ -148,6 +159,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     const height = canvas.height;
     const imageData = ctx.createImageData(width, height);
     const data = imageData.data;
+    const data32 = new Uint32Array(data.buffer);
     const bandwidthX = xAxis.bandwidth();
     const bandwidthY = yAxis.bandwidth();
 
@@ -157,23 +169,19 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
         const y = yAxis(tile.y.toString());
 
         if (notNullOrUndefined(tile.value) && !isNaN(tile.value) && notNullOrUndefined(x) && notNullOrUndefined(y)) {
-            const color = d3.rgb(colorScale(tile.value) as any);
+            const r = Math.round(rScale(tile.value));
+            const g = Math.round(gScale(tile.value));
+            const b = Math.round(bScale(tile.value));
 
-            const xStart = Math.round(x);
-            const yStart = Math.round(y);
-            const xEnd = Math.round(x + bandwidthX);
-            const yEnd = Math.round(y + bandwidthY);
+            const colorInt = (255 << 24) | (b << 16) | (g << 8) | r;
+
+            const xStart = Math.max(0, Math.round(x));
+            const yStart = Math.max(0, Math.round(y));
+            const xEnd = Math.min(width, Math.round(x + bandwidthX));
+            const yEnd = Math.min(height, Math.round(y + bandwidthY));
 
             for (let iy = yStart; iy < yEnd; iy++) {
-                if (iy < 0 || iy >= height) continue;
-                for (let ix = xStart; ix < xEnd; ix++) {
-                    if (ix < 0 || ix >= width) continue;
-                    const i = (iy * width + ix) * 4;
-                    data[i] = color.r;
-                    data[i + 1] = color.g;
-                    data[i + 2] = color.b;
-                    data[i + 3] = 255;
-                }
+                data32.fill(colorInt, iy * width + xStart, iy * width + xEnd);
             }
         }
 
