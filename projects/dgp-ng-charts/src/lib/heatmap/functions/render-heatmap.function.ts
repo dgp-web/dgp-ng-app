@@ -101,7 +101,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     const xAxis = d3.scaleBand()
         .range([0, payload.drawD3ChartInfo.containerWidth])
         .domain(columnValues as any)
-        .padding(0.01);
+        .padding(0);
 
     payload.drawD3ChartInfo.svg.append("g")
         .attr("transform", "translate(0," + payload.drawD3ChartInfo.containerHeight + ")")
@@ -113,7 +113,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     const yAxis = d3.scaleBand()
         .range([0, payload.drawD3ChartInfo.containerHeight])
         .domain(rowValues as any)
-        .padding(0.01);
+        .padding(0);
 
     payload.drawD3ChartInfo.svg.append("g")
         .call(d3.axisLeft(yAxis)
