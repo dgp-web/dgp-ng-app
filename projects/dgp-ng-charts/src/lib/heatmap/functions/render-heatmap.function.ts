@@ -144,23 +144,42 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     /**
      * Draw tiles on canvas
      */
+    const width = canvas.width;
+    const height = canvas.height;
+    const imageData = ctx.createImageData(width, height);
+    const data = imageData.data;
+    const bandwidthX = xAxis.bandwidth();
+    const bandwidthY = yAxis.bandwidth();
+
     payload.model.forEach(tile => {
 
-        ctx.beginPath();
+        const x = xAxis(tile.x.toString());
+        const y = yAxis(tile.y.toString());
 
-        ctx.fillStyle = notNullOrUndefined(tile.value) && !isNaN(tile.value)
-            ? colorScale(tile.value) as any
-            : "transparent";
-        ctx.fillRect(
-            xAxis(tile.x.toString()),
-            yAxis(tile.y.toString()),
-            xAxis.bandwidth(),
-            yAxis.bandwidth()
-        );
-        ctx.stroke();
-        ctx.closePath();
+        if (notNullOrUndefined(tile.value) && !isNaN(tile.value) && notNullOrUndefined(x) && notNullOrUndefined(y)) {
+            const color = d3.rgb(colorScale(tile.value) as any);
+
+            const xStart = Math.round(x);
+            const yStart = Math.round(y);
+            const xEnd = Math.round(x + bandwidthX);
+            const yEnd = Math.round(y + bandwidthY);
+
+            for (let iy = yStart; iy < yEnd; iy++) {
+                if (iy < 0 || iy >= height) continue;
+                for (let ix = xStart; ix < xEnd; ix++) {
+                    if (ix < 0 || ix >= width) continue;
+                    const i = (iy * width + ix) * 4;
+                    data[i] = color.r;
+                    data[i + 1] = color.g;
+                    data[i + 2] = color.b;
+                    data[i + 3] = 255;
+                }
+            }
+        }
 
     });
+
+    ctx.putImageData(imageData, 0, 0);
 
     if (payload.segments) {
         payload.segments.forEach(drawHeatmapSegmentOnCanvas({ ctx, xAxis, yAxis }));
