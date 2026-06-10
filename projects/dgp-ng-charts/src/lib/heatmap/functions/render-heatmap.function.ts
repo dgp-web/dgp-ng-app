@@ -163,29 +163,68 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     const bandwidthX = xAxis.bandwidth();
     const bandwidthY = yAxis.bandwidth();
 
-    payload.model.forEach(tile => {
+    const xRangeMap = new Map<number, { start: number, end: number }>();
+    columnValues.forEach(val => {
+        const x = xAxis(val.toString());
+        if (x !== undefined && x !== null) {
+            xRangeMap.set(val as number, {
+                start: Math.max(0, Math.round(x)),
+                end: Math.min(width, Math.round(x + bandwidthX))
+            });
+        }
+    });
 
-        const x = xAxis(tile.x.toString());
-        const y = yAxis(tile.y.toString());
+    const yRangeMap = new Map<number, { start: number, end: number }>();
+    rowValues.forEach(val => {
+        const y = yAxis(val.toString());
+        if (y !== undefined && y !== null) {
+            yRangeMap.set(val as number, {
+                start: Math.max(0, Math.round(y)),
+                end: Math.min(height, Math.round(y + bandwidthY))
+            });
+        }
+    });
 
-        if (notNullOrUndefined(tile.value) && !isNaN(tile.value) && notNullOrUndefined(x) && notNullOrUndefined(y)) {
-            const r = Math.round(rScale(tile.value));
-            const g = Math.round(gScale(tile.value));
-            const b = Math.round(bScale(tile.value));
+    const lutSize = 1024;
+    const colorLut = new Uint32Array(lutSize);
+    const minVal = domain[0];
+    const maxVal = domain[domain.length - 1];
+    const range = maxVal - minVal;
 
-            const colorInt = (255 << 24) | (b << 16) | (g << 8) | r;
+    for (let i = 0; i < lutSize; i++) {
+        const val = range === 0 ? minVal : minVal + (i / (lutSize - 1)) * range;
+        const r = Math.round(rScale(val));
+        const g = Math.round(gScale(val));
+        const b = Math.round(bScale(val));
+        colorLut[i] = (255 << 24) | (b << 16) | (g << 8) | r;
+    }
 
-            const xStart = Math.max(0, Math.round(x));
-            const yStart = Math.max(0, Math.round(y));
-            const xEnd = Math.min(width, Math.round(x + bandwidthX));
-            const yEnd = Math.min(height, Math.round(y + bandwidthY));
+    const model = payload.model;
+    const modelLength = model.length;
 
-            for (let iy = yStart; iy < yEnd; iy++) {
-                data32.fill(colorInt, iy * width + xStart, iy * width + xEnd);
+    for (let i = 0; i < modelLength; i++) {
+        const tile = model[i];
+        const val = tile.value;
+
+        if (val !== null && val !== undefined && !isNaN(val)) {
+            const xRange = xRangeMap.get(tile.x);
+            const yRange = yRangeMap.get(tile.y);
+
+            if (xRange && yRange) {
+                const lutIndex = range === 0 ? 0 : Math.min(lutSize - 1, Math.max(0, Math.floor(((val - minVal) / range) * (lutSize - 1))));
+                const colorInt = colorLut[lutIndex];
+
+                const xStart = xRange.start;
+                const yStart = yRange.start;
+                const xEnd = xRange.end;
+                const yEnd = yRange.end;
+
+                for (let iy = yStart; iy < yEnd; iy++) {
+                    data32.fill(colorInt, iy * width + xStart, iy * width + xEnd);
+                }
             }
         }
-
-    });
+    }
 
     ctx.putImageData(imageData, 0, 0);
 
@@ -197,13 +236,21 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
         const selectionPublisher = new Subject<HeatmapSelection>();
 
-        const tilesWithPositions: TileWithPosition[] = payload.model.map(tile => ({
-            tile: tile,  // Original tile reference
-            pixelX: xAxis(tile.x.toString()),
-            pixelY: yAxis(tile.y.toString()),
-            pixelWidth: xAxis.bandwidth(),
-            pixelHeight: yAxis.bandwidth()
-        }));
+        const tilesWithPositions: TileWithPosition[] = [];
+        for (let i = 0; i < modelLength; i++) {
+            const tile = model[i];
+            const xRange = xRangeMap.get(tile.x);
+            const yRange = yRangeMap.get(tile.y);
+            if (xRange && yRange) {
+                tilesWithPositions.push({
+                    tile: tile,
+                    pixelX: xRange.start,
+                    pixelY: yRange.start,
+                    pixelWidth: xRange.end - xRange.start,
+                    pixelHeight: yRange.end - yRange.start
+                });
+            }
+        }
 
         const quadtree = d3.quadtree<TileWithPosition>()
             .x(d => d.pixelX)
@@ -290,17 +337,17 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             if (notNullOrUndefined(upperLeftCorner.x)
                 && notNullOrUndefined(upperLeftCorner.y)) {
 
-                payload.drawD3ChartInfo.svg.call(brush.move, [
-                    [
-                        xAxis(upperLeftCorner.x.toString()),
-                        yAxis(upperLeftCorner.y.toString())
-                    ],
-                    [
+                const xStartRange = xRangeMap.get(upperLeftCorner.x);
+                const yStartRange = yRangeMap.get(upperLeftCorner.y);
+                const xEndRange = xRangeMap.get(lowerRightCorner.x);
+                const yEndRange = yRangeMap.get(lowerRightCorner.y);
 
-                        xAxis(lowerRightCorner.x.toString()) + xAxis.bandwidth(), // Add bandwidth for full width
-                        yAxis(lowerRightCorner.y.toString()) + yAxis.bandwidth()
-                    ],
-                ]);
+                if (xStartRange && yStartRange && xEndRange && yEndRange) {
+                    payload.drawD3ChartInfo.svg.call(brush.move, [
+                        [xStartRange.start, yStartRange.start],
+                        [xEndRange.end, yEndRange.end],
+                    ]);
+                }
             }
  
         }
