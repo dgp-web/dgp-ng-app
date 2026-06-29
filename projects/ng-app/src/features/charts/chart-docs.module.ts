@@ -8,6 +8,7 @@ import { HeatmapDocsComponent } from "./components/heatmap-docs.component";
 import { ShapeDocsComponent } from "./components/shape-docs.component";
 import { FillPatternDocsComponent } from "./components/fill-pattern-docs.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
+import { DgpHeatmapModule } from "dgp-ng-charts";
 import { DocsPageModule } from "../shared";
 
 @NgModule({
@@ -33,7 +34,8 @@ import { DocsPageModule } from "../shared";
         }]),
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
-        DocsPageModule
+        DocsPageModule,
+        DgpHeatmapModule
     ],
     declarations: [
         ...components
