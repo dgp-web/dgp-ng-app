@@ -47,6 +47,7 @@ export class IntegerOnlyDirective {
         <dgp-docs-page>
             <dgp-docs-page-content>
                 <dgp-docs-chapter-title>Heatmap</dgp-docs-chapter-title>
+                <dgp-docs-section-title>Demo</dgp-docs-section-title>
 
                 <!-- Add number inputs for min and max rows and columns: 100 to 1000 -->
 
@@ -100,7 +101,8 @@ export class IntegerOnlyDirective {
                     </dgp-inspector>
                 </dgp-details>
 
-                <dgp-heatmap [model]="heatmapTiles"
+                <dgp-heatmap style="max-height: 320px;"
+                             [model]="heatmapTiles"
                              [config]="heatmapConfig"
                              chartTitle="Chart title"
                              yAxisTitle="y axis"
