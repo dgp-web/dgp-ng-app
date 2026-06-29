@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { defaultDgpHeatmapConfig, ExportChartConfig, HeatmapConfig, HeatmapSegment, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
 
@@ -150,7 +150,9 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
         this.selection = {...heatmapTiles};
     }
 
-    constructor() {
+    constructor(
+        private readonly cd: ChangeDetectorRef,
+    ) {
         super();
 
         this.initHeatmap();
@@ -161,6 +163,7 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
             .pipe(debounceTime(250))
             .subscribe(model => {
             this.createHeatmapTiles(model);
+            this.cd.markForCheck();
         });
     }
 
@@ -201,7 +204,7 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
 
     private initHeatmap() {
         this.createHeatmapTiles(this.model);
-        this.initHeatmapSegments();
+       // this.initHeatmapSegments();
     }
 
     protected updateRows(rows: number) {
