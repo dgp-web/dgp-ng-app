@@ -7,9 +7,12 @@ import { BarChartDocsComponent } from "./components/bar-chart-docs.component";
 import { HeatmapDocsComponent } from "./components/heatmap-docs.component";
 import { ShapeDocsComponent } from "./components/shape-docs.component";
 import { FillPatternDocsComponent } from "./components/fill-pattern-docs.component";
-import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule } from "dgp-ng-app";
+import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpDetailsModule, DgpInspectorModule } from "dgp-ng-app";
 import { DgpHeatmapModule } from "dgp-ng-charts";
 import { DocsPageModule } from "../shared";
+import { MatFormField, MatInput } from "@angular/material/input";
+import { FormsModule } from "@angular/forms";
+import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
 
 @NgModule({
     imports: [
@@ -35,7 +38,14 @@ import { DocsPageModule } from "../shared";
         DgpPageHeaderModule,
         DgpHamburgerMenuToggleModule,
         DocsPageModule,
-        DgpHeatmapModule
+        DgpHeatmapModule,
+        DgpDetailsModule,
+        MatFormField,
+        MatInput,
+        FormsModule,
+        DgpInspectorModule,
+        MatRadioGroup,
+        MatRadioButton
     ],
     declarations: [
         ...components

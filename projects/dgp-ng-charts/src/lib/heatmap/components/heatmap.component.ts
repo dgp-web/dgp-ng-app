@@ -9,6 +9,8 @@ import { ExportChartConfig } from "../models/export-chart-config.model";
 import { HeatmapSegment } from "../models/heatmap-segment.model";
 import { HeatmapSelection } from "../models/heatmap-selection.model";
 import { HeatmapTile } from "../models/heatmap-tile.model";
+import { HeatmapConfig, HeatmapLegend } from "../models";
+import { HeatmapModel } from "../models/heatmap.model";
 
 @Component({
     selector: "dgp-heatmap",
@@ -48,7 +50,7 @@ import { HeatmapTile } from "../models/heatmap-tile.model";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> {
+export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> implements HeatmapModel {
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
