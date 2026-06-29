@@ -2,6 +2,39 @@ import { AfterViewInit, ChangeDetectionStrategy, Component } from "@angular/core
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { defaultDgpHeatmapConfig, ExportChartConfig, HeatmapConfig, HeatmapSegment, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
 
+import { Directive, HostListener } from '@angular/core';
+import { debounceTime } from "rxjs/operators";
+import { ModelMetadata, validateAttribute } from "data-modeling";
+
+@Directive({
+    selector: '[appIntegerOnly]',
+    standalone: true
+})
+export class IntegerOnlyDirective {
+
+    // 1. Blocks keyboard decimals
+    @HostListener('keydown', ['$event'])
+    onKeyDown(event: KeyboardEvent) {
+        if (['.', ',', 'e', 'E'].includes(event.key)) {
+            event.preventDefault();
+        }
+    }
+
+    // 2. Blocks clipboard decimals
+    @HostListener('paste', ['$event'])
+    onPaste(event: ClipboardEvent) {
+        const clipboardData = event.clipboardData;
+        const pastedText = clipboardData?.getData('text') || '';
+
+        // If the pasted text contains a decimal, comma, or scientific 'e', block it
+        // Use /^-?\d+$/ if you want to allow negative integers
+        const integerRegex = /^\d+$/;
+
+        if (!integerRegex.test(pastedText)) {
+            event.preventDefault();
+        }
+    }
+}
 
 @Component({
     selector: "dgp-heatmap-docs",
@@ -24,26 +57,34 @@ import { defaultDgpHeatmapConfig, ExportChartConfig, HeatmapConfig, HeatmapSegme
                                    [showFieldIcons]="false"
                                    [responsive]="false">
                         <dgp-inspector-item [label]="'Rows'">
-                            <mat-form-field>
+
+                            <mat-form-field [subscriptSizing]="'dynamic'">
                                 <input matInput
                                        type="number"
+                                       appIntegerOnly
                                        [min]="1"
                                        [max]="1000"
                                        [step]="1"
                                        [ngModel]="model.rows"
+                                       [ngModelOptions]="{updateOn: 'blur'}"
                                        (ngModelChange)="updateRows($event)">
+                                <mat-hint>Integer between 1 and 1000</mat-hint>
                             </mat-form-field>
+
                         </dgp-inspector-item>
 
                         <dgp-inspector-item [label]="'Columns'">
                             <mat-form-field>
                                 <input matInput
                                        type="number"
+                                       appIntegerOnly
                                        [min]="1"
                                        [max]="1000"
                                        [step]="1"
                                        [ngModel]="model.columns"
+                                       [ngModelOptions]="{updateOn: 'blur'}"
                                        (ngModelChange)="updateColumns($event)">
+                                <mat-hint>Integer between 1 and 1000</mat-hint>
                             </mat-form-field>
                         </dgp-inspector-item>
 
@@ -104,6 +145,7 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
 
     selection: HeatmapSelection;
 
+
     selectTiles(heatmapTiles: HeatmapSelection) {
         this.selection = {...heatmapTiles};
     }
@@ -115,7 +157,9 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
     }
 
     ngAfterViewInit(): void {
-        this.model$.subscribe(model => {
+        this.model$
+            .pipe(debounceTime(250))
+            .subscribe(model => {
             this.createHeatmapTiles(model);
         });
     }
@@ -161,10 +205,26 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
     }
 
     protected updateRows(rows: number) {
-        this.updateModel({rows});
+        const validationResult = validateAttribute({
+            value: rows,
+            modelId: "",
+            attributePath: "rows",
+            modelType: "HeatmapDemoConfig",
+            attributeMetadata: heatmapDemoConfigMetadata.attributes.rows
+        });
+        if (validationResult.isValid) {
+            this.updateModel({rows});
+        }
     }
 
     protected updateColumns(columns: number) {
+        const validationResult = validateAttribute({
+            value: columns,
+            modelId: "",
+            attributePath: "columns",
+            modelType: "HeatmapDemoConfig",
+            attributeMetadata: heatmapDemoConfigMetadata.attributes.columns
+        });
         this.updateModel({columns});
     }
 
@@ -184,4 +244,23 @@ export const defaultHeatmapDemoConfig: HeatmapDemoConfig = {
     rows: 50,
     columns: 150,
     useNullValues: true
+};
+
+export const heatmapDemoConfigMetadata: ModelMetadata<HeatmapDemoConfig> = {
+    attributes: {
+        rows: {
+            min: 1,
+            max: 1000,
+            step: 1,
+            isRequired: true,
+            type: "number"
+        },
+        columns: {
+            min: 1,
+            max: 1000,
+            step: 1,
+            isRequired: true,
+            type: "number"
+        }
+    }
 };

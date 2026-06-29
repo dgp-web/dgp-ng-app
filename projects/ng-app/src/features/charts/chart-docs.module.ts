@@ -4,15 +4,18 @@ import { RouterModule } from "@angular/router";
 import { ConnectedScatterPlotDocsComponent } from "./components/connected-scatter-plot-docs.component";
 import { BoxPlotDocsComponent } from "./components/box-plot-docs.component";
 import { BarChartDocsComponent } from "./components/bar-chart-docs.component";
-import { HeatmapDocsComponent } from "./components/heatmap-docs.component";
+import { HeatmapDocsComponent, IntegerOnlyDirective } from "./components/heatmap-docs.component";
 import { ShapeDocsComponent } from "./components/shape-docs.component";
 import { FillPatternDocsComponent } from "./components/fill-pattern-docs.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpDetailsModule, DgpInspectorModule } from "dgp-ng-app";
 import { DgpHeatmapModule } from "dgp-ng-charts";
 import { DocsPageModule } from "../shared";
-import { MatFormField, MatInput } from "@angular/material/input";
+import { MatError, MatFormField, MatHint, MatInput } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
+import { JsonPipe, NgIf } from "@angular/common";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
 
 @NgModule({
     imports: [
@@ -45,7 +48,14 @@ import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
         FormsModule,
         DgpInspectorModule,
         MatRadioGroup,
-        MatRadioButton
+        MatRadioButton,
+        IntegerOnlyDirective,
+        MatError,
+        NgIf,
+        JsonPipe,
+        MatIcon,
+        MatTooltip,
+        MatHint
     ],
     declarations: [
         ...components
