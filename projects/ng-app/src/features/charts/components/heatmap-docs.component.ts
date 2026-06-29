@@ -1,10 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, HostListener } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
 import { defaultDgpHeatmapConfig, ExportChartConfig, HeatmapConfig, HeatmapSegment, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
-
-import { Directive, HostListener } from '@angular/core';
 import { debounceTime } from "rxjs/operators";
-import { ModelMetadata, validateAttribute } from "data-modeling";
+import { validateAttribute } from "data-modeling";
+import { HeatmapDemoConfig } from "../models/heatmap/heatmap-demo-config.model";
+import { defaultHeatmapDemoConfig } from "../constants/heatmap/default-heatmap-demo-config.constant";
+import { heatmapDemoConfigMetadata } from "../constants/heatmap/heatmap-demo-config-metadata.constant";
 
 @Directive({
     selector: '[appIntegerOnly]',
@@ -57,7 +58,7 @@ export class IntegerOnlyDirective {
                     <dgp-inspector style="margin-left: 36px; display: flex; flex-direction: column;"
                                    [showFieldIcons]="false"
                                    [responsive]="false">
-                        <dgp-inspector-item [label]="'Rows'">
+                        <dgp-inspector-item [metadata]="modelMetadata.attributes.rows">
 
                             <mat-form-field [subscriptSizing]="'dynamic'">
                                 <input matInput
@@ -74,7 +75,7 @@ export class IntegerOnlyDirective {
 
                         </dgp-inspector-item>
 
-                        <dgp-inspector-item [label]="'Columns'">
+                        <dgp-inspector-item [metadata]="modelMetadata.attributes.columns">
                             <mat-form-field>
                                 <input matInput
                                        type="number"
@@ -89,7 +90,7 @@ export class IntegerOnlyDirective {
                             </mat-form-field>
                         </dgp-inspector-item>
 
-                        <dgp-inspector-item [label]="'Use empty values'">
+                        <dgp-inspector-item [metadata]="modelMetadata.attributes.useNullValues">
                             <mat-radio-group [ngModel]="model.useNullValues"
                                              (ngModelChange)="updateUseNullValues($event)">
                                 <mat-radio-button style="margin-right: 16px;"
@@ -129,6 +130,7 @@ export class IntegerOnlyDirective {
 })
 export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDemoConfig> implements AfterViewInit {
 
+    readonly modelMetadata = heatmapDemoConfigMetadata;
     model = defaultHeatmapDemoConfig;
 
     readonly heatmapConfig: HeatmapConfig = {
@@ -242,33 +244,3 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
 
 }
 
-export interface HeatmapDemoConfig {
-    readonly rows: number;
-    readonly columns: number;
-    readonly useNullValues?: boolean;
-}
-
-export const defaultHeatmapDemoConfig: HeatmapDemoConfig = {
-    rows: 50,
-    columns: 150,
-    useNullValues: true
-};
-
-export const heatmapDemoConfigMetadata: ModelMetadata<HeatmapDemoConfig> = {
-    attributes: {
-        rows: {
-            min: 1,
-            max: 1000,
-            step: 1,
-            isRequired: true,
-            type: "number"
-        },
-        columns: {
-            min: 1,
-            max: 1000,
-            step: 1,
-            isRequired: true,
-            type: "number"
-        }
-    }
-};
