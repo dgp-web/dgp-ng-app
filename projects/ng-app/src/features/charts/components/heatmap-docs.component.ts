@@ -108,7 +108,7 @@ export class IntegerOnlyDirective {
                              selectionMode="Brush"
                              [exportConfig]="exportConfig"
                              [segments]="heatmapSegments"
-                             [segments]="selection"
+                             [selection]="selection"
                              (selectionChange)="selectTiles($event)">
 
                     <ng-container right-legend>Right</ng-container>
@@ -200,11 +200,12 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
             xStart: 12, yStart: 5, xEnd: 149, yEnd: 23,
             strokeColor: "#ffffff"
         }];
+        this.cd.markForCheck();
     }
 
     private initHeatmap() {
         this.createHeatmapTiles(this.model);
-       // this.initHeatmapSegments();
+      // this.initHeatmapSegments();
     }
 
     protected updateRows(rows: number) {
