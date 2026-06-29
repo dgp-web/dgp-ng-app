@@ -141,7 +141,7 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
     };
 
     heatmapTiles: ReadonlyArray<HeatmapTile>;
-    heatmapSegments: ReadonlyArray<HeatmapSegment>;
+    heatmapSegments: ReadonlyArray<HeatmapSegment> = [];
 
     selection: HeatmapSelection;
 
@@ -228,7 +228,9 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
             modelType: "HeatmapDemoConfig",
             attributeMetadata: heatmapDemoConfigMetadata.attributes.columns
         });
-        this.updateModel({columns});
+        if (validationResult.isValid) {
+            this.updateModel({columns});
+        }
     }
 
     protected updateUseNullValues(useNullValues: boolean) {
