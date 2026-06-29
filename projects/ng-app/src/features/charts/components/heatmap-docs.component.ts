@@ -1,41 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, HostListener } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import { DgpModelEditorComponentBase } from "dgp-ng-app";
-import { defaultDgpHeatmapConfig, ExportChartConfig, HeatmapConfig, HeatmapSegment, HeatmapSelection, HeatmapTile } from "dgp-ng-charts";
+import { HeatmapSegment, HeatmapSelection } from "dgp-ng-charts";
 import { debounceTime } from "rxjs/operators";
 import { validateAttribute } from "data-modeling";
 import { HeatmapDemoConfig } from "../models/heatmap/heatmap-demo-config.model";
 import { defaultHeatmapDemoConfig } from "../constants/heatmap/default-heatmap-demo-config.constant";
 import { heatmapDemoConfigMetadata } from "../constants/heatmap/heatmap-demo-config-metadata.constant";
-
-@Directive({
-    selector: '[appIntegerOnly]',
-    standalone: true
-})
-export class IntegerOnlyDirective {
-
-    // 1. Blocks keyboard decimals
-    @HostListener('keydown', ['$event'])
-    onKeyDown(event: KeyboardEvent) {
-        if (['.', ',', 'e', 'E'].includes(event.key)) {
-            event.preventDefault();
-        }
-    }
-
-    // 2. Blocks clipboard decimals
-    @HostListener('paste', ['$event'])
-    onPaste(event: ClipboardEvent) {
-        const clipboardData = event.clipboardData;
-        const pastedText = clipboardData?.getData('text') || '';
-
-        // If the pasted text contains a decimal, comma, or scientific 'e', block it
-        // Use /^-?\d+$/ if you want to allow negative integers
-        const integerRegex = /^\d+$/;
-
-        if (!integerRegex.test(pastedText)) {
-            event.preventDefault();
-        }
-    }
-}
+import { Heatmap } from "../../../../../dgp-ng-charts/src/lib/heatmap/models/heatmap.model";
+import { createDemoHeatmap } from "../functions/create-demo-heatmap.function";
 
 @Component({
     selector: "dgp-heatmap-docs",
@@ -102,16 +74,17 @@ export class IntegerOnlyDirective {
                     </dgp-inspector>
                 </dgp-details>
 
-                <dgp-heatmap style="max-height: 320px;"
-                             [model]="heatmapTiles"
-                             [config]="heatmapConfig"
+                <dgp-heatmap *ngIf="heatmap"
+                             style="max-height: 320px;"
+                             [model]="heatmap.model"
+                             [config]="heatmap.config"
                              chartTitle="Chart title"
                              yAxisTitle="y axis"
                              xAxisTitle="x axis"
                              selectionMode="Brush"
-                             [exportConfig]="exportConfig"
-                             [segments]="heatmapSegments"
-                             [selection]="selection"
+                             [exportConfig]="heatmap.exportConfig"
+                             [segments]="heatmap.segments"
+                             [selection]="heatmap.selection"
                              (selectionChange)="selectTiles($event)">
 
                     <ng-container right-legend>Right</ng-container>
@@ -133,18 +106,8 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
     readonly modelMetadata = heatmapDemoConfigMetadata;
     model = defaultHeatmapDemoConfig;
 
-    readonly heatmapConfig: HeatmapConfig = {
-        ...defaultDgpHeatmapConfig,
-        maxTileExtent: {
-            height: 100,
-            width: 100
-        }
-    };
-    exportConfig: ExportChartConfig = {
-        rightLegend: document.createElement("span")
-    };
+    heatmap: Heatmap;
 
-    heatmapTiles: ReadonlyArray<HeatmapTile>;
     heatmapSegments: ReadonlyArray<HeatmapSegment> = [];
 
     selection: HeatmapSelection;
@@ -158,42 +121,14 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
         private readonly cd: ChangeDetectorRef,
     ) {
         super();
-
-        this.initHeatmap();
     }
 
     ngAfterViewInit(): void {
         this.model$
             .pipe(debounceTime(250))
             .subscribe(model => {
-            this.createHeatmapTiles(model);
-            this.cd.markForCheck();
-        });
-    }
-
-    private createHeatmapTiles(payload: HeatmapDemoConfig) {
-        const heatmapTiles = new Array<HeatmapTile>();
-
-        for (let i = 0; i < payload.rows; i++) {
-            for (let j = 0; j < payload.columns; j++) {
-
-                let value = Math.random() * (i + j);
-
-                if (payload.useNullValues) {
-
-                    const useNullValue = (i + j) % 2;
-                    value = useNullValue ? null : value;
-                }
-
-                heatmapTiles.push({
-                    x: j,
-                    y: i,
-                    value
-                });
-            }
-        }
-
-        this.heatmapTiles = heatmapTiles;
+                this.createDemoHeatmap(model);
+            });
     }
 
     private initHeatmapSegments() {
@@ -205,11 +140,6 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
             strokeColor: "#ffffff"
         }];
         this.cd.markForCheck();
-    }
-
-    private initHeatmap() {
-        this.createHeatmapTiles(this.model);
-      // this.initHeatmapSegments();
     }
 
     protected updateRows(rows: number) {
@@ -242,5 +172,9 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
         this.updateModel({useNullValues});
     }
 
+    private createDemoHeatmap(payload: HeatmapDemoConfig) {
+        this.heatmap = createDemoHeatmap(payload);
+        this.cd.markForCheck();
+    }
 }
 

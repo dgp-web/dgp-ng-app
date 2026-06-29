@@ -4,7 +4,7 @@ import { RouterModule } from "@angular/router";
 import { ConnectedScatterPlotDocsComponent } from "./components/connected-scatter-plot-docs.component";
 import { BoxPlotDocsComponent } from "./components/box-plot-docs.component";
 import { BarChartDocsComponent } from "./components/bar-chart-docs.component";
-import { HeatmapDocsComponent, IntegerOnlyDirective } from "./components/heatmap-docs.component";
+import { HeatmapDocsComponent } from "./components/heatmap-docs.component";
 import { ShapeDocsComponent } from "./components/shape-docs.component";
 import { FillPatternDocsComponent } from "./components/fill-pattern-docs.component";
 import { DgpHamburgerMenuToggleModule, DgpPageHeaderModule, DgpDetailsModule, DgpInspectorModule } from "dgp-ng-app";
@@ -16,6 +16,7 @@ import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
 import { JsonPipe, NgIf } from "@angular/common";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
+import { IntegerOnlyDirective } from "../shared/integer-only.directive";
 
 @NgModule({
     imports: [

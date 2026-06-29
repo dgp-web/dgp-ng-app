@@ -10,7 +10,7 @@ import { HeatmapSegment } from "../models/heatmap-segment.model";
 import { HeatmapSelection } from "../models/heatmap-selection.model";
 import { HeatmapTile } from "../models/heatmap-tile.model";
 import { HeatmapConfig, HeatmapLegend } from "../models";
-import { HeatmapModel } from "../models/heatmap.model";
+import { Heatmap } from "../models/heatmap.model";
 import { selection } from "d3";
 import { size } from "lodash";
 
@@ -52,7 +52,7 @@ import { size } from "lodash";
     `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> implements HeatmapModel, AfterViewInit, OnDestroy {
+export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> implements Heatmap, AfterViewInit, OnDestroy {
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
@@ -85,8 +85,8 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
         this.scheduleDrawChartAction();
     }
 
-    readonly model$ = observeAttribute$(this as HeatmapModel, "model");
-    readonly config$ = observeAttribute$(this as HeatmapModel, "config");
+    readonly model$ = observeAttribute$(this as Heatmap, "model");
+    readonly config$ = observeAttribute$(this as Heatmap, "config");
 
     private redrawSubscription: Subscription;
 

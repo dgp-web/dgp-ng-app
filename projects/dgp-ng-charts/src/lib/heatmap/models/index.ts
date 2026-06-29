@@ -10,5 +10,6 @@ export * from "./heatmap-selection-filter.model";
 export * from "./heatmap-selection.model";
 export * from "./heatmap-tile-extent.model";
 export * from "./heatmap-tile.model";
+export * from "./heatmap.model";
 export * from "./internal-export-chart-config.model";
 
