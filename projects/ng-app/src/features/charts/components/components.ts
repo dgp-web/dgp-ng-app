@@ -4,6 +4,7 @@ import { BarChartDocsComponent } from "./bar-chart-docs.component";
 import { BoxPlotDocsComponent } from "./box-plot-docs.component";
 import { ShapeDocsComponent } from "./shape-docs.component";
 import { FillPatternDocsComponent } from "./fill-pattern-docs.component";
+import { HeatmapDemoConfigFormComponent } from "./heatmap/heatmap-demo-config-form.component";
 
 export const components = [
     BarChartDocsComponent,
@@ -11,5 +12,6 @@ export const components = [
     ConnectedScatterPlotDocsComponent,
     FillPatternDocsComponent,
     HeatmapDocsComponent,
-    ShapeDocsComponent
+    ShapeDocsComponent,
+    HeatmapDemoConfigFormComponent
 ];

@@ -22,56 +22,12 @@ import { createDemoHeatmap } from "../functions/create-demo-heatmap.function";
                 <dgp-docs-chapter-title>Heatmap</dgp-docs-chapter-title>
                 <dgp-docs-section-title>Demo</dgp-docs-section-title>
 
-                <!-- Add number inputs for min and max rows and columns: 100 to 1000 -->
+                <dgp-details summary="Settings"
+                             [expanded]="false">
+                    <dgp-heatmap-demo-config-form style="margin-left: 36px; "
+                                                  [model]="model"
+                                                  (modelChange)="setModel($event)"/>
 
-                <!-- TODO: Coloring as in labs -->
-                <dgp-details summary="Settings" [expanded]="false">
-                    <!-- TODO HeatmapDemoConfigForm -->
-                    <dgp-inspector style="margin-left: 36px; display: flex; flex-direction: column;"
-                                   [showFieldIcons]="false"
-                                   [responsive]="false">
-                        <dgp-inspector-item [metadata]="modelMetadata.attributes.rows">
-
-                            <mat-form-field [subscriptSizing]="'dynamic'">
-                                <input matInput
-                                       type="number"
-                                       appIntegerOnly
-                                       [min]="1"
-                                       [max]="1000"
-                                       [step]="1"
-                                       [ngModel]="model.rows"
-                                       [ngModelOptions]="{updateOn: 'blur'}"
-                                       (ngModelChange)="updateRows($event)">
-                                <mat-hint>Integer between 1 and 1000</mat-hint>
-                            </mat-form-field>
-
-                        </dgp-inspector-item>
-
-                        <dgp-inspector-item [metadata]="modelMetadata.attributes.columns">
-                            <mat-form-field>
-                                <input matInput
-                                       type="number"
-                                       appIntegerOnly
-                                       [min]="1"
-                                       [max]="1000"
-                                       [step]="1"
-                                       [ngModel]="model.columns"
-                                       [ngModelOptions]="{updateOn: 'blur'}"
-                                       (ngModelChange)="updateColumns($event)">
-                                <mat-hint>Integer between 1 and 1000</mat-hint>
-                            </mat-form-field>
-                        </dgp-inspector-item>
-
-                        <dgp-inspector-item [metadata]="modelMetadata.attributes.useNullValues">
-                            <mat-radio-group [ngModel]="model.useNullValues"
-                                             (ngModelChange)="updateUseNullValues($event)">
-                                <mat-radio-button style="margin-right: 16px;"
-                                                  [value]="true">Yes
-                                </mat-radio-button>
-                                <mat-radio-button [value]="false">No</mat-radio-button>
-                            </mat-radio-group>
-                        </dgp-inspector-item>
-                    </dgp-inspector>
                 </dgp-details>
 
                 <dgp-heatmap *ngIf="heatmap"
@@ -140,36 +96,6 @@ export class HeatmapDocsComponent extends DgpModelEditorComponentBase<HeatmapDem
             strokeColor: "#ffffff"
         }];
         this.cd.markForCheck();
-    }
-
-    protected updateRows(rows: number) {
-        const validationResult = validateAttribute({
-            value: rows,
-            modelId: "",
-            attributePath: "rows",
-            modelType: "HeatmapDemoConfig",
-            attributeMetadata: heatmapDemoConfigMetadata.attributes.rows
-        });
-        if (validationResult.isValid) {
-            this.updateModel({rows});
-        }
-    }
-
-    protected updateColumns(columns: number) {
-        const validationResult = validateAttribute({
-            value: columns,
-            modelId: "",
-            attributePath: "columns",
-            modelType: "HeatmapDemoConfig",
-            attributeMetadata: heatmapDemoConfigMetadata.attributes.columns
-        });
-        if (validationResult.isValid) {
-            this.updateModel({columns});
-        }
-    }
-
-    protected updateUseNullValues(useNullValues: boolean) {
-        this.updateModel({useNullValues});
     }
 
     private createDemoHeatmap(payload: HeatmapDemoConfig) {

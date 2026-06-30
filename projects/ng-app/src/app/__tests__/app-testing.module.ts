@@ -7,6 +7,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatNativeDateModule } from "@angular/material/core";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { MatNativeDateModule } from "@angular/material/core";
             runtimeChecks: defaultRuntimeChecks,
         }),
         StoreModule.forFeature(authenticationStoreFeature, authenticationReducer),
+        EffectsModule.forRoot([]),
         DgpRequestStoreModule,
         HttpClientTestingModule,
         RouterTestingModule,
