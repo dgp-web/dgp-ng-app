@@ -73,14 +73,17 @@ jobs:
       run: npm run docs-app:build:prod
 
     - name: Publish docs-app to firebase
+      if: false
       run: npm run docs-app:publish
       env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
     - name: Publish docs-app to firebase v18
+      if: false
       run: npm run docs-app-18:publish
       env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
 
     - name: build dgp-labs
       run: npm run dgp-labs:build:prod
