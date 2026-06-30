@@ -164,24 +164,33 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
     const bandwidthY = yAxis.bandwidth();
 
     const xRangeMap = new Map<number, { start: number, end: number }>();
-    columnValues.forEach(val => {
+    columnValues.forEach((val, index) => {
         const x = xAxis(val.toString());
         if (x !== undefined && x !== null) {
+            const start = Math.round(x);
+
+            const nextVal = columnValues[index + 1];
+            const nextX = nextVal !== undefined ? xAxis(nextVal.toString()) : null;
+            const end = (nextX !== undefined && nextX !== null) ? Math.round(nextX) : width;
+
             xRangeMap.set(val as number, {
-                start: Math.max(0, Math.round(x)),
-                end: Math.min(width, Math.round(x + bandwidthX))
+                start,
+                end
             });
         }
     });
 
     const yRangeMap = new Map<number, { start: number, end: number }>();
-    rowValues.forEach(val => {
+    rowValues.forEach((val,index) => {
         const y = yAxis(val.toString());
         if (y !== undefined && y !== null) {
-            yRangeMap.set(val as number, {
-                start: Math.max(0, Math.round(y)),
-                end: Math.min(height, Math.round(y + bandwidthY))
-            });
+            const start = Math.round(y);
+            const nextVal = rowValues[index + 1];
+            const nextY = nextVal !== undefined ? yAxis(nextVal.toString()) : null;
+            const end = (nextY !== undefined && nextY !== null) ? Math.round(nextY) : height;
+
+            yRangeMap.set(val as number, { start, end });
+
         }
     });
 
@@ -349,7 +358,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
                     ]);
                 }
             }
- 
+
         }
 
         selectionPublisher.subscribe(selection => {

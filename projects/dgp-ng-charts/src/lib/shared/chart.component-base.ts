@@ -12,9 +12,15 @@ export interface DrawD3ChartPayload {
     readonly containerHeight: number;
 }
 
+export interface ChartBase {
+    readonly chartTitle?: string;
+    readonly yAxisTitle?: string;
+    readonly xAxisTitle?: string;
+}
+
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements OnDestroy {
+export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConfig> implements OnDestroy, ChartBase {
 
     protected configValue: TConfig
 
