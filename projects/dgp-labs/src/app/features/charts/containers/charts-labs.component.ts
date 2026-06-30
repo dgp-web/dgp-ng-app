@@ -152,7 +152,7 @@ export class ChartsLabsComponent {
             height: 100,
             width: 100
         }
-    }
+    };
 
     readonly axisScaleTypeEnum = ScaleType;
     fillPattern = FillPattern.All;

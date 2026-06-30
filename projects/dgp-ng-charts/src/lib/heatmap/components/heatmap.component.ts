@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 import { Many } from "data-modeling";
-import { areEqualByHashCode, Size } from "dgp-ng-app";
-import { BehaviorSubject } from "rxjs";
+import { areEqualByHashCode, Size, observeAttribute$ } from "dgp-ng-app";
+import { BehaviorSubject, combineLatest, merge, Subscription } from "rxjs";
 import { ChartComponentBase } from "../../shared/chart.component-base";
 import { defaultDgpHeatmapConfig } from "../constants/default-dgp-heatmap-config.constant";
 import { renderHeatmap } from "../functions/render-heatmap.function";
@@ -9,6 +9,10 @@ import { ExportChartConfig } from "../models/export-chart-config.model";
 import { HeatmapSegment } from "../models/heatmap-segment.model";
 import { HeatmapSelection } from "../models/heatmap-selection.model";
 import { HeatmapTile } from "../models/heatmap-tile.model";
+import { HeatmapConfig, HeatmapLegend } from "../models";
+import { Heatmap } from "../models/heatmap.model";
+import { selection } from "d3";
+import { size } from "lodash";
 
 @Component({
     selector: "dgp-heatmap",
@@ -49,7 +53,7 @@ import { HeatmapTile } from "../models/heatmap-tile.model";
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> {
+export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTile>, any> implements Heatmap, AfterViewInit, OnDestroy {
 
     readonly size$ = new BehaviorSubject<Size>(null);
 
@@ -82,6 +86,24 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
         this.scheduleDrawChartAction();
     }
 
+    readonly model$ = observeAttribute$(this as Heatmap, "model");
+    readonly config$ = observeAttribute$(this as Heatmap, "config");
+
+    private redrawSubscription: Subscription;
+
+    ngAfterViewInit(): void {
+        this.redrawSubscription = merge(this.model$, this.config$).subscribe(() => {
+            this.scheduleDrawChartAction();
+        });
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+
+        if(!this.redrawSubscription?.closed) this.redrawSubscription.unsubscribe();
+    }
+
+
     private setSelectionInternally(value: HeatmapSelection) {
         this.selectionValue = value;
         this.selectionChange.emit(value);
@@ -107,5 +129,6 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
         this.size$.next(size);
         this.drawChartActionScheduler.next();
     }
+
 
 }
