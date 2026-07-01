@@ -97,9 +97,8 @@ export class HeatmapComponent extends ChartComponentBase<ReadonlyArray<HeatmapTi
     }
 
     ngOnDestroy(): void {
-        super.ngOnDestroy();
-
         if(!this.redrawSubscription?.closed) this.redrawSubscription.unsubscribe();
+        super.ngOnDestroy();
     }
 
 
