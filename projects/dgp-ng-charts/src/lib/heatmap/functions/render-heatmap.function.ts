@@ -3,17 +3,9 @@ import { notNullOrUndefined, Point } from "dgp-ng-app";
 import * as _ from "lodash";
 import { uniq } from "lodash";
 import { Subject } from "rxjs";
-import { isRectangleOverlap } from "../../box-plot/functions";
 import { HeatmapRendererPayload, HeatmapSelection, HeatmapTile } from "../models";
+import { calculateTileExtent } from "./calculate-tile-extent.function";
 import { drawHeatmapSegmentOnCanvas } from "./draw-heatmap-segment-on-canvas.function";
-
-type TileWithPosition = {
-    tile: HeatmapTile;
-    pixelX: number;
-    pixelY: number;
-    pixelWidth: number;
-    pixelHeight: number;
-};
 
 export function renderHeatmap(payload: HeatmapRendererPayload) {
 
@@ -26,70 +18,6 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             extent1[0][1] === extent2[0][1] &&
             extent1[1][0] === extent2[1][0] &&
             extent1[1][1] === extent2[1][1];
-    }
-    // Helper to calculate how many tiles the brush covers
-    function calculateTileExtent(
-        brushX: number,
-        brushY: number,
-        brushWidth: number,
-        brushHeight: number
-    ): { width: number; height: number } {
-
-        // Find the range of tile indices covered by the brush
-        const startCol = Math.floor(brushX / xAxis.bandwidth());
-        const endCol = Math.ceil((brushX + brushWidth) / xAxis.bandwidth());
-        const startRow = Math.floor(brushY / yAxis.bandwidth());
-        const endRow = Math.ceil((brushY + brushHeight) / yAxis.bandwidth());
-
-        return {
-            width: Math.max(1, endCol - startCol),
-            height: Math.max(1, endRow - startRow)
-        };
-    }
-
-    // Helper function to constrain brush to tile extent
-    function constrainBrushToTileExtent(
-        extent: [[number, number], [number, number]],
-        maxExtent: { width: number; height: number }
-    ): [[number, number], [number, number]] | null {
-
-        const brushX = extent[0][0];
-        const brushY = extent[0][1];
-        const brushWidth = extent[1][0] - extent[0][0];
-        const brushHeight = extent[1][1] - extent[0][1];
-
-        // Calculate how many tiles the current brush covers
-        const coveredTileExtent = calculateTileExtent(brushX, brushY, brushWidth, brushHeight);
-
-        if (coveredTileExtent.width <= maxExtent.width && coveredTileExtent.height <= maxExtent.height) {
-            return extent; // No constraint needed
-        }
-
-        // Calculate maximum pixel dimensions based on tile extent
-        const maxPixelWidth = maxExtent.width * xAxis.bandwidth();
-        const maxPixelHeight = maxExtent.height * yAxis.bandwidth();
-
-        // Constrain the brush dimensions
-        const constrainedWidth = Math.min(brushWidth, maxPixelWidth);
-        const constrainedHeight = Math.min(brushHeight, maxPixelHeight);
-
-        // Keep brush centered on its current center
-        const centerX = brushX + brushWidth / 2;
-        const centerY = brushY + brushHeight / 2;
-
-        const newBrushX = Math.max(0, Math.min(
-            payload.drawD3ChartInfo.containerWidth - constrainedWidth,
-            centerX - constrainedWidth / 2
-        ));
-        const newBrushY = Math.max(0, Math.min(
-            payload.drawD3ChartInfo.containerHeight - constrainedHeight,
-            centerY - constrainedHeight / 2
-        ));
-
-        return [
-            [newBrushX, newBrushY],
-            [newBrushX + constrainedWidth, newBrushY + constrainedHeight]
-        ];
     }
 
     // Labels of row and columns
@@ -119,6 +47,78 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
         .call(d3.axisLeft(yAxis)
             .tickValues([])
             .tickSize(0));
+
+    // Helper function to constrain brush to tile extent
+    function constrainBrushToTileExtent(
+        extent: [[number, number], [number, number]],
+        maxExtent: { width: number; height: number }
+    ): [[number, number], [number, number]] | null {
+
+        const brushX = extent[0][0];
+        const brushY = extent[0][1];
+        const brushWidth = extent[1][0] - extent[0][0];
+        const brushHeight = extent[1][1] - extent[0][1];
+
+        const coveredTileExtent = calculateTileExtent({
+            brushX, brushY, brushWidth, brushHeight,
+            xAxis, yAxis
+        });
+
+        if (coveredTileExtent.width <= maxExtent.width && coveredTileExtent.height <= maxExtent.height) {
+            return extent; // No constraint needed
+        }
+
+        const bX = xAxis.bandwidth();
+        const bY = yAxis.bandwidth();
+
+        let newStartCol = coveredTileExtent.startCol;
+        let newEndCol = coveredTileExtent.endCol;
+
+        if (coveredTileExtent.width > maxExtent.width) {
+            const centerCol = (coveredTileExtent.startCol + coveredTileExtent.endCol) / 2;
+            newStartCol = Math.round(centerCol - (maxExtent.width - 1) / 2);
+            newStartCol = Math.max(0, Math.min(columnValues.length - maxExtent.width, newStartCol));
+            newEndCol = newStartCol + maxExtent.width - 1;
+        }
+
+        let newStartRow = coveredTileExtent.startRow;
+        let newEndRow = coveredTileExtent.endRow;
+
+        if (coveredTileExtent.height > maxExtent.height) {
+            const centerRow = (coveredTileExtent.startRow + coveredTileExtent.endRow) / 2;
+            newStartRow = Math.round(centerRow - (maxExtent.height - 1) / 2);
+            newStartRow = Math.max(0, Math.min(rowValues.length - maxExtent.height, newStartRow));
+            newEndRow = newStartRow + maxExtent.height - 1;
+        }
+
+        const minPixelX = Math.round(newStartCol * bX);
+        const maxPixelX = Math.round((newEndCol + 1) * bX);
+        const minPixelY = Math.round(newStartRow * bY);
+        const maxPixelY = Math.round((newEndRow + 1) * bY);
+
+        const targetWidth = maxPixelX - minPixelX;
+        const targetHeight = maxPixelY - minPixelY;
+
+        const constrainedWidth = Math.min(brushWidth, targetWidth);
+        const constrainedHeight = Math.min(brushHeight, targetHeight);
+
+        const centerX = brushX + brushWidth / 2;
+        const centerY = brushY + brushHeight / 2;
+
+        const newBrushX = Math.max(minPixelX, Math.min(
+            maxPixelX - constrainedWidth,
+            centerX - constrainedWidth / 2
+        ));
+        const newBrushY = Math.max(minPixelY, Math.min(
+            maxPixelY - constrainedHeight,
+            centerY - constrainedHeight / 2
+        ));
+
+        return [
+            [newBrushX, newBrushY],
+            [newBrushX + constrainedWidth, newBrushY + constrainedHeight]
+        ];
+    }
 
     const colorRange = payload.config.colorRange.map(x => d3.rgb(x));
     const domain = payload.config.domainComputer(payload.model, payload.config.domainOverrides);
@@ -245,26 +245,10 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
 
         const selectionPublisher = new Subject<HeatmapSelection>();
 
-        const tilesWithPositions: TileWithPosition[] = [];
-        for (let i = 0; i < modelLength; i++) {
-            const tile = model[i];
-            const xRange = xRangeMap.get(tile.x);
-            const yRange = yRangeMap.get(tile.y);
-            if (xRange && yRange) {
-                tilesWithPositions.push({
-                    tile: tile,
-                    pixelX: xRange.start,
-                    pixelY: yRange.start,
-                    pixelWidth: xRange.end - xRange.start,
-                    pixelHeight: yRange.end - yRange.start
-                });
-            }
-        }
-
-        const quadtree = d3.quadtree<TileWithPosition>()
-            .x(d => d.pixelX)
-            .y(d => d.pixelY)
-            .addAll(tilesWithPositions);
+        const tileMap = new Map<string, HeatmapTile>();
+        payload.model.forEach(t => {
+            tileMap.set(`${t.x},${t.y}`, t);
+        });
 
         const brush = d3.brush()
             .extent([[0, 0], [payload.drawD3ChartInfo.containerWidth, payload.drawD3ChartInfo.containerHeight]])
@@ -291,28 +275,25 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
                         const brushWidth = extent[1][0] - extent[0][0];
                         const brushHeight = extent[1][1] - extent[0][1];
 
-                        const selectedTileWrappers: TileWithPosition[] = [];
-
-                        quadtree.visit((node, x1, y1, x2, y2) => {
-                            if (brushX >= x2 || brushX + brushWidth <= x1 ||
-                                brushY >= y2 || brushY + brushHeight <= y1) {
-                                return true;
-                            }
-
-                            if (!node.length) {
-                                const wrapper = (node as any).data as TileWithPosition;
-                                if (wrapper && isRectangleOverlap(
-                                    brushX, brushY, brushWidth, brushHeight,
-                                    wrapper.pixelX, wrapper.pixelY, wrapper.pixelWidth, wrapper.pixelHeight
-                                )) {
-                                    selectedTileWrappers.push(wrapper);
-                                }
-                            }
-
-                            return false;
+                        const tileExtent = calculateTileExtent({
+                            brushX, brushY, brushWidth, brushHeight,
+                            xAxis, yAxis
                         });
 
-                        return selectedTileWrappers.map(wrapper => wrapper.tile);
+                        const selectedTiles: HeatmapTile[] = [];
+
+                        for (let i = tileExtent.startCol; i <= tileExtent.endCol; i++) {
+                            for (let j = tileExtent.startRow; j <= tileExtent.endRow; j++) {
+                                const xVal = columnValues[i];
+                                const yVal = rowValues[j];
+                                const tile = tileMap.get(`${xVal},${yVal}`);
+                                if (tile) {
+                                    selectedTiles.push(tile);
+                                }
+                            }
+                        }
+
+                        return selectedTiles;
                     })() : []
                 };
 

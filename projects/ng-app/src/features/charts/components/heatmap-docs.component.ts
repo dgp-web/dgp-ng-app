@@ -31,7 +31,7 @@ import { createDemoHeatmap } from "../functions/create-demo-heatmap.function";
                 </dgp-details>
 
                 <dgp-heatmap *ngIf="heatmap"
-                             style="max-height: 320px;"
+                             style="height: 320px;"
                              [model]="heatmap.model"
                              [config]="heatmap.config"
                              chartTitle="Chart title"
@@ -43,12 +43,14 @@ import { createDemoHeatmap } from "../functions/create-demo-heatmap.function";
                              [selection]="heatmap.selection"
                              (selectionChange)="selectTiles($event)">
 
-                    <ng-container right-legend>Right</ng-container>
+                    <ng-container right-legend>
+                    </ng-container>
 
                     <ng-container bottom-legend>Bottom</ng-container>
 
                 </dgp-heatmap>
 
+                {{selection | json}}
             </dgp-docs-page-content>
         </dgp-docs-page>
     `,
