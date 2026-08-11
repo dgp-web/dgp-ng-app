@@ -18,12 +18,7 @@
         "**/*.stories.ts"
     ],
     "angularCompilerOptions": {
-      "extendedDiagnostics": {
-        "checks": {
-          "nullishCoalescingNotNullable": "suppress",
-          "optionalChainNotNullable": "suppress"
-        }
-      },
+      "extendedDiagnostics": false,
       "strictTemplates": false
     }
 }
