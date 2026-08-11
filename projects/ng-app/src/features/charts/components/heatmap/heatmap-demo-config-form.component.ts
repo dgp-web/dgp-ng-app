@@ -58,6 +58,7 @@ import { validateAttribute } from "data-modeling";
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HeatmapDemoConfigFormComponent extends DgpModelEditorComponentBase<HeatmapDemoConfig> {
 

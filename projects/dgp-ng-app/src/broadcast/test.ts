@@ -31,7 +31,7 @@ describe(BroadcastStoreDecorator.name, () => {
     teardown: { destroyAfterEach: false }
 });
 
-        decoratedStore = TestBed.get(Store) as BroadcastStoreDecorator<any>;
+        decoratedStore = TestBed.inject(Store) as BroadcastStoreDecorator<any>;
 
     });
 
