@@ -6,11 +6,13 @@ import { DgpView } from "../../utils/view";
     selector: "dgp-input-hint",
     template: `
         <dgp-spacer></dgp-spacer>
-
-        <dgp-input-length-info *ngIf="metadata?.type === 'string'"
-                               [model]="model"
-                               [metadata]="metadata"></dgp-input-length-info>
-    `,
+        
+        @if (metadata?.type === 'string') {
+          <dgp-input-length-info
+            [model]="model"
+          [metadata]="metadata"></dgp-input-length-info>
+        }
+        `,
     styles: [`
         :host {
             display: flex;

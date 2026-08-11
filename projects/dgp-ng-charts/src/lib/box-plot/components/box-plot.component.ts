@@ -15,41 +15,45 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
     selector: "dgp-box-plot",
     template: `
         <dgp-chart [yAxisTitle]="yAxisTitle"
-                   [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle"
-                   (sizeChanged)="onResize($event)">
-
-            <ng-container right-legend>
-                <ng-content select="[right-legend]"></ng-content>
-            </ng-container>
-
-            <dgp-svg-box-plot *ngIf="renderer === rendererEnum.SVG"
-                              [showXAxisGridLines]="showXAxisGridLines"
-                              [showYAxisGridLines]="showYAxisGridLines"
-                              [showOutlierTooltips]="showOutlierTooltips"
-                              [showDataAreaOutline]="showDataAreaOutline"
-                              [controlLines]="controlLines"
-                              [config]="config"
-                              [dotSize]="dotSize"
-                              [model]="model$ | async"
-                              [scales]="scales$ | async"
-                              [size]="size$ | async"></dgp-svg-box-plot>
-
-            <dgp-hybrid-box-plot *ngIf="renderer === rendererEnum.Hybrid"
-                                 [showXAxisGridLines]="showXAxisGridLines"
-                                 [showYAxisGridLines]="showYAxisGridLines"
-                                 [showOutlierTooltips]="showOutlierTooltips"
-                                 [showDataAreaOutline]="showDataAreaOutline"
-                                 [controlLines]="controlLines"
-                                 [config]="config"
-                                 [dotSize]="dotSize"
-                                 [model]="model$ | async"
-                                 [scales]="scales$ | async"
-                                 [size]="size$ | async"></dgp-hybrid-box-plot>
-
-
+          [xAxisTitle]="xAxisTitle"
+          [chartTitle]="chartTitle"
+          (sizeChanged)="onResize($event)">
+        
+          <ng-container right-legend>
+            <ng-content select="[right-legend]"></ng-content>
+          </ng-container>
+        
+          @if (renderer === rendererEnum.SVG) {
+            <dgp-svg-box-plot
+              [showXAxisGridLines]="showXAxisGridLines"
+              [showYAxisGridLines]="showYAxisGridLines"
+              [showOutlierTooltips]="showOutlierTooltips"
+              [showDataAreaOutline]="showDataAreaOutline"
+              [controlLines]="controlLines"
+              [config]="config"
+              [dotSize]="dotSize"
+              [model]="model$ | async"
+              [scales]="scales$ | async"
+            [size]="size$ | async"></dgp-svg-box-plot>
+          }
+        
+          @if (renderer === rendererEnum.Hybrid) {
+            <dgp-hybrid-box-plot
+              [showXAxisGridLines]="showXAxisGridLines"
+              [showYAxisGridLines]="showYAxisGridLines"
+              [showOutlierTooltips]="showOutlierTooltips"
+              [showDataAreaOutline]="showDataAreaOutline"
+              [controlLines]="controlLines"
+              [config]="config"
+              [dotSize]="dotSize"
+              [model]="model$ | async"
+              [scales]="scales$ | async"
+            [size]="size$ | async"></dgp-hybrid-box-plot>
+          }
+        
+        
         </dgp-chart>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

@@ -15,58 +15,61 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
     selector: "dgp-bar-chart",
     template: `
         <dgp-chart [yAxisTitle]="yAxisTitle"
-                   [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle"
-                   (sizeChanged)="onResize($event)">
-
-            <ng-container chart-title>
-                <ng-content select="[chart-title]"></ng-content>
-            </ng-container>
-
-            <ng-container x-axis-title>
-                <ng-content select="[x-axis-title]"></ng-content>
-            </ng-container>
-
-            <ng-container y-axis-title>
-                <ng-content select="[y-axis-title]"></ng-content>
-            </ng-container>
-
-            <ng-container right-legend>
-                <ng-content select="[right-legend]"></ng-content>
-            </ng-container>
-
-            <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
-                          [showYAxisGridLines]="showYAxisGridLines"
-                          [showDataAreaOutline]="showDataAreaOutline"
+          [xAxisTitle]="xAxisTitle"
+          [chartTitle]="chartTitle"
+          (sizeChanged)="onResize($event)">
+        
+          <ng-container chart-title>
+            <ng-content select="[chart-title]"></ng-content>
+          </ng-container>
+        
+          <ng-container x-axis-title>
+            <ng-content select="[x-axis-title]"></ng-content>
+          </ng-container>
+        
+          <ng-container y-axis-title>
+            <ng-content select="[y-axis-title]"></ng-content>
+          </ng-container>
+        
+          <ng-container right-legend>
+            <ng-content select="[right-legend]"></ng-content>
+          </ng-container>
+        
+          <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
+            [showYAxisGridLines]="showYAxisGridLines"
+            [showDataAreaOutline]="showDataAreaOutline"
+            [scales]="scales$ | async"
+            [config]="config"
+            [size]="size$ | async">
+        
+            <svg:defs xmlns:svg="http://www.w3.org/2000/svg"
+              dgpPatternAndMaskDefs></svg:defs>
+        
+              @if (scales$ | async) {
+                @for (barGroup of model; track trackByBarGroupId($index, barGroup)) {
+                  <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+                    dgpBarChartBarGroup
+                    [barGroup]="barGroup"
+                    [scales]="scales$ | async">
+                    @for (bar of barGroup.bars; track trackByBarId($index, bar)) {
+                      <ng-container>
+                        <rect dgpBarChartBarFillPattern
                           [scales]="scales$ | async"
-                          [config]="config"
-                          [size]="size$ | async">
-
-                <svg:defs xmlns:svg="http://www.w3.org/2000/svg"
-                          dgpPatternAndMaskDefs></svg:defs>
-
-                <ng-container *ngIf="scales$ | async">
-                    <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-                           *ngFor="let barGroup of model; trackBy: trackByBarGroupId"
-                           dgpBarChartBarGroup
-                           [barGroup]="barGroup"
-                           [scales]="scales$ | async">
-                        <ng-container *ngFor="let bar of barGroup.bars; trackBy: trackByBarId">
-                            <rect dgpBarChartBarFillPattern
-                                  [scales]="scales$ | async"
-                                  [barGroup]="barGroup"
-                                  [bar]="bar"></rect>
-                            <rect dgpBarChartBar
-                                  [scales]="scales$ | async"
-                                  [barGroup]="barGroup"
-                                  [bar]="bar"></rect>
-                        </ng-container>
+                          [barGroup]="barGroup"
+                        [bar]="bar"></rect>
+                        <rect dgpBarChartBar
+                          [scales]="scales$ | async"
+                          [barGroup]="barGroup"
+                        [bar]="bar"></rect>
+                      </ng-container>
+                    }
                     </svg:g>
-                </ng-container>
-
-            </dgp-svg-plot>
-        </dgp-chart>
-    `,
+                  }
+                }
+        
+              </dgp-svg-plot>
+            </dgp-chart>
+        `,
     styles: [`
         :host {
             display: flex;

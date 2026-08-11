@@ -5,11 +5,11 @@ import { DgpDropzoneDirectiveBase } from "../shared/dropzone.directive-base";
     selector: "dgp-dropzone",
     template: `
         <ng-content></ng-content>
-
-        <ng-container *ngIf="isModelDragged$ | async">
-            <ng-content select="[dgp-drop-indicator]"></ng-content>
-        </ng-container>
-    `,
+        
+        @if (isModelDragged$ | async) {
+          <ng-content select="[dgp-drop-indicator]"></ng-content>
+        }
+        `,
     standalone: false
 })
 export class DgpDropzoneComponent<TModel> extends DgpDropzoneDirectiveBase<TModel> {

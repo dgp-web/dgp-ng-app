@@ -9,30 +9,32 @@ import { HamburgerShellState } from "../models";
     selector: "dgp-hamburger-shell",
     template: `
         <mat-drawer-container class="hamburger-menu-drawer-container">
-
-            <mat-drawer [mode]="hamburgerMenuMode$ | async"
-                        [opened]="isHamburgerMenuOpen$ | async"
-                        class="hamburger-menu-drawer mat-elevation-z4"
-                        (closed)="closeHamburgerMenu()">
-
-                <div class="progress-bar-container">
-                    <mat-progress-bar *ngIf="hasPendingRequests$ | async"
-                                      color="accent"
-                                      mode="query"></mat-progress-bar>
-                </div>
-
-                <ng-content select="[dgp-hamburger-menu]"></ng-content>
-
-            </mat-drawer>
-
-            <mat-drawer-content class="hamburger-menu-drawer-content">
-
-                <ng-content></ng-content>
-
-            </mat-drawer-content>
-
+        
+          <mat-drawer [mode]="hamburgerMenuMode$ | async"
+            [opened]="isHamburgerMenuOpen$ | async"
+            class="hamburger-menu-drawer mat-elevation-z4"
+            (closed)="closeHamburgerMenu()">
+        
+            <div class="progress-bar-container">
+              @if (hasPendingRequests$ | async) {
+                <mat-progress-bar
+                  color="accent"
+                mode="query"></mat-progress-bar>
+              }
+            </div>
+        
+            <ng-content select="[dgp-hamburger-menu]"></ng-content>
+        
+          </mat-drawer>
+        
+          <mat-drawer-content class="hamburger-menu-drawer-content">
+        
+            <ng-content></ng-content>
+        
+          </mat-drawer-content>
+        
         </mat-drawer-container>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

@@ -10,35 +10,43 @@ import { defaultChartConfig } from "../../shared/constants";
     selector: "[dgpChartSVGRoot]",
     template: `
         <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-               [attr.clip-path]="containerAreaClipPath">
-            <g [attr.transform]="containerTransform$ | async">
-
-                <g dgpChartBottomAxis
-                   [scales]="scales"></g>
-
-                <g *ngIf="showXAxisGridLines"
-                   dgpChartXAxisGridLines
-                   [scales]="scales"></g>
-
-                <g dgpChartLeftAxis
-                   [scales]="scales"></g>
-
-                <svg:g *ngIf="showYAxisGridLines"
-                       dgpChartYAxisGridLines
-                       [scales]="scales"></svg:g>
-
-                <g [attr.clip-path]="dataAreaClipPath">
-                    <line *ngIf="showDataAreaOutline"
-                          dgpChartDataAreaOutlineTop
-                          [scales]="scales"></line>
-                    <line *ngIf="showDataAreaOutline"
-                          dgpChartDataAreaOutlineRight
-                          [scales]="scales"></line>
-
-                    <ng-content></ng-content>
-                </g>
+          [attr.clip-path]="containerAreaClipPath">
+          <g [attr.transform]="containerTransform$ | async">
+        
+            <g dgpChartBottomAxis
+            [scales]="scales"></g>
+        
+            @if (showXAxisGridLines) {
+              <g
+                dgpChartXAxisGridLines
+              [scales]="scales"></g>
+            }
+        
+            <g dgpChartLeftAxis
+            [scales]="scales"></g>
+        
+            @if (showYAxisGridLines) {
+              <svg:g
+                dgpChartYAxisGridLines
+                [scales]="scales"></svg:g>
+              }
+        
+              <g [attr.clip-path]="dataAreaClipPath">
+                @if (showDataAreaOutline) {
+                  <line
+                    dgpChartDataAreaOutlineTop
+                  [scales]="scales"></line>
+                }
+                @if (showDataAreaOutline) {
+                  <line
+                    dgpChartDataAreaOutlineRight
+                  [scales]="scales"></line>
+                }
+        
+                <ng-content></ng-content>
+              </g>
             </g>
-        </svg:g>`,
+            </svg:g>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

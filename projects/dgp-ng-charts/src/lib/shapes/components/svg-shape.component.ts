@@ -7,55 +7,72 @@ import { idPrefixProvider } from "../../shared/id-prefix-provider.constant";
 @Component({
     selector: "dgp-svg-shape",
     template: `
-        <ng-container [ngSwitch]="model">
-            <dgp-circle-shape *ngSwitchCase="shapeEnum.Circle"
-                              [fillColor]="fillColor"
-                              [fillPattern]="fillPattern"
-                              [width]="getWidth()"
-                              [height]="getHeight()"></dgp-circle-shape>
-            <dgp-cross-shape *ngSwitchCase="shapeEnum.Cross"
-                             [fillColor]="fillColor"
-                             [fillPattern]="fillPattern"
-                             [width]="getWidth()"
-                             [height]="getHeight()"></dgp-cross-shape>
-            <dgp-rectangle-shape *ngSwitchCase="shapeEnum.Rectangle"
-                                 [fillColor]="fillColor"
-                                 [fillPattern]="fillPattern"
-                                 [width]="getWidth()"
-                                 [height]="getHeight()"></dgp-rectangle-shape>
-            <dgp-triangle-shape *ngSwitchCase="shapeEnum.Triangle"
-                                [fillColor]="fillColor"
-                                [fillPattern]="fillPattern"
-                                [width]="getWidth()"
-                                [height]="getHeight()"></dgp-triangle-shape>
-            <dgp-triangle-down-shape *ngSwitchCase="shapeEnum.TriangleDown"
-                                     [fillColor]="fillColor"
-                                     [fillPattern]="fillPattern"
-                                     [width]="getWidth()"
-                                     [height]="getHeight()"></dgp-triangle-down-shape>
-            <dgp-triangle-right-shape
-                *ngSwitchCase="shapeEnum.TriangleRight"
-                [fillColor]="fillColor"
-                [fillPattern]="fillPattern"
-                [width]="getWidth()"
-                [height]="getHeight()"></dgp-triangle-right-shape>
-            <dgp-triangle-left-shape *ngSwitchCase="shapeEnum.TriangleLeft"
-                                     [fillColor]="fillColor"
-                                     [fillPattern]="fillPattern"
-                                     [width]="getWidth()"
-                                     [height]="getHeight()"></dgp-triangle-left-shape>
-            <dgp-star-shape *ngSwitchCase="shapeEnum.Star"
-                            [fillColor]="fillColor"
-                            [fillPattern]="fillPattern"
-                            [width]="getWidth()"
-                            [height]="getHeight()"></dgp-star-shape>
-            <dgp-rhombus-shape *ngSwitchCase="shapeEnum.Rhombus"
-                               [fillColor]="fillColor"
-                               [fillPattern]="fillPattern"
-                               [width]="getWidth()"
-                               [height]="getHeight()"></dgp-rhombus-shape>
-        </ng-container>
-    `,
+@switch (model) {
+  @case (shapeEnum.Circle) {
+    <dgp-circle-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-circle-shape>
+  }
+  @case (shapeEnum.Cross) {
+    <dgp-cross-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-cross-shape>
+  }
+  @case (shapeEnum.Rectangle) {
+    <dgp-rectangle-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-rectangle-shape>
+  }
+  @case (shapeEnum.Triangle) {
+    <dgp-triangle-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-triangle-shape>
+  }
+  @case (shapeEnum.TriangleDown) {
+    <dgp-triangle-down-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-triangle-down-shape>
+  }
+  @case (shapeEnum.TriangleRight) {
+    <dgp-triangle-right-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-triangle-right-shape>
+  }
+  @case (shapeEnum.TriangleLeft) {
+    <dgp-triangle-left-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-triangle-left-shape>
+  }
+  @case (shapeEnum.Star) {
+    <dgp-star-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-star-shape>
+  }
+  @case (shapeEnum.Rhombus) {
+    <dgp-rhombus-shape
+      [fillColor]="fillColor"
+      [fillPattern]="fillPattern"
+      [width]="getWidth()"
+    [height]="getHeight()"></dgp-rhombus-shape>
+  }
+}
+`,
     styles: [`
         :host {
             display: inline-flex;

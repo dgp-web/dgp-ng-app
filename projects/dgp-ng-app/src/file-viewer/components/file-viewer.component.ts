@@ -6,26 +6,35 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
     selector: "dgp-file-viewer",
     template: `
 
-        <ng-container *ngIf="isKnownFileType; else dynamicViewer">
-            <ng-container [ngSwitch]="fileItem.extension">
-                <dgp-jpg-viewer *ngSwitchCase="'jpg'"
-                                [fileItem]="fileItem"></dgp-jpg-viewer>
-                <dgp-pdf-viewer *ngSwitchCase="'pdf'"
-                                [fileItem]="fileItem"></dgp-pdf-viewer>
-                <dgp-png-viewer *ngSwitchCase="'png'"
-                                [fileItem]="fileItem"></dgp-png-viewer>
-                <dgp-svg-viewer *ngSwitchCase="'svg'"
-                                [fileItem]="fileItem"></dgp-svg-viewer>
-                <dgp-fallback-file-viewer *ngSwitchDefault
-                                          [fileItem]="fileItem"></dgp-fallback-file-viewer>
-            </ng-container>
-        </ng-container>
+@if (isKnownFileType) {
+  @switch (fileItem.extension) {
+    @case ('jpg') {
+      <dgp-jpg-viewer
+      [fileItem]="fileItem"></dgp-jpg-viewer>
+    }
+    @case ('pdf') {
+      <dgp-pdf-viewer
+      [fileItem]="fileItem"></dgp-pdf-viewer>
+    }
+    @case ('png') {
+      <dgp-png-viewer
+      [fileItem]="fileItem"></dgp-png-viewer>
+    }
+    @case ('svg') {
+      <dgp-svg-viewer
+      [fileItem]="fileItem"></dgp-svg-viewer>
+    }
+    @default {
+      <dgp-fallback-file-viewer
+      [fileItem]="fileItem"></dgp-fallback-file-viewer>
+    }
+  }
+} @else {
+  <dgp-dynamic-file-viewer [fileItem]="fileItem"></dgp-dynamic-file-viewer>
+}
 
-        <ng-template #dynamicViewer>
-            <dgp-dynamic-file-viewer [fileItem]="fileItem"></dgp-dynamic-file-viewer>
-        </ng-template>
 
-    `,
+`,
     styles: [`
         :host {
             display: flex;

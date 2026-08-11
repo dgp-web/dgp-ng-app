@@ -7,24 +7,23 @@ import { FileUploadState } from "../../../file-upload/models";
     selector: "dgp-file-item-list",
     template: `
         <mat-nav-list style="overflow: auto;">
-
-            <h3 mat-subheader>
-                Files
-                <dgp-spacer></dgp-spacer>
-                <dgp-remove-current-file-item-action></dgp-remove-current-file-item-action>
-                <dgp-download-current-file-item></dgp-download-current-file-item>
-            </h3>
-
-            <ng-container *ngFor="let directory of model.directories">
-
-                <dgp-file-item-list-item
-                    *ngFor="let fileItemId of directory.fileItemIds"
-                    [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
-
-            </ng-container>
-
+        
+          <h3 mat-subheader>
+            Files
+            <dgp-spacer></dgp-spacer>
+            <dgp-remove-current-file-item-action></dgp-remove-current-file-item-action>
+            <dgp-download-current-file-item></dgp-download-current-file-item>
+          </h3>
+        
+          @for (directory of model.directories; track directory) {
+            @for (fileItemId of directory.fileItemIds; track fileItemId) {
+              <dgp-file-item-list-item
+              [model]="model.fileItemKVS[fileItemId]"></dgp-file-item-list-item>
+            }
+          }
+        
         </mat-nav-list>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

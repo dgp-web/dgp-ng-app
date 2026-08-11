@@ -12,31 +12,35 @@ import { OutlierHoverEvent } from "../models/outlier-hover-event.model";
     selector: "dgp-hybrid-box-plot",
     template: `
         <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
-                      [showYAxisGridLines]="showYAxisGridLines"
-                      [showDataAreaOutline]="showDataAreaOutline"
-                      [scales]="scales"
-                      [config]="config"
-                      [size]="size"></dgp-svg-plot>
-
-        <dgp-box-plot-data-canvas *ngIf="scales"
-                                  [scales]="scales"
-                                  [config]="config"
-                                  [model]="model"
-                                  [controlLines]="controlLines"
-                                  [size]="size"
-                                  [dotSize]="dotSize"
-                                  [showOutlierTooltips]="showOutlierTooltips"
-                                  (outlierHovered)="showTooltip($event)"></dgp-box-plot-data-canvas>
-
-        <div *ngIf="showOutlierTooltips && hoverEvent$.value"
-             class="tooltip"
-             [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
-             [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
+          [showYAxisGridLines]="showYAxisGridLines"
+          [showDataAreaOutline]="showDataAreaOutline"
+          [scales]="scales"
+          [config]="config"
+        [size]="size"></dgp-svg-plot>
+        
+        @if (scales) {
+          <dgp-box-plot-data-canvas
+            [scales]="scales"
+            [config]="config"
+            [model]="model"
+            [controlLines]="controlLines"
+            [size]="size"
+            [dotSize]="dotSize"
+            [showOutlierTooltips]="showOutlierTooltips"
+          (outlierHovered)="showTooltip($event)"></dgp-box-plot-data-canvas>
+        }
+        
+        @if (showOutlierTooltips && hoverEvent$.value) {
+          <div
+            class="tooltip"
+            [style.top.px]="hoverEvent$.value?.absoluteDomYPx"
+            [style.left.px]="hoverEvent$.value?.absoluteDomXPx + 16">
             {{getCurrentOutlierTooltip()}}
-        </div>
-
-
-    `,
+          </div>
+        }
+        
+        
+        `,
     styles: [`
         :host {
             display: flex;

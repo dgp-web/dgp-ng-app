@@ -3,25 +3,26 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 @Component({
     selector: "dgp-hamburger-menu-entry",
     template: `
-        <a *ngIf="isNonEmptyRoute(); else emptyRoute"
-           mat-list-item
-           [routerLink]="route"
-           [routerLinkActive]="'dgp-list-item--selected'"
-           [class.disabled]="disabled"
-           [attr.tabindex]="disabled ? -1 : 0">
+        @if (isNonEmptyRoute()) {
+          <a
+            mat-list-item
+            [routerLink]="route"
+            [routerLinkActive]="'dgp-list-item--selected'"
+            [class.disabled]="disabled"
+            [attr.tabindex]="disabled ? -1 : 0">
             <mat-icon matListItemIcon>{{ matIconName }}</mat-icon>
             {{ label }}
-        </a>
-
-        <ng-template #emptyRoute>
-            <a mat-list-item
-               class="disabled"
-               tabindex="-1">
-                <mat-icon matListItemIcon>{{ matIconName }}</mat-icon>
-                {{ label }}
-            </a>
-        </ng-template>
-    `,
+          </a>
+        } @else {
+          <a mat-list-item
+            class="disabled"
+            tabindex="-1">
+            <mat-icon matListItemIcon>{{ matIconName }}</mat-icon>
+            {{ label }}
+          </a>
+        }
+        
+        `,
     styles: [`
         :host {
             display: flex;

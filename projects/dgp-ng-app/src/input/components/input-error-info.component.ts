@@ -9,17 +9,17 @@ import { observeAttribute$ } from "../../utils/observe-input";
 @Component({
     selector: "dgp-input-error-info",
     template: `
-        <div *ngIf="hasErrors$ | async"
-             class="host">
-
+        @if (hasErrors$ | async) {
+          <div
+            class="host">
             <mat-icon color="warn"
-                      class="error-indicator">warning
+              class="error-indicator">warning
             </mat-icon>
-
             {{firstErrorMessage$ | async}}
-        </div>
-
-    `,
+          </div>
+        }
+        
+        `,
     styles: [`
         .host {
             display: inline-flex;

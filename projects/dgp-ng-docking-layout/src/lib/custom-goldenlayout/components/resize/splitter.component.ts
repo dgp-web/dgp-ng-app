@@ -9,32 +9,32 @@ import { DragEvent } from "../../models/drag-event.model";
 @Component({
     selector: "dgp-gl-splitter",
     template: `
-        <ng-container *ngIf="isVertical">
-            <div class="lm_splitter lm_vertical"
-                 [style.height.px]="size"
-                 dgpGlDragListener
-                 (dragStart$)="dragStart$.emit($event)"
-                 (dragStop$)="dragStop$.emit($event)"
-                 (drag$)="drag$.emit($event)">
-                <div class="lm_drag_handle"
-                     [style.top.px]="handleExcessPos$ | async"
-                     [style.height.px]="handleSize$ | async"></div>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="!isVertical">
-            <div class="lm_splitter lm_horizontal"
-                 [style.width.px]="size"
-                 dgpGlDragListener
-                 (dragStart$)="dragStart$.emit($event)"
-                 (dragStop$)="dragStop$.emit($event)"
-                 (drag$)="drag$.emit($event)">
-                <div class="lm_drag_handle"
-                     [style.left.px]="handleExcessPos$ | async"
-                     [style.width.px]="handleSize$ | async"></div>
-            </div>
-        </ng-container>
-    `,
+        @if (isVertical) {
+          <div class="lm_splitter lm_vertical"
+            [style.height.px]="size"
+            dgpGlDragListener
+            (dragStart$)="dragStart$.emit($event)"
+            (dragStop$)="dragStop$.emit($event)"
+            (drag$)="drag$.emit($event)">
+            <div class="lm_drag_handle"
+              [style.top.px]="handleExcessPos$ | async"
+            [style.height.px]="handleSize$ | async"></div>
+          </div>
+        }
+        
+        @if (!isVertical) {
+          <div class="lm_splitter lm_horizontal"
+            [style.width.px]="size"
+            dgpGlDragListener
+            (dragStart$)="dragStart$.emit($event)"
+            (dragStop$)="dragStop$.emit($event)"
+            (drag$)="drag$.emit($event)">
+            <div class="lm_drag_handle"
+              [style.left.px]="handleExcessPos$ | async"
+            [style.width.px]="handleSize$ | async"></div>
+          </div>
+        }
+        `,
     standalone: false
 })
 export class SplitterComponent  {

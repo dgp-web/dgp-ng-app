@@ -7,22 +7,22 @@ import { DgpContainer } from "../../utils/container.component-base";
     selector: "dgp-file-manager",
     template: `
         <mat-dialog-content>
+          @if (isDropTargetVisible$ | async) {
             <dgp-current-file-drop-zone
-                *ngIf="isDropTargetVisible$ | async; else fileViewer"></dgp-current-file-drop-zone>
-
-            <ng-template #fileViewer>
-                <ng-container *ngIf="canOpenFileDrawer$ | async; else singleFileViewer">
-                    <dgp-file-manager-dialog-header></dgp-file-manager-dialog-header>
-                    <dgp-current-list-file-viewer></dgp-current-list-file-viewer>
-                </ng-container>
-            </ng-template>
-
-            <ng-template #singleFileViewer>
-                <dgp-current-file-viewer></dgp-current-file-viewer>
-            </ng-template>
-
+            ></dgp-current-file-drop-zone>
+          } @else {
+            @if (canOpenFileDrawer$ | async) {
+              <dgp-file-manager-dialog-header></dgp-file-manager-dialog-header>
+              <dgp-current-list-file-viewer></dgp-current-list-file-viewer>
+            } @else {
+              <dgp-current-file-viewer></dgp-current-file-viewer>
+            }
+          }
+        
+        
+        
         </mat-dialog-content>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

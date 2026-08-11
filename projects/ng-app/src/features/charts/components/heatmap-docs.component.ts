@@ -13,47 +13,46 @@ import { createDemoHeatmap } from "../functions/create-demo-heatmap.function";
     selector: "dgp-heatmap-docs",
     template: `
         <dgp-page-header>
-            <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
-            Heatmap
+          <dgp-hamburger-menu-toggle></dgp-hamburger-menu-toggle>
+          Heatmap
         </dgp-page-header>
-
+        
         <dgp-docs-page>
-            <dgp-docs-page-content>
-                <dgp-docs-chapter-title>Heatmap</dgp-docs-chapter-title>
-                <dgp-docs-section-title>Demo</dgp-docs-section-title>
-
-                <dgp-details summary="Settings"
-                             [expanded]="false">
-                    <dgp-heatmap-demo-config-form style="margin-left: 36px; "
-                                                  [model]="model"
-                                                  (modelChange)="setModel($event)"/>
-
-                </dgp-details>
-
-                <dgp-heatmap *ngIf="heatmap"
-                             style="height: 320px;"
-                             [model]="heatmap.model"
-                             [config]="heatmap.config"
-                             chartTitle="Chart title"
-                             yAxisTitle="y axis"
-                             xAxisTitle="x axis"
-                             selectionMode="Brush"
-                             [exportConfig]="heatmap.exportConfig"
-                             [segments]="heatmap.segments"
-                             [selection]="heatmap.selection"
-                             (selectionChange)="selectTiles($event)">
-
-                    <ng-container right-legend>
-                    </ng-container>
-
-                    <ng-container bottom-legend>Bottom</ng-container>
-
+          <dgp-docs-page-content>
+            <dgp-docs-chapter-title>Heatmap</dgp-docs-chapter-title>
+            <dgp-docs-section-title>Demo</dgp-docs-section-title>
+        
+            <dgp-details summary="Settings"
+              [expanded]="false">
+              <dgp-heatmap-demo-config-form style="margin-left: 36px; "
+                [model]="model"
+                (modelChange)="setModel($event)"/>
+        
+              </dgp-details>
+        
+              @if (heatmap) {
+                <dgp-heatmap
+                  style="height: 320px;"
+                  [model]="heatmap.model"
+                  [config]="heatmap.config"
+                  chartTitle="Chart title"
+                  yAxisTitle="y axis"
+                  xAxisTitle="x axis"
+                  selectionMode="Brush"
+                  [exportConfig]="heatmap.exportConfig"
+                  [segments]="heatmap.segments"
+                  [selection]="heatmap.selection"
+                  (selectionChange)="selectTiles($event)">
+                  <ng-container right-legend>
+                  </ng-container>
+                  <ng-container bottom-legend>Bottom</ng-container>
                 </dgp-heatmap>
-
-                {{selection | json}}
+              }
+        
+              {{selection | json}}
             </dgp-docs-page-content>
-        </dgp-docs-page>
-    `,
+          </dgp-docs-page>
+        `,
     styles: [`
 
     `],

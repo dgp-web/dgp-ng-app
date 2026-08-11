@@ -5,25 +5,29 @@ import { MatDialogRef } from "@angular/material/dialog";
 @Component({
     selector: "dgp-maximize-dialog-button",
     template: `
-        <button *ngIf="!isMaximized"
-                mat-icon-button
-                (click)="maximize()"
-                matTooltip="Maximize"
-                dgpActionShortcut
-                shortcutKey="M"
-                [requireShift]="true">
+        @if (!isMaximized) {
+          <button
+            mat-icon-button
+            (click)="maximize()"
+            matTooltip="Maximize"
+            dgpActionShortcut
+            shortcutKey="M"
+            [requireShift]="true">
             <mat-icon>crop_din</mat-icon>
-        </button>
-        <button *ngIf="isMaximized"
-                mat-icon-button
-                (click)="minimize()"
-                matTooltip="Minimize"
-                dgpActionShortcut
-                shortcutKey="M"
-                [requireShift]="true">
+          </button>
+        }
+        @if (isMaximized) {
+          <button
+            mat-icon-button
+            (click)="minimize()"
+            matTooltip="Minimize"
+            dgpActionShortcut
+            shortcutKey="M"
+            [requireShift]="true">
             <mat-icon>filter_none</mat-icon>
-        </button>
-    `,
+          </button>
+        }
+        `,
     standalone: false
 })
 export class MaximizeDialogButtonComponent {
