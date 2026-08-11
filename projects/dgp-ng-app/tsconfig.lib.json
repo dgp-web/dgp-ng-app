@@ -10,8 +10,10 @@
     "angularCompilerOptions": {
         "compilationMode": "partial",
         "skipTemplateCodegen": true,
+        "extendedDiagnostics": false,
         "strictMetadataEmit": true,
-        "enableResourceInlining": true
+        "enableResourceInlining": true,
+        "strictTemplates": false
     },
     "exclude": [
         "**/*.spec.ts"

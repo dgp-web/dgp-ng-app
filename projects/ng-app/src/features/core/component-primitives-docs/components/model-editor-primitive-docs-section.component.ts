@@ -40,6 +40,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core";
                              language="html"></dgp-docs-code-block>
 
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ModelEditorPrimitiveDocsSectionComponent {

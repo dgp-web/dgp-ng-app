@@ -68,7 +68,7 @@ export class BroadcastChannelServiceImpl extends BroadcastChannelService {
         return fromEventPattern(
             this.addBroadcastListenerForAction
         ).pipe(
-            map((messageEvent: MessageEventLike) => messageEvent.data as BroadcastAction)
+            map(x => (x as any).data as BroadcastAction)
         );
     }
 

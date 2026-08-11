@@ -22,7 +22,7 @@ export class OpenFileManagerViaShortKeyDirective implements OnDestroy {
 
         this.keyPressSubscription = fromEvent(document, "keydown")
             .pipe(
-                filter(this.moduleConfig.openFileManagerShortKeyFilter),
+                filter(x => this.moduleConfig.openFileManagerShortKeyFilter(x as KeyboardEvent)),
                 switchMap(() => this.store.select(isFileManagerOpen)
                     .pipe(first())
                     .toPromise()),

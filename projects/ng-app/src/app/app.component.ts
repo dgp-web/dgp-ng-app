@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { of } from "rxjs";
 import { chartFeatures } from "../constants/charts/chart-features.constant";
 import { coreFeatures } from "../constants/core-features.constant";
@@ -60,6 +60,7 @@ import { coreFeatures } from "../constants/core-features.constant";
             flex-direction: column;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AppComponent {

@@ -55,14 +55,14 @@ export function getOverflowingColumnsInfo(payload: {
                     utilityTableRow = utilityTable.querySelectorAll("tr").item(regularRowIndex);
                 }
 
-                regularRow.querySelectorAll("td, th").forEach((cell: HTMLElement, cellIndex) => {
+                regularRow.querySelectorAll("td, th").forEach((cell: Element, cellIndex) => {
                     if (cellIndex !== columnIndex) return;
-
+                    const typedCell = cell as HTMLElement
                     const tag = cell.tagName;
                     const utilityCell = document.createElement(tag);
                     utilityCell.style.width = cell.clientWidth + "px";
-                    utilityCell.style.minWidth = cell.style.minWidth;
-                    utilityCell.style.maxWidth = cell.style.maxWidth;
+                    utilityCell.style.minWidth = typedCell.style.minWidth;
+                    utilityCell.style.maxWidth = typedCell.style.maxWidth;
                     utilityCell.innerHTML = cell.innerHTML;
                     utilityTableRow.appendChild(utilityCell);
 

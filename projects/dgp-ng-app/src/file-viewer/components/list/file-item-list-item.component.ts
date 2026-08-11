@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { FileItem } from "../../models";
 import { getFileItemSizeLabel } from "../../functions";
 import { DgpView } from "../../../utils/view";
@@ -29,6 +29,7 @@ import { DgpView } from "../../../utils/view";
             flex-direction: column;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FileItemListItemComponent extends DgpView<FileItem> {

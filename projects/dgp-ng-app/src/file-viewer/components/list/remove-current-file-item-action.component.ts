@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { DgpContainer } from "../../../utils/container.component-base";
 import { FileUploadState } from "../../../file-upload/models";
 import { firstAsPromise } from "../../../utils/first-as-promise";
@@ -25,6 +25,7 @@ export const canRemoveCurrentFileItem = createSelector(
             <mat-icon>delete</mat-icon>
         </button>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RemoveCurrentFileItemActionComponent extends DgpContainer<FileUploadState> {

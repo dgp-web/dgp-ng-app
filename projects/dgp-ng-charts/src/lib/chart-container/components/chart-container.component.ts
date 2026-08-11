@@ -1,4 +1,4 @@
-import { Component, HostBinding } from "@angular/core";
+import { Component, HostBinding, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-chart-container",
@@ -31,6 +31,7 @@ import { Component, HostBinding } from "@angular/core";
         }
 
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ChartContainerComponent {

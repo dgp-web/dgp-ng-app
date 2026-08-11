@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "lib-dgp-ng-data-export",
@@ -8,6 +8,7 @@ import { Component, OnInit } from "@angular/core";
     </p>
   `,
     styles: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DgpNgDataExportComponent implements OnInit {

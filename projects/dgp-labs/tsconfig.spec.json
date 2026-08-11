@@ -14,5 +14,9 @@
     "include": [
         "src/**/*.spec.ts",
         "src/**/*.d.ts"
-    ]
+    ],
+    "angularCompilerOptions": {
+        "extendedDiagnostics": false,
+        "strictTemplates": false
+    }
 }

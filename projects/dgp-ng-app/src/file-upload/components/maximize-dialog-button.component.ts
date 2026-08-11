@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject, ChangeDetectionStrategy } from "@angular/core";
 import { FILE_UPLOAD_CONFIG, FileUploadConfig } from "../models";
 import { MatDialogRef } from "@angular/material/dialog";
 
@@ -28,6 +28,7 @@ import { MatDialogRef } from "@angular/material/dialog";
           </button>
         }
         `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MaximizeDialogButtonComponent {

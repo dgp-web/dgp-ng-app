@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-routing-overlay",
@@ -21,6 +21,7 @@ import { Component } from "@angular/core";
             opacity: 0.67;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RoutingOverlayComponent {

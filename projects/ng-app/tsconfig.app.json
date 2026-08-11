@@ -16,5 +16,9 @@
     "exclude": [
         "src/**/*.spec.ts",
         "**/*.stories.ts"
-    ]
+    ],
+    "angularCompilerOptions": {
+      "extendedDiagnostics": false,
+      "strictTemplates": false
+    }
 }

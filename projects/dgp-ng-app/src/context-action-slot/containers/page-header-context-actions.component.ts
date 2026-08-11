@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { DgpContainer } from "../../utils/container.component-base";
 import { ActionContextState } from "../../action-context/models/action-context-state.model";
 import { isAnyActionContextSelected } from "../../action-context/selectors/is-any-action-context-selected.selector";
@@ -26,6 +26,7 @@ import { getSelectedActionContextLabel } from "../../action-context/selectors/ge
           </div>
         }
         `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DgpPageHeaderContextActionsComponent extends DgpContainer<ActionContextState> {

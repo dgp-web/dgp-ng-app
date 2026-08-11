@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-current-list-file-viewer",
@@ -16,6 +16,7 @@ import { Component } from "@angular/core";
             overflow: auto;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CurrentListFileViewerComponent {

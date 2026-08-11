@@ -1,7 +1,6 @@
 import {
     ChangeDetectionStrategy,
     Component,
-    ComponentFactoryResolver,
     Inject,
     OnChanges,
     SimpleChanges,
@@ -28,7 +27,6 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
 export class DynamicFileViewerComponent extends FileViewerComponentBase implements OnChanges {
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
         private readonly viewContainerRef: ViewContainerRef,
         @Inject(FILE_VIEWER_CONFIG)
         private readonly config: FileViewerConfig
@@ -48,11 +46,9 @@ export class DynamicFileViewerComponent extends FileViewerComponentBase implemen
 
     private loadComponent(fileItem: FileItem) {
         const fileType = fileItem.extension;
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-            this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default
-        );
+        const componentFactory = this.config.fileTypeViewerMap[fileType.toLowerCase()] ? this.config.fileTypeViewerMap[fileType.toLowerCase()] : this.config.fileTypeViewerMap.default;
         this.viewContainerRef.clear();
-        const componentRef = this.viewContainerRef.createComponent(componentFactory);
+        const componentRef = this.viewContainerRef.createComponent(componentFactory as any);
         const viewerComponent = componentRef.instance as FileViewerComponentBase;
         viewerComponent.fileItem = this.fileItem;
     }

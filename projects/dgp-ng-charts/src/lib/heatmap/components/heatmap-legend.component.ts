@@ -8,15 +8,15 @@ import { HeatmapLegend } from "../models/heatmap-legend.model";
         <div class="container">
           <div class="filled"></div>
           <div class="labels">
-            @if (model?.max !== null && model?.max !== undefined) {
+            @if ($safeNavigationMigration(model?.max) !== null && $safeNavigationMigration(model?.max) !== undefined) {
               <div>{{ model?.max.toPrecision(3) }}</div>
             }
             <dgp-spacer></dgp-spacer>
-            @if (model?.median !== null && model?.median !== undefined) {
+            @if ($safeNavigationMigration(model?.median) !== null && $safeNavigationMigration(model?.median) !== undefined) {
               <div>{{ model?.median.toPrecision(3) }}</div>
             }
             <dgp-spacer></dgp-spacer>
-            @if (model?.min !== null && model?.min !== undefined) {
+            @if ($safeNavigationMigration(model?.min) !== null && $safeNavigationMigration(model?.min) !== undefined) {
               <div>{{ model?.min.toPrecision(3) }}</div>
             }
           </div>

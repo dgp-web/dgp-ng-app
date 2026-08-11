@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { firstAsPromise } from "../../../utils/first-as-promise";
 import { getSelectedFileItem } from "../../../file-upload/selectors";
 import { DgpContainer } from "../../../utils/container.component-base";
@@ -16,6 +16,7 @@ import { downloadFile } from "../../../file-upload/actions";
             <mat-icon>file_download</mat-icon>
         </button>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DownloadCurrentFileItemComponent extends DgpContainer<FileUploadState> {

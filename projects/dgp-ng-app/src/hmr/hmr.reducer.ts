@@ -1,4 +1,4 @@
-import {ActionReducer} from "@ngrx/store";
+import { Action, ActionReducer } from "@ngrx/store";
 import { hotReload } from "./hmr.actions";
 
 /**
@@ -6,7 +6,7 @@ import { hotReload } from "./hmr.actions";
  */
 export function hmrReducer(x: ActionReducer<any>): ActionReducer<any> {
 
-  return (state: any, action: typeof hotReload) => {
+  return (state: any, action: Action) => {
     if (action.type === "[HMR] Reload") {
       return (action as any).payload;
     }

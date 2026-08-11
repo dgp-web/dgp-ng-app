@@ -302,7 +302,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
             });
 
 
-        payload.drawD3ChartInfo.svg.call(brush);
+        payload.drawD3ChartInfo.svg.call(brush as any);
 
         if (payload.selection && payload.selection.tiles) {
 
@@ -333,7 +333,7 @@ export function renderHeatmap(payload: HeatmapRendererPayload) {
                 const yEndRange = yRangeMap.get(lowerRightCorner.y);
 
                 if (xStartRange && yStartRange && xEndRange && yEndRange) {
-                    payload.drawD3ChartInfo.svg.call(brush.move, [
+                    payload.drawD3ChartInfo.svg.call(brush.move as any, [
                         [xStartRange.start, yStartRange.start],
                         [xEndRange.end, yEndRange.end],
                     ]);

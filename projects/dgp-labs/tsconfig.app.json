@@ -13,5 +13,9 @@
     ],
     "include": [
         "src/**/*.d.ts"
-    ]
+    ],
+    "angularCompilerOptions": {
+        "extendedDiagnostics": false,
+        "strictTemplates": false
+    }
 }

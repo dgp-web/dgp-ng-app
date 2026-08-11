@@ -8,11 +8,11 @@ export function getOrCreateRxAttribute$<TTarget extends object, TAttributeKey ex
 ) {
     const componentFixture = getOrCreateRxComponentFixture(instance);
 
-    let attribute$ = componentFixture.get(attributeKey) as BehaviorSubject<TTarget[TAttributeKey]>;
+    let attribute$ = componentFixture.get(attributeKey) as unknown as BehaviorSubject<TTarget[TAttributeKey]>;
 
     if (attribute$ === undefined) {
         attribute$ = createRxAttribute(attributeKey);
-        registerRxAttribute(attributeKey, attribute$, componentFixture);
+        registerRxAttribute(attributeKey, attribute$ as any, componentFixture);
     }
 
     return attribute$;

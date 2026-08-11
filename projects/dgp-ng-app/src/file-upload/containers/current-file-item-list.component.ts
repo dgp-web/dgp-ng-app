@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
 import { getFileItemListModel, isRemoveFilesDisabled } from "../selectors";
@@ -18,6 +18,7 @@ import { getFileItemListModel, isRemoveFilesDisabled } from "../selectors";
             flex-grow: 1;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CurrentFileItemListComponent extends DgpContainer<FileUploadState> {

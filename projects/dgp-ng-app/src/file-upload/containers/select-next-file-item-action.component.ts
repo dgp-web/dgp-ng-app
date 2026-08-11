@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { MatIconButton } from "@angular/material/button";
 import { MatTooltip } from "@angular/material/tooltip";
 import { DgpShortcutModule } from "../../shortcuts/shortcuts.module";
@@ -25,6 +25,7 @@ import { selectNextFile } from "../actions";
             <mat-icon>chevron_right</mat-icon>
         </button>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatIconButton,
         MatTooltip,

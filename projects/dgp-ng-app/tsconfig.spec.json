@@ -8,7 +8,9 @@
         ]
     },
     "angularCompilerOptions": {
-        "enableIvy": false
+        "enableIvy": false,
+        "extendedDiagnostics": false,
+        "strictTemplates": false
     },
     "include": [
         "**/*.spec.ts",
