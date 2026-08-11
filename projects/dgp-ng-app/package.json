@@ -1,6 +1,6 @@
 {
     "name": "dgp-ng-app",
-    "version": "18.0.3",
+    "version": "19.3.2",
     "license": "MIT",
     "description": "Building blocks for Angular apps",
     "keywords": [
@@ -32,6 +32,7 @@
         "@ngrx/effects": ">=18",
         "@types/lodash": "^4",
         "entity-store": "^2",
+        "fast-deep-equal": "^3",
         "lodash": "^4",
         "rxjs": "^6"
     },

@@ -6,7 +6,10 @@ export * from "./heatmap-domain-overrides.model";
 export * from "./heatmap-legend.model";
 export * from "./heatmap-renderer-payload.model";
 export * from "./heatmap-segment.model";
-export * from "./heatmap-selection.model";
 export * from "./heatmap-selection-filter.model";
+export * from "./heatmap-selection.model";
+export * from "./heatmap-tile-extent.model";
 export * from "./heatmap-tile.model";
+export * from "./heatmap.model";
 export * from "./internal-export-chart-config.model";
+

@@ -250,9 +250,10 @@ export { DgpTileModule } from "./tile/tile.module";
 
 // utils
 export { AppFeature } from "./utils/app-feature.model";
+export { areEqualByHashCode } from "./utils/are-equal-by-hash-code.function";
 export { createOnChangeEffect$ } from "./utils/create-on-change-effect$.function";
 export { defaultRuntimeChecks } from "./utils/default-runtime-checks";
-export { distinctUntilHashChanged } from "./utils/distinct-until-hash-changed.function";
+export { distinctUntilHashChanged, distinctUntilDeepChanged } from "./utils/distinct-until-hash-changed.function";
 export { DgpDisabledBase } from "./utils/dgp-disabled-base.directive";
 export { DgpEffectsBase } from "./utils/effects-base";
 export { filterEmpty } from "./utils/filter-empty.function";
