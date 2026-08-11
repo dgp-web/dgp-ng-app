@@ -5,7 +5,7 @@ import { Directory, FileItem } from "../file-viewer/models";
 
 import { DrawerLayout } from "../drawer-layout/models";
 
-export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent) => boolean;
+export type OpenFileManagerShortKeyFilter = (x: KeyboardEvent ) => boolean;
 
 export interface FileUploadEditingCapabilities {
     readonly canAddFiles: boolean;

@@ -1,5 +1,5 @@
-export const matrixToMany = <T>(prev: T[], current: T[]): T[] => {
+export const matrixToMany = <T>(prev: readonly T[], current: readonly T[]): T[] => {
     if (!prev) prev = [];
     prev = prev.concat(current);
-    return prev;
+    return prev as T[];
 };

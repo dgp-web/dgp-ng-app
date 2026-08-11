@@ -10,12 +10,7 @@
     "angularCompilerOptions": {
         "compilationMode": "partial",
         "skipTemplateCodegen": true,
-        "extendedDiagnostics": {
-          "checks": {
-            "nullishCoalescingNotNullable": "suppress",
-            "optionalChainNotNullable": "suppress"
-          }
-        },
+        "extendedDiagnostics": false,
         "strictMetadataEmit": true,
         "enableResourceInlining": true,
         "strictTemplates": false

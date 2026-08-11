@@ -126,7 +126,7 @@ export abstract class ChartComponentBase<TModel, TConfig extends SharedChartConf
                 svg,
                 containerHeight,
                 containerWidth
-            });
+            } as any);
         }
 
     }

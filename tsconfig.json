@@ -9,7 +9,10 @@
       "experimentalDecorators": true,
       "module": "ES2020",
       "moduleResolution": "bundler",
+      "noImplicitAny": false,
+      "ignoreDeprecations": "6.0",
       "importHelpers": true,
+      "strictNullChecks": false,
       "target": "ES2022",
       "typeRoots": [
         "node_modules/@types"
@@ -51,6 +54,7 @@
       "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
+        "extendedDiagnostics": false,
         "fullTemplateTypeCheck": true,
         "strictInjectionParameters": true
     }
