@@ -15,10 +15,10 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
           [scales]="scales"
           [config]="config"
           [size]="size">
-        
+
           <svg:defs xmlns:svg="http://www.w3.org/2000/svg"
             dgpPatternAndMaskDefs></svg:defs>
-        
+
             @if (scales) {
               @for (controlLine of controlLines; track trackByBoxPlotControlLineId($index, controlLine)) {
                 <svg:line xmlns:svg="http://www.w3.org/2000/svg"
@@ -82,7 +82,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                       [scales]="scales">
                       @for (box of boxGroup.boxes; track trackByBoxId($index, box)) {
                         <ng-container>
-                          @for (value of box.outliers; track (box | trackByBoxOutlierKey)(i, value); let i = $index) {
+                          @for (value of box.outliers; track $index; let i = $index) {
                             <ng-container
                               >
                               @if (showOutlierTooltips) {
@@ -119,7 +119,7 @@ import { CardinalAxisTickFormat } from "../../shared/models/cardinal-axis-tick-f
                     }
                     </svg:g>
                   }
-        
+
                 </dgp-svg-plot>
         `,
     styles: [`
@@ -191,4 +191,7 @@ export class DgpSVGBoxPlotComponent extends DgpCardinalYAxisChartComponentBase i
         return result;
     }
 
+    protected trackByBoxOutlierKey1($index: any, value: number, box: Box) {
+        return `${box.boxGroupId}.${box.boxId}.${$index}`;
+    }
 }

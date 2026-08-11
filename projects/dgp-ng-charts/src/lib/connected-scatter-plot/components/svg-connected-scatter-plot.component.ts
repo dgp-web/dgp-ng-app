@@ -49,7 +49,7 @@ import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-sc
                   [scales]="scales"
                 [lineWidth]="lineWidth"></path>
               }
-              @for (dot of series.dots; track (series | trackByConnectedScatterDot)($index, dot)) {
+              @for (dot of series.dots; track $index) {
                 <ng-container>
                   @if (series.showVertices) {
                     <ng-container>

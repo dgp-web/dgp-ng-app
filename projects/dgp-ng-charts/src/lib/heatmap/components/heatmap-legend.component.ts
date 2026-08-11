@@ -8,7 +8,7 @@ import { HeatmapLegend } from "../models/heatmap-legend.model";
         <div class="container">
           <div class="filled"></div>
           <div class="labels">
-            @if (model?.max !== null && model?.max undefined) {
+            @if (model?.max !== null && model?.max !== undefined) {
               <div>{{ model?.max.toPrecision(3) }}</div>
             }
             <dgp-spacer></dgp-spacer>
