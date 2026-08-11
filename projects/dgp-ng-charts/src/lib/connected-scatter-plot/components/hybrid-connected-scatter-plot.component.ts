@@ -26,36 +26,40 @@ import { map } from "rxjs/operators";
     selector: "dgp-hybrid-connected-scatter-plot",
     template: `
 
-        <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
-                      [showYAxisGridLines]="showYAxisGridLines"
-                      [showDataAreaOutline]="showDataAreaOutline"
-                      [scales]="scales"
-                      [config]="config"
-                      [size]="size"></dgp-svg-plot>
+<dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
+  [showYAxisGridLines]="showYAxisGridLines"
+  [showDataAreaOutline]="showDataAreaOutline"
+  [scales]="scales"
+  [config]="config"
+[size]="size"></dgp-svg-plot>
 
-        <dgp-connected-scatter-plot-data-canvas *ngIf="scales"
-                                                [scales]="scales"
-                                                [config]="config"
-                                                [model]="model"
-                                                [controlLines]="controlLines"
-                                                [size]="size"
-                                                [showDotTooltips]="showDotTooltips"
-                                                [dotSize]="dotSize"
-                                                [lineWidth]="lineWidth"
-                                                (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
+@if (scales) {
+  <dgp-connected-scatter-plot-data-canvas
+    [scales]="scales"
+    [config]="config"
+    [model]="model"
+    [controlLines]="controlLines"
+    [size]="size"
+    [showDotTooltips]="showDotTooltips"
+    [dotSize]="dotSize"
+    [lineWidth]="lineWidth"
+  (dotHovered)="showTooltip($event)"></dgp-connected-scatter-plot-data-canvas>
+}
 
-        <ng-container *ngIf="showDotTooltips && hoverEvent$.value">
-            <div *ngIf="tooltipPosition$ | async as pos"
-                 class="tooltip"
-                 [style.top]="pos.top"
-                 [style.left]="pos.left"
-                 [style.bottom]="pos.bottom"
-                 [style.right]="pos.right">
-                {{ getCurrentTooltip() }}
-            </div>
-        </ng-container>
+@if (showDotTooltips && hoverEvent$.value) {
+  @if (tooltipPosition$ | async; as pos) {
+    <div
+      class="tooltip"
+      [style.top]="pos.top"
+      [style.left]="pos.left"
+      [style.bottom]="pos.bottom"
+      [style.right]="pos.right">
+      {{ getCurrentTooltip() }}
+    </div>
+  }
+}
 
-    `,
+`,
     styles: [`
         :host {
             display: flex;

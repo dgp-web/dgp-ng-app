@@ -6,29 +6,25 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
     selector: "dgp-pdf-viewer",
     template: `
 
-        <ng-container *ngIf="platform.FIREFOX || platform.BLINK || platform.EDGE; else fallback">
+@if (platform.FIREFOX || platform.BLINK || platform.EDGE) {
+  @if (platform.FIREFOX || platform.BLINK) {
+    <object [attr.data]="fileItem.url | safe:'resourceUrl'"
+      type="application/pdf"
+      width="100%"
+      height="100%">
+      <dgp-fallback-file-viewer [fileItem]="fileItem"></dgp-fallback-file-viewer>
+    </object>
+  }
+  @if (platform.EDGE) {
+    <div [innerHTML]="edgeHTML | safe:'html'"
+    class="edge-helper"></div>
+  }
+} @else {
+  <dgp-fallback-file-viewer [fileItem]="fileItem"></dgp-fallback-file-viewer>
+}
 
-            <ng-container *ngIf="platform.FIREFOX || platform.BLINK">
-                <object [attr.data]="fileItem.url | safe:'resourceUrl'"
-                        type="application/pdf"
-                        width="100%"
-                        height="100%">
-                    <dgp-fallback-file-viewer [fileItem]="fileItem"></dgp-fallback-file-viewer>
-                </object>
-            </ng-container>
 
-            <ng-container *ngIf="platform.EDGE">
-                <div [innerHTML]="edgeHTML | safe:'html'"
-                     class="edge-helper"></div>
-            </ng-container>
-
-        </ng-container>
-
-        <ng-template #fallback>
-            <dgp-fallback-file-viewer [fileItem]="fileItem"></dgp-fallback-file-viewer>
-        </ng-template>
-
-    `,
+`,
     styles: [`
         :host {
             display: flex;

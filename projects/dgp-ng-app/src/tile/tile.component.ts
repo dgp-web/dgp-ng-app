@@ -3,46 +3,48 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 @Component({
     selector: "dgp-tile",
     template: `
-        <a *ngIf="route"
-           [routerLink]="route"
-           class="container"
-           matRipple>
+        @if (route) {
+          <a
+            [routerLink]="route"
+            class="container"
+            matRipple>
             <mat-card appearance="outlined"
-                      class="tile-card">
-                <mat-card-content class="description">
-                    <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
-                    <div class="label">
-                        {{ label }}
-                    </div>
-                    <mat-divider class="divider"></mat-divider>
-                    <div class="description__text">
-                        {{ description }}
-                    </div>
-                </mat-card-content>
+              class="tile-card">
+              <mat-card-content class="description">
+                <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
+                <div class="label">
+                  {{ label }}
+                </div>
+                <mat-divider class="divider"></mat-divider>
+                <div class="description__text">
+                  {{ description }}
+                </div>
+              </mat-card-content>
             </mat-card>
-
-        </a>
-
-        <a *ngIf="externalLink"
-           [attr.href]="externalLink"
-           target="_blank"
-           class="container">
+          </a>
+        }
+        
+        @if (externalLink) {
+          <a
+            [attr.href]="externalLink"
+            target="_blank"
+            class="container">
             <mat-card appearance="outlined" matRipple
-                      class="tile-card">
-                <mat-card-content class="description">
-                    <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
-                    <div class="label">
-                        {{ label }}
-                    </div>
-                    <mat-divider class="divider"></mat-divider>
-                    <div class="description__text">
-                        {{ description }}
-                    </div>
-                </mat-card-content>
+              class="tile-card">
+              <mat-card-content class="description">
+                <mat-icon class="icon dgp-bg--primary">{{ matIconName }}</mat-icon>
+                <div class="label">
+                  {{ label }}
+                </div>
+                <mat-divider class="divider"></mat-divider>
+                <div class="description__text">
+                  {{ description }}
+                </div>
+              </mat-card-content>
             </mat-card>
-
-        </a>
-    `,
+          </a>
+        }
+        `,
     styles: [`
         .container {
             display: flex;

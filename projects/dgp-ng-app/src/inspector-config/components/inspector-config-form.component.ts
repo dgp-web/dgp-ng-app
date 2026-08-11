@@ -9,76 +9,68 @@ import { inspectorConfigMetadata } from "../../inspector/constants";
 @Component({
     selector: "dgp-inspector-config-form",
     template: `
-        <dgp-inspector *ngIf="model"
-                       [fieldLabelThemeColor]="model.fieldLabelThemeColor"
-                       [maxContentWidth]="model.maxContentWidth"
-                       [responsive]="model.responsive"
-                       [showFieldDescriptions]="model.showFieldDescriptions"
-                       [showFieldIcons]="model.showFieldIcons">
-
+        @if (model) {
+          <dgp-inspector
+            [fieldLabelThemeColor]="model.fieldLabelThemeColor"
+            [maxContentWidth]="model.maxContentWidth"
+            [responsive]="model.responsive"
+            [showFieldDescriptions]="model.showFieldDescriptions"
+            [showFieldIcons]="model.showFieldIcons">
             <dgp-inspector-section label="General">
-
-                <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.responsive">
-                    <mat-form-field>
-                        <mat-select [ngModel]="model.responsive"
-                                    (ngModelChange)="updateResponsive($event)">
-                            <mat-option [value]="false">No</mat-option>
-                            <mat-option [value]="true">Yes</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </dgp-inspector-item>
-
+              <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.responsive">
+                <mat-form-field>
+                  <mat-select [ngModel]="model.responsive"
+                    (ngModelChange)="updateResponsive($event)">
+                    <mat-option [value]="false">No</mat-option>
+                    <mat-option [value]="true">Yes</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </dgp-inspector-item>
             </dgp-inspector-section>
-
             <dgp-inspector-section label="Fields">
-
-                <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.showFieldDescriptions">
-                    <mat-form-field>
-                        <mat-select [ngModel]="model.showFieldDescriptions"
-                                    (ngModelChange)="updateShowFieldDescription($event)">
-                            <mat-option [value]="false">No</mat-option>
-                            <mat-option [value]="true">Yes</mat-option>
-                            <mat-option [value]="'onHover'">On hover</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.showFieldIcons">
-                    <mat-form-field>
-                        <mat-select [ngModel]="model.showFieldIcons"
-                                    (ngModelChange)="updateShowFieldIcons($event)">
-                            <mat-option [value]="false">No</mat-option>
-                            <mat-option [value]="true">Yes</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.fieldLabelThemeColor">
-                    <mat-form-field>
-                        <mat-select [ngModel]="model.fieldLabelThemeColor"
-                                    (ngModelChange)="updateFieldLabelThemeColor($event)">
-                            <mat-option [value]="null"></mat-option>
-                            <mat-option [value]="'primary'">Primary</mat-option>
-                            <mat-option [value]="'accent'">Accent</mat-option>
-                            <mat-option [value]="'warn'">Warn</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </dgp-inspector-item>
-
-                <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.maxContentWidth">
-                    <dgp-spacer></dgp-spacer>
-                    <mat-slider [ngModel]="maxContentWidth$ | async"
-                                (ngModelChange)="updateMaxContentWidth($event)"
-                                [min]="160"
-                                [max]="480"
-                                [step]="1"
-                                style="width: 160px;"><input matSliderThumb /></mat-slider>
-                </dgp-inspector-item>
-
+              <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.showFieldDescriptions">
+                <mat-form-field>
+                  <mat-select [ngModel]="model.showFieldDescriptions"
+                    (ngModelChange)="updateShowFieldDescription($event)">
+                    <mat-option [value]="false">No</mat-option>
+                    <mat-option [value]="true">Yes</mat-option>
+                    <mat-option [value]="'onHover'">On hover</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </dgp-inspector-item>
+              <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.showFieldIcons">
+                <mat-form-field>
+                  <mat-select [ngModel]="model.showFieldIcons"
+                    (ngModelChange)="updateShowFieldIcons($event)">
+                    <mat-option [value]="false">No</mat-option>
+                    <mat-option [value]="true">Yes</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </dgp-inspector-item>
+              <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.fieldLabelThemeColor">
+                <mat-form-field>
+                  <mat-select [ngModel]="model.fieldLabelThemeColor"
+                    (ngModelChange)="updateFieldLabelThemeColor($event)">
+                    <mat-option [value]="null"></mat-option>
+                    <mat-option [value]="'primary'">Primary</mat-option>
+                    <mat-option [value]="'accent'">Accent</mat-option>
+                    <mat-option [value]="'warn'">Warn</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </dgp-inspector-item>
+              <dgp-inspector-item [metadata]="inspectorConfigMetadata.attributes.maxContentWidth">
+                <dgp-spacer></dgp-spacer>
+                <mat-slider [ngModel]="maxContentWidth$ | async"
+                  (ngModelChange)="updateMaxContentWidth($event)"
+                  [min]="160"
+                  [max]="480"
+                  [step]="1"
+                style="width: 160px;"><input matSliderThumb /></mat-slider>
+              </dgp-inspector-item>
             </dgp-inspector-section>
-
-        </dgp-inspector>
-    `,
+          </dgp-inspector>
+        }
+        `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

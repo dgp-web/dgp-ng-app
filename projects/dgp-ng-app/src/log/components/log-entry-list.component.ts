@@ -6,31 +6,34 @@ import { DgpContainer } from "../../utils/container.component-base";
 @Component({
     selector: "dgp-log-entry-list",
     template: `
-        <mat-nav-list *ngIf="hasLogEntries$ | async; else emptyState">
+        @if (hasLogEntries$ | async) {
+          <mat-nav-list>
             <h3 mat-subheader>Entries</h3>
-            <a mat-list-item
-               *ngFor="let logEntry of logEntries$ | async"
-               [routerLink]="['/logEntries', logEntry.timeStamp.toString()]">
-                <mat-icon matListItemIcon
-                          *ngIf="logEntry.severity === severityEnum.Error">
+            @for (logEntry of logEntries$ | async; track logEntry) {
+              <a mat-list-item
+                [routerLink]="['/logEntries', logEntry.timeStamp.toString()]">
+                @if (logEntry.severity === severityEnum.Error) {
+                  <mat-icon matListItemIcon
+                    >
                     error
-                </mat-icon>
+                  </mat-icon>
+                }
                 <div matListItemTitle>
-                    {{ logEntry.title }}
+                  {{ logEntry.title }}
                 </div>
                 <div matListItemLine>
-                    {{ logEntry.timeStamp | date:'medium' }}
+                  {{ logEntry.timeStamp | date:'medium' }}
                 </div>
-            </a>
-        </mat-nav-list>
-
-        <ng-template #emptyState>
-            <dgp-empty-state matIconName="error"
-                             title="No entries available">
-
-            </dgp-empty-state>
-        </ng-template>
-    `,
+              </a>
+            }
+          </mat-nav-list>
+        } @else {
+          <dgp-empty-state matIconName="error"
+            title="No entries available">
+          </dgp-empty-state>
+        }
+        
+        `,
     styles: [`
         :host {
             display: flex;

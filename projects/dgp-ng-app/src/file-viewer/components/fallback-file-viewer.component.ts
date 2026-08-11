@@ -7,25 +7,26 @@ import { FileViewerComponentBase } from "./file-viewer.component-base";
     selector: "dgp-fallback-file-viewer",
     template: `
         <dgp-empty-state title="No preview available"
-                         matIconName="get_app">
-
-            <a *ngIf="!isTridentOrEdge; else ieFallback"
-               class="download-link"
-               [href]="fileItem.url | safe:'url'"
-               target="_blank">
-                Download it here
+          matIconName="get_app">
+        
+          @if (!isTridentOrEdge) {
+            <a
+              class="download-link"
+              [href]="fileItem.url | safe:'url'"
+              target="_blank">
+              Download it here
             </a>
-
-            <ng-template #ieFallback>
-                <a class="download-link"
-                   href="javascript:;"
-                   (click)="downloadFileInTridentOrEdge()">
-                    Download it here
-                </a>
-            </ng-template>
-
+          } @else {
+            <a class="download-link"
+              href="javascript:;"
+              (click)="downloadFileInTridentOrEdge()">
+              Download it here
+            </a>
+          }
+        
+        
         </dgp-empty-state>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

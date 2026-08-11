@@ -5,18 +5,19 @@ import { Platform } from "@angular/cdk/platform";
 @Component({
     selector: "dgp-jpg-viewer",
     template: `
-        <img *ngIf="!isTrident; else fallback"
-             [src]="fileItem.url | safe:'url'"
-             class="image"
-             alt="{{ fileItem.fileName }}">
-        <ng-template #fallback>
-            <div class="trident-container">
-                <img [src]="fileItem.url | safe:'url'"
-                     class="trident-image"
-                     alt="{{ fileItem.fileName }}">
+        @if (!isTrident) {
+          <img
+            [src]="fileItem.url | safe:'url'"
+            class="image"
+            alt="{{ fileItem.fileName }}">
+        } @else {
+          <div class="trident-container">
+            <img [src]="fileItem.url | safe:'url'"
+              class="trident-image"
+              alt="{{ fileItem.fileName }}">
             </div>
-        </ng-template>
-    `,
+          }
+        `,
     styles: [`
         :host {
             display: flex;

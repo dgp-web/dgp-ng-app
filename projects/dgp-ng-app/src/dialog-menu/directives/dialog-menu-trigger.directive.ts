@@ -37,7 +37,7 @@ export class DgpDialogMenuTriggerDirective {
     ) {
     }
 
-    @HostListener("click", ["$event"])
+    @HostListener("click")
     async openDialogMenu() {
 
         if (this.disabled) {

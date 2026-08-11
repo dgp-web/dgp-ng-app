@@ -7,29 +7,33 @@ import { Details } from "../models/details.model";
     selector: "dgp-details",
     template: `
         <details #details
-                 (toggle)="onToggle($event)">
-            <summary (click)="$event.preventDefault()"
-                     tabindex="-1">
-                <ng-container *ngIf="togglePosition === 'start'">
-                    <dgp-expansion-toggle *ngIf="expandable"
-                                          [model]="expanded"
-                                          (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
-                </ng-container>
-                <div class="summary-content">
-                    {{ summary }}
-                    <ng-content select="[summary]"></ng-content>
-                </div>
-                <ng-container *ngIf="togglePosition === 'end'">
-                    <dgp-expansion-toggle *ngIf="expandable"
-                                          [model]="expanded"
-                                          (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
-                </ng-container>
-            </summary>
-            <div class="details-content">
-                <ng-content></ng-content>
+          (toggle)="onToggle($event)">
+          <summary (click)="$event.preventDefault()"
+            tabindex="-1">
+            @if (togglePosition === 'start') {
+              @if (expandable) {
+                <dgp-expansion-toggle
+                  [model]="expanded"
+                (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
+              }
+            }
+            <div class="summary-content">
+              {{ summary }}
+              <ng-content select="[summary]"></ng-content>
             </div>
+            @if (togglePosition === 'end') {
+              @if (expandable) {
+                <dgp-expansion-toggle
+                  [model]="expanded"
+                (modelChange)="updateExpanded($event)"></dgp-expansion-toggle>
+              }
+            }
+          </summary>
+          <div class="details-content">
+            <ng-content></ng-content>
+          </div>
         </details>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

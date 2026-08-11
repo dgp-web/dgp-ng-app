@@ -9,29 +9,28 @@ import { DgpPlotComponentBase } from "./plot.component-base";
 @Component({
     selector: "dgp-svg-plot",
     template: `
-        <svg *ngIf="scales"
-             class="chart-svg"
-             [attr.viewBox]="viewBox$ | async">
-
+        @if (scales) {
+          <svg
+            class="chart-svg"
+            [attr.viewBox]="viewBox$ | async">
             <defs>
-                <clipPath dgpChartDataAreaClipPath
-                          [scales]="scales"></clipPath>
-                <clipPath dgpChartContainerAreaClipPath
-                          [scales]="scales"></clipPath>
+              <clipPath dgpChartDataAreaClipPath
+              [scales]="scales"></clipPath>
+              <clipPath dgpChartContainerAreaClipPath
+              [scales]="scales"></clipPath>
             </defs>
             <ng-content select="[defs]"></ng-content>
-
             <g dgpChartSVGRoot
-               [scales]="scales"
-               [config]="config"
-               [showXAxisGridLines]="showXAxisGridLines"
-               [showYAxisGridLines]="showYAxisGridLines"
-               [showDataAreaOutline]="showDataAreaOutline">
-
-                <ng-content></ng-content>
+              [scales]="scales"
+              [config]="config"
+              [showXAxisGridLines]="showXAxisGridLines"
+              [showYAxisGridLines]="showYAxisGridLines"
+              [showDataAreaOutline]="showDataAreaOutline">
+              <ng-content></ng-content>
             </g>
-        </svg>
-    `,
+          </svg>
+        }
+        `,
     styles: [`
         :host {
             display: flex;

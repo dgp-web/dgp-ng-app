@@ -22,67 +22,72 @@ import { getConnectedScatterPlotDotTooltip } from "../functions/get-connected-sc
     selector: "dgp-svg-connected-scatter-plot",
     template: `
 
-        <dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
-                      [showYAxisGridLines]="showYAxisGridLines"
-                      [showDataAreaOutline]="showDataAreaOutline"
-                      [scales]="scales"
-                      [config]="config"
-                      [size]="size">
+<dgp-svg-plot [showXAxisGridLines]="showXAxisGridLines"
+  [showYAxisGridLines]="showYAxisGridLines"
+  [showDataAreaOutline]="showDataAreaOutline"
+  [scales]="scales"
+  [config]="config"
+  [size]="size">
 
-            <ng-container *ngIf="scales">
-
-                <svg:line xmlns:svg="http://www.w3.org/2000/svg"
-                          *ngFor="let controlLine of controlLines; trackBy: trackByConnectedPlotControlLineId"
-                          dgpConnectedScatterPlotControlLine
+  @if (scales) {
+    @for (controlLine of controlLines; track trackByConnectedPlotControlLineId($index, controlLine)) {
+      <svg:line xmlns:svg="http://www.w3.org/2000/svg"
+        dgpConnectedScatterPlotControlLine
+        [scales]="scales"
+        [lineWidth]="lineWidth"
+        [connectedScatterPlotControlLine]="controlLine"></svg:line>
+      }
+      @for (group of model; track trackByConnectedScatterGroupId($index, group)) {
+        <svg:g xmlns:svg="http://www.w3.org/2000/svg"
+          >
+          @for (series of group.series; track trackByConnectedScatterSeriesId($index, series)) {
+            <ng-container>
+              @if (series.showEdges) {
+                <path
+                  dgpLineChartLine
+                  [series]="series"
+                  [scales]="scales"
+                [lineWidth]="lineWidth"></path>
+              }
+              @for (dot of series.dots; track $index) {
+                <ng-container>
+                  @if (series.showVertices) {
+                    <ng-container>
+                      @if (showDotTooltips) {
+                        <g
+                          [matTooltip]="getTooltip(group, series, dot)"
+                          dgpScatterPlotDot
+                          [dot]="dot"
+                          [series]="series"
                           [scales]="scales"
-                          [lineWidth]="lineWidth"
-                          [connectedScatterPlotControlLine]="controlLine"></svg:line>
-
-                <svg:g xmlns:svg="http://www.w3.org/2000/svg"
-                       *ngFor="let group of model; trackBy: trackByConnectedScatterGroupId">
-                    <ng-container *ngFor="let series of group.series; trackBy: trackByConnectedScatterSeriesId">
-
-                        <path *ngIf="series.showEdges"
-                              dgpLineChartLine
-                              [series]="series"
-                              [scales]="scales"
-                              [lineWidth]="lineWidth"></path>
-
-                        <ng-container *ngFor="let dot of series.dots; trackBy: (series | trackByConnectedScatterDot)">
-                            <ng-container *ngIf="series.showVertices">
-
-                                <g *ngIf="showDotTooltips; else noTooltip"
-                                   [matTooltip]="getTooltip(group, series, dot)"
-                                   dgpScatterPlotDot
-                                   [dot]="dot"
-                                   [series]="series"
-                                   [scales]="scales"
-                                   dgpDot
-                                   [model]="series.shape"
-                                   [dotSize]="dotSize">
-                                </g>
-
-                                <ng-template #noTooltip>
-                                    <g dgpScatterPlotDot
-                                       [dot]="dot"
-                                       [series]="series"
-                                       [scales]="scales"
-                                       dgpDot
-                                       [model]="series.shape"
-                                       [dotSize]="dotSize">
-                                    </g>
-                                </ng-template>
-
-
-                            </ng-container>
-
-                        </ng-container>
+                          dgpDot
+                          [model]="series.shape"
+                          [dotSize]="dotSize">
+                        </g>
+                      } @else {
+                        <ng-template [ngTemplateOutlet]="noTooltip"></ng-template>
+                      }
+                      <ng-template #noTooltip>
+                        <g dgpScatterPlotDot
+                          [dot]="dot"
+                          [series]="series"
+                          [scales]="scales"
+                          dgpDot
+                          [model]="series.shape"
+                          [dotSize]="dotSize">
+                        </g>
+                      </ng-template>
                     </ng-container>
-                </svg:g>
-
+                  }
+                </ng-container>
+              }
             </ng-container>
-        </dgp-svg-plot>
-    `,
+          }
+          </svg:g>
+        }
+      }
+    </dgp-svg-plot>
+`,
     styles: [`
         :host {
             display: flex;

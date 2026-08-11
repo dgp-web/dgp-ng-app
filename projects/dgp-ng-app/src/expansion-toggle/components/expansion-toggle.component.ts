@@ -5,13 +5,17 @@ import { DgpModelEditorComponentBase } from "../../utils/model-editor.component-
     selector: "dgp-expansion-toggle",
     template: `
         <button mat-icon-button
-                (click)="setModel(!model)">
-            <mat-icon>
-                <ng-container *ngIf="model">expand_more</ng-container>
-                <ng-container *ngIf="!model">navigate_next</ng-container>
-            </mat-icon>
+          (click)="setModel(!model)">
+          <mat-icon>
+            @if (model) {
+              expand_more
+            }
+            @if (!model) {
+              navigate_next
+            }
+          </mat-icon>
         </button>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

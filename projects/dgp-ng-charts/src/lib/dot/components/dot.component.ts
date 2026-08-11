@@ -6,57 +6,67 @@ import { DotConfig } from "../../connected-scatter-plot/models";
 @Component({
     selector: "[dgpDot]",
     template: `
-        <ng-container [ngSwitch]="model">
-            <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
-                        *ngSwitchDefault
-                        dgpCircle
-                        [width]="dotSize"></svg:circle>
-            <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
-                        *ngSwitchCase="shapeEnum.Circle"
-                        dgpCircle
-                        [width]="dotSize"></svg:circle>
-            <svg:rect xmlns:svg="http://www.w3.org/2000/svg"
-                      *ngSwitchCase="shapeEnum.Rectangle"
-                      dgpRectangle
-                      [width]="dotSize-2"
-                      [height]="dotSize-2"></svg:rect>
+@switch (model) {
+  @default {
+    <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
+      dgpCircle
+      [width]="dotSize"></svg:circle>
+    }
+    @case (shapeEnum.Circle) {
+      <svg:circle xmlns:svg="http://www.w3.org/2000/svg"
+        dgpCircle
+        [width]="dotSize"></svg:circle>
+      }
+      @case (shapeEnum.Rectangle) {
+        <svg:rect xmlns:svg="http://www.w3.org/2000/svg"
+          dgpRectangle
+          [width]="dotSize-2"
+          [height]="dotSize-2"></svg:rect>
+        }
+        @case (shapeEnum.Rhombus) {
+          <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+            dgpRhombus
+            [width]="dotSize"
+            [height]="dotSize"></svg:polygon>
+          }
+          @case (shapeEnum.Star) {
             <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.Rhombus"
-                         dgpRhombus
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.Star"
-                         dgpStar
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.Cross"
-                         dgpCross
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.Triangle"
-                         dgpTriangle
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.TriangleDown"
-                         dgpTriangleDown
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.TriangleRight"
-                         dgpTriangleRight
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-            <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
-                         *ngSwitchCase="shapeEnum.TriangleLeft"
-                         dgpTriangleLeft
-                         [width]="dotSize"
-                         [height]="dotSize"></svg:polygon>
-        </ng-container>
-    `,
+              dgpStar
+              [width]="dotSize"
+              [height]="dotSize"></svg:polygon>
+            }
+            @case (shapeEnum.Cross) {
+              <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                dgpCross
+                [width]="dotSize"
+                [height]="dotSize"></svg:polygon>
+              }
+              @case (shapeEnum.Triangle) {
+                <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                  dgpTriangle
+                  [width]="dotSize"
+                  [height]="dotSize"></svg:polygon>
+                }
+                @case (shapeEnum.TriangleDown) {
+                  <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                    dgpTriangleDown
+                    [width]="dotSize"
+                    [height]="dotSize"></svg:polygon>
+                  }
+                  @case (shapeEnum.TriangleRight) {
+                    <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                      dgpTriangleRight
+                      [width]="dotSize"
+                      [height]="dotSize"></svg:polygon>
+                    }
+                    @case (shapeEnum.TriangleLeft) {
+                      <svg:polygon xmlns:svg="http://www.w3.org/2000/svg"
+                        dgpTriangleLeft
+                        [width]="dotSize"
+                        [height]="dotSize"></svg:polygon>
+                      }
+                    }
+`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

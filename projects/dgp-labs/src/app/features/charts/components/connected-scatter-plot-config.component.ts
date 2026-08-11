@@ -12,120 +12,122 @@ import {
     selector: "dgp-connected-scatter-plot-config",
     template: `
         <dgp-inspector class="--dynamic-form-fields"
-                       [responsive]="true">
-            <dgp-inspector-section label="General"
-                                   matIconName="info">
-                <dgp-inspector-item [metadata]="cspMetadata.attributes.chartTitle">
-                    <input [disabled]="disabled"
-                           [ngModel]="model.chartTitle"
-                           (ngModelChange)="updateChartTitle($event)">
+          [responsive]="true">
+          <dgp-inspector-section label="General"
+            matIconName="info">
+            <dgp-inspector-item [metadata]="cspMetadata.attributes.chartTitle">
+              <input [disabled]="disabled"
+                [ngModel]="model.chartTitle"
+                (ngModelChange)="updateChartTitle($event)">
+              </dgp-inspector-item>
+        
+        
+              <dgp-inspector-item label="Dot size"
+                matIconName="label">
+                <input type="number"
+                  [disabled]="disabled"
+                  [ngModel]="model.dotSize"
+                  (ngModelChange)="setDotSize($event)">
                 </dgp-inspector-item>
-
-
-                <dgp-inspector-item label="Dot size"
-                                    matIconName="label">
-                    <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.dotSize"
-                           (ngModelChange)="setDotSize($event)">
-                </dgp-inspector-item>
-
+        
                 <dgp-inspector-item label="Show dot tooltips"
-                                    matIconName="info">
-                    <input type="checkbox"
-                           [disabled]="disabled"
-                           [ngModel]="model.showDotTooltips"
-                           (ngModelChange)="setShowDotTooltips($event)">
-                </dgp-inspector-item>
-
-                <dgp-inspector-item label="Line width"
-                                    matIconName="label">
+                  matIconName="info">
+                  <input type="checkbox"
+                    [disabled]="disabled"
+                    [ngModel]="model.showDotTooltips"
+                    (ngModelChange)="setShowDotTooltips($event)">
+                  </dgp-inspector-item>
+        
+                  <dgp-inspector-item label="Line width"
+                    matIconName="label">
                     <input type="number"
-                           [disabled]="disabled"
-                           [ngModel]="model.lineWidth"
-                           (ngModelChange)="setLineWidth($event)">
-                </dgp-inspector-item>
-            </dgp-inspector-section>
-
-        </dgp-inspector>
-
-        <dgp-cardinal-x-axis-config [model]="model"
-                                    (modelChange)="setModel($event)"
-                                    [disabled]="disabled"></dgp-cardinal-x-axis-config>
-
-        <dgp-cardinal-y-axis-config [model]="model"
-                                    (modelChange)="setModel($event)"
-                                    [disabled]="disabled"></dgp-cardinal-y-axis-config>
-
-        <dgp-inspector>
-
-            <dgp-inspector-section matIconName="storage"
-                                   label="Data groups">
-
-                <dgp-inspector-item matIconName="stacked_line_chart"
-                                    label="Group">
-                    <select [ngModel]="selectedDataGroupId$ | async"
-                            (ngModelChange)="selectDataGroupId($event)"
-                            [disabled]="disabled">
-                        <option *ngFor="let group of model.model; let i = index"
-                                [ngValue]="group.connectedScatterGroupId">
+                      [disabled]="disabled"
+                      [ngModel]="model.lineWidth"
+                      (ngModelChange)="setLineWidth($event)">
+                    </dgp-inspector-item>
+                  </dgp-inspector-section>
+        
+                </dgp-inspector>
+        
+                <dgp-cardinal-x-axis-config [model]="model"
+                  (modelChange)="setModel($event)"
+                [disabled]="disabled"></dgp-cardinal-x-axis-config>
+        
+                <dgp-cardinal-y-axis-config [model]="model"
+                  (modelChange)="setModel($event)"
+                [disabled]="disabled"></dgp-cardinal-y-axis-config>
+        
+                <dgp-inspector>
+        
+                  <dgp-inspector-section matIconName="storage"
+                    label="Data groups">
+        
+                    <dgp-inspector-item matIconName="stacked_line_chart"
+                      label="Group">
+                      <select [ngModel]="selectedDataGroupId$ | async"
+                        (ngModelChange)="selectDataGroupId($event)"
+                        [disabled]="disabled">
+                        @for (group of model.model; track group; let i = $index) {
+                          <option
+                            [ngValue]="group.connectedScatterGroupId">
                             Group: {{i + 1}}
-                        </option>
-                    </select>
-                </dgp-inspector-item>
-
-
-                <dgp-connected-scatter-group-form
-                    *ngIf="selectedDataGroup$ | async as selectedDataGroup"
-                    [model]="selectedDataGroup"
-                    (modelChange)="updateSelectedGroup($event)"
-                    [disabled]="disabled"></dgp-connected-scatter-group-form>
-
-            </dgp-inspector-section>
-
-            <dgp-inspector-section label="Control lines"
-                                   matIconName="vertical_distribute">
-
-                <dgp-inspector-item matIconName="horizontal_rule"
-                                    label="Selected line">
-                    <select [disabled]="disabled"
-                            [ngModel]="selectedControlLineId$ | async"
-                            (ngModelChange)="selectControlLine($event)">
-                        <option *ngFor="let controlLine of model.controlLines"
-                                [ngValue]="controlLine.connectedScatterPlotControlLineId">
+                          </option>
+                        }
+                      </select>
+                    </dgp-inspector-item>
+        
+        
+                    @if (selectedDataGroup$ | async; as selectedDataGroup) {
+                      <dgp-connected-scatter-group-form
+                        [model]="selectedDataGroup"
+                        (modelChange)="updateSelectedGroup($event)"
+                      [disabled]="disabled"></dgp-connected-scatter-group-form>
+                    }
+        
+                  </dgp-inspector-section>
+        
+                  <dgp-inspector-section label="Control lines"
+                    matIconName="vertical_distribute">
+        
+                    <dgp-inspector-item matIconName="horizontal_rule"
+                      label="Selected line">
+                      <select [disabled]="disabled"
+                        [ngModel]="selectedControlLineId$ | async"
+                        (ngModelChange)="selectControlLine($event)">
+                        @for (controlLine of model.controlLines; track controlLine) {
+                          <option
+                            [ngValue]="controlLine.connectedScatterPlotControlLineId">
                             {{controlLine.label}}
-                        </option>
-                    </select>
-                </dgp-inspector-item>
-
-                <!-- dgp-control-line-form -->
-                <ng-container *ngIf="selectedControlLine$ | async as selectedControlLine">
-                    <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.label">
+                          </option>
+                        }
+                      </select>
+                    </dgp-inspector-item>
+        
+                    <!-- dgp-control-line-form -->
+                    @if (selectedControlLine$ | async; as selectedControlLine) {
+                      <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.label">
                         <input [ngModel]="selectedControlLine.label"
-                               [disabled]="disabled"
-                               (ngModelChange)="updateSelectedControlLineLabel($event)">
-                    </dgp-inspector-item>
-
-                    <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.value">
-                        <input type="number"
-                               [ngModel]="selectedControlLine.value"
-                               [disabled]="disabled"
-                               (ngModelChange)="updateSelectedControlLineValue($event)">
-                    </dgp-inspector-item>
-
-                    <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.colorHex">
-                        <input type="color"
-                               [ngModel]="selectedControlLine.colorHex"
-                               [disabled]="disabled"
-                               (ngModelChange)="updateSelectedControlLineColorHex($event)">
-                    </dgp-inspector-item>
-
-                </ng-container>
-
-            </dgp-inspector-section>
-
-        </dgp-inspector>
-    `,
+                          [disabled]="disabled"
+                          (ngModelChange)="updateSelectedControlLineLabel($event)">
+                        </dgp-inspector-item>
+                        <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.value">
+                          <input type="number"
+                            [ngModel]="selectedControlLine.value"
+                            [disabled]="disabled"
+                            (ngModelChange)="updateSelectedControlLineValue($event)">
+                          </dgp-inspector-item>
+                          <dgp-inspector-item [metadata]="cspMetadata.attributes.controlLines.item.attributes.colorHex">
+                            <input type="color"
+                              [ngModel]="selectedControlLine.colorHex"
+                              [disabled]="disabled"
+                              (ngModelChange)="updateSelectedControlLineColorHex($event)">
+                            </dgp-inspector-item>
+                          }
+        
+                        </dgp-inspector-section>
+        
+                      </dgp-inspector>
+        `,
     styles: [`
         :host {
             display: flex;

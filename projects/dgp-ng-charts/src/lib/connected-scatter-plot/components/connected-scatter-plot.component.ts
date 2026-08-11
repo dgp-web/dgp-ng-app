@@ -13,45 +13,49 @@ import { ConnectedScatterPlotRenderer } from "../models/connected-scatter-plot-r
     selector: "dgp-connected-scatter-plot",
     template: `
         <dgp-chart [yAxisTitle]="yAxisTitle"
-                   [xAxisTitle]="xAxisTitle"
-                   [chartTitle]="chartTitle"
-                   (sizeChanged)="onResize($event)">
-
-            <ng-container right-legend>
-                <ng-content select="[right-legend]"></ng-content>
-            </ng-container>
-
-            <!-- TODO: This needs some cleaning up. Passing around unneeded models and scales is weird -->
-            <dgp-svg-connected-scatter-plot *ngIf="renderer === rendererEnum.SVG"
-                                            [size]="size$ | async"
-                                            [showXAxisGridLines]="showXAxisGridLines"
-                                            [showYAxisGridLines]="showYAxisGridLines"
-                                            [model]="resolvedModel$ | async"
-                                            [controlLines]="controlLines"
-                                            [scales]="scales$ | async"
-                                            [showDotTooltips]="showDotTooltips"
-                                            [showDataAreaOutline]="showDataAreaOutline"
-                                            [config]="config"
-                                            [dotSize]="dotSize"
-                                            [dotTooltipFormat]="dotTooltipFormat"
-                                            [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-svg-connected-scatter-plot>
-
-            <dgp-hybrid-connected-scatter-plot *ngIf="renderer === rendererEnum.Hybrid"
-                                               [size]="size$ | async"
-                                               [showXAxisGridLines]="showXAxisGridLines"
-                                               [showYAxisGridLines]="showYAxisGridLines"
-                                               [model]="resolvedModel$ | async"
-                                               [controlLines]="controlLines"
-                                               [scales]="scales$ | async"
-                                               [showDotTooltips]="showDotTooltips"
-                                               [showDataAreaOutline]="showDataAreaOutline"
-                                               [config]="config"
-                                               [dotSize]="dotSize"
-                                               [dotTooltipFormat]="dotTooltipFormat"
-                                               [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-hybrid-connected-scatter-plot>
-
+          [xAxisTitle]="xAxisTitle"
+          [chartTitle]="chartTitle"
+          (sizeChanged)="onResize($event)">
+        
+          <ng-container right-legend>
+            <ng-content select="[right-legend]"></ng-content>
+          </ng-container>
+        
+          <!-- TODO: This needs some cleaning up. Passing around unneeded models and scales is weird -->
+          @if (renderer === rendererEnum.SVG) {
+            <dgp-svg-connected-scatter-plot
+              [size]="size$ | async"
+              [showXAxisGridLines]="showXAxisGridLines"
+              [showYAxisGridLines]="showYAxisGridLines"
+              [model]="resolvedModel$ | async"
+              [controlLines]="controlLines"
+              [scales]="scales$ | async"
+              [showDotTooltips]="showDotTooltips"
+              [showDataAreaOutline]="showDataAreaOutline"
+              [config]="config"
+              [dotSize]="dotSize"
+              [dotTooltipFormat]="dotTooltipFormat"
+            [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-svg-connected-scatter-plot>
+          }
+        
+          @if (renderer === rendererEnum.Hybrid) {
+            <dgp-hybrid-connected-scatter-plot
+              [size]="size$ | async"
+              [showXAxisGridLines]="showXAxisGridLines"
+              [showYAxisGridLines]="showYAxisGridLines"
+              [model]="resolvedModel$ | async"
+              [controlLines]="controlLines"
+              [scales]="scales$ | async"
+              [showDotTooltips]="showDotTooltips"
+              [showDataAreaOutline]="showDataAreaOutline"
+              [config]="config"
+              [dotSize]="dotSize"
+              [dotTooltipFormat]="dotTooltipFormat"
+            [lineWidth]="lineWidth | resolveConnectedScatterPlotLineWidth"></dgp-hybrid-connected-scatter-plot>
+          }
+        
         </dgp-chart>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

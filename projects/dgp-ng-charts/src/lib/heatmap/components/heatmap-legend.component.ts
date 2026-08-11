@@ -6,16 +6,22 @@ import { HeatmapLegend } from "../models/heatmap-legend.model";
     selector: "dgp-heatmap-legend",
     template: `
         <div class="container">
-            <div class="filled"></div>
-            <div class="labels">
-                <div *ngIf="model?.max !== null && model?.max undefined">{{ model?.max.toPrecision(3) }}</div>
-                <dgp-spacer></dgp-spacer>
-                <div *ngIf="model?.median !== null && model?.median !== undefined">{{ model?.median.toPrecision(3) }}</div>
-                <dgp-spacer></dgp-spacer>
-                <div *ngIf="model?.min !== null && model?.min !== undefined">{{ model?.min.toPrecision(3) }}</div>
-            </div>
+          <div class="filled"></div>
+          <div class="labels">
+            @if (model?.max !== null && model?.max !== undefined) {
+              <div>{{ model?.max.toPrecision(3) }}</div>
+            }
+            <dgp-spacer></dgp-spacer>
+            @if (model?.median !== null && model?.median !== undefined) {
+              <div>{{ model?.median.toPrecision(3) }}</div>
+            }
+            <dgp-spacer></dgp-spacer>
+            @if (model?.min !== null && model?.min !== undefined) {
+              <div>{{ model?.min.toPrecision(3) }}</div>
+            }
+          </div>
         </div>
-    `,
+        `,
     styles: [`
         :host {
             display: flex;

@@ -9,19 +9,21 @@ import { map } from "rxjs/operators";
     selector: "dgp-shape-select",
     template: `
         <mat-form-field>
-            <mat-select [ngModel]="model"
-                        (ngModelChange)="setModel($event)"
-                        [disabled]="disabled">
-                <mat-option [value]="null"><i>Clear selection</i></mat-option>
-                <mat-option *ngFor="let shape of shapes"
-                            [value]="shape">
-                    <dgp-svg-shape [model]="shape"
-                                   [fillColor]="fillColor$ | async"></dgp-svg-shape>
-                    {{shapeMap.get(shape).label}}
-                </mat-option>
-            </mat-select>
+          <mat-select [ngModel]="model"
+            (ngModelChange)="setModel($event)"
+            [disabled]="disabled">
+            <mat-option [value]="null"><i>Clear selection</i></mat-option>
+            @for (shape of shapes; track shape) {
+              <mat-option
+                [value]="shape">
+                <dgp-svg-shape [model]="shape"
+                [fillColor]="fillColor$ | async"></dgp-svg-shape>
+                {{shapeMap.get(shape).label}}
+              </mat-option>
+            }
+          </mat-select>
         </mat-form-field>
-    `,
+        `,
     styles: [`
         :host {
             width: auto;
