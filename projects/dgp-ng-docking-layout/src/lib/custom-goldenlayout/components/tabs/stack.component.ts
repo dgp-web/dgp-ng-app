@@ -1,16 +1,17 @@
 import {
-    AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostBinding,
-    Inject,
-    Input,
-    Output,
-    QueryList,
-    ViewChild,
-    ViewChildren
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Inject,
+  Input,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  ChangeDetectionStrategy
 } from "@angular/core";
 import {
     ComponentConfiguration,
@@ -110,6 +111,7 @@ export interface ComponentDroppedOnStackEvent {
             user-select: none;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class StackComponent implements DropTarget, AfterViewInit {

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-close-dialog-button",
@@ -9,6 +9,7 @@ import { Component } from "@angular/core";
             <mat-icon>close</mat-icon>
         </button>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CloseDialogButtonComponent {

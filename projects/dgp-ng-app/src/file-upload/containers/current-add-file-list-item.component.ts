@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
 import { isAddFilesDisabled } from "../selectors";
@@ -32,6 +32,7 @@ import { addFilesViaDrop } from "../actions";
             </mat-action-list>
           }
         `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CurrentAddFileListItemComponent extends DgpContainer<FileUploadState> {

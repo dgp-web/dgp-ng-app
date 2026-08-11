@@ -1,7 +1,7 @@
 import { Vector2 } from "../../../common/models";
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
 import { activeClassName } from "../../constants/active-class-name.constant";
-import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, ViewChild, ChangeDetectionStrategy } from "@angular/core";
 import { DragStartEvent } from "../../models/drag-start-event.model";
 import { DgpView } from "dgp-ng-app";
 import { ComponentConfiguration } from "../../types";
@@ -22,6 +22,7 @@ import { ComponentConfiguration } from "../../types";
             </a>
         </li>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TabComponent extends DgpView<ComponentConfiguration> {

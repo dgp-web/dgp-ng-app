@@ -1,5 +1,5 @@
 import { DragListenerDirective } from "../drag-and-drop/drag-listener.directive";
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ChangeDetectionStrategy } from "@angular/core";
 import { isNullOrUndefined, observeAttribute$ } from "dgp-ng-app";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
@@ -35,6 +35,7 @@ import { DragEvent } from "../../models/drag-event.model";
           </div>
         }
         `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SplitterComponent  {

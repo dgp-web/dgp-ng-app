@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-file-manager-dialog-header",
@@ -14,6 +14,7 @@ import { Component } from "@angular/core";
             align-items: center;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FileManagerDialogHeaderComponent {

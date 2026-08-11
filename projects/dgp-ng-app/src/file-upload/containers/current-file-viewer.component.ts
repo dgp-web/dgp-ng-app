@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { DgpContainer } from "../../utils/container.component-base";
 import { FileUploadState } from "../models";
 import { getSelectedFileItem, hasMoreThanOneFile } from "../selectors";
@@ -32,6 +32,7 @@ import { getSelectedFileItem, hasMoreThanOneFile } from "../selectors";
             right: 0;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CurrentFileViewerComponent extends DgpContainer<FileUploadState> {

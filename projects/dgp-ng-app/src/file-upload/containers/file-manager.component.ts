@@ -1,4 +1,4 @@
-import { Component, } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { FileUploadState } from "../models";
 import { canOpenFileDrawer, isDropTargetVisible } from "../selectors";
 import { DgpContainer } from "../../utils/container.component-base";
@@ -38,6 +38,7 @@ import { DgpContainer } from "../../utils/container.component-base";
             max-height: initial;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FileManagerComponent extends DgpContainer<FileUploadState> {

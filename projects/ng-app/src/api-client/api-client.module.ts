@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule, ValueProvider } from "@angular/core";
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from "@angular/common/http";
 import { ApiClientSettings } from "./api-client-settings";
 
 export interface ApiClientSettingsProvider extends ValueProvider {
@@ -7,7 +7,7 @@ export interface ApiClientSettingsProvider extends ValueProvider {
 }
 
 @NgModule({ imports: [], providers: [
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ] })
 export class ApiClientModule {
 

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
     selector: "dgp-component-primitives-docs-page",
@@ -89,6 +89,7 @@ import { Component } from "@angular/core";
     styles: [`
 
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComponentPrimitivesDocsPageComponent {

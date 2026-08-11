@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { interval } from "rxjs";
 
 @Component({
@@ -89,6 +89,7 @@ import { interval } from "rxjs";
             flex-direction: column;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DgpNgDockingLayoutComponent implements OnInit {

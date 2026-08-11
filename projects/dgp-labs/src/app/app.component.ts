@@ -1,4 +1,4 @@
-import { Component, HostBinding } from "@angular/core";
+import { Component, HostBinding, ChangeDetectionStrategy } from "@angular/core";
 import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
 
 
@@ -92,6 +92,7 @@ import { DgpContainer, getAuthenticatedUserSelector } from "dgp-ng-app";
     styleUrls: [
         "./app.component.scss"
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AppComponent extends DgpContainer {

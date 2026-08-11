@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { FileUploadState } from "../models";
 import { DgpContainer } from "../../utils/container.component-base";
 import { isAddFilesDisabled } from "../selectors";
@@ -19,6 +19,7 @@ import { Many } from "data-modeling";
             flex-grow: 1;
         }
     `],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CurrentFileDropZoneComponent extends DgpContainer<FileUploadState> {

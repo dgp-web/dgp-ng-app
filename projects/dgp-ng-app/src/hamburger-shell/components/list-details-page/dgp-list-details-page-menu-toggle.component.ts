@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltip } from "@angular/material/tooltip";
@@ -25,6 +25,7 @@ import { toggleListDetailsPageMenu } from "../../actions";
             }
         </button>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatIconButton,
         MatIcon,

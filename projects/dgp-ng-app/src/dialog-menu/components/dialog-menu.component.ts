@@ -1,4 +1,4 @@
-import { Component, Inject, TemplateRef } from "@angular/core";
+import { Component, Inject, TemplateRef, ChangeDetectionStrategy } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
         <ng-container *ngTemplateOutlet="template"></ng-container>
     `,
     styles: [``],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DgpDialogMenuComponent {

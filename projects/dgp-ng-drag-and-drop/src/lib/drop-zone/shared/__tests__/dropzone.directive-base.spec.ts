@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { DgpDropzoneDirectiveBase } from "../dropzone.directive-base";
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { DgpDragAndDropModule } from "../../../data/drag-and-drop.module";
 import { DgpDragAndDropService } from "../../../data/services/drag-and-drop.service";
 import { of } from "rxjs";
@@ -9,6 +9,7 @@ import { WithDragContext } from "../../../models";
 @Component({
     selector: "dgp-test-dropzone",
     template: ``,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TestDropzoneComponent extends DgpDropzoneDirectiveBase<any> {
