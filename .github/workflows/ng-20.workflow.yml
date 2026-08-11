@@ -1,18 +1,18 @@
-name: Build and deploy NG 17
+name: Build and deploy NG 20
 
 on:
   push:
-    branches: [ support/ng-17 ]
+    branches: [ support/ng-20 ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-          node-version: '18.20'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
     - name: Install npm packages
@@ -69,18 +69,3 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
-    - name: build docs-app
-      run: npm run docs-app:build:prod
-
-    - name: Publish docs-app to firebase
-      run: npm run docs-app:publish
-      env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-    - name: Publish docs-app to firebase v17
-      run: npm run docs-app-17:publish
-      env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-    - name: build dgp-labs
-      run: npm run dgp-labs:build:prod
