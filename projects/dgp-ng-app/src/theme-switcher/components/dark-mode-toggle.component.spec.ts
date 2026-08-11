@@ -48,7 +48,7 @@ describe(DarkModeToggleComponent.name, () => {
         fixture = TestBed.createComponent(DarkModeToggleComponent);
         component = fixture.componentInstance;
 
-        store = TestBed.get(Store);
+        store = TestBed.inject(Store);
 
     }));
 
