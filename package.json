@@ -107,7 +107,6 @@
     "@types/lodash": "^4.14.149",
     "@types/node": "^12.11.1",
     "@types/seedrandom": "^2.4.28",
-    "angular-eslint": "21.4.0",
     "cpx": "^1.5.0",
     "eslint": "^10.3.0",
     "event-source-polyfill": "^1.0.11",
