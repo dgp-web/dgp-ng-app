@@ -1,7 +1,7 @@
 {
   "name": "dgp-ng-app",
   "version": "21.0.0",
-  "scripts": {
+  "scripts": { 
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
